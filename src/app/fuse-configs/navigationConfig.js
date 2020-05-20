@@ -117,7 +117,7 @@ const navigationConfig = [
 				translate: 'GRUOP',
 				type: 'collapse',
 				icon: 'shopping_cart',
-				url: '/apps/groups',
+				url: '/apps/groups/group',
 				children: [
 					{
 						id: 'Conversation',
@@ -172,7 +172,7 @@ const navigationConfig = [
 				translate: 'COMPAIGNS',
 				type: 'item',
 				icon: 'email',
-				url: '/apps/mail',
+				url: '/apps/campaign',
 				// badge: {
 				// 	title: 25,
 				// 	bg: '#F44336',

@@ -9,7 +9,9 @@ import Error404PageConfig from './errors/404/Error404PageConfig';
 import IntelligenceConfig from './Intelligence/IntelligenceConfig';
 import ChatAppConfig from './chat/ChatAppConfig';
 import GroupChatAppConfig from './group-chat/GroupChatAppConfig';
-import GroupConfig from './groups/GroupConfig'
+import GroupConfig from './groups/GroupConfig';
+import ContactsAppConfig from './contacts/ContactsAppConfig';
+import CampaignConfig from './campaigns/CampaignConfig';
 
 
 
@@ -26,6 +28,8 @@ const pagesConfigs = [
 	ChatAppConfig,
 	GroupChatAppConfig,
 	GroupConfig,
+	ContactsAppConfig,
+	CampaignConfig
 
 
 	
