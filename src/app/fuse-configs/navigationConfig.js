@@ -123,7 +123,7 @@ const navigationConfig = [
 						id: 'Conversation',
 						title: 'Conversation',
 						type: 'item',
-						url: '/apps/e-commerce/products',
+						url: '/apps/group-chat',
 						exact: true,
 						badge: {
 					title: 25,
@@ -135,14 +135,20 @@ const navigationConfig = [
 						id: 'Groups',
 						title: 'Groups',
 						type: 'item',
-						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
+						url: '/apps/e-commerce/products',
 						exact: true,
 						badge: {
 					title: 25,
 					bg: '#F44336',
 					fg: '#FFFFFF'
 				}
-					}
+					},{
+						id: 'e-commerce-product-detail',
+						title: 'Product Detail',
+						type: 'item',
+						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
+						exact: true
+					},
 				
 				
 				]
