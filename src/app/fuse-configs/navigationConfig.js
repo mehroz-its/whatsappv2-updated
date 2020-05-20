@@ -117,7 +117,7 @@ const navigationConfig = [
 				translate: 'GRUOP',
 				type: 'collapse',
 				icon: 'shopping_cart',
-				url: '/apps/e-commerce',
+				url: '/apps/groups',
 				children: [
 					{
 						id: 'Conversation',
@@ -135,21 +135,26 @@ const navigationConfig = [
 						id: 'Groups',
 						title: 'Groups',
 						type: 'item',
-						url: '/apps/e-commerce/products',
+						url: '/apps/groups/group',
 						exact: true,
 						badge: {
 					title: 25,
 					bg: '#F44336',
 					fg: '#FFFFFF'
 				}
-					},{
-						id: 'e-commerce-product-detail',
-						title: 'Product Detail',
-						type: 'item',
-						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
-						exact: true
 					},
-				
+					{
+						id: 'Group Details',
+						title: 'Group Details',
+						type: 'item',
+						url: '/apps/groups/group-detail',
+						exact: true,
+						badge: {
+					title: 25,
+					bg: '#F44336',
+					fg: '#FFFFFF'
+				}
+					}
 				
 				]
 			},

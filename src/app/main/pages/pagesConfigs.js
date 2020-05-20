@@ -9,7 +9,7 @@ import Error404PageConfig from './errors/404/Error404PageConfig';
 import IntelligenceConfig from './Intelligence/IntelligenceConfig';
 import ChatAppConfig from './chat/ChatAppConfig';
 import GroupChatAppConfig from './group-chat/GroupChatAppConfig';
-import ECommerceAppConfig from './e-commerce/ECommerceAppConfig';
+import GroupConfig from './groups/GroupConfig'
 
 
 
@@ -25,7 +25,7 @@ const pagesConfigs = [
 	IntelligenceConfig,
 	ChatAppConfig,
 	GroupChatAppConfig,
-	ECommerceAppConfig,
+	GroupConfig,
 
 
 	

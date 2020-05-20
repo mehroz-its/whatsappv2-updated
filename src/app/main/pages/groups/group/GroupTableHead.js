@@ -67,7 +67,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function ProductsTableHead(props) {
+function GroupTableHead(props) {
 	const classes = useStyles(props);
 	const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
 
@@ -159,4 +159,4 @@ function ProductsTableHead(props) {
 	);
 }
 
-export default ProductsTableHead;
+export default GroupTableHead;

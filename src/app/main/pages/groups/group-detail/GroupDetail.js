@@ -60,7 +60,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function Product(props) {
+function GroupDetail(props) {
 	console.log(props)
 	// const dispatch = useDispatch();
 	const product = useSelector(({ eCommerceApp }) => eCommerceApp.product);
@@ -520,4 +520,4 @@ function Product(props) {
 	);
 }
 
-export default withReducer('eCommerceApp', reducer)(Product);
+export default withReducer('eCommerceApp', reducer)(GroupDetail);

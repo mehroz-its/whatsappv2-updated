@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as Actions from '../store/actions';
 
-function ProductsHeader(props) {
+function GroupDetailsHeader(props) {
 	const dispatch = useDispatch();
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
@@ -74,4 +74,4 @@ function ProductsHeader(props) {
 	);
 }
 
-export default ProductsHeader;
+export default GroupDetailsHeader;
