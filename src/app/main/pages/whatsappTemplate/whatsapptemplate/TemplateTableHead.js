@@ -17,6 +17,13 @@ import React, { useState } from 'react';
 
 const rows = [
 	{
+		id: 'id',
+		align: 'left',
+		disablePadding: false,
+		label: 'ID',
+		sort: true
+	},
+	{
 		id: 'name',
 		align: 'left',
 		disablePadding: false,
@@ -24,21 +31,41 @@ const rows = [
 		sort: true
 	},
 	{
-		id: 'Number',
+		id: 'text',
 		align: 'left',
 		disablePadding: false,
-		label: 'Number',
+		label: 'Text',
 		sort: true
 	},
 	{
-		id: 'Type',
-		align: 'left',
+		id: 'params',
+		align: 'right',
+		disablePadding: false,
+		label: 'Params',
+		sort: true
+	},
+	{
+		id: 'type',
+		align: 'right',
 		disablePadding: false,
 		label: 'Type',
 		sort: true
 	},
+	{
+		id: 'enable',
+		align: 'right',
+		disablePadding: false,
+		label: 'Enable',
+		sort: true
+	},
+	{
+		id: 'approved',
+		align: 'right',
+		disablePadding: false,
+		label: 'Approved',
+		sort: true
+	},
 	
-
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -47,7 +74,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function GroupTableHead(props) {
+function TemplateTableHead(props) {
 	const classes = useStyles(props);
 	const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
 
@@ -66,7 +93,7 @@ function GroupTableHead(props) {
 	return (
 		<TableHead>
 			<TableRow className="h-64">
-				<TableCell padding="none" className="relative w-64 text-center">
+				{/* <TableCell padding="none" className="relative w-64 text-center">
 					<Checkbox
 						indeterminate={props.numSelected > 0 && props.numSelected < props.rowCount}
 						checked={props.numSelected === props.rowCount}
@@ -107,7 +134,7 @@ function GroupTableHead(props) {
 							</Menu>
 						</div>
 					)}
-				</TableCell>
+				</TableCell> */}
 				{rows.map(row => {
 					return (
 						<TableCell
@@ -139,4 +166,4 @@ function GroupTableHead(props) {
 	);
 }
 
-export default GroupTableHead;
+export default TemplateTableHead;

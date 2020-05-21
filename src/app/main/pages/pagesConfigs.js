@@ -12,6 +12,8 @@ import GroupChatAppConfig from './group-chat/GroupChatAppConfig';
 import GroupConfig from './groups/GroupConfig';
 import ContactsAppConfig from './contacts/ContactsAppConfig';
 import CampaignConfig from './campaigns/CampaignConfig';
+import WhatsAppTemplateConfig from  './whatsappTemplate/WhatsAppTemplateConfig'
+import CannedMessageConfig from './canned/CannedMessageConfig'
 
 
 
@@ -29,7 +31,9 @@ const pagesConfigs = [
 	GroupChatAppConfig,
 	GroupConfig,
 	ContactsAppConfig,
-	CampaignConfig
+	CampaignConfig,
+	WhatsAppTemplateConfig,
+	CannedMessageConfig
 
 
 	

@@ -199,14 +199,14 @@ const navigationConfig = [
 						id: 'Whatsapp Template',
 						title: 'Whatsapp Template',
 						type: 'item',
-						url: '/apps/e-commerce/products',
+						url: '/apps/whatsapp-template',
 						exact: true
 					},
 					{
 						id: 'Canned Messages',
 						title: 'Canned Messages',
 						type: 'item',
-						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
+						url: '/apps/canned-messages',
 						exact: true
 					}
 				

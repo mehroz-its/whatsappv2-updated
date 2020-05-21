@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as Actions from '../store/actions';
 
-function CampaignHeader(props) {
+function TemplateHeader(props) {
 	const dispatch = useDispatch();
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
@@ -23,7 +23,7 @@ function CampaignHeader(props) {
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 					<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-					Campaigns Management
+					Whatsapp Template
 					</Typography>
 				</FuseAnimate>
 			</div>
@@ -57,7 +57,7 @@ function CampaignHeader(props) {
 					variant="contained"
 					color="secondary"
 				>
-					<span className="hidden sm:flex">Add New Campaign</span>
+					<span className="hidden sm:flex">Create Template</span>
 					<span className="flex sm:hidden">New</span>
 				</Button>
 			</FuseAnimate>
@@ -65,4 +65,4 @@ function CampaignHeader(props) {
 	);
 }
 
-export default CampaignHeader;
+export default TemplateHeader;

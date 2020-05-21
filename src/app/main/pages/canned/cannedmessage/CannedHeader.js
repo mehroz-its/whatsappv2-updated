@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as Actions from '../store/actions';
 
-function GroupDetailsHeader(props) {
+function CanneddHeader(props) {
 	const dispatch = useDispatch();
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
@@ -23,21 +23,12 @@ function GroupDetailsHeader(props) {
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 					<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-						Members
+					Canned Messages
 					</Typography>
 				</FuseAnimate>
-
 			</div>
 
-			<div className="flex flex-col min-w-0 mx-8 sm:mc-16">
-				<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-					<Typography variant="caption">{`Total Members : 3`}</Typography>
-				</FuseAnimate>
-			</div>
-
-
-
-			{/* <div className="flex flex-1 items-center justify-center px-12">
+			<div className="flex flex-1 items-center justify-center px-12">
 				<ThemeProvider theme={mainTheme}>
 					<FuseAnimate animation="transition.slideDownIn" delay={300}>
 						<Paper className="flex items-center w-full max-w-512 px-8 py-4 rounded-8" elevation={1}>
@@ -57,8 +48,8 @@ function GroupDetailsHeader(props) {
 						</Paper>
 					</FuseAnimate>
 				</ThemeProvider>
-			</div> */}
-			{/* <FuseAnimate animation="transition.slideRightIn" delay={300}>
+			</div>
+			<FuseAnimate animation="transition.slideRightIn" delay={300}>
 				<Button
 					component={Link}
 					to="/apps/e-commerce/products/new"
@@ -66,12 +57,12 @@ function GroupDetailsHeader(props) {
 					variant="contained"
 					color="secondary"
 				>
-					<span className="hidden sm:flex">Add New Group</span>
+					<span className="hidden sm:flex">Add Canned Message</span>
 					<span className="flex sm:hidden">New</span>
 				</Button>
-			</FuseAnimate> */}
+			</FuseAnimate>
 		</div>
 	);
 }
 
-export default GroupDetailsHeader;
+export default CanneddHeader;

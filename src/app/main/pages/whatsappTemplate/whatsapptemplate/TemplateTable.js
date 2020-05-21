@@ -12,21 +12,17 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as Actions from '../store/actions';
-import GroupTableHead from './GroupTableHead';
-import TableData from '../CampaignData'
+import TemplateTableHead from './TemplateTableHead';
+import TableData from '../TemplateData'
 
-function GroupDetailTable(props) {
+function TemplateTable(props) {
 	console.log(props)
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 
 	const [selected, setSelected] = useState([]);
-	const [data, setData] = useState(
-		[{ name: 'Uzair', number: "0300000", type: 'Admin' },
-		{ name: 'Abc', number: "03012525", type: 'Member' },
-	    { name: 'Sinan', number: "0302525", type: 'Admin' }]
-	);
+	const [data, setData] = useState(TableData);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -71,7 +67,7 @@ function GroupDetailTable(props) {
 	}
 
 	function handleClick(n) {
-		props.history.push({ pathname: `/apps/e-commerce/productsdetail`, id: n.id });
+		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
 	}
 
 	function handleCheck(event, id) {
@@ -103,7 +99,7 @@ function GroupDetailTable(props) {
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
 				<Table className="min-w-xl" aria-labelledby="tableTitle">
-					<ProductsTableHead
+					<TemplateTableHead
 						numSelected={selected.length}
 						order={order}
 						onSelectAllClick={handleSelectAllClick}
@@ -143,45 +139,42 @@ function GroupDetailTable(props) {
 										onClick={event => handleClick(n)}
 									>
 
-										<TableCell className="w-64 text-center" padding="none">
+										{/* <TableCell className="w-64 text-center" padding="none">
 											<Checkbox
 												checked={isSelected}
 												onClick={event => event.stopPropagation()}
 												onChange={event => handleCheck(event, n.id)}
 											/>
-										</TableCell>
-										{/* <TableCell component="th" scope="row" >
+										</TableCell> */}
+										<TableCell component="th" scope="row" >
 											{n.id}
-										</TableCell> */}
-										{/* <TableCell className="w-52" component="th" scope="row" padding="none">
-											{n.images.length > 0 && n.featuredImageId ? (
-												<img
-													className="w-full block rounded"
-													src={_.find(n.images, { id: n.featuredImageId }).url}
-													alt={n.name}
-												/>
-											) : (
-													<img
-														className="w-full block rounded"
-														src="assets/images/ecommerce/product-image-placeholder.png"
-														alt={n.name}
-													/>
-												)}
-										</TableCell> */}
+										</TableCell>
 										<TableCell component="th" scope="row">
 											{n.name}
 										</TableCell>
-
 										<TableCell component="th" scope="row">
-											{n.number}
+											{n.text}
 										</TableCell>
-
-										<TableCell component="th" scope="row">
+										<TableCell component="th" scope="row" align="right">
+											{n.params}
+										</TableCell>
+										<TableCell component="th" scope="row" align="right">
 											{n.type}
 										</TableCell>
-										{/* <TableCell component="th" scope="row" align="right">
-											{n.icon}
-										</TableCell> */}
+										<TableCell component="th" scope="row" align="right">
+										{n.approved ? (
+												<Icon className="text-red text-20">check_circle</Icon>
+												) : (
+													<Icon className="text-green text-20">remove_circle</Icon>
+												)}
+										</TableCell>
+										<TableCell component="th" scope="row" align="right">
+											{n.enable ? (
+												<Icon className="text-red text-20">check_circle</Icon>
+												) : (
+													<Icon className="text-green text-20">remove_circle</Icon>
+												)}
+										</TableCell>
 										{/* 
 										<TableCell component="th" scope="row" align="right">
 											{n.quantity}
@@ -228,4 +221,4 @@ function GroupDetailTable(props) {
 	);
 }
 
-export default withRouter(GroupDetailTable);
+export default withRouter(TemplateTable);
