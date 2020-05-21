@@ -8,6 +8,7 @@ import ResetPasswordPageConfig from './auth/reset-password/ResetPasswordPageConf
 import Error404PageConfig from './errors/404/Error404PageConfig';
 import IntelligenceConfig from './Intelligence/IntelligenceConfig';
 import ChatAppConfig from './chat/ChatAppConfig';
+import ContactsAppConfig from './contacts/ContactsAppConfig';
 
 
 const pagesConfigs = [
@@ -20,7 +21,8 @@ const pagesConfigs = [
 	ResetPassword2PageConfig,
 	Error404PageConfig,
 	IntelligenceConfig,
-	ChatAppConfig
+	ChatAppConfig,
+	ContactsAppConfig
 	
 ];
 
