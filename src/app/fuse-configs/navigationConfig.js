@@ -214,7 +214,7 @@ const navigationConfig = [
 						id: 'Chat',
 						title: 'Chat',
 						type: 'item',
-						url: '/apps/e-commerce/products',
+						url: '/chart/chats',
 						exact: true
 					},
 					{

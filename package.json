@@ -3,6 +3,7 @@
     "version": "4.1.5",
     "private": true,
     "dependencies": {
+        "@amcharts/amcharts4": "^4.9.23",
         "@date-io/core": "1.3.9",
         "@date-io/date-fns": "1.3.13",
         "@date-io/moment": "1.3.11",

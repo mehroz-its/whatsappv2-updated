@@ -9,6 +9,7 @@ import Error404PageConfig from './errors/404/Error404PageConfig';
 import IntelligenceConfig from './Intelligence/IntelligenceConfig';
 import ChatAppConfig from './chat/ChatAppConfig';
 import ContactsAppConfig from './contacts/ContactsAppConfig';
+import ChartsAppConfig from './charts/ChartsAppConfig';
 
 
 const pagesConfigs = [
@@ -22,7 +23,8 @@ const pagesConfigs = [
 	Error404PageConfig,
 	IntelligenceConfig,
 	ChatAppConfig,
-	ContactsAppConfig
+	ContactsAppConfig,
+	ChartsAppConfig
 	
 ];
 
