@@ -193,7 +193,7 @@ const navigationConfig = [
 				translate: 'GALLERY',
 				type: 'collapse',
 				icon: 'shopping_cart',
-				url: '/apps/todo',
+				
 				children: [
 					{
 						id: 'Whatsapp Template',
