@@ -117,13 +117,13 @@ const navigationConfig = [
 				translate: 'GRUOP',
 				type: 'collapse',
 				icon: 'shopping_cart',
-				url: '/apps/e-commerce',
+				url: '/apps/groups/group',
 				children: [
 					{
 						id: 'Conversation',
 						title: 'Conversation',
 						type: 'item',
-						url: '/apps/e-commerce/products',
+						url: '/apps/group-chat',
 						exact: true,
 						badge: {
 					title: 25,
@@ -135,7 +135,19 @@ const navigationConfig = [
 						id: 'Groups',
 						title: 'Groups',
 						type: 'item',
-						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
+						url: '/apps/groups/group',
+						exact: true,
+						badge: {
+					title: 25,
+					bg: '#F44336',
+					fg: '#FFFFFF'
+				}
+					},
+					{
+						id: 'Group Details',
+						title: 'Group Details',
+						type: 'item',
+						url: '/apps/groups/group-detail',
 						exact: true,
 						badge: {
 					title: 25,
@@ -143,7 +155,6 @@ const navigationConfig = [
 					fg: '#FFFFFF'
 				}
 					}
-				
 				
 				]
 			},
@@ -153,7 +164,7 @@ const navigationConfig = [
 				translate: 'TEMPLATE MESSAGE',
 				type: 'item',
 				icon: 'school',
-				url: '/apps/academy'
+				url: '/apps/templates'
 			},
 			{
 				id: 'Compaigns',
@@ -161,7 +172,7 @@ const navigationConfig = [
 				translate: 'COMPAIGNS',
 				type: 'item',
 				icon: 'email',
-				url: '/apps/mail',
+				url: '/apps/campaign',
 				// badge: {
 				// 	title: 25,
 				// 	bg: '#F44336',
@@ -188,14 +199,14 @@ const navigationConfig = [
 						id: 'Whatsapp Template',
 						title: 'Whatsapp Template',
 						type: 'item',
-						url: '/apps/e-commerce/products',
+						url: '/apps/whatsapp-template',
 						exact: true
 					},
 					{
 						id: 'Canned Messages',
 						title: 'Canned Messages',
 						type: 'item',
-						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
+						url: '/apps/canned-messages',
 						exact: true
 					}
 				
@@ -247,35 +258,35 @@ const navigationConfig = [
 						id: 'Countries',
 						title: 'Countries',
 						type: 'item',
-						url: '/apps/e-commerce/products',
+						url: '/apps/countries',
 						exact: true
 					},
 					{
 						id: 'Cities',
 						title: 'Cities',
 						type: 'item',
-						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
+						url: '/apps/cities',
 						exact: true
 					},
 					{
 						id: 'Roles',
 						title: 'Roles',
 						type: 'item',
-						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
+						url: '/apps/roles',
 						exact: true
 					},
 					{
 						id: 'Permissions',
 						title: 'Permissions',
 						type: 'item',
-						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
+						url: '/apps/permissions',
 						exact: true
 					},
 					{
 						id: 'Users',
 						title: 'Users',
 						type: 'item',
-						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
+						url: '/apps/users',
 						exact: true
 					},
 

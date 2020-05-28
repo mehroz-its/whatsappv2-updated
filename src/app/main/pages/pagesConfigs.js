@@ -8,8 +8,22 @@ import ResetPasswordPageConfig from './auth/reset-password/ResetPasswordPageConf
 import Error404PageConfig from './errors/404/Error404PageConfig';
 import IntelligenceConfig from './Intelligence/IntelligenceConfig';
 import ChatAppConfig from './chat/ChatAppConfig';
-import ContactsAppConfig from './contacts/ContactsAppConfig';
 import ChartsAppConfig from './charts/ChartsAppConfig';
+import GroupChatAppConfig from './group-chat/GroupChatAppConfig';
+import GroupConfig from './groups/GroupConfig';
+import ContactsAppConfig from './contacts/ContactsAppConfig';
+import CampaignConfig from './campaigns/CampaignConfig';
+import WhatsAppTemplateConfig from  './whatsappTemplate/WhatsAppTemplateConfig'
+import CannedMessageConfig from './canned/CannedMessageConfig'
+import CitiesConfig from './setting/cities/CitiesConfig'
+import CountryConfig from './setting/countries/CountryConfig'
+import PermissionConfig from './setting/permission/PermissionConfig'
+import RolesConfig from './setting/roles/RolesConfig'
+import UserConfig from './setting/users/UserConfig'
+import TemplateConfig from './template-message/TemplateConfig'
+
+
+
 
 
 const pagesConfigs = [
@@ -23,8 +37,21 @@ const pagesConfigs = [
 	Error404PageConfig,
 	IntelligenceConfig,
 	ChatAppConfig,
+	ChartsAppConfig,
+	GroupChatAppConfig,
+	GroupConfig,
 	ContactsAppConfig,
-	ChartsAppConfig
+	CampaignConfig,
+	WhatsAppTemplateConfig,
+	CannedMessageConfig,
+	CitiesConfig,
+	CountryConfig,
+	PermissionConfig,
+	RolesConfig,
+	UserConfig,
+	TemplateConfig
+
+
 	
 ];
 

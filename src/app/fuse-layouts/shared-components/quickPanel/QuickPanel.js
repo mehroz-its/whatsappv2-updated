@@ -28,7 +28,7 @@ function QuickPanel(props) {
 			onClose={ev => dispatch(Actions.toggleQuickPanel())}
 		>
 			<FuseScrollbars>
-				<Typography>Quick Panel</Typography>
+				<Typography>Quick Panel Here</Typography>
 			</FuseScrollbars>
 		</Drawer>
 	);
