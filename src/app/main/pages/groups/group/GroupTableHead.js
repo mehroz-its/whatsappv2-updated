@@ -86,7 +86,7 @@ function GroupTableHead(props) {
 	return (
 		<TableHead>
 			<TableRow className="h-64">
-				<TableCell padding="none" className="relative w-64 text-center">
+				{/* <TableCell padding="none" className="relative w-64 text-center">
 					<Checkbox
 						indeterminate={props.numSelected > 0 && props.numSelected < props.rowCount}
 						checked={props.numSelected === props.rowCount}
@@ -127,7 +127,7 @@ function GroupTableHead(props) {
 							</Menu>
 						</div>
 					)}
-				</TableCell>
+				</TableCell> */}
 				{rows.map(row => {
 					return (
 						<TableCell

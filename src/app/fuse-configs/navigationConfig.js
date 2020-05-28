@@ -219,27 +219,26 @@ const navigationConfig = [
 				translate: 'REPORTS',
 				type: 'collapse',
 				icon: 'shopping_cart',
-				url: '/apps/todo',
 				children: [
 					{
 						id: 'Chat',
 						title: 'Chat',
 						type: 'item',
-						url: '/chart/chats',
+						url: '/report/chats',
 						exact: true
 					},
 					{
 						id: 'Agent',
 						title: 'Agent',
 						type: 'item',
-						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
+						url: '/report/agent',
 						exact: true
 					},
 					{
 						id: 'Compaigns',
 						title: 'Compaigns',
 						type: 'item',
-						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
+						url: '/report/compaigns',
 						exact: true
 					}
 				

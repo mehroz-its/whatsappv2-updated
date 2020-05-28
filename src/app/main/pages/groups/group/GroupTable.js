@@ -139,13 +139,13 @@ function GroupTable(props) {
 										onClick={event => handleClick(n)}
 									>
 
-										<TableCell className="w-64 text-center" padding="none">
+										{/* <TableCell className="w-64 text-center" padding="none">
 											<Checkbox
 												checked={isSelected}
 												onClick={event => event.stopPropagation()}
 												onChange={event => handleCheck(event, n.id)}
 											/>
-										</TableCell>
+										</TableCell> */}
 										<TableCell component="th" scope="row" >
 											{n.id}
 										</TableCell>

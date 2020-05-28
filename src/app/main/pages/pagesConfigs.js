@@ -8,7 +8,6 @@ import ResetPasswordPageConfig from './auth/reset-password/ResetPasswordPageConf
 import Error404PageConfig from './errors/404/Error404PageConfig';
 import IntelligenceConfig from './Intelligence/IntelligenceConfig';
 import ChatAppConfig from './chat/ChatAppConfig';
-import ChartsAppConfig from './charts/ChartsAppConfig';
 import GroupChatAppConfig from './group-chat/GroupChatAppConfig';
 import GroupConfig from './groups/GroupConfig';
 import ContactsAppConfig from './contacts/ContactsAppConfig';
@@ -21,6 +20,7 @@ import PermissionConfig from './setting/permission/PermissionConfig'
 import RolesConfig from './setting/roles/RolesConfig'
 import UserConfig from './setting/users/UserConfig'
 import TemplateConfig from './template-message/TemplateConfig'
+import ReportsAppConfig from './Reports/ReportsAppConfig'
 
 
 
@@ -37,7 +37,7 @@ const pagesConfigs = [
 	Error404PageConfig,
 	IntelligenceConfig,
 	ChatAppConfig,
-	ChartsAppConfig,
+	ReportsAppConfig,
 	GroupChatAppConfig,
 	GroupConfig,
 	ContactsAppConfig,
