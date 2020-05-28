@@ -49,18 +49,7 @@ function CanneddHeader(props) {
 					</FuseAnimate>
 				</ThemeProvider>
 			</div>
-			<FuseAnimate animation="transition.slideRightIn" delay={300}>
-				<Button
-					component={Link}
-					to="/apps/e-commerce/products/new"
-					className="whitespace-no-wrap normal-case"
-					variant="contained"
-					color="secondary"
-				>
-					<span className="hidden sm:flex">Add Canned Message</span>
-					<span className="flex sm:hidden">New</span>
-				</Button>
-			</FuseAnimate>
+		
 		</div>
 	);
 }

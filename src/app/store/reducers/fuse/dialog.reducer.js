@@ -22,7 +22,7 @@ const dialog = (state = initialState, action) => {
 		case Actions.CLOSE_DIALOG: {
 			return {
 				...state,
-				state: false
+				state: true
 			};
 		}
 		default: {
