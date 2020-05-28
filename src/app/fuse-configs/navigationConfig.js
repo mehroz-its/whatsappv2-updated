@@ -258,35 +258,35 @@ const navigationConfig = [
 						id: 'Countries',
 						title: 'Countries',
 						type: 'item',
-						url: '/apps/e-commerce/products',
+						url: '/apps/countries',
 						exact: true
 					},
 					{
 						id: 'Cities',
 						title: 'Cities',
 						type: 'item',
-						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
+						url: '/apps/cities',
 						exact: true
 					},
 					{
 						id: 'Roles',
 						title: 'Roles',
 						type: 'item',
-						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
+						url: '/apps/roles',
 						exact: true
 					},
 					{
 						id: 'Permissions',
 						title: 'Permissions',
 						type: 'item',
-						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
+						url: '/apps/permissions',
 						exact: true
 					},
 					{
 						id: 'Users',
 						title: 'Users',
 						type: 'item',
-						url: '/apps/e-commerce/products/1/a-walk-amongst-friends-canvas-print',
+						url: '/apps/users',
 						exact: true
 					},
 
