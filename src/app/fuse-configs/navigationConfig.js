@@ -164,7 +164,7 @@ const navigationConfig = [
 				translate: 'TEMPLATE MESSAGE',
 				type: 'item',
 				icon: 'school',
-				url: '/apps/academy'
+				url: '/apps/templates'
 			},
 			{
 				id: 'Compaigns',

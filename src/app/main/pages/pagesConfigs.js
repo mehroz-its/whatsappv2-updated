@@ -19,6 +19,7 @@ import CountryConfig from './setting/countries/CountryConfig'
 import PermissionConfig from './setting/permission/PermissionConfig'
 import RolesConfig from './setting/roles/RolesConfig'
 import UserConfig from './setting/users/UserConfig'
+import TemplateConfig from './template-message/TemplateConfig'
 
 
 
@@ -45,7 +46,8 @@ const pagesConfigs = [
 	CountryConfig,
 	PermissionConfig,
 	RolesConfig,
-	UserConfig
+	UserConfig,
+	TemplateConfig
 
 
 	
