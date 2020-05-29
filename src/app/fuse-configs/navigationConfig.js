@@ -81,22 +81,10 @@ const navigationConfig = [
 				id: 'dashboards',
 				title: 'Dashboards',
 				translate: 'DASHBOARDS',
-				type: 'collapse',
+				type: 'item',
 				icon: 'dashboard',
-				children: [
-					{
-						id: 'analytics-dashboard',
-						title: 'Analytics',
-						type: 'item',
-						url: '/apps/dashboards/analytics'
-					},
-					{
-						id: 'project-dashboard',
-						title: 'Project',
-						type: 'item',
-						url: '/apps/dashboards/project'
-					}
-				]
+				url: '/dashboard',
+
 			},
 			{
 				id: 'Conversation',
@@ -117,7 +105,7 @@ const navigationConfig = [
 				translate: 'GRUOP',
 				type: 'collapse',
 				icon: 'shopping_cart',
-				url: '/apps/groups/group',
+				// url: '/apps/groups/group',
 				children: [
 					{
 						id: 'Conversation',
@@ -143,18 +131,18 @@ const navigationConfig = [
 					fg: '#FFFFFF'
 				}
 					},
-					{
-						id: 'Group Details',
-						title: 'Group Details',
-						type: 'item',
-						url: '/apps/groups/group-detail',
-						exact: true,
-						badge: {
-					title: 25,
-					bg: '#F44336',
-					fg: '#FFFFFF'
-				}
-					}
+				// 	{
+				// 		id: 'Group Details',
+				// 		title: 'Group Details',
+				// 		type: 'item',
+				// 		url: '/apps/groups/group-detail',
+				// 		exact: true,
+				// 		badge: {
+				// 	title: 25,
+				// 	bg: '#F44336',
+				// 	fg: '#FFFFFF'
+				// }
+				// 	}
 				
 				]
 			},

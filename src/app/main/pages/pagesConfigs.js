@@ -20,7 +20,8 @@ import PermissionConfig from './setting/permission/PermissionConfig'
 import RolesConfig from './setting/roles/RolesConfig'
 import UserConfig from './setting/users/UserConfig'
 import TemplateConfig from './template-message/TemplateConfig'
-import ReportsAppConfig from './Reports/ReportsAppConfig'
+import ReportsAppConfig from './reports/ReportsAppConfig'
+import AdminDashboardAppConfig from './adminDashboard/AdminDashboardAppConfig'
 
 
 
@@ -49,7 +50,8 @@ const pagesConfigs = [
 	PermissionConfig,
 	RolesConfig,
 	UserConfig,
-	TemplateConfig
+	TemplateConfig,
+	AdminDashboardAppConfig
 
 
 	
