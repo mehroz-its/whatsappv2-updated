@@ -99,7 +99,10 @@ function Campaign(props) {
 							fullWidth
 						/>
 					</div>
-					<div className="flex" style={{marginLeft:50,marginBottom:20}}>
+					<div className="flex" style={{marginBottom:20}}>
+					<div className="min-w-48 pt-20">
+							<Icon color="action">account_circle</Icon>
+						</div>
 					<FormControl className={classes.formControl}>
 					
         <InputLabel id="demo-simple-select-label" style={{marginLeft:10}}>Type</InputLabel>
