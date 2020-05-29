@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
+
 const useStyles = makeStyles(theme => ({
 	listItem: {
 		color: 'inherit!important',
@@ -45,8 +46,8 @@ function ContactsSidebarContent(props) {
 			<FuseAnimate animation="transition.slideLeftIn" delay={200}>
 				<Paper className="rounded-0 shadow-none lg:rounded-8 lg:shadow-1">
 					<div className="p-24 flex items-center">
-						{/* <Avatar alt="zzd" src="../../../" /> */}
-						<Typography className="mx-12">sdsd</Typography>
+						<Avatar alt="zzd" src="../../../" />
+						<Typography className="mx-12">Jhon Doe</Typography>
 					</div>
 					<Divider />
 					<List>

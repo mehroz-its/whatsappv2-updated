@@ -8,12 +8,20 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ContactsMultiSelectMenu from './ContactsMultiSelectMenu';
 import ContactsTable from './ContactsTable';
+import * as Actions from './store/actions';
+import Data from './ContactData'
 
 function ContactsList(props) {
 	const dispatch = useDispatch();
-	const contacts = null;
-	const searchText = null;
-	const user = null;
+	// const contacts = useSelector(({ contactsApp }) => contactsApp.contacts.entities);
+    const contacts = Data.entities
+	const searchText=Data.searchText
+	// const searchText = useSelector(({ contactsApp }) => console.log(contactsApp) );
+	// const user = useSelector(({ contactsApp }) => contactsApp.user);
+	 const user = Data.user
+	// const searchText = Data.searchText
+
+
 
 	const [filteredData, setFilteredData] = useState(null);
 
@@ -76,6 +84,7 @@ function ContactsList(props) {
 						<IconButton
 							onClick={ev => {
 								ev.stopPropagation();
+								dispatch(Actions.toggleStarredContact(row.original.id));
 							}}
 						>
 							{user.starred && user.starred.includes(row.original.id) ? (
@@ -87,6 +96,7 @@ function ContactsList(props) {
 						<IconButton
 							onClick={ev => {
 								ev.stopPropagation();
+								dispatch(Actions.removeContact(row.original.id));
 							}}
 						>
 							<Icon>delete</Icon>
@@ -95,6 +105,7 @@ function ContactsList(props) {
 				)
 			}
 		],
+		[dispatch, user.starred]
 	);
 
 	useEffect(() => {
@@ -124,6 +135,8 @@ function ContactsList(props) {
 			</div>
 		);
 	}
+	console.log(searchText,'search')
+	console.log( user,'user')
 
 	return (
 		<FuseAnimate animation="transition.slideUpIn" delay={300}>
@@ -132,6 +145,7 @@ function ContactsList(props) {
 				data={filteredData}
 				onRowClick={(ev, row) => {
 					if (row) {
+						dispatch(Actions.openEditContactDialog(row.original));
 					}
 				}}
 			/>
