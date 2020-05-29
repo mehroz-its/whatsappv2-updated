@@ -4,9 +4,67 @@ import React from 'react';
 import reducer from './store/reducers';
 import CountryHeader from './CountryHeader';
 import CountryTable from  './CountryTable';
+import Icon from '@material-ui/core/Icon';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import { green } from '@material-ui/core/colors';
 
-function Campaign() {
+import FuseAnimate from '@fuse/core/FuseAnimate';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import TextField from '@material-ui/core/TextField';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+import Fab from '@material-ui/core/Fab';
+
+import { makeStyles,withStyles } from '@material-ui/core/styles';
+
+const GreenCheckbox = withStyles({
+	root: {
+	  color: green[400],
+	  '&$checked': {
+		color: green[600],
+	  },
+	},
+	checked: {},
+  })((props) => <Checkbox color="default" {...props} />);
+
+const useStyles = makeStyles((theme)=>({
+	addButton: {
+		position: 'absolute',
+		bottom:50,
+		right:50,
+		zIndex: 99
+	},
+}))
+
+function Campaign(props) {
+	const [state, setState] = React.useState({
+		
+		checkedG: true,
+	  });
+	const [open, setOpen] = React.useState(false);
+
+	const classes = useStyles(props);
+	
+	const handleClickOpen = () => {
+		setOpen(true);
+	  };
+	
+	
+	  const handleClose = () => {
+		setOpen(false);
+	  };
+	  const handleChange = (event) => {
+		setState({ ...state, [event.target.name]: event.target.checked });
+	  };
+	
+	
 	return (
+		<>
 		<FusePageCarded
 			classes={{
 				content: 'flex',
@@ -16,6 +74,79 @@ function Campaign() {
 			content={<CountryTable />}
 			innerScroll
 		/>
+<FuseAnimate animation="transition.expandIn" delay={300}>
+				<Fab
+					color="primary"
+					aria-label="add"
+					className={classes.addButton}
+					onClick={handleClickOpen}
+					// onClick={ev => dispatch(Actions.openNewContactDialog())}
+				>
+					<Icon>person_add</Icon>
+				</Fab>
+			</FuseAnimate>
+			<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" 	classes={{
+				paper: 'm-24'
+			}}
+		
+			fullWidth
+			maxWidth="xs">
+      <DialogTitle id="form-dialog-title">Add Country</DialogTitle>
+	  <DialogContent classes={{ root: 'p-24' }}>
+					<div className="flex">
+						<div className="min-w-48 pt-20">
+							<Icon color="action">account_circle</Icon>
+						</div>
+
+						<TextField
+							className="mb-24"
+							label="Name"
+							autoFocus
+							id="name"
+							name="name"
+					
+							variant="outlined"
+							required
+							fullWidth
+						/>
+					</div>
+		
+					<div className="flex">
+						<div className="min-w-48 pt-20">
+							<Icon color="action">account_circle</Icon>
+						</div>
+
+						<TextField
+							className="mb-24"
+							label="Country Code"
+							autoFocus
+							id="name"
+							name="name"
+					
+
+							variant="outlined"
+							required
+							fullWidth
+						/>
+					</div>
+					<FormControlLabel
+        control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedG" />}
+        label="Enabled"
+      />
+				
+		
+
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={handleClose} color="primary">
+          Done
+        </Button>
+      </DialogActions>
+    </Dialog>
+		</>
 	);
 }
 

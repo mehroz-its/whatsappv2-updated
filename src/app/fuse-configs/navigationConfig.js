@@ -117,7 +117,7 @@ const navigationConfig = [
 				translate: 'GRUOP',
 				type: 'collapse',
 				icon: 'shopping_cart',
-				url: '/apps/groups/group',
+				// url: '/apps/groups/group',
 				children: [
 					{
 						id: 'Conversation',
@@ -219,7 +219,7 @@ const navigationConfig = [
 				translate: 'REPORTS',
 				type: 'collapse',
 				icon: 'shopping_cart',
-				url: '/apps/todo',
+				// url: '/apps/todo',
 				children: [
 					{
 						id: 'Chat',
@@ -252,7 +252,7 @@ const navigationConfig = [
 				translate: 'SETTINGS',
 				type: 'collapse',
 				icon: 'shopping_cart',
-				url: '/apps/todo',
+				// url: '/apps/todo',
 				children: [
 					{
 						id: 'Countries',
