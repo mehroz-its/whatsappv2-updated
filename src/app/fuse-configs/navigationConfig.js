@@ -239,7 +239,6 @@ const navigationConfig = [
 				translate: 'SETTINGS',
 				type: 'collapse',
 				icon: 'shopping_cart',
-				url: '/apps/todo',
 				children: [
 					{
 						id: 'Countries',
