@@ -286,7 +286,7 @@ const navigationConfig = [
 				translate: 'AGENT HISTORY',
 				type: 'item',
 				icon: 'folder',
-				url: '/apps/scrumboard'
+				url: '/apps/agent'
 			},
 			{
 				id: 'LOGS',

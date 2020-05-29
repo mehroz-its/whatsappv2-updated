@@ -1,4 +1,4 @@
-import { getUserData } from 'app/main/apps/contacts/store/actions/user.actions';
+import { getUserData } from 'app/main/pages/contacts/store/actions/user.actions';
 import axios from 'axios';
 
 export const GET_CONTACTS = '[CONTACTS APP] GET CONTACTS';
