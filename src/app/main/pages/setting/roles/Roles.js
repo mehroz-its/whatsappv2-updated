@@ -44,7 +44,10 @@ function Roles(props) {
 
 	const [state, setState] = React.useState({
 		
-		checkedG: true,
+		checkedG: false,
+		checkedA: false,
+		checkedB: false,
+		checkedF: false,
 	  });
 	const [open, setOpen] = React.useState(false);
 
@@ -92,7 +95,8 @@ function Roles(props) {
 			maxWidth="xs">
       <DialogTitle id="form-dialog-title">Add Roles</DialogTitle>
 	  <DialogContent classes={{ root: 'p-24' }}>
-		            <div >
+		            <div style={{display:'flex',flexDirection:'row'}}>
+						<div style={{flex:1}}>
 					<div className="flex">
 						<div className="min-w-48 pt-20">
 							<Icon color="action">account_circle</Icon>
@@ -118,24 +122,37 @@ function Roles(props) {
 
 						<TextField
 							className="mb-24"
-							label="Country Code"
+							label="Description"
 							autoFocus
 							id="name"
 							name="name"
-					
-
-							variant="outlined"
+                            variant="outlined"
 							required
 							fullWidth
 						/>
 					</div>
-					<FormControlLabel
+		<FormControlLabel
         control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedG" />}
         label="Enabled"
       />
-				
+	  </div>
+	  <div style={{flexDirection:'column',flex:1,display:'flex',alignItems:'flex-end',marginLeft:10	}}>
+	  	<FormControlLabel
 		
-	</div>
+        control={<GreenCheckbox checked={state.checkedA} onChange={handleChange} name="checkedA" />}
+        label="Agent Backend Access"
+      />
+	  	<FormControlLabel
+        control={<GreenCheckbox checked={state.checkedB} onChange={handleChange} name="checkedB" />}
+        label="Agent FrontEnd Access"
+      />
+	  	<FormControlLabel
+        control={<GreenCheckbox checked={state.checkedF} onChange={handleChange} name="checkedF" />}
+        label="Agent Application Access"
+      />
+	  </div>
+     </div>
+
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">

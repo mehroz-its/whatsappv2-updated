@@ -69,6 +69,7 @@ function PermissionTable(props) {
 	function handleClick(n) {
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
 	}
+	
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
