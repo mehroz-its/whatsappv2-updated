@@ -299,12 +299,12 @@ function Chat(props) {
 					)}
 			</FuseScrollbars>
 			{chat && (
-				<form onSubmit={onMessageSubmit} className="absolute bottom-0 right-0 left-0 py-16 px-8">
+				<form onSubmit={onMessageSubmit} className="absolute bottom-0 right-0 left-0 ">
 					<Paper className="flex items-center relative " elevation={1}>
 						<TextField
 							multiline={true}
 							rows="2"
-							style={{ height: 150, padding: 0, margin: 0, marginTop: -32,}}
+							style={{ height: 170, padding: 0, margin: 0, marginTop: -32,}}
 							autoFocus={false}
 							id="message-input"
 							className="flex-1"

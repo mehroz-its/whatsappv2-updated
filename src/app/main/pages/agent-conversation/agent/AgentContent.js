@@ -216,7 +216,7 @@ function AgentContent(props) {
 				viewChat === true &&
 				<div style={{ marginTop: '20px' }}> <Chat /> </div>
 
-
+				
 			}
 
 
