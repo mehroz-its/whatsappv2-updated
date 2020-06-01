@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
 	},
 	contentCardWrapper: {
 		position: 'relative',
-		padding: 10,
+		// padding: 10,
 		maxWidth:'100%',
 		display: 'flex',
 		flexDirection: 'column',

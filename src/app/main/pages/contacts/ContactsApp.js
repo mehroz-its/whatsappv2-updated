@@ -30,7 +30,7 @@ function ContactsApp() {
 			leftSidebarContent={<ContactsSidebarContent />}
 				sidebarInner
 				ref={pageLayout}	
-				innerScroll
+				// innerScroll
 		/>
 	);
 }

@@ -28,6 +28,7 @@ function ContactsHeader(props) {
 				</Hidden>
 
 				<div className="flex items-center">
+					
 					<FuseAnimate animation="transition.expandIn" delay={300}>
 						<Icon className="text-32">account_box</Icon>
 					</FuseAnimate>
