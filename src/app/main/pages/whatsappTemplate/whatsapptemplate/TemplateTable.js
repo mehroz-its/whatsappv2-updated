@@ -14,6 +14,7 @@ import { withRouter } from 'react-router-dom';
 import * as Actions from '../store/actions';
 import TemplateTableHead from './TemplateTableHead';
 import TableData from '../TemplateData'
+import TemplateDialog from './TemplateDialog'
 
 function TemplateTable(props) {
 	console.log(props)
@@ -24,6 +25,8 @@ function TemplateTable(props) {
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(TableData);
 	const [page, setPage] = useState(0);
+	const [open, setOpen] = React.useState(false)
+
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
 		direction: 'asc',
@@ -67,6 +70,11 @@ function TemplateTable(props) {
 	}
 
 	function handleClick(n) {
+		setOpen(true)
+		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
+	}
+	function handleClose() {
+		setOpen(false)
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
 	}
 
@@ -139,13 +147,6 @@ function TemplateTable(props) {
 										onClick={event => handleClick(n)}
 									>
 
-										{/* <TableCell className="w-64 text-center" padding="none">
-											<Checkbox
-												checked={isSelected}
-												onClick={event => event.stopPropagation()}
-												onChange={event => handleCheck(event, n.id)}
-											/>
-										</TableCell> */}
 										<TableCell component="th" scope="row" >
 											{n.id}
 										</TableCell>
@@ -175,26 +176,7 @@ function TemplateTable(props) {
 													<Icon className="text-green text-20">remove_circle</Icon>
 												)}
 										</TableCell>
-										{/* 
-										<TableCell component="th" scope="row" align="right">
-											{n.quantity}
-											<i
-												className={clsx(
-													'inline-block w-8 h-8 rounded mx-8',
-													n.quantity <= 5 && 'bg-red',
-													n.quantity > 5 && n.quantity <= 25 && 'bg-orange',
-													n.quantity > 25 && 'bg-green'
-												)}
-											/>
-										</TableCell> */}
-
-										{/* <TableCell component="th" scope="row" align="right">
-											{n.active ? (
-												<Icon className="text-green text-20">check_circle</Icon>
-											) : (
-													<Icon className="text-red text-20">remove_circle</Icon>
-												)}
-										</TableCell> */}
+										
 									</TableRow>
 								);
 							})}
@@ -217,6 +199,7 @@ function TemplateTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
+	             	{ open && <TemplateDialog type="Update Template" isOpen={open} closeDialog={handleClose} />} 
 		</div>
 	);
 }

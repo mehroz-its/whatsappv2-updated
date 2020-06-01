@@ -14,6 +14,7 @@ import { withRouter } from 'react-router-dom';
 import * as Actions from '../store/actions';
 import CannedTableHead from './CannedTableHead';
 import TableData from '../CannedData'
+import CannedDialog from './CannedDialog'
 
 function CannedTable(props) {
 	console.log(props)
@@ -22,6 +23,8 @@ function CannedTable(props) {
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 
 	const [selected, setSelected] = useState([]);
+	const [open, setOpen] = React.useState(false);
+
 	const [data, setData] = useState(TableData);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -57,7 +60,12 @@ function CannedTable(props) {
 			id
 		});
 	}
-
+	const handleClose = () => {
+		setOpen(false);
+	  };
+	  const handleClickOpen = () => {
+		setOpen(true);
+	  }
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
 			setSelected(data.map(n => n.id));
@@ -67,6 +75,8 @@ function CannedTable(props) {
 	}
 
 	function handleClick(n) {
+		setOpen(true);
+
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
 	}
 
@@ -210,6 +220,7 @@ function CannedTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
+			{open && <CannedDialog isOpen={open} type="Update Canned Message" closeDialog={handleClose} />}
 		</div>
 	);
 }
