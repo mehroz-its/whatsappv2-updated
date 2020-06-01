@@ -51,10 +51,12 @@ function UserNavbarHeader(props) {
 			className="user relative flex flex-col items-center justify-center pt-24 pb-64 mb-32 z-0"
 		>
 			<Typography className="username text-16 whitespace-no-wrap" color="inherit">
-				{user.data.displayName}
+				{/* {user.data.displayName} */}
+				Admin
 			</Typography>
 			<Typography className="email text-13 mt-8 opacity-50 whitespace-no-wrap" color="inherit">
-				{user.data.email}
+				{/* {user.data.email} */}
+				admin@its.com.pk
 			</Typography>
 			<Avatar
 				className={clsx(classes.avatar, 'avatar')}
