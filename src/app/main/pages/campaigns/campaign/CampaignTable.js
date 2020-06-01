@@ -14,13 +14,16 @@ import { withRouter } from 'react-router-dom';
 import * as Actions from '../store/actions';
 import CampaignTableHead from './CampaignTableHead';
 import TableData from '../CampaignData'
+import CampaignDialog from './CampaignDialog'
+
+
 
 function CampaignTable(props) {
 	console.log(props)
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
-
+	const [open, setOpen] = React.useState(false)
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(TableData);
 	const [page, setPage] = useState(0);
@@ -67,6 +70,9 @@ function CampaignTable(props) {
 	}
 
 	function handleClick(n) {
+		console.log("hadn lcick ");
+		
+		setOpen(true)
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
 	}
 
@@ -90,6 +96,11 @@ function CampaignTable(props) {
 	function handleChangePage(event, value) {
 		setPage(value);
 	}
+	function handleDialogClose() {
+		console.log("hhe");
+		setOpen(false)
+	}
+
 
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
@@ -129,6 +140,7 @@ function CampaignTable(props) {
 								const isSelected = selected.indexOf(n.id) !== -1;
 								return (
 									<TableRow
+
 										className="h-64 cursor-pointer"
 										hover
 										role="checkbox"
@@ -159,16 +171,16 @@ function CampaignTable(props) {
 											{n.begin_dt}
 										</TableCell>
 										<TableCell component="th" scope="row" align="right">
-										{n.activated ? (
+											{n.activated ? (
 												<Icon className="text-red text-20">check_circle</Icon>
-												) : (
+											) : (
 													<Icon className="text-green text-20">remove_circle</Icon>
 												)}
 										</TableCell>
 										<TableCell component="th" scope="row" align="right">
 											{n.progress ? (
 												<Icon className="text-red text-20">check_circle</Icon>
-												) : (
+											) : (
 													<Icon className="text-green text-20">remove_circle</Icon>
 												)}
 										</TableCell>
@@ -226,6 +238,7 @@ function CampaignTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
+		{open && <CampaignDialog isOpen={open} type='Update Campaign' closeDialog={handleDialogClose}  />}
 		</div>
 	);
 }

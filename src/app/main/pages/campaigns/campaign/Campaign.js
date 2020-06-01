@@ -7,15 +7,9 @@ import CampaignTable from  './CampaignTable';
 import Fab from '@material-ui/core/Fab';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
-import Button from '@material-ui/core/Button';
-import CampaignAdd from './CampaignAdd'
-import Dialog from '@material-ui/core/Dialog';
-import TextField from '@material-ui/core/TextField';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
+import CampaignDialog from './CampaignDialog'
+
 
 const useStyles = makeStyles({
 	addButton: {
@@ -30,6 +24,7 @@ const useStyles = makeStyles({
 });
 
 
+
 function Campaign(props) {
 	const [open, setOpen] = React.useState(false);
 
@@ -38,6 +33,11 @@ function Campaign(props) {
 	const handleClickOpen = () => {
 		setOpen(true);
 	  };
+	  const handleDialogClose = () => {
+		setOpen(false)
+	  };
+
+
 	
 	  const handleClose = () => {
 		setOpen(false);
@@ -65,80 +65,9 @@ function Campaign(props) {
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-			<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" 	classes={{
-				paper: 'm-24'
-			}}
+			{open && <CampaignDialog isOpen={open} type='Add Campaign' closeDialog={handleDialogClose}  />}
+
 		
-			fullWidth
-			maxWidth="xs">
-      <DialogTitle id="form-dialog-title">Add Campaign</DialogTitle>
-	  <DialogContent classes={{ root: 'p-24' }}>
-					<div className="flex">
-						<div className="min-w-48 pt-20">
-							<Icon color="action">account_circle</Icon>
-						</div>
-
-						<TextField
-							className="mb-24"
-							label="Name"
-							autoFocus
-							id="name"
-							name="name"
-					
-							variant="outlined"
-							required
-							fullWidth
-						/>
-					</div>
-
-					<div className="flex">
-						<div className="min-w-48 pt-20">
-							<Icon color="action">account_circle</Icon>
-						</div>
-
-						<TextField
-							className="mb-24"
-							label="Description"
-							autoFocus
-							id="name"
-							name="name"
-					
-
-							variant="outlined"
-							required
-							fullWidth
-						/>
-					</div>
-					<div className="flex">
-						<div className="min-w-48 pt-20">
-							<Icon color="action">cake</Icon>
-						</div>
-						<TextField
-							className="mb-24"
-							id="birthday"
-							label="Begin Date"
-							type="date"
-						
-							InputLabelProps={{
-								shrink: true
-							}}
-							variant="outlined"
-							fullWidth
-						/>
-					</div>
-					<Button color="black" style={{backgroundColor:'black',color:'white'}} >Upload </Button>
-
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={handleClose} color="primary">
-          Done
-        </Button>
-      </DialogActions>
-    </Dialog>
-		     
 		</>
 	);
 }
