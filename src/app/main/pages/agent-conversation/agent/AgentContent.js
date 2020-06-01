@@ -187,8 +187,8 @@ function AgentContent(props) {
 		<div className="w-full flex flex-col" style={{ marginTop: '20px' }}>
 			<FormControl variant="outlined" fullWidth className={classes.formControl}>
 				<Grid container>
-					<Grid item xs={3}></Grid>
-					<Grid item xs={6} >
+					<Grid item xs={2} md={4}></Grid>
+					<Grid item xs={8} md={4} >
 						<Select
 							id="template_selection"
 							fullWidth
@@ -209,7 +209,7 @@ function AgentContent(props) {
 							})}
 						</Select>
 					</Grid>
-					<Grid item xs={3}></Grid>
+					<Grid item xs={2} md={4}></Grid>
 				</Grid>
 			</FormControl>
 			{

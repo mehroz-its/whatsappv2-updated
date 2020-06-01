@@ -61,7 +61,7 @@ function Canned(props) {
 			}}
 			header={<CannedHeader />}
 			content={<CannedTable />}
-			innerScroll
+			// innerScroll
 		/>
 <FuseAnimate animation="transition.expandIn" delay={300}>
 				<Fab

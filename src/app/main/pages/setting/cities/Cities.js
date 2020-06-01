@@ -69,7 +69,7 @@ function Cities(props) {
 			}}
 			header={<CitiesHeader />}
 			content={<CitiesTable />}
-			innerScrollss
+			// innerScrollss
 		/>
 		
 <FuseAnimate animation="transition.expandIn" delay={300}>

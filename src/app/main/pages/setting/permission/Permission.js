@@ -14,7 +14,7 @@ function Permissions() {
 			}}
 			header={<PermissionHeader />}
 			content={<PermissionTable />}
-			innerScroll
+			// innerScroll
 		/>
 	);
 }

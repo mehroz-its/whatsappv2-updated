@@ -14,7 +14,7 @@ function Campaign() {
 			}}
 			header={<AgentHeader />}
 			content={<AgentContent />}
-			innerScroll
+			// innerScroll
 		/>
 	);
 }

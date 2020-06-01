@@ -61,7 +61,7 @@ function Campaign(props) {
 			}}
 			header={<TemplateHeader />}
 			content={<TemplateTable />}
-			innerScroll
+			// innerScroll
 		/>
 			<FuseAnimate animation="transition.expandIn" delay={300}>
 				<Fab

@@ -14,7 +14,7 @@ function Users() {
 			}}
 			header={<UserHeader />}
 			content={<UserTable />}
-			innerScroll
+			// innerScroll
 		/>
 	);
 }

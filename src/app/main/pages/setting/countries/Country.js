@@ -72,7 +72,7 @@ function Campaign(props) {
 			}}
 			header={<CountryHeader />}
 			content={<CountryTable />}
-			innerScroll
+			// innerScroll
 		/>
 <FuseAnimate animation="transition.expandIn" delay={300}>
 				<Fab

@@ -14,7 +14,7 @@ function Campaign() {
 			}}
 			header={<TemplateHeader />}
 			content={<TemplateContent />}
-			innerScroll
+			// innerScroll
 		/>
 	);
 }

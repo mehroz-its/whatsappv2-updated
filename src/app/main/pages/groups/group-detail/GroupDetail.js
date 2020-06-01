@@ -274,7 +274,7 @@ function GroupDetail(props) {
 									}}
 									header={<GroupDetailHeader />}
 									content={<GroupDetailTable />}
-									innerScroll
+									// innerScroll
 								/>
 
 								{/* <FuseChipSelect
@@ -515,7 +515,7 @@ function GroupDetail(props) {
 					</div>
 				)
 			}
-			innerScroll
+			// innerScroll
 		/>
 	);
 }

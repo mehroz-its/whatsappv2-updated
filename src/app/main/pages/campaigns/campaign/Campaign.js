@@ -23,6 +23,9 @@ const useStyles = makeStyles({
 		bottom:50,
 		right:50,
 		zIndex: 99
+	},
+	full:{
+		width:'100%'
 	}
 });
 
@@ -45,11 +48,12 @@ function Campaign(props) {
 		<FusePageCarded
 			classes={{
 				content: 'flex',
-				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
+				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
+				root:classes.layoutRoot,
 			}}
 			header={<CampaignHeader />}
 			content={<CampaignTable />}
-			innerScroll
+			// innerScroll
 		/>
 <FuseAnimate animation="transition.expandIn" delay={300}>
 				<Fab

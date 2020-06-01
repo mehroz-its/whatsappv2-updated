@@ -70,7 +70,7 @@ function Roles(props) {
 			}}
 			header={<RolesHeader />}
 			content={<Rolestable />}
-			innerScroll
+			// innerScroll
 		/>
 				
 <FuseAnimate animation="transition.expandIn" delay={300}>

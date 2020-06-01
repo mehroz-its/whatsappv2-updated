@@ -14,7 +14,7 @@ function Groups() {
 			}}
 			header={<GroupHeader />}
 			content={<GroupTable />}
-			innerScroll
+			// innerScroll
 		/>
 	);
 }
