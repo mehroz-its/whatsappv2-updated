@@ -14,13 +14,18 @@ import { withRouter } from 'react-router-dom';
 import * as Actions from './store/actions';
 import UserTableHead from './UserTableHead';
 import TableData from './UsersData'
+import UserDialog from './UserDialog'
 
 function UserTable(props) {
+
+	function closeDialog(){
+		setOpen(false)
+	}
 	console.log(props)
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
-
+	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(TableData);
 	const [page, setPage] = useState(0);
@@ -68,6 +73,9 @@ function UserTable(props) {
 
 	function handleClick(n) {
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
+		
+			setOpen(true)
+		
 	}
 
 	function handleCheck(event, id) {
@@ -208,6 +216,7 @@ function UserTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
+			{open ? <UserDialog  isOpen={open} closeDialog={closeDialog} type="Update"/>:null}
 		</div>
 	);
 }

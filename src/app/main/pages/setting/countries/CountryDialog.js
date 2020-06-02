@@ -41,7 +41,7 @@ const GreenCheckbox = withStyles({
 }))
 
 
-const PermissionDialog = (props) => {
+const CountryDialog = (props) => {
     console.log(props,'in dialog')
     const {isOpen,type} = props
     const [openDialog, setopenDialog] = React.useState(isOpen);
@@ -65,60 +65,18 @@ const PermissionDialog = (props) => {
 		checkedB: false,
 		checkedF: false,
 	  });
-      const checkToShow = ()=>{
-        if(age===10)
-        {
-            console.log('first');
-            
-            return (
-                <>
-              <FormControlLabel
-      
-      control={<GreenCheckbox checked={state.checkedA} onChange={handleChange} name="checkedA" />}
-      label="Receive Calls"
-    />
-    </>
-            )
-        }
-        else if(age===20)
-        {
-            console.log('second');
-            
-            return (
-              <FormControlLabel
-      
-              control={<GreenCheckbox checked={state.checkedB} onChange={handleChange} name="checkedB" />}
-              label="Send Audio"
-            />
-            )
-        }
-        else if(age===30)
-        {
-            console.log('third');
-            
-            return (
-              <FormControlLabel
-      
-              control={<GreenCheckbox checked={state.checkedF} onChange={handleChange} name="checkedF" />}
-              label="Edit City"
-            />
-            )
-        }
-  
-    }
+   
 
     return (  
     // <div> {isOpen}</div>
-    <Dialog open={openDialog} aria-labelledby="form-dialog-title" classes={{
+    <Dialog open={openDialog} onClose={handleClose} aria-labelledby="form-dialog-title" 	classes={{
         paper: 'm-24'
     }}
 
-        fullWidth
-        maxWidth="sm">
-        <DialogTitle id="form-dialog-title">{type} Permissions</DialogTitle>
-        <DialogContent classes={{ root: 'p-24' }}>
-        <div style={{display:'flex',flexDirection:'row'}}>
-        <div>
+    fullWidth
+    maxWidth="sm">
+<DialogTitle id="form-dialog-title">{type} Country</DialogTitle>
+<DialogContent classes={{ root: 'p-24' }}>
             <div className="flex">
                 <div className="min-w-48 pt-20">
                     <Icon color="action">account_circle</Icon>
@@ -130,13 +88,13 @@ const PermissionDialog = (props) => {
                     autoFocus
                     id="name"
                     name="name"
-
+            
                     variant="outlined"
                     required
                     fullWidth
                 />
             </div>
-           
+
             <div className="flex">
                 <div className="min-w-48 pt-20">
                     <Icon color="action">account_circle</Icon>
@@ -144,59 +102,34 @@ const PermissionDialog = (props) => {
 
                 <TextField
                     className="mb-24"
-                    label="Description"
+                    label="Country Code"
                     autoFocus
                     id="name"
                     name="name"
-
+            
 
                     variant="outlined"
                     required
                     fullWidth
                 />
             </div>
-         
-            <FormControl className={classes.formControl}>
-					
-                    <InputLabel id="demo-simple-select-label">Type</InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={age}
-                      onChange={handleChangeAgain}
-                    >
-                    <MenuItem value={0}>Select Customer</MenuItem>
-                      <MenuItem value={10}>Application</MenuItem>
-                      <MenuItem value={20}>FrontEnd</MenuItem>
-                      <MenuItem value={30}>Backend</MenuItem>
-                      <MenuItem value={40}>Client</MenuItem>
-                    </Select>
-                  </FormControl>
-     <div className="flex">
-                  <FormControlLabel
-        control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedG" />}
-        label="Enabled"
-      />
-      </div>
-    </div>
-<div style={{flexDirection:'column',flex:1,display:'flex',alignItems:'flex-end',marginLeft:10}}>
-		  {
-			checkToShow()
-		  }
+            <FormControlLabel
+control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedG" />}
+label="Enabled"
+/>
+        
 
-	  </div>
-      </div>
-          
-        </DialogContent>
-        <DialogActions>
-            <Button onClick={handleClose} color="primary">
-                Cancel
-             </Button>
-            <Button onClick={handleClose} color="primary">
-                Done
-         </Button>
-        </DialogActions>
-    </Dialog>
+
+</DialogContent>
+<DialogActions>
+<Button onClick={handleClose} color="primary">
+  Cancel
+</Button>
+<Button onClick={handleClose} color="primary">
+  Done
+</Button>
+</DialogActions>
+</Dialog>
 
 
 
@@ -206,4 +139,4 @@ const PermissionDialog = (props) => {
     )
 }
 
-export default PermissionDialog
+export default CountryDialog

@@ -17,6 +17,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Fab from '@material-ui/core/Fab';
 import { makeStyles,withStyles } from '@material-ui/core/styles';
+import RolesDialog from './RolesDialog';
 
 
 const GreenCheckbox = withStyles({
@@ -41,6 +42,10 @@ const GreenCheckbox = withStyles({
 
 
 function Roles(props) {
+
+	function closeDialog(){
+		setOpen(false)
+	}
 
 	const [state, setState] = React.useState({
 		
@@ -87,82 +92,7 @@ function Roles(props) {
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-			<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" 	classes={{
-				paper: 'm-24'
-			}}
-		
-			fullWidth
-			maxWidth="xs">
-      <DialogTitle id="form-dialog-title">Add Roles</DialogTitle>
-	  <DialogContent classes={{ root: 'p-24' }}>
-		            <div style={{display:'flex',flexDirection:'row'}}>
-						<div style={{flex:1}}>
-					<div className="flex">
-						<div className="min-w-48 pt-20">
-							<Icon color="action">account_circle</Icon>
-						</div>
-
-						<TextField
-							className="mb-24"
-							label="Name"
-							autoFocus
-							id="name"
-							name="name"
-					
-							variant="outlined"
-							required
-							fullWidth
-						/>
-					</div>
-		
-					<div className="flex">
-						<div className="min-w-48 pt-20">
-							<Icon color="action">account_circle</Icon>
-						</div>
-
-						<TextField
-							className="mb-24"
-							label="Description"
-							autoFocus
-							id="name"
-							name="name"
-                            variant="outlined"
-							required
-							fullWidth
-						/>
-					</div>
-		<FormControlLabel
-        control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedG" />}
-        label="Enabled"
-      />
-	  </div>
-	  <div style={{flexDirection:'column',flex:1,display:'flex',alignItems:'flex-end',marginLeft:10	}}>
-	  	<FormControlLabel
-		
-        control={<GreenCheckbox checked={state.checkedA} onChange={handleChange} name="checkedA" />}
-        label="Agent Backend Access"
-      />
-	  	<FormControlLabel
-        control={<GreenCheckbox checked={state.checkedB} onChange={handleChange} name="checkedB" />}
-        label="Agent FrontEnd Access"
-      />
-	  	<FormControlLabel
-        control={<GreenCheckbox checked={state.checkedF} onChange={handleChange} name="checkedF" />}
-        label="Agent Application Access"
-      />
-	  </div>
-     </div>
-
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={handleClose} color="primary">
-          Done
-        </Button>
-      </DialogActions>
-    </Dialog>
+			{open ? <RolesDialog isOpen={open} closeDialog={closeDialog} type="Add" /> : null }
 	</>
 	);
 }

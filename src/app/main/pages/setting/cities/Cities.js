@@ -17,6 +17,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Fab from '@material-ui/core/Fab';
 import { makeStyles,withStyles } from '@material-ui/core/styles';
+import CitiesDialog from './CitiesDialog';
 
 const GreenCheckbox = withStyles({
 	root: {
@@ -39,6 +40,12 @@ const GreenCheckbox = withStyles({
 
 
 function Cities(props) {
+
+	function closeDialog(){
+		setOpen(false)
+	}
+	
+		
 	const [state, setState] = React.useState({
 		
 		checkedG: true,
@@ -83,67 +90,7 @@ function Cities(props) {
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-			<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" 	classes={{
-				paper: 'm-24'
-			}}
-		
-			fullWidth
-			maxWidth="xs">
-      <DialogTitle id="form-dialog-title">Add City</DialogTitle>
-	  <DialogContent classes={{ root: 'p-24' }}>
-					<div className="flex">
-						<div className="min-w-48 pt-20">
-							<Icon color="action">account_circle</Icon>
-						</div>
-
-						<TextField
-							className="mb-24"
-							label="Name"
-							autoFocus
-							id="name"
-							name="name"
-					
-							variant="outlined"
-							required
-							fullWidth
-						/>
-					</div>
-		
-					<div className="flex">
-						<div className="min-w-48 pt-20">
-							<Icon color="action">account_circle</Icon>
-						</div>
-
-						<TextField
-							className="mb-24"
-							label="Country Code"
-							autoFocus
-							id="name"
-							name="name"
-					
-
-							variant="outlined"
-							required
-							fullWidth
-						/>
-					</div>
-					<FormControlLabel
-        control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedG" />}
-        label="Enabled"
-      />
-				
-		
-
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={handleClose} color="primary">
-          Done
-        </Button>
-      </DialogActions>
-    </Dialog>
+			{open ?<CitiesDialog isOpen={open} closeDialog={closeDialog} type="Add" /> :null }
 	</>
 	);
 }

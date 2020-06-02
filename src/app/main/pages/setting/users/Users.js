@@ -17,6 +17,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
+import UserDialog from './UserDialog'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const GreenCheckbox = withStyles({
@@ -50,8 +51,10 @@ function Users(props) {
 		checkedB:true
 
 	})
+	function closeDialog(){
+		setOpen(false)
+	}
 
-	const [age, setAge] = React.useState('Text');
 
 	const handleClose = () => {
 		setOpen(false);
@@ -88,128 +91,8 @@ function Users(props) {
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-
-			<Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" 	classes={{
-				paper: 'm-24'
-			}}
+       {open ? <UserDialog isOpen={open} closeDialog={closeDialog}  type="Add" /> : null}
 		
-			fullWidth
-			maxWidth="xs">
-      <DialogTitle id="form-dialog-title">Add Users</DialogTitle>
-	  <DialogContent classes={{ root: 'p-24' }}>
-		            <div style={{display:'flex',flexDirection:'row'}}>
-						<div style={{flex:1}}>
-					<div className="flex">
-						<div className="min-w-48 pt-20">
-							<Icon color="action">account_circle</Icon>
-						</div>
-
-						<TextField
-							className="mb-24"
-							label="UserName"
-							autoFocus
-							id="name"
-							name="name"
-					
-							variant="outlined"
-							required
-							fullWidth
-						/>
-					</div>
-		
-					<div className="flex">
-						<div className="min-w-48 pt-20">
-							<Icon color="action">account_circle</Icon>
-						</div>
-
-						<TextField
-							className="mb-24"
-							label="Email"
-							autoFocus
-							id="name"
-							name="name"
-                            variant="outlined"
-							required
-							fullWidth
-						/>
-					</div>
-					<div className="flex">
-						<div className="min-w-48 pt-20">
-							<Icon color="action">account_circle</Icon>
-						</div>
-
-						<TextField
-							className="mb-24"
-							label="Number"
-							autoFocus
-							id="name"
-							name="name"
-					
-							variant="outlined"
-							required
-							fullWidth
-						/>
-					</div>
-					<div className="flex">
-						<div className="min-w-48 pt-20">
-							<Icon color="action">account_circle</Icon>
-						</div>
-
-						<TextField
-							className="mb-24"
-							label="Password"
-							autoFocus
-							id="name"
-							name="name"
-					
-							variant="outlined"
-							required
-							fullWidth
-						/>
-					</div>
-					
-
-					
-		<FormControlLabel
-        control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedG" />}
-        label="Enabled"
-      />
-	  </div>
-	  <div style={{marginLeft:10}}>
-	  <FormControlLabel
-        control={<GreenCheckbox checked={state.checkedB} onChange={handleChange} name="checkedB" />}
-        label="Agent FrontEnd Access"
-      />
-		  
-		  </div>
-		  
-	  {/* <div style={{flexDirection:'column',flex:1,display:'flex',alignItems:'flex-end',marginLeft:10	}}>
-	  	<FormControlLabel
-		
-        control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedA" />}
-        label="Agent Backend Access"
-      />
-	  	<FormControlLabel
-        control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedB" />}
-        label="Agent FrontEnd Access"
-      />
-	  	<FormControlLabel
-        control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedF" />}
-        label="Agent Application Access"
-      />
-	  </div> */}
-     </div>
-
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={handleClose} color="primary">
-          Done
-        </Button>
-      </DialogActions>
-    </Dialog>
 
 		</>
 	);
