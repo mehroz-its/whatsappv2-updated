@@ -14,13 +14,20 @@ import { withRouter } from 'react-router-dom';
 import * as Actions from './store/actions';
 import RolesTableHead from './RolesTableHead';
 import TableData from './RolesData'
+import RolesDialog from './RolesDialog'
 
 function RolesTable(props) {
+
+	function closeDialog(){
+		setOpen(false)
+	}
+
+
 	console.log(props)
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
-
+	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(TableData);
 	const [page, setPage] = useState(0);
@@ -67,7 +74,7 @@ function RolesTable(props) {
 	}
 
 	function handleClick(n) {
-		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
+		setOpen(true)
 	}
 
 	function handleCheck(event, id) {
@@ -206,6 +213,7 @@ function RolesTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
+			{open ? <RolesDialog  isOpen={open} closeDialog={closeDialog} type="Update"/>:null}
 		</div>
 	);
 }

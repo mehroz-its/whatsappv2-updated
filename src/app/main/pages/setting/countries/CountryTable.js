@@ -14,13 +14,19 @@ import { withRouter } from 'react-router-dom';
 import * as Actions from './store/actions';
 import CountryTableHead from './CountryTableHead'
 import TableData from './CountryData'
+import CountryDialog from './CountryDialog'
 
 function CountryTable(props) {
+
+	function closeDialog(){
+		setOpen(false)
+	}
+	
 	console.log(props)
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
-
+	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(TableData);
 	const [page, setPage] = useState(0);
@@ -67,8 +73,9 @@ function CountryTable(props) {
 	}
 
 	function handleClick(n) {
-		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
+		setOpen(true)
 	}
+	
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
@@ -206,6 +213,7 @@ function CountryTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
+			{open ? <CountryDialog  isOpen={open} closeDialog={closeDialog} type="Update"/>:null}
 		</div>
 	);
 }

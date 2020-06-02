@@ -7,7 +7,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import clsx from 'clsx';
+import PermissionDialog from './PermissionDialog'
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -16,11 +16,18 @@ import PermissionTableHead from './PermissionTableHead';
 import TableData from './PermissionData'
 
 function PermissionTable(props) {
+
+	
+	function closeDialog(){
+		setOpen(false)
+	}
+
+	
 	console.log(props)
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
-
+	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(TableData);
 	const [page, setPage] = useState(0);
@@ -67,7 +74,7 @@ function PermissionTable(props) {
 	}
 
 	function handleClick(n) {
-		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
+		setOpen(true)
 	}
 	
 
@@ -205,6 +212,7 @@ function PermissionTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
+			{open ? <PermissionDialog  isOpen={open} closeDialog={closeDialog} type="Update"/>:null}
 		</div>
 	);
 }
