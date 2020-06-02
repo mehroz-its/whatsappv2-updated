@@ -7,6 +7,7 @@ import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import Paper from '@material-ui/core/Paper';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
+import am4themes_material from "@amcharts/amcharts4/themes/material";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import MaterialTable from 'material-table';
 import Grid from '@material-ui/core/Grid';
@@ -57,6 +58,9 @@ const campaign_report_chart = (dataa) => {
 		}]
 	}];
 	// Create chart instance
+	am4core.useTheme(am4themes_animated);
+	am4core.useTheme(am4themes_material);
+
 	let chart = am4core.create("chartdiv", am4charts.XYChart);
 	chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
 
@@ -152,29 +156,31 @@ const useStyles = makeStyles({
 
 
 const rader_chart = () => {
+	am4core.useTheme(am4themes_material);
+	am4core.useTheme(am4themes_animated);
 	let chart = am4core.create("chartdivv", am4charts.RadarChart);
 	chart.data = [{
-		"category": "my-Document",
+		"category": "Document",
 		"value": 80,
 		"full": 100
 	}, {
-		"category": "my-Photos",
+		"category": "Photos",
 		"value": 35,
 		"full": 100
 	}, {
-		"category": "my-Audio",
+		"category": "Audio",
 		"value": 92,
 		"full": 100
 	}, {
-		"category": "my-Text",
+		"category": "Text",
 		"value": 68,
 		"full": 100
 	}, {
-		"category": "my-Contacts",
+		"category": "Contacts",
 		"value": 68,
 		"full": 100
 	}, {
-		"category": "my-Locations",
+		"category": "Locations",
 		"value": 68,
 		"full": 100
 	}];
@@ -233,6 +239,9 @@ const rader_chart = () => {
 	chart.cursor = new am4charts.RadarCursor();
 }
 const column_chart = () => {
+	am4core.useTheme(am4themes_animated);
+	am4core.useTheme(am4themes_material);
+
 	let chart = am4core.create("columnchartdiv", am4charts.XYChart);
 
 	// Add data
@@ -244,7 +253,7 @@ const column_chart = () => {
 	}, {
 		"name": "Female",
 		"points": 65456,
-		"color": "#e83879",
+		"color": "#fc2254",
 		"bullet": "https://www.amcharts.com/lib/images/faces/D02.png"
 	},];
 
@@ -404,7 +413,7 @@ function DashboardApp() {
 							animation: 'transition.slideUpBigIn'
 						}}
 					>
-						<Grid container spacing={3} style={{marginTop:10}}>
+						<Grid container spacing={3} style={{ marginTop: 10 }}>
 							<Grid item md={12} sm={12} xs={12} >
 								<Paper className="w-full rounded-8 shadow-none border-1">
 									<div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>

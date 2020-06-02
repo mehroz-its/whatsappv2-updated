@@ -95,7 +95,7 @@ const navigationConfig = [
 				url: '/apps/chat',
 				badge: {
 					title: 13,
-					bg: 'rgb(9, 210, 97)',
+					bg: '#e73859',
 					fg: '#FFFFFF'
 				}
 			},

@@ -8,7 +8,7 @@ const settingsConfig = {
 	direction: 'ltr', // rtl, ltr
 	theme: {
 		main: 'default',
-		navbar: 'mainThemeDark',
+		navbar: 'default',
 		toolbar: 'mainThemeLight',
 		footer: 'mainThemeDark'
 	}
