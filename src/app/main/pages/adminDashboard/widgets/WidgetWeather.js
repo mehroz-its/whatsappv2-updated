@@ -16,7 +16,7 @@ function WidgetWeather(props) {
 			} 
 		},
 		{
-			icon: "rainy",
+			icon: "cloudy",
 			name: "Monaday", 
 			temp: {
 				C: "21",
@@ -24,7 +24,7 @@ function WidgetWeather(props) {
 			} 
 		},
 		{
-			icon: "rainy",
+			icon: "windy3",
 			name: "Tuesday", 
 			temp: {
 				C: "21",
@@ -47,10 +47,10 @@ function WidgetWeather(props) {
 			</div>
 			<div className="flex items-center justify-center p-16 pb-32">
 				<Icon className="meteocons text-40 ltr:mr-8 rtl:ml-8" color="action">
-					more_vert
+				rainy2
 				</Icon>
 				<Typography className="text-44 mx-8" color="textSecondary">
-					C
+					22
 				</Typography>
 				<Typography className="text-48 font-300" color="textSecondary">
 					°
@@ -66,10 +66,9 @@ function WidgetWeather(props) {
 						windy
 					</Icon>
 					<Typography className="mx-4">
-
-						200
+						12
 					</Typography>
-					<Typography color="textSecondary">200</Typography>
+					<Typography color="textSecondary">KMH</Typography>
 				</div>
 
 				<div className="flex items-center">
@@ -77,7 +76,7 @@ function WidgetWeather(props) {
 						compass
 					</Icon>
 					<Typography className="mx-4">
-						north
+					NW
 					</Typography>
 				</div>
 
@@ -86,7 +85,7 @@ function WidgetWeather(props) {
 						rainy
 					</Icon>
 					<Typography className="mx-4">
-						20%
+					98%
 					</Typography>
 				</div>
 			</div>
@@ -97,7 +96,7 @@ function WidgetWeather(props) {
 						<Typography className="text-15">{id.name}</Typography>
 						<div className="flex items-center">
 							<Icon className="meteocons text-24 ltr:mr-16 rtl:ml-16" color="action">
-							more_vert
+							{id.icon}
 							</Icon>
 							<Typography className="text-20">{day.temp}</Typography>
 							<Typography className="text-20" color="textSecondary">
