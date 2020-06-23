@@ -7,87 +7,73 @@ i18next.addResourceBundle('en', 'navigation', en);
 i18next.addResourceBundle('tr', 'navigation', tr);
 i18next.addResourceBundle('ar', 'navigation', ar);
 
-let user_token = localStorage.getItem('user_token')
-if (user_token !== null) {
-	var user_routes = []
-	let userAcl = localStorage.getItem('user_acl');
-	let _routes = JSON.parse(userAcl)
-	_routes = Object.keys(_routes)
-	_routes.map((i, v) => {
-		let val = i.split('FRONT:')
-		user_routes.push(val[1])
-	})
-
-	console.log(user_routes)
-} else {
-	console.log("user_token null")
-
-}
+// let userAcl = localStorage.getItem('user_acl');
+// if (userAcl !== null) userAcl = JSON.parse(this.userAcl);
 
 
-const navigationConfig = [
-	{
-		id: 'applications',
-		title: 'Applications',
-		translate: 'Super Admin',
-		type: 'group',
-		icon: 'apps',
-		children: [
-			{
-				id: 'Intelligence',
-				title: 'Intelligence',
-				translate: 'INTELLEIGENCE',
-				type: 'item',
-				icon: 'dashboard',
-				url: '/pages/intelligence'
-			},
-			{
-				id: 'Accounts',
-				title: 'Accounts',
-				translate: 'ACCOUNTS',
-				type: 'item',
-				icon: 'dashboard',
-				url: '/account'
-			},
-			{
-				id: 'Reports',
-				title: 'Reports',
-				translate: 'REPORTS',
-				type: 'item',
-				icon: 'dashboard',
-				url: '/reports'
-			},
-			{
-				id: 'Package',
-				title: 'Package',
-				translate: 'PACKAGE',
-				type: 'item',
-				icon: 'dashboard',
-				url: '/package'
-			},
-			{
-				id: 'Template',
-				title: 'Template',
-				translate: 'TEMPLATE',
-				type: 'collapse',
-				icon: 'dashboard',
-				children: [
-					{
-						id: 'Request',
-						title: 'Request',
-						type: 'item',
-						url: '/Request'
-					},
-					{
-						id: 'Manage',
-						title: 'Manage',
-						type: 'item',
-						url: '/Manage'
-					}
-				]
-			},
-		]
-	},
+const AppRoutes = [
+	// {
+	// 	id: 'applications',
+	// 	title: 'Applications',
+	// 	translate: 'Super Admin',
+	// 	type: 'group',
+	// 	icon: 'apps',
+	// 	children: [
+	// 		{
+	// 			id: 'Intelligence',
+	// 			title: 'Intelligence',
+	// 			translate: 'INTELLEIGENCE',
+	// 			type: 'item',
+	// 			icon: 'dashboard',
+	// 			url: '/pages/intelligence'
+	// 		},
+	// 		{
+	// 			id: 'Accounts',
+	// 			title: 'Accounts',
+	// 			translate: 'ACCOUNTS',
+	// 			type: 'item',
+	// 			icon: 'dashboard',
+	// 			url: '/account'
+	// 		},
+	// 		{
+	// 			id: 'Reports',
+	// 			title: 'Reports',
+	// 			translate: 'REPORTS',
+	// 			type: 'item',
+	// 			icon: 'dashboard',
+	// 			url: '/reports'
+	// 		},
+	// 		{
+	// 			id: 'Package',
+	// 			title: 'Package',
+	// 			translate: 'PACKAGE',
+	// 			type: 'item',
+	// 			icon: 'dashboard',
+	// 			url: '/package'
+	// 		},
+	// 		{
+	// 			id: 'Template',
+	// 			title: 'Template',
+	// 			translate: 'TEMPLATE',
+	// 			type: 'collapse',
+	// 			icon: 'dashboard',
+	// 			children : [
+	// 				{
+	// 					id   : 'Request',
+	// 					title: 'Request',
+	// 					type : 'item',
+	// 					url  : '/Request'
+	// 				},
+	// 				{
+	// 					id   : 'Manage',
+	// 					title: 'Manage',
+	// 					type : 'item',
+	// 					url  : '/Manage'
+	// 				}
+	// 			]
+	// 		},
+	// 	]
+	// },
 	{
 		id: 'applications',
 		title: 'Applications',
@@ -132,10 +118,10 @@ const navigationConfig = [
 						url: '/apps/group-chat',
 						exact: true,
 						badge: {
-							title: 25,
-							bg: '#F44336',
-							fg: '#FFFFFF'
-						}
+					title: 25,
+					bg: '#F44336',
+					fg: '#FFFFFF'
+				}
 					},
 					{
 						id: 'Groups',
@@ -144,24 +130,24 @@ const navigationConfig = [
 						url: '/apps/groups/group',
 						exact: true,
 						badge: {
-							title: 25,
-							bg: '#F44336',
-							fg: '#FFFFFF'
-						}
+					title: 25,
+					bg: '#F44336',
+					fg: '#FFFFFF'
+				}
 					},
-					// 	{
-					// 		id: 'Group Details',
-					// 		title: 'Group Details',
-					// 		type: 'item',
-					// 		url: '/apps/groups/group-detail',
-					// 		exact: true,
-					// 		badge: {
-					// 	title: 25,
-					// 	bg: '#F44336',
-					// 	fg: '#FFFFFF'
-					// }
-					// 	}
-
+				// 	{
+				// 		id: 'Group Details',
+				// 		title: 'Group Details',
+				// 		type: 'item',
+				// 		url: '/apps/groups/group-detail',
+				// 		exact: true,
+				// 		badge: {
+				// 	title: 25,
+				// 	bg: '#F44336',
+				// 	fg: '#FFFFFF'
+				// }
+				// 	}
+				
 				]
 			},
 			{
@@ -199,7 +185,7 @@ const navigationConfig = [
 				translate: 'GALLERY',
 				type: 'collapse',
 				icon: 'shopping_cart',
-
+				
 				children: [
 					{
 						id: 'Whatsapp Template',
@@ -213,10 +199,10 @@ const navigationConfig = [
 						title: 'Canned Messages',
 						type: 'item',
 						url: '/apps/canned-messages',
-						exact: true,
+						exact: true
 					}
-
-
+				
+				
 				]
 			},
 			{
@@ -247,8 +233,8 @@ const navigationConfig = [
 						url: '/report/compaigns',
 						exact: true
 					}
-
-
+				
+				
 				]
 			},
 			{
@@ -294,8 +280,8 @@ const navigationConfig = [
 						exact: true
 					},
 
-
-
+				
+				
 				]
 			},
 			{
@@ -321,14 +307,26 @@ const navigationConfig = [
 						url: '/apps/e-commerce/products',
 						exact: true
 					},
-
-
-
+					
+				
+				
 				]
 			},
-
+		
 		]
 	},
 ];
 
-export default navigationConfig;
+class AppRoutes {
+    registeredRoutes() {
+        return Object.keys(APP_ROUTES);
+    }
+
+    getRoute(name) {
+        if (APP_ROUTES[name]) return APP_ROUTES[name];
+
+        throw new Error(`Invalid route name [${name}]`);
+    }
+}
+
+export default new AppRoutes()

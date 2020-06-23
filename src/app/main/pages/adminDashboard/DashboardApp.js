@@ -11,7 +11,7 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import MaterialTable from 'material-table';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-
+import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 import Widget2 from './widgets/Widget2';
 
 
@@ -300,10 +300,12 @@ const newMessageList = [
 	{ category: "My-Photos", value: "0", full: "100" },
 	{ category: "My-MYDocuments", value: "0", full: "100" }
 ]
-function DashboardApp() {
+function DashboardApp(props) {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
 	const [rader, setrader] = React.useState(newMessageList);
+	console.log(props)
+
 
 	const [state, setState] = React.useState({
 		columns: [
@@ -327,6 +329,22 @@ function DashboardApp() {
 		],
 	});
 
+	// React.useEffect(() => {
+	// 	// pie_chart()
+	// 	if (hasPermission('app', 'view_dashboard_stats')) {
+	// 		CoreHttpHandler.request('dashboard', 'listing', { }, dataSourceSuccess =>{}, dataSourceFailure =>{});
+	// 		// CoreHttpHandler.request('dashboard', 'messagestate', { ...dataSourceOptions.params }, messagestateSuccess, messagestateFailure);
+	// 	}
+	// 	// if (hasPermission('app', 'view_dashboard_reports')) {
+	// 	//     CoreHttpHandler.request('dashboard', 'messagestate', { ...dataSourceOptions.params }, messagestateSuccess, messagestateFailure);
+	// 	// }
+	// 	// else{
+
+	// 	// }
+	// }, []);
+
+
+	
 	React.useEffect(() => {
 		rader_chart();
 		column_chart()
@@ -404,7 +422,7 @@ function DashboardApp() {
 							animation: 'transition.slideUpBigIn'
 						}}
 					>
-						<Grid container spacing={3} style={{marginTop:10}}>
+						<Grid container spacing={3} style={{ marginTop: 10 }}>
 							<Grid item md={12} sm={12} xs={12} >
 								<Paper className="w-full rounded-8 shadow-none border-1">
 									<div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>

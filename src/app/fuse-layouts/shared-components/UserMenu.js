@@ -27,20 +27,20 @@ function UserMenu(props) {
 		setUserMenu(null);
 	};
 
-	const handleLogOut = ()=>{
+	const handleLogOut = () => {
 		console.log('i am logout')
-	
+
 		CoreHttpHandler.request(
-            'core',
-            'userLogout',
-            {},
-            (response) => {
-                localStorage.clear();
-                window.location.href = '/login';
-            },
-            (response) => { }
-        );
-		
+			'core',
+			'userLogout',
+			{},
+			(response) => {
+				window.location.href = '/login';
+				localStorage.clear();
+			},
+			(response) => { }
+		);
+
 	}
 
 	return (

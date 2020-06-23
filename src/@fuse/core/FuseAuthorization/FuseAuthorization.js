@@ -6,19 +6,33 @@ import { matchRoutes } from 'react-router-config';
 import { withRouter } from 'react-router-dom';
 
 class FuseAuthorization extends Component {
+
+	
+
 	constructor(props, context) {
 		super(props);
 		const { routes } = context;
 		this.state = {
 			accessGranted: true,
-			routes
+			routes,
+			user_routes:null
 		};
 	}
 
+
+
 	componentDidMount() {
-		if (!this.state.accessGranted) {
+		// if (!this.state.accessGranted) {
+		// 	this.redirectRoute();
+		// }
+		if (this.props.hasPermission === null) {
 			this.redirectRoute();
+		} else {
+			this.setState({ user_routes: this.props.hasPermission })
+			console.log(this.state.user_routes,"state.user_routes")
 		}
+
+
 	}
 
 	shouldComponentUpdate(nextProps, nextState) {
@@ -79,6 +93,30 @@ function mapStateToProps({ auth }) {
 		userRole: auth.user.role
 	};
 }
+
+// const FuseAuthorization = ({ component: Comp, hasPermission, setSnackBarMessage, userAuthenticated, path, ...rest }) => {
+//     return (
+//         <Route
+//             path={path}
+//             {...rest}
+//             render={props => {
+//                 return userAuthenticated ? (
+//                     <Comp {...props} hasPermission={hasPermission} setSnackBarMessage={setSnackBarMessage} />
+//                 ) : (
+//                         <Redirect
+//                             to={{
+//                                 pathname: "/",
+//                                 state: {
+//                                     prevLocation: path,
+//                                     error: "You dont have access to this page",
+//                                 },
+//                             }}
+//                         />
+//                     );
+//             }}
+//         />
+//     );
+// };
 
 FuseAuthorization.contextType = AppContext;
 
