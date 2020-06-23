@@ -10,6 +10,8 @@ import * as authActions from 'app/auth/store/actions';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import CoreHttpHandler from '../../../http/services/CoreHttpHandler';
+
 
 function UserMenu(props) {
 	const dispatch = useDispatch();
@@ -25,14 +27,30 @@ function UserMenu(props) {
 		setUserMenu(null);
 	};
 
+	const handleLogOut = ()=>{
+		console.log('i am logout')
+	
+		CoreHttpHandler.request(
+            'core',
+            'userLogout',
+            {},
+            (response) => {
+                localStorage.clear();
+                window.location.href = '/login';
+            },
+            (response) => { }
+        );
+		
+	}
+
 	return (
 		<>
 			<Button className="h-64" onClick={userMenuClick}>
 				{user.data.photoURL ? (
 					<Avatar className="" alt="user photo" src={user.data.photoURL} />
 				) : (
-					<Avatar className="">{user.data.displayName[0]}</Avatar>
-				)}
+						<Avatar className="">{user.data.displayName[0]}</Avatar>
+					)}
 
 				<div className="hidden md:flex flex-col mx-12 items-start">
 					<Typography component="span" className="normal-case font-600 flex">
@@ -66,13 +84,19 @@ function UserMenu(props) {
 			>
 				{!user.role || user.role.length === 0 ? (
 					<>
-						<MenuItem component={Link} to="/login" role="button">
+						{/* <MenuItem component={Link} to="/login" role="button">
 							<ListItemIcon className="min-w-40">
 								<Icon>lock</Icon>
 							</ListItemIcon>
 							<ListItemText primary="Login" />
+						</MenuItem> */}
+						<MenuItem component={Button} onClick={handleLogOut} role="button">
+							<ListItemIcon className="min-w-40">
+								<Icon>lock</Icon>
+							</ListItemIcon>
+							<ListItemText primary="Log out" />
 						</MenuItem>
-						<MenuItem component={Link} to="/register" role="button">
+						<MenuItem component={Button} onClick={() => { console.log('i ma regisster') }} role="button">
 							<ListItemIcon className="min-w-40">
 								<Icon>person_add</Icon>
 							</ListItemIcon>
@@ -80,32 +104,32 @@ function UserMenu(props) {
 						</MenuItem>
 					</>
 				) : (
-					<>
-						<MenuItem component={Link} to="/pages/profile" onClick={userMenuClose} role="button">
-							<ListItemIcon className="min-w-40">
-								<Icon>account_circle</Icon>
-							</ListItemIcon>
-							<ListItemText primary="My Profile" />
-						</MenuItem>
-						<MenuItem component={Link} to="/apps/mail" onClick={userMenuClose} role="button">
-							<ListItemIcon className="min-w-40">
-								<Icon>mail</Icon>
-							</ListItemIcon>
-							<ListItemText primary="Inbox" />
-						</MenuItem>
-						<MenuItem
-							onClick={() => {
-								dispatch(authActions.logoutUser());
-								userMenuClose();
-							}}
-						>
-							<ListItemIcon className="min-w-40">
-								<Icon>exit_to_app</Icon>
-							</ListItemIcon>
-							<ListItemText primary="Logout" />
-						</MenuItem>
-					</>
-				)}
+						<>
+							<MenuItem component={Link} to="/pages/profile" onClick={userMenuClose} role="button">
+								<ListItemIcon className="min-w-40">
+									<Icon>account_circle</Icon>
+								</ListItemIcon>
+								<ListItemText primary="My Profile" />
+							</MenuItem>
+							<MenuItem component={Link} to="/apps/mail" onClick={userMenuClose} role="button">
+								<ListItemIcon className="min-w-40">
+									<Icon>mail</Icon>
+								</ListItemIcon>
+								<ListItemText primary="Inbox" />
+							</MenuItem>
+							<MenuItem
+								onClick={() => {
+									dispatch(authActions.logoutUser());
+									userMenuClose();
+								}}
+							>
+								<ListItemIcon className="min-w-40">
+									<Icon>exit_to_app</Icon>
+								</ListItemIcon>
+								<ListItemText primary="Logout" />
+							</MenuItem>
+						</>
+					)}
 			</Popover>
 		</>
 	);
