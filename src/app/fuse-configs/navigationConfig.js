@@ -7,87 +7,25 @@ i18next.addResourceBundle('en', 'navigation', en);
 i18next.addResourceBundle('tr', 'navigation', tr);
 i18next.addResourceBundle('ar', 'navigation', ar);
 
-let user_token = localStorage.getItem('user_token')
-if (user_token !== null) {
-	var user_routes = []
-	let userAcl = localStorage.getItem('user_acl');
-	let _routes = JSON.parse(userAcl)
-	_routes = Object.keys(_routes)
-	_routes.map((i, v) => {
-		let val = i.split('FRONT:')
-		user_routes.push(val[1])
-	})
+// let user_token = localStorage.getItem('user_token')
+// if (user_token !== null) {
+// 	var user_routes = []
+// 	let userAcl = localStorage.getItem('user_acl');
+// 	let _routes = JSON.parse(userAcl)
+// 	_routes = Object.keys(_routes)
+// 	_routes.map((i, v) => {
+// 		let val = i.split('FRONT:')
+// 		user_routes.push(val[1])
+// 	})
 
-	console.log(user_routes)
-} else {
-	console.log("user_token null")
+// 	console.log(user_routes)
+// } else {
+// 	console.log("user_token null")
 
-}
+// }
 
 
 const navigationConfig = [
-	{
-		id: 'applications',
-		title: 'Applications',
-		translate: 'Super Admin',
-		type: 'group',
-		icon: 'apps',
-		children: [
-			{
-				id: 'Intelligence',
-				title: 'Intelligence',
-				translate: 'INTELLEIGENCE',
-				type: 'item',
-				icon: 'dashboard',
-				url: '/pages/intelligence'
-			},
-			{
-				id: 'Accounts',
-				title: 'Accounts',
-				translate: 'ACCOUNTS',
-				type: 'item',
-				icon: 'dashboard',
-				url: '/account'
-			},
-			{
-				id: 'Reports',
-				title: 'Reports',
-				translate: 'REPORTS',
-				type: 'item',
-				icon: 'dashboard',
-				url: '/reports'
-			},
-			{
-				id: 'Package',
-				title: 'Package',
-				translate: 'PACKAGE',
-				type: 'item',
-				icon: 'dashboard',
-				url: '/package'
-			},
-			{
-				id: 'Template',
-				title: 'Template',
-				translate: 'TEMPLATE',
-				type: 'collapse',
-				icon: 'dashboard',
-				children: [
-					{
-						id: 'Request',
-						title: 'Request',
-						type: 'item',
-						url: '/Request'
-					},
-					{
-						id: 'Manage',
-						title: 'Manage',
-						type: 'item',
-						url: '/Manage'
-					}
-				]
-			},
-		]
-	},
 	{
 		id: 'applications',
 		title: 'Applications',
@@ -97,117 +35,119 @@ const navigationConfig = [
 		children: [
 			{
 				id: 'dashboards',
-				title: 'Dashboards',
-				translate: 'DASHBOARDS',
+				title: 'Intelligence',
+				translate: 'Intelligence',
 				type: 'item',
 				icon: 'dashboard',
 				url: '/dashboard',
 
 			},
 			{
-				id: 'Conversation',
-				title: 'Conversation',
-				translate: 'CONVERSATION',
-				type: 'item',
-				icon: 'today',
-				url: '/apps/chat',
-				badge: {
-					title: 13,
-					bg: 'rgb(9, 210, 97)',
-					fg: '#FFFFFF'
-				}
-			},
-			{
-				id: 'Groups',
-				title: 'Groups',
-				translate: 'GRUOP',
+				id: 'Chat',
+				title: 'Chat',
+				translate: 'Chat',
 				type: 'collapse',
-				icon: 'shopping_cart',
+				icon: 'today',
 				// url: '/apps/groups/group',
 				children: [
 					{
 						id: 'Conversation',
 						title: 'Conversation',
+						translate: 'Conversation',
 						type: 'item',
-						url: '/apps/group-chat',
-						exact: true,
-						badge: {
-							title: 25,
-							bg: '#F44336',
-							fg: '#FFFFFF'
-						}
+						url: '/apps/chat',
+
 					},
 					{
-						id: 'Groups',
-						title: 'Groups',
+						id: 'History',
+						title: 'History',
+						translate: 'History',
 						type: 'item',
-						url: '/apps/groups/group',
-						exact: true,
-						badge: {
-							title: 25,
-							bg: '#F44336',
-							fg: '#FFFFFF'
-						}
+						url: '/apps/history',
+
 					},
-					// 	{
-					// 		id: 'Group Details',
-					// 		title: 'Group Details',
-					// 		type: 'item',
-					// 		url: '/apps/groups/group-detail',
-					// 		exact: true,
-					// 		badge: {
-					// 	title: 25,
-					// 	bg: '#F44336',
-					// 	fg: '#FFFFFF'
-					// }
-					// 	}
 
 				]
 			},
 			{
-				id: 'Template Message',
-				title: 'Template Message',
-				translate: 'TEMPLATE MESSAGE',
-				type: 'item',
-				icon: 'school',
-				url: '/apps/templates'
-			},
-			{
-				id: 'Compaigns',
-				title: 'Compaigns',
-				translate: 'COMPAIGNS',
-				type: 'item',
+				id: 'Template',
+				title: 'Template',
+				translate: 'Template',
+				type: 'collapse',
 				icon: 'email',
-				url: '/apps/campaign',
-				// badge: {
-				// 	title: 25,
-				// 	bg: '#F44336',
-				// 	fg: '#FFFFFF'
-				// }
+				// url: '/apps/groups/group',
+				children: [
+					{
+						id: 'Campaigns',
+						title: 'Campaigns',
+						translate: 'Campaigns',
+						type: 'item',
+						url: '/apps/campaign',
+						// badge: {
+						// 	title: 25,
+						// 	bg: '#F44336',
+						// 	fg: '#FFFFFF'
+						// }
+					},
+					{
+						id: 'Template List',
+						title: 'Template List',
+						type: 'item',
+						translate: 'Template List',
+						url: '/apps/whatsapp-template',
+						exact: true
+					},
+
+				]
 			},
 			{
 				id: 'Contact Book',
 				title: 'Contact Book',
 				translate: 'CONTACT BOOK',
-				type: 'item',
+				type: 'collapse',
 				icon: 'shopping_cart',
-				url: '/apps/contacts/all',
+				// url: '/apps/groups/group',
+				children: [
+					{
+						id: 'Contacts',
+						title: 'Contacts',
+						translate: 'Contacts',
+						type: 'item',
+						exact: true,
+						url: '/apps/contacts/all',
+
+					},
+					{
+						id: 'Contact Book',
+						title: 'Contact Groups',
+						translate: 'Contact Groups',
+						type: 'item',
+						exact: true,
+						url: '/apps/contacts/group',
+						children: [
+
+						]
+					},
+					{
+						id: 'Block List',
+						title: 'Block List ',
+						translate: 'Block List',
+						type: 'item',
+						exact: true,
+						url: '/apps/blocklist',
+
+					}
+
+				]
 			},
+
 			{
 				id: 'Gallery',
 				title: 'Gallery',
 				translate: 'GALLERY',
 				type: 'collapse',
 				icon: 'shopping_cart',
-
 				children: [
-					{
-						id: 'Whatsapp Template',
-						title: 'Whatsapp Template',
-						type: 'item',
-						url: '/apps/whatsapp-template',
-						exact: true
-					},
 					{
 						id: 'Canned Messages',
 						title: 'Canned Messages',
@@ -237,17 +177,16 @@ const navigationConfig = [
 						id: 'Agent',
 						title: 'Agent',
 						type: 'item',
-						url: '/report/agent',
+						url: '/report/chats',
 						exact: true
 					},
 					{
-						id: 'Compaigns',
-						title: 'Compaigns',
+						id: 'Agent_Conversation_History',
+						title: 'Agent Conversation History',
+						translate: 'Agent Activity',
 						type: 'item',
-						url: '/report/compaigns',
-						exact: true
-					}
-
+						url: '/apps/agent'
+					},
 
 				]
 			},
@@ -297,35 +236,7 @@ const navigationConfig = [
 
 
 				]
-			},
-			{
-				id: 'Agent_Conversation_History',
-				title: 'Agent Conversation History',
-				translate: 'AGENT HISTORY',
-				type: 'item',
-				icon: 'folder',
-				url: '/apps/agent'
-			},
-			{
-				id: 'LOGS',
-				title: 'LOGS',
-				translate: 'LOGS',
-				type: 'collapse',
-				icon: 'shopping_cart',
-				url: '/apps/todo',
-				children: [
-					{
-						id: 'Activaty_Log',
-						title: 'Activaty Log',
-						type: 'item',
-						url: '/apps/e-commerce/products',
-						exact: true
-					},
-
-
-
-				]
-			},
+			}
 
 		]
 	},
