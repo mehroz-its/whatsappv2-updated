@@ -26,8 +26,6 @@ import AgentConfig from './agent-conversation/AgentConfig'
 
 
 
-
-
 const pagesConfigs = [
 	RegisterPageConfig,
 	ResetPasswordPageConfig,
