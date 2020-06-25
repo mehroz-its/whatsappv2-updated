@@ -14,22 +14,24 @@ import { withRouter } from 'react-router-dom';
 import * as Actions from './store/actions';
 import PermissionTableHead from './PermissionTableHead';
 import TableData from './PermissionData'
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+
 
 function PermissionTable(props) {
 
-	
-	function closeDialog(){
+
+	function closeDialog() {
 		setOpen(false)
 	}
 
-	
+
 	console.log(props)
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
-	const [data, setData] = useState(TableData);
+	const [data, setData] = useState([]);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -37,6 +39,29 @@ function PermissionTable(props) {
 		id: null
 	});
 
+	const getData = ((loadData) => {
+		loadData = () => {
+			return CoreHttpHandler.request('permissions', 'listing', {
+
+				limit: 10,
+				page: 0,
+				columns: "*",
+				sortby: "ASC",
+				orderby: "id",
+				where: "displayed = $1",
+				values: true,
+			}, null, null, true);
+		};
+		loadData().then((response) => {
+			const tableData = response.data.data.list.data
+			console.log(tableData)
+			setData(tableData)
+		});
+	})
+
+	React.useEffect(() => {
+		getData()
+	}, []);
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
 	// }, [dispatch]);
@@ -76,7 +101,7 @@ function PermissionTable(props) {
 	function handleClick(n) {
 		setOpen(true)
 	}
-	
+
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
@@ -154,19 +179,19 @@ function PermissionTable(props) {
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-									<TableCell component="th" scope="row" >
+										<TableCell component="th" scope="row" >
 											{n.id}
 										</TableCell>
 										<TableCell component="th" scope="row">
 											{n.title}
 										</TableCell>
 										<TableCell component="th" scope="row">
-											{n.consumer}
+											{n.method !== 'APP' ? `${n.method}END` : n.method}
 										</TableCell>
 										<TableCell component="th" scope="row" align="left">
-										{n.enabled ? (
+											{n.enabled ? (
 												<Icon className="text-red text-20">check_circle</Icon>
-												) : (
+											) : (
 													<Icon className="text-green text-20">remove_circle</Icon>
 												)}
 										</TableCell>
@@ -212,7 +237,7 @@ function PermissionTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-			{open ? <PermissionDialog  isOpen={open} closeDialog={closeDialog} type="Update"/>:null}
+			{open ? <PermissionDialog isOpen={open} closeDialog={closeDialog} type="Update" /> : null}
 		</div>
 	);
 }

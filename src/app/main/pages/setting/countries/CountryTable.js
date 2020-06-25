@@ -14,6 +14,8 @@ import { withRouter } from 'react-router-dom';
 import * as Actions from './store/actions';
 import CountryTableHead from './CountryTableHead'
 import TableData from './CountryData'
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+
 import CountryDialog from './CountryDialog'
 
 function CountryTable(props) {
@@ -28,13 +30,38 @@ function CountryTable(props) {
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
-	const [data, setData] = useState(TableData);
+	const [data, setData] = useState([]);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
 		direction: 'asc',
 		id: null
 	});
+
+	const getData = ((loadData) => {
+		loadData = () => {
+			return CoreHttpHandler.request('locations', 'get_countries', {
+
+				limit: 10,
+				page: 0,
+				columns: "*",
+				sortby: "DESC",
+				orderby: "id",
+				where: "id != $1",
+				values: 0,
+			}, null, null, true);
+		};
+		loadData().then((response) => {
+			const tableData = response.data.data.list.data
+			console.log(tableData)
+			setData(tableData)
+		});
+	})
+
+	React.useEffect(() => {
+		getData()
+	}, []);
+
 
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
@@ -165,9 +192,9 @@ function CountryTable(props) {
 									
 										<TableCell component="th" scope="row" align="left">
 										{n.enabled ? (
-												<Icon className="text-red text-20">check_circle</Icon>
+												<Icon className="text-green text-20">check_circle</Icon>
 												) : (
-													<Icon className="text-green text-20">remove_circle</Icon>
+													<Icon className="text-red text-20">cancel</Icon>
 												)}
 										</TableCell>
 

@@ -22,57 +22,57 @@ import CannedDialog from './CannedDialog'
 
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme)=>({
+const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'absolute',
-		bottom:50,
-		right:50,
+		bottom: 50,
+		right: 50,
 		zIndex: 99
 	},
 	formControl: {
 		margin: theme.spacing(1),
 		minWidth: 330,
-	
-	  },
+
+	},
 }));
 
 function Canned(props) {
 	const [open, setOpen] = React.useState(false);
 
 	const classes = useStyles(props);
-	
-	
-	  const handleChange = (event) => {
-		setAge(event.target.value);
-	  };
-	
-	  const handleClose = () => {
-		setOpen(false);
-	  };
-	  const handleClickOpen = () => {
-		setOpen(true);
-	  }
 
-	  const [age, setAge] = React.useState('Text');
+
+	const handleChange = (event) => {
+		setAge(event.target.value);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+	};
+	const handleClickOpen = () => {
+		setOpen(true);
+	}
+
+	const [age, setAge] = React.useState('Text');
 
 	return (
 		<>
-		<FusePageCarded
-			classes={{
-				content: 'flex',
-				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
-			}}
-			header={<CannedHeader />}
-			content={<CannedTable />}
+			<FusePageCarded
+				classes={{
+					content: 'flex',
+					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
+				}}
+				header={<CannedHeader />}
+				content={<CannedTable />}
 			// innerScroll
-		/>
-<FuseAnimate animation="transition.expandIn" delay={300}>
+			/>
+			<FuseAnimate animation="transition.expandIn" delay={300}>
 				<Fab
 					color="primary"
 					aria-label="add"
 					className={classes.addButton}
 					onClick={handleClickOpen}
-					// onClick={ev => dispatch(Actions.openNewContactDialog())}
+				// onClick={ev => dispatch(Actions.openNewContactDialog())}
 				>
 					<Icon>person_add</Icon>
 				</Fab>

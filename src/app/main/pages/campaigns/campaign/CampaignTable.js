@@ -15,6 +15,7 @@ import * as Actions from '../store/actions';
 import CampaignTableHead from './CampaignTableHead';
 import TableData from '../CampaignData'
 import CampaignDialog from './CampaignDialog'
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 
 
 
@@ -32,6 +33,31 @@ function CampaignTable(props) {
 		direction: 'asc',
 		id: null
 	});
+
+
+
+	const getData = ((loadData)=>{
+		loadData = () => {
+			return CoreHttpHandler.request('campaigns', 'listing', {
+				columns: "*",
+				limit: 10,
+				orderby: "id",
+				page: 0,
+				sortby: "ASC",
+				values: 1,
+				where: "displayed = $1",
+			}, null, null, true);
+		};
+		loadData().then((response) => {
+			const tableData = response.data.data.list.data
+			console.log(tableData)
+			setData(tableData)
+		});
+	}) 
+
+	React.useEffect(() => {
+		getData()
+	}, []);
 
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
@@ -71,7 +97,7 @@ function CampaignTable(props) {
 
 	function handleClick(n) {
 		console.log("hadn lcick ");
-		
+
 		setOpen(true)
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
 	}
@@ -238,7 +264,7 @@ function CampaignTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-		{open && <CampaignDialog isOpen={open} type='Update Campaign' closeDialog={handleDialogClose}  />}
+			{open && <CampaignDialog isOpen={open} type='Update Campaign' closeDialog={handleDialogClose} />}
 		</div>
 	);
 }

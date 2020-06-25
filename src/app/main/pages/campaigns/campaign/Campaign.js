@@ -27,6 +27,11 @@ const useStyles = makeStyles({
 
 function Campaign(props) {
 	const [open, setOpen] = React.useState(false);
+	const [dialogData,setDialogData] =  React.useState({
+		name:'',
+		description:'',
+		begin_dt:''
+	})
 
 	const classes = useStyles(props);
 	

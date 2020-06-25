@@ -15,6 +15,8 @@ import * as Actions from './store/actions';
 import UserTableHead from './UserTableHead';
 import TableData from './UsersData'
 import UserDialog from './UserDialog'
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+
 
 function UserTable(props) {
 
@@ -27,13 +29,36 @@ function UserTable(props) {
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
-	const [data, setData] = useState(TableData);
+	const [data, setData] = useState([]);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
 		direction: 'asc',
 		id: null
 	});
+
+	const getData = ((loadData) => {
+		loadData = () => {
+			return CoreHttpHandler.request('users', 'listing', {
+				limit: 10,
+				page: 0,
+				columns: "*",
+				sortby: "ASC",
+				orderby: "id",
+				where: "displayed = $1",
+				values: true,
+			}, null, null, true);
+		};
+		loadData().then((response) => {
+			const tableData = response.data.data.list.data
+			console.log(tableData)
+			setData(tableData)
+		});
+	})
+
+	React.useEffect(() => {
+		getData()
+	}, []);
 
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
@@ -168,9 +193,9 @@ function UserTable(props) {
 										</TableCell>
 										<TableCell component="th" scope="row" align="right">
 											{n.enabled ? (
-												<Icon className="text-red text-20">check_circle</Icon>
+												<Icon className="text-green text-20">check_circle</Icon>
 											) : (
-													<Icon className="text-green text-20">remove_circle</Icon>
+													<Icon className="text-red text-20">cancel</Icon>
 												)}
 										</TableCell>
 

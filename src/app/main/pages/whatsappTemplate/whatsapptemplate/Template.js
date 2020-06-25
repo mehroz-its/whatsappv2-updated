@@ -62,7 +62,7 @@ function Campaign(props) {
 				content={<TemplateTable />}
 			// innerScroll
 			/>
-			<FuseAnimate animation="transition.expandIn" delay={300}>
+			{/* <FuseAnimate animation="transition.expandIn" delay={300}>
 				<Fab
 					color="primary"
 					aria-label="add"
@@ -72,7 +72,7 @@ function Campaign(props) {
 				>
 					<Icon>person_add</Icon>
 				</Fab>
-			</FuseAnimate>
+			</FuseAnimate> */}
 			{open && <TemplateDialog type="Add Template" isOpen={open}  closeDialog={handleClose} />}
 		</>
 	);

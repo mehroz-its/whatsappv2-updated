@@ -15,6 +15,8 @@ import * as Actions from '../store/actions';
 import CannedTableHead from './CannedTableHead';
 import TableData from '../CannedData'
 import CannedDialog from './CannedDialog'
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+
 
 function CannedTable(props) {
 	console.log(props)
@@ -25,7 +27,7 @@ function CannedTable(props) {
 	const [selected, setSelected] = useState([]);
 	const [open, setOpen] = React.useState(false);
 
-	const [data, setData] = useState(TableData);
+	const [data, setData] = useState([]);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -33,6 +35,31 @@ function CannedTable(props) {
 		id: null
 	});
 
+
+
+	const getData = ((loadData) => {
+		loadData = () => {
+			return CoreHttpHandler.request('canned_messages', 'listing', {
+
+				limit: 10,
+				page: 0,
+				columns: "*",
+				sortby: "DESC",
+				orderby: "id",
+				where: "id != $1",
+				values: 0,
+			}, null, null, true);
+		};
+		loadData().then((response) => {
+			const tableData = response.data.data.list.data
+			console.log(tableData)
+			setData(tableData)
+		});
+	})
+
+	React.useEffect(() => {
+		getData()
+	}, []);
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
 	// }, [dispatch]);
@@ -160,22 +187,22 @@ function CannedTable(props) {
 											{n.id}
 										</TableCell>
 										<TableCell component="th" scope="row">
-											{n.name}
+											{n.message_name}
 										</TableCell>
 										<TableCell component="th" scope="row">
-											{n.text}
+											{n.message_text}
 										</TableCell>
 										<TableCell component="th" scope="row" align="right">
-											{n.params}
+											{n.message_params}
 										</TableCell>
 										<TableCell component="th" scope="row" align="right">
-											{n.type}
+											{n.message_type}
 										</TableCell>
 										<TableCell component="th" scope="row" align="right">
-											{n.enable ? (
-												<Icon className="text-red text-20">check_circle</Icon>
+											{n.enabled ? (
+												<Icon className="text-green text-20">check_circle</Icon>
 												) : (
-													<Icon className="text-green text-20">remove_circle</Icon>
+													<Icon className="text-red text-20">cancel</Icon>
 												)}
 										</TableCell>
 										{/* 

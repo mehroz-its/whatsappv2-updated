@@ -15,6 +15,8 @@ import * as Actions from '../store/actions';
 import TemplateTableHead from './TemplateTableHead';
 import TableData from '../TemplateData'
 import TemplateDialog from './TemplateDialog'
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+
 
 function TemplateTable(props) {
 	console.log(props)
@@ -23,15 +25,40 @@ function TemplateTable(props) {
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 
 	const [selected, setSelected] = useState([]);
-	const [data, setData] = useState(TableData);
+	const [data, setData] = useState([]);
 	const [page, setPage] = useState(0);
 	const [open, setOpen] = React.useState(false)
+	const [dialogData,setDialogData]=React.useState({name:'',params:''})
 
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
 		direction: 'asc',
 		id: null
 	});
+
+	const getData = ((loadData) => {
+		loadData = () => {
+			return CoreHttpHandler.request('template', 'listing', {
+
+				limit: 10,
+				page: 0,
+				columns: "*",
+				sortby: "DESC",
+				orderby: "id",
+				where: "id != $1",
+				values: 0,
+			}, null, null, true);
+		};
+		loadData().then((response) => {
+			const tableData = response.data.data.list.data
+			console.log(tableData)
+			setData(tableData)
+		});
+	})
+
+	React.useEffect(() => {
+		getData()
+	}, []);
 
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
@@ -69,12 +96,17 @@ function TemplateTable(props) {
 		setSelected([]);
 	}
 
-	function handleClick(n) {
+	function handleRowClick(n) {
 		setOpen(true)
-		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
+		setDialogData({name:n.template_name,params:n.template_params})
+	
+
+		
+
 	}
 	function handleClose() {
 		setOpen(false)
+
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
 	}
 
@@ -144,39 +176,42 @@ function TemplateTable(props) {
 										tabIndex={-1}
 										key={n.id}
 										selected={isSelected}
-										onClick={event => handleClick(n)}
+										onClick={event => handleRowClick(n)}
 									>
 
 										<TableCell component="th" scope="row" >
 											{n.id}
 										</TableCell>
 										<TableCell component="th" scope="row">
-											{n.name}
+											{n.template_name}
 										</TableCell>
 										<TableCell component="th" scope="row">
-											{n.text}
+											{n.template_text}
+										</TableCell>
+										{n.params === null ? (<TableCell component="th" scope="row" align="right">
+											{n.template_params}
+										</TableCell>) :
+											(<TableCell component="th" scope="row" align="right">
+												Null
+											</TableCell>)}
+										<TableCell component="th" scope="row" align="right">
+											{n.template_type}
 										</TableCell>
 										<TableCell component="th" scope="row" align="right">
-											{n.params}
-										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-											{n.type}
-										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-										{n.approved ? (
-												<Icon className="text-red text-20">check_circle</Icon>
-												) : (
-													<Icon className="text-green text-20">remove_circle</Icon>
+											{n.approved ? (
+												<Icon className="text-green text-20">check_circle</Icon>
+											) : (
+													<Icon className="text-red text-20">cancel</Icon>
 												)}
 										</TableCell>
 										<TableCell component="th" scope="row" align="right">
-											{n.enable ? (
-												<Icon className="text-red text-20">check_circle</Icon>
-												) : (
-													<Icon className="text-green text-20">remove_circle</Icon>
+											{n.enabled ? (
+												<Icon className="text-green text-20">check_circle</Icon>
+											) : (
+													<Icon className="text-red text-20">cancel</Icon>
 												)}
 										</TableCell>
-										
+
 									</TableRow>
 								);
 							})}
@@ -199,7 +234,7 @@ function TemplateTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-	             	{ open && <TemplateDialog type="Update Template" isOpen={open} closeDialog={handleClose} />} 
+			{open && <TemplateDialog type="Update Template" isOpen={open} closeDialog={handleClose} data={dialogData} />}
 		</div>
 	);
 }
