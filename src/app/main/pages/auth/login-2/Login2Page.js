@@ -13,6 +13,8 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React from 'react';
+import navigationLogo from '../../../../../images/logo.jpg';
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
@@ -25,26 +27,160 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function Login2Page(props) {
-	const classes = useStyles();
+const formStyle = {
+    padding: '30px 10px',
+    justifyContent: 'center',
+};
 
-	const { form, handleChange, resetForm } = useForm({
-		email: '',
-		password: '',
-		remember: true
-	});
+const formItem = {
+    margin: '10px 0',
+};
 
-	function isFormValid() {
-		return form.email.length > 0 && form.password.length > 0;
-	}
+const LogoStyle = {
+    width: '70%',
+    display: 'block',
+    padding: '0 0 0 0',
+    margin: '70px auto -40px auto',
+    // borderBottom: '2px solid #f3d63c',
+};
 
-	function handleSubmit(ev) {
-		ev.preventDefault();
-		resetForm();
-	}
+
+
+
+class Login2Page extends React.Component {
+
+	constructor(props) {
+        super(props);
+        this.userToken = localStorage.getItem('user_token');
+        this.settings = JSON.parse(localStorage.getItem('client_settings'));
+
+        if (this.settings === null) this.settings = {
+            client_logo: navigationLogo
+        }
+    }
+
+    state = {
+        username: '',
+        passsword: '',
+        has_error: false,
+        error_message: null,
+        client_settings: null,
+    };
+
+    handleUserNameInput = (e) => {
+        this.setState({ username: e.target.value });
+    };
+
+    handlePassordInput = (e) => {
+        this.setState({ passsword: e.target.value });
+    };
+    authSuccess = (response) => {
+        const token = response.data.data.token;
+
+        localStorage.setItem('client_token', token);
+
+        CoreHttpHandler.request('core', 'clientSettings', {}, this.settingsSuccess, this.settingsFailure);
+    };
+
+    authFailure = (error) => {
+        console.log("CLIENT AUTH ERROR > ", error);
+    };
+
+    settingsSuccess = (response) => {
+        const settings = response.data.data.setting;
+        this.setState({
+            client_settings : settings
+        })
+        localStorage.setItem('client_settings', JSON.stringify(settings));
+    };
+
+    settingsFailure = (error) => {
+        console.log("CLIENT SETTINGS ERROR >", error);
+    };
+
+    clientAuthentication() {
+        CoreHttpHandler.request('core', 'clientAuth', {}, this.authSuccess, this.authFailure);
+    }
+
+    componentDidMount() {
+        if (this.userToken !== null){
+            this.props.history.push('/dashboard');
+        }else{
+            this.clientAuthentication();
+
+        }
+        // const clientToken = localStorage.getItem('client_token');
+
+        // if (clientToken === null) this.clientAuthentication();
+    }
+
+    // componentDidMount() {
+    //     if (this.userToken !== null) this.props.history.push('/dashboard');
+    // }
+
+    loginSuccess = (data) => {
+        const { token, acl, app, back, user } = data.data.data;
+
+        localStorage.setItem('user_token', token);
+
+        if (user) {
+            localStorage.setItem('user_data', JSON.stringify(user));
+        } else localStorage.setItem('user_data', JSON.stringify({}));
+
+        if (acl) {
+            localStorage.setItem('user_acl', JSON.stringify(acl));
+        } else localStorage.setItem('user_acl', JSON.stringify({}));
+
+        if (app) {
+            localStorage.setItem('app_acl', JSON.stringify(app));
+        } else localStorage.setItem('app_acl', JSON.stringify({}));
+
+        if (back) {
+            localStorage.setItem('back_acl', JSON.stringify(back));
+        } else localStorage.setItem('back_acl', JSON.stringify({}));
+
+        localStorage.setItem('online', false);
+
+        window.location.reload(false);
+    };
+
+    loginFailure = (error) => {
+        this.setState({
+            has_error: true,
+            error_message: error.response.data.message,
+        });
+    };
+
+    login = () => {
+        const data = {
+            username: this.state.username,
+            password: this.state.passsword,
+        };
+
+        CoreHttpHandler.request(
+            'core',
+            'userAuth',
+            data,
+            this.loginSuccess,
+            this.loginFailure
+        );
+    };
+
+    _handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            this.login();
+        }
+    };
+
+    goToForget = () => {
+        this.props.history.push('/forget-password');
+	};
+	
+render(){
+
 
 	return (
-		<div className={clsx(classes.root, 'flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}>
+		<div className={clsx( 'flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}>
 			<div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
 				<FuseAnimate animation="transition.expandIn">
 					<img className="w-128 mb-32" src="assets/images/logos/fuse.svg" alt="logo" />
@@ -59,7 +195,7 @@ function Login2Page(props) {
 				<FuseAnimate delay={400}>
 					<Typography variant="subtitle1" color="inherit" className="max-w-512 mt-16">
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ullamcorper nisl erat, vel
-						convallis elit fermentum pellentesque. Sed mollis velit facilisis facilisis.
+						convallis elit fermentum pellentesquasdasdse. Sed mollis velit facilisis facilisis.
 					</Typography>
 				</FuseAnimate>
 			</div>
@@ -75,7 +211,7 @@ function Login2Page(props) {
 							name="loginForm"
 							noValidate
 							className="flex flex-col justify-center w-full"
-							onSubmit={handleSubmit}
+							
 						>
 							<TextField
 								className="mb-16"
@@ -83,10 +219,11 @@ function Login2Page(props) {
 								autoFocus
 								type="email"
 								name="email"
-								value={form.email}
-								onChange={handleChange}
+								value={this.state.username}
+								onChange={this.handleUserNameInput}
 								variant="outlined"
 								required
+								style={formItem}
 								fullWidth
 							/>
 
@@ -95,22 +232,24 @@ function Login2Page(props) {
 								label="Password"
 								type="password"
 								name="password"
-								value={form.password}
-								onChange={handleChange}
+								
+								onChange={this.handlePassordInput}
 								variant="outlined"
+								value={this.state.passsword}
 								required
+								style={formItem}
 								fullWidth
 							/>
 
 							<div className="flex items-center justify-between">
-								<FormControl>
+								{/* <FormControl>
 									<FormControlLabel
 										control={
 											<Checkbox name="remember" checked={form.remember} onChange={handleChange} />
 										}
 										label="Remember Me"
 									/>
-								</FormControl>
+								</FormControl> */}
 
 								<Link className="font-medium" to="/pages/auth/forgot-password">
 									Forgot Password?
@@ -122,8 +261,8 @@ function Login2Page(props) {
 								color="primary"
 								className="w-full mx-auto mt-16"
 								aria-label="LOG IN"
-								disabled={!isFormValid()}
-								onClick={() => { props.history.push("/") }}
+								
+								onClick={this.login}
 
 							>
 								LOGIN
@@ -156,5 +295,5 @@ function Login2Page(props) {
 		</div>
 	);
 }
-
+}
 export default Login2Page;

@@ -14,6 +14,7 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
+import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 import Widget2 from './widgets/Widget2';
 import WidgetNow from './widgets/WidgetNow';
 import WidgetWeather from './widgets/WidgetWeather';
@@ -120,11 +121,13 @@ const newMessageList = [
 	{ category: "My-Photos", value: "0", full: "100" },
 	{ category: "My-MYDocuments", value: "0", full: "100" }
 ]
-function DashboardApp() {
+function DashboardApp(props) {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
 	const [rader, setrader] = React.useState(newMessageList);
 	const [tabValue, setTabValue] = useState(0);
+	console.log(props)
+
 
 	const [state, setState] = React.useState({
 		columns: [
@@ -148,6 +151,22 @@ function DashboardApp() {
 		],
 	});
 
+	// React.useEffect(() => {
+	// 	// pie_chart()
+	// 	if (hasPermission('app', 'view_dashboard_stats')) {
+	// 		CoreHttpHandler.request('dashboard', 'listing', { }, dataSourceSuccess =>{}, dataSourceFailure =>{});
+	// 		// CoreHttpHandler.request('dashboard', 'messagestate', { ...dataSourceOptions.params }, messagestateSuccess, messagestateFailure);
+	// 	}
+	// 	// if (hasPermission('app', 'view_dashboard_reports')) {
+	// 	//     CoreHttpHandler.request('dashboard', 'messagestate', { ...dataSourceOptions.params }, messagestateSuccess, messagestateFailure);
+	// 	// }
+	// 	// else{
+
+	// 	// }
+	// }, []);
+
+
+	
 	React.useEffect(() => {
 		rader_chart();
 	})
@@ -248,6 +267,19 @@ function DashboardApp() {
 
 					)}
 
+					<FuseAnimateGroup
+						className="flex flex-wrap"
+						enter={{
+							animation: 'transition.slideUpBigIn'
+						}}
+					>
+						<Grid container spacing={3} style={{ marginTop: 10 }}>
+							<Grid item md={12} sm={12} xs={12} >
+								<Paper className="w-full rounded-8 shadow-none border-1">
+									<div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>
+								</Paper>
+							</Grid></Grid>
+					</FuseAnimateGroup>
 				</div>
 			}
 			rightSidebarContent={

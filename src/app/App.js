@@ -25,6 +25,13 @@ const jss = create({
 const generateClassName = createGenerateClassName();
 
 const App = () => {
+	const [hasPermission, setHasPermission] = React.useState(null)
+
+	React.useEffect(() => {
+		const user_acl = localStorage.getItem('user_acl')
+		setHasPermission(user_acl)
+	});
+
 	return (
 		<AppContext.Provider
 			value={{
@@ -36,7 +43,8 @@ const App = () => {
 					<MuiPickersUtilsProvider utils={MomentUtils}>
 						<Auth>
 							<Router history={history}>
-								<FuseAuthorization>
+								<FuseAuthorization
+								 hasPermission={hasPermission}> 
 									<FuseTheme>
 										<FuseLayout />
 									</FuseTheme>
