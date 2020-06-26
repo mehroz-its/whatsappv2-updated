@@ -14,7 +14,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+import { getUserData } from '../../chat/store/actions';
 
 
 
@@ -39,19 +41,23 @@ const useStyles = makeStyles((theme) => ({
 const CampaignDialog = (props) => {
 	const classes = useStyles(props);
 
-	const { isOpen } = props
+	const { isOpen, type, getUpdatedData, data } = props
+	console.log(props)
 	const [openDialog, setopenDialog] = React.useState(isOpen);
-	const [canned_type, setCannedType] = React.useState('text');
-	const [name, setName] = React.useState('');
-	const [text, setText] = React.useState('');
-	const [enabled, setEnabled] = React.useState('');
+	const [canned_type, setCannedType] = React.useState(data.type);
+	const [name, setName] = React.useState(data.name);
+	const [text, setText] = React.useState(data.text);
+	const [enabled, setEnabled] = React.useState(data.enable);
 	const [open, setOpen] = React.useState(false);
 
 
 	const [description, setDescription] = React.useState('');
 	const [isLoading, setIsLoading] = React.useState(false);
-	const [uploadedFilePath, setUploadedFilePath] = React.useState('');
-	const [attachment_name, setAttachment_name] = React.useState('')
+	const [uploadedFilePath, setUploadedFilePath] = React.useState(data.url);
+	const [attachment_name, setAttachment_name] = React.useState(data.file_name)
+	const [attachment_params, setAttachment_params] = React.useState('')
+
+
 
 
 	const handleDialogClose = () => {
@@ -60,25 +66,54 @@ const CampaignDialog = (props) => {
 	};
 
 	const handleSubmit = () => {
-		// props.closeDialog()
-		// setopenDialog(false);
 
+		let fileName = uploadedFilePath.split('https://upload.its.com.pk/')
 		let params = {
 			message_name: name,
 			message_text: text,
-			message_params: params,
+			message_params: attachment_params,
 			attachment_url: uploadedFilePath,
-			attachment_name: attachment_name,
+			attachment_name: fileName[1],
 			message_type: canned_type,
 			enabled: enabled
 		};
+		console.log(params)
+		if (type !== 'Update Canned Message') {
+			CoreHttpHandler.request('canned_messages', 'create_message', params, (response) => {
+				// props.getUpdatedData()
+				console.log(response)
+				props.closeDialog()
+				setopenDialog(false);
+			}, (error) => {
+				props.closeDialog()
+				setopenDialog(false);
 
-		CoreHttpHandler.request('canned_messages', 'create_message', params, (response) => {
-		}, (error) => {
+			});
+		} else {
+			let update_params = {
+				key: 'id',
+				value: data.id,
+				params:params
+			}
+			console.log(update_params,'update_params')
+			// return
+			CoreHttpHandler.request('canned_messages', 'update_message', update_params, (response) => {
+				// props.getUpdatedData()
+				console.log(response)
+				props.closeDialog()
+				setopenDialog(false);
+			}, (error) => {
+				props.closeDialog()
+				setopenDialog(false);
 
-		});
+			});
+		}
 	};
+	const handleEnable = (event) => {
 
+		setEnabled(event.target.checked);
+		console.log(enabled, 'enable')
+	};
 
 	const onInputChange = e => {
 		switch (e.target.name) {
@@ -131,7 +166,7 @@ const CampaignDialog = (props) => {
 					// let name = response.data.data.link
 					// setAttachment_name(name.split('/'))
 					// console.log(attachment_name,'name')
-					
+
 					onInputChange({
 						target: {
 							name: 'msisdnUrl',
@@ -174,7 +209,7 @@ const CampaignDialog = (props) => {
 						onChange={onInputChange}
 					/>
 				</div>
-				<div className="flex">
+				{/* <div className="flex">
 					<div className="min-w-48 pt-20">
 						<Icon color="action">account_circle</Icon>
 					</div>
@@ -193,7 +228,7 @@ const CampaignDialog = (props) => {
 
 
 					/>
-				</div>
+				</div> */}
 
 				<div className="flex" style={{ marginBottom: 20 }}>
 					<div className="min-w-48 pt-20">
@@ -232,6 +267,7 @@ const CampaignDialog = (props) => {
 						variant="outlined"
 						required
 						fullWidth
+						value={text}
 						onChange={onInputChange}
 					/>
 				</div>) : canned_type !== 'text' ? (
@@ -245,7 +281,7 @@ const CampaignDialog = (props) => {
 							}
 						</div>
 						<div item xs={12} >
-							<input accept={canned_type!=='document'? `${canned_type}/*`:"application/pdf, application/vnd.ms-excel"} style={{ paddingTop: '10px' }} id="contained-button-file" type="file" name="url" filename={uploadedFilePath} style={{ display: "none" }} onChange={onChangeHandler} />
+							<input accept={canned_type !== 'document' ? `${canned_type}/*` : "application/pdf, application/vnd.ms-excel"} style={{ paddingTop: '10px' }} id="contained-button-file" type="file" name="url" filename={uploadedFilePath} style={{ display: "none" }} onChange={onChangeHandler} />
 							<label htmlFor="contained-button-file">
 								<Button id="content-upload-button" variant="contained" color="primary" component="span"                            >
 									Upload
@@ -254,9 +290,17 @@ const CampaignDialog = (props) => {
 						</div>
 					</div>
 				) : null}
+				<div className="flex">
+					<div className="min-w-48 pt-20">
+						<Icon color="action">account_circle</Icon>
+					</div>
 
+					<Checkbox
+						checked={enabled}
+						onChange={handleEnable}
+					/>
 
-
+				</div>
 
 			</DialogContent>
 			<DialogActions>

@@ -26,6 +26,10 @@ function CannedTable(props) {
 
 	const [selected, setSelected] = useState([]);
 	const [open, setOpen] = React.useState(false);
+	const [dialogData, setDialogData] = React.useState(
+		{ enable: true, id: '', name: '', type: 'text', text: '', url: '', attachment_type: '', file_name: '' }
+	)
+
 
 	const [data, setData] = useState([]);
 	const [page, setPage] = useState(0);
@@ -38,10 +42,11 @@ function CannedTable(props) {
 
 
 	const getData = ((loadData) => {
+		console.log('called get data')
 		loadData = () => {
 			return CoreHttpHandler.request('canned_messages', 'listing', {
 
-				limit: 10,
+				limit: 100,
 				page: 0,
 				columns: "*",
 				sortby: "DESC",
@@ -88,11 +93,13 @@ function CannedTable(props) {
 		});
 	}
 	const handleClose = () => {
+		getData()
+
 		setOpen(false);
-	  };
-	  const handleClickOpen = () => {
+	};
+	const handleClickOpen = () => {
 		setOpen(true);
-	  }
+	}
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
 			setSelected(data.map(n => n.id));
@@ -102,6 +109,8 @@ function CannedTable(props) {
 	}
 
 	function handleClick(n) {
+		setDialogData({ enable: n.enabled, id: n.id, name: n.message_name, type: n.message_type, text: n.message_text, url: n.attachment_url, attachment_type: n.attachment_type, file_name: n.attachment_name })
+		console.log(n)
 		setOpen(true);
 
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
@@ -201,7 +210,7 @@ function CannedTable(props) {
 										<TableCell component="th" scope="row" align="right">
 											{n.enabled ? (
 												<Icon className="text-green text-20">check_circle</Icon>
-												) : (
+											) : (
 													<Icon className="text-red text-20">cancel</Icon>
 												)}
 										</TableCell>
@@ -247,9 +256,9 @@ function CannedTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-			{open && <CannedDialog isOpen={open} type="Update Canned Message" closeDialog={handleClose} />}
+			{open && <CannedDialog isOpen={open} type="Update Canned Message" closeDialog={handleClose} getUpdatedData={getData} data={dialogData} />}
 		</div>
 	);
 }
 
-export default withRouter(CannedTable);
+export default withRouter(CannedTable);	
