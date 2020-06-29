@@ -24,10 +24,14 @@ import TemplateConfig from './template-message/TemplateConfig'
 // import ReportsAppConfig from './reports/ReportsAppConfig'
 import AdminDashboardAppConfig from './adminDashboard/AdminDashboardAppConfig'
 import AgentConfig from './agent-conversation/AgentConfig'
+import BlockListConfig from './blocklist/BlockListConfig'
+import ContactGroupConfig from './contact-group/ContactGroupConfig'
 
 
 
 const pagesConfigs = [
+	ContactGroupConfig,
+	BlockListConfig,
 	RegisterPageConfig,
 	ResetPasswordPageConfig,
 	ForgotPasswordPageConfig,

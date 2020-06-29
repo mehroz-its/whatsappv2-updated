@@ -12,17 +12,24 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as Actions from '../store/actions';
-import TemplateTableHead from './TemplateTableHead';
+import ContactGroupHead from './ContactGroupHead';
 import TableData from '../CannedData'
+import ContactGroupDialog from './ContactGroupDialog'
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 
-function TemplateTable(props) {
+
+function ContactGroupTable(props) {
 	console.log(props)
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 
 	const [selected, setSelected] = useState([]);
-	const [data, setData] = useState(TableData);
+	const [open, setOpen] = React.useState(false);
+	const [dialogData, setDialogData] = React.useState()
+
+
+	const [data, setData] = useState([]);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -30,6 +37,32 @@ function TemplateTable(props) {
 		id: null
 	});
 
+
+
+	const getData = ((loadData) => {
+		console.log('called get data')
+		loadData = () => {
+			return CoreHttpHandler.request('contact_group', 'listing', {
+
+				limit: 100,
+				page: 0,
+				columns: "*",
+				sortby: "DESC",
+				orderby: "id",
+				where: "id != $1",
+				values: 0,
+			}, null, null, true);
+		};
+		loadData().then((response) => {
+			const tableData = response.data.data.list.data
+			console.log(tableData)
+			setData(tableData)
+		});
+	})
+
+	React.useEffect(() => {
+		getData()
+	}, []);
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
 	// }, [dispatch]);
@@ -57,7 +90,14 @@ function TemplateTable(props) {
 			id
 		});
 	}
+	const handleClose = () => {
+		getData()
 
+		setOpen(false);
+	};
+	const handleClickOpen = () => {
+		setOpen(true);
+	}
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
 			setSelected(data.map(n => n.id));
@@ -67,6 +107,11 @@ function TemplateTable(props) {
 	}
 
 	function handleClick(n) {
+		setDialogData(n)
+
+		console.log(dialogData,'ContactGroupDialogContactGroupDialog')
+		setOpen(true);
+
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
 	}
 
@@ -99,7 +144,7 @@ function TemplateTable(props) {
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
 				<Table className="min-w-xl" aria-labelledby="tableTitle">
-					<TemplateTableHead
+					<ContactGroupHead
 						numSelected={selected.length}
 						order={order}
 						onSelectAllClick={handleSelectAllClick}
@@ -150,29 +195,19 @@ function TemplateTable(props) {
 											{n.id}
 										</TableCell>
 										<TableCell component="th" scope="row">
-											{n.name}
+											{n.title}
 										</TableCell>
 										<TableCell component="th" scope="row">
-											{n.text}
+											{n.description}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-											{n.params}
+										<TableCell component="th" scope="row" align="left">
+											{n.customers.length}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-											{n.type}
-										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-										{n.approved ? (
-												<Icon className="text-red text-20">check_circle</Icon>
-												) : (
-													<Icon className="text-green text-20">remove_circle</Icon>
-												)}
-										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-											{n.enable ? (
-												<Icon className="text-red text-20">check_circle</Icon>
-												) : (
-													<Icon className="text-green text-20">remove_circle</Icon>
+										<TableCell component="th" scope="row" align="left">
+											{n.enabled ? (
+												<Icon className="text-green text-20">check_circle</Icon>
+											) : (
+													<Icon className="text-red text-20">cancel</Icon>
 												)}
 										</TableCell>
 										{/* 
@@ -217,8 +252,9 @@ function TemplateTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
+			{open && <ContactGroupDialog isOpen={open} type="Contact Group Details" closeDialog={handleClose} getUpdatedData={getData} data={dialogData} />}
 		</div>
 	);
 }
 
-export default withRouter(TemplateTable);
+export default withRouter(ContactGroupTable);	

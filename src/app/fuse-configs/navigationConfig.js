@@ -123,7 +123,7 @@ const navigationConfig = [
 						translate: 'Contact Groups',
 						type: 'item',
 						exact: true,
-						url: '/apps/contacts/group',
+						url: '/apps/contact-groups',
 						children: [
 
 						]
@@ -134,7 +134,7 @@ const navigationConfig = [
 						translate: 'Block List',
 						type: 'item',
 						exact: true,
-						url: '/apps/blocklist',
+						url: '/apps/block-list',
 
 					}
 

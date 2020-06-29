@@ -12,21 +12,25 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as Actions from '../store/actions';
-import CampaignTableHead from './CampaignTableHead';
-import TableData from '../CampaignData'
-import CampaignDialog from './CampaignDialog'
+import BlockTableHead from './BlockListTableHead';
+import TableData from '../CannedData'
+import BlockDialog from './BlockListDialog'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 
 
-
-function CampaignTable(props) {
+function BlockTable(props) {
 	console.log(props)
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
-	const [open, setOpen] = React.useState(false)
+
 	const [selected, setSelected] = useState([]);
-	const [data, setData] = useState(TableData);
+	const [open, setOpen] = React.useState(false);
+	const [dialogData, setDialogData] = React.useState(
+		{ id:'', number:'' })
+
+
+	const [data, setData] = useState([]);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -36,16 +40,18 @@ function CampaignTable(props) {
 
 
 
-	const getData = ((loadData)=>{
+	const getData = ((loadData) => {
+		console.log('called get data')
 		loadData = () => {
-			return CoreHttpHandler.request('campaigns', 'listing', {
-				columns: "*",
-				limit: 10,
-				orderby: "id",
+			return CoreHttpHandler.request('contact_book', 'listing', {
+
+				limit: 100,
 				page: 0,
-				sortby: "ASC",
-				values: 1,
-				where: "displayed = $1",
+				columns: "*",
+				sortby: "DESC",
+				orderby: "id",
+				where: "blocked = $1",
+				values: true,
 			}, null, null, true);
 		};
 		loadData().then((response) => {
@@ -53,12 +59,11 @@ function CampaignTable(props) {
 			console.log(tableData)
 			setData(tableData)
 		});
-	}) 
+	})
 
 	React.useEffect(() => {
 		getData()
 	}, []);
-
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
 	// }, [dispatch]);
@@ -86,7 +91,14 @@ function CampaignTable(props) {
 			id
 		});
 	}
+	const handleClose = () => {
+		getData()
 
+		setOpen(false);
+	};
+	const handleClickOpen = () => {
+		setOpen(true);
+	}
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
 			setSelected(data.map(n => n.id));
@@ -96,9 +108,10 @@ function CampaignTable(props) {
 	}
 
 	function handleClick(n) {
-		console.log("hadn lcick ");
+		setDialogData({ id: n.id, number: n.number })
+		console.log(n)
+		setOpen(true);
 
-		setOpen(true)
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
 	}
 
@@ -122,11 +135,6 @@ function CampaignTable(props) {
 	function handleChangePage(event, value) {
 		setPage(value);
 	}
-	function handleDialogClose() {
-		console.log("hhe");
-		setOpen(false)
-	}
-
 
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
@@ -136,7 +144,7 @@ function CampaignTable(props) {
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
 				<Table className="min-w-xl" aria-labelledby="tableTitle">
-					<CampaignTableHead
+					<BlockTableHead
 						numSelected={selected.length}
 						order={order}
 						onSelectAllClick={handleSelectAllClick}
@@ -166,7 +174,6 @@ function CampaignTable(props) {
 								const isSelected = selected.indexOf(n.id) !== -1;
 								return (
 									<TableRow
-
 										className="h-64 cursor-pointer"
 										hover
 										role="checkbox"
@@ -191,36 +198,20 @@ function CampaignTable(props) {
 											{n.name}
 										</TableCell>
 										<TableCell component="th" scope="row">
-											{n.description}
+											{n.number}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-											{n.begin_dt}
+										<TableCell component="th" scope="row" align="left">
+											{n.reason}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-											{n.activated ? (
-												<Icon className="text-red text-20">check_circle</Icon>
-											) : (
-													<Icon className="text-green text-20">remove_circle</Icon>
-												)}
+										<TableCell component="th" scope="row" align="left">
+											{n.dt}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-											{n.progress ? (
+										<TableCell component="th" scope="row" align="center">
+											{n.blocked ? (
 												<Icon className="text-green text-20">check_circle</Icon>
 											) : (
 													<Icon className="text-red text-20">cancel</Icon>
 												)}
-										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-											{n.consumers}
-										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-											{n.success}
-										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-											{n.failure}
-										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-											{n.lastUpdated}
 										</TableCell>
 										{/* 
 										<TableCell component="th" scope="row" align="right">
@@ -264,9 +255,9 @@ function CampaignTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-			{open && <CampaignDialog isOpen={open} type='Update Campaign' closeDialog={handleDialogClose} />}
+			{open && <BlockDialog isOpen={open} type="Update" closeDialog={handleClose} getUpdatedData={getData} data={dialogData} />}
 		</div>
 	);
 }
 
-export default withRouter(CampaignTable);
+export default withRouter(BlockTable);	

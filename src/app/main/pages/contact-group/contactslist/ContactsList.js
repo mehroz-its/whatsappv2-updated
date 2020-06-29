@@ -10,7 +10,7 @@ import ContactsMultiSelectMenu from './ContactsMultiSelectMenu';
 import ContactsTable from './ContactsTable';
 import * as Actions from './store/actions';
 import Data from './ContactData'
-import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 
 
 function ContactsList(props) {
@@ -70,37 +70,37 @@ function ContactsList(props) {
 				sortable: false
 			},
 			{
-				Header: 'First Name',
+				Header: 'Name',
 				accessor: 'name',
 				className: 'font-bold',
 				sortable: true
 			},
 			{
-				Header: 'Last Name',
-				accessor: 'lastName',
+				Header: 'Phone',
+				accessor: 'phone',
 				className: 'font-bold',
 				sortable: true
 			},
-			{
-				Header: 'Company',
-				accessor: 'company',
-				sortable: true
-			},
-			{
-				Header: 'Job Title',
-				accessor: 'jobTitle',
-				sortable: true
-			},
-			{
-				Header: 'Email',
-				accessor: 'email',
-				sortable: true
-			},
-			{
-				Header: 'Phone',
-				accessor: 'phone',
-				sortable: true
-			},
+			// {
+			// 	Header: 'Company',
+			// 	accessor: 'company',
+			// 	sortable: true
+			// },
+			// {
+			// 	Header: 'Job Title',
+			// 	accessor: 'jobTitle',
+			// 	sortable: true
+			// },
+			// {
+			// 	Header: 'Email',
+			// 	accessor: 'email',
+			// 	sortable: true
+			// },
+			// {
+			// 	Header: 'Phone',
+			// 	accessor: 'phone',
+			// 	sortable: true
+			// },
 			{
 				id: 'action',
 				width: 128,
