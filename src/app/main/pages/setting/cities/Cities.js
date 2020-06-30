@@ -51,7 +51,7 @@ function Cities(props) {
 		checkedG: true,
 	  });
 	const [open, setOpen] = React.useState(false);
-
+	const[data,setData]=React.useState('')
 	const classes = useStyles(props);
 	
 	const handleClickOpen = () => {
@@ -90,7 +90,7 @@ function Cities(props) {
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-			{open ?<CitiesDialog isOpen={open} closeDialog={closeDialog} type="Add" /> :null }
+			{open ?<CitiesDialog isOpen={open} closeDialog={closeDialog} type="Add" data={data}/> :null }
 	</>
 	);
 }

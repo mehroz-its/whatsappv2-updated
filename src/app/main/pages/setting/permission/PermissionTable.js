@@ -59,6 +59,16 @@ function PermissionTable(props) {
 		});
 	})
 
+	const[dialogData,setDialogData]=useState({
+		enabled:'',
+		id:'',
+		description:'',
+		title:'',
+		method:'',	
+		rule_set:[],
+		consumer:""
+	})
+
 	React.useEffect(() => {
 		getData()
 	}, []);
@@ -99,6 +109,18 @@ function PermissionTable(props) {
 	}
 
 	function handleClick(n) {
+		console.log(n,'mmmmm');
+		setDialogData({
+			enabled:n.enabled,
+			id:n.id,
+			description:n.description,
+			title:n.title,
+			method:n.method,
+			rule_set:n.rule_set,
+			consumer:n.consumer
+			
+	})
+		
 		setOpen(true)
 	}
 
@@ -237,7 +259,7 @@ function PermissionTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-			{open ? <PermissionDialog isOpen={open} closeDialog={closeDialog} type="Update" /> : null}
+			{open ? <PermissionDialog isOpen={open} closeDialog={closeDialog} type="Update"  data={dialogData} /> : null}
 		</div>
 	);
 }

@@ -55,7 +55,7 @@ function Roles(props) {
 		checkedF: false,
 	  });
 	const [open, setOpen] = React.useState(false);
-
+    const [data,setData]=React.useState(false)
 	const classes = useStyles(props);
 	
 	const handleClickOpen = () => {
@@ -92,7 +92,7 @@ function Roles(props) {
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-			{open ? <RolesDialog isOpen={open} closeDialog={closeDialog} type="Add" /> : null }
+			{open ? <RolesDialog isOpen={open} closeDialog={closeDialog} type="Add"  data={data}/> : null }
 	</>
 	);
 }

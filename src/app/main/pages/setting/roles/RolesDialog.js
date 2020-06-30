@@ -15,6 +15,7 @@
     import { makeStyles,withStyles } from '@material-ui/core/styles';
     import Checkbox from '@material-ui/core/Checkbox';
     import FormControlLabel from '@material-ui/core/FormControlLabel';
+    import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 
     const GreenCheckbox = withStyles({
         root: {
@@ -43,29 +44,86 @@
 
     const RolesDialog = (props) => {
         console.log(props,'in dialog')
-        const {isOpen,type} = props
+        const {isOpen,type,data} = props
         const [openDialog, setopenDialog] = React.useState(isOpen);
-        const [age, setAge] = React.useState('0');
+        const [name, setName] = React.useState(data.name);
+        const [description, setDescription] = React.useState(data.description);
+        const [isToggled, setIsToggled] = React.useState(data.enabled);
+        
         const handleClose = () => {
             props.closeDialog()
             setopenDialog(false);
         };
         const classes = useStyles(props);
         
-        const handleChangeAgain = (event) => {
-            setAge(event.target.value);
-        };
+    
+        const handleToggleChange = () => {
+            setIsToggled(!isToggled)
+           };
+        
+            
+       
+       
         const handleChange = (event) => {
             setState({ ...state, [event.target.name]: event.target.checked });
         };
         const [state, setState] = React.useState({
             
-            checkedG: false,
-            checkedA: false,
-            checkedB: false,
-            checkedF: false,
+            Agentback: false,
+            Agentfront: false,
+            AgentApplication: false,
+            
         });
+        const result=Object.values(state)
+
+        const handleSubmit = () => {
+    
         
+            // let fileName = uploadedFilePath.split('https://upload.its.com.pk/')
+            let params = {
+                id: 0,
+                name: name,
+                description: description,
+                permissions: [7,9],
+                enabled: isToggled,
+                displayed: true,
+            };
+            console.log(params,'params')
+            if (type !== 'Update') {
+              CoreHttpHandler.request('roles', 'create_role', params, (response) => {
+                // props.getUpdatedData()
+                console.log(response)
+                props.closeDialog()
+                setopenDialog(false);
+              }, (error) => {
+                props.closeDialog()
+                setopenDialog(false);
+        
+              });
+            } else {
+       return;
+              console.log(props.data,'datasss');
+              
+              
+              let update_params = {
+                key: 'id',
+                value:props.data.id,
+                params:props.data
+              }
+              console.log(update_params,'update_params')
+              // return
+              CoreHttpHandler.request('users', 'update_user', update_params, (response) => {
+                // props.getUpdatedData()
+                console.log(response)
+                props.closeDialog()
+                setopenDialog(false);
+              }, (error) => {
+                props.closeDialog()
+                setopenDialog(false);
+        
+              });
+            }
+          }
         return (  
         // <div> {isOpen}</div>
         <Dialog open={openDialog} onClose={handleClose} aria-labelledby="form-dialog-title" 	classes={{
@@ -89,7 +147,8 @@
                         autoFocus
                         id="name"
                         name="name"
-                
+                        value={name}
+                        onChange={e=>setName(e.target.value)}
                         variant="outlined"
                         required
                         fullWidth
@@ -104,8 +163,10 @@
                     <TextField
                         className="mb-24"
                         label="Description"
-                        autoFocus
-                        id="name"
+                      
+                        id="description"
+                        value={description}
+                        onChange={e=>setDescription(e.target.value)}
                         name="name"
                         variant="outlined"
                         required
@@ -113,22 +174,22 @@
                     />
                 </div>
     <FormControlLabel
-    control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedG" />}
+    control={<GreenCheckbox checked={isToggled} onChange={handleToggleChange} name="isToggled" />}
     label="Enabled"
     />
     </div>
     <div style={{flexDirection:'column',flex:1,display:'flex',marginLeft:10}}>
     <FormControlLabel
 
-    control={<GreenCheckbox checked={state.checkedA} onChange={handleChange} name="checkedA" />}
+    control={<GreenCheckbox checked={state.Agentback} onChange={handleChange} name="Agentback" />}
     label="Agent Backend Access"
     />
     <FormControlLabel
-    control={<GreenCheckbox checked={state.checkedB} onChange={handleChange} name="checkedB" />}
+    control={<GreenCheckbox checked={state.Agentfront} onChange={handleChange} name="Agentfront" />}
     label="Agent FrontEnd Access"
     />
     <FormControlLabel
-    control={<GreenCheckbox checked={state.checkedF} onChange={handleChange} name="checkedF" />}
+    control={<GreenCheckbox checked={state.AgentApplication} onChange={handleChange} name="AgentApplication" />}
     label="Agent Application Access"
     />
     </div>
@@ -139,7 +200,7 @@
     <Button onClick={handleClose} color="primary">
     Cancel
     </Button>
-    <Button onClick={handleClose} color="primary">
+    <Button onClick={handleSubmit} color="primary">
     Done
     </Button>
     </DialogActions>

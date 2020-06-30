@@ -40,7 +40,7 @@ function Permissions(props) {
  function closeDialog(){
 		setOpen(false)
 	}
-
+    const[data,setData]=React.useState('')
 	const [open, setOpen] = React.useState(false);
 
 	const classes = useStyles(props);
@@ -73,7 +73,7 @@ function Permissions(props) {
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-    {open ?  <PermissionDialog isOpen={open} closeDialog={closeDialog} type="Add"/> : null}
+    {open ?  <PermissionDialog isOpen={open} closeDialog={closeDialog} type="Add"  data={data}/> : null}
 			</>
 	);
 }

@@ -41,7 +41,13 @@ const useStyles = makeStyles((theme)=>({
 	},
 }))
 
+
 function Country(props) {
+
+	
+	// React.useEffect(()=>{
+	// 	this.loadCities()
+	// })
 
 	function closeDialog(){
 		setOpen(false)
@@ -53,21 +59,57 @@ function Country(props) {
 	  });
 	  
 	const [open, setOpen] = React.useState(false);
-
+	const[data,setData]=React.useState('')
 	const classes = useStyles(props);
 	
 	const handleClickOpen = () => {
-		setOpen(true);
+		setOpen(true)
+		console.log('handle');
+		;
 	  };
 	
 	
 	  const handleClose = () => {
 		setOpen(false);
 	  };
-	  const handleChange = (event) => {
-		setState({ ...state, [event.target.name]: event.target.checked });
-	  };
+	//   const handleChange = (event) => {
+	// 	setState({ ...state, [event.target.name]: event.target.checked });
+	//   };
+	//   const loadCities = () => {
+    //     return CoreHttpService.request('locations', 'get_cities', {
+    //         columns: "id, name",
+    //         sortby: "ASC",
+    //         orderby: "id",
+    //         where: "enabled = $1",
+    //         values: true,
+    //         page: 0,
+    //         limit: 0
+	// 	}, null, null, true);
+	// 	{createCountryDialog}
+	// };
 	
+
+
+	//   const createCountryDialog = () => {
+	// 	  console.log('called');
+		  
+    //     loadCities().then(response => {
+    //         const cities = response.data.data.list.data;
+
+    //         setDialogData({
+    //             country: {
+    //                 id: '',
+    //                 code: '',
+    //                 name: '',
+    //                 enabled: true,
+    //                 cities: []
+    //             },
+    //             cities,
+    //             type: 'create',
+    //             state: true,
+    //         })
+    //     });
+	// };
 	
 	return (
 		<>
@@ -91,7 +133,7 @@ function Country(props) {
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-	   {open ?<CountryDialog isOpen={open} closeDialog={closeDialog} type="Add" /> :null }
+	   {open ?<CountryDialog isOpen={open} closeDialog={closeDialog} type="Add" data={data}/> :null }
 		</>
 	);
 }

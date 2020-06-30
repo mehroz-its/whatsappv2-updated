@@ -17,6 +17,7 @@ import TableData from './CountryData'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 
 import CountryDialog from './CountryDialog'
+import { database } from 'firebase';
 
 function CountryTable(props) {
 
@@ -37,6 +38,14 @@ function CountryTable(props) {
 		direction: 'asc',
 		id: null
 	});
+	const[dialogData,setDialogData]=useState({
+		enabled:'',
+		id:'',
+		name:'',
+		code:'',
+		cities:''
+		
+	})
 
 	const getData = ((loadData) => {
 		loadData = () => {
@@ -101,7 +110,17 @@ function CountryTable(props) {
 
 	function handleClick(n) {
 		setOpen(true)
-	}
+		console.log(dialogData,n,'asdsd');
+		setDialogData({
+			enabled:n.enabled,
+			id:n.id,
+			name:n.name,
+			code:n.code
+    })
+		
+		
+}
+	console.log(dialogData,'asdsdssssssssssss');
 	
 
 	function handleCheck(event, id) {
@@ -240,7 +259,7 @@ function CountryTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-			{open ? <CountryDialog  isOpen={open} closeDialog={closeDialog} type="Update"/>:null}
+			{open ? <CountryDialog  isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData} />:null }
 		</div>
 	);
 }
