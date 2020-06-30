@@ -170,7 +170,7 @@ const navigationConfig = [
 						id: 'Chat',
 						title: 'Chat',
 						type: 'item',
-						url: '/report/chats',
+						url: '/report/chat',
 						exact: true
 					},
 					{

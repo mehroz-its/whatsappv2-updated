@@ -8,6 +8,8 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import MaterialTable from 'material-table';
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+
 
 const useStyles = makeStyles({
 	layoutRoot: {}
@@ -190,30 +192,36 @@ function AgentApp() {
 	const pageLayout = useRef(null);
 	const [state, setState] = React.useState({
 		columns: [
-			{ title: 'Name', field: 'name' },
-			{ title: 'Surname', field: 'surname' },
-			{ title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-			{
-				title: 'Birth Place',
-				field: 'birthCity',
-				lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-			},
-		],
-		data: [
-			{ name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-			{
-				name: 'Zerya Betül',
-				surname: 'Baran',
-				birthYear: 2017,
-				birthCity: 34,
-			},
+			{ title: 'Agent', field: 'agent_id' },
+			{ title: 'Name', field: 'agent_name' },
+			{ title: 'Average response time', field: 'responsetime' },
+			{ title: 'Count of total conversations', field: 'total_chat_count' },
+			{ title: 'Count of total engagements', field: 'total_engagement_count' },
+			{ title: 'Account status (active or disable)', field: 'account_status'},
 		],
 	});
+	const [tableData, setTableData] = React.useState([]);
+	const getData = ((loadData) => {
+		console.log('called get data')
+		loadData = () => {
+			return CoreHttpHandler.request('reports', 'agentReport', {
+				role_id: 64,
+				limit: 10,
+				page: 0
+			}, null, null, true);
+		};
+		loadData().then((response) => {
+			let tableData = response.data.data.list.data
+			console.log(tableData)
+			setTableData(tableData)
+		});
+	})
 
 	React.useEffect(() => {
 		incomingAndOutGoingCount()
 		// engagments()
-	})
+		getData()
+	},[])
 	return (
 		<FusePageSimple
 			classes={{
@@ -254,45 +262,45 @@ function AgentApp() {
 							<MaterialTable
 								title="Agents Reports"
 								columns={state.columns}
-								data={state.data}
+								data={tableData}
 								style={{width:'100%',}}
-								editable={{
-									onRowAdd: newData =>
-										new Promise(resolve => {
-											setTimeout(() => {
-												resolve();
-												setState(prevState => {
-													const data = [...prevState.data];
-													data.push(newData);
-													return { ...prevState, data };
-												});
-											}, 600);
-										}),
-									onRowUpdate: (newData, oldData) =>
-										new Promise(resolve => {
-											setTimeout(() => {
-												resolve();
-												if (oldData) {
-													setState(prevState => {
-														const data = [...prevState.data];
-														data[data.indexOf(oldData)] = newData;
-														return { ...prevState, data };
-													});
-												}
-											}, 600);
-										}),
-									onRowDelete: oldData =>
-										new Promise(resolve => {
-											setTimeout(() => {
-												resolve();
-												setState(prevState => {
-													const data = [...prevState.data];
-													data.splice(data.indexOf(oldData), 1);
-													return { ...prevState, data };
-												});
-											}, 600);
-										}),
-								}}
+								// editable={{
+								// 	onRowAdd: newData =>
+								// 		new Promise(resolve => {
+								// 			setTimeout(() => {
+								// 				resolve();
+								// 				setState(prevState => {
+								// 					const data = [...prevState.data];
+								// 					data.push(newData);
+								// 					return { ...prevState, data };
+								// 				});
+								// 			}, 600);
+								// 		}),
+								// 	onRowUpdate: (newData, oldData) =>
+								// 		new Promise(resolve => {
+								// 			setTimeout(() => {
+								// 				resolve();
+								// 				if (oldData) {
+								// 					setState(prevState => {
+								// 						const data = [...prevState.data];
+								// 						data[data.indexOf(oldData)] = newData;
+								// 						return { ...prevState, data };
+								// 					});
+								// 				}
+								// 			}, 600);
+								// 		}),
+								// 	onRowDelete: oldData =>
+								// 		new Promise(resolve => {
+								// 			setTimeout(() => {
+								// 				resolve();
+								// 				setState(prevState => {
+								// 					const data = [...prevState.data];
+								// 					data.splice(data.indexOf(oldData), 1);
+								// 					return { ...prevState, data };
+								// 				});
+								// 			}, 600);
+								// 		}),
+								// }}
 							/>
 						</div>
 
