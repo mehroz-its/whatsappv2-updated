@@ -63,7 +63,7 @@ function Users(props) {
 		setState({ ...state, [event.target.name]: event.target.checked });
 	  };
 	const [open, setOpen] = React.useState(false);
-
+	const[data,setData]=React.useState('')
 	const classes = useStyles(props);
 	
 	const handleClickOpen = () => {
@@ -91,7 +91,7 @@ function Users(props) {
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-       {open ? <UserDialog isOpen={open} closeDialog={closeDialog}  type="Add" /> : null}
+       {open ? <UserDialog isOpen={open} closeDialog={closeDialog}  type="Add"  data={data} /> : null}
 		
 
 		</>

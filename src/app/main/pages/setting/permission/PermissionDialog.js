@@ -15,6 +15,7 @@ import { green } from '@material-ui/core/colors';
 import { makeStyles,withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 
 const GreenCheckbox = withStyles({
 	root: {
@@ -42,31 +43,47 @@ const GreenCheckbox = withStyles({
 
 
 const PermissionDialog = (props) => {
-    console.log(props,'in dialog')
+    console.log(props.data,'in dialog')
+    const {data} = props
     const {isOpen,type} = props
     const [openDialog, setopenDialog] = React.useState(isOpen);
-    const [age, setAge] = React.useState('0');
+    const [method, setMethod] = React.useState(props.data.method);
+    const [title, setTitle] = React.useState(data.title);
+    const [description, setDescription] = React.useState(data.description);
+    const [isToggled, setIsToggled] = React.useState(data.enabled);
+   
     const handleClose = () => {
         props.closeDialog()
         setopenDialog(false);
     };
+    console.log(method,'mthod valeeasds');
+    
     const classes = useStyles(props);
     
-	  const handleChangeAgain = (event) => {
-		setAge(event.target.value);
+	  const handleMethodChange = (event) => {
+      setMethod(event.target.value);
       };
+
+      const handleToggleChange = () => {
+        setIsToggled(!isToggled)
+       };
+
       const handleChange = (event) => {
 		setState({ ...state, [event.target.name]: event.target.checked });
       };
+
       const [state, setState] = React.useState({
-		
-		checkedG: false,
-		checkedA: false,
-		checkedB: false,
-		checkedF: false,
-	  });
+        
+        checkedApplication: false,
+        checkedAudio: false,
+        checkedCity: false,
+     
+      });
+
+      const result=Object.values(state)
+
       const checkToShow = ()=>{
-        if(age===10)
+        if(method==="APP")
         {
             console.log('first');
             
@@ -74,39 +91,88 @@ const PermissionDialog = (props) => {
                 <>
               <FormControlLabel
       
-      control={<GreenCheckbox checked={state.checkedA} onChange={handleChange} name="checkedA" />}
+      control={<GreenCheckbox checked={state.checkedApplication} onChange={handleChange} name="checkedApplication" />}
       label="Receive Calls"
     />
     </>
             )
         }
-        else if(age===20)
+        else if(method==="FRONT")
         {
             console.log('second');
             
             return (
               <FormControlLabel
       
-              control={<GreenCheckbox checked={state.checkedB} onChange={handleChange} name="checkedB" />}
+              control={<GreenCheckbox checked={state.checkedAudio} onChange={handleChange} name="checkedAudio" />}
               label="Send Audio"
             />
             )
         }
-        else if(age===30)
+        else if(method==="BACK")
         {
             console.log('third');
             
             return (
               <FormControlLabel
       
-              control={<GreenCheckbox checked={state.checkedF} onChange={handleChange} name="checkedF" />}
+              control={<GreenCheckbox checked={state.checkedCity} onChange={handleChange} name="checkedCity" />}
               label="Edit City"
             />
             )
         }
   
     }
-
+    const handleSubmit = () => {
+    
+        
+      // let fileName = uploadedFilePath.split('https://upload.its.com.pk/')
+      let params = {
+        id: '',
+        description: description,
+        title: title,
+        method: method,
+        rule_set: result,
+        enabled: true,
+        consumer: 0,
+        displayed: true,
+      };
+      console.log(params,'params')
+      if (type !== 'Update') {
+        CoreHttpHandler.request('permissions', 'create', params, (response) => {
+          // props.getUpdatedData()
+          console.log(response)
+          props.closeDialog()
+          setopenDialog(false);
+        }, (error) => {
+          props.closeDialog()
+          setopenDialog(false);
+  
+        });
+      } else {
+    
+        console.log(props.data,'datasss');
+        
+        
+        let update_params = {
+          key: 'id',
+          value:props.data.id,
+          params:props.data
+        }
+        console.log(update_params,'update_params')
+        // return
+        CoreHttpHandler.request('permissions', 'update', update_params, (response) => {
+          // props.getUpdatedData()
+          console.log(response)
+          props.closeDialog()
+          setopenDialog(false);
+        }, (error) => {
+          props.closeDialog()
+          setopenDialog(false);
+  
+        });
+      }
+    }
     return (  
     // <div> {isOpen}</div>
     <Dialog open={openDialog} aria-labelledby="form-dialog-title" classes={{
@@ -126,11 +192,12 @@ const PermissionDialog = (props) => {
 
                 <TextField
                     className="mb-24"
-                    label="Name"
+                    label="Title"
                     autoFocus
-                    id="name"
-                    name="name"
-
+                    id="Title"
+                    name="Title"
+                    value={title}
+                    onChange={e=>setTitle(e.target.value)}
                     variant="outlined"
                     required
                     fullWidth
@@ -145,11 +212,11 @@ const PermissionDialog = (props) => {
                 <TextField
                     className="mb-24"
                     label="Description"
-                    autoFocus
-                    id="name"
-                    name="name"
-
-
+                    
+                    id="Description"
+                    name="Description"
+                    value={description}
+                    onChange={e=>setDescription(e.target.value)}
                     variant="outlined"
                     required
                     fullWidth
@@ -162,19 +229,19 @@ const PermissionDialog = (props) => {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={age}
-                      onChange={handleChangeAgain}
+                      value={method}
+                      onChange={handleMethodChange}
                     >
                     <MenuItem value={0}>Select Customer</MenuItem>
-                      <MenuItem value={10}>Application</MenuItem>
-                      <MenuItem value={20}>FrontEnd</MenuItem>
-                      <MenuItem value={30}>Backend</MenuItem>
-                      <MenuItem value={40}>Client</MenuItem>
+                      <MenuItem value={"APP"}>Application</MenuItem>
+                      <MenuItem value={"FRONT"}>FrontEnd</MenuItem>
+                      <MenuItem value={"BACK"}>Backend</MenuItem>
+                      <MenuItem value={"Client"}>Client</MenuItem>
                     </Select>
                   </FormControl>
      <div className="flex">
                   <FormControlLabel
-        control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedG" />}
+        control={<GreenCheckbox checked={isToggled} onChange={handleToggleChange} name="checkedG" />}
         label="Enabled"
       />
       </div>
@@ -192,7 +259,7 @@ const PermissionDialog = (props) => {
             <Button onClick={handleClose} color="primary">
                 Cancel
              </Button>
-            <Button onClick={handleClose} color="primary">
+            <Button onClick={handleSubmit} color="primary">
                 Done
          </Button>
         </DialogActions>

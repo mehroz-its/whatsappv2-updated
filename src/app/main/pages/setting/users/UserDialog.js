@@ -15,6 +15,7 @@ import { green } from '@material-ui/core/colors';
 import { makeStyles,withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 
 const GreenCheckbox = withStyles({
 	root: {
@@ -41,31 +42,96 @@ const GreenCheckbox = withStyles({
 }))
 
 
+
+
 const UserDialog = (props) => {
     
-    console.log(props,'in dialog')
+    console.log(props,'in dialogasdasdasd')
+    const {data} = props
     const {isOpen,type} = props
     const [openDialog, setopenDialog] = React.useState(isOpen);
-    const [age, setAge] = React.useState('0');
+    const [userName, setUserName] = React.useState(data.username);
+    const [email, setEmail] = React.useState(data.email);
+    const [number, setNumber] = React.useState(data.number);
+    const [password, setPassword] = React.useState('');
+    const [isToggled, setIsToggled] = React.useState(data.enabled);
+    const [state, setState] = React.useState({
+        
+        checkedAgent: false,
+        checkedaSaS: false,
+        checkedAdmin2: false,
+        checkedFahad: false,
+      });
+
+
     const handleClose = () => {
         props.closeDialog()
         setopenDialog(false);
     };
     
-    
-
-      const handleChange = (event) => {
-		setState({ ...state, [event.target.name]: event.target.checked });
+ 
+    const handleChange = (event) => {
+        setState({ ...state, [event.target.name]: event.target.checked });
       };
-      const [state, setState] = React.useState({
-		
-		checkedG: false,
-		checkedA: false,
-		checkedB: false,
-		checkedF: false,
-	  });
-      
 
+      const result=Object.values(state)
+
+      
+      const handleSubmit = () => {
+    
+        
+     // let fileName = uploadedFilePath.split('https://upload.its.com.pk/')
+     let params = {
+        id: 0,
+                    username: userName,
+                    email: email,
+                    number: number,
+                    password: password,
+                    enabled: false,
+                    displayed: true,
+                    roles: result
+     };
+     console.log(params,'params')
+     if (type !== 'Update') {
+       CoreHttpHandler.request('users', 'create_user', params, (response) => {
+         // props.getUpdatedData()
+         console.log(response)
+         props.closeDialog()
+         setopenDialog(false);
+       }, (error) => {
+         props.closeDialog()
+         setopenDialog(false);
+ 
+       });
+     } else {
+
+       console.log(props.data,'datasss');
+       
+       
+       let update_params = {
+         key: 'id',
+         value:props.data.id,
+         params:props.data
+       }
+       console.log(update_params,'update_params')
+       // return
+       CoreHttpHandler.request('users', 'update_user', update_params, (response) => {
+         // props.getUpdatedData()
+         console.log(response)
+         props.closeDialog()
+         setopenDialog(false);
+       }, (error) => {
+         props.closeDialog()
+         setopenDialog(false);
+ 
+       });
+     }
+   }
+   const handleToggleChange = () => {
+    setIsToggled(!isToggled)
+   };
+
+        
     return (  
     // <div> {isOpen}</div>
     <Dialog open={openDialog} onClose={handleClose} aria-labelledby="form-dialog-title" 	classes={{
@@ -87,9 +153,10 @@ const UserDialog = (props) => {
                     className="mb-24"
                     label="UserName"
                     autoFocus
-                    id="name"
-                    name="name"
-            
+                    id="UserName"
+                    name="UserName"
+                    value={userName}
+                    onChange={e=>setUserName(e.target.value)}
                     variant="outlined"
                     required
                     fullWidth
@@ -104,9 +171,10 @@ const UserDialog = (props) => {
                 <TextField
                     className="mb-24"
                     label="Email"
-                    autoFocus
-                    id="name"
-                    name="name"
+                    value={email}
+                    onChange={e=>setEmail(e.target.value)}
+                    id="Email"
+                    name="Email"
                     variant="outlined"
                     required
                     fullWidth
@@ -120,10 +188,10 @@ const UserDialog = (props) => {
                 <TextField
                     className="mb-24"
                     label="Number"
-                    autoFocus
-                    id="name"
-                    name="name"
-            
+                    id="Number"
+                    name="Number"
+                    value={number}
+                    onChange={e=>setNumber(e.target.value)}
                     variant="outlined"
                     required
                     fullWidth
@@ -137,27 +205,40 @@ const UserDialog = (props) => {
                 <TextField
                     className="mb-24"
                     label="Password"
-                    autoFocus
                     id="name"
                     name="name"
-            
+                    value={password}
+                    onChange={e=>setPassword(e.target.value)}
                     variant="outlined"
                     required
                     fullWidth
+          
                 />
             </div>
             
 
             
 <FormControlLabel
-control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedG" />}
+control={<GreenCheckbox checked={isToggled} onChange={handleToggleChange} name="isToggled" />}
 label="Enabled"
 />
 </div>
-<div style={{marginLeft:10}}>
+<div style={{marginLeft:10,flexDirection:'column',flex:1,display:'flex'}}>
 <FormControlLabel
-control={<GreenCheckbox checked={state.checkedB} onChange={handleChange} name="checkedB" />}
+control={<GreenCheckbox checked={state.checkedAgent} onChange={handleChange} name="checkedAgent" />}
 label="Agent "
+/>
+<FormControlLabel
+control={<GreenCheckbox checked={state.checkedaSaS} onChange={handleChange} name="checkedaSaS" />}
+label="aSas "
+/>
+<FormControlLabel
+control={<GreenCheckbox checked={state.checkedAdmin2} onChange={handleChange} name="checkedAdmin2" />}
+label="Admin2 "
+/>
+<FormControlLabel
+control={<GreenCheckbox checked={state.checkedFahad} onChange={handleChange} name="checkedFahad" />}
+label="Fahad"
 />
   
   </div>
@@ -170,7 +251,7 @@ label="Agent "
 <Button onClick={handleClose} color="primary">
   Cancel
 </Button>
-<Button onClick={handleClose} color="primary">
+<Button onClick={handleSubmit} color="primary">
   Done
 </Button>
 </DialogActions>

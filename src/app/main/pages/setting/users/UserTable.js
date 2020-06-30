@@ -56,6 +56,15 @@ function UserTable(props) {
 		});
 	})
 
+	const[dialogData,setDialogData]=useState({
+		enabled:'',
+		id:'',
+		username:'',
+		email:'',
+		number:'',
+		roles:[]
+		
+	})
 	React.useEffect(() => {
 		getData()
 	}, []);
@@ -98,9 +107,18 @@ function UserTable(props) {
 
 	function handleClick(n) {
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
-		
+		   console.log(n,'nnnnnnnnnn');
+		   
 			setOpen(true)
-		
+			setDialogData({
+				enabled:n.enabled,
+				id:n.id,
+				username:n.username,
+				email:n.email,
+				number:n.number,
+				roles:n.roles
+				
+		})
 	}
 
 	function handleCheck(event, id) {
@@ -241,7 +259,7 @@ function UserTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-			{open ? <UserDialog  isOpen={open} closeDialog={closeDialog} type="Update"/>:null}
+			{open ? <UserDialog  isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData}/>:null}
 		</div>
 	);
 }

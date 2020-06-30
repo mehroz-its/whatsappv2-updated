@@ -15,6 +15,8 @@ import { green } from '@material-ui/core/colors';
 import { makeStyles,withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+
 
 const GreenCheckbox = withStyles({
 	root: {
@@ -44,32 +46,123 @@ const GreenCheckbox = withStyles({
 const CitiesDialog = (props) => {
     console.log(props,'in dialog')
     const {isOpen,type} = props
+   
     const [openDialog, setopenDialog] = React.useState(isOpen);
-    const [age, setAge] = React.useState('0');
+    
     const handleClose = () => {
         props.closeDialog()
         setopenDialog(false);
     };
-    const classes = useStyles(props);
-    
-	  const handleChangeAgain = (event) => {
-		setAge(event.target.value);
+
+    // const handleSubmit = () =>{
+    //   console.log(name,email,enabled,'statessss');
+    //   props.closeDialog()
+    //   setopenDialog(false)
+      
+    // }
+
+    const [isToggled, setIsToggled] = React.useState(props.data.enabled);
+
+    const handleSubmit = () => {
+         console.log(city,'city');
+         
+      // let fileName = uploadedFilePath.split('https://upload.its.com.pk/')
+      let params = {
+        id:'',
+        code: email,
+        name: name,
+        enabled: isToggled,
+        country: 0
       };
-      const handleChange = (event) => {
-		setState({ ...state, [event.target.name]: event.target.checked });
-      };
-      const [state, setState] = React.useState({
-		
-		checkedG: false,
-		checkedA: false,
-		checkedB: false,
-		checkedF: false,
-	  });
+      console.log(params,'params')
+      if (type !== 'Update') {
+        CoreHttpHandler.request('locations', 'create_city', params, (response) => {
+          console.log('create');
+          
+          // props.getUpdatedData()
+          console.log(response)
+          props.closeDialog()
+          setopenDialog(false);
+        }, (error) => {
+          props.closeDialog()
+          setopenDialog(false);
+  
+        });
+      } else {
+      
+        
+        let update_params = {
+          key: 'id',
+          value:props.data.id,
+          params:props.data
+        }
+        console.log(update_params,'update_params')
+        // return
+        CoreHttpHandler.request('locations', 'update_city', update_params, (response) => {
+          // props.getUpdatedData()
+          console.log(response)
+          props.closeDialog()
+          setopenDialog(false);
+        }, (error) => {
+          props.closeDialog()
+          setopenDialog(false);
+  
+        });
+      }
+    }
    
+    const [dialogData, setDialogData] = React.useState({
+      country: {
+          id: '',
+          code: '',
+          name: '',
+          enabled: true,
+          cities: []
+      },
+      cities: [],
+     
+      type: null
+  });
+
+  const loadCities = () => {
+    return CoreHttpHandler.request('locations', 'get_cities', {
+        columns: "id, name",
+        sortby: "ASC",
+        orderby: "id",
+        where: "enabled = $1",
+        values: true,
+        page: 0,
+        limit: 0
+    }, null, null, true);
+};
+
+const createCountryDialog = () => {
+    loadCities().then(response => {
+        const cities = response.data.data.list.data;
+      console.log('calledddddd',cities);
+      setCities(cities)
+    });
+};
+
+const handleChange = (event) => {
+ setIsToggled(!isToggled)
+};
+
+
+
+const [enabled, setenabled] = React.useState({
+  checkedA: true,
+});
+
+const [name,setName]=React.useState(props.data.name)
+const [email,setEmail]=React.useState(props.data.code)
+const [city,setCities]=React.useState(props.data.cities)
+
 
     return (  
     // <div> {isOpen}</div>
-    <Dialog open={openDialog} onClose={handleClose} aria-labelledby="form-dialog-title" 	classes={{
+
+    <Dialog open={openDialog} onClose={handleClose} aria-labelledby="form-dialog-title" onClick={createCountryDialog}	classes={{
         paper: 'm-24'
     }}
 
@@ -85,10 +178,11 @@ const CitiesDialog = (props) => {
                 <TextField
                     className="mb-24"
                     label="Name"
-                    autoFocus
-                    id="name"
+                   autoFocus
+                  
                     name="name"
-            
+                    value={name}
+                    onChange={e=>setName(e.target.value)}
                     variant="outlined"
                     required
                     fullWidth
@@ -103,21 +197,20 @@ const CitiesDialog = (props) => {
                 <TextField
                     className="mb-24"
                     label="Country Code"
-                    autoFocus
-                    id="name"
-                    name="name"
-            
-
+                 
+                   
+                    name="code"
+                    value={email}
+                    onChange={e=>setEmail(e.target.value)}
                     variant="outlined"
                     required
                     fullWidth
                 />
             </div>
             <FormControlLabel
-control={<GreenCheckbox checked={state.checkedG} onChange={handleChange} name="checkedG" />}
-label="Enabled"
-/>
-        
+        control={<Checkbox checked={isToggled} onChange={handleChange} name="checkedA" />}
+        label="Enabled"
+      />
 
 
 </DialogContent>
@@ -125,7 +218,7 @@ label="Enabled"
 <Button onClick={handleClose} color="primary">
   Cancel
 </Button>
-<Button onClick={handleClose} color="primary">
+<Button onClick={handleSubmit} color="primary">
   Done
 </Button>
 </DialogActions>

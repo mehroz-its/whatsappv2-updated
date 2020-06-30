@@ -38,6 +38,14 @@ function CitiesTable(props) {
 		direction: 'asc',
 		id: null
 	});
+	const[dialogData,setDialogData]=useState({
+		enabled:'',
+		id:'',
+		name:'',
+		code:'',
+		country:''
+		
+	})
 
 	const getData = ((loadData) => {
 		loadData = () => {
@@ -101,8 +109,20 @@ function CitiesTable(props) {
 
 
 	function handleClick(n) {
+		console.log(n,'nnnnnnnn');
+		
 		setOpen(true)
-	}
+		console.log(dialogData,n,'asdsd');
+		setDialogData({
+			enabled:n.enabled,
+			id:n.id,
+			name:n.name,
+			code:n.code,
+            country:0
+         })
+		
+		
+}
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
@@ -260,7 +280,7 @@ function CitiesTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-				{open ? <CitiesDialog  isOpen={open} closeDialog={closeDialog} type="Update"/>:null}
+				{open ? <CitiesDialog  isOpen={open} closeDialog={closeDialog} type="Update"  data={dialogData} />:null}
 		</div>
 	);
 }
