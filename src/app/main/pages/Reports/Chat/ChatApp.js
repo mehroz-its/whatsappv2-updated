@@ -8,6 +8,8 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import MaterialTable from 'material-table';
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+
 
 const useStyles = makeStyles({
 	layoutRoot: {}
@@ -190,30 +192,53 @@ function ChatApp() {
 	const pageLayout = useRef(null);
 	const [state, setState] = React.useState({
 		columns: [
-			{ title: 'Name', field: 'name' },
-			{ title: 'Surname', field: 'surname' },
-			{ title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-			{
-				title: 'Birth Place',
-				field: 'birthCity',
-				lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-			},
+			{ title: 'Number', field: 'number' },
+			{ title: 'Incoming DateTime', field: 'incoming' },
+			{ title: 'Outgoing DateTime', field: 'outgoing', },
+			{ title: 'Incoming Messages Count', field: 'incoming_count', },
+			{ title: 'Outgoing Messages Count', field: 'outgoing_count' },
+
 		],
-		data: [
-			{ name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-			{
-				name: 'Zerya Betül',
-				surname: 'Baran',
-				birthYear: 2017,
-				birthCity: 34,
-			},
-		],
+
 	});
+	const [tableData, setTableData] = React.useState([]);
+	let data =[]
+	tableData.map((i,val)=>{
+		let filtered = {
+			incoming:new Date(i.incoming).toISOString(),
+			outgoing: new Date(i.outgoing).toISOString(),
+			incoming_count:i.incoming_count,
+			outgoing_count:i.outgoing_count,
+			number:i.number
+		}
+		data.push(filtered)
+	})
+	const getData = ((loadData) => {
+		console.log('called get data')
+		loadData = () => {
+			return CoreHttpHandler.request('reports', 'chatReport', {
+
+				limit: 100,
+				page: 0,
+				columns: "*",
+				sortby: "ASC",
+				orderby: "id",
+			}, null, null, true);
+		};
+		loadData().then((response) => {
+			let tableData = response.data.data.list.data
+			console.log(tableData)
+			setTableData(tableData)
+		});
+	})
 
 	React.useEffect(() => {
+
 		incomingAndOutGoingCount()
 		engagments()
-	})
+		getData()
+	},[])
+
 	return (
 		<FusePageSimple
 			classes={{
@@ -258,45 +283,45 @@ function ChatApp() {
 							<MaterialTable
 								title="Chart Reports"
 								columns={state.columns}
-								data={state.data}
-								style={{width:'100%',}}
-								editable={{
-									onRowAdd: newData =>
-										new Promise(resolve => {
-											setTimeout(() => {
-												resolve();
-												setState(prevState => {
-													const data = [...prevState.data];
-													data.push(newData);
-													return { ...prevState, data };
-												});
-											}, 600);
-										}),
-									onRowUpdate: (newData, oldData) =>
-										new Promise(resolve => {
-											setTimeout(() => {
-												resolve();
-												if (oldData) {
-													setState(prevState => {
-														const data = [...prevState.data];
-														data[data.indexOf(oldData)] = newData;
-														return { ...prevState, data };
-													});
-												}
-											}, 600);
-										}),
-									onRowDelete: oldData =>
-										new Promise(resolve => {
-											setTimeout(() => {
-												resolve();
-												setState(prevState => {
-													const data = [...prevState.data];
-													data.splice(data.indexOf(oldData), 1);
-													return { ...prevState, data };
-												});
-											}, 600);
-										}),
-								}}
+								data={data}
+								style={{ width: '100%', }}
+							// editable={{
+							// 	onRowAdd: newData =>
+							// 		new Promise(resolve => {
+							// 			setTimeout(() => {
+							// 				resolve();
+							// 				setState(prevState => {
+							// 					const data = [...prevState.data];
+							// 					data.push(newData);
+							// 					return { ...prevState, data };
+							// 				});
+							// 			}, 600);
+							// 		}),
+							// 	onRowUpdate: (newData, oldData) =>
+							// 		new Promise(resolve => {
+							// 			setTimeout(() => {
+							// 				resolve();
+							// 				if (oldData) {
+							// 					setState(prevState => {
+							// 						const data = [...prevState.data];
+							// 						data[data.indexOf(oldData)] = newData;
+							// 						return { ...prevState, data };
+							// 					});
+							// 				}
+							// 			}, 600);
+							// 		}),
+							// 	onRowDelete: oldData =>
+							// 		new Promise(resolve => {
+							// 			setTimeout(() => {
+							// 				resolve();
+							// 				setState(prevState => {
+							// 					const data = [...prevState.data];
+							// 					data.splice(data.indexOf(oldData), 1);
+							// 					return { ...prevState, data };
+							// 				});
+							// 			}, 600);
+							// 		}),
+							// }}
 							/>
 						</div>
 

@@ -177,7 +177,7 @@ const navigationConfig = [
 						id: 'Agent',
 						title: 'Agent',
 						type: 'item',
-						url: '/report/chats',
+						url: '/report/agent-report',
 						exact: true
 					},
 					{

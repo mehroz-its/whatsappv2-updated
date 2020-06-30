@@ -21,7 +21,7 @@ import RolesConfig from './setting/roles/RolesConfig'
 import UserConfig from './setting/users/UserConfig'
 import TemplateConfig from './template-message/TemplateConfig'
 // import ReportsAppConfig from './Reports/ReportsAppConfig'
-// import ReportsAppConfig from './reports/ReportsAppConfig'
+import ReportsAppConfig from './reports/ReportsAppConfig'
 import AdminDashboardAppConfig from './adminDashboard/AdminDashboardAppConfig'
 import AgentConfig from './agent-conversation/AgentConfig'
 import BlockListConfig from './blocklist/BlockListConfig'
@@ -42,7 +42,7 @@ const pagesConfigs = [
 	Error404PageConfig,
 	IntelligenceConfig,
 	ChatAppConfig,
-	// ReportsAppConfig,
+	ReportsAppConfig,
 	GroupChatAppConfig,
 	GroupConfig,
 	ContactsAppConfig,
