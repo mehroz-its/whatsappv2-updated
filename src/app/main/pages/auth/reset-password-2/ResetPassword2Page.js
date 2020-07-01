@@ -176,7 +176,7 @@ function ResetPasswordPage2(props) {
 						</form>
 
 						<div className="flex flex-col items-center justify-center pt-32 pb-24">
-							<Link className="font-medium" to="/pages/auth/login-2">
+							<Link className="font-medium" to="/login">
 								Go back to login
 							</Link>
 						</div>
