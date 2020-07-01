@@ -26,8 +26,7 @@ import AdminDashboardAppConfig from './adminDashboard/AdminDashboardAppConfig'
 import AgentConfig from './agent-conversation/AgentConfig'
 import BlockListConfig from './blocklist/BlockListConfig'
 import ContactGroupConfig from './contact-group/ContactGroupConfig'
-
-
+import TokenConfig from './auth/token/TokenConfig'
 
 const pagesConfigs = [
 	ContactGroupConfig,
@@ -56,7 +55,8 @@ const pagesConfigs = [
 	UserConfig,
 	TemplateConfig,
 	AdminDashboardAppConfig,
-	AgentConfig
+	AgentConfig,
+	TokenConfig
 
 
 	

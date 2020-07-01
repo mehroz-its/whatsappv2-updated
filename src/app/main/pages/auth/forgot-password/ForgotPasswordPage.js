@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -26,11 +28,70 @@ function ForgotPasswordPage(props) {
 
 	function isFormValid() {
 		return form.email.length > 0;
+
+	}
+
+	let validateEmail = email => {
+		var re = /^(([^<>()\[\]\\.,;:\s@”]+(\.[^<>()\[\]\\.,;:\s@”]+)*)|(“.+”))@((\[[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}\.[0–9]{1,3}])|(([a-zA-Z\-0–9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(email);
+	};
+
+
+	function isFormValid() {
+		return (
+			form.email.length > 0 &&
+			validateEmail(form.email)
+		);
 	}
 
 	function handleSubmit(ev) {
-		console.log("ev", ev);
-		props.history.push("/");
+		ev.preventDefault()
+		// props.location.pathname('pages/auth/token');
+		props.history.push({
+			pathname: '/pages/auth/token',
+			
+		});
+		console.log(props)
+		return;
+
+		
+		// console.log("ev", form.email);
+		// props.history.push("/");
+
+		if (form.email === "") {
+			// this.setState({
+			//     message: "Please enter email",
+			//     severity: 'error',
+			// });
+			return;
+		}
+
+		if (validateEmail(form.email) === true) {
+			let data = {
+				email: form.email,
+			};
+			CoreHttpHandler.request(
+				'forgetpassword',
+				'gettoken',
+				data,
+				(response) => {
+					console.log("response : ", response);
+					props.history.push('pages/auth/token');
+				},
+				(error) => {
+					// this.setState({
+					//     message: error.response.data.message,
+					//     severity: 'error',
+					// });
+				}
+			);
+		} else {
+			// this.setState({
+			//     message: "Please enter valid email",
+			//     severity: 'error',
+			// });
+		}
+
 		// this.props.history.push('/')
 		// ev.preventDefault();
 		// resetForm();
@@ -68,7 +129,7 @@ function ForgotPasswordPage(props) {
 							name="recoverForm"
 							noValidate
 							className="flex flex-col justify-center w-full"
-							onSubmit={handleSubmit}
+						// onSubmit={handleSubmit}
 						>
 							<TextField
 								className="mb-16"
@@ -88,15 +149,17 @@ function ForgotPasswordPage(props) {
 								color="primary"
 								className="w-224 mx-auto mt-16"
 								aria-label="Reset"
-								// disabled={!isFormValid()}
+								disabled={!isFormValid()}
 								type="submit"
-								onClick={()=>{props.history.push("/")}}
-							> SEND RESET LINK
+															// onClick={()=>{props.history.push("/pages/auth/reset-password-2")}}
+								onClick={handleSubmit}
+							> 
+							Send Token
 							</Button>
 						</form>
 
 						<div className="flex flex-col items-center justify-center pt-32 pb-24">
-							<Link className="font-medium" to="/pages/auth/login-2">
+							<Link className="font-medium" to="/">
 								Go back to login
 							</Link>
 						</div>

@@ -77,8 +77,20 @@ function ResetPasswordPage2() {
 							name="resetForm"
 							noValidate
 							className="flex flex-col justify-center w-full"
-							// onSubmit={handleSubmit}
+							onSubmit={handleSubmit}
 						>
+							<TextField
+								className="mb-16"
+								label="Email"
+								autoFocus
+								type="email"
+								name="email"
+								value={form.email}
+								onChange={handleChange}
+								variant="outlined"
+								required
+								fullWidth
+							/>
 
 							<TextField
 								className="mb-16"
