@@ -10,6 +10,9 @@ import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Alert from '@material-ui/lab/Alert';
+
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -21,20 +24,20 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function ResetPasswordPage2() {
+function ResetPasswordPage2(props) {
+	console.log(props)
 	const classes = useStyles();
 
 	const { form, handleChange, resetForm } = useForm({
-		name: '',
-		email: '',
 		password: '',
 		passwordConfirm: ''
 	});
+	const [alertmessage, setAlertMessage] = React.useState('')
+	const [alertseveirty, setAlertSeveirty] = React.useState('')
+
 
 	function isFormValid() {
 		return (
-			form.email.length > 0 &&
-			form.password.length > 0 &&
 			form.password.length > 3 &&
 			form.password === form.passwordConfirm
 		);
@@ -42,8 +45,58 @@ function ResetPasswordPage2() {
 
 	function handleSubmit(ev) {
 		ev.preventDefault();
-		resetForm();
+		// resetForm();
+		let data = {
+			resetToken:props.location.token,
+			password: form.password,
+			cpassword: form.passwordConfirm
+		}
+		console.log(data, 'datadata')
+
+		CoreHttpHandler.request(
+			'forgetpassword',
+			'setpassword',
+			data,
+			(response) => {
+				// this.setState({
+				//     message: 'updated succesfully',
+				//     severity: 'success',
+				// });
+				setAlertSeveirty('success')
+				setAlertMessage('updated Succesfully')
+				setTimeout(() => {
+					props.history.push({
+						pathname: '/'
+						
+					});
+				}, 1000);
+			},
+			(error) => {
+				if (error.response.status === 422) {
+					// this.setState({
+					//     message: error.response.data.message,
+					//     severity: 'error',
+					// });
+					setAlertMessage(error.response.data.message)
+					setAlertSeveirty('error')
+					setTimeout(() => {
+						props.history.push({
+							pathname: '/pages/auth/forgot-password'
+							
+						});
+					}, 1000);
+				} else {
+					// this.setState({
+					//     message: error.response.data.message,
+					//     severity: 'error',
+					// });
+					setAlertMessage(error.response.data.message)
+					setAlertSeveirty('error')
+				}
+			}
+		);
 	}
+
 
 	return (
 		<div className={clsx(classes.root, 'flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}>
@@ -77,8 +130,13 @@ function ResetPasswordPage2() {
 							name="resetForm"
 							noValidate
 							className="flex flex-col justify-center w-full"
-							// onSubmit={handleSubmit}
+						// onSubmit={handleSubmit}
 						>
+							{alertmessage ? (
+								<Alert style={{marginBottom:'10px'}}  severity={alertseveirty}>
+									{alertmessage}
+								</Alert>
+							) : null}
 
 							<TextField
 								className="mb-16"
@@ -111,6 +169,7 @@ function ResetPasswordPage2() {
 								aria-label="Reset"
 								disabled={!isFormValid()}
 								type="submit"
+								onClick={handleSubmit}
 							>
 								RESET MY PASSWORD
 							</Button>

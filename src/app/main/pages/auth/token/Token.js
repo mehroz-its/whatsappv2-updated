@@ -21,28 +21,27 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function ResetPasswordPage2() {
+function ResetPasswordPage2(props) {
 	const classes = useStyles();
 
 	const { form, handleChange, resetForm } = useForm({
-		name: '',
-		email: '',
-		password: '',
-		passwordConfirm: ''
+		token: '',
 	});
 
 	function isFormValid() {
 		return (
-			form.email.length > 0 &&
-			form.password.length > 0 &&
-			form.password.length > 3 &&
-			form.password === form.passwordConfirm
+			form.token.length > 0
+
 		);
 	}
 
 	function handleSubmit(ev) {
 		ev.preventDefault();
-		resetForm();
+		props.history.push({
+			pathname: '/pages/auth/reset-password',token:form.token
+			
+		});
+	
 	}
 
 	return (
@@ -81,35 +80,11 @@ function ResetPasswordPage2() {
 						>
 							<TextField
 								className="mb-16"
-								label="Email"
+								label="Token"
 								autoFocus
-								type="email"
-								name="email"
-								value={form.email}
-								onChange={handleChange}
-								variant="outlined"
-								required
-								fullWidth
-							/>
-
-							<TextField
-								className="mb-16"
-								label="Password"
-								type="password"
-								name="password"
-								value={form.password}
-								onChange={handleChange}
-								variant="outlined"
-								required
-								fullWidth
-							/>
-
-							<TextField
-								className="mb-16"
-								label="Password (Confirm)"
-								type="password"
-								name="passwordConfirm"
-								value={form.passwordConfirm}
+								type="token"
+								name="token"
+								value={form.token}
 								onChange={handleChange}
 								variant="outlined"
 								required
@@ -123,8 +98,9 @@ function ResetPasswordPage2() {
 								aria-label="Reset"
 								disabled={!isFormValid()}
 								type="submit"
+								onClick={handleSubmit}
 							>
-								RESET MY PASSWORD
+								Verify Token
 							</Button>
 						</form>
 

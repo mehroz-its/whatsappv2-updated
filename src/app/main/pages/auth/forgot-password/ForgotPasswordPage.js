@@ -10,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Alert from '@material-ui/lab/Alert';
+
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 
 
@@ -22,6 +24,8 @@ const useStyles = makeStyles(theme => ({
 
 function ForgotPasswordPage(props) {
 	const classes = useStyles();
+	const [alertmessage, setAlertMessage] = React.useState('')
+	const [alertseveirty, setAlertSeveirty] = React.useState('')
 	const { form, handleChange, resetForm } = useForm({
 		email: ''
 	});
@@ -46,15 +50,13 @@ function ForgotPasswordPage(props) {
 
 	function handleSubmit(ev) {
 		ev.preventDefault()
-		// props.location.pathname('pages/auth/token');
 		props.history.push({
 			pathname: '/pages/auth/token',
-			
+
 		});
 		console.log(props)
-		return;
 
-		
+
 		// console.log("ev", form.email);
 		// props.history.push("/");
 
@@ -63,6 +65,8 @@ function ForgotPasswordPage(props) {
 			//     message: "Please enter email",
 			//     severity: 'error',
 			// });
+			setAlertSeveirty('error')
+			setAlertMessage('Pleaseenter a valid email')
 			return;
 		}
 
@@ -76,13 +80,19 @@ function ForgotPasswordPage(props) {
 				data,
 				(response) => {
 					console.log("response : ", response);
-					props.history.push('pages/auth/token');
+					props.history.push({
+						pathname: '/pages/auth/token',
+
+					});
 				},
 				(error) => {
 					// this.setState({
 					//     message: error.response.data.message,
 					//     severity: 'error',
 					// });
+					setAlertSeveirty('error')
+					setAlertMessage(error.response.data.message)
+
 				}
 			);
 		} else {
@@ -90,11 +100,12 @@ function ForgotPasswordPage(props) {
 			//     message: "Please enter valid email",
 			//     severity: 'error',
 			// });
+			setAlertSeveirty('error')
+			setAlertMessage('Please enter valid email')
+
 		}
 
-		// this.props.history.push('/')
-		// ev.preventDefault();
-		// resetForm();
+
 	}
 
 	return (
@@ -131,6 +142,11 @@ function ForgotPasswordPage(props) {
 							className="flex flex-col justify-center w-full"
 						// onSubmit={handleSubmit}
 						>
+								{alertmessage ? (
+								<Alert style={{marginBottom:'10px'}}  severity={alertseveirty}>
+									{alertmessage}
+								</Alert>
+							) : null}
 							<TextField
 								className="mb-16"
 								label="Email"
@@ -151,10 +167,10 @@ function ForgotPasswordPage(props) {
 								aria-label="Reset"
 								disabled={!isFormValid()}
 								type="submit"
-															// onClick={()=>{props.history.push("/pages/auth/reset-password-2")}}
+								// onClick={()=>{props.history.push("/pages/auth/reset-password-2")}}
 								onClick={handleSubmit}
-							> 
-							Send Token
+							>
+								Send Token
 							</Button>
 						</form>
 
