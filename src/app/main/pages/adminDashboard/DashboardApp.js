@@ -125,6 +125,8 @@ function DashboardApp(props) {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
 	const [rader, setrader] = React.useState(newMessageList);
+	const [box, setBox] = React.useState([]);
+
 	const [tabValue, setTabValue] = useState(0);
 	console.log(props)
 
@@ -166,10 +168,33 @@ function DashboardApp(props) {
 	// }, []);
 
 
-	
+	const dataSourceOptions = {
+        params: {
+            columns: "*",
+            sortby: "ASC",
+            orderby: "id",
+            where: "id != $1 AND displayed = false",
+            values: 0,
+        },
+        type: 'dashboard',
+        apiType: 'listing',
+    };
+
 	React.useEffect(() => {
 		rader_chart();
+		CoreHttpHandler.request('dashboard', 'listing', { }, dataSourceSuccess =>{}, dataSourceFailure =>{});
+
 	})
+	const dataSourceSuccess = (response) => {
+		const list = response.data.data.dashboardBoxInfo.boxes;
+		console.log("list :" , list);
+		
+        setBox(list)
+    };
+
+    const dataSourceFailure = (response) => {
+    
+    };
 	function handleChangeTab(event, value) {
 		setTabValue(value);
 	}
