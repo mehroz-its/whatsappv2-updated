@@ -15,34 +15,35 @@ const useStyles = makeStyles({
 	layoutRoot: {}
 });
 
-const incomingAndOutGoingCount = () => {
+const incomingAndOutGoingCount = (data) => {
 	let chart = am4core.create("chartdivv", am4charts.XYChart);
-	chart.data = [
-		{
-			category: 'Place #1',
-			first: 40,
-			second: 55,
-			third: 60
-		},
-		{
-			category: 'Place #2',
-			first: 30,
-			second: 78,
-			third: 69
-		},
-		{
-			category: 'Place #3',
-			first: 27,
-			second: 40,
-			third: 45
-		},
-		{
-			category: 'Place #4',
-			first: 50,
-			second: 33,
-			third: 22
-		}
-	]
+	chart.data = data;
+	// chart.data = [
+	// 	{
+	// 		category: 'Place #1',
+	// 		first: 40,
+	// 		second: 55,
+	// 		third: 60
+	// 	},
+	// 	{
+	// 		category: 'Place #2',
+	// 		first: 30,
+	// 		second: 78,
+	// 		third: 69
+	// 	},
+	// 	{
+	// 		category: 'Place #3',
+	// 		first: 27,
+	// 		second: 40,
+	// 		third: 45
+	// 	},
+	// 	{
+	// 		category: 'Place #4',
+	// 		first: 50,
+	// 		second: 33,
+	// 		third: 22
+	// 	}
+	// ]
 	chart.colors.step = 1;
 	chart.legend = new am4charts.Legend()
 	chart.legend.position = 'top'
@@ -57,9 +58,8 @@ const incomingAndOutGoingCount = () => {
 	yAxis.min = 0;
 	// createSeries('incoming', 'Incoming');
 	// createSeries('outgoing', 'Outgoing');
-	createSeries('first', 'The Thirst');
-	createSeries('second', 'The Second');
-	createSeries('third', 'The Third');
+	createSeries('incoming', 'Incoming');
+	createSeries('outgoing', 'Outgoing');
 	function createSeries(value, name) {
 		let series = chart.series.push(new am4charts.ColumnSeries())
 		series.dataFields.valueY = value
@@ -116,52 +116,54 @@ const incomingAndOutGoingCount = () => {
 	}
 }
 
-const engagments = () => {
+const engagments = (data) => {
 
 	let chart = am4core.create("chartdiv", am4charts.XYChart);
-	chart.data = [{
-		"country": "USA",
-		"visits": 2025
-	}, {
-		"country": "China",
-		"visits": 1882
-	}, {
-		"country": "Japan",
-		"visits": 1809
-	}, {
-		"country": "Germany",
-		"visits": 1322
-	}, {
-		"country": "UK",
-		"visits": 1122
-	}, {
-		"country": "France",
-		"visits": 1114
-	}, {
-		"country": "India",
-		"visits": 984
-	}, {
-		"country": "Spain",
-		"visits": 711
-	}, {
-		"country": "Netherlands",
-		"visits": 665
-	}, {
-		"country": "Russia",
-		"visits": 580
-	}, {
-		"country": "South Korea",
-		"visits": 443
-	}, {
-		"country": "Canada",
-		"visits": 441
-	}, {
-		"country": "Brazil",
-		"visits": 395
-	}];	// Create axes
+	chart.data = data;
+
+	// chart.data = [{
+	// 	"country": "USA",
+	// 	"visits": 2025
+	// }, {
+	// 	"country": "China",
+	// 	"visits": 1882
+	// }, {
+	// 	"country": "Japan",
+	// 	"visits": 1809
+	// }, {
+	// 	"country": "Germany",
+	// 	"visits": 1322
+	// }, {
+	// 	"country": "UK",
+	// 	"visits": 1122
+	// }, {
+	// 	"country": "France",
+	// 	"visits": 1114
+	// }, {
+	// 	"country": "India",
+	// 	"visits": 984
+	// }, {
+	// 	"country": "Spain",
+	// 	"visits": 711
+	// }, {
+	// 	"country": "Netherlands",
+	// 	"visits": 665
+	// }, {
+	// 	"country": "Russia",
+	// 	"visits": 580
+	// }, {
+	// 	"country": "South Korea",
+	// 	"visits": 443
+	// }, {
+	// 	"country": "Canada",
+	// 	"visits": 441
+	// }, {
+	// 	"country": "Brazil",
+	// 	"visits": 395
+	// }];	// Create axes
 
 	let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-	categoryAxis.dataFields.category = "country";
+	categoryAxis.dataFields.category = "type";
 	categoryAxis.renderer.grid.template.location = 0;
 	categoryAxis.renderer.minGridDistance = 30;
 
@@ -176,9 +178,9 @@ const engagments = () => {
 
 	// Create series
 	let series = chart.series.push(new am4charts.ColumnSeries());
-	series.dataFields.valueY = "visits";
-	series.dataFields.categoryX = "country";
-	series.name = "visits";
+	series.dataFields.valueY = "value";
+	series.dataFields.categoryX = "type";
+	series.name = "value";
 	series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
 	series.columns.template.fillOpacity = .8;
 
@@ -190,6 +192,8 @@ const engagments = () => {
 function ChatApp() {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
+	const [value, setValue] = React.useState(0);
+    const [chartdata, setchartdata] = React.useState(null);
 	const [state, setState] = React.useState({
 		columns: [
 			{ title: 'Number', field: 'number' },
@@ -231,13 +235,51 @@ function ChatApp() {
 			setTableData(tableData)
 		});
 	})
-
+	const dataSourceOptions = {
+        params: {
+            columns: "*",
+            sortby: "ASC",
+            orderby: "id",
+            where: "id != $1 AND displayed = false",
+            values: 0,
+        },
+        // type: 'dashboard',
+        // apiType: 'listing',
+    };
 	React.useEffect(() => {
-
-		incomingAndOutGoingCount()
-		engagments()
+		CoreHttpHandler.request('reports', 'chatChartInOutCC', { ...dataSourceOptions }, dataSourceSuccess, dataSourceFailure);
+        CoreHttpHandler.request('reports', 'chatChartEngagments', { ...dataSourceOptions }, dataSourceSuccessEngagments, dataSourceFailureEngagments);
+        
+		// incomingAndOutGoingCount()
+		// engagments()
 		getData()
 	},[])
+	const dataSourceSuccess = (response) => {
+        const list = response.data.data.report.boxes;
+        const data = list.map((item, i) => {
+            const chartObj = {
+                category: item.type
+            };
+            for (let i = 0; i < item.value.length; i++) {
+                chartObj[item.value[i].direction] = item.value[i].count;
+            }
+            return chartObj;
+        });
+        setchartdata(data)
+        incomingAndOutGoingCount(data);
+
+    };
+
+    const dataSourceFailure = (response) => {
+    };
+
+    const dataSourceSuccessEngagments = (response) => {
+        const list = response.data.data.report.boxes;
+        engagments(list)
+    };
+
+    const dataSourceFailureEngagments = (response) => {
+    };
 
 	return (
 		<FusePageSimple
@@ -263,11 +305,15 @@ function ChatApp() {
 						}}>
 						<div className="widget flex w-full sm:w-1/1 md:w-1/2 p-12">
 							<Paper className="w-full rounded-8 shadow-none border-1">
+							<Typography variant="h5" className="header-card" >Conversation Count</Typography>
+
 								<div id="chartdivv" style={{ width: "100%", height: "300px" }}></div>
 							</Paper>
 						</div>
 						<div className="widget flex w-full sm:w-1/1 md:w-1/2 p-12">
 							<Paper className="w-full rounded-8 shadow-none border-1">
+							<Typography variant="h5" className="header-card" >Engagements</Typography>
+
 								<div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>
 							</Paper>
 						</div>

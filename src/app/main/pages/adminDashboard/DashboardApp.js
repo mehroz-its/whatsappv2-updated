@@ -25,38 +25,39 @@ const useStyles = makeStyles({
 });
 
 
-const rader_chart = () => {
+const rader_chart = (list) => {
 	am4core.useTheme(am4themes_material);
 	am4core.useTheme(am4themes_animated);
 	let myEle = document.getElementById("chartdivv");
 	
     if(myEle){
 		let chart = am4core.create("chartdivv", am4charts.RadarChart);
-		chart.data = [{
-			"category": "Document",
-			"value": 80,
-			"full": 100
-		}, {
-			"category": "Photos",
-			"value": 35,
-			"full": 100
-		}, {
-			"category": "Audio",
-			"value": 92,
-			"full": 100
-		}, {
-			"category": "Text",
-			"value": 68,
-			"full": 100
-		}, {
-			"category": "Contacts",
-			"value": 68,
-			"full": 100
-		}, {
-			"category": "Locations",
-			"value": 68,
-			"full": 100
-		}];
+		chart.data = list;
+		// chart.data = [{
+		// 	"category": "Document",
+		// 	"value": 80,
+		// 	"full": 100
+		// }, {
+		// 	"category": "Photos",
+		// 	"value": 35,
+		// 	"full": 100
+		// }, {
+		// 	"category": "Audio",
+		// 	"value": 92,
+		// 	"full": 100
+		// }, {
+		// 	"category": "Text",
+		// 	"value": 68,
+		// 	"full": 100
+		// }, {
+		// 	"category": "Contacts",
+		// 	"value": 68,
+		// 	"full": 100
+		// }, {
+		// 	"category": "Locations",
+		// 	"value": 68,
+		// 	"full": 100
+		// }];
 	
 		// Make chart not full circle
 		chart.startAngle = -90;
@@ -181,19 +182,27 @@ function DashboardApp(props) {
     };
 
 	React.useEffect(() => {
-		rader_chart();
-		CoreHttpHandler.request('dashboard', 'listing', { }, dataSourceSuccess =>{}, dataSourceFailure =>{});
+	
+		CoreHttpHandler.request('dashboard', 'listing', { ...dataSourceOptions.params }, dataSourceSuccess, dataSourceFailure);
+		CoreHttpHandler.request('dashboard', 'messagestate', { ...dataSourceOptions.params }, messagestateSuccess, messagestateFailure);
 
-	})
+	}, [])
 	const dataSourceSuccess = (response) => {
 		const list = response.data.data.dashboardBoxInfo.boxes;
 		console.log("list :" , list);
-		
         setBox(list)
     };
 
     const dataSourceFailure = (response) => {
     
+	};
+	const messagestateSuccess = (response) => {
+        const list = response.data.data.chartData;
+        console.log("list : ", list);
+        rader_chart(list)
+    };
+
+    const messagestateFailure = (response) => {
     };
 	function handleChangeTab(event, value) {
 		setTabValue(value);
@@ -238,28 +247,13 @@ function DashboardApp(props) {
 							<Grid container spacing={3}>
 								<Grid item md={8} sm={12} xs={12} >
 									<Grid container spacing={3}>
-										<Grid item md={4} sm={6} xs={12} >
-											<Widget2 title="Daily" count="100" bottom_title="Customer Engaged" />
-										</Grid>
-										<Grid item md={4} sm={6} xs={12} >
-											<Widget2 title="Monthly" count="100" bottom_title="Customer Engaged" />
-										</Grid>
-										<Grid item md={4} sm={6} xs={12} >
-											<Widget2 title="Total" count="100" bottom_title="Customer Engaged" />
-										</Grid>
-
-										<Grid item md={4} sm={6} xs={12} >
-											<Widget2 title="Daily" count="100" bottom_title="Conversation" />
-										</Grid>
-										<Grid item md={4} sm={6} xs={12} >
-											<Widget2 title="Monthly" count="100" bottom_title="Conversation" />
-										</Grid>
-										<Grid item md={4} sm={6} xs={12} >
-											<Widget2 title="Total" count="100" bottom_title="Conversation" />
-										</Grid>
-
-
-
+										{box.map((value, index) => {
+                                    return (
+                                        <Grid item md={4} sm={6} xs={12} >
+									<Widget2 title={value.title} count={value.value} bottom_title={value.subtitle} />
+                                        </Grid>
+                                    )
+                                })}
 									</Grid>
 								</Grid>
 
@@ -268,15 +262,7 @@ function DashboardApp(props) {
 										<div id="chartdivv" style={{ width: "100%", height: "300px" }}></div>
 									</Card>
 								</Grid>
-								{/* <Grid item md={3} sm={12} xs={12} >
-								<Card elevation={3} style={{ padding: 10 }}>
-									<div id="columnchartdiv" style={{ width: "100%", height: "280px" }}></div>
-								</Card>
-
-							</Grid> */}
 							</Grid>
-
-
 						</FuseAnimateGroup>
 					)}
 
@@ -292,7 +278,7 @@ function DashboardApp(props) {
 
 					)}
 
-					<FuseAnimateGroup
+					{/* <FuseAnimateGroup
 						className="flex flex-wrap"
 						enter={{
 							animation: 'transition.slideUpBigIn'
@@ -304,7 +290,7 @@ function DashboardApp(props) {
 									<div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>
 								</Paper>
 							</Grid></Grid>
-					</FuseAnimateGroup>
+					</FuseAnimateGroup> */}
 				</div>
 			}
 			rightSidebarContent={

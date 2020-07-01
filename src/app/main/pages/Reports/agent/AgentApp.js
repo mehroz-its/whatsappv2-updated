@@ -15,34 +15,36 @@ const useStyles = makeStyles({
 	layoutRoot: {}
 });
 
-const incomingAndOutGoingCount = () => {
+const incomingAndOutGoingCount = (data) => {
 	let chart = am4core.create("chartdivv", am4charts.XYChart);
-	chart.data = [
-		{
-			category: 'Daily',
-			first: 40,
-			second: 55,
-			
-		},
-		{
-			category: 'Weekly',
-			first: 30,
-			second: 78,
-			
-		},
-		{
-			category: 'Monthly',
-			first: 27,
-			second: 40,
-			
-		},
-		{
-			category: 'Yearly',
-			first: 50,
-			second: 33,
-			
-		}
-	]
+	chart.data = data;
+
+		// chart.data = [
+		// 	{
+		// 		category: 'Daily',
+		// 		first: 40,
+		// 		second: 55,
+				
+		// 	},
+		// 	{
+		// 		category: 'Weekly',
+		// 		first: 30,
+		// 		second: 78,
+				
+		// 	},
+		// 	{
+		// 		category: 'Monthly',
+		// 		first: 27,
+		// 		second: 40,
+				
+		// 	},
+		// 	{
+		// 		category: 'Yearly',
+		// 		first: 50,
+		// 		second: 33,
+				
+		// 	}
+		// ]
 	chart.colors.step = 1;
 	chart.legend = new am4charts.Legend()
 	chart.legend.position = 'top'
@@ -57,8 +59,8 @@ const incomingAndOutGoingCount = () => {
 	yAxis.min = 0;
 	// createSeries('incoming', 'Incoming');
 	// createSeries('outgoing', 'Outgoing');
-	createSeries('first', 'Conversation');
-	createSeries('second', 'Engagements');
+	createSeries('conversation', 'conversation');
+	createSeries('engagements', 'engagements');
 	// createSeries('third', 'The Third');
 	function createSeries(value, name) {
 		let series = chart.series.push(new am4charts.ColumnSeries())
@@ -218,10 +220,58 @@ function AgentApp() {
 	})
 
 	React.useEffect(() => {
-		incomingAndOutGoingCount()
+		// incomingAndOutGoingCount()
+		CoreHttpHandler.request('reports', 'agentChart', {
+            role_id: 64
+        }, dataSourceSuccess, dataSourceFailure)
 		// engagments()
 		getData()
 	},[])
+	const dataSourceSuccess = (response) => {
+        let stats = [];
+        const list = response.data.data.list[0];
+        let daily = list.daily[0]
+        const Daily = {
+            category: "Daily",
+            conversation: parseInt(daily.conversation),
+            engagements: parseInt(daily.engagements),
+        };
+
+
+        let weekly = list.weekly[0]
+        const Weekly = {
+            category: "Weekly",
+            conversation: parseInt(weekly.conversation),
+            engagements: parseInt(weekly.engagements),
+        };
+
+        let monthly = list.daily[0]
+        const Monthly = {
+            category: "Monthly",
+            conversation: parseInt(monthly.conversation),
+            engagements: parseInt(monthly.engagements),
+        };
+
+        let yearly = list.yearly[0]
+        const Yearly = {
+            category: "Yearly",
+            conversation: parseInt(yearly.conversation),
+            engagements: parseInt(yearly.engagements),
+        };
+        // setBox(list)
+
+
+        stats = [
+            Daily,
+            Weekly,
+            Monthly,
+            Yearly
+        ]
+        incomingAndOutGoingCount(stats);
+    };
+
+    const dataSourceFailure = (response) => {
+    };
 	return (
 		<FusePageSimple
 			classes={{
