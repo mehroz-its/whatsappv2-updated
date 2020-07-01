@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ResetPasswordPageConfig = {
+const TokenConfig = {
 	settings: {
 		layout: {
 			config: {
@@ -24,10 +24,10 @@ const ResetPasswordPageConfig = {
 	},
 	routes: [
 		{
-			path: '/pages/auth/reset-password1',
-			component: React.lazy(() => import('./ResetPasswordPage'))
+			path: '/pages/auth/token',
+			component: React.lazy(() => import('./Token'))
 		}
 	]
 };
 
-export default ResetPasswordPageConfig;
+export default TokenConfig;
