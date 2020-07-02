@@ -11,17 +11,63 @@ import ContactsTable from './ContactsTable';
 import * as Actions from './store/actions';
 import Data from './ContactData'
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
+import { object } from 'prop-types';
 
 
 function ContactsList(props) {
+	const [data, setData] = React.useState([])
+
+	let filtered = []
+	let newobj = {
+
+	}
+	data.map((i, v) => {
+		let newobj = {
+			...i
+		}
+		i.attributes.map((item, val) => {
+			// console.log(`${Object.keys(item)[0]}${Object.keys(item)[1]}:${Object.values(item)[0]}`,'item')
+			// let val1 = `${Object.keys(item)[0]}${Object.keys(item)[1]}:${Object.values(item)[0]}`
+			// let val2 = `${Object.keys(item)[1]}:${Object.values(item)[1]}`
+			newobj[`${Object.keys(item)[0]}${Object.keys(item)[1]}`] = `${Object.values(item)[0]}`
+			newobj[`${Object.keys(item)[1]}`] = `${Object.values(item)[1]}`
+			
+
+
+		})
+		filtered.push(newobj)
+
+	})
+	
+	console.log(filtered, 'datadatadatadatadatadatadata')
+
+	let ContactsData = {
+		entities: data,
+		searchText: "",
+		user: {
+			avatar: "assets/images/avatars/profile.jpg",
+			frequentContacts: ['5725a6809fdd915739187ed5', "5725a68031fdbb1db2c1af47", "5725a680606588342058356d", "5725a680e7eb988a58ddf303"],
+			groups: [
+				{ contactIds: ["5725a680bbcec3cc32a8488a", "5725a680e87cb319bd9bd673", "5725a6802d10e277a0f35775"], id: "5725a6802d10e277a0f35739", name: "Friends" },
+				{ contactIds: ["5725a680bbcec3cc32a8488a", "5725a680e87cb319bd9bd673", "5725a6802d10e277a0f35775"], id: "5725a6802d10e277a0f35739", name: "Clients" },
+				{ contactIds: ["5725a680bbcec3cc32a8488a", "5725a680e87cb319bd9bd673", "5725a6802d10e277a0f35775"], id: "5725a6802d10e277a0f35739", name: "Recent Workers" },
+
+			],
+			id: "5725a6802d10e277a0f35724",
+			name: "John Dossse",
+			starred: ["5725a680ae1ae9a3c960d487", "5725a6801146cce777df2a08", "5725a680bbcec3cc32a8488a"]
+		}
+	}
 	const dispatch = useDispatch();
 	// const contacts = useSelector(({ contactsApp }) => contactsApp.contacts.entities);
-    const contacts = Data.entities
-	const searchText=Data.searchText
+	const contacts = ContactsData.entities
+	// const [contacts,setContacts] = React.useState([])
+	const searchText = ContactsData.searchText
 	// const searchText = useSelector(({ contactsApp }) => console.log(contactsApp) );
 	// const user = useSelector(({ contactsApp }) => contactsApp.user);
-	 const user = Data.user
+	const user = ContactsData.user
 	// const searchText = Data.searchText
+	console.log(ContactsData.entities, 'ContactsData.entities')
 
 	const getData = ((loadData) => {
 		console.log('called get data')
@@ -40,7 +86,8 @@ function ContactsList(props) {
 		loadData().then((response) => {
 			const tableData = response.data.data.list.data
 			console.log(tableData)
-			// setData(tableData)
+			setData(tableData)
+			
 		});
 	})
 
@@ -70,25 +117,36 @@ function ContactsList(props) {
 				sortable: false
 			},
 			{
+				Header: 'ID',
+				accessor: 'id',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
 				Header: 'First Name',
-				accessor: 'name',
+				accessor: 'firstname',
 				className: 'font-bold',
 				sortable: true
 			},
 			{
 				Header: 'Last Name',
-				accessor: 'lastName',
+				accessor: 'lastname',
 				className: 'font-bold',
 				sortable: true
 			},
 			{
-				Header: 'Company',
-				accessor: 'company',
+				Header: 'Age',
+				accessor: 'age',
 				sortable: true
 			},
 			{
-				Header: 'Job Title',
-				accessor: 'jobTitle',
+				Header: 'Gender',
+				accessor: 'gender',
+				sortable: true
+			},
+			{
+				Header: 'Number',
+				accessor: 'number',
 				sortable: true
 			},
 			{
@@ -97,10 +155,16 @@ function ContactsList(props) {
 				sortable: true
 			},
 			{
-				Header: 'Phone',
-				accessor: 'phone',
+				Header: 'Country',
+				accessor: 'country',
 				sortable: true
 			},
+			{
+				Header: 'City',
+				accessor: 'city',
+				sortable: true
+			},
+
 			{
 				id: 'action',
 				width: 128,
@@ -116,8 +180,8 @@ function ContactsList(props) {
 							{user.starred && user.starred.includes(row.original.id) ? (
 								<Icon>star</Icon>
 							) : (
-								<Icon>star_border</Icon>
-							)}
+									<Icon>star_border</Icon>
+								)}
 						</IconButton>
 						<IconButton
 							onClick={ev => {
@@ -161,14 +225,14 @@ function ContactsList(props) {
 			</div>
 		);
 	}
-	console.log(searchText,'search')
-	console.log( user,'user')
+	console.log(ContactsData, 'ContactsData')
+	// console.log(user, 'user')
 
 	return (
 		<FuseAnimate animation="transition.slideUpIn" delay={300}>
 			<ContactsTable
 				columns={columns}
-				data={filteredData}
+				data={filtered}
 				onRowClick={(ev, row) => {
 					if (row) {
 						dispatch(Actions.openEditContactDialog(row.original));
