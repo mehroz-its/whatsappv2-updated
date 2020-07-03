@@ -100,22 +100,22 @@ function ContactsList(props) {
 
 	const columns = React.useMemo(
 		() => [
-			{
-				Header: ({ selectedFlatRows }) => {
-					const selectedRowIds = selectedFlatRows.map(row => row.original.id);
+			// {
+			// 	Header: ({ selectedFlatRows }) => {
+			// 		const selectedRowIds = selectedFlatRows.map(row => row.original.id);
 
-					return (
-						selectedFlatRows.length > 0 && <ContactsMultiSelectMenu selectedContactIds={selectedRowIds} />
-					);
-				},
-				accessor: 'avatar',
-				Cell: ({ row }) => {
-					return <Avatar className="mx-8" alt={row.original.name} src={row.original.avatar} />;
-				},
-				className: 'justify-center',
-				width: 64,
-				sortable: false
-			},
+			// 		return (
+			// 			selectedFlatRows.length > 0 && <ContactsMultiSelectMenu selectedContactIds={selectedRowIds} />
+			// 		);
+			// 	},
+			// 	accessor: 'avatar',
+			// 	Cell: ({ row }) => {
+			// 		return <Avatar className="mx-8" alt={row.original.name} src={row.original.avatar} />;
+			// 	},
+			// 	className: 'justify-center',
+			// 	width: 64,
+			// 	sortable: false
+			// },
 			{
 				Header: 'ID',
 				accessor: 'id',
@@ -198,29 +198,30 @@ function ContactsList(props) {
 		[dispatch, user.starred]
 	);
 
-	useEffect(() => {
-		function getFilteredArray(entities, _searchText) {
-			const arr = Object.keys(entities).map(id => entities[id]);
-			if (_searchText.length === 0) {
-				return arr;
-			}
-			return FuseUtils.filterArrayByString(arr, _searchText);
-		}
+	// useEffect(() => {
+	// 	function getFilteredArray(entities, _searchText) {
+	// 		const arr = Object.keys(entities).map(id => entities[id]);
+	// 		if (_searchText.length === 0) {
+	// 			return arr;
+	// 		}
+	// 		return FuseUtils.filterArrayByString(arr, _searchText);
+	// 	}
 
-		if (contacts) {
-			setFilteredData(getFilteredArray(contacts, searchText));
-		}
-	}, [contacts, searchText]);
+	// 	if (filtered) {
+	// 		setFilteredData(getFilteredArray(filtered, searchText));
+	// 	}
+	// }, [filtered, searchText]);
 
-	if (!filteredData) {
-		return null;
-	}
+	// if (!filteredData) {
+	// 	return null;
+	// }
 
-	if (filteredData.length === 0) {
+	if (filtered.length === 0) {
 		return (
 			<div className="flex flex-1 items-center justify-center h-full">
 				<Typography color="textSecondary" variant="h5">
-					There are no contacts!
+					{/* There are no contacts! */}
+					Loading Your Contacts
 				</Typography>
 			</div>
 		);
@@ -228,16 +229,27 @@ function ContactsList(props) {
 	console.log(ContactsData, 'ContactsData')
 	// console.log(user, 'user')
 
+	function handleClick(n) {
+		console.log(n,'nnnn')
+		// setDialogData(n)
+
+		// console.log(dialogData,'ContactGroupDialogContactGroupDialog')
+		// setOpen(true);
+
+		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
+	}
 	return (
 		<FuseAnimate animation="transition.slideUpIn" delay={300}>
 			<ContactsTable
 				columns={columns}
 				data={filtered}
 				onRowClick={(ev, row) => {
-					if (row) {
-						dispatch(Actions.openEditContactDialog(row.original));
-					}
+					// if (row) {
+					// 	dispatch(Actions.openEditContactDialog(row.original));
+					// }
+					console.log(row,'rowrow')
 				}}
+				// onRowClick={console.log('i am clicked')}
 			/>
 		</FuseAnimate>
 	);

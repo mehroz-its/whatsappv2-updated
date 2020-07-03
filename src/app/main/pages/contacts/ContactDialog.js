@@ -2,6 +2,8 @@ import { useForm } from '@fuse/hooks';
 import FuseUtils from '@fuse/utils/FuseUtils';
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -14,11 +16,17 @@ import Typography from '@material-ui/core/Typography';
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Actions from './store/actions';
-
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
+import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
+import CitiesDropDown from './CitiesDropDown'
 const defaultFormState = {
 	id: '',
 	name: '',
-	lastName: '',
+	lastname: '',
 	avatar: 'assets/images/avatars/profile.jpg',
 	nickname: '',
 	company: '',
@@ -31,10 +39,62 @@ const defaultFormState = {
 };
 
 function ContactDialog(props) {
+	const { data, isOpen, type } = props
 	const dispatch = useDispatch();
-	const contactDialog = useSelector(({ contactsApp }) => contactsApp.contacts.contactDialog);
+	const contactDialog = { data: data, props: { open: isOpen }, type: type }
+	const [value, setValue] = React.useState(data.gender);
+	const [selectedcountry, setSelectedCountry] = React.useState('Country');
+	const [country, setCountry] = React.useState('');
+
+	const [city, setCity] = React.useState('Country');
+	const [countries, setCountries] = React.useState([]);
+	const [cities, setCities] = React.useState([]);
+
+	const [countryopen, setSelectCountryOpen] = React.useState(false);
+	const [cityopen, setSelectCityOpen] = React.useState(false);
+	const [selectedCity,setSelectedCity]=React.useState('')
+
 
 	const { form, handleChange, setForm } = useForm(defaultFormState);
+	console.log(form, 'form')
+
+	const getData = ((loadData) => {
+		console.log('called get data')
+		loadData = () => {
+			return CoreHttpHandler.request('locations', 'get_countries', {
+
+				columns: "id, name",
+				sortby: "ASC",
+				orderby: "id",
+				where: "enabled = $1",
+				values: true,
+				page: 0,
+				limit: 0
+			}, null, null, true);
+		};
+		loadData().then((response) => {
+			const data = response.data.data.list.data
+			setCountries(data)
+
+
+		});
+	})
+	const getSelectedCity = (val)=>{
+		setSelectedCity(val)
+	}
+	const byName = true
+	const defaultValueCountry = (byName) ? 'Select Country' : 0;
+	// const selected = selectedCountry === 'N/A' ? defaultValue : selectedCountry;
+
+	const defaultValueCity = (byName) ? 'Select City' : 0;
+
+
+
+
+
+	React.useEffect(() => {
+		getData()
+	}, []);
 
 	const initDialog = useCallback(() => {
 		/**
@@ -74,15 +134,70 @@ function ContactDialog(props) {
 	function canBeSubmitted() {
 		return form.name.length > 0;
 	}
+	const handleRadio = (event) => {
+		setValue(event.target.value);
+	};
+	const handleCountryChange = (event) => {
+		setCountry(event.target.value);
+		console.log(country, 'i am country')
+	}
+	const handleCityChange = (event) => {
+		setCity(event.target.value);
+		console.log(city)
+		
+	}
+
+	const handleCountryClose = () => {
+		setSelectCountryOpen(false);
+	};
+
+	const handleCountryOpen = () => {
+		setSelectCountryOpen(true);
+	};
+	const handleCityClose = () => {
+		setSelectCityOpen(false);
+	};
+
+	const handleCityOpen = () => {
+		setSelectCityOpen(true);
+	};
 
 	function handleSubmit(event) {
 		event.preventDefault();
+		console.log(data)
+let params={
+	id:data.id,
+	number:data.number,
+	assign_name:`${form.firstname}${form.lastName}`,
+	attributes:[
+		{attribute_id:data.attribute_idfirstname, firstname: form.firstname},
+		{attribute_id: data.attribute_idlastname, lastname: form.lastname},
+		{attribute_id: data.attribute_idgender, gender: value},
+		{attribute_id: data.attribute_idage, age:form.age},
+		{attribute_id: data.attribute_idemail, email: form.email},
+		{attribute_id: data.attribute_idcountry, country: country},
+		{attribute_id: data.attribute_idcity, city: selectedCity}
+	]
+}
+CoreHttpHandler.request('contact_book', 'update', {
+	key: ':id',
+	value: data.id,
+	params: params
+}, (response) => {
+	console.log(response)
+	props.closeDialog()
 
-		if (contactDialog.type === 'new') {
-			dispatch(Actions.addContact(form));
-		} else {
-			dispatch(Actions.updateContact(form));
-		}
+}, (error) => {
+console.log(error)
+props.closeDialog()
+});
+
+console.log(params,'i am on submit')
+		// if (contactDialog.type === 'new') {
+		// 	dispatch(Actions.addContact(form));
+		// } else {
+		// 	dispatch(Actions.updateContact(form));
+		// }
 		closeComposeDialog();
 	}
 
@@ -90,6 +205,26 @@ function ContactDialog(props) {
 		dispatch(Actions.removeContact(form.id));
 		closeComposeDialog();
 	}
+	
+	// if (country !== null) { 
+	// 		CoreHttpHandler.request('locations', 'get_cities', {
+	// 			columns: "id, name",
+	// 			sortby: "ASC",
+	// 			orderby: "id",
+	// 			where: (byName) ? "country_id = (SELECT id FROM countries WHERE name = $1)" : "country_id = $1",
+	// 			values: country.trim(),
+	// 			page: 0,
+	// 			limit: 0,
+	// 		}, (response) => {
+	// 			const _cities = response.data.data.list.data;
+	// 			console.log(_cities)
+	// 			setCities(_cities);
+	// 			// setDisplay(true);
+	// 		}, (error) => {
+	// 			// setCurrentCities([]);
+	// 			// setDisplay(false);
+	// 		});
+	//  }
 
 	return (
 		<Dialog
@@ -118,7 +253,7 @@ function ContactDialog(props) {
 			</AppBar>
 			<form noValidate onSubmit={handleSubmit} className="flex flex-col md:overflow-hidden">
 				<DialogContent classes={{ root: 'p-24' }}>
-					<div className="flex">
+					{/* <div className="flex">
 						<div className="min-w-48 pt-20">
 							<Icon color="action">account_circle</Icon>
 						</div>
@@ -135,38 +270,7 @@ function ContactDialog(props) {
 							required
 							fullWidth
 						/>
-					</div>
-
-					<div className="flex">
-						<div className="min-w-48 pt-20" />
-						<TextField
-							className="mb-24"
-							label="Last name"
-							id="lastName"
-							name="lastName"
-							value={form.lastName}
-							onChange={handleChange}
-							variant="outlined"
-							fullWidth
-						/>
-					</div>
-
-					<div className="flex">
-						<div className="min-w-48 pt-20">
-							<Icon color="action">star</Icon>
-						</div>
-						<TextField
-							className="mb-24"
-							label="Nickname"
-							id="nickname"
-							name="nickname"
-							value={form.nickname}
-							onChange={handleChange}
-							variant="outlined"
-							fullWidth
-						/>
-					</div>
-
+					</div> */}
 					<div className="flex">
 						<div className="min-w-48 pt-20">
 							<Icon color="action">phone</Icon>
@@ -176,12 +280,49 @@ function ContactDialog(props) {
 							label="Phone"
 							id="phone"
 							name="phone"
-							value={form.phone}
+							value={form.number}
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth
 						/>
 					</div>
+
+					<div className="flex">
+						<div className="min-w-48 pt-20">
+							<Icon color="action">account_circle</Icon>
+						</div>
+						<TextField
+							className="mb-24"
+							label="First Name"
+							id="firstname"
+							name="firstname"
+							value={form.firstname}
+							onChange={handleChange}
+							variant="outlined"
+							fullWidth
+						/>
+					</div>
+
+					<div className="flex">
+						{/* <div className="min-w-48 pt-20" /> */}
+						<div className="min-w-48 pt-20">
+							<Icon color="action">account_circle</Icon>
+						</div>
+						<TextField
+							className="mb-24"
+							label="LastName"
+							id="lastname"
+							name="lastname"
+							value={form.lastname}
+							onChange={handleChange}
+							variant="outlined"
+							fullWidth
+						/>
+					</div>
+
+
+
+
 
 					<div className="flex">
 						<div className="min-w-48 pt-20">
@@ -201,14 +342,14 @@ function ContactDialog(props) {
 
 					<div className="flex">
 						<div className="min-w-48 pt-20">
-							<Icon color="action">domain</Icon>
+							<Icon color="action">child_care</Icon>
 						</div>
 						<TextField
 							className="mb-24"
-							label="Company"
-							id="company"
-							name="company"
-							value={form.company}
+							label="Age"
+							id="age"
+							name="age"
+							value={form.age}
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth
@@ -216,6 +357,79 @@ function ContactDialog(props) {
 					</div>
 
 					<div className="flex">
+						<FormLabel component="legend">Gender</FormLabel>
+						
+					</div>
+					<div className="flex">
+						<RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleRadio}>
+							<FormControlLabel value="female" control={<Radio />} label="Female" />
+							<FormControlLabel value="male" control={<Radio />} label="Male" />
+						</RadioGroup>
+					</div>
+
+
+
+					<div className="flex mb-20">
+						{/* <div className="min-w-48 pt-20">
+						
+						</div> */}
+						<Select
+							labelId="demo-controlled-open-select-label"
+							id="demo-controlled-open-select"
+							open={countryopen}
+							onClose={handleCountryClose}
+							onOpen={handleCountryOpen}
+							value={country}
+							onChange={handleCountryChange}
+							fullWidth
+						>
+							<MenuItem key={`country_list_item_0`} value={defaultValueCountry}>Select Country</MenuItem>
+							{countries.length > 1 ? countries.map((country, i) => {
+								let item = null;
+
+								if (byName) {
+									item = <MenuItem key={`country_list_item_${i}`} value={country.name}>{country.name}</MenuItem>;
+								} else item = <MenuItem key={`country_list_item_${i}`} value={country.id}>{country.name}</MenuItem>;
+
+								return item;
+							}) : null}
+						</Select>
+					</div>
+
+
+					<div className="flex">
+						<CitiesDropDown country={country} selectedCity={getSelectedCity}/>
+						{/* <div className="min-w-48 pt-20">
+							<Icon color="action">work</Icon>
+						</div> */}
+						{/* <Select
+							labelId="demo-controlled-open-select-label"
+							id="demo-controlled-open-select"
+							open={cityopen}
+							onClose={handleCityClose}
+							onOpen={handleCityOpen}
+							value={city}
+							onChange={handleCityChange}
+							fullWidth
+						>
+							<MenuItem key={`city_list_item_0`} value={defaultValueCity}>Select City</MenuItem>
+							{cities.map((city, i) => {
+								let item = null;
+
+								if (byName) {
+									item = <MenuItem key={`city_list_item_${i}`} value={city.name}>{city.name}</MenuItem>;
+								} else item = <MenuItem key={`city_list_item_${i}`} value={city.id}>{city.name}</MenuItem>;
+
+								return item;
+							})}
+							<MenuItem value={30}>Thirty</MenuItem>
+						</Select> */}
+					</div>
+
+
+
+
+					{/* <div className="flex">
 						<div className="min-w-48 pt-20">
 							<Icon color="action">work</Icon>
 						</div>
@@ -266,8 +480,8 @@ function ContactDialog(props) {
 						/>
 					</div>
 
-					<div className="flex">
-						<div className="min-w-48 pt-20">
+					<div className="flex"> */}
+					{/* <div className="min-w-48 pt-20">
 							<Icon color="action">note</Icon>
 						</div>
 						<TextField
@@ -282,7 +496,7 @@ function ContactDialog(props) {
 							rows={5}
 							fullWidth
 						/>
-					</div>
+					</div> */}
 				</DialogContent>
 
 				{contactDialog.type === 'new' ? (
@@ -300,23 +514,23 @@ function ContactDialog(props) {
 						</div>
 					</DialogActions>
 				) : (
-					<DialogActions className="justify-between p-8">
-						<div className="px-16">
-							<Button
-								variant="contained"
-								color="primary"
-								type="submit"
-								onClick={handleSubmit}
-								disabled={!canBeSubmitted()}
-							>
-								Save
+						<DialogActions className="justify-between p-8">
+							<div className="px-16">
+								<Button
+									variant="contained"
+									color="primary"
+									type="submit"
+									onClick={handleSubmit}
+									disabled={!canBeSubmitted()}
+								>
+									Save
 							</Button>
-						</div>
-						<IconButton onClick={handleRemove}>
-							<Icon>delete</Icon>
-						</IconButton>
-					</DialogActions>
-				)}
+							</div>
+							<IconButton onClick={handleRemove}>
+								<Icon>delete</Icon>
+							</IconButton>
+						</DialogActions>
+					)}
 			</form>
 		</Dialog>
 	);

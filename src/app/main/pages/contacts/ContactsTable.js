@@ -13,6 +13,8 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
 import clsx from 'clsx';
 import ContactsTablePaginationActions from './ContactsTablePaginationActions';
+import ContactDialog from './ContactDialog'
+
 
 const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
 	const defaultRef = React.useRef();
@@ -30,6 +32,17 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 });
 
 const EnhancedTable = ({ columns, data, onRowClick }) => {
+	const [open, setOpen] = React.useState(false);
+	const handleClose = () => {
+		setOpen(false);
+	};
+	const handleClickOpen = () => {
+		setOpen(true);
+	}
+	const [dialogData, setDialogData] = React.useState()
+
+
+
 	const {
 		getTableProps,
 		headerGroups,
@@ -89,6 +102,16 @@ const EnhancedTable = ({ columns, data, onRowClick }) => {
 		setPageSize(Number(event.target.value));
 	};
 
+	const handleClick=(ev, row) => {
+		// if (row) {
+		// 	dispatch(Actions.openEditContactDialog(row.original));
+		// }
+		console.log(row.original,'rowrow')
+		setDialogData(row.original)
+		handleClickOpen()
+		// console.log(dialogData,'dialogData')
+	}
+
 	// Render the UI for your table
 	return ( <div>
 	<TableContainer className="min-h-full sm:border-1 sm:rounded-16" >
@@ -122,7 +145,7 @@ const EnhancedTable = ({ columns, data, onRowClick }) => {
 						return (
 							<TableRow
 								{...row.getRowProps()}
-								onClick={ev => onRowClick(ev, row)}
+								onClick={ev => handleClick(ev, row)}
 								className="truncate cursor-pointer"
 							>
 								{row.cells.map(cell => {
@@ -164,6 +187,8 @@ const EnhancedTable = ({ columns, data, onRowClick }) => {
 				</TableFooter>
 			</MaUTable>
 		</TableContainer>
+		{open && <ContactDialog type="edit" data={dialogData}isOpen={open} closeDialog={handleClose}  />}
+
 		</div>
 	);};
 	
