@@ -38,6 +38,25 @@ const useStyles = makeStyles(theme => ({
 
 function ContactsSidebarContent(props) {
 	const user = null;
+	let data = null
+	data = JSON.parse(localStorage.getItem('user_data'))
+	console.log(data)
+
+	let value = null
+	if (data !== null) {
+		function titleCase(str) {
+			str = str.toLowerCase().split(' ');
+			for (var i = 0; i < str.length; i++) {
+				str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
+			}
+			return str.join(' ');
+		}
+		console.log(data)
+		 value = titleCase(data.username);
+
+	}
+	console.log(value, 'titleCasetitleCasetitleCase')
+
 
 	const classes = useStyles(props);
 
@@ -46,8 +65,8 @@ function ContactsSidebarContent(props) {
 			<FuseAnimate animation="transition.slideLeftIn" delay={200}>
 				<Paper className="rounded-0 shadow-none lg:rounded-8 lg:shadow-1">
 					<div className="p-24 flex items-center">
-						<Avatar alt="zzd" src="../../../" />
-						<Typography className="mx-12">Jhon Doe</Typography>
+						<Avatar alt={value.charAt(0)} src="../../../" />
+						<Typography className="mx-12">{value}</Typography>
 					</div>
 					<Divider />
 					<List>
@@ -63,7 +82,7 @@ function ContactsSidebarContent(props) {
 							</Icon>
 							<ListItemText className="truncate" primary="All contacts" disableTypography />
 						</ListItem>
-						<ListItem
+						{/* <ListItem
 							button
 							component={NavLinkAdapter}
 							to="/apps/contacts/frequent"
@@ -86,7 +105,7 @@ function ContactsSidebarContent(props) {
 								star
 							</Icon>
 							<ListItemText className="truncate" primary="Starred contacts" disableTypography />
-						</ListItem>
+						</ListItem> */}
 					</List>
 				</Paper>
 			</FuseAnimate>

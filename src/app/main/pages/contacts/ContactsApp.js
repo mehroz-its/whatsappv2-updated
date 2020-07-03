@@ -71,29 +71,7 @@ function ContactsApp() {
 				ref={pageLayout}	
 				// innerScroll
 		/>
-		<FuseAnimate animation="transition.expandIn" delay={300}>
-				<Fab
-					color="primary"
-					aria-label="add"
-					className={classes.addButton}
-					onClick={handleClickOpen}
-				// onClick={ev => dispatch(Actions.openNewContactDialog())}
-				>
-					<Icon>person_add</Icon>
-				</Fab>
-			</FuseAnimate>
-				{/* <FuseAnimate animation="transition.expandIn" delay={300}>
-				<Fab
-					color="primary"
-					aria-label="add"
-					className={classes.addButton}
-					onClick={ev => dispatch(Actions.openNewContactDialog())}
-				>
-					<Icon>person_add</Icon>
-				</Fab>
-			</FuseAnimate> */}
-
-			{open && <ContactDialog type="Create New Contact Group" data={dialogData}isOpen={open} closeDialog={handleClose}  />}
+	
 			</>
 			);
 }
