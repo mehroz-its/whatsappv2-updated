@@ -246,10 +246,10 @@ function ContactDialog(props) {
 						{contactDialog.type === 'new' ? 'New Contact' : 'Edit Contact'}
 					</Typography>
 				</Toolbar>
-				<div className="flex flex-col items-center justify-center pb-24">
-					<Avatar className="w-96 h-96" alt="contact avatar" src={form.avatar} />
+				<div className="flex flex-col items-center justify-center pb-10">
+					<Avatar className="w-56 h-56" alt="contact avatar" src={form.avatar} />
 					{contactDialog.type === 'edit' && (
-						<Typography variant="h6" color="inherit" className="pt-8">
+						<Typography variant="h6" color="inherit" className="pt-0">
 							{form.name}
 						</Typography>
 					)}
@@ -288,6 +288,7 @@ function ContactDialog(props) {
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth
+							disabled
 						/>
 					</div>
 
