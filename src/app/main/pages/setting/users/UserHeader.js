@@ -14,7 +14,7 @@ function UserHeader(props) {
 	const dispatch = useDispatch();
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
-
+	const [search,setSearch]=React.useState('')
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
 			<div className="flex items-center">
@@ -35,15 +35,15 @@ function UserHeader(props) {
 							<Icon color="action">search</Icon>
 
 							<Input
-								placeholder="Search"
-								className="flex flex-1 mx-8"
-								disableUnderline
-								fullWidth
-								value={searchText}
-								inputProps={{
-									'aria-label': 'Search'
-								}}
-								onChange={ev => dispatch(Actions.setProductsSearchText(ev))}
+									placeholder="Search"
+									className="flex flex-1 mx-8"
+									disableUnderline
+									fullWidth
+									onChange={e=>{
+									
+										props.SearchVal(e.target.value)
+										
+									}}
 							/>
 						</Paper>
 					</FuseAnimate>

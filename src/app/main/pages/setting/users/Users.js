@@ -54,18 +54,16 @@ function Users(props) {
 	function closeDialog(){
 		setOpen(false)
 	}
+	const updateText =(search)=>
+	{
+	  setVal(search)
+	}
 
 
-	const handleClose = () => {
-		setOpen(false);
-	  };
-	  const handleChange = (event) => {
-		setState({ ...state, [event.target.name]: event.target.checked });
-	  };
 	const [open, setOpen] = React.useState(false);
 	const[data,setData]=React.useState('')
 	const classes = useStyles(props);
-	
+	const[val,setVal]=React.useState('')
 	const handleClickOpen = () => {
 		setOpen(true);
 	  };
@@ -76,8 +74,8 @@ function Users(props) {
 				content: 'flex',
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
-			header={<UserHeader />}
-			content={<UserTable />}
+			header={<UserHeader  SearchVal={updateText} />}
+			content={<UserTable  ValueForSearch={val}/>}
 			// innerScroll
 		/>
 		<FuseAnimate animation="transition.expandIn" delay={300}>

@@ -25,13 +25,18 @@ function CountryTable(props) {
 		setOpen(false)
 	}
 	
-	console.log(props)
+ 
+ 
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState([]);
+	const [data2, setData2] = useState(data);
+	const [filter, setFilter] = useState([]);
+	const [press,setPress]=useState(props.PressedVal)
+	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -46,6 +51,8 @@ function CountryTable(props) {
 		cities:''
 		
 	})
+	
+	
 
 	const getData = ((loadData) => {
 		loadData = () => {
@@ -62,13 +69,16 @@ function CountryTable(props) {
 		};
 		loadData().then((response) => {
 			const tableData = response.data.data.list.data
-			console.log(tableData)
+
 			setData(tableData)
+			setData2(tableData)
 		});
 	})
 
 	React.useEffect(() => {
 		getData()
+		
+		
 	}, []);
 
 
@@ -108,19 +118,44 @@ function CountryTable(props) {
 		setSelected([]);
 	}
 
-	function handleClick(n) {
+	function handleClick(filter) {
 		setOpen(true)
-		console.log(dialogData,n,'asdsd');
+
 		setDialogData({
-			enabled:n.enabled,
-			id:n.id,
-			name:n.name,
-			code:n.code
+			enabled:filter.enabled,
+			id:filter.id,
+			name:filter.name,
+			code:filter.code
     })
 		
 		
 }
-	console.log(dialogData,'asdsdssssssssssss');
+	if(searchVal!==props.ValueForSearch)
+	{
+		{search()}
+	}
+	
+	// if(searchVal.length===0)
+	// {
+	// 	{getData()}
+	// }
+
+
+	
+
+//    if(props.PressedVal==8){
+// 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+// }
+
+	function search(){
+		console.log('ceeleded',props.ValueForSearch,searchVal);
+		
+        setSearchVal(props.ValueForSearch)
+		setData2(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+		console.log(data,'filterssss');
+		
+		
+	}
 	
 
 	function handleCheck(event, id) {
@@ -148,6 +183,24 @@ function CountryTable(props) {
 		setRowsPerPage(event.target.value);
 	}
 
+	console.log(data2,'data32222');
+	
+
+
+	//   const filter=data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase()))
+	//   console.log(filter,'filesdasD');
+	 
+    //   if(props.ValueForSearch)
+   	//  function search() {
+	// 	const filter=data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase()))
+	//     setSearchVal(filter)
+	// }
+
+	// if(props.ValueForSearch.length > 0)
+	// {
+	// 	{search()}
+	// }
+	  
 	return (
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
@@ -162,7 +215,7 @@ function CountryTable(props) {
 
 					<TableBody>
 						{_.orderBy(
-							data,
+							data2,
 							[
 								o => {
 									switch (order.id) {
@@ -178,8 +231,8 @@ function CountryTable(props) {
 							[order.direction]
 						)
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map(n => {
-								const isSelected = selected.indexOf(n.id) !== -1;
+							.map(filter => {
+								const isSelected = selected.indexOf(filter.id) !== -1;
 								return (
 									<TableRow
 										className="h-64 cursor-pointer"
@@ -187,9 +240,9 @@ function CountryTable(props) {
 										role="checkbox"
 										aria-checked={isSelected}
 										tabIndex={-1}
-										key={n.id}
+										key={filter.id}
 										selected={isSelected}
-										onClick={event => handleClick(n)}
+										onClick={event => handleClick(filter)}
 									>
 
 										{/* <TableCell className="w-64 text-center" padding="none">
@@ -200,17 +253,17 @@ function CountryTable(props) {
 											/>
 										</TableCell> */}
 										<TableCell component="th" scope="row" >
-											{n.id}
+											{filter.id}
 										</TableCell>
 										<TableCell component="th" scope="row">
-											{n.name}
+											{filter.name}
 										</TableCell>
 										<TableCell component="th" scope="row">
-											{n.code}
+											{filter.code}
 										</TableCell>
 									
 										<TableCell component="th" scope="row" align="left">
-										{n.enabled ? (
+										{filter.enabled ? (
 												<Icon className="text-green text-20">check_circle</Icon>
 												) : (
 													<Icon className="text-red text-20">cancel</Icon>

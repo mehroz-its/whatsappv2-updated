@@ -45,7 +45,7 @@ const GreenCheckbox = withStyles({
 
 const CountryDialog = (props) => {
  
-    const {isOpen,type} = props
+    const {isOpen,type,data} = props
    
     const [openDialog, setopenDialog] = React.useState(isOpen);
     
@@ -61,8 +61,11 @@ const CountryDialog = (props) => {
       
     // }
 
-    const [isToggled, setIsToggled] = React.useState(false);
-
+    const [isToggled, setIsToggled] = React.useState(props.data.enabled);
+   
+   console.log(isToggled,'asdasd');
+   
+     
     const handleSubmit = () => {
          console.log(city,'city');
          
@@ -92,10 +95,16 @@ const CountryDialog = (props) => {
         let update_params = {
           key: 'id',
           value:props.data.id,
-          params:props.data
+          params:{
+            id:data.id,
+            name:name,
+            code:email,
+            enabled:isToggled,
+            cities:undefined
+          }
         }
         console.log(update_params,'update_params')
-        // return
+        //  return ;
         CoreHttpHandler.request('locations', 'update_country', update_params, (response) => {
           // props.getUpdatedData()
           console.log(response)
@@ -166,8 +175,7 @@ const [city,setCities]=React.useState(props.data.cities)
                 <TextField
                     className="mb-24"
                     label="Name"
-                   autoFocus
-                  
+                    autoFocus
                     name="name"
                     value={name}
                     onChange={e=>setName(e.target.value)}

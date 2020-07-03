@@ -128,10 +128,9 @@ const PermissionDialog = (props) => {
         
       // let fileName = uploadedFilePath.split('https://upload.its.com.pk/')
       let params = {
-        id: '',
+        id: "0",
         description: description,
         title: title,
-        method: method,
         rule_set: result,
         enabled: true,
         consumer: 0,

@@ -45,11 +45,13 @@
     const RolesDialog = (props) => {
         console.log(props,'in dialog')
         const {isOpen,type,data} = props
+       
+        const [selected,setSelected]=React.useState([])
         const [openDialog, setopenDialog] = React.useState(isOpen);
         const [name, setName] = React.useState(data.name);
         const [description, setDescription] = React.useState(data.description);
-        const [isToggled, setIsToggled] = React.useState(data.enabled);
-        
+        const [isToggled, setIsToggled] = React.useState(props.data.enabled);
+        console.log(isToggled,'asdasd');
         const handleClose = () => {
             props.closeDialog()
             setopenDialog(false);
@@ -65,7 +67,10 @@
        
        
         const handleChange = (event) => {
+            console.log(event.target.name,event.target.checked,'event',event);
+        
             setState({ ...state, [event.target.name]: event.target.checked });
+            
         };
         const [state, setState] = React.useState({
             
@@ -77,7 +82,7 @@
         const result=Object.values(state)
 
         const handleSubmit = () => {
-    
+             
         
             // let fileName = uploadedFilePath.split('https://upload.its.com.pk/')
             let params = {
@@ -101,7 +106,7 @@
         
               });
             } else {
-       return;
+     
               console.log(props.data,'datasss');
               
               
@@ -112,7 +117,7 @@
               }
               console.log(update_params,'update_params')
               // return
-              CoreHttpHandler.request('users', 'update_user', update_params, (response) => {
+              CoreHttpHandler.request('roles', 'update_role', update_params, (response) => {
                 // props.getUpdatedData()
                 console.log(response)
                 props.closeDialog()
@@ -173,19 +178,19 @@
                         fullWidth
                     />
                 </div>
-    <FormControlLabel
-    control={<GreenCheckbox checked={isToggled} onChange={handleToggleChange} name="isToggled" />}
-    label="Enabled"
-    />
+                <FormControlLabel
+        control={<Checkbox checked={isToggled} onChange={handleToggleChange} name="checkedA"   />}
+        label="Enabled"
+      />
     </div>
     <div style={{flexDirection:'column',flex:1,display:'flex',marginLeft:10}}>
     <FormControlLabel
 
-    control={<GreenCheckbox checked={state.Agentback} onChange={handleChange} name="Agentback" />}
+    control={<GreenCheckbox checked={state.Agentback} onChange={handleChange} name="Agentback"  value={0} />}
     label="Agent Backend Access"
     />
     <FormControlLabel
-    control={<GreenCheckbox checked={state.Agentfront} onChange={handleChange} name="Agentfront" />}
+    control={<GreenCheckbox checked={state.Agentfront} onChange={handleChange} name="Agentfront"  />}
     label="Agent FrontEnd Access"
     />
     <FormControlLabel
