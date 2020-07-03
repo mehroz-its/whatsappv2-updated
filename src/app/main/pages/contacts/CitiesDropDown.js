@@ -62,7 +62,7 @@ function CitiesDropDown(props) {
 	const handleCityOpen = () => {
 		setSelectCityOpen(true);
 	};
-    const defaultValueCity = (byName) ? 'Select City' : 0;
+	const defaultValueCity = city === 'N/A' ? 'Select Country' : city
     const byName = true
 
     return (
@@ -72,7 +72,7 @@ function CitiesDropDown(props) {
             open={cityopen}
             onClose={handleCityClose}
             onOpen={handleCityOpen}
-            value={city}
+            value={defaultValueCity}
             onChange={handleCityChange}
             fullWidth
         >

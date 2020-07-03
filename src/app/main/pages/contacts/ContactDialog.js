@@ -9,6 +9,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Icon from '@material-ui/core/Icon';
+import InputLabel from '@material-ui/core/InputLabel';
+
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -44,7 +46,7 @@ function ContactDialog(props) {
 	const contactDialog = { data: data, props: { open: isOpen }, type: type }
 	const [value, setValue] = React.useState(data.gender);
 	const [selectedcountry, setSelectedCountry] = React.useState('Country');
-	const [country, setCountry] = React.useState('');
+	const [country, setCountry] = React.useState(data.country);
 
 	const [city, setCity] = React.useState('Country');
 	const [countries, setCountries] = React.useState([]);
@@ -52,7 +54,7 @@ function ContactDialog(props) {
 
 	const [countryopen, setSelectCountryOpen] = React.useState(false);
 	const [cityopen, setSelectCityOpen] = React.useState(false);
-	const [selectedCity,setSelectedCity]=React.useState('')
+	const [selectedCity, setSelectedCity] = React.useState('')
 
 
 	const { form, handleChange, setForm } = useForm(defaultFormState);
@@ -79,14 +81,14 @@ function ContactDialog(props) {
 
 		});
 	})
-	const getSelectedCity = (val)=>{
+	const getSelectedCity = (val) => {
 		setSelectedCity(val)
 	}
 	const byName = true
-	const defaultValueCountry = (byName) ? 'Select Country' : 0;
+	const defaultValueCountry = country === 'N/A' ? 'Select Country' : country
 	// const selected = selectedCountry === 'N/A' ? defaultValue : selectedCountry;
 
-	const defaultValueCity = (byName) ? 'Select City' : 0;
+	// const defaultValueCity = (byName) ? 'Select City' : 0;
 
 
 
@@ -144,7 +146,7 @@ function ContactDialog(props) {
 	const handleCityChange = (event) => {
 		setCity(event.target.value);
 		console.log(city)
-		
+
 	}
 
 	const handleCountryClose = () => {
@@ -165,34 +167,36 @@ function ContactDialog(props) {
 	function handleSubmit(event) {
 		event.preventDefault();
 		console.log(data)
-let params={
-	id:data.id,
-	number:data.number,
-	assign_name:`${form.firstname}${form.lastName}`,
-	attributes:[
-		{attribute_id:data.attribute_idfirstname, firstname: form.firstname},
-		{attribute_id: data.attribute_idlastname, lastname: form.lastname},
-		{attribute_id: data.attribute_idgender, gender: value},
-		{attribute_id: data.attribute_idage, age:form.age},
-		{attribute_id: data.attribute_idemail, email: form.email},
-		{attribute_id: data.attribute_idcountry, country: country},
-		{attribute_id: data.attribute_idcity, city: selectedCity}
-	]
-}
-CoreHttpHandler.request('contact_book', 'update', {
-	key: ':id',
-	value: data.id,
-	params: params
-}, (response) => {
-	console.log(response)
-	props.closeDialog()
+		
+		let params = {
+			id: data.id,
+			number: data.number,
+			assign_name: `${form.firstname}${form.lastname}`,
+			attributes: [
+				{ attribute_id: data.attribute_idfirstname, firstname: form.firstname },
+				{ attribute_id: data.attribute_idlastname, lastname: form.lastname },
+				{ attribute_id: data.attribute_idgender, gender: value },
+				{ attribute_id: data.attribute_idage, age: form.age },
+				{ attribute_id: data.attribute_idemail, email: form.email },
+				{ attribute_id: data.attribute_idcountry, country: country },
+				{ attribute_id: data.attribute_idcity, city: selectedCity }
+			]
+		}
+		console.log(params)
+		CoreHttpHandler.request('contact_book', 'update', {
+			key: ':id',
+			value: data.id,
+			params: params
+		}, (response) => {
+			console.log(response)
+			props.closeDialog()
 
-}, (error) => {
-console.log(error)
-props.closeDialog()
-});
+		}, (error) => {
+			console.log(error)
+			props.closeDialog()
+		});
 
-console.log(params,'i am on submit')
+		console.log(params, 'i am on submit')
 		// if (contactDialog.type === 'new') {
 		// 	dispatch(Actions.addContact(form));
 		// } else {
@@ -205,7 +209,7 @@ console.log(params,'i am on submit')
 		dispatch(Actions.removeContact(form.id));
 		closeComposeDialog();
 	}
-	
+
 	// if (country !== null) { 
 	// 		CoreHttpHandler.request('locations', 'get_cities', {
 	// 			columns: "id, name",
@@ -358,7 +362,7 @@ console.log(params,'i am on submit')
 
 					<div className="flex">
 						<FormLabel component="legend">Gender</FormLabel>
-						
+
 					</div>
 					<div className="flex">
 						<RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleRadio}>
@@ -373,16 +377,22 @@ console.log(params,'i am on submit')
 						{/* <div className="min-w-48 pt-20">
 						
 						</div> */}
+						{/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
+
 						<Select
 							labelId="demo-controlled-open-select-label"
 							id="demo-controlled-open-select"
 							open={countryopen}
 							onClose={handleCountryClose}
 							onOpen={handleCountryOpen}
-							value={country}
+							value={defaultValueCountry}
 							onChange={handleCountryChange}
 							fullWidth
+
 						>
+							{/* <MenuItem value="0">
+								<em>None</em>
+							</MenuItem> */}
 							<MenuItem key={`country_list_item_0`} value={defaultValueCountry}>Select Country</MenuItem>
 							{countries.length > 1 ? countries.map((country, i) => {
 								let item = null;
@@ -398,7 +408,7 @@ console.log(params,'i am on submit')
 
 
 					<div className="flex">
-						<CitiesDropDown country={country} selectedCity={getSelectedCity}/>
+						<CitiesDropDown country={country} selectedCity={getSelectedCity} />
 						{/* <div className="min-w-48 pt-20">
 							<Icon color="action">work</Icon>
 						</div> */}
@@ -526,9 +536,19 @@ console.log(params,'i am on submit')
 									Save
 							</Button>
 							</div>
-							<IconButton onClick={handleRemove}>
+							{/* <IconButton onClick={handleRemove}>
 								<Icon>delete</Icon>
-							</IconButton>
+							</IconButton> */}
+							<div >
+								<Button
+									variant="contained"
+									color="primary"
+									type="submit"
+									onClick={()=>{props.closeDialog()}}
+								>
+									Cancel
+							</Button>
+							</div>
 						</DialogActions>
 					)}
 			</form>
