@@ -45,7 +45,7 @@ const GreenCheckbox = withStyles({
 
 const CitiesDialog = (props) => {
     console.log(props,'in dialog')
-    const {isOpen,type} = props
+    const {isOpen,type,data} = props
    
     const [openDialog, setopenDialog] = React.useState(isOpen);
     
@@ -94,7 +94,13 @@ const CitiesDialog = (props) => {
         let update_params = {
           key: 'id',
           value:props.data.id,
-          params:props.data
+          params:{
+            id:data.id,
+            name:name,
+            code:email,
+            enabled:isToggled,
+            country:0
+          }
         }
         console.log(update_params,'update_params')
         // return
@@ -168,7 +174,7 @@ const [city,setCities]=React.useState(props.data.cities)
 
     fullWidth
     maxWidth="sm">
-<DialogTitle id="form-dialog-title">{type} Country</DialogTitle>
+<DialogTitle id="form-dialog-title">{type} City</DialogTitle>
 <DialogContent classes={{ root: 'p-24' }}>
             <div className="flex">
                 <div className="min-w-48 pt-20">

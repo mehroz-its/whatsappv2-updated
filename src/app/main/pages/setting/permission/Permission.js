@@ -42,13 +42,18 @@ function Permissions(props) {
 	}
     const[data,setData]=React.useState('')
 	const [open, setOpen] = React.useState(false);
-
+	const[val,setVal]=React.useState('')
 	const classes = useStyles(props);
 	
 	const handleClickOpen = () => {
 		setOpen(true);
 	  };
-	
+
+	  const updateText = (search) =>
+	  {
+		setVal(search)
+	  }
+
 	
 	return (
 		<>
@@ -57,8 +62,8 @@ function Permissions(props) {
 				content: 'flex',
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
-			header={<PermissionHeader />}
-			content={<PermissionTable />}
+			header={<PermissionHeader  SearchVal={updateText}/>}
+			content={<PermissionTable   ValueForSearch={val}/>}
 			// innerScroll
 		/>
 						

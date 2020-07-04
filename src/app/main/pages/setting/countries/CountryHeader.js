@@ -14,6 +14,16 @@ function CountryHeader(props) {
 	const dispatch = useDispatch();
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
+	const [search,setSearch]=React.useState('')
+	const [backVal,setBackVal]=React.useState('')
+	const keydown=(event)=>{
+		
+		if(event.keyCode!==8)
+		{    console.log('caleeeedddd');
+		
+                 props.ButtonVal(event.keyCode)
+		}
+	}
 
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
@@ -39,11 +49,12 @@ function CountryHeader(props) {
 								className="flex flex-1 mx-8"
 								disableUnderline
 								fullWidth
-								value={searchText}
-								inputProps={{
-									'aria-label': 'Search'
+							    onChange={e=>{
+								
+									props.SearchVal(e.target.value)
+									
 								}}
-								onChange={ev => dispatch(Actions.setProductsSearchText(ev))}
+						
 							/>
 						</Paper>
 					</FuseAnimate>

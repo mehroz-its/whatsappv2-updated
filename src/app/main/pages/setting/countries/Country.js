@@ -60,11 +60,13 @@ function Country(props) {
 	  
 	const [open, setOpen] = React.useState(false);
 	const[data,setData]=React.useState('')
+	const[val,setVal]=React.useState('')
+
 	const classes = useStyles(props);
 	
 	const handleClickOpen = () => {
 		setOpen(true)
-		console.log('handle');
+	
 		;
 	  };
 	
@@ -72,44 +74,14 @@ function Country(props) {
 	  const handleClose = () => {
 		setOpen(false);
 	  };
-	//   const handleChange = (event) => {
-	// 	setState({ ...state, [event.target.name]: event.target.checked });
-	//   };
-	//   const loadCities = () => {
-    //     return CoreHttpService.request('locations', 'get_cities', {
-    //         columns: "id, name",
-    //         sortby: "ASC",
-    //         orderby: "id",
-    //         where: "enabled = $1",
-    //         values: true,
-    //         page: 0,
-    //         limit: 0
-	// 	}, null, null, true);
-	// 	{createCountryDialog}
-	// };
-	
+
+	  const updateText =(search)=>
+	  {
+		setVal(search)
+	  }
 
 
-	//   const createCountryDialog = () => {
-	// 	  console.log('called');
-		  
-    //     loadCities().then(response => {
-    //         const cities = response.data.data.list.data;
-
-    //         setDialogData({
-    //             country: {
-    //                 id: '',
-    //                 code: '',
-    //                 name: '',
-    //                 enabled: true,
-    //                 cities: []
-    //             },
-    //             cities,
-    //             type: 'create',
-    //             state: true,
-    //         })
-    //     });
-	// };
+	  
 	
 	return (
 		<>
@@ -118,8 +90,8 @@ function Country(props) {
 				content: 'flex',
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
-			header={<CountryHeader />}
-			content={<CountryTable />}
+			header={<CountryHeader  SearchVal={updateText} />}
+			content={<CountryTable   ValueForSearch={val}   />}
 			// innerScroll
 		/>
 <FuseAnimate animation="transition.expandIn" delay={300}>

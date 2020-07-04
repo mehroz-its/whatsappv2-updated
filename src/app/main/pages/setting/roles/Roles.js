@@ -55,9 +55,11 @@ function Roles(props) {
 		checkedF: false,
 	  });
 	const [open, setOpen] = React.useState(false);
-    const [data,setData]=React.useState(false)
+    const [data,setData]=React.useState({
+		enabled:false
+	})
 	const classes = useStyles(props);
-	
+	const[val,setVal]=React.useState('')
 	const handleClickOpen = () => {
 		setOpen(true);
 	  };
@@ -69,6 +71,12 @@ function Roles(props) {
 	  const handleChange = (event) => {
 		setState({ ...state, [event.target.name]: event.target.checked });
 	  };
+
+	  const updateText =(search)=>
+	  {
+		setVal(search)
+	  }
+
 	return (
 		<>
 		<FusePageCarded
@@ -76,8 +84,8 @@ function Roles(props) {
 				content: 'flex',
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
-			header={<RolesHeader />}
-			content={<Rolestable />}
+			header={<RolesHeader SearchVal={updateText} />}
+			content={<Rolestable  ValueForSearch={val} />}
 			// innerScroll
 		/>
 				

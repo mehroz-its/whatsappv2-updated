@@ -32,7 +32,16 @@ function RolesTable(props) {
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(TableData);
 	const [page, setPage] = useState(0);
+	const [data2, setData2] = useState(data);
+	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
 	const [rowsPerPage, setRowsPerPage] = useState(10);
+	const[dialogData,setDialogData]=useState({
+		enabled:'',
+		id:'',
+		name:'',
+		description:'',
+        permission:[]
+})
 	const [order, setOrder] = useState({
 		direction: 'asc',
 		id: null
@@ -55,6 +64,7 @@ function RolesTable(props) {
 			const tableData = response.data.data.list.data
 			console.log(tableData)
 			setData(tableData)
+			setData2(tableData)
 		});
 	})
 
@@ -98,8 +108,20 @@ function RolesTable(props) {
 	}
 
 	function handleClick(n) {
+		console.log(n,'nnnnnnnnnnnnnn');
+		
 		setOpen(true)
+		setDialogData({
+			enabled:n.enabled,
+			id:n.id,
+			name:n.name,
+			description:n.description,
+			permission:n.permission
+			
+	})
+		
 	}
+
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
@@ -126,6 +148,33 @@ function RolesTable(props) {
 		setRowsPerPage(event.target.value);
 	}
 
+	if(searchVal!==props.ValueForSearch)
+	{
+		{search()}
+	}
+	
+	// if(searchVal.length===0)
+	// {
+	// 	{getData()}
+	// }
+
+
+	
+
+//    if(props.PressedVal==8){
+// 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+// }
+
+	function search(){
+		console.log('ceeleded',props.ValueForSearch,searchVal);
+		
+        setSearchVal(props.ValueForSearch)
+		setData2(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+		console.log(data,'filterssss');
+		
+		
+	}
+
 	return (
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
@@ -140,7 +189,7 @@ function RolesTable(props) {
 
 					<TableBody>
 						{_.orderBy(
-							data,
+							data2,
 							[
 								o => {
 									switch (order.id) {
@@ -237,7 +286,7 @@ function RolesTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-			{open ? <RolesDialog  isOpen={open} closeDialog={closeDialog} type="Update"/>:null}
+			{open ? <RolesDialog  isOpen={open} closeDialog={closeDialog} type="Update"  data={dialogData} />:null}
 		</div>
 	);
 }
