@@ -26,6 +26,7 @@ function ContactsApp() {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
 	const [open, setOpen] = React.useState(false);
+	const[val,setVal]=React.useState('')
 	const dispatch = useDispatch();
 
 
@@ -50,7 +51,10 @@ function ContactsApp() {
 		}
 	  )
 
-
+	  const updateText =(search)=>
+	  {
+		setVal(search)
+	  }
 
 	return (
 		<>
@@ -62,9 +66,9 @@ function ContactsApp() {
 			header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
 			wrapper: 'min-h-0'
 		}}
-		header={<ContactsHeader pageLayout={pageLayout} />}
+		header={<ContactsHeader pageLayout={pageLayout}   SearchVal={updateText}/>}
 
-		content={<ContactsList />}
+		content={<ContactsList   ValueForSearch={val} />}
 		
 			leftSidebarContent={<ContactsSidebarContent />}
 				sidebarInner

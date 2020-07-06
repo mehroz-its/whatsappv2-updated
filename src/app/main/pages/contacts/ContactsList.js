@@ -16,7 +16,8 @@ import { object } from 'prop-types';
 
 function ContactsList(props) {
 	const [data, setData] = React.useState([])
-
+	const [data2, setData2] = useState([]);
+	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
 	let filtered = []
 	let newobj = {
 
@@ -39,7 +40,7 @@ function ContactsList(props) {
 
 	})
 	
-	console.log(filtered, 'datadatadatadatadatadatadata')
+	console.log(data2,searchVal,props.ValueForSearch, 'datadatadatadatadatadatadata')
 
 	let ContactsData = {
 		entities: data,
@@ -58,6 +59,8 @@ function ContactsList(props) {
 			starred: ["5725a680ae1ae9a3c960d487", "5725a6801146cce777df2a08", "5725a680bbcec3cc32a8488a"]
 		}
 	}
+
+	
 	const dispatch = useDispatch();
 	// const contacts = useSelector(({ contactsApp }) => contactsApp.contacts.entities);
 	const contacts = ContactsData.entities
@@ -87,7 +90,7 @@ function ContactsList(props) {
 			const tableData = response.data.data.list.data
 			console.log(tableData)
 			setData(tableData)
-			
+		
 		});
 	})
 
@@ -95,7 +98,38 @@ function ContactsList(props) {
 		getData()
 	}, []);
 
+	if(searchVal!==props.ValueForSearch)
+	{
+		{search()}
+	}
+	
+	// if(searchVal.length===0)
+	// {
+	// 	{getData()}
+	// }
+	
+	
+	console.log(data2,props.ValueForSearch,'asdasdasdasdasdasd');
+	
+	
+	//    if(props.PressedVal==8){
+	// 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+	// }
+	
+	function search(){
+		console.log('ceeleded',props.ValueForSearch,searchVal);
+		
+		setSearchVal(props.ValueForSearch)
+		setData2(filtered.filter(n=>n.firstname.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+		console.log(data,'filterssss');
+		
+		
+	}
 
+	if(data2.length>0)
+	{
+		filtered=data2
+	}
 	const [filteredData, setFilteredData] = useState(null);
 
 	const columns = React.useMemo(

@@ -39,11 +39,13 @@ function ContactGroupHeader(props) {
 								className="flex flex-1 mx-8"
 								disableUnderline
 								fullWidth
-								value={searchText}
-								inputProps={{
-									'aria-label': 'Search'
+								//value={searchText}
+							
+								onChange={e=>{
+							
+									props.SearchVal(e.target.value)
+									
 								}}
-								onChange={ev => dispatch(Actions.setProductsSearchText(ev))}
 							/>
 						</Paper>
 					</FuseAnimate>

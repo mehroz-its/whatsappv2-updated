@@ -52,8 +52,10 @@ function ContactsHeader(props) {
 								disableUnderline
 								fullWidth
 								// value={searchText}
-								inputProps={{
-									'aria-label': 'Search'
+								onChange={e=>{
+							
+									props.SearchVal(e.target.value)
+									
 								}}
 								// onChange={ev => dispatch(Actions.setSearchText(ev))}
 							/>
