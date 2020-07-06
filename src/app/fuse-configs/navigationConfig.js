@@ -128,15 +128,15 @@ const navigationConfig = [
 
 						]
 					},
-					{
-						id: 'Block List',
-						title: 'Block List ',
-						translate: 'Block List',
-						type: 'item',
-						exact: true,
-						url: '/apps/block-list',
+					// {
+					// 	id: 'Block List',
+					// 	title: 'Block List ',
+					// 	translate: 'Block List',
+					// 	type: 'item',
+					// 	exact: true,
+					// 	url: '/apps/block-list',
 
-					}
+					// }
 
 				]
 			},
