@@ -27,9 +27,11 @@ import BlockListConfig from './blocklist/BlockListConfig'
 import ContactGroupConfig from './contact-group/ContactGroupConfig'
 import TokenConfig from './auth/token/TokenConfig'
 import ResetPassword2PageConfig from './auth/reset-password-2/ResetPassword2PageConfig'
+import BlockAppConfig from './BlockedContacts/BlockAppConfig'
 
 const pagesConfigs = [
 	ContactGroupConfig,
+	BlockAppConfig,
 	BlockListConfig,
 	RegisterPageConfig,
 	ResetPasswordPageConfig,
