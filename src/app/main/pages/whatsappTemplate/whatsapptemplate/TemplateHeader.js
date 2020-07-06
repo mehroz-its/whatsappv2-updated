@@ -39,11 +39,11 @@ function TemplateHeader(props) {
 								className="flex flex-1 mx-8"
 								disableUnderline
 								fullWidth
-								value={searchText}
-								inputProps={{
-									'aria-label': 'Search'
+								onChange={e=>{
+							
+									props.SearchVal(e.target.value)
+									
 								}}
-								onChange={ev => dispatch(Actions.setProductsSearchText(ev))}
 							/>
 						</Paper>
 					</FuseAnimate>

@@ -27,7 +27,9 @@ function CampaignTable(props) {
 	const [open, setOpen] = React.useState(false)
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(TableData);
+	const [data2, setData2] = useState(data);
 	const [page, setPage] = useState(0);
+	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
 		direction: 'asc',
@@ -36,7 +38,7 @@ function CampaignTable(props) {
 
 
 
-	const getData = ((loadData)=>{
+	const getData = ((loadData) => {
 		loadData = () => {
 			return CoreHttpHandler.request('campaigns', 'listing', {
 				columns: "*",
@@ -52,8 +54,10 @@ function CampaignTable(props) {
 			const tableData = response.data.data.list.data
 			console.log(tableData)
 			setData(tableData)
+			setData2(tableData)
+
 		});
-	}) 
+	})
 
 	React.useEffect(() => {
 		getData()
@@ -86,6 +90,20 @@ function CampaignTable(props) {
 			id
 		});
 	}
+
+	function search() {
+		console.log('ceeleded', props.ValueForSearch, searchVal);
+
+		setSearchVal(props.ValueForSearch)
+		setData2(data.filter(n => n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+		console.log(data, 'filterssss');
+
+
+	}
+	if (searchVal !== props.ValueForSearch) {
+		{ search() }
+	}
+
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
@@ -146,7 +164,7 @@ function CampaignTable(props) {
 
 					<TableBody>
 						{_.orderBy(
-							data,
+							data2,
 							[
 								o => {
 									switch (order.id) {

@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 function Campaign(props) {
 	const classes = useStyles(props);
 	const [open, setOpen] = React.useState(false);
+	const[val,setVal]=React.useState('')
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -49,6 +50,12 @@ function Campaign(props) {
 	const handleClose = () => {
 		setOpen(false);
 	};
+	
+	const updateText =(search)=>
+	{
+	  setVal(search)
+	}
+
 	const [age, setAge] = React.useState('Text');
 
 	return (
@@ -58,8 +65,8 @@ function Campaign(props) {
 					content: 'flex',
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
-				header={<TemplateHeader />}
-				content={<TemplateTable />}
+				header={<TemplateHeader SearchVal={updateText} />}
+				content={<TemplateTable  ValueForSearch={val} />}
 			// innerScroll
 			/>
 			{/* <FuseAnimate animation="transition.expandIn" delay={300}>

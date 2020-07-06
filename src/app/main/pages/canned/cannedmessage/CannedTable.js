@@ -33,6 +33,8 @@ function CannedTable(props) {
 
 	const [data, setData] = useState([]);
 	const [page, setPage] = useState(0);
+	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
+	const [data2, setData2] = useState(data);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
 		direction: 'asc',
@@ -59,6 +61,8 @@ function CannedTable(props) {
 			const tableData = response.data.data.list.data
 			console.log(tableData)
 			setData(tableData)
+			setData2(tableData)
+
 		});
 	})
 
@@ -116,6 +120,20 @@ function CannedTable(props) {
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
 	}
 
+	function search(){
+		console.log('ceeleded',props.ValueForSearch,searchVal);
+		
+		setSearchVal(props.ValueForSearch)
+		setData2(data.filter(n=>n.message_name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+		console.log(data,'filterssss');
+		
+		
+	}
+	if(searchVal!==props.ValueForSearch)
+{
+	{search()}
+}
+
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
@@ -155,7 +173,7 @@ function CannedTable(props) {
 
 					<TableBody>
 						{_.orderBy(
-							data,
+							data2,
 							[
 								o => {
 									switch (order.id) {

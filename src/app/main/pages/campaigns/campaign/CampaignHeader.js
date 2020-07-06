@@ -14,6 +14,7 @@ function CampaignHeader(props) {
 	const dispatch = useDispatch();
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
+    const [search,setSearch]=React.useState('')
 
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
@@ -39,11 +40,11 @@ function CampaignHeader(props) {
 								className="flex flex-1 mx-8"
 								disableUnderline
 								fullWidth
-								value={searchText}
-								inputProps={{
-									'aria-label': 'Search'
+								onChange={e=>{
+							
+									props.SearchVal(e.target.value)
+									
 								}}
-								onChange={ev => dispatch(Actions.setProductsSearchText(ev))}
 							/>
 						</Paper>
 					</FuseAnimate>

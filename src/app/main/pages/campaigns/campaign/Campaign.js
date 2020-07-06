@@ -27,6 +27,8 @@ const useStyles = makeStyles({
 
 function Campaign(props) {
 	const [open, setOpen] = React.useState(false);
+	const[val,setVal]=React.useState('')
+
 	const [dialogData,setDialogData] =  React.useState({
 		name:'',
 		description:'',
@@ -47,6 +49,11 @@ function Campaign(props) {
 	  const handleClose = () => {
 		setOpen(false);
 	  };
+	  const updateText =(search)=>
+	  {
+		setVal(search)
+		console.log(val)
+	  }
 
 	return (
 		<>
@@ -56,8 +63,8 @@ function Campaign(props) {
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
 				root:classes.layoutRoot,
 			}}
-			header={<CampaignHeader />}
-			content={<CampaignTable />}
+			header={<CampaignHeader SearchVal={updateText} />}
+			content={<CampaignTable  ValueForSearch={val}  />}
 			// innerScroll
 		/>
 <FuseAnimate animation="transition.expandIn" delay={300}>
