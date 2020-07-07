@@ -19,6 +19,8 @@ import Widget2 from './widgets/Widget2';
 import WidgetNow from './widgets/WidgetNow';
 import WidgetWeather from './widgets/WidgetWeather';
 import Widget5 from './/widgets/Widget5'
+import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading'
+
 
 const useStyles = makeStyles({
 	layoutRoot: {}
@@ -127,6 +129,8 @@ function DashboardApp(props) {
 	const pageLayout = useRef(null);
 	const [rader, setrader] = React.useState(newMessageList);
 	const [box, setBox] = React.useState([]);
+	const [radarList, setRadarList] = React.useState([]);
+
 
 	const [tabValue, setTabValue] = useState(0);
 	console.log(props)
@@ -198,7 +202,8 @@ function DashboardApp(props) {
 	};
 	const messagestateSuccess = (response) => {
         const list = response.data.data.chartData;
-        console.log("list : ", list);
+		console.log("list : ", list);
+		setRadarList(list)
         rader_chart(list)
     };
 
@@ -206,6 +211,13 @@ function DashboardApp(props) {
     };
 	function handleChangeTab(event, value) {
 		setTabValue(value);
+	}
+	if (box.length === 0 && radarList.length ===0 ) {
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+		);
 	}
 	return (
 		<FusePageSimple

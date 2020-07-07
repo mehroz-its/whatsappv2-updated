@@ -12,6 +12,8 @@ import * as Actions from './store/actions';
 import Data from './ContactData'
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 import { object } from 'prop-types';
+import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading'
+
 
 
 function ContactsList(props) {
@@ -253,10 +255,7 @@ function ContactsList(props) {
 	if (filtered.length === 0) {
 		return (
 			<div className="flex flex-1 items-center justify-center h-full">
-				<Typography color="textSecondary" variant="h5">
-					{/* There are no contacts! */}
-					Loading Your Contacts
-				</Typography>
+				<FuseLoading />
 			</div>
 		);
 	}

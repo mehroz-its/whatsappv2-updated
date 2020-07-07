@@ -15,6 +15,7 @@ import * as Actions from './store/actions';
 import PermissionTableHead from './PermissionTableHead';
 import TableData from './PermissionData'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 
 
 function PermissionTable(props) {
@@ -101,6 +102,14 @@ function PermissionTable(props) {
 			direction,
 			id
 		});
+	}
+
+	if (data2.length === 0) {
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+		);
 	}
 
 	function handleSelectAllClick(event) {
