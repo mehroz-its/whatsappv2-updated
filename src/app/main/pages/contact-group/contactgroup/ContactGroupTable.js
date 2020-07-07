@@ -16,6 +16,8 @@ import ContactGroupHead from './ContactGroupHead';
 import TableData from '../CannedData'
 import ContactGroupDialog from './ContactGroupDialog'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
+
 
 
 function ContactGroupTable(props) {
@@ -116,6 +118,13 @@ function ContactGroupTable(props) {
 		setOpen(true);
 
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
+	}
+	if (data2.length === 0) {
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+		);
 	}
 
 	function handleCheck(event, id) {

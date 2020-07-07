@@ -16,6 +16,8 @@ import RolesTableHead from './RolesTableHead';
 import TableData from './RolesData'
 import RolesDialog from './RolesDialog'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
+
 
 function RolesTable(props) {
 
@@ -99,6 +101,15 @@ function RolesTable(props) {
 		});
 	}
 
+
+	if (data2.length === 0) {
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+		);
+	}
+	
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
 			setSelected(data.map(n => n.id));

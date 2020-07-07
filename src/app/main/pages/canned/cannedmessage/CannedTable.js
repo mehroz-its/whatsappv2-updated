@@ -16,6 +16,8 @@ import CannedTableHead from './CannedTableHead';
 import TableData from '../CannedData'
 import CannedDialog from './CannedDialog'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
+
 
 
 function CannedTable(props) {
@@ -111,7 +113,13 @@ function CannedTable(props) {
 		}
 		setSelected([]);
 	}
-
+	if (data2.length === 0) {
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+		);
+	}
 	function handleClick(n) {
 		setDialogData({ enable: n.enabled, id: n.id, name: n.message_name, type: n.message_type, text: n.message_text, url: n.attachment_url, attachment_type: n.attachment_type, file_name: n.attachment_name })
 		console.log(n)

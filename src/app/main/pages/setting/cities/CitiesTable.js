@@ -16,6 +16,7 @@ import CampaignTableHead from './CitiesTableHead';
 import TableData from './CitiesData'
 import CitiesDialog from './CitiesDialog';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 
 
 function CitiesTable(props) {
@@ -110,6 +111,13 @@ function CitiesTable(props) {
 		setSelected([]);
 	}
 
+	if (data2.length === 0) {
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+		);
+	}
 
 	function handleClick(n) {
 		console.log(n,'nnnnnnnn');

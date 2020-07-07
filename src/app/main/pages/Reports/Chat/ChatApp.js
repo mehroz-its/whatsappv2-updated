@@ -9,6 +9,8 @@ import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import MaterialTable from 'material-table';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
+
 
 
 const useStyles = makeStyles({
@@ -279,7 +281,14 @@ function ChatApp() {
     };
 
     const dataSourceFailureEngagments = (response) => {
-    };
+	};
+	// if (tableData.length === 0) {
+	// 	return (
+	// 		<div className="flex flex-1 items-center justify-center h-full">
+	// 			<FuseLoading />
+	// 		</div>
+	// 	);
+	// }
 
 	return (
 		<FusePageSimple

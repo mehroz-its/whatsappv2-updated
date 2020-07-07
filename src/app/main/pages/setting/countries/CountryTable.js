@@ -15,6 +15,8 @@ import * as Actions from './store/actions';
 import CountryTableHead from './CountryTableHead'
 import TableData from './CountryData'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
+
 
 import CountryDialog from './CountryDialog'
 import { database } from 'firebase';
@@ -140,6 +142,13 @@ function CountryTable(props) {
 	// 	{getData()}
 	// }
 
+	if (data2.length === 0) {
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+		);
+	}
 
 	
 

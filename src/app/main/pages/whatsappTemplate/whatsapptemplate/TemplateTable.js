@@ -16,6 +16,8 @@ import TemplateTableHead from './TemplateTableHead';
 import TableData from '../TemplateData'
 import TemplateDialog from './TemplateDialog'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
+
 
 
 function TemplateTable(props) {
@@ -89,6 +91,13 @@ function TemplateTable(props) {
 			direction,
 			id
 		});
+	}
+	if (data2.length === 0) {
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+		);
 	}
 
 	function handleSelectAllClick(event) {

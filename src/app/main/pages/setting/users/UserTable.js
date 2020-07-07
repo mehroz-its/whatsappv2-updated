@@ -16,6 +16,7 @@ import UserTableHead from './UserTableHead';
 import TableData from './UsersData'
 import UserDialog from './UserDialog'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 
 
 function UserTable(props) {
@@ -71,7 +72,14 @@ function UserTable(props) {
 	React.useEffect(() => {
 		getData()
 	}, []);
-
+	
+	if (data2.length === 0) {
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+		);
+	}
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
 	// }, [dispatch]);
