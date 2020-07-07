@@ -181,11 +181,11 @@ const navigationConfig = [
 						exact: true
 					},
 					{
-						id: 'Agent_Conversation_History',
-						title: 'Agent Conversation History',
-						translate: 'Agent Activity',
+						id: 'compaigns_report',
+						title: 'Compaigns',
+						translate: 'Compaigns',
 						type: 'item',
-						url: '/apps/agent'
+						url: '/report/compaigns'
 					},
 
 				]
