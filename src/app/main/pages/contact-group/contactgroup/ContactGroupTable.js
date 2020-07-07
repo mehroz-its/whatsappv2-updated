@@ -23,6 +23,7 @@ function ContactGroupTable(props) {
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
+	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
 
 	const [selected, setSelected] = useState([]);
 	const [open, setOpen] = React.useState(false);
@@ -30,6 +31,7 @@ function ContactGroupTable(props) {
 
 
 	const [data, setData] = useState([]);
+	const [data2, setData2] = useState(data);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -57,6 +59,7 @@ function ContactGroupTable(props) {
 			const tableData = response.data.data.list.data
 			console.log(tableData)
 			setData(tableData)
+			setData2(tableData)
 		});
 	})
 
@@ -139,6 +142,33 @@ function ContactGroupTable(props) {
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
 	}
+	if(searchVal!==props.ValueForSearch)
+{
+	{search()}
+}
+
+// if(searchVal.length===0)
+// {
+// 	{getData()}
+// }
+
+
+
+
+//    if(props.PressedVal==8){
+// 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+// }
+  console.log(data2,props.ValueForSearch,searchVal,'data2222');
+  
+function search(){
+	console.log('ceeleded',props.ValueForSearch,searchVal);
+	
+	setSearchVal(props.ValueForSearch)
+	setData2(data.filter(n=>n.title.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+	console.log(data,'filterssss');
+	
+	
+}
 
 	return (
 		<div className="w-full flex flex-col">
@@ -154,7 +184,7 @@ function ContactGroupTable(props) {
 
 					<TableBody>
 						{_.orderBy(
-							data,
+							data2,
 							[
 								o => {
 									switch (order.id) {

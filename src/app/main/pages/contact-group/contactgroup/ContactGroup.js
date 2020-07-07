@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 function ContactGroup(props) {
 	const [open, setOpen] = React.useState(false);
-
+	const[val,setVal]=React.useState('')
 	const classes = useStyles(props);
 
 
@@ -66,6 +66,11 @@ function ContactGroup(props) {
 		}
 	  )
 
+	  const updateText =(search)=>
+	  {
+		setVal(search)
+	  }
+
 	return (
 		<>
 			<FusePageCarded
@@ -73,8 +78,8 @@ function ContactGroup(props) {
 					content: 'flex',
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
-				header={<ContactGroupHeader />}
-				content={<ContactGroupTable />}
+				header={<ContactGroupHeader  SearchVal={updateText}/>}
+				content={<ContactGroupTable   ValueForSearch={val} />}
 			// innerScroll
 			/>
 			<FuseAnimate animation="transition.expandIn" delay={300}>
