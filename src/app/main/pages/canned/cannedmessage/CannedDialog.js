@@ -17,6 +17,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import { getUserData } from '../../chat/store/actions';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 
 
 
@@ -42,7 +44,7 @@ const CampaignDialog = (props) => {
 	const classes = useStyles(props);
 
 	const { isOpen, type, getUpdatedData, data } = props
-	console.log(props)
+	console.log(isOpen, 'isOpenisOpen in dialog	')
 	const [openDialog, setopenDialog] = React.useState(isOpen);
 	const [canned_type, setCannedType] = React.useState(data.type);
 	const [name, setName] = React.useState(data.name);
@@ -93,9 +95,9 @@ const CampaignDialog = (props) => {
 			let update_params = {
 				key: 'id',
 				value: data.id,
-				params:params
+				params: params
 			}
-			console.log(update_params,'update_params')
+			console.log(update_params, 'update_params')
 			// return
 			CoreHttpHandler.request('canned_messages', 'update_message', update_params, (response) => {
 				// props.getUpdatedData()
@@ -290,17 +292,14 @@ const CampaignDialog = (props) => {
 						</div>
 					</div>
 				) : null}
-				<div className="flex">
-					<div className="min-w-48 pt-20">
-						<Icon color="action">account_circle</Icon>
-					</div>
-
-					<Checkbox
+				<FormControlLabel
+					control={	<Checkbox
+						
 						checked={enabled}
 						onChange={handleEnable}
-					/>
-
-				</div>
+					/>}
+					label="Enabled"
+				/>
 
 			</DialogContent>
 			<DialogActions>

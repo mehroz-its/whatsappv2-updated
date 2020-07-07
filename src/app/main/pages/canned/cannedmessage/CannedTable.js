@@ -22,6 +22,8 @@ import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 
 function CannedTable(props) {
 	console.log(props)
+	const [data, setData] = useState(props.dataa);
+
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
@@ -33,44 +35,43 @@ function CannedTable(props) {
 	)
 
 
-	const [data, setData] = useState([]);
+	// const [data, setData] = useState(props.data);
 	const [page, setPage] = useState(0);
-	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
-	const [data2, setData2] = useState(data);
+	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
 		direction: 'asc',
 		id: null
 	});
 
+	let data2 = props.dataa
+	console.log(data2, 'data from props')
+	// const getData = ((loadData) => {
+	// 	console.log('called get data')
+	// 	loadData = () => {
+	// 		return CoreHttpHandler.request('canned_messages', 'listing', {
 
+	// 			limit: 100,
+	// 			page: 0,
+	// 			columns: "*",
+	// 			sortby: "DESC",
+	// 			orderby: "id",
+	// 			where: "id != $1",
+	// 			values: 0,
+	// 		}, null, null, true);
+	// 	};
+	// 	loadData().then((response) => {
+	// 		const tableData = response.data.data.list.data
+	// 		console.log(tableData)
+	// 		setData(tableData)
+	// 		setData2(tableData)
 
-	const getData = ((loadData) => {
-		console.log('called get data')
-		loadData = () => {
-			return CoreHttpHandler.request('canned_messages', 'listing', {
+	// 	});
+	// })
 
-				limit: 100,
-				page: 0,
-				columns: "*",
-				sortby: "DESC",
-				orderby: "id",
-				where: "id != $1",
-				values: 0,
-			}, null, null, true);
-		};
-		loadData().then((response) => {
-			const tableData = response.data.data.list.data
-			console.log(tableData)
-			setData(tableData)
-			setData2(tableData)
-
-		});
-	})
-
-	React.useEffect(() => {
-		getData()
-	}, []);
+	// React.useEffect(() => {
+	// 	getData()
+	// }, []);
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
 	// }, [dispatch]);
@@ -99,10 +100,15 @@ function CannedTable(props) {
 		});
 	}
 	const handleClose = () => {
-		getData()
+		// getData()
 
 		setOpen(false);
+		props.onClose()
 	};
+	// const handleClose = props.onClose
+	const openDialog = props.onClickOpen
+	let openDialogValue = props.isOpen
+	console.log(openDialogValue,'openDialogValue')
 	const handleClickOpen = () => {
 		setOpen(true);
 	}
@@ -113,34 +119,33 @@ function CannedTable(props) {
 		}
 		setSelected([]);
 	}
-	if (data2.length === 0) {
-		return (
-			<div className="flex flex-1 items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
-	}
+	// if (data.length === 0) {
+	// 	return (
+	// 		<div className="flex flex-1 items-center justify-center h-full">
+	// 			<FuseLoading />
+	// 		</div>
+	// 	);
+	// }
 	function handleClick(n) {
 		setDialogData({ enable: n.enabled, id: n.id, name: n.message_name, type: n.message_type, text: n.message_text, url: n.attachment_url, attachment_type: n.attachment_type, file_name: n.attachment_name })
 		console.log(n)
-		setOpen(true);
-
+		props.onClickOpen()
+		handleClickOpen()
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
 	}
 
-	function search(){
-		console.log('ceeleded',props.ValueForSearch,searchVal);
-		
-		setSearchVal(props.ValueForSearch)
-		setData2(data.filter(n=>n.message_name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-		console.log(data,'filterssss');
-		
-		
-	}
-	if(searchVal!==props.ValueForSearch)
-{
-	{search()}
-}
+	// function search() {
+	// 	console.log('ceeleded', props.ValueForSearch, searchVal);
+
+	// 	setSearchVal(props.ValueForSearch)
+	// 	setData(data.filter(n => n.message_name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+	// 	console.log(data, 'filterssss');
+
+
+	// }
+	// if (searchVal !== props.ValueForSearch) {
+	// 	{ search() }
+	// }
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
@@ -282,7 +287,7 @@ function CannedTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-			{open && <CannedDialog isOpen={open} type="Update Canned Message" closeDialog={handleClose} getUpdatedData={getData} data={dialogData} />}
+			{open && <CannedDialog isOpen={open} type="Update Canned Message" closeDialog={handleClose} data={dialogData} />}
 		</div>
 	);
 }

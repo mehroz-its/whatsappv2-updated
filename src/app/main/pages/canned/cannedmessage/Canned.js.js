@@ -19,6 +19,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import CannedDialog from './CannedDialog'
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -38,11 +40,44 @@ const useStyles = makeStyles((theme) => ({
 
 function Canned(props) {
 	const [open, setOpen] = React.useState(false);
-	const[val,setVal]=React.useState('')
+	const [updateDialogOpen, setUpdateDialogOpen] = React.useState(false);
+
+	const [val, setVal] = React.useState('')
+	const [data, setData] = React.useState([]);
+	const [data2, setData2] = React.useState(data);
+
+
+
 
 	const [dialogData, setDialogData] = React.useState(
 		{ enable: true, id: '', name: '', type: 'text', text: '', url: '', attachment_type: '', file_name: '' }
 	)
+	const getData = ((loadData) => {
+		console.log('called get data')
+		loadData = () => {
+			return CoreHttpHandler.request('canned_messages', 'listing', {
+
+				limit: 100,
+				page: 0,
+				columns: "*",
+				sortby: "DESC",
+				orderby: "id",
+				where: "id != $1",
+				values: 0,
+			}, null, null, true);
+		};
+		loadData().then((response) => {
+			const tableData = response.data.data.list.data
+			console.log(tableData)
+			setData(tableData)
+			setData2(tableData)
+
+		});
+	})
+
+	React.useEffect(() => {
+		getData()
+	}, []);
 
 	const classes = useStyles(props);
 
@@ -52,17 +87,36 @@ function Canned(props) {
 	};
 
 	const handleClose = () => {
+		getData()
 		setOpen(false);
+		// setUpdateDialogOpen(false)
 	};
 	const handleClickOpen = () => {
 		setOpen(true);
+
 	}
-	const updateText =(search)=>
-	  {
-		setVal(search)
-	  }
+	const handleUpdateClickOpen = () => {
+		setUpdateDialogOpen(true);
+	}
+	const searchContact =(value)=> {
+		// console.log('ceeleded', props.ValueForSearch, searchVal);
+
+		// setSearchVal(props.ValueForSearch)
+		setData2(data.filter(n => n.message_name.toLowerCase().includes(value.toLowerCase())))
+		console.log(data2, 'filterssss');
+
+
+	}
+	// const updateText = (search) => {
+	// 	searchContact(val)
+	// 	setVal(search)
+	// }
+
 
 	const [age, setAge] = React.useState('Text');
+
+	
+	console.log(val, 'i m search value')
 
 	return (
 		<>
@@ -71,8 +125,8 @@ function Canned(props) {
 					content: 'flex',
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
-				header={<CannedHeader   SearchVal={updateText} />}
-				content={<CannedTable ValueForSearch={val}/>}
+				header={<CannedHeader SearchVal={searchContact} />}
+				content={<CannedTable dataa={data2} ValueForSearch={val} isOpen={updateDialogOpen} onClickOpen={handleUpdateClickOpen} onClose={handleClose} />}
 			// innerScroll
 			/>
 			<FuseAnimate animation="transition.expandIn" delay={300}>
