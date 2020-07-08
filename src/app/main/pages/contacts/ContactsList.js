@@ -236,7 +236,7 @@ function ContactsList(props) {
 									<Icon>star_border</Icon>
 								)}
 						</IconButton> */}
-						{row.original.blocked === true ?
+						{row.original.blocked === false ?
 							(
 								<IconButton
 									onClick={ev => {
