@@ -6,22 +6,28 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 
 
-const RolesListInDialog = function (props) {
-    const { roles, checkedRoles, classes, onInputChange } = props;
+const RuleListInDialog = function (props) {
+    const { rules, checkedRules, classes, onInputChange } = props;
+    console.log(rules, 'rulesrules')
     return (
         <List dense className={classes.root}>
-            {roles.map(value => {
-                const labelId = `checkbox-list-secondary-label-${value.id}`;
+            {rules.map(value => {
+                console.log(value)
+                const labelId = `checkbox-list-secondary-label-${value}`;
+                let lbl = value;
+
+                if (value.indexOf('_') !== -1) lbl = value.split('_').join(' ');
+
                 return (
-                    <ListItem key={value.id} button>
-                        <ListItemText id={labelId} primary={`${value.name}`} />
+                    <ListItem key={value} button>
+                        <ListItemText id={labelId} primary={`${lbl}`} />
                         <ListItemSecondaryAction>
                             <Checkbox
-                                name={'roles'}
-                                value={value.id}
+                                name={'rule_set'}
+                                value={value}
                                 edge="end"
                                 onChange={onInputChange}
-                                checked={checkedRoles.includes(value.id) && true}
+                                checked={checkedRules.includes(value) && true}
                                 inputProps={{ 'aria-labelledby': labelId }}
                             />
                         </ListItemSecondaryAction>
@@ -32,4 +38,4 @@ const RolesListInDialog = function (props) {
     )
 };
 
-export default RolesListInDialog;
+export default RuleListInDialog;

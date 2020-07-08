@@ -34,7 +34,8 @@ function PermissionTable(props) {
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState([]);
 	const [data2, setData2] = useState(data);
-	const[searchVal,setSearchVal]=useState(props.ValueForSearch)	
+	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
+	const [userRules, setUserRules] = useState([])
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -46,7 +47,7 @@ function PermissionTable(props) {
 		loadData = () => {
 			return CoreHttpHandler.request('permissions', 'listing', {
 
-				limit: 10,
+				limit: 100,
 				page: 0,
 				columns: "*",
 				sortby: "ASC",
@@ -63,19 +64,36 @@ function PermissionTable(props) {
 		});
 	})
 
-	const[dialogData,setDialogData]=useState({
-		enabled:'',
-		id:'',
-		description:'',
-		title:'',
-		method:'',	
-		rule_set:[],
-		consumer:""
+	const [dialogData, setDialogData] = useState({
+		enabled: '',
+		id: '',
+		description: '',
+		title: '',
+		method: '',
+		rule_set: [],
+		consumer: ""
 	})
 
 	React.useEffect(() => {
 		getData()
 	}, []);
+
+	const loadRuleSets = () => {
+		return CoreHttpHandler.request('permissions', 'rule_set', {
+		}, null, null, true);
+	};
+
+	React.useEffect(() => {
+		loadRuleSets().then(response => {
+			let rules = (response.data.data.rule_set);
+			setUserRules(response.data.data.rule_set)
+			// rules = 
+			console.log(response.data.data.rule_set, 'in table')
+
+		});
+	}, []);
+
+
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
 	// }, [dispatch]);
@@ -121,19 +139,20 @@ function PermissionTable(props) {
 	}
 
 	function handleClick(n) {
-		console.log(n,'mmmmm');
+		console.log(n, 'mmmmm');
 		setDialogData({
-			enabled:n.enabled,
-			id:n.id,
-			description:n.description,
-			title:n.title,
-			method:n.method,
-			rule_set:n.rule_set,
-			consumer:n.consumer
-			
-	})
-		
+			enabled: n.enabled,
+			id: n.id,
+			description: n.description,
+			title: n.title,
+			method: n.method,
+			rule_set: n.rule_set,
+			consumer: n.consumer,
+			displayRules: n.method === "FRONT" ? userRules.frontend : n.method === "APP" ? userRules.app : n.method === "BACK" ? userRules.backend : []
+
+		})
 		setOpen(true)
+
 	}
 
 
@@ -161,31 +180,30 @@ function PermissionTable(props) {
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
 	}
-	if(searchVal!==props.ValueForSearch)
-	{
-		{search()}
+	if (searchVal !== props.ValueForSearch) {
+		{ search() }
 	}
-	
+
 	// if(searchVal.length===0)
 	// {
 	// 	{getData()}
 	// }
 
 
-	
 
-//    if(props.PressedVal==8){
-// 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-// }
 
-	function search(){
-		console.log('ceeleded',props.ValueForSearch,searchVal);
-		
-        setSearchVal(props.ValueForSearch)
-		setData2(data.filter(n=>n.title.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-		console.log(data,'filterssss');
-		
-		
+	//    if(props.PressedVal==8){
+	// 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+	// }
+
+	function search() {
+		console.log('ceeleded', props.ValueForSearch, searchVal);
+
+		setSearchVal(props.ValueForSearch)
+		setData2(data.filter(n => n.title.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+		console.log(data, 'filterssss');
+
+
 	}
 
 	return (
@@ -250,9 +268,9 @@ function PermissionTable(props) {
 										</TableCell>
 										<TableCell component="th" scope="row" align="left">
 											{n.enabled ? (
-												<Icon className="text-red text-20">check_circle</Icon>
+												<Icon className="text-green text-20">check_circle</Icon>
 											) : (
-													<Icon className="text-green text-20">remove_circle</Icon>
+													<Icon className="text-red text-20">cancel</Icon>
 												)}
 										</TableCell>
 										{/* 
@@ -297,7 +315,7 @@ function PermissionTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-			{open ? <PermissionDialog isOpen={open} closeDialog={closeDialog} type="Update"  data={dialogData} /> : null}
+			{open ? <PermissionDialog isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData} /> : null}
 		</div>
 	);
 }
