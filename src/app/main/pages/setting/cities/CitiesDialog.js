@@ -43,16 +43,22 @@ const GreenCheckbox = withStyles({
 }))
 
 
+// React.useEffect(() => {
+
+// });
 const CitiesDialog = (props) => {
     console.log(props,'in dialog')
     const {isOpen,type,data} = props
    
     const [openDialog, setopenDialog] = React.useState(isOpen);
+    const[country,setCountry]=React.useState([])
+    const [method, setMethod] = React.useState('');
     
     const handleClose = () => {
         props.closeDialog()
         setopenDialog(false);
     };
+    const classes = useStyles(props);
 
     // const handleSubmit = () =>{
     //   console.log(name,email,enabled,'statessss');
@@ -60,6 +66,9 @@ const CitiesDialog = (props) => {
     //   setopenDialog(false)
       
     // }
+    const handleMethodChange = (event) => {
+      setMethod(event.target.value);
+      };
 
     const [isToggled, setIsToggled] = React.useState(props.data.enabled);
 
@@ -142,17 +151,50 @@ const CitiesDialog = (props) => {
     }, null, null, true);
 };
 
+const loadCountries = () => {
+  return CoreHttpHandler.request('locations', 'get_countries', {
+      columns: "id, name",
+      sortby: "ASC",
+      orderby: "id",
+      where: "enabled = $1",
+      values: true,
+      page: 0,
+      limit: 0
+  }, null, null, true);
+};
+
+
+const createCountry = ()=>{
+  console.log('creteacalledd');
+  
+  loadCountries().then(response => {
+    const countries = response.data.data.list.data;
+    console.log(countries,'set counte');
+    
+    setCountry(countries)
+  })
+}
 const createCountryDialog = () => {
+  console.log('createCitiescalledd')
     loadCities().then(response => {
         const cities = response.data.data.list.data;
       console.log('calledddddd',cities);
       setCities(cities)
     });
+    
+   
 };
+
+const functioncalls = ()=>{
+  {createCountryDialog()}
+  {createCountry()}
+}
 
 const handleChange = (event) => {
  setIsToggled(!isToggled)
 };
+
+console.log(country,'counrtrt');
 
 
 
@@ -164,11 +206,17 @@ const [name,setName]=React.useState(props.data.name)
 const [email,setEmail]=React.useState(props.data.code)
 const [city,setCities]=React.useState(props.data.cities)
 
+console.log(method,'methossssss');
+
 
     return (  
     // <div> {isOpen}</div>
 
-    <Dialog open={openDialog} onClose={handleClose} aria-labelledby="form-dialog-title" onClick={createCountryDialog}	classes={{
+    <Dialog open={openDialog} 
+    onClose={handleClose} 
+    aria-labelledby="form-dialog-title" 
+    onClick={functioncalls}	
+    classes={{
         paper: 'm-24'
     }}
 
@@ -184,14 +232,14 @@ const [city,setCities]=React.useState(props.data.cities)
                 <TextField
                     className="mb-24"
                     label="Name"
-                   autoFocus
-                  
+                    autoFocus
                     name="name"
                     value={name}
                     onChange={e=>setName(e.target.value)}
                     variant="outlined"
                     required
                     fullWidth
+                    onClick={createCountry}
                 />
             </div>
 
@@ -203,20 +251,43 @@ const [city,setCities]=React.useState(props.data.cities)
                 <TextField
                     className="mb-24"
                     label="Country Code"
-                 
-                   
                     name="code"
                     value={email}
                     onChange={e=>setEmail(e.target.value)}
                     variant="outlined"
                     required
                     fullWidth
+                    onClick={createCountry}
                 />
             </div>
-            <FormControlLabel
+      <div style={{flexDirection:'column',flex:1,display:'flex',marginLeft:10}}>
+
+        {props.type=='Add' ?
+       <FormControl className={classes.formControl}>
+					
+          <InputLabel id="demo-simple-select-label">Type</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={method}
+            onChange={handleMethodChange}
+            onClick={createCountry}
+          >
+          <MenuItem value={0}>Select Customer</MenuItem>
+            {
+              country.map(data=>
+                <MenuItem value={data.id}>{data.name}</MenuItem>
+                )
+            }
+          </Select>
+        </FormControl>
+        :null
+}
+        <FormControlLabel
         control={<Checkbox checked={isToggled} onChange={handleChange} name="checkedA" />}
         label="Enabled"
       />
+      </div>
 
 
 </DialogContent>
