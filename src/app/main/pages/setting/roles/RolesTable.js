@@ -4,6 +4,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Icon from '@material-ui/core/Icon';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
+import Typography from '@material-ui/core/Typography';
+
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
@@ -23,6 +25,7 @@ function RolesTable(props) {
 
 	function closeDialog(){
 		setOpen(false)
+		props.onClose()
 	}
 
 
@@ -32,9 +35,9 @@ function RolesTable(props) {
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
-	const [data, setData] = useState(TableData);
+	// const [data, setData] = useState(TableData);
 	const [page, setPage] = useState(0);
-	const [data2, setData2] = useState(data);
+	// const [data2, setData2] = useState(data);
 	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const[dialogData,setDialogData]=useState({
@@ -49,30 +52,30 @@ function RolesTable(props) {
 		id: null
 	});
 
-	const getData = ((loadData) => {
-		loadData = () => {
-			return CoreHttpHandler.request('roles', 'listing', {
+	// const getData = ((loadData) => {
+	// 	loadData = () => {
+	// 		return CoreHttpHandler.request('roles', 'listing', {
 
-				limit: 100,
-				page: 0,
-				columns: "*",
-				sortby: "ASC",
-				orderby: "id",
-				where: "displayed = $1",
-				values: true,
-			}, null, null, true);
-		};
-		loadData().then((response) => {
-			const tableData = response.data.data.list.data
-			console.log(tableData)
-			setData(tableData)
-			setData2(tableData)
-		});
-	})
+	// 			limit: 100,
+	// 			page: 0,
+	// 			columns: "*",
+	// 			sortby: "ASC",
+	// 			orderby: "id",
+	// 			where: "displayed = $1",
+	// 			values: true,
+	// 		}, null, null, true);
+	// 	};
+	// 	loadData().then((response) => {
+	// 		const tableData = response.data.data.list.data
+	// 		console.log(tableData)
+	// 		setData(tableData)
+	// 		setData2(tableData)
+	// 	});
+	// })
 
-	React.useEffect(() => {
-		getData()
-	}, []);
+	// React.useEffect(() => {
+	// 	getData()
+	// }, []);
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
 	// }, [dispatch]);
@@ -86,6 +89,7 @@ function RolesTable(props) {
 	// 		console.log(products,'here in prdoducts table')
 	// 	}
 	// }, [products, searchText]);
+	let data2 = props.dataa
 
 	function handleRequestSort(event, property) {
 		const id = property;
@@ -103,20 +107,30 @@ function RolesTable(props) {
 
 
 	if (data2.length === 0) {
-		return (
-			<div className="flex flex-1 items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
+		if (props.ValueForSearch !== '') {
+			return (
+				<div className="flex flex-1 items-center justify-center h-full">
+					<Typography color="textSecondary" variant="h5">
+						No Match Found
+					</Typography>
+				</div>
+			)
+		} else {
+			return (
+				<div className="flex flex-1 items-center justify-center h-full">
+					<FuseLoading />
+				</div>
+			);
+		}
 	}
 	
-	function handleSelectAllClick(event) {
-		if (event.target.checked) {
-			setSelected(data.map(n => n.id));
-			return;
-		}
-		setSelected([]);
-	}
+	// function handleSelectAllClick(event) {
+	// 	if (event.target.checked) {
+	// 		setSelected(data.map(n => n.id));
+	// 		return;
+	// 	}
+	// 	setSelected([]);
+	// }
     let  loadPermissions = () => {
         return CoreHttpHandler.request('permissions', 'listing', {
             columns: "id, title",
@@ -200,10 +214,10 @@ function RolesTable(props) {
 		setRowsPerPage(event.target.value);
 	}
 
-	if(searchVal!==props.ValueForSearch)
-	{
-		{search()}
-	}
+	// if(searchVal!==props.ValueForSearch)
+	// {
+	// 	{search()}
+	// }
 	
 	// if(searchVal.length===0)
 	// {
@@ -217,16 +231,7 @@ function RolesTable(props) {
 // 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
 // }
 
-	function search(){
-		console.log('ceeleded',props.ValueForSearch,searchVal);
-		
-        setSearchVal(props.ValueForSearch)
-		setData2(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-		console.log(data,'filterssss');
-		
-		
-	}
-
+	
 	return (
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
@@ -234,9 +239,9 @@ function RolesTable(props) {
 					<RolesTableHead
 						numSelected={selected.length}
 						order={order}
-						onSelectAllClick={handleSelectAllClick}
+						// onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={data.length}
+						rowCount={data2.length}
 					/>
 
 					<TableBody>
@@ -326,7 +331,7 @@ function RolesTable(props) {
 			<TablePagination
 				className="overflow-hidden"
 				component="div"
-				count={data.length}
+				count={data2.length}
 				rowsPerPage={rowsPerPage}
 				page={page}
 				backIconButtonProps={{

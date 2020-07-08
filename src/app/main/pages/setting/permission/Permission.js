@@ -22,6 +22,8 @@ import Fab from '@material-ui/core/Fab';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { green } from '@material-ui/core/colors';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,10 +38,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 function Permissions(props) {
-
-	function closeDialog() {
-		setOpen(false)
-	}
+	const [data, setData] = React.useState([]);
+	const [data2, setData2] = React.useState(data);
 	const [dialogData, setDialogData] = React.useState({
 		enabled: true,
 		id: '',
@@ -51,16 +51,54 @@ function Permissions(props) {
 	})
 	const [open, setOpen] = React.useState(false);
 	const [val, setVal] = React.useState('')
+
 	const classes = useStyles(props);
 
+	const getData = ((loadData) => {
+		loadData = () => {
+			return CoreHttpHandler.request('permissions', 'listing', {
+
+				limit: 100,
+				page: 0,
+				columns: "*",
+				sortby: "ASC",
+				orderby: "id",
+				where: "displayed = $1",
+				values: true,
+			}, null, null, true);
+		};
+		loadData().then((response) => {
+			const tableData = response.data.data.list.data
+			console.log(tableData)
+			setData(tableData)
+			setData2(tableData)
+		});
+	})
+	React.useEffect(() => {
+		getData()
+	}, []);
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
 
-	const updateText = (search) => {
-		setVal(search)
+	// const updateText = (search) => {
+	// 	setVal(search)
+	// }
+
+	function search(val) {
+		console.log('ceeleded', val);
+
+		setVal(val)
+		setData2(data.filter(n => n.title.toLowerCase().includes(val.toLowerCase())))
+		console.log(data, 'filterssss');
+
+
 	}
 
+	function closeDialog() {
+		setOpen(false)
+		getData()
+	}
 
 	return (
 		<>
@@ -69,8 +107,8 @@ function Permissions(props) {
 					content: 'flex',
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
-				header={<PermissionHeader SearchVal={updateText} />}
-				content={<PermissionTable ValueForSearch={val} />}
+				header={<PermissionHeader SearchVal={search} />}
+				content={<PermissionTable ValueForSearch={val} dataa={data2} onClose={closeDialog} />}
 			// innerScroll
 			/>
 

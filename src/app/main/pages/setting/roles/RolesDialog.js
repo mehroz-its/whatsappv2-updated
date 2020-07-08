@@ -49,7 +49,7 @@ const RolesDialog = (props) => {
     //     role,
     // } = props.data;
     // // console.log(object)
-    console.log(props.data.permission, ' props.data in dialog')
+    console.log(props.type, ' props.data in dialog')
     const { isOpen, type, data } = props
     const [currentPermissions, setCurrentPermissions] = React.useState(type === 'Update' ? data.permission : []);
     const [selected, setSelected] = React.useState([])
@@ -121,7 +121,7 @@ const RolesDialog = (props) => {
         // return;
 
         // let fileName = uploadedFilePath.split('https://upload.its.com.pk/')
- 
+
         // return;
         if (type !== 'Update') {
             let params = {
@@ -156,7 +156,7 @@ const RolesDialog = (props) => {
 
             let update_params = {
                 key: 'id',
-                value:data.id,
+                value: data.id,
                 params: params
             }
             console.log(update_params, 'update_params')
@@ -225,7 +225,7 @@ const RolesDialog = (props) => {
                                 onChange={e => setName(e.target.value)}
                                 variant="outlined"
                                 required
-                                disabled
+                                disabled={props.type !== 'Update' ? false : true}
                                 fullWidth
                             />
                         </div>
