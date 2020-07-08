@@ -28,9 +28,11 @@ import ContactGroupConfig from './contact-group/ContactGroupConfig'
 import TokenConfig from './auth/token/TokenConfig'
 import ResetPassword2PageConfig from './auth/reset-password-2/ResetPassword2PageConfig'
 import BlockAppConfig from './BlockedContacts/BlockAppConfig'
+import ProfileAppConfig from './profile/ProfileAppConfig'
 
 const pagesConfigs = [
 	ContactGroupConfig,
+	ProfileAppConfig,
 	BlockAppConfig,
 	BlockListConfig,
 	RegisterPageConfig,
