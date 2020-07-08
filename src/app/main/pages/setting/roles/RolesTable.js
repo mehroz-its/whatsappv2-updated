@@ -39,11 +39,11 @@ function RolesTable(props) {
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const[dialogData,setDialogData]=useState({
 		enabled:'',
-		id:'',
+		id:'0',
 		name:'',
 		description:'',
-        permission:[]
-})
+		permission:[]
+	})
 	const [order, setOrder] = useState({
 		direction: 'asc',
 		id: null
@@ -53,7 +53,7 @@ function RolesTable(props) {
 		loadData = () => {
 			return CoreHttpHandler.request('roles', 'listing', {
 
-				limit: 10,
+				limit: 100,
 				page: 0,
 				columns: "*",
 				sortby: "ASC",
@@ -117,17 +117,58 @@ function RolesTable(props) {
 		}
 		setSelected([]);
 	}
+    let  loadPermissions = () => {
+        return CoreHttpHandler.request('permissions', 'listing', {
+            columns: "id, title",
+            sortby: "ASC",
+            orderby: "id",
+            where: "displayed = $1",
+            values: true,
+            page: 0,
+            limit: 0
+        }, null, null, true);
+    };
 
 	function handleClick(n) {
 		console.log(n,'nnnnnnnnnnnnnn');
-		
+
+		// loadPermissions = () => {
+        //     return CoreHttpHandler.request('permissions', 'listing', {
+        //         columns: "id, title",
+        //         sortby: "ASC",
+        //         orderby: "id",
+        //         where: "displayed = $1",
+        //         values: true,
+        //         page: 0,
+        //         limit: 0
+        //     }, null, null, true);
+        // };
+		// loadPermissions().then((response) => {
+		// 	const permissions = response.data.data.list.data
+        //     console.log(permissions,'in ')
+        //     // setPermissions(tableData)
+		// 	setDialogData({
+		// 		role: {
+		// 			id: n.id,
+		// 			name: n.name,
+		// 			description: n.description,
+		// 			permissions: n.permissions,
+		// 			enabled: true,
+		// 			displayed: true,
+		// 		},
+		// 		permissions,
+		// 	});
+
+		// });
+		console.log(dialogData,'i am dialog data')
+
 		setOpen(true)
 		setDialogData({
 			enabled:n.enabled,
 			id:n.id,
 			name:n.name,
 			description:n.description,
-			permission:n.permission
+			permission:n.permissions
 			
 	})
 		
