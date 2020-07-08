@@ -85,6 +85,13 @@ const rows = [
 		disablePadding: false,
 		label: 'Last Updated',
 		sort: true
+	},
+	{
+		id: 'completed',
+		align: 'right',
+		disablePadding: false,
+		label: 'Completed',
+		sort: true
 	}
 
 ];

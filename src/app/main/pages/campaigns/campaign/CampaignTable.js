@@ -31,7 +31,7 @@ function CampaignTable(props) {
 	const [data, setData] = useState(TableData);
 	const [data2, setData2] = useState(data);
 	const [page, setPage] = useState(0);
-	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
+	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
 		direction: 'asc',
@@ -39,18 +39,18 @@ function CampaignTable(props) {
 	});
 
 
-    const [dialogData, setDialogData] = React.useState({
-        id: 0,
-        name: "",
-        description: "",
-        begin_dt: null,
-        begin_time: null,
-        msisdnUrl: "",
-        state: false,
-        template_id: 0,
-        type: null,
-        activated: false,
-    }); 
+	const [dialogData, setDialogData] = React.useState({
+		id: 0,
+		name: "",
+		description: "",
+		begin_dt: null,
+		begin_time: null,
+		msisdnUrl: "",
+		state: false,
+		template_id: 0,
+		type: null,
+		activated: false,
+	});
 
 	const getData = ((loadData) => {
 		loadData = () => {
@@ -131,7 +131,7 @@ function CampaignTable(props) {
 		console.log("hadn lcick ");
 		if (n.completed) {
 			// setSnackBarMessage("Completed campaigns can not be edited", "warning");
-			
+
 		} else {
 			setDialogData({
 				id: n.id,
@@ -219,6 +219,7 @@ function CampaignTable(props) {
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map(n => {
 								const isSelected = selected.indexOf(n.id) !== -1;
+								console.log(n, 'i am in table')
 								return (
 									<TableRow
 
@@ -248,14 +249,14 @@ function CampaignTable(props) {
 										<TableCell component="th" scope="row">
 											{n.description}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-											{n.begin_dt}
-										</TableCell>
+										{<TableCell component="th" scope="row" align="right">
+											{n.begin_dt === null ? 'N/A' : n.begin_dt}
+										</TableCell>}
 										<TableCell component="th" scope="row" align="right">
 											{n.activated ? (
-												<Icon className="text-red text-20">check_circle</Icon>
+												<Icon className="text-green text-20">check_circle</Icon>
 											) : (
-													<Icon className="text-green text-20">remove_circle</Icon>
+													<Icon className="text-red text-20">cancel</Icon>
 												)}
 										</TableCell>
 										<TableCell component="th" scope="row" align="right">
@@ -272,10 +273,18 @@ function CampaignTable(props) {
 											{n.success}
 										</TableCell>
 										<TableCell component="th" scope="row" align="right">
-											{n.failure}
+											{n.failures}
 										</TableCell>
 										<TableCell component="th" scope="row" align="right">
-											{n.lastUpdated}
+											{n.dtu}
+									
+										</TableCell>
+										<TableCell component="th" scope="row" align="right">
+											{n.completed ? (
+												<Icon className="text-green text-20">check_circle</Icon>
+											) : (
+													<Icon className="text-red text-20">cancel</Icon>
+												)}
 										</TableCell>
 										{/* 
 										<TableCell component="th" scope="row" align="right">
