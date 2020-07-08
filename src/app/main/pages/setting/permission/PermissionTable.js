@@ -12,6 +12,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as Actions from './store/actions';
+import Typography from '@material-ui/core/Typography';
+
 import PermissionTableHead from './PermissionTableHead';
 import TableData from './PermissionData'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
@@ -23,6 +25,7 @@ function PermissionTable(props) {
 
 	function closeDialog() {
 		setOpen(false)
+		props.onClose()
 	}
 
 
@@ -32,9 +35,9 @@ function PermissionTable(props) {
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
-	const [data, setData] = useState([]);
-	const [data2, setData2] = useState(data);
-	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
+	// const [data, setData] = useState([]);
+	// const [data2, setData2] = useState(data);
+	// const [searchVal, setSearchVal] = useState(props.ValueForSearch)
 	const [userRules, setUserRules] = useState([])
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -43,26 +46,26 @@ function PermissionTable(props) {
 		id: null
 	});
 
-	const getData = ((loadData) => {
-		loadData = () => {
-			return CoreHttpHandler.request('permissions', 'listing', {
+	// const getData = ((loadData) => {
+	// 	loadData = () => {
+	// 		return CoreHttpHandler.request('permissions', 'listing', {
 
-				limit: 100,
-				page: 0,
-				columns: "*",
-				sortby: "ASC",
-				orderby: "id",
-				where: "displayed = $1",
-				values: true,
-			}, null, null, true);
-		};
-		loadData().then((response) => {
-			const tableData = response.data.data.list.data
-			console.log(tableData)
-			setData(tableData)
-			setData2(tableData)
-		});
-	})
+	// 			limit: 100,
+	// 			page: 0,
+	// 			columns: "*",
+	// 			sortby: "ASC",
+	// 			orderby: "id",
+	// 			where: "displayed = $1",
+	// 			values: true,
+	// 		}, null, null, true);
+	// 	};
+	// 	loadData().then((response) => {
+	// 		const tableData = response.data.data.list.data
+	// 		console.log(tableData)
+	// 		setData(tableData)
+	// 		setData2(tableData)
+	// 	});
+	// })
 
 	const [dialogData, setDialogData] = useState({
 		enabled: '',
@@ -74,9 +77,9 @@ function PermissionTable(props) {
 		consumer: ""
 	})
 
-	React.useEffect(() => {
-		getData()
-	}, []);
+	// React.useEffect(() => {
+	// 	getData()
+	// }, []);
 
 	const loadRuleSets = () => {
 		return CoreHttpHandler.request('permissions', 'rule_set', {
@@ -93,6 +96,7 @@ function PermissionTable(props) {
 		});
 	}, []);
 
+	let data2 = props.dataa
 
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
@@ -123,20 +127,29 @@ function PermissionTable(props) {
 	}
 
 	if (data2.length === 0) {
-		return (
-			<div className="flex flex-1 items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
-	}
-
-	function handleSelectAllClick(event) {
-		if (event.target.checked) {
-			setSelected(data.map(n => n.id));
-			return;
+		if (props.ValueForSearch !== '') {
+			return (
+				<div className="flex flex-1 items-center justify-center h-full">
+					<Typography color="textSecondary" variant="h5">
+						No Match Found
+					</Typography>
+				</div>
+			)
+		} else {
+			return (
+				<div className="flex flex-1 items-center justify-center h-full">
+					<FuseLoading />
+				</div>
+			);
 		}
-		setSelected([]);
 	}
+	// function handleSelectAllClick(event) {
+	// 	if (event.target.checked) {
+	// 		setSelected(data.map(n => n.id));
+	// 		return;
+	// 	}
+	// 	setSelected([]);
+	// }
 
 	function handleClick(n) {
 		console.log(n, 'mmmmm');
@@ -180,9 +193,9 @@ function PermissionTable(props) {
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
 	}
-	if (searchVal !== props.ValueForSearch) {
-		{ search() }
-	}
+	// if (searchVal !== props.ValueForSearch) {
+	// 	{ search() }
+	// }
 
 	// if(searchVal.length===0)
 	// {
@@ -196,15 +209,7 @@ function PermissionTable(props) {
 	// 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
 	// }
 
-	function search() {
-		console.log('ceeleded', props.ValueForSearch, searchVal);
 
-		setSearchVal(props.ValueForSearch)
-		setData2(data.filter(n => n.title.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-		console.log(data, 'filterssss');
-
-
-	}
 
 	return (
 		<div className="w-full flex flex-col">
@@ -213,9 +218,9 @@ function PermissionTable(props) {
 					<PermissionTableHead
 						numSelected={selected.length}
 						order={order}
-						onSelectAllClick={handleSelectAllClick}
+						// onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={data.length}
+						rowCount={data2.length}
 					/>
 
 					<TableBody>
@@ -303,7 +308,7 @@ function PermissionTable(props) {
 			<TablePagination
 				className="overflow-hidden"
 				component="div"
-				count={data.length}
+				count={data2.length}
 				rowsPerPage={rowsPerPage}
 				page={page}
 				backIconButtonProps={{
