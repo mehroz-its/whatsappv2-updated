@@ -42,7 +42,7 @@ const Profile = function (props) {
     const { setSnackBarMessage } = props;
 
 
-   const  handleDate = (e) =>{
+    const handleDate = (e) => {
         setDOB(e.target.value)
     }
     const onInputChange = (e) => {
@@ -87,19 +87,25 @@ const Profile = function (props) {
     };
 
     const _update = () => {
+        profileData[7] = { id: "8", image: props.urlImageHeader }
+
         let data = {
             key: 'id',
             value: profileId,
             attributes: profileData
         }
+
+        console.log(profileData)
+        // return
+        // urlImageHeader
         CoreHttpHandler.request('profile', 'update', data, response => {
-            setSnackBarMessage("Profile updated successfully", "success");
+            // setSnackBarMessage("Profile updated successfully", "success");
         },
             error => {
-                setSnackBarMessage(
-                    "Please try again later, Profile not updated",
-                    "error"
-                );
+                // setSnackBarMessage(
+                //     "Please try again later, Profile not updated",
+                //     "error"
+                // );
             });
     }
 
@@ -118,6 +124,7 @@ const Profile = function (props) {
             setProfileUsername(`${nameCapitalized}'s Profile`);
             setProfileId(user.id)
             setProfileData(profileData);
+            props.onChange(`${nameCapitalized}'s Profile`)
 
             let image = null
             profileData.map((val, id) => {
@@ -126,6 +133,7 @@ const Profile = function (props) {
                 }
             })
             setProfileImage(image)
+            props.updateImage(image)
 
         });
     }, []);
@@ -213,17 +221,17 @@ const Profile = function (props) {
                             return (
                                 <Grid key={`user_attribute_grid_holder_${i}`} item md={6} xs={12}>
 
-                                <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
-                                    <TextField required id={`id-${id}`}
-                                        key={`user_attribute_data_${i}`}
-                                        value={value} name={keys[1]} autoFocus
-                                        label={`${keys[1].toUpperCase()}`}
-                                        onInput={(e) => {
-                                            e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 13)
-                                        }}
-                                        type={keys[1] !== 'cnic' ? 'text' : keys[1] === 'cnic' ? 'number' : null}
-                                        variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
-                                </div>
+                                    <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
+                                        <TextField required id={`id-${id}`}
+                                            key={`user_attribute_data_${i}`}
+                                            value={value} name={keys[1]} autoFocus
+                                            label={`${keys[1].toUpperCase()}`}
+                                            onInput={(e) => {
+                                                e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 13)
+                                            }}
+                                            type={keys[1] !== 'cnic' ? 'text' : keys[1] === 'cnic' ? 'number' : null}
+                                            variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
+                                    </div>
                                 </Grid>
                             )
                         }
