@@ -226,7 +226,7 @@ function DashboardApp(props) {
 			
 			}}
 			header={
-				<div className="flex flex-col justify-between flex-1 px-24 pt-24">
+				<div className="flex flex-col justify-between flex-1 px-20 pt-20">
 					{/* <div className="flex justify-between items-start"> */}
 					<Typography className="py-0 sm:py-24" variant="h5">
 						Welcome back, John!

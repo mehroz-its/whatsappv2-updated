@@ -51,7 +51,9 @@ function Cities(props) {
 		checkedG: true,
 	  });
 	const [open, setOpen] = React.useState(false);
-	const[data,setData]=React.useState('')
+	const[data,setData]=React.useState({
+		enabled:false
+	})
 	const classes = useStyles(props);
 	const[val,setVal]=React.useState('')
 	const handleClickOpen = () => {
