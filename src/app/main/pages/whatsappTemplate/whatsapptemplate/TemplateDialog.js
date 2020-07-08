@@ -106,6 +106,7 @@ console.log(data,'from this.props.')
 						name="name"
 						variant="outlined"
 						required
+						disabled={true}
 						fullWidth
 						value={name}
 						onChange={onInputChange}
