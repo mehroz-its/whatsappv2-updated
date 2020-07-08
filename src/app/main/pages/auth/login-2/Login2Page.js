@@ -119,6 +119,7 @@ class Login2Page extends React.Component {
     // }
 
     loginSuccess = (data) => {
+		this.setState({error_message:''})
         const { token, acl, app, back, user } = data.data.data;
 
         localStorage.setItem('user_token', token);
@@ -147,16 +148,23 @@ class Login2Page extends React.Component {
     loginFailure = (error) => {
         this.setState({
             has_error: true,
-            error_message: error.response.data.message,
-        });
+			error_message: error.response.data.message,
+		
+		});
+		
     };
 
     login = () => {
+		this.setState({error_message:''})
         const data = {
             username: this.state.username,
             password: this.state.passsword,
         };
-
+		   if(this.state.username ==''||this.state.passsword=='')
+		   {
+			  this.setState({error_message:'Please fill every field'})
+		   }
+		   else {
         CoreHttpHandler.request(
             'core',
             'userAuth',
@@ -164,9 +172,13 @@ class Login2Page extends React.Component {
             this.loginSuccess,
             this.loginFailure
         );
-    };
+	}
+};
 
     _handleKeyDown = (e) => {
+		console.log('in handleee');
+		
+		
         if (e.key === 'Enter') {
             this.login();
         }
@@ -175,6 +187,7 @@ class Login2Page extends React.Component {
     goToForget = () => {
         this.props.history.push('/forget-password');
 	};
+
 	
 render(){
 
@@ -225,6 +238,7 @@ render(){
 								required
 								style={formItem}
 								fullWidth
+								onKeyDown={this._handleKeyDown}
 							/>
 
 							<TextField
@@ -239,7 +253,9 @@ render(){
 								required
 								style={formItem}
 								fullWidth
+								onKeyDown={this._handleKeyDown}
 							/>
+							
 
 							<div className="flex items-center justify-between">
 								{/* <FormControl>
@@ -255,6 +271,10 @@ render(){
 									Forgot Password?
 								</Link>
 							</div>
+							<input
+							
+							value={this.state.error_message}
+							style={{color:'red',fontSize:15,textAlign:'center',marginTop:2}}/>
 
 							<Button
 								variant="contained"
@@ -269,19 +289,7 @@ render(){
 							</Button>
 						</form>
 
-						<div className="my-24 flex items-center justify-center">
-							<Divider className="w-32" />
-							<span className="mx-8 font-bold">OR</span>
-							<Divider className="w-32" />
-						</div>
-
-						<Button variant="contained" color="secondary" size="small" className="normal-case w-192 mb-8">
-							Log in with Google
-						</Button>
-
-						<Button variant="contained" color="primary" size="small" className="normal-case w-192">
-							Log in with Facebook
-						</Button>
+					
 
 						<div className="flex flex-col items-center justify-center pt-32 pb-24">
 							<span className="font-medium">Don't have an account?</span>

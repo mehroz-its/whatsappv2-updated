@@ -1,4 +1,4 @@
-import DemoContent from '@fuse/core/DemoContent';
+	import DemoContent from '@fuse/core/DemoContent';
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useRef, useState } from 'react';
@@ -223,12 +223,12 @@ function DashboardApp(props) {
 		<FusePageSimple
 			classes={{
 				root: classes.layoutRoot,
-				header: 'min-h-160 h-160',
+			
 			}}
 			header={
 				<div className="flex flex-col justify-between flex-1 px-24 pt-24">
 					{/* <div className="flex justify-between items-start"> */}
-					<Typography className="py-0 sm:py-24" variant="h4">
+					<Typography className="py-0 sm:py-24" variant="h5">
 						Welcome back, John!
 						</Typography>
 					{/* </div> */}
