@@ -17,10 +17,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const CampaignDialog = (props) => {
     // console.log(props, 'in dialog')
-    const { isOpen } = props
+    const { isOpen ,data} = props
     const [openDialog, setopenDialog] = React.useState(isOpen);
-    const [name, setName] = React.useState('');
-    const [description, setDescription] = React.useState('');
+    const [name, setName] = React.useState(data.name);
+    const [description, setDescription] = React.useState(data.description);
     const [begin_dt, setBegin_dt] = React.useState('');
     const [templateId, setTemplateId] = React.useState(null);
     const [activated, setActivated] = React.useState('');

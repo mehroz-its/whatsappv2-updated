@@ -39,12 +39,24 @@ function CampaignTable(props) {
 	});
 
 
+    const [dialogData, setDialogData] = React.useState({
+        id: 0,
+        name: "",
+        description: "",
+        begin_dt: null,
+        begin_time: null,
+        msisdnUrl: "",
+        state: false,
+        template_id: 0,
+        type: null,
+        activated: false,
+    }); 
 
 	const getData = ((loadData) => {
 		loadData = () => {
 			return CoreHttpHandler.request('campaigns', 'listing', {
 				columns: "*",
-				limit: 10,
+				limit: 100,
 				orderby: "id",
 				page: 0,
 				sortby: "ASC",
@@ -117,8 +129,24 @@ function CampaignTable(props) {
 
 	function handleClick(n) {
 		console.log("hadn lcick ");
+		if (n.completed) {
+			// setSnackBarMessage("Completed campaigns can not be edited", "warning");
+			
+		} else {
+			setDialogData({
+				id: n.id,
+				name: n.name,
+				description: n.description,
+				begin_dt: n.begin_dt,
+				msisdnUrl: null,
+				template_id: n.template_id,
+				type: "update",
+				state: true,
+				activated: n.activated
+			});
+			setOpen(true)
 
-		setOpen(true)
+		}
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
 	}
 
@@ -291,7 +319,7 @@ function CampaignTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-			{open && <CampaignDialog isOpen={open} type='Update Campaign' closeDialog={handleDialogClose} />}
+			{open && <CampaignDialog isOpen={open} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} />}
 		</div>
 	);
 }
