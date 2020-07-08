@@ -13,13 +13,20 @@ import Data from './ContactData'
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 import { object } from 'prop-types';
 import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading'
+import BlockContactInDialog from './BlockContactInDialog'
 
 
 
 function ContactsList(props) {
 	const [data, setData] = React.useState([])
+	const [rowvalue, setROWvalue] = React.useState('')
+
+	const [openBlockDialog, setOpenBlockDialog] = React.useState(false);
+	const [unblockDialog, setUnBlockDialog] = React.useState(false);
+
+
 	const [data2, setData2] = useState([]);
-	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
+	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
 	let filtered = []
 	let newobj = {
 
@@ -34,15 +41,15 @@ function ContactsList(props) {
 			// let val2 = `${Object.keys(item)[1]}:${Object.values(item)[1]}`
 			newobj[`${Object.keys(item)[0]}${Object.keys(item)[1]}`] = `${Object.values(item)[0]}`
 			newobj[`${Object.keys(item)[1]}`] = `${Object.values(item)[1]}`
-			
+
 
 
 		})
 		filtered.push(newobj)
 
 	})
-	
-	console.log(data2,searchVal,props.ValueForSearch, 'datadatadatadatadatadatadata')
+
+	console.log(data2, searchVal, props.ValueForSearch, 'datadatadatadatadatadatadata')
 
 	let ContactsData = {
 		entities: data,
@@ -62,7 +69,7 @@ function ContactsList(props) {
 		}
 	}
 
-	
+
 	const dispatch = useDispatch();
 	// const contacts = useSelector(({ contactsApp }) => contactsApp.contacts.entities);
 	const contacts = ContactsData.entities
@@ -92,7 +99,7 @@ function ContactsList(props) {
 			const tableData = response.data.data.list.data
 			console.log(tableData)
 			setData(tableData)
-		
+
 		});
 	})
 
@@ -100,37 +107,47 @@ function ContactsList(props) {
 		getData()
 	}, []);
 
-	if(searchVal!==props.ValueForSearch)
-	{
-		{search()}
+	if (searchVal !== props.ValueForSearch) {
+		{ search() }
 	}
-	
+
+	const handleClose = () => {
+		// getData()
+
+		setOpenBlockDialog(false);
+		setUnBlockDialog(false)
+	};
+
 	// if(searchVal.length===0)
 	// {
 	// 	{getData()}
 	// }
-	
-	
-	console.log(data2,props.ValueForSearch,'asdasdasdasdasdasd');
-	
-	
+
+
+	console.log(data2, props.ValueForSearch, 'asdasdasdasdasdasd');
+
+
 	//    if(props.PressedVal==8){
 	// 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
 	// }
-	
-	function search(){
-		console.log('ceeleded',props.ValueForSearch,searchVal);
-		
+
+	function search() {
+		console.log('ceeleded', props.ValueForSearch, searchVal);
+
 		setSearchVal(props.ValueForSearch)
-		setData2(filtered.filter(n=>n.firstname.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-		console.log(data,'filterssss');
-		
-		
+		setData2(filtered.filter(n => n.firstname.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+		console.log(data, 'filterssss');
+
+
 	}
 
-	if(data2.length>0)
-	{
-		filtered=data2
+	if (data2.length > 0) {
+		filtered = data2
+	}
+	const handleUnblockClick = (row) => {
+		// ev.stopPropagation();
+		setROWvalue(row.original)
+		console.log(row.original, 'clg icon')
 	}
 	const [filteredData, setFilteredData] = useState(null);
 
@@ -207,7 +224,7 @@ function ContactsList(props) {
 				sortable: false,
 				Cell: ({ row }) => (
 					<div className="flex items-center">
-						<IconButton
+						{/* <IconButton
 							onClick={ev => {
 								ev.stopPropagation();
 								dispatch(Actions.toggleStarredContact(row.original.id));
@@ -218,15 +235,29 @@ function ContactsList(props) {
 							) : (
 									<Icon>star_border</Icon>
 								)}
-						</IconButton>
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(Actions.removeContact(row.original.id));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
+						</IconButton> */}
+						{row.original.blocked === false ?
+							(
+								<IconButton
+									onClick={ev => {
+										ev.stopPropagation();
+										handleClick(row)
+									}}
+								>
+									<Icon name='lock'>phone_locked</Icon>
+								</IconButton>
+							) : (
+								<IconButton
+									onClick={ev => {
+										ev.stopPropagation();
+										setUnBlockDialog(true)
+										handleUnblockClick(row)
+									}}
+								>
+									<Icon>phone</Icon>
+								</IconButton>
+							)}
+
 					</div>
 				)
 			}
@@ -263,7 +294,22 @@ function ContactsList(props) {
 	// console.log(user, 'user')
 
 	function handleClick(n) {
-		console.log(n,'nnnn')
+		setROWvalue(n.original)
+		setOpenBlockDialog(true)
+		// CoreHttpHandler.request('conversations', 'block', {
+		// 	key: ':number', value: n.original.id, params: {
+		// 		reason: this.state.blockReason,
+		// 	}
+		// },
+		// 	(response) => {
+		// 		console.log(response)
+		// 	},
+		// 	(error) => {
+		// 		console.log(error)
+		// 	}
+		// );
+
+		// console.log(n.original, 'nnnn')
 		// setDialogData(n)
 
 		// console.log(dialogData,'ContactGroupDialogContactGroupDialog')
@@ -274,16 +320,22 @@ function ContactsList(props) {
 	return (
 		<FuseAnimate animation="transition.slideUpIn" delay={300}>
 			<ContactsTable
+				openUnBlockDialog={unblockDialog}
+				onBlockDialogClose={handleClose}
+				blockRowData={rowvalue}
+				openBlockDialog={openBlockDialog}
 				columns={columns}
 				data={filtered}
 				onRowClick={(ev, row) => {
 					// if (row) {
 					// 	dispatch(Actions.openEditContactDialog(row.original));
 					// }
-					console.log(row,'rowrow')
+					console.log(row, 'rowrow')
 				}}
-				// onRowClick={console.log('i am clicked')}
+			// onRowClick={console.log('i am clicked')}
 			/>
+			{/* {openBlockDialog && <BlockContactInDialog isOpen={openBlockDialog} type="Block Number" data={rowvalue} />} */}
+
 		</FuseAnimate>
 	);
 }
