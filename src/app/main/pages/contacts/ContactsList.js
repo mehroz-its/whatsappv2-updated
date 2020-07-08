@@ -13,11 +13,18 @@ import Data from './ContactData'
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 import { object } from 'prop-types';
 import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading'
+import BlockContactInDialog from './BlockContactInDialog'
 
 
 
 function ContactsList(props) {
 	const [data, setData] = React.useState([])
+	const [rowvalue, setROWvalue] = React.useState('')
+
+	const [openBlockDialog, setOpenBlockDialog] = React.useState(false);
+	const [unblockDialog, setUnBlockDialog] = React.useState(false);
+
+
 	const [data2, setData2] = useState([]);
 	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
 	let filtered = []
@@ -104,6 +111,13 @@ function ContactsList(props) {
 		{ search() }
 	}
 
+	const handleClose = () => {
+		// getData()
+
+		setOpenBlockDialog(false);
+		setUnBlockDialog(false)
+	};
+
 	// if(searchVal.length===0)
 	// {
 	// 	{getData()}
@@ -130,11 +144,11 @@ function ContactsList(props) {
 	if (data2.length > 0) {
 		filtered = data2
 	}
-	// const handleActionClick = (row) => {
-	// 	// ev.stopPropagation();
-
-	// 	console.log(row.original, 'clg icon')
-	// }
+	const handleUnblockClick = (row) => {
+		// ev.stopPropagation();
+		setROWvalue(row.original)
+		console.log(row.original, 'clg icon')
+	}
 	const [filteredData, setFilteredData] = useState(null);
 
 	const columns = React.useMemo(
@@ -222,7 +236,7 @@ function ContactsList(props) {
 									<Icon>star_border</Icon>
 								)}
 						</IconButton> */}
-						{row.original.blocked === false ?
+						{row.original.blocked === true ?
 							(
 								<IconButton
 									onClick={ev => {
@@ -230,16 +244,17 @@ function ContactsList(props) {
 										handleClick(row)
 									}}
 								>
-									<Icon>block</Icon>
+									<Icon name='lock'>phone_locked</Icon>
 								</IconButton>
 							) : (
 								<IconButton
 									onClick={ev => {
 										ev.stopPropagation();
-										handleClick(row)
+										setUnBlockDialog(true)
+										handleUnblockClick(row)
 									}}
 								>
-									<Icon>block</Icon>
+									<Icon>phone</Icon>
 								</IconButton>
 							)}
 
@@ -279,7 +294,22 @@ function ContactsList(props) {
 	// console.log(user, 'user')
 
 	function handleClick(n) {
-		console.log(n.original, 'nnnn')
+		setROWvalue(n.original)
+		setOpenBlockDialog(true)
+		// CoreHttpHandler.request('conversations', 'block', {
+		// 	key: ':number', value: n.original.id, params: {
+		// 		reason: this.state.blockReason,
+		// 	}
+		// },
+		// 	(response) => {
+		// 		console.log(response)
+		// 	},
+		// 	(error) => {
+		// 		console.log(error)
+		// 	}
+		// );
+
+		// console.log(n.original, 'nnnn')
 		// setDialogData(n)
 
 		// console.log(dialogData,'ContactGroupDialogContactGroupDialog')
@@ -290,6 +320,10 @@ function ContactsList(props) {
 	return (
 		<FuseAnimate animation="transition.slideUpIn" delay={300}>
 			<ContactsTable
+				openUnBlockDialog={unblockDialog}
+				onBlockDialogClose={handleClose}
+				blockRowData={rowvalue}
+				openBlockDialog={openBlockDialog}
 				columns={columns}
 				data={filtered}
 				onRowClick={(ev, row) => {
@@ -300,6 +334,8 @@ function ContactsList(props) {
 				}}
 			// onRowClick={console.log('i am clicked')}
 			/>
+			{/* {openBlockDialog && <BlockContactInDialog isOpen={openBlockDialog} type="Block Number" data={rowvalue} />} */}
+
 		</FuseAnimate>
 	);
 }

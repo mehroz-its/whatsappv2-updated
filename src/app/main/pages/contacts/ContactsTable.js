@@ -14,6 +14,10 @@ import { useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } fro
 import clsx from 'clsx';
 import ContactsTablePaginationActions from './ContactsTablePaginationActions';
 import ContactDialog from './ContactDialog'
+import BlockContactInDialog from './BlockContactInDialog'
+import BlockDialog from '../BlockedContacts/BlockListDialog'
+
+
 
 
 const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
@@ -31,10 +35,11 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 	);
 });
 
-const EnhancedTable = ({ columns, data, onRowClick }) => {
+const EnhancedTable = ({ columns, data, onRowClick, openUnBlockDialog,openBlockDialog, blockRowData ,onBlockDialogClose}) => {
 	const [open, setOpen] = React.useState(false);
 	const handleClose = () => {
 		setOpen(false);
+		onBlockDialogClose()
 	};
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -102,19 +107,19 @@ const EnhancedTable = ({ columns, data, onRowClick }) => {
 		setPageSize(Number(event.target.value));
 	};
 
-	const handleClick=(ev, row) => {
+	const handleClick = (ev, row) => {
 		// if (row) {
 		// 	dispatch(Actions.openEditContactDialog(row.original));
 		// }
-		console.log(row.original,'rowrow')
+		console.log(row.original, 'rowrow')
 		setDialogData(row.original)
 		handleClickOpen()
 		// console.log(dialogData,'dialogData')
 	}
 
 	// Render the UI for your table
-	return ( <div>
-	<TableContainer className="min-h-full sm:border-1 sm:rounded-16" >
+	return (<div>
+		<TableContainer className="min-h-full sm:border-1 sm:rounded-16" >
 			<MaUTable {...getTableProps()}>
 				<TableHead>
 					{headerGroups.map(headerGroup => (
@@ -187,12 +192,16 @@ const EnhancedTable = ({ columns, data, onRowClick }) => {
 				</TableFooter>
 			</MaUTable>
 		</TableContainer>
-		{open && <ContactDialog type="edit" data={dialogData}isOpen={open} closeDialog={handleClose}  />}
+		{open && <ContactDialog type="edit" data={dialogData} isOpen={open} closeDialog={handleClose} />}
+		{openBlockDialog && <BlockContactInDialog isOpen={openBlockDialog} type="Block Number" data={blockRowData} closeDialog={handleClose} />}
+		{openUnBlockDialog && <BlockDialog isOpen={openUnBlockDialog} type="UnBlock Number" closeDialog={handleClose} data={blockRowData} />}
 
-		</div>
-	);};
-	
-	
+
+	</div>
+	);
+};
+
+
 
 
 EnhancedTable.propTypes = {
