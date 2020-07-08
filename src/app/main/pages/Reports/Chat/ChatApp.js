@@ -194,7 +194,9 @@ const engagments = (data) => {
 function ChatApp() {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
-	const [value, setValue] = React.useState(0);
+	const [val, setVal] = React.useState('');
+	
+	const[data2,setData2]=React.useState([])
     const [chartdata, setchartdata] = React.useState(null);
 	const [state, setState] = React.useState({
 		columns: [
@@ -235,6 +237,7 @@ function ChatApp() {
 			let tableData = response.data.data.list.data
 			console.log(tableData)
 			setTableData(tableData)
+			setData2(tableData)
 		});
 	})
 	const dataSourceOptions = {
@@ -292,6 +295,16 @@ function ChatApp() {
 	// 	);
 	// }
 
+	const searchContact =(value)=> {
+	setVal(value)
+		// console.log('ceeleded', props.ValueForSearch, searchVal);
+
+		// setSearchVal(props.ValueForSearch)
+		setData2(data.filter(n =>n.number.toLowerCase().includes(value.toLowerCase())))
+		console.log(data2, 'filterssss');
+
+
+	}
 	return (
 		<FusePageSimple
 			classes={{
@@ -339,9 +352,11 @@ function ChatApp() {
 			header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
 			wrapper: 'min-h-0'
 		}}
-						header={<ChartHeader/>}
-						content={<ChartTable data={data} />}
-						content={<ChartTable data={data} />}
+						header={<ChartHeader  SearchVal={searchContact} />}
+						content={
+						
+						<ChartTable data={ val==''? data : data2} />}
+				
 						/>
 						
 						

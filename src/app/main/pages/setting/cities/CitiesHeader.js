@@ -38,6 +38,7 @@ function CitiesHeader(props) {
 							className="flex flex-1 mx-8"
 							disableUnderline
 							fullWidth
+							placeholder="Search"
 							onChange={e=>{
 							
 								props.SearchVal(e.target.value)

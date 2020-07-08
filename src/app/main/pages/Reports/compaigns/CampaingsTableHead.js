@@ -15,42 +15,49 @@ import Tooltip from '@material-ui/core/Tooltip';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 
-const rows = [
+const rows = [	
 	{
-		id: 'incoming',
+		id: 'Agent_id',
 		align: 'left',
 		disablePadding: false,
-		label: 'Incoming',
+		label: 'Agent_id',
 		sort: true
 	},
 	{
-		id: 'incoming_count',
+		id: 'agent_name',
 		align: 'left',
 		disablePadding: false,
-		label: 'Incoming_count',
+		label: 'agent_name',
 		sort: true
 	},
 	{
-		id: 'number',
+		id: 'total_chat_count',
 		align: 'left',
 		disablePadding: false,
-		label: 'Number',
+		label: 'Total_chat_count',
 		sort: true
 	},
 	{
-		id: 'outgoing',
+		id: 'total_engagement_count',
 		align: 'right',
 		disablePadding: false,
-		label: 'Outgoing',
+		label: 'Total_engagement_count',
 		sort: true
 	},
 	{
-		id: 'outgoing_count',
+		id: 'responsetime',
 		align: 'right',
 		disablePadding: false,
-		label: 'Outgoing_count',
+		label: 'responsetime',
 		sort: true
-	}
+	},
+	{
+		id: 'account_status',
+		align: 'right',
+		disablePadding: false,
+		label: 'Acount_status',
+		sort: true
+	}	
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -59,7 +66,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function ChartTableHead(props) {
+function CampaingsTableHead(props) {
 	const classes = useStyles(props);
 	const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
 
@@ -151,4 +158,4 @@ function ChartTableHead(props) {
 	);
 }
 
-export default ChartTableHead;
+export default CampaingsTableHead;

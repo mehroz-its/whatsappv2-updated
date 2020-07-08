@@ -18,14 +18,10 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Fab from '@material-ui/core/Fab';
 import { makeStyles,withStyles } from '@material-ui/core/styles';
 import CitiesDialog from './CitiesDialog';
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 
 const GreenCheckbox = withStyles({
-	root: {
-	  color: green[400],
-	  '&$checked': {
-		color: green[600],
-	  },
-	},
+
 	checked: {},
   })((props) => <Checkbox color="default" {...props} />);
 
@@ -41,37 +37,70 @@ const GreenCheckbox = withStyles({
 
 function Cities(props) {
 
+	const classes = useStyles(props);
 	function closeDialog(){
 		setOpen(false)
 	}
 	
-		
-	const [state, setState] = React.useState({
-		
-		checkedG: true,
-	  });
+	const [dialogData, setDialogData] = React.useState(
+		{ enable: true, id: '', name: '',code:'', country:'' }
+	)	
 	const [open, setOpen] = React.useState(false);
-	const[data,setData]=React.useState({
-		enabled:false
-	})
-	const classes = useStyles(props);
 	const[val,setVal]=React.useState('')
-	const handleClickOpen = () => {
-		setOpen(true);
-	  };
+	const [data, setData] = React.useState([]);
+	const [data2, setData2] = React.useState(data);
+	const [updateDialogOpen, setUpdateDialogOpen] = React.useState(false);
 	
+	
+	const getData = ((loadData) => {
+		loadData = () => {
+			return CoreHttpHandler.request('locations', 'get_cities', {
+
+				limit: 10,
+				page: 0,
+				columns: "*",
+				sortby: "DESC",
+				orderby: "id",
+				where: "id != $1",
+				values: 0,
+			}, null, null, true);
+		};
+		loadData().then((response) => {
+			const tableData = response.data.data.list.data
+			console.log(tableData)
+			setData(tableData)
+			setData2(tableData)
+		});
+	})
+
+
+	
+	React.useEffect(() => {
+		getData()
+	}, []);
 	
 	  const handleClose = () => {
+		getData()
 		setOpen(false);
-	  };
-	  const handleChange = (event) => {
-		setState({ ...state, [event.target.name]: event.target.checked });
-	  };
+		// setUpdateDialogOpen(false)
+	};
+	const handleClickOpen = () => {
+		setOpen(true);
 
-	  const updateText =(search)=>
-	  {
-		setVal(search)
-	  }
+	}
+	const handleUpdateClickOpen = () => {
+		setUpdateDialogOpen(true);
+	}
+	const searchContact =(value)=> {
+		setVal(value)
+		// console.log('ceeleded', props.ValueForSearch, searchVal);
+
+		// setSearchVal(props.ValueForSearch)
+		setData2(data.filter(n => n.name.toLowerCase().includes(value.toLowerCase())))
+		console.log(data2, 'filterssss');
+
+
+	}
 
 	
 	
@@ -82,8 +111,8 @@ function Cities(props) {
 				content: 'flex',
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
-			header={<CitiesHeader  SearchVal={updateText} />}
-			content={<CitiesTable   ValueForSearch={val} />}
+			header={<CitiesHeader  SearchVal={searchContact}  />}
+			content={<CitiesTable   InsertedVal={val}  dataa={data2} ValueForSearch={val} isOpen={updateDialogOpen} onClickOpen={handleUpdateClickOpen} onClose={handleClose} />}
 			// innerScrollss
 		/>
 		
@@ -98,7 +127,7 @@ function Cities(props) {
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-			{open ?<CitiesDialog isOpen={open} closeDialog={closeDialog} type="Add" data={data}/> :null }
+			{open ?<CitiesDialog type="Add" isOpen={open} closeDialog={handleClose} data={dialogData}/> :null }
 	</>
 	);
 }

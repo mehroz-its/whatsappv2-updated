@@ -25,6 +25,7 @@ function CitiesTable(props) {
 	function closeDialog(){
 		setOpen(false)
 	}
+	let data2 = props.dataa
 
 	console.log(props)
 	const dispatch = useDispatch();
@@ -34,7 +35,7 @@ function CitiesTable(props) {
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState([]);
 	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
-	const [data2, setData2] = useState(data);
+
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -50,44 +51,8 @@ function CitiesTable(props) {
 		
 	})
 
-	const getData = ((loadData) => {
-		loadData = () => {
-			return CoreHttpHandler.request('locations', 'get_cities', {
 
-				limit: 10,
-				page: 0,
-				columns: "*",
-				sortby: "DESC",
-				orderby: "id",
-				where: "id != $1",
-				values: 0,
-			}, null, null, true);
-		};
-		loadData().then((response) => {
-			const tableData = response.data.data.list.data
-			console.log(tableData)
-			setData(tableData)
-			setData2(tableData)
-		});
-	})
 
-	React.useEffect(() => {
-		getData()
-	}, []);
-
-	// useEffect(() => {
-	// 	dispatch(Actions.getProducts());
-	// }, [dispatch]);
-
-	// useEffect(() => {
-	// 	if (searchText.length !== 0) {
-	// 		setData(_.filter(products, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
-	// 		setPage(0);
-	// 	} else {
-	// 		setData(products);
-	// 		console.log(products,'here in prdoducts table')
-	// 	}
-	// }, [products, searchText]);
 
 	function handleRequestSort(event, property) {
 		const id = property;
@@ -103,6 +68,13 @@ function CitiesTable(props) {
 		});
 	}
 
+	const handleClose = () => {
+		// getData()
+
+		setOpen(false);
+		props.onClose()
+	};
+
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
 			setSelected(data.map(n => n.id));
@@ -111,13 +83,6 @@ function CitiesTable(props) {
 		setSelected([]);
 	}
 
-	if (data2.length === 0) {
-		return (
-			<div className="flex flex-1 items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
-	}
 
 	function handleClick(n) {
 		console.log(n,'nnnnnnnn');
@@ -134,32 +99,7 @@ function CitiesTable(props) {
 		
 		
 }
-if(searchVal!==props.ValueForSearch)
-{
-	{search()}
-}
 
-// if(searchVal.length===0)
-// {
-// 	{getData()}
-// }
-
-
-
-
-//    if(props.PressedVal==8){
-// 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-// }
-
-function search(){
-	console.log('ceeleded',props.ValueForSearch,searchVal);
-	
-	setSearchVal(props.ValueForSearch)
-	setData2(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-	console.log(data,'filterssss');
-	
-	
-}
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
@@ -186,6 +126,17 @@ function search(){
 		setRowsPerPage(event.target.value);
 	}
 
+
+	if(data2.length===0&&props.InsertedVal.length!=0)
+	{
+		console.log(props.InsertedVal,'sdsdsd');
+		
+	return (
+		<div style={{justifyContent:'center',alignItems:'center',display:'flex',flex:1,fontSize:40,fontStyle:'italic'}}>
+               No Data Found
+		</div>
+	)
+	}
 	return (
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
@@ -317,7 +268,7 @@ function search(){
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-				{open ? <CitiesDialog  isOpen={open} closeDialog={closeDialog} type="Update"  data={dialogData} />:null}
+				{open ? <CitiesDialog  isOpen={open} closeDialog={closeDialog} type="Update" closeDialog={handleClose}  data={dialogData} />:null}
 		</div>
 	);
 }

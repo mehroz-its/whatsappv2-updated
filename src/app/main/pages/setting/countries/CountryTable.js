@@ -27,15 +27,15 @@ function CountryTable(props) {
 		setOpen(false)
 	}
 	
- 
- 
+	let data2 = props.dataa
+    // let data3=props.dataa
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState([]);
-	const [data2, setData2] = useState(data);
+
 	const [filter, setFilter] = useState([]);
 	const [press,setPress]=useState(props.PressedVal)
 	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
@@ -46,7 +46,7 @@ function CountryTable(props) {
 		id: null
 	});
 	const[dialogData,setDialogData]=useState({
-		enabled:'',
+		enabled:true,
 		id:'',
 		name:'',
 		code:'',
@@ -56,32 +56,7 @@ function CountryTable(props) {
 	
 	
 
-	const getData = ((loadData) => {
-		loadData = () => {
-			return CoreHttpHandler.request('locations', 'get_countries', {
 
-				limit: 10,
-				page: 0,
-				columns: "*",
-				sortby: "DESC",
-				orderby: "id",
-				where: "id != $1",
-				values: 0,
-			}, null, null, true);
-		};
-		loadData().then((response) => {
-			const tableData = response.data.data.list.data
-
-			setData(tableData)
-			setData2(tableData)
-		});
-	})
-
-	React.useEffect(() => {
-		getData()
-		
-		
-	}, []);
 
 
 	// useEffect(() => {
@@ -98,6 +73,9 @@ function CountryTable(props) {
 	// 	}
 	// }, [products, searchText]);
 
+	const openDialog = props.onClickOpen
+	let openDialogValue = props.isOpen
+
 	function handleRequestSort(event, property) {
 		const id = property;
 		let direction = 'desc';
@@ -111,7 +89,9 @@ function CountryTable(props) {
 			id
 		});
 	}
-
+	const handleClickOpen = () => {
+		setOpen(true);
+	}
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
 			setSelected(data.map(n => n.id));
@@ -121,7 +101,8 @@ function CountryTable(props) {
 	}
 
 	function handleClick(filter) {
-		setOpen(true)
+		props.onClickOpen()
+		handleClickOpen()
 
 		setDialogData({
 			enabled:filter.enabled,
@@ -132,39 +113,34 @@ function CountryTable(props) {
 		
 		
 }
-	if(searchVal!==props.ValueForSearch)
-	{
-		{search()}
-	}
-	
-	// if(searchVal.length===0)
-	// {
-	// 	{getData()}
+
+
+	// if (data3.length === 0) {
+	// 	return (
+	// 		<div className="flex flex-1 items-center justify-center h-full">
+	// 			<FuseLoading />
+	// 		</div>
+	// 	);
 	// }
 
-	if (data2.length === 0) {
-		return (
-			<div className="flex flex-1 items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
+	if(data2.length===0&&props.InsertedVal.length!=0)
+	{
+		console.log(props.InsertedVal,'sdsdsd');
+		
+	return (
+		<div style={{justifyContent:'center',alignItems:'center',display:'flex',flex:1,fontSize:40,fontStyle:'italic'}}>
+               No Data Found
+		</div>
+	)
 	}
 
 	
+	const handleClose = () => {
+		// getData()
 
-//    if(props.PressedVal==8){
-// 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-// }
-
-	function search(){
-		console.log('ceeleded',props.ValueForSearch,searchVal);
-		
-        setSearchVal(props.ValueForSearch)
-		setData2(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-		console.log(data,'filterssss');
-		
-		
-	}
+		setOpen(false);
+		props.onClose()
+	};
 	
 
 	function handleCheck(event, id) {
@@ -192,23 +168,11 @@ function CountryTable(props) {
 		setRowsPerPage(event.target.value);
 	}
 
-	console.log(data2,'data32222');
+
 	
 
 
-	//   const filter=data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase()))
-	//   console.log(filter,'filesdasD');
-	 
-    //   if(props.ValueForSearch)
-   	//  function search() {
-	// 	const filter=data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase()))
-	//     setSearchVal(filter)
-	// }
-
-	// if(props.ValueForSearch.length > 0)
-	// {
-	// 	{search()}
-	// }
+	
 	  
 	return (
 		<div className="w-full flex flex-col">
@@ -279,26 +243,7 @@ function CountryTable(props) {
 												)}
 										</TableCell>
 
-										{/* 
-										<TableCell component="th" scope="row" align="right">
-											{n.quantity}
-											<i
-												className={clsx(
-													'inline-block w-8 h-8 rounded mx-8',
-													n.quantity <= 5 && 'bg-red',
-													n.quantity > 5 && n.quantity <= 25 && 'bg-orange',
-													n.quantity > 25 && 'bg-green'
-												)}
-											/>
-										</TableCell> */}
-
-										{/* <TableCell component="th" scope="row" align="right">
-											{n.active ? (
-												<Icon className="text-green text-20">check_circle</Icon>
-											) : (
-													<Icon className="text-red text-20">remove_circle</Icon>
-												)}
-										</TableCell> */}
+									
 									</TableRow>
 								);
 							})}
@@ -321,7 +266,7 @@ function CountryTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-			{open ? <CountryDialog  isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData} />:null }
+			{open ? <CountryDialog  isOpen={open} closeDialog={closeDialog} closeDialog={handleClose} type="Update" data={dialogData} />:null }
 		</div>
 	);
 }

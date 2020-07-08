@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-function ChartHeader(props) {
+function AgentHeader(props) {
 	const dispatch = useDispatch();
 	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
 
@@ -68,4 +68,4 @@ function ChartHeader(props) {
 	);
 }
 
-export default ChartHeader;
+export default AgentHeader;

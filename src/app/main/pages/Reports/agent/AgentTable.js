@@ -11,67 +11,46 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import * as Actions from '../store/actions';
-import CannedTableHead from './CannedTableHead';
-import TableData from '../CannedData'
-import CannedDialog from './CannedDialog'
+
+import AgentTableHead from './AgentTableHead';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 
 
+function AgentTable(props) {
 
-function CannedTable(props) {
+	
+	function closeDialog(){
+		setOpen(false)
+	}
+
 	console.log(props)
-	const [data, setData] = useState(props.dataa);
-
-	const dispatch = useDispatch();
-	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
-	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
-
-	const [selected, setSelected] = useState([]);
+	// const dispatch = useDispatch();
+	// const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
+	// const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [open, setOpen] = React.useState(false);
-	const [dialogData, setDialogData] = React.useState(
-		{ enable: true, id: '', name: '', type: 'text', text: '', url: '', attachment_type: '', file_name: '' }
-	)
-
-
-	// const [data, setData] = useState(props.data);
+	const [selected, setSelected] = useState([]);
+	// const [data, setData] = useState([]);
+	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
+	const [data2, setData2] = useState(data);
 	const [page, setPage] = useState(0);
-	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
 		direction: 'asc',
 		id: null
 	});
+	const[dialogData,setDialogData]=useState({
+		enabled:'',
+		id:'',
+		name:'',
+		code:'',
+		country:''
+		
+	})
 
-	let data2 = props.dataa
-	console.log(data2, 'data from props')
-	// const getData = ((loadData) => {
-	// 	console.log('called get data')
-	// 	loadData = () => {
-	// 		return CoreHttpHandler.request('canned_messages', 'listing', {
-
-	// 			limit: 100,
-	// 			page: 0,
-	// 			columns: "*",
-	// 			sortby: "DESC",
-	// 			orderby: "id",
-	// 			where: "id != $1",
-	// 			values: 0,
-	// 		}, null, null, true);
-	// 	};
-	// 	loadData().then((response) => {
-	// 		const tableData = response.data.data.list.data
-	// 		console.log(tableData)
-	// 		setData(tableData)
-	// 		setData2(tableData)
-
-	// 	});
-	// })
-
-	// React.useEffect(() => {
-	// 	getData()
-	// }, []);
+    let data=props.data
+    console.log(data,'data');
+    
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
 	// }, [dispatch]);
@@ -99,19 +78,7 @@ function CannedTable(props) {
 			id
 		});
 	}
-	const handleClose = () => {
-		// getData()
 
-		setOpen(false);
-		props.onClose()
-	};
-	// const handleClose = props.onClose
-	const openDialog = props.onClickOpen
-	let openDialogValue = props.isOpen
-	console.log(openDialogValue,'openDialogValue')
-	const handleClickOpen = () => {
-		setOpen(true);
-	}
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
 			setSelected(data.map(n => n.id));
@@ -119,33 +86,56 @@ function CannedTable(props) {
 		}
 		setSelected([]);
 	}
-	// if (data.length === 0) {
+
+	// if (data2.length === 0) {
 	// 	return (
 	// 		<div className="flex flex-1 items-center justify-center h-full">
 	// 			<FuseLoading />
 	// 		</div>
 	// 	);
 	// }
+
 	function handleClick(n) {
-		setDialogData({ enable: n.enabled, id: n.id, name: n.message_name, type: n.message_type, text: n.message_text, url: n.attachment_url, attachment_type: n.attachment_type, file_name: n.attachment_name })
-		console.log(n)
-		props.onClickOpen()
-		handleClickOpen()
-		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
-	}
+		console.log(n,'nnnnnnnn');
+		
+		setOpen(true)
+		console.log(dialogData,n,'asdsd');
+		setDialogData({
+			enabled:n.enabled,
+			id:n.id,
+			name:n.name,
+			code:n.code,
+            country:0
+         })
+		
+		
+}
+// if(searchVal!==props.ValueForSearch)
+// {
+// 	{search()}
+// }
 
-	// function search() {
-	// 	console.log('ceeleded', props.ValueForSearch, searchVal);
-
-	// 	setSearchVal(props.ValueForSearch)
-	// 	setData(data.filter(n => n.message_name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-	// 	console.log(data, 'filterssss');
+// // if(searchVal.length===0)
+// // {
+// // 	{getData()}
+// // }
 
 
-	// }
-	// if (searchVal !== props.ValueForSearch) {
-	// 	{ search() }
-	// }
+
+
+// //    if(props.PressedVal==8){
+// // 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+// // }
+
+// function search(){
+// 	console.log('ceeleded',props.ValueForSearch,searchVal);
+	
+// 	setSearchVal(props.ValueForSearch)
+// 	setData2(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+// 	console.log(data,'filterssss');
+	
+	
+// }
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
@@ -172,21 +162,11 @@ function CannedTable(props) {
 		setRowsPerPage(event.target.value);
 	}
 
-	if(data2.length===0&&props.InsertedVal.length!=0)
-	{
-		console.log(props.InsertedVal,'sdsdsd');
-		
-	return (
-		<div style={{justifyContent:'center',alignItems:'center',display:'flex',flex:1,fontSize:40,fontStyle:'italic'}}>
-               No Data Found
-		</div>
-	)
-	}
 	return (
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
 				<Table className="min-w-xl" aria-labelledby="tableTitle">
-					<CannedTableHead
+					<AgentTableHead
 						numSelected={selected.length}
 						order={order}
 						onSelectAllClick={handleSelectAllClick}
@@ -196,7 +176,7 @@ function CannedTable(props) {
 
 					<TableBody>
 						{_.orderBy(
-							data2,
+							data,
 							[
 								o => {
 									switch (order.id) {
@@ -213,7 +193,9 @@ function CannedTable(props) {
 						)
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map(n => {
-								const isSelected = selected.indexOf(n.id) !== -1;
+                                const isSelected = selected.indexOf(n.id) !== -1;
+                                console.log(n,'nnnnnnnnnnn');
+                                
 								return (
 									<TableRow
 										className="h-64 cursor-pointer"
@@ -233,28 +215,44 @@ function CannedTable(props) {
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-										<TableCell component="th" scope="row" >
-											{n.id}
+										<TableCell component="th" scope="row"  align="center">
+											{n.agent_id}
 										</TableCell>
-										<TableCell component="th" scope="row">
-											{n.message_name}
+										<TableCell component="th" scope="row"  align="center">
+											{n.agent_name}
 										</TableCell>
-										<TableCell component="th" scope="row">
-											{n.message_text}
+										<TableCell component="th" scope="row"  align="center">
+											{n.total_chat_count}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-											{n.message_params}
+										<TableCell component="th" scope="row" align="center">
+											{n.total_engagement_count}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-											{n.message_type}
+                                        <TableCell component="th" scope="row" align="center">
+											{n.responsetime}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-											{n.enabled ? (
-												<Icon className="text-green text-20">check_circle</Icon>
-											) : (
-													<Icon className="text-red text-20">cancel</Icon>
+                                        <TableCell component="th" scope="row" align="center">
+											{n.account_status}
+										</TableCell>
+									
+										{/* <TableCell component="th" scope="row" align="right">
+											{n.progress ? (
+												<Icon className="text-red text-20">check_circle</Icon>
+												) : (
+													<Icon className="text-green text-20">remove_circle</Icon>
 												)}
 										</TableCell>
+										<TableCell component="th" scope="row" align="right">
+											{n.consumers}
+										</TableCell>
+										<TableCell component="th" scope="row" align="right">
+											{n.success}
+										</TableCell>
+										<TableCell component="th" scope="row" align="right">
+											{n.failure}
+										</TableCell>
+										<TableCell component="th" scope="row" align="right">
+											{n.lastUpdated}
+										</TableCell> */}
 										{/* 
 										<TableCell component="th" scope="row" align="right">
 											{n.quantity}
@@ -297,9 +295,9 @@ function CannedTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-			{open && <CannedDialog isOpen={open} type="Update Canned Message" closeDialog={handleClose} data={dialogData} />}
+				
 		</div>
 	);
 }
 
-export default withRouter(CannedTable);	
+export default withRouter(AgentTable);
