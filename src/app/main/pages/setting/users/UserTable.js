@@ -8,6 +8,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import clsx from 'clsx';
+import Typography from '@material-ui/core/Typography';
+
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -23,16 +25,17 @@ function UserTable(props) {
 
 	function closeDialog(){
 		setOpen(false)
+		props.onClose()
 	}
 	console.log(props)
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [open, setOpen] = React.useState(false);
-	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
+	// const[searchVal,setSearchVal]=useState(props.ValueForSearch)
 	const [selected, setSelected] = useState([]);
-	const [data, setData] = useState([]);
-	const [data2, setData2] = useState(data);
+	// const [data, setData] = useState([]);
+	// const [data2, setData2] = useState(data);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -40,25 +43,25 @@ function UserTable(props) {
 		id: null
 	});
 
-	const getData = ((loadData) => {
-		loadData = () => {
-			return CoreHttpHandler.request('users', 'listing', {
-				limit: 100,
-				page: 0,
-				columns: "*",
-				sortby: "ASC",
-				orderby: "id",
-				where: "displayed = $1",
-				values: true,
-			}, null, null, true);
-		};
-		loadData().then((response) => {
-			const tableData = response.data.data.list.data
-			console.log(tableData)
-			setData(tableData)
-			setData2(tableData)
-		});
-	})
+	// const getData = ((loadData) => {
+	// 	loadData = () => {
+	// 		return CoreHttpHandler.request('users', 'listing', {
+	// 			limit: 10,
+	// 			page: 0,
+	// 			columns: "*",
+	// 			sortby: "ASC",
+	// 			orderby: "id",
+	// 			where: "displayed = $1",
+	// 			values: true,
+	// 		}, null, null, true);
+	// 	};
+	// 	loadData().then((response) => {
+	// 		const tableData = response.data.data.list.data
+	// 		console.log(tableData)
+	// 		setData(tableData)
+	// 		setData2(tableData)
+	// 	});
+	// })
 
 	const[dialogData,setDialogData]=useState({
 		enabled:'',
@@ -69,17 +72,11 @@ function UserTable(props) {
 		roles:[]
 		
 	})
-	React.useEffect(() => {
-		getData()
-	}, []);
+	// React.useEffect(() => {
+	// 	getData()
+	// }, []);
 	
-	if (data2.length === 0) {
-		return (
-			<div className="flex flex-1 items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
-	}
+
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
 	// }, [dispatch]);
@@ -108,13 +105,13 @@ function UserTable(props) {
 		});
 	}
 
-	function handleSelectAllClick(event) {
-		if (event.target.checked) {
-			setSelected(data.map(n => n.id));
-			return;
-		}
-		setSelected([]);
-	}
+	// function handleSelectAllClick(event) {
+	// 	if (event.target.checked) {
+	// 		setSelected(data.map(n => n.id));
+	// 		return;
+	// 	}
+	// 	setSelected([]);
+	// }
 
 	function handleClick(n) {
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
@@ -132,10 +129,10 @@ function UserTable(props) {
 		})
 	}
 
-	if(searchVal!==props.ValueForSearch)
-	{
-		{search()}
-	}
+	// if(searchVal!==props.ValueForSearch)
+	// {
+	// 	{search()}
+	// }
 	
 	// if(searchVal.length===0)
 	// {
@@ -150,15 +147,37 @@ function UserTable(props) {
 // }
 
 
-	function search(){
-		console.log('ceeleded',props.ValueForSearch,searchVal);
+	// function search(){
+	// 	console.log('ceeleded',props.ValueForSearch,searchVal);
 		
-        setSearchVal(props.ValueForSearch)
-		setData2(data.filter(n=>n.username.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-		console.log(data,'filterssss');
+    //     setSearchVal(props.ValueForSearch)
+	// 	setData2(data.filter(n=>n.username.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+	// 	console.log(data,'filterssss');
 		
 		
+	// }
+	let data2 = props.dataa
+
+
+
+	if (data2.length === 0) {
+		if (props.ValueForSearch !== '') {
+			return (
+				<div className="flex flex-1 items-center justify-center h-full">
+					<Typography color="textSecondary" variant="h5">
+						No Match Found
+					</Typography>
+				</div>
+			)
+		} else {
+			return (
+				<div className="flex flex-1 items-center justify-center h-full">
+					<FuseLoading />
+				</div>
+			);
+		}
 	}
+
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
@@ -191,9 +210,9 @@ function UserTable(props) {
 					<UserTableHead
 						numSelected={selected.length}
 						order={order}
-						onSelectAllClick={handleSelectAllClick}
+						// onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
-						rowCount={data.length}
+						rowCount={data2.length}
 					/>
 
 					<TableBody>
@@ -285,7 +304,7 @@ function UserTable(props) {
 			<TablePagination
 				className="overflow-hidden"
 				component="div"
-				count={data.length}
+				count={data2.length}
 				rowsPerPage={rowsPerPage}
 				page={page}
 				backIconButtonProps={{
