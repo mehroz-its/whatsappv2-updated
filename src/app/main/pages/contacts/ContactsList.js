@@ -143,6 +143,8 @@ function ContactsList(props) {
 
 	if (data2.length > 0) {
 		filtered = data2
+	} else if (data2.length === 0 && searchVal !== '') {
+		filtered = data2
 	}
 	const handleUnblockClick = (row) => {
 		// ev.stopPropagation();
@@ -284,11 +286,26 @@ function ContactsList(props) {
 	// }
 
 	if (filtered.length === 0) {
-		return (
-			<div className="flex flex-1 items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
+		if (searchVal !== '') {
+			return (
+				<div className="flex flex-1 items-center justify-center h-full">
+
+					<Typography color="textSecondary" variant="h5">
+						{/* There are no contacts! */}
+					No Match Found!
+				</Typography>
+				</div>
+			)
+
+
+		} else {
+			return (
+				<div className="flex flex-1 items-center justify-center h-full">
+					<FuseLoading />
+				</div>
+			);
+		}
+
 	}
 	console.log(ContactsData, 'ContactsData')
 	// console.log(user, 'user')
@@ -320,6 +337,7 @@ function ContactsList(props) {
 	return (
 		<FuseAnimate animation="transition.slideUpIn" delay={300}>
 			<ContactsTable
+				getUpdatedData={() => { getData() }}
 				openUnBlockDialog={unblockDialog}
 				onBlockDialogClose={handleClose}
 				blockRowData={rowvalue}
