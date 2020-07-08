@@ -43,7 +43,7 @@ function UserTable(props) {
 	const getData = ((loadData) => {
 		loadData = () => {
 			return CoreHttpHandler.request('users', 'listing', {
-				limit: 10,
+				limit: 100,
 				page: 0,
 				columns: "*",
 				sortby: "ASC",

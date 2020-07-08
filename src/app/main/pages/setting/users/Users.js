@@ -61,7 +61,14 @@ function Users(props) {
 
 
 	const [open, setOpen] = React.useState(false);
-	const[data,setData]=React.useState('')
+	const[dialogData,setDialogData]=React.useState({
+		enabled:true,
+		id:'',
+		username:'',
+		email:'',
+		number:'',
+		roles:[]
+	})
 	const classes = useStyles(props);
 	const[val,setVal]=React.useState('')
 	const handleClickOpen = () => {
@@ -89,7 +96,7 @@ function Users(props) {
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-       {open ? <UserDialog isOpen={open} closeDialog={closeDialog}  type="Add"  data={data} /> : null}
+       {open ? <UserDialog isOpen={open} closeDialog={closeDialog}  type="Add"  data={dialogData} /> : null}
 		
 
 		</>
