@@ -54,7 +54,7 @@ const PermissionDialog = (props) => {
   const [isToggled, setIsToggled] = React.useState(data.enabled);
   const [rules, setRules] = React.useState([])
   const [showRuleSet, setShowRuleSet] = React.useState(false);
-  const [currentRules, setCurrenconsumertRules] = React.useState([]);
+  const [currentRules, setCurrenconsumertRules] = React.useState(data.rule_set);
   const [enabled, setEnabled] = React.useState(data.enabled);
   const [consumer, setConsumer] = React.useState(data.consumer);
   console.log(data.method)
@@ -199,15 +199,24 @@ const PermissionDialog = (props) => {
     } else {
 
       console.log(props.data, 'datasss');
-
+      let params = {
+        id: data.id,
+        method: data.method,
+        description: description,
+        title: title,
+        rule_set: currentRules,
+        enabled: enabled,
+        consumer: consumer,
+        displayed: true,
+        dt: data.dt,
+        dtu: data.dtu
+      };
 
       let update_params = {
         key: 'id',
         value: props.data.id,
-        params: props.data
+        params: params
       }
-      console.log(update_params, 'update_params')
-      // return
       CoreHttpHandler.request('permissions', 'update', update_params, (response) => {
         // props.getUpdatedData()
         console.log(response)
@@ -254,6 +263,8 @@ const PermissionDialog = (props) => {
 
     }
   }
+  const disabled = type === "Update"?true:false
+
   return (
     // <div> {isOpen}</div>
     <Dialog open={openDialog} aria-labelledby="form-dialog-title" classes={{
@@ -282,6 +293,7 @@ const PermissionDialog = (props) => {
                 variant="outlined"
                 required
                 fullWidth
+                disabled={type === "Update"?true:false}
               />
             </div>
 
@@ -301,6 +313,8 @@ const PermissionDialog = (props) => {
                 variant="outlined"
                 required
                 fullWidth
+                disabled={type === "Update"?true:false}
+
               />
             </div>
             {type !== 'Update' ?
