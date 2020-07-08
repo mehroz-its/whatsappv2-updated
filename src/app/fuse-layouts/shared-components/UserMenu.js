@@ -43,6 +43,13 @@ function UserMenu(props) {
 
 	}
 
+	const handleProfile = () =>{
+		props.history.push({
+			pathname: '/pages/profile',
+
+		});
+
+	}
 	return (
 		<>
 			<Button className="h-64" onClick={userMenuClick}>
@@ -96,11 +103,11 @@ function UserMenu(props) {
 							</ListItemIcon>
 							<ListItemText primary="Log out" />
 						</MenuItem>
-						<MenuItem component={Button} onClick={() => { console.log('i ma regisster') }} role="button">
+						<MenuItem component={Button} onClick={handleProfile} role="button">
 							<ListItemIcon className="min-w-40">
 								<Icon>person_add</Icon>
 							</ListItemIcon>
-							<ListItemText primary="Register" />
+							<ListItemText primary="Profile" />
 						</MenuItem>
 					</>
 				) : (
