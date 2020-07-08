@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom';
 import CoreHttpHandler from '../../../http/services/CoreHttpHandler';
 
 
-function UserMenu(props) {
+const UserMenu =(props) => {
 	const dispatch = useDispatch();
 	const user = useSelector(({ auth }) => auth.user);
 
@@ -43,6 +43,16 @@ function UserMenu(props) {
 
 	}
 
+	const handleProfile = () =>{
+		// props.history.push({
+		// 	pathname: '/pages/profile',
+
+		// });
+		window.location.href = '/apps/profile';
+
+
+	}
+	console.log(props)
 	return (
 		<>
 			<Button className="h-64" onClick={userMenuClick}>
@@ -84,7 +94,7 @@ function UserMenu(props) {
 			>
 				{!user.role || user.role.length === 0 ? (
 					<>
-						{/* <MenuItem component={Link} to="/login" role="button">
+						{/* <MenuItem component={Link} to="pages/profile" role="button">
 							<ListItemIcon className="min-w-40">
 								<Icon>lock</Icon>
 							</ListItemIcon>
@@ -92,15 +102,15 @@ function UserMenu(props) {
 						</MenuItem> */}
 						<MenuItem component={Button} onClick={handleLogOut} role="button">
 							<ListItemIcon className="min-w-40">
-								<Icon>lock</Icon>
+								<Icon size={40}>lock</Icon>
 							</ListItemIcon>
 							<ListItemText primary="Log out" />
 						</MenuItem>
-						<MenuItem component={Button} onClick={() => { console.log('i ma regisster') }} role="button">
+						<MenuItem component={Button} onClick={handleProfile} role="button">
 							<ListItemIcon className="min-w-40">
 								<Icon>person_add</Icon>
 							</ListItemIcon>
-							<ListItemText primary="Register" />
+							<ListItemText primary="Profile" />
 						</MenuItem>
 					</>
 				) : (
