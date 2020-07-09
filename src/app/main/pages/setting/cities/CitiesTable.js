@@ -94,7 +94,7 @@ function CitiesTable(props) {
 			id:n.id,
 			name:n.name,
 			code:n.code,
-            country:0
+            country:n.country_id
          })
 		
 		
