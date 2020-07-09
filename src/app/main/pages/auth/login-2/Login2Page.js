@@ -223,12 +223,13 @@ render(){
 
 	return (
 		<div 
-		
+		 style={{backgroundColor:'#fc2254'}}
 		className={clsx(useStyles.root,'flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}>
 			<div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
-				<FuseAnimate animation="transition.expandIn">
-					<img src={require('./logo.jpg')}  style={useStyles.LogoStyle} />
-				</FuseAnimate>
+			
+                    <img src={require('./Logo_Image.jpeg')}
+                     style={{color:'#fc2254',fontStyle:150,height:100,width:500,backgroundColor:'#fc2254'}} />
+			
 
 			</div>
 

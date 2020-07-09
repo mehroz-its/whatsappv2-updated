@@ -17,7 +17,7 @@ import TableData from '../CampaignData'
 import CampaignDialog from './CampaignDialog'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
-
+import Typography from '@material-ui/core/Typography';
 
 
 
@@ -151,11 +151,21 @@ function CampaignTable(props) {
 	}
 
 	if (data2.length === 0) {
-		return (
-			<div className="flex flex-1 items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
+		if (props.ValueForSearch !== '') {
+			return (
+				<div className="flex flex-1 items-center justify-center h-full">
+					<Typography color="textSecondary" variant="h5">
+						No Data Found
+					</Typography>
+				</div>
+			)
+		} else {
+			return (
+				<div className="flex flex-1 items-center justify-center h-full">
+					<FuseLoading />
+				</div>
+			);
+		}
 	}
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);

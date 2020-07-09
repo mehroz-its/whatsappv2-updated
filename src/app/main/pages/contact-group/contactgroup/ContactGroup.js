@@ -13,7 +13,7 @@ import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import { useDispatch } from 'react-redux';
-
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -42,18 +42,49 @@ function ContactGroup(props) {
 	const [open, setOpen] = React.useState(false);
 	const[val,setVal]=React.useState('')
 	const classes = useStyles(props);
+	const [data, setData] = React.useState([]);
+	const [data2, setData2] = React.useState(data);
+	const [updateDialogOpen, setUpdateDialogOpen] = React.useState(false);
 
-
-	const handleChange = (event) => {
-		setAge(event.target.value);
-	};
 
 	const handleClose = () => {
+		getData()
 		setOpen(false);
+		// setUpdateDialogOpen(false)
 	};
 	const handleClickOpen = () => {
 		setOpen(true);
+
 	}
+	const handleUpdateClickOpen = () => {
+		setUpdateDialogOpen(true);
+	}
+
+	const getData = ((loadData) => {
+		console.log('called get data')
+		loadData = () => {
+			return CoreHttpHandler.request('contact_group', 'listing', {
+
+				limit: 100,
+				page: 0,
+				columns: "*",
+				sortby: "DESC",
+				orderby: "id",
+				where: "id != $1",
+				values: 0,
+			}, null, null, true);
+		};
+		loadData().then((response) => {
+			const tableData = response.data.data.list.data
+			console.log(tableData)
+			setData(tableData)
+			setData2(tableData)
+		});
+	})
+
+	React.useEffect(() => {
+		getData()
+	}, []);
 
 	const [age, setAge] = React.useState('Text');
 	const [dialogData, setDialogData] = React.useState(
@@ -66,11 +97,16 @@ function ContactGroup(props) {
 		}
 	  )
 
-	  const updateText =(search)=>
-	  {
-		setVal(search)
-	  }
+	  const searchContact =(value)=> {
+		setVal(value)
+		// console.log('ceeleded', props.ValueForSearch, searchVal);
 
+		// setSearchVal(props.ValueForSearch)
+		setData2(data.filter(n =>n.title.toLowerCase().includes(value.toLowerCase())))
+		console.log(data2, 'filterssss');
+
+
+	}
 	return (
 		<>
 			<FusePageCarded
@@ -78,8 +114,8 @@ function ContactGroup(props) {
 					content: 'flex',
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
-				header={<ContactGroupHeader  SearchVal={updateText}/>}
-				content={<ContactGroupTable   ValueForSearch={val} />}
+				header={<ContactGroupHeader  SearchVal={searchContact} />}
+				content={<ContactGroupTable InsertedVal={val}  dataa={data2} ValueForSearch={val} isOpen={updateDialogOpen} onClickOpen={handleUpdateClickOpen} onClose={handleClose}  />}
 			// innerScroll
 			/>
 			<FuseAnimate animation="transition.expandIn" delay={300}>
