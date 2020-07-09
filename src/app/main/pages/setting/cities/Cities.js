@@ -43,7 +43,7 @@ function Cities(props) {
 	}
 	
 	const [dialogData, setDialogData] = React.useState(
-		{ enable: true, id: '', name: '',code:'', country:'' }
+		{ enabled: true, id: '', name: '',code:'', country:'' }
 	)	
 	const [open, setOpen] = React.useState(false);
 	const[val,setVal]=React.useState('')

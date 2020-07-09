@@ -54,7 +54,7 @@ const CitiesDialog = (props) => {
     const [email,setEmail]=React.useState(props.data.code)
     const [city,setCities]=React.useState(props.data.cities)
     const [enabled, setEnabled] = React.useState(data.enabled);
-    const[method,setMethod]=React.useState('')
+    const[method,setMethod]=React.useState(data.country)
     
     const handleClose = () => {
         props.closeDialog()
@@ -76,7 +76,7 @@ const CitiesDialog = (props) => {
         code: email,
         name: name,
         enabled: enabled,
-        country: 0
+        country: method
       };
       console.log(params,'params')
       if (type !== 'Update') {
@@ -103,7 +103,7 @@ const CitiesDialog = (props) => {
             name:name,
             code:email,
             enabled:enabled,
-            country:0
+            country:method
           }
         }
         console.log(update_params,'update_params')
@@ -194,8 +194,12 @@ const handleEnable = (event) => {
 };
 
 
+React.useEffect(() => {
+  createCountry()
+}, []);
 
 
+console.log('method',method,enabled);
 
     return (  
   
@@ -238,7 +242,7 @@ const handleEnable = (event) => {
 
                 <TextField
                     className="mb-24"
-                    label="Country Code"
+                    label="City Code"
                     name="code"
                     value={email}
                     onChange={e=>setEmail(e.target.value)}
@@ -253,7 +257,7 @@ const handleEnable = (event) => {
         {props.type=='Add' ?
        <FormControl className={classes.formControl}>
 					
-          <InputLabel id="demo-simple-select-label">Type</InputLabel>
+          <InputLabel id="demo-simple-select-label">Country</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
@@ -261,7 +265,7 @@ const handleEnable = (event) => {
             onChange={handleMethodChange}
             onClick={createCountry}
           >
-          <MenuItem value={0}>Select Customer</MenuItem>
+          <MenuItem value={0}>Select Country</MenuItem>
             {
               country.map(data=>
                 <MenuItem value={data.id}>{data.name}</MenuItem>
