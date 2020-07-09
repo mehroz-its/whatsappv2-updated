@@ -33,7 +33,7 @@ function ContactGroupTable(props) {
 
 
 	const [data, setData] = useState([]);
-	const [data2, setData2] = useState(data);
+
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -41,33 +41,9 @@ function ContactGroupTable(props) {
 		id: null
 	});
 
+	let data2 = props.dataa
 
 
-	const getData = ((loadData) => {
-		console.log('called get data')
-		loadData = () => {
-			return CoreHttpHandler.request('contact_group', 'listing', {
-
-				limit: 100,
-				page: 0,
-				columns: "*",
-				sortby: "DESC",
-				orderby: "id",
-				where: "id != $1",
-				values: 0,
-			}, null, null, true);
-		};
-		loadData().then((response) => {
-			const tableData = response.data.data.list.data
-			console.log(tableData)
-			setData(tableData)
-			setData2(tableData)
-		});
-	})
-
-	React.useEffect(() => {
-		getData()
-	}, []);
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
 	// }, [dispatch]);
@@ -95,11 +71,7 @@ function ContactGroupTable(props) {
 			id
 		});
 	}
-	const handleClose = () => {
-		getData()
 
-		setOpen(false);
-	};
 	const handleClickOpen = () => {
 		setOpen(true);
 	}
@@ -119,7 +91,7 @@ function ContactGroupTable(props) {
 
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
 	}
-	if (data2.length === 0) {
+	if (data2.length === 0&&props.InsertedVal.length==0) {
 		return (
 			<div className="flex flex-1 items-center justify-center h-full">
 				<FuseLoading />
@@ -151,33 +123,22 @@ function ContactGroupTable(props) {
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
 	}
-	if(searchVal!==props.ValueForSearch)
-{
-	{search()}
-}
+	const handleClose = () => {
+		// getData()
 
-// if(searchVal.length===0)
-// {
-// 	{getData()}
-// }
-
-
-
-
-//    if(props.PressedVal==8){
-// 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-// }
-  console.log(data2,props.ValueForSearch,searchVal,'data2222');
-  
-function search(){
-	console.log('ceeleded',props.ValueForSearch,searchVal);
-	
-	setSearchVal(props.ValueForSearch)
-	setData2(data.filter(n=>n.title.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-	console.log(data,'filterssss');
-	
-	
-}
+		setOpen(false);
+		props.onClose()
+	};
+	if(data2.length===0&&props.InsertedVal.length!=0)
+	{
+		console.log(props.InsertedVal,'sdsdsd');
+		
+	return (
+		<div style={{justifyContent:'center',alignItems:'center',display:'flex',flex:1,fontSize:40,fontStyle:'italic'}}>
+               No Data Found
+		</div>
+	)
+	}
 
 	return (
 		<div className="w-full flex flex-col">
@@ -291,7 +252,7 @@ function search(){
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-			{open && <ContactGroupDialog isOpen={open} type="Contact Group Details" closeDialog={handleClose} getUpdatedData={getData} data={dialogData} />}
+			{open && <ContactGroupDialog isOpen={open} type="Contact Group Details" closeDialog={handleClose} data={dialogData} />}
 		</div>
 	);
 }
