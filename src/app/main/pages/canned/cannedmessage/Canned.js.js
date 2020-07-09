@@ -99,6 +99,7 @@ function Canned(props) {
 		setUpdateDialogOpen(true);
 	}
 	const searchContact =(value)=> {
+		setVal(value)
 		// console.log('ceeleded', props.ValueForSearch, searchVal);
 
 		// setSearchVal(props.ValueForSearch)
@@ -126,7 +127,7 @@ function Canned(props) {
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
 				header={<CannedHeader SearchVal={searchContact} />}
-				content={<CannedTable dataa={data2} ValueForSearch={val} isOpen={updateDialogOpen} onClickOpen={handleUpdateClickOpen} onClose={handleClose} />}
+				content={<CannedTable InsertedVal={val}  dataa={data2} ValueForSearch={val} isOpen={updateDialogOpen} onClickOpen={handleUpdateClickOpen} onClose={handleClose} />}
 			// innerScroll
 			/>
 			<FuseAnimate animation="transition.expandIn" delay={300}>

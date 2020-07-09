@@ -9,8 +9,8 @@ import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import MaterialTable from 'material-table';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
-
-
+import AgentHeader from './AgentHeader'
+import AgentTable from './AgentTable'
 const useStyles = makeStyles({
 	layoutRoot: {}
 });
@@ -192,6 +192,8 @@ const engagments = () => {
 function AgentApp() {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
+	const[data2,setData2]=React.useState([])
+	const [val, setVal] = React.useState('');
 	const [state, setState] = React.useState({
 		columns: [
 			{ title: 'Agent', field: 'agent_id' },
@@ -271,7 +273,18 @@ function AgentApp() {
     };
 
     const dataSourceFailure = (response) => {
-    };
+	};
+	
+	const searchContact =(value)=> {
+		setVal(value)
+			// console.log('ceeleded', props.ValueForSearch, searchVal);
+	
+			// setSearchVal(props.ValueForSearch)
+			setData2(tableData.filter(n =>n.agent_name.toLowerCase().includes(value.toLowerCase())))
+			console.log(data2, 'filterssss');
+	
+	
+		}
 	return (
 		<FusePageSimple
 			classes={{
@@ -302,59 +315,22 @@ function AgentApp() {
 					
 					</FuseAnimateGroup>
 
-					<FuseAnimateGroup
-						className="flex flex-wrap"
-						enter={{
-							animation: 'transition.slideUpBigIn'
-						}}>
-						<div className="widget flex w-full sm:w-1/1 md:w-1/1 p-12">
+					
+					<FusePageSimple
+		classes={{
+			contentWrapper: 'p-0 sm:p-24 pb-80 sm:pb-80 h-full',
+			content: 'flex flex-col h-full',
+			leftSidebar: 'w-256 border-0',
+			header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
+			wrapper: 'min-h-0'
+		}}
+						header={<AgentHeader   SearchVal={searchContact} />}
+						content={ <AgentTable data={ val==''? tableData : data2} />}
+						/>
+							
+					
 
-							<MaterialTable
-								title="Agents Reports"
-								columns={state.columns}
-								data={tableData}
-								style={{width:'100%',}}
-								// editable={{
-								// 	onRowAdd: newData =>
-								// 		new Promise(resolve => {
-								// 			setTimeout(() => {
-								// 				resolve();
-								// 				setState(prevState => {
-								// 					const data = [...prevState.data];
-								// 					data.push(newData);
-								// 					return { ...prevState, data };
-								// 				});
-								// 			}, 600);
-								// 		}),
-								// 	onRowUpdate: (newData, oldData) =>
-								// 		new Promise(resolve => {
-								// 			setTimeout(() => {
-								// 				resolve();
-								// 				if (oldData) {
-								// 					setState(prevState => {
-								// 						const data = [...prevState.data];
-								// 						data[data.indexOf(oldData)] = newData;
-								// 						return { ...prevState, data };
-								// 					});
-								// 				}
-								// 			}, 600);
-								// 		}),
-								// 	onRowDelete: oldData =>
-								// 		new Promise(resolve => {
-								// 			setTimeout(() => {
-								// 				resolve();
-								// 				setState(prevState => {
-								// 					const data = [...prevState.data];
-								// 					data.splice(data.indexOf(oldData), 1);
-								// 					return { ...prevState, data };
-								// 				});
-								// 			}, 600);
-								// 		}),
-								// }}
-							/>
-						</div>
-
-					</FuseAnimateGroup>
+					
 				</div>
 			}
 		/>

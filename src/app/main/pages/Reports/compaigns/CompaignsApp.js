@@ -9,7 +9,8 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import MaterialTable from 'material-table';
-
+import CampaingsHeader from './CampaingsHeader'
+import CampaingsTable from './CampaingsTable'
 const useStyles = makeStyles({
 	layoutRoot: {}
 });
@@ -250,6 +251,7 @@ const campaign_report_chart = (dataa) => {
 function CompaignsApp() {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
+	const[data2,setData2]=React.useState([])
 	const [state, setState] = React.useState({
 		columns: [
 			{ title: 'Name', field: 'name' },
@@ -311,54 +313,24 @@ function CompaignsApp() {
 						enter={{
 							animation: 'transition.slideUpBigIn'
 						}}>
-						<div className="widget flex w-full sm:w-1/1 md:w-1/1 p-12">
-
-							<MaterialTable
-								title="Compaigns Reports"
-								columns={state.columns}
-								data={state.data}
-								style={{width:'100%',}}
-								editable={{
-									onRowAdd: newData =>
-										new Promise(resolve => {
-											setTimeout(() => {
-												resolve();
-												setState(prevState => {
-													const data = [...prevState.data];
-													data.push(newData);
-													return { ...prevState, data };
-												});
-											}, 600);
-										}),
-									onRowUpdate: (newData, oldData) =>
-										new Promise(resolve => {
-											setTimeout(() => {
-												resolve();
-												if (oldData) {
-													setState(prevState => {
-														const data = [...prevState.data];
-														data[data.indexOf(oldData)] = newData;
-														return { ...prevState, data };
-													});
-												}
-											}, 600);
-										}),
-									onRowDelete: oldData =>
-										new Promise(resolve => {
-											setTimeout(() => {
-												resolve();
-												setState(prevState => {
-													const data = [...prevState.data];
-													data.splice(data.indexOf(oldData), 1);
-													return { ...prevState, data };
-												});
-											}, 600);
-										}),
-								}}
-							/>
-						</div>
 
 					</FuseAnimateGroup>
+
+					<FusePageSimple
+		classes={{
+			contentWrapper: 'p-0 sm:p-24 pb-80 sm:pb-80 h-full',
+			content: 'flex flex-col h-full',
+			leftSidebar: 'w-256 border-0',
+			header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
+			wrapper: 'min-h-0'
+		}}
+						header={<CampaingsHeader />}
+						content={
+						
+						<CampaingsTable data={data2} />
+					}
+				
+						/>
 				</div>
 			}
 		/>

@@ -16,6 +16,8 @@ import React from 'react';
 import navigationLogo from '../../../../../images/logo.jpg';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
 import { Link } from 'react-router-dom';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -27,6 +29,9 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
+
+
+
 const formStyle = {
     padding: '30px 10px',
     justifyContent: 'center',
@@ -36,6 +41,10 @@ const formItem = {
     margin: '10px 0',
 };
 
+
+const error= {
+    color:'red'
+}
 const LogoStyle = {
     width: '70%',
     display: 'block',
@@ -44,8 +53,16 @@ const LogoStyle = {
     // borderBottom: '2px solid #f3d63c',
 };
 
+const success={
+    color:'pink'
+}
 
 
+const styles={
+    root:{
+      color:'red'
+}
+}
 
 class Login2Page extends React.Component {
 
@@ -53,7 +70,8 @@ class Login2Page extends React.Component {
         super(props);
         this.userToken = localStorage.getItem('user_token');
         this.settings = JSON.parse(localStorage.getItem('client_settings'));
-
+    
+            this.state={snackbaropen:false,snackbarmsg:'',ok:''}
         if (this.settings === null) this.settings = {
             client_logo: navigationLogo
         }
@@ -67,6 +85,9 @@ class Login2Page extends React.Component {
         client_settings: null,
     };
 
+    snackbarClose= (event)=>{
+        this.setState({snackbaropen:false})
+    }
     handleUserNameInput = (e) => {
         this.setState({ username: e.target.value });
     };
@@ -119,7 +140,10 @@ class Login2Page extends React.Component {
     // }
 
     loginSuccess = (data) => {
-		this.setState({error_message:''})
+        
+        this.setState({error_message:'',snackbaropen:true,snackbarmsg:'Successfully LoggedIn',ok:'success'})
+       
+        
         const { token, acl, app, back, user } = data.data.data;
 
         localStorage.setItem('user_token', token);
@@ -148,21 +172,26 @@ class Login2Page extends React.Component {
     loginFailure = (error) => {
         this.setState({
             has_error: true,
-			error_message: error.response.data.message,
+            snackbarmsg: error.response.data.message,
+            snackbaropen:true,
+            ok:'error'
 		
 		});
 		
     };
 
     login = () => {
-		this.setState({error_message:''})
+        this.setState({error_message:''})
+        console.log(this.state.username,this.state.passsword,'sdssssd',);
         const data = {
             username: this.state.username,
             password: this.state.passsword,
         };
-		   if(this.state.username ==''||this.state.passsword=='')
+		   if(this.state.username ==''||this.state.passsword==''||this.state.passsword==undefined||this.state.username==undefined)
 		   {
-			  this.setState({error_message:'Please fill every field'})
+               console.log(this.state.username,this.state.passsword,'sdsd');
+               
+			  this.setState({snackbaropen:true,snackbarmsg:'Please Fill Every Detail',ok:'error'})
 		   }
 		   else {
         CoreHttpHandler.request(
@@ -190,28 +219,30 @@ class Login2Page extends React.Component {
 
 	
 render(){
-
+     const{classes}=this.props
 
 	return (
-		<div className={clsx( 'flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}>
+		<div 
+		
+		className={clsx(useStyles.root,'flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}>
 			<div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
 				<FuseAnimate animation="transition.expandIn">
-					<img className="w-128 mb-32" src="assets/images/logos/fuse.svg" alt="logo" />
+					<img src={require('./logo.jpg')}  style={useStyles.LogoStyle} />
 				</FuseAnimate>
 
-				<FuseAnimate animation="transition.slideUpIn" delay={300}>
-					<Typography variant="h3" color="inherit" className="font-light">
-						Welcome to the FUSE!
-					</Typography>
-				</FuseAnimate>
-
-				<FuseAnimate delay={400}>
-					<Typography variant="subtitle1" color="inherit" className="max-w-512 mt-16">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ullamcorper nisl erat, vel
-						convallis elit fermentum pellentesquasdasdse. Sed mollis velit facilisis facilisis.
-					</Typography>
-				</FuseAnimate>
 			</div>
+
+            <Snackbar
+        
+            anchorOrigin={{vertical:'bottom',horizontal:'right'}}
+            open={this.state.snackbaropen}
+            autoHideDuration={3000}
+            onClose={this.snackbarClose}
+           >
+            <Alert variant="filled" severity={this.state.ok}>
+            {this.state.snackbarmsg}
+      </Alert>
+               </Snackbar>
 
 			<FuseAnimate animation={{ translateX: [0, '100%'] }}>
 				<Card className="w-full max-w-400 mx-auto m-16 md:m-0" square>
@@ -271,11 +302,7 @@ render(){
 									Forgot Password?
 								</Link>
 							</div>
-							<input
 							
-							value={this.state.error_message}
-							style={{color:'red',fontSize:15,textAlign:'center',marginTop:2}}/>
-
 							<Button
 								variant="contained"
 								color="primary"
@@ -290,13 +317,7 @@ render(){
 						</form>
 
 					
-
-						<div className="flex flex-col items-center justify-center pt-32 pb-24">
-							<span className="font-medium">Don't have an account?</span>
-							<Link className="font-medium" to="/pages/auth/register">
-								Create an account
-							</Link>
-						</div>
+                
 					</CardContent>
 				</Card>
 			</FuseAnimate>

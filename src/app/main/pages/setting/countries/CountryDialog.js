@@ -46,35 +46,29 @@ const GreenCheckbox = withStyles({
 const CountryDialog = (props) => {
  
     const {isOpen,type,data} = props
+    console.log(data,'dataaaaaa in cuntydialog');
+    
    
     const [openDialog, setopenDialog] = React.useState(isOpen);
-    
+    const [enabled, setEnabled] = React.useState(data.enabled);
+    const [name,setName]=React.useState(props.data.name)
+   const [email,setEmail]=React.useState(props.data.code)
+    const [city,setCities]=React.useState(props.data.cities)
+
     const handleClose = () => {
         props.closeDialog()
         setopenDialog(false);
     };
 
-    // const handleSubmit = () =>{
-    //   console.log(name,email,enabled,'statessss');
-    //   props.closeDialog()
-    //   setopenDialog(false)
-      
-    // }
-
-    const [isToggled, setIsToggled] = React.useState(props.data.enabled);
-   
-   console.log(isToggled,'asdasd');
-   
-     
-    const handleSubmit = () => {
+ const handleSubmit = () => {
          console.log(city,'city');
          
-      // let fileName = uploadedFilePath.split('https://upload.its.com.pk/')
+  
       let params = {
         id:'',
         code: email,
         name: name,
-        enabled: isToggled,
+        enabled: enabled,
         cities: city
       };
       console.log(params,'params')
@@ -99,7 +93,7 @@ const CountryDialog = (props) => {
             id:data.id,
             name:name,
             code:email,
-            enabled:isToggled,
+            enabled:enabled,
             cities:undefined
           }
         }
@@ -140,19 +134,17 @@ const createCountryDialog = () => {
     });
 };
 
-const handleChange = (event) => {
- setIsToggled(!isToggled)
+const handleEnable = (event) => {
+
+  setEnabled(event.target.checked);
+  console.log(enabled, 'enable')
 };
 
 
 
-const [enabled, setenabled] = React.useState({
-  checkedA: true,
-});
 
-const [name,setName]=React.useState(props.data.name)
-const [email,setEmail]=React.useState(props.data.code)
-const [city,setCities]=React.useState(props.data.cities)
+
+
 
 
 
@@ -204,7 +196,7 @@ const [city,setCities]=React.useState(props.data.cities)
                 />
             </div>
             <FormControlLabel
-        control={<Checkbox checked={isToggled} onChange={handleChange} name="checkedA" />}
+        control={<Checkbox checked={enabled} onChange={handleEnable} name="checkedA" />}
         label="Enabled"
       />
 

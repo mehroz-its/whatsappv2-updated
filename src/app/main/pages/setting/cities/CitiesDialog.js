@@ -43,16 +43,18 @@ const GreenCheckbox = withStyles({
 }))
 
 
-// React.useEffect(() => {
 
-// });
 const CitiesDialog = (props) => {
     console.log(props,'in dialog')
     const {isOpen,type,data} = props
    
     const [openDialog, setopenDialog] = React.useState(isOpen);
     const[country,setCountry]=React.useState([])
-    const [method, setMethod] = React.useState('');
+    const [name,setName]=React.useState(props.data.name)
+    const [email,setEmail]=React.useState(props.data.code)
+    const [city,setCities]=React.useState(props.data.cities)
+    const [enabled, setEnabled] = React.useState(data.enabled);
+    const[method,setMethod]=React.useState('')
     
     const handleClose = () => {
         props.closeDialog()
@@ -60,27 +62,20 @@ const CitiesDialog = (props) => {
     };
     const classes = useStyles(props);
 
-    // const handleSubmit = () =>{
-    //   console.log(name,email,enabled,'statessss');
-    //   props.closeDialog()
-    //   setopenDialog(false)
-      
-    // }
-    const handleMethodChange = (event) => {
+     const handleMethodChange = (event) => {
       setMethod(event.target.value);
       };
 
-    const [isToggled, setIsToggled] = React.useState(props.data.enabled);
+
 
     const handleSubmit = () => {
          console.log(city,'city');
          
-      // let fileName = uploadedFilePath.split('https://upload.its.com.pk/')
       let params = {
         id:'',
         code: email,
         name: name,
-        enabled: isToggled,
+        enabled: enabled,
         country: 0
       };
       console.log(params,'params')
@@ -107,7 +102,7 @@ const CitiesDialog = (props) => {
             id:data.id,
             name:name,
             code:email,
-            enabled:isToggled,
+            enabled:enabled,
             country:0
           }
         }
@@ -190,27 +185,20 @@ const functioncalls = ()=>{
   {createCountry()}
 }
 
-const handleChange = (event) => {
- setIsToggled(!isToggled)
+
+
+const handleEnable = (event) => {
+
+  setEnabled(event.target.checked);
+  console.log(enabled, 'enable')
 };
 
-console.log(country,'counrtrt');
 
 
-
-const [enabled, setenabled] = React.useState({
-  checkedA: true,
-});
-
-const [name,setName]=React.useState(props.data.name)
-const [email,setEmail]=React.useState(props.data.code)
-const [city,setCities]=React.useState(props.data.cities)
-
-console.log(method,'methossssss');
 
 
     return (  
-    // <div> {isOpen}</div>
+  
 
     <Dialog open={openDialog} 
     onClose={handleClose} 
@@ -284,7 +272,7 @@ console.log(method,'methossssss');
         :null
 }
         <FormControlLabel
-        control={<Checkbox checked={isToggled} onChange={handleChange} name="checkedA" />}
+        control={<Checkbox checked={enabled} onChange={handleEnable} name="checkedA" />}
         label="Enabled"
       />
       </div>

@@ -6,9 +6,9 @@ import React, { useRef } from 'react';
 import FusePageSimpleHeader from './FusePageSimpleHeader';
 import FusePageSimpleSidebar from './FusePageSimpleSidebar';
 
-const headerHeight = 120;
-const toolbarHeight = 64;
-const drawerWidth = 240;
+const headerHeight = 0;
+const toolbarHeight = 0;
+const drawerWidth = 0;
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -38,17 +38,17 @@ const useStyles = makeStyles(theme => ({
 		height: headerHeight,
 		minHeight: headerHeight,
 		display: 'flex',
-		background: `linear-gradient(to right, ${theme.palette.primary.dark} 0%, ${theme.palette.primary.main} 100%)`,
-		color: theme.palette.primary.contrastText,
+        color: theme.palette.primary.contrastText,
 		backgroundSize: 'cover',
-		backgroundColor: theme.palette.primary.dark
+		backgroundColor: theme.palette.primary.dark,
+	
 	},
 	topBg: {
 		position: 'absolute',
 		left: 0,
 		right: 0,
 		top: 0,
-		height: headerHeight,
+		height: headerHeight+900,
 		pointerEvents: 'none'
 	},
 	/* contentCardWrapper            : {
