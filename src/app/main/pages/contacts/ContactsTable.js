@@ -35,11 +35,12 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 	);
 });
 
-const EnhancedTable = ({ columns, data, onRowClick, openUnBlockDialog,openBlockDialog, blockRowData ,onBlockDialogClose}) => {
+const EnhancedTable = ({ columns, data, getUpdatedData,onRowClick, openUnBlockDialog,openBlockDialog, blockRowData ,onBlockDialogClose}) => {
 	const [open, setOpen] = React.useState(false);
 	const handleClose = () => {
 		setOpen(false);
 		onBlockDialogClose()
+		getUpdatedData()
 	};
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -192,7 +193,7 @@ const EnhancedTable = ({ columns, data, onRowClick, openUnBlockDialog,openBlockD
 				</TableFooter>
 			</MaUTable>
 		</TableContainer>
-		{open && <ContactDialog type="edit" data={dialogData} isOpen={open} closeDialog={handleClose} />}
+		{open && <ContactDialog type="edit" data={dialogData} isOpen={open} closeDialog={handleClose}  />}
 		{openBlockDialog && <BlockContactInDialog isOpen={openBlockDialog} type="Block Number" data={blockRowData} closeDialog={handleClose} />}
 		{openUnBlockDialog && <BlockDialog isOpen={openUnBlockDialog} type="UnBlock Number" closeDialog={handleClose} data={blockRowData} />}
 
