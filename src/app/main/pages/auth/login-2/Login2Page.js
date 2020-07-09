@@ -18,6 +18,8 @@ import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
 import { Link } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -103,6 +105,8 @@ const Login2Page = (props) => {
     const [snackbarmessage, setSnackBarMessage] = React.useState('')
     const [ok, setOK] = React.useState('')
     const [hit, setHitFalse] = React.useState(true)
+    const [isLoading, setIsLoading] = React.useState(false);
+
 
 
 
@@ -160,11 +164,11 @@ const Login2Page = (props) => {
             // setHitFalse(true)
         }
     }
-	React.useEffect(() => {
+    React.useEffect(() => {
         // getData()
-                checkUser()
+        checkUser()
 
-	}, []);
+    }, []);
 
     // setTimeout(() => {
     //     checkUser()
@@ -193,6 +197,7 @@ const Login2Page = (props) => {
         setSnackBarOpen(true)
         setSnackBarMessage('Successfully LoggedIn')
         setOK('success')
+        // setIsLoading(false)
 
 
         const { token, acl, app, back, user } = data.data.data;
@@ -238,10 +243,13 @@ const Login2Page = (props) => {
         setSnackBarOpen(true)
         setSnackBarMessage(`${error.response.data.message}`)
         setOK('error')
+        setIsLoading(false)
 
     };
 
     let login = () => {
+        setIsLoading(true);
+
         // this.setState({ error_message: '' })
         setErrorMessage('')
         console.log(username, passsword, 'sdssssd',);
@@ -251,7 +259,7 @@ const Login2Page = (props) => {
         };
         if (username == '' || passsword == '' || passsword == undefined || username == undefined) {
             console.log(username, passsword, 'sdsd');
-
+            setIsLoading(false)
             // this.setState({ snackbaropen: true, snackbarmsg: 'Please Fill Every Detail', ok: 'error' })
             setSnackBarOpen(true)
             setSnackBarMessage('Please Fill Every Detail')
@@ -293,6 +301,12 @@ const Login2Page = (props) => {
                     {/* <img className="w-128 mb-32" src="../../../../../images/itsAppLogo.png" alt="logo" /> */}
                     <img src={require('../../../../../images/itsAppLogo.png')}
                         style={{ width: 500, height: 100, }} />
+                </FuseAnimate>
+
+                <FuseAnimate animation="transition.slideUpIn" delay={300}>
+                    <Typography variant="h3" color="inherit" className="font-light mt-20">
+                        Welcome to the Intellexal Solutions!
+					</Typography>
                 </FuseAnimate>
                 {/* <img src={require('../../../../../images/itsAppLogo.png')}
                      style={{color:'#fc2254',fontStyle:150,height:100,width:500,backgroundColor:'#fc2254'}} />
@@ -371,17 +385,20 @@ const Login2Page = (props) => {
 								</Link>
                             </div>
 
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                className="w-full mx-auto mt-16"
-                                aria-label="LOG IN"
+                            {isLoading === true ? <CircularProgress color="secondary" style={{ marginLeft: '40%' }} />
+                                : <Button
+                                    variant="contained"
+                                    color="primary"
+                                    className="w-full mx-auto mt-16"
+                                    aria-label="LOG IN"
 
-                                onClick={login}
+                                    onClick={login}
 
-                            >
-                                LOGIN
+                                >
+                                    LOGIN
 							</Button>
+                            }
+
                         </form>
 
 
