@@ -112,7 +112,8 @@ function ForgotPasswordPage(props) {
 		<div className={clsx(classes.root, 'flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}>
 			<div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
 				<FuseAnimate animation="transition.expandIn">
-					<img className="w-128 mb-32" src="assets/images/logos/fuse.svg" alt="logo" />
+					{/* <img src={require('../../../../../images/itsAppLogo.png')}
+						style={{ width: 500, height: 100, }} /> */}
 				</FuseAnimate>
 
 				<FuseAnimate animation="transition.slideUpIn" delay={300}>
@@ -122,10 +123,10 @@ function ForgotPasswordPage(props) {
 				</FuseAnimate>
 
 				<FuseAnimate delay={400}>
-					<Typography variant="subtitle1" color="inherit" className="max-w-512 mt-16">
+					{/* <Typography variant="subtitle1" color="inherit" className="max-w-512 mt-16">
 						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ullamcorper nisl erat, vel
 						convallis elit fermentum pellentesque. Sed mollis velit facilisis facilisis.
-					</Typography>
+					</Typography> */}
 				</FuseAnimate>
 			</div>
 
@@ -142,8 +143,8 @@ function ForgotPasswordPage(props) {
 							className="flex flex-col justify-center w-full"
 						// onSubmit={handleSubmit}
 						>
-								{alertmessage ? (
-								<Alert style={{marginBottom:'10px'}}  severity={alertseveirty}>
+							{alertmessage ? (
+								<Alert style={{ marginBottom: '10px' }} severity={alertseveirty}>
 									{alertmessage}
 								</Alert>
 							) : null}

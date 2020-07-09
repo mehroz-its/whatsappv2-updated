@@ -20,13 +20,13 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles(theme => ({
-	root: {
-		background: `linear-gradient(to right, ${theme.palette.primary.dark} 0%, ${darken(
-			theme.palette.primary.dark,
-			0.5
-		)} 100%)`,
-		color: theme.palette.primary.contrastText
-	}
+    root: {
+        background: `linear-gradient(to right, ${theme.palette.primary.dark} 0%, ${darken(
+            theme.palette.primary.dark,
+            0.5
+        )} 100%)`,
+        color: theme.palette.primary.contrastText
+    }
 }));
 
 
@@ -42,8 +42,8 @@ const formItem = {
 };
 
 
-const error= {
-    color:'red'
+const error = {
+    color: 'red'
 }
 const LogoStyle = {
     width: '70%',
@@ -53,97 +53,148 @@ const LogoStyle = {
     // borderBottom: '2px solid #f3d63c',
 };
 
-const success={
-    color:'pink'
+const success = {
+    color: 'pink'
 }
 
 
-const styles={
-    root:{
-      color:'red'
-}
+const styles = {
+    root: {
+        color: 'red'
+    }
 }
 
-class Login2Page extends React.Component {
+const Login2Page = (props) => {
 
-	constructor(props) {
-        super(props);
-        this.userToken = localStorage.getItem('user_token');
-        this.settings = JSON.parse(localStorage.getItem('client_settings'));
-    
-            this.state={snackbaropen:false,snackbarmsg:'',ok:''}
-        if (this.settings === null) this.settings = {
-            client_logo: navigationLogo
-        }
+    // constructor(props) {
+    //     super(props);
+    //     userToken = localStorage.getItem('user_token');
+    //     this.settings = JSON.parse(localStorage.getItem('client_settings'));
+
+    //         this.state={snackbaropen:false,snackbarmsg:'',ok:''}
+    //     if (this.settings === null) this.settings = {
+    //         client_logo: navigationLogo
+    //     }
+    // }
+    if (settings === null) settings = {
+        client_logo: navigationLogo
     }
 
-    state = {
-        username: '',
-        passsword: '',
-        has_error: false,
-        error_message: null,
-        client_settings: null,
-    };
-
-    snackbarClose= (event)=>{
-        this.setState({snackbaropen:false})
+    let userToken = localStorage.getItem('user_token');
+    let settings = JSON.parse(localStorage.getItem('client_settings'));
+    if (settings === null) settings = {
+        client_logo: navigationLogo
     }
-    handleUserNameInput = (e) => {
-        this.setState({ username: e.target.value });
+
+    // state = {
+    //     username: '',
+    //     passsword: '',
+    //     has_error: false,
+    //     error_message: null,
+    //     client_settings: null,
+    // };
+
+    const [username, setUserName] = React.useState('')
+    const [passsword, setPassword] = React.useState('')
+    const [has_error, setHasError] = React.useState(false)
+    const [client_settings, setClientSettings] = React.useState(null)
+    const [error_message, setErrorMessage] = React.useState(null)
+    const [snackbaropen, setSnackBarOpen] = React.useState(false)
+    const [snackbarmessage, setSnackBarMessage] = React.useState('')
+    const [ok, setOK] = React.useState('')
+    const [hit, setHitFalse] = React.useState(true)
+
+
+
+
+
+
+
+    let snackbarClose = (event) => {
+        // this.setState({ snackbaropen: false })
+        setSnackBarOpen(false)
+
+    }
+    let handleUserNameInput = (e) => {
+        // this.setState({ username: e.target.value });
+        setUserName(e.target.value)
     };
 
-    handlePassordInput = (e) => {
-        this.setState({ passsword: e.target.value });
+    let handlePassordInput = (e) => {
+        // this.setState({ passsword: e.target.value });
+        setPassword(e.target.value)
     };
-    authSuccess = (response) => {
+    let authSuccess = (response) => {
         const token = response.data.data.token;
 
         localStorage.setItem('client_token', token);
 
-        CoreHttpHandler.request('core', 'clientSettings', {}, this.settingsSuccess, this.settingsFailure);
+        CoreHttpHandler.request('core', 'clientSettings', {}, settingsSuccess, settingsFailure);
     };
 
-    authFailure = (error) => {
+    let authFailure = (error) => {
         console.log("CLIENT AUTH ERROR > ", error);
     };
 
-    settingsSuccess = (response) => {
+    let settingsSuccess = (response) => {
         const settings = response.data.data.setting;
-        this.setState({
-            client_settings : settings
-        })
+        // this.setState({
+        //     client_settings: settings
+        // })
+        setClientSettings(settings)
         localStorage.setItem('client_settings', JSON.stringify(settings));
     };
 
-    settingsFailure = (error) => {
+    let settingsFailure = (error) => {
         console.log("CLIENT SETTINGS ERROR >", error);
     };
 
-    clientAuthentication() {
-        CoreHttpHandler.request('core', 'clientAuth', {}, this.authSuccess, this.authFailure);
+    let clientAuthentication = () => {
+        CoreHttpHandler.request('core', 'clientAuth', {}, authSuccess, authFailure);
     }
-
-    componentDidMount() {
-        if (this.userToken !== null){
-            this.props.history.push('/dashboard');
-        }else{
-            this.clientAuthentication();
-
+    let checkUser = () => {
+        if (userToken !== null) {
+            props.history.push('/dashboard');
+        } else if (hit !== false) {
+            clientAuthentication();
+            // setHitFalse(true)
         }
-        // const clientToken = localStorage.getItem('client_token');
-
-        // if (clientToken === null) this.clientAuthentication();
     }
+	React.useEffect(() => {
+        // getData()
+                checkUser()
+
+	}, []);
+
+    // setTimeout(() => {
+    //     checkUser()
+    // }, 1000);
 
     // componentDidMount() {
-    //     if (this.userToken !== null) this.props.history.push('/dashboard');
+    //     if (userToken !== null) {
+    //         this.props.history.push('/dashboard');
+    //     } else {
+    //         this.clientAuthentication();
+
+    //     }
+    //     // const clientToken = localStorage.getItem('client_token');
+
+    //     // if (clientToken === null) this.clientAuthentication();
     // }
 
-    loginSuccess = (data) => {
-        
-        this.setState({error_message:'',snackbaropen:true,snackbarmsg:'Successfully LoggedIn',ok:'success'})
-       
-        
+    // componentDidMount() {
+    //     if (userToken !== null) this.props.history.push('/dashboard');
+    // }
+
+    let loginSuccess = (data) => {
+
+        // this.setState({ error_message: '', snackbaropen: true, snackbarmsg: 'Successfully LoggedIn', ok: 'success' })
+        setErrorMessage('')
+        setSnackBarOpen(true)
+        setSnackBarMessage('Successfully LoggedIn')
+        setOK('success')
+
+
         const { token, acl, app, back, user } = data.data.data;
 
         localStorage.setItem('user_token', token);
@@ -169,132 +220,144 @@ class Login2Page extends React.Component {
         window.location.reload(false);
     };
 
-    loginFailure = (error) => {
-        this.setState({
-            has_error: true,
-            snackbarmsg: error.response.data.message,
-            snackbaropen:true,
-            ok:'error'
-		
-		});
-		
+    let loginFailure = (error) => {
+        // this.setState({
+        //     has_error: true,
+        //     snackbarmsg: error.response.data.message,
+        //     snackbaropen: true,
+        //     ok: 'error'
+
+        // });
+        // setHasError(true)
+        // setErrorMessage('')
+        // setSnackBarOpen('true')
+        // setSnackBarMessage(`${error.response.data.message}`)
+        // setOK('error')
+        setHasError(true)
+        setErrorMessage('')
+        setSnackBarOpen(true)
+        setSnackBarMessage(`${error.response.data.message}`)
+        setOK('error')
+
     };
 
-    login = () => {
-        this.setState({error_message:''})
-        console.log(this.state.username,this.state.passsword,'sdssssd',);
+    let login = () => {
+        // this.setState({ error_message: '' })
+        setErrorMessage('')
+        console.log(username, passsword, 'sdssssd',);
         const data = {
-            username: this.state.username,
-            password: this.state.passsword,
+            username: username,
+            password: passsword,
         };
-		   if(this.state.username ==''||this.state.passsword==''||this.state.passsword==undefined||this.state.username==undefined)
-		   {
-               console.log(this.state.username,this.state.passsword,'sdsd');
-               
-			  this.setState({snackbaropen:true,snackbarmsg:'Please Fill Every Detail',ok:'error'})
-		   }
-		   else {
-        CoreHttpHandler.request(
-            'core',
-            'userAuth',
-            data,
-            this.loginSuccess,
-            this.loginFailure
-        );
-	}
-};
+        if (username == '' || passsword == '' || passsword == undefined || username == undefined) {
+            console.log(username, passsword, 'sdsd');
 
-    _handleKeyDown = (e) => {
-		console.log('in handleee');
-		
-		
-        if (e.key === 'Enter') {
-            this.login();
+            // this.setState({ snackbaropen: true, snackbarmsg: 'Please Fill Every Detail', ok: 'error' })
+            setSnackBarOpen(true)
+            setSnackBarMessage('Please Fill Every Detail')
+            setOK('error')
+        }
+        else {
+            CoreHttpHandler.request(
+                'core',
+                'userAuth',
+                data,
+                loginSuccess,
+                loginFailure
+            );
         }
     };
 
-    goToForget = () => {
+    let _handleKeyDown = (e) => {
+        console.log('in handleee');
+
+
+        if (e.key === 'Enter') {
+            login();
+        }
+    };
+
+    let goToForget = () => {
         this.props.history.push('/forget-password');
-	};
+    };
 
-	
-render(){
-     const{classes}=this.props
 
-	return (
-		<div 
-		 style={{backgroundColor:'#fc2254'}}
-		className={clsx(useStyles.root,'flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}>
-			<div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
-			<FuseAnimate animation="transition.expandIn">
-					{/* <img className="w-128 mb-32" src="../../../../../images/itsAppLogo.png" alt="logo" /> */}
+
+    const classes = useStyles();
+
+    return (
+        <div
+            className={clsx(classes.root, 'flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}>
+            <div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
+                <FuseAnimate animation="transition.expandIn">
+                    {/* <img className="w-128 mb-32" src="../../../../../images/itsAppLogo.png" alt="logo" /> */}
                     <img src={require('../../../../../images/itsAppLogo.png')}
-                      style={{width:500,height:100,}}/>
-				</FuseAnimate>
-                    {/* <img src={require('../../../../../images/itsAppLogo.png')}
+                        style={{ width: 500, height: 100, }} />
+                </FuseAnimate>
+                {/* <img src={require('../../../../../images/itsAppLogo.png')}
                      style={{color:'#fc2254',fontStyle:150,height:100,width:500,backgroundColor:'#fc2254'}} />
 			 */}
 
-			</div>
+            </div>
 
             <Snackbar
-        
-            anchorOrigin={{vertical:'bottom',horizontal:'right'}}
-            open={this.state.snackbaropen}
-            autoHideDuration={3000}
-            onClose={this.snackbarClose}
-           >
-            <Alert variant="filled" severity={this.state.ok}>
-            {this.state.snackbarmsg}
-      </Alert>
-               </Snackbar>
 
-			<FuseAnimate animation={{ translateX: [0, '100%'] }}>
-				<Card className="w-full max-w-400 mx-auto m-16 md:m-0" square>
-					<CardContent className="flex flex-col items-center justify-center p-32 md:p-48 md:pt-128 ">
-						<Typography variant="h6" className="md:w-full mb-32">
-							LOGIN TO YOUR ACCOUNT
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                open={snackbaropen}
+                autoHideDuration={3000}
+                onClose={snackbarClose}
+            >
+                <Alert variant="filled" severity={ok}>
+                    {snackbarmessage}
+                </Alert>
+            </Snackbar>
+
+            <FuseAnimate animation={{ translateX: [0, '100%'] }}>
+                <Card className="w-full max-w-400 mx-auto m-16 md:m-0" square>
+                    <CardContent className="flex flex-col items-center justify-center p-32 md:p-48 md:pt-128 ">
+                        <Typography variant="h6" className="md:w-full mb-32">
+                            LOGIN TO YOUR ACCOUNT
 						</Typography>
 
-						<form
-							name="loginForm"
-							noValidate
-							className="flex flex-col justify-center w-full"
-							
-						>
-							<TextField
-								className="mb-16"
-								label="Email"
-								autoFocus
-								type="email"
-								name="email"
-								value={this.state.username}
-								onChange={this.handleUserNameInput}
-								variant="outlined"
-								required
-								style={formItem}
-								fullWidth
-								onKeyDown={this._handleKeyDown}
-							/>
+                        <form
+                            name="loginForm"
+                            noValidate
+                            className="flex flex-col justify-center w-full"
 
-							<TextField
-								className="mb-16"
-								label="Password"
-								type="password"
-								name="password"
-								
-								onChange={this.handlePassordInput}
-								variant="outlined"
-								value={this.state.passsword}
-								required
-								style={formItem}
-								fullWidth
-								onKeyDown={this._handleKeyDown}
-							/>
-							
+                        >
+                            <TextField
+                                className="mb-16"
+                                label="Email"
+                                autoFocus
+                                type="email"
+                                name="email"
+                                value={username}
+                                onChange={handleUserNameInput}
+                                variant="outlined"
+                                required
+                                style={formItem}
+                                fullWidth
+                                onKeyDown={_handleKeyDown}
+                            />
 
-							<div className="flex items-center justify-between">
-								{/* <FormControl>
+                            <TextField
+                                className="mb-16"
+                                label="Password"
+                                type="password"
+                                name="password"
+
+                                onChange={handlePassordInput}
+                                variant="outlined"
+                                value={passsword}
+                                required
+                                style={formItem}
+                                fullWidth
+                                onKeyDown={_handleKeyDown}
+                            />
+
+
+                            <div className="flex items-center justify-between">
+                                {/* <FormControl>
 									<FormControlLabel
 										control={
 											<Checkbox name="remember" checked={form.remember} onChange={handleChange} />
@@ -303,31 +366,31 @@ render(){
 									/>
 								</FormControl> */}
 
-								<Link className="font-medium" to="/pages/auth/forgot-password">
-									Forgot Password?
+                                <Link className="font-medium" to="/pages/auth/forgot-password">
+                                    Forgot Password?
 								</Link>
-							</div>
-							
-							<Button
-								variant="contained"
-								color="primary"
-								className="w-full mx-auto mt-16"
-								aria-label="LOG IN"
-								
-								onClick={this.login}
+                            </div>
 
-							>
-								LOGIN
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                className="w-full mx-auto mt-16"
+                                aria-label="LOG IN"
+
+                                onClick={login}
+
+                            >
+                                LOGIN
 							</Button>
-						</form>
+                        </form>
 
-					
-                
-					</CardContent>
-				</Card>
-			</FuseAnimate>
-		</div>
-	);
-}
+
+
+                    </CardContent>
+                </Card>
+            </FuseAnimate>
+        </div>
+    );
+
 }
 export default Login2Page;
