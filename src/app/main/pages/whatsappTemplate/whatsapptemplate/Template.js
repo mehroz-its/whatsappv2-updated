@@ -4,7 +4,7 @@ import React from 'react';
 import Fab from '@material-ui/core/Fab';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import DialogContent from '@material-ui/core/DialogContent';
-
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import DialogTitle from '@material-ui/core/DialogTitle';
 import reducer from '../store/reducers';
 import TemplateHeader from './TemplateHeader';
@@ -41,12 +41,56 @@ const useStyles = makeStyles((theme) => ({
 function Campaign(props) {
 	const classes = useStyles(props);
 	const [open, setOpen] = React.useState(false);
+	const [data, setData] = React.useState([]);
+	const [data2, setData2] = React.useState(data);
+
+
 	const[val,setVal]=React.useState('')
 
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
 
+	const getData = ((loadData) => {
+		loadData = () => {
+			return CoreHttpHandler.request('template', 'listing', {
+
+				limit: 10,
+				page: 0,
+				columns: "*",
+				sortby: "DESC",
+				orderby: "id",
+				where: "id != $1",
+				values: 0,
+			}, null, null, true);
+		};
+		loadData().then((response) => {
+			const tableData = response.data.data.list.data
+			console.log(tableData)
+			setData(tableData)
+			setData2(tableData)
+			console.log(data,'i am adta2')
+
+			console.log(response.data.data.list.data)
+
+		});
+	})
+
+	React.useEffect(() => {
+		getData()
+	}, []);
+
+	function search(value){
+		// console.log('ceeleded',props.ValueForSearch,searchVal);
+		console.log(data)
+		setVal(value)
+		setData2(data.filter(n=>n.template_name.toLowerCase().includes(value.toLowerCase())))
+		console.log(data,'filterssss');
+		
+		
+	}
+	
+	
 	const handleClose = () => {
 		setOpen(false);
 	};
@@ -65,8 +109,8 @@ function Campaign(props) {
 					content: 'flex',
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
-				header={<TemplateHeader SearchVal={updateText} />}
-				content={<TemplateTable  ValueForSearch={val} />}
+				header={<TemplateHeader SearchVal={search} />}
+				content={<TemplateTable dataa={data2}  ValueForSearch={val} />}
 			// innerScroll
 			/>
 			{/* <FuseAnimate animation="transition.expandIn" delay={300}>

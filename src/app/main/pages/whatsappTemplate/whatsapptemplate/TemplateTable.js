@@ -21,6 +21,9 @@ import Typography from '@material-ui/core/Typography';
 
 
 function TemplateTable(props) {
+
+	let data2 = props.dataa
+
 	console.log(props)
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
@@ -32,38 +35,16 @@ function TemplateTable(props) {
 	const [open, setOpen] = React.useState(false)
 	const [dialogData, setDialogData] = React.useState({ name: '', params: '' })
 	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
-	const [data2, setData2] = useState(data);
+	// const [data2, setData2] = useState(data);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
 		direction: 'asc',
 		id: null
 	});
 
-	const getData = ((loadData) => {
-		loadData = () => {
-			return CoreHttpHandler.request('template', 'listing', {
+	// let data2 =[]
+	//  data2 = props.dataa
 
-				limit: 10,
-				page: 0,
-				columns: "*",
-				sortby: "DESC",
-				orderby: "id",
-				where: "id != $1",
-				values: 0,
-			}, null, null, true);
-		};
-		loadData().then((response) => {
-			const tableData = response.data.data.list.data
-			console.log(tableData)
-			setData(tableData)
-			setData2(tableData)
-
-		});
-	})
-
-	React.useEffect(() => {
-		getData()
-	}, []);
 
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
@@ -92,6 +73,8 @@ function TemplateTable(props) {
 			id
 		});
 	}
+
+
 	if (data2.length === 0) {
 		if (props.ValueForSearch !== '') {
 			return (
@@ -127,19 +110,9 @@ function TemplateTable(props) {
 
 	}
 
-	function search(){
-		console.log('ceeleded',props.ValueForSearch,searchVal);
-		console.log(data)
-		setSearchVal(props.ValueForSearch)
-		setData2(data.filter(n=>n.template_name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-		console.log(data,'filterssss');
-		
-		
-	}
-	
-	if (searchVal !== props.ValueForSearch) {
-		{ search() }
-	}
+	// if (searchVal !== props.ValueForSearch) {
+	// 	{ search() }
+	// }
 	function handleClose() {
 		setOpen(false)
 
