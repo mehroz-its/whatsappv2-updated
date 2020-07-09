@@ -226,10 +226,14 @@ render(){
 		 style={{backgroundColor:'#fc2254'}}
 		className={clsx(useStyles.root,'flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}>
 			<div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
-			
-                    <img src={require('./Logo_Image.jpeg')}
+			<FuseAnimate animation="transition.expandIn">
+					{/* <img className="w-128 mb-32" src="../../../../../images/itsAppLogo.png" alt="logo" /> */}
+                    <img src={require('../../../../../images/itsAppLogo.png')}
+                      style={{width:500,height:100,}}/>
+				</FuseAnimate>
+                    {/* <img src={require('../../../../../images/itsAppLogo.png')}
                      style={{color:'#fc2254',fontStyle:150,height:100,width:500,backgroundColor:'#fc2254'}} />
-			
+			 */}
 
 			</div>
 
