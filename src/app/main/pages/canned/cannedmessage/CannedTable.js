@@ -15,9 +15,8 @@ import * as Actions from '../store/actions';
 import CannedTableHead from './CannedTableHead';
 import TableData from '../CannedData'
 import CannedDialog from './CannedDialog'
-import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
-
+import Typography from '@material-ui/core/Typography';
 
 
 function CannedTable(props) {
@@ -172,15 +171,22 @@ function CannedTable(props) {
 		setRowsPerPage(event.target.value);
 	}
 
-	if(data2.length===0&&props.InsertedVal.length!=0)
-	{
-		console.log(props.InsertedVal,'sdsdsd');
-		
-	return (
-		<div style={{justifyContent:'center',alignItems:'center',display:'flex',flex:1,fontSize:40,fontStyle:'italic'}}>
-               No Data Found
-		</div>
-	)
+	if (data2.length === 0) {
+		if (props.ValueForSearch !== '') {
+			return (
+				<div className="flex flex-1 items-center justify-center h-full">
+					<Typography color="textSecondary" variant="h5">
+						No Data Found
+					</Typography>
+				</div>
+			)
+		} else {
+			return (
+				<div className="flex flex-1 items-center justify-center h-full">
+					<FuseLoading />
+				</div>
+			);
+		}
 	}
 	return (
 		<div className="w-full flex flex-col">

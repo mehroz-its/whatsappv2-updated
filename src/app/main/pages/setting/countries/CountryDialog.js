@@ -16,7 +16,8 @@ import { makeStyles,withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
-
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert'; 
 
 const GreenCheckbox = withStyles({
 	root: {
@@ -54,6 +55,9 @@ const CountryDialog = (props) => {
     const [name,setName]=React.useState(props.data.name)
    const [email,setEmail]=React.useState(props.data.code)
     const [city,setCities]=React.useState(props.data.cities)
+    const [snackbaropen, setSnackBarOpen] = React.useState(false)
+    const [snackbarmessage, setSnackBarMessage] = React.useState('')
+    const [ok, setOK] = React.useState('')
 
     const handleClose = () => {
         props.closeDialog()
@@ -73,15 +77,23 @@ const CountryDialog = (props) => {
       };
       console.log(params,'params')
       if (type !== 'Update') {
-        CoreHttpHandler.request('locations', 'create_country', params, (response) => {
-          // props.getUpdatedData()
-          console.log(response)
+        CoreHttpHandler.request('locations', 'create_country', params, 
+        (response) => {
+       
+          setopenDialog(false); 
+          setSnackBarOpen(true)
+          setSnackBarMessage('Successfully Created')
+          setOK('success')
           props.closeDialog()
-          setopenDialog(false);
         }, (error) => {
-          props.closeDialog()
+   
+       
+          console.log(error,'erroorr')
           setopenDialog(false);
-  
+          setSnackBarOpen(true)
+          setSnackBarMessage('Country Not Created..Please Try Again Later')
+          setOK('error')
+          props.closeDialog()
         });
       } else {
         console.log('here');
@@ -104,10 +116,15 @@ const CountryDialog = (props) => {
           console.log(response)
           props.closeDialog()
           setopenDialog(false);
+          setSnackBarOpen(true)
+          setSnackBarMessage('Successfully Created')
+          setOK('success')
         }, (error) => {
           props.closeDialog()
           setopenDialog(false);
-  
+          setSnackBarOpen(true)
+          setSnackBarMessage('Country Not Created..Please Try Again Later')
+          setOK('error')
         });
       }
     }
@@ -142,6 +159,8 @@ const handleEnable = (event) => {
 
 
 
+console.log(snackbarmessage,snackbaropen,ok,name,'logsss');
+
 
 
 
@@ -150,7 +169,7 @@ const handleEnable = (event) => {
 
     return (  
     // <div> {isOpen}</div>
-
+<>
     <Dialog open={openDialog} onClose={handleClose} aria-labelledby="form-dialog-title" onClick={createCountryDialog}	classes={{
         paper: 'm-24'
     }}
@@ -186,7 +205,7 @@ const handleEnable = (event) => {
                     className="mb-24"
                     label="Country Code"
                  
-                   
+                   inputProps={{maxLength:4}}
                     name="code"
                     value={email}
                     onChange={e=>setEmail(e.target.value)}
@@ -210,8 +229,20 @@ const handleEnable = (event) => {
   Done
 </Button>
 </DialogActions>
-</Dialog>
 
+</Dialog>
+<Snackbar
+
+anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+open={snackbaropen}
+autoHideDuration={3000}
+
+>
+<Alert variant="filled" severity={ok}>
+    {snackbarmessage}
+</Alert>
+</Snackbar>
+</>
 
 
 

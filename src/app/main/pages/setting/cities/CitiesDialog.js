@@ -248,6 +248,7 @@ console.log('method',method,enabled);
                     onChange={e=>setEmail(e.target.value)}
                     variant="outlined"
                     required
+                    inputProps={{maxLength:4}}
                     fullWidth
                     onClick={createCountry}
                 />
