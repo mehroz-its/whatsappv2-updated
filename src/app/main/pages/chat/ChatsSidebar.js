@@ -293,7 +293,7 @@ function ChatsSidebar(props) {
 										<ContactListItem
 											key={contactt.id}
 											contact={contactt}
-											onContactClick={(e)=>props.onContactClick(e)}
+											onContactClick={(e)=>props.onContactClick(contactt)}
 										// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
 										// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
 										/>

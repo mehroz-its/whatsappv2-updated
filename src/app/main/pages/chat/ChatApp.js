@@ -193,6 +193,7 @@ const chat=null
 // 		}
 // 	]
 // }
+
 function ChatApp(props) {
 	const dispatch = useDispatch();
 	// const chat = useSelector(({ chatApp }) => chatApp.chat);
@@ -209,9 +210,12 @@ function ChatApp(props) {
 	const [NewMessages, setNewMessages] = React.useState([]);
 	const [showLatestMessage, setshowLatestMessage] = React.useState(false);
 	const [selectedRecipient, setselectedRecipient] = React.useState(null);
-
+	const [int_CustomerList, setint_CustomerList] = React.useState(null);
+	const [int_MessageLists, setint_MessageLists] = React.useState(null);
+	
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
+
 	const getNumbers = () => {
 		CoreHttpHandler.request('conversations', 'numbers', {}, (response) => {
 			const numbers = response.data.data.customers;
@@ -235,21 +239,19 @@ function ChatApp(props) {
 		}, (response) => {
 		});
 	}
-	const getConversation = (e) => {
-		setselectedRecipient(e)
+	const getConversation = () => {
+		console.log("getConversation selectedRecipient :" ,  selectedRecipient);
 		
         let params = {
             key: ':number',
-            value: e.number,
+            value: selectedRecipient.numbers,
             key2: ':last_closed',
-            value2: e.last_closed
+            value2: selectedRecipient.last_closed
 
         };
         console.log("params : ", params);
         CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
 			console.log("response :", response);
-			console.log("selectedRecipient :", selectedRecipient);
-
             if (response.data.data.chat.length > NewMessages.length) {
                 //   console.log("if");
 				const messages = response.data.data.chat;
@@ -261,8 +263,11 @@ function ChatApp(props) {
 				const messages = response.data.data.chat;
 				setmessages(messages)
 				setshowLatestMessage(false)
-            }
-            CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: e.number }, (response) => {
+			}
+			if (int_MessageLists === null) setint_MessageLists(setInterval(() => {
+                getConversation();
+            }, 3000));
+            CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: selectedRecipient.number }, (response) => {
 
             }, (response) => {
 
@@ -271,14 +276,30 @@ function ChatApp(props) {
         }, (response) => {
 
         });
-    }
+	}
+	
 	useEffect(() => {
+		if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
+            getNumbers();
+        }, 5000));
 		getNumbers()
 		// dispatch(Actions.getUserData());
 		// dispatch(Actions.getContacts());
 	},[]);
 	// }, [dispatch]);
+	const selectedRecipientt = (e) => {
+		// e !==selectedRecipient?setselectedRecipient(e):null
+		console.log(e.number,'numbersss')
+		if(e !==selectedRecipient){
+			setselectedRecipient(e)
 
+            getConversation();
+		}
+		
+            if (int_MessageLists === null) setint_MessageLists(setInterval(() => {
+               getConversation();
+            }, 3000));
+    }
 	return (
 		<div className={clsx(classes.root)}>
 			<div className={classes.topBg} />
@@ -317,7 +338,7 @@ function ChatApp(props) {
 								paper: classes.drawerPaper
 							}}
 						>
-							<ChatsSidebar numbers={numbers} onContactClick={(e)=>{getConversation(e)}} />
+							<ChatsSidebar numbers={numbers} onContactClick={(e)=>{selectedRecipientt(e)}} />
 						</Drawer>
 					</Hidden>
 					<Drawer

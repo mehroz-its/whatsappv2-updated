@@ -12,7 +12,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import Button from '@material-ui/core/Button';
-
+import AudioMessageType from  './messageType/AudioMessageType'
+import ContactMessageType from  './messageType/ContactMessageType'
+import DocumentMessageType from  './messageType/DocumentMessageType'
+import ImageMessageType from  './messageType/ImageMessageType'
+import VideoMessageType from  './messageType/VideoMessageType'
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -21,6 +25,7 @@ import PauseIcon from '@material-ui/icons/Pause';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MicIcon from '@material-ui/icons/Mic'
+import CoreHttpHandler from '../../../../http/services/CoreHttpHandler';
 
 import * as Actions from './store/actions';
 const contacts = [
@@ -200,11 +205,61 @@ const useStyles = makeStyles(theme => ({
 				}
 			}
 		}
-	}
+	},
+	root: {
+        display: 'flex',
+        width: '250px',
+        height: '70px',
+        backgroundColor:'white'
+    },
+    rootDocu: {
+        display: 'flex',
+        width: '350px',
+        height: '100px',
+        alignContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+
+    },
+    contact: {
+        display: 'flex',
+        width: '40%',
+        height: '150px'
+    },
+    details: {
+        flexDirection: 'column',
+    },
+    content: {
+        padding: '10px 10px 0 15px'
+    },
+    cover: {
+        width: 120,
+        height: 120,
+        float: 'right'
+    },
+    playIcon: {
+        height: 20,
+        width: 20,
+    },
+    playbtn: {
+        padding: 5,
+        margin: '0 5px'
+    },
+    HeadIcon: {
+        width: '34%',
+        height: '62px',
+        float: 'right'
+    },
+    Headbtn: {
+        padding: 5,
+        margin: '0 5px'
+    }
 }));
 
 function Chat(props) {
 	const dispatch = useDispatch();
+	const { messages } = props;
+
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
 	// const selectedContactId = useSelector(({ chatApp }) => chatApp.contacts.selectedContactId);
 	// const chat = useSelector(({ chatApp }) => chatApp.chat);
@@ -219,7 +274,6 @@ function Chat(props) {
 	const [audio, setAudio] = React.useState('');
 	const [play, setAudioState] = React.useState(false);
 	const audioPlayHandler = () => {
-	console.log("audio : ",audio)
 		if (play) {
 			setAudioState(false);
 			audio.pause();
@@ -229,11 +283,10 @@ function Chat(props) {
 		}
 	};
 	useEffect(() => {
-		console.log("props.messages :", props.messages)
-		if (props.messages) {
+		if (messages) {
 			scrollToBottom();
 		}
-	}, [props.messages]);
+	}, [messages,]);
 
 	function scrollToBottom() {
 		chatRef.current.scrollTop = chatRef.current.scrollHeight;
@@ -242,7 +295,7 @@ function Chat(props) {
 	function shouldShowContactAvatar(item, i) {
 		return (
 			item.type === "inbound" &&
-			((props.messages[i + 1] && props.messages[i + 1].type !== props.selectedRecipient.id) || !props.messages[i + 1])
+			((messages[i + 1] && messages[i + 1].type !== props.selectedRecipient.id) || !messages[i + 1])
 		);
 	}
 
@@ -268,48 +321,32 @@ function Chat(props) {
 			setMessageText('');
 		});
 	}
-	const audioMessage = () => {
-		if (props.messages && props.messages !== null) {
-            props.messages.forEach((attribute) => {
-                if (attribute.attribute_name === 'url') {
-                    setAudioPath(attribute.attribute_value);
-                    setAudio(new Audio(attribute.attribute_value));
+	const sendMessage = () => {
+        let params = {
+            type: "text",
+            text: {
+                to: [props.selectedRecipient.number],
+                message: {
+                    text: messageText
                 }
-
-                if (attribute.attribute_name === 'filename') {
-                    setFilename(`${attribute.attribute_value.slice(0, 25)}...`);
-                }
-
-                if (attribute.attribute_name === 'mime_type') {
-                    setFileType(`Format: ${attribute.attribute_value.split('/')[1]}`);
-                }
-            });
-        }
-		return (
-			<Card className={classes.root} >
-				<div>
-					<MicIcon style={{ position: 'absolute', color: '#72bcd4', top: 45, width: 20, marginTop: '7px', right: 230 }} />
-					<div>
-						<AccountCircleIcon style={{ width: 40, height: 40, marginTop: '8px' }} />
-
-						<IconButton onClick={audioPlayHandler} aria-label="play/pause" style={{ marginTop: '-30px' }}>
-							{!play && <PlayArrowIcon />}
-							{play && <PauseIcon />}
-						</IconButton>
-					</div>
-				</div>
-				<div style={{ display: 'flex', justifyContent: 'flex-end', flex: 1 }}>
-					<a href={audioPath} target={'_blank'}><GetAppIcon style={{ width: 22, fontSize: 40, color: 'grey', marginTop: '20px' }} /></a>
-				</div>
-			</Card >)
-	}
-
+            }
+        };
+		console.log("params :",  params)
+        CoreHttpHandler.request('conversations', 'send_text', params, (response) => {
+			setMessageText('')
+        }, (error) => {
+        });
+    }
+	 // send message
+	 const sendMessageHandler = (event) => {
+        sendMessage();
+    }
 	return (
 		<div className={clsx('flex flex-col relative', props.className)}>
 			<FuseScrollbars ref={chatRef} className="flex flex-1 flex-col overflow-y-auto">
-				{props.messages && props.messages.length > 0 ? (
+				{messages && messages.length > 0 ? (
 					<div className="flex flex-col pt-16 px-16 ltr:pl-56 rtl:pr-56 pb-40">
-						{props.messages.map((item, i) => {
+						{messages.map((item, index) => {
 							const contact = null;
 							// 	item.type === "inbound" ? user : contacts.find(_contact => _contact.id === item.who);
 							return (
@@ -320,12 +357,12 @@ function Chat(props) {
 										'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
 										{ me: item.type === "outbound" },
 										{ contact: item.type === "inbound" },
-										{ 'first-of-group': isFirstMessageOfGroup(item, i) },
-										{ 'last-of-group': isLastMessageOfGroup(item, i) },
-										i + 1 === props.messages.length && 'pb-96'
+										{ 'first-of-group': isFirstMessageOfGroup(item, index) },
+										{ 'last-of-group': isLastMessageOfGroup(item, index) },
+										index + 1 === messages.length && 'pb-96'
 									)}
 								>
-									{shouldShowContactAvatar(item, i) && (
+									{shouldShowContactAvatar(item, index) && (
 										<Avatar
 											className="avatar absolute ltr:left-0 rtl:right-0 m-0 -mx-32"
 											src={props.selectedRecipient.avatar}
@@ -333,7 +370,10 @@ function Chat(props) {
 									)}
 									<div className="bubble flex relative items-center justify-center p-12 max-w-full">
 										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap">{item.message_body}</div> : null}
-										{item.message_type === "audio" ? audioMessage() : null}
+										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item}/> : null}
+										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item}/> : null}
+										{item.message_type === "video" ? <VideoMessageType index={index} classes={classes} message={item}/> : null}
+										{item.message_type === "document" ? <DocumentMessageType index={index} classes={classes} message={item}/> : null}
 
 										<Typography
 											className="time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-no-wrap"
@@ -387,7 +427,7 @@ function Chat(props) {
 							<AttachFileIcon />
 						</IconButton>
 						<Button variant="contained" style={{ position: 'absolute', left: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, }}>Canned</Button>
-						<Button variant="contained" style={{ position: 'absolute', right: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, backgroundColor: '#424141', color: 'white' }}>Send</Button>
+						<Button variant="contained" style={{ position: 'absolute', right: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, backgroundColor: '#424141', color: 'white' }} onClick={sendMessageHandler}>Send</Button>
 
 					</Paper>
 				</form>
