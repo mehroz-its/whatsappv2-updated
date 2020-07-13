@@ -23,7 +23,8 @@ import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading'
 
 
 const useStyles = makeStyles({
-	layoutRoot: {}
+	layoutRoot: {},
+
 });
 
 
@@ -221,17 +222,16 @@ function DashboardApp(props) {
 	}
 	return (
 		<FusePageSimple
-			classes={{
-				root: classes.layoutRoot,
-			
-			}}
+		classes={{
+			content: 'flex',
+			header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
+			root: classes.layoutRoot,
+		}}
 			header={
 				<div className="flex flex-col justify-between flex-1 px-20 pt-20">
-					{/* <div className="flex justify-between items-start"> */}
-					<Typography className="py-0 sm:py-24" variant="h5">
+					{/* <Typography className="py-0 sm:py-24" variant="h5">
 						Welcome back, John!
-						</Typography>
-					{/* </div> */}
+						</Typography> */}
 				</div>
 			}
 			contentToolbar={
@@ -289,20 +289,6 @@ function DashboardApp(props) {
 
 
 					)}
-
-					{/* <FuseAnimateGroup
-						className="flex flex-wrap"
-						enter={{
-							animation: 'transition.slideUpBigIn'
-						}}
-					>
-						<Grid container spacing={3} style={{ marginTop: 10 }}>
-							<Grid item md={12} sm={12} xs={12} >
-								<Paper className="w-full rounded-8 shadow-none border-1">
-									<div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>
-								</Paper>
-							</Grid></Grid>
-					</FuseAnimateGroup> */}
 				</div>
 			}
 			rightSidebarContent={
