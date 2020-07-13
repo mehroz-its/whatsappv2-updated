@@ -21,6 +21,7 @@ import StatusIcon from './StatusIcon';
 import * as Actions from './store/actions';
 import reducer from './store/reducers';
 import UserSidebar from './UserSidebar';
+import CoreHttpHandler from '../../../../http/services/CoreHttpHandler';
 
 const drawerWidth = 400;
 const headerHeight = 200;
@@ -49,7 +50,7 @@ const useStyles = makeStyles(theme => ({
 	contentCardWrapper: {
 		position: 'relative',
 		// padding: 10,
-		maxWidth:'100%',
+		maxWidth: '100%',
 		display: 'flex',
 		flexDirection: 'column',
 		flex: '1 0 auto',
@@ -57,7 +58,7 @@ const useStyles = makeStyles(theme => ({
 		minWidth: '0',
 		maxHeight: '100%',
 		margin: '0 auto',
-		
+
 		[theme.breakpoints.down('sm')]: {
 			padding: 16
 		},
@@ -151,46 +152,47 @@ const user = {
 	status: "online"
 }
 const selectedContactId = "5725a680b3249760ea21de52";
-const chat = {
-	id: "1725a680b3249760ea21de52",
-	dialog: [
-		{
-			message: "Quickly come to the meeting room 1B, we have a big server issue",
-			time: "2017-03-22T08:54:28.299Z",
-			who: "5725a680b3249760ea21de52",
-		},
-		{
-			message: "Quickly come to the meeting room 1B, we have a big server issue",
-			time: "2017-03-22T08:54:28.299Z",
-			who: "5725a680b3249760ea21de52",
-		},
+const chat=null
+// const chat = {
+// 	id: "1725a680b3249760ea21de52",
+// 	dialog: [
+// 		{
+// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
+// 			time: "2017-03-22T08:54:28.299Z",
+// 			who: "5725a680b3249760ea21de52",
+// 		},
+// 		{
+// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
+// 			time: "2017-03-22T08:54:28.299Z",
+// 			who: "5725a680b3249760ea21de52",
+// 		},
 
-		{
-			message: "Quickly come to the meeting room 1B, we have a big server issue",
-			time: "2017-03-22T08:54:28.299Z",
-			who: "5725a680b3249760ea21de52",
-		},
-		{
-			message: "Quickly come to the meeting room 1B, we have a big server issue",
-			time: "2017-03-22T08:54:28.299Z",
-			who: "5725a680b3249760ea21de52",
-		},
-		{
-			message: "Quickly come to the meeting room 1B, we have a big server issue",
-			time: "2017-03-22T08:54:28.299Z",
-			who: "5725a680b3249760ea21de52",
-		},
-		{
-			message: "I’m having breakfast right now, can’t you wait for 10 minutes?",
-			time: "2017-03-22T08:55:28.299Z",
-			who: "5725a6802d10e277a0f35724"
-		}, {
-			message: "We are losing money! Quick!",
-			time: "2017-03-22T09:00:28.299Z",
-			who: "5725a680b3249760ea21de52"
-		}
-	]
-}
+// 		{
+// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
+// 			time: "2017-03-22T08:54:28.299Z",
+// 			who: "5725a680b3249760ea21de52",
+// 		},
+// 		{
+// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
+// 			time: "2017-03-22T08:54:28.299Z",
+// 			who: "5725a680b3249760ea21de52",
+// 		},
+// 		{
+// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
+// 			time: "2017-03-22T08:54:28.299Z",
+// 			who: "5725a680b3249760ea21de52",
+// 		},
+// 		{
+// 			message: "I’m having breakfast right now, can’t you wait for 10 minutes?",
+// 			time: "2017-03-22T08:55:28.299Z",
+// 			who: "5725a6802d10e277a0f35724"
+// 		}, {
+// 			message: "We are losing money! Quick!",
+// 			time: "2017-03-22T09:00:28.299Z",
+// 			who: "5725a680b3249760ea21de52"
+// 		}
+// 	]
+// }
 function ChatApp(props) {
 	const dispatch = useDispatch();
 	// const chat = useSelector(({ chatApp }) => chatApp.chat);
@@ -200,19 +202,86 @@ function ChatApp(props) {
 	const userSidebarOpen = false;
 	const contactSidebarOpen = false;
 
+	const [lastMessageTimestamp, setlastMessageTimestamp] = React.useState(null);
+	const [latestMessageSender, setlatestMessageSender] = React.useState(null);
+	const [numbers, setnumbers] = React.useState([]);
+	const [messages, setmessages] = React.useState([]);
+	const [NewMessages, setNewMessages] = React.useState([]);
+	const [showLatestMessage, setshowLatestMessage] = React.useState(false);
+	const [selectedRecipient, setselectedRecipient] = React.useState(null);
+
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
+	const getNumbers = () => {
+		CoreHttpHandler.request('conversations', 'numbers', {}, (response) => {
+			const numbers = response.data.data.customers;
+			const lastMessage = response.data.data.lastMessage;
+			if (lastMessage) {
+				const lastMessageDtu = new Date(lastMessage.dtu);
 
+				if (lastMessageTimestamp === null)
+					setlastMessageTimestamp(new Date(lastMessage.dtu))
+
+				if (lastMessageTimestamp < lastMessageDtu) {
+					// if (lastMessage.name !== null) {
+					//     this.setSnackBarMessage(`New Message From [${lastMessage.name}]`, 'success', 'new_message');
+					// } else this.setSnackBarMessage(`New Message From [${lastMessage.number}]`, 'success', 'new_message');
+					setlastMessageTimestamp(lastMessageDtu);
+					setlatestMessageSender(lastMessage.number);
+
+				}
+			}
+			setnumbers(numbers)
+		}, (response) => {
+		});
+	}
+	const getConversation = (e) => {
+		setselectedRecipient(e)
+		
+        let params = {
+            key: ':number',
+            value: e.number,
+            key2: ':last_closed',
+            value2: e.last_closed
+
+        };
+        console.log("params : ", params);
+        CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
+			console.log("response :", response);
+			console.log("selectedRecipient :", selectedRecipient);
+
+            if (response.data.data.chat.length > NewMessages.length) {
+                //   console.log("if");
+				const messages = response.data.data.chat;
+				setNewMessages(response.data.data.chat)
+				setmessages(messages)
+				setshowLatestMessage(true)
+            }
+            else {
+				const messages = response.data.data.chat;
+				setmessages(messages)
+				setshowLatestMessage(false)
+            }
+            CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: e.number }, (response) => {
+
+            }, (response) => {
+
+            })
+
+        }, (response) => {
+
+        });
+    }
 	useEffect(() => {
+		getNumbers()
 		// dispatch(Actions.getUserData());
 		// dispatch(Actions.getContacts());
-	});
+	},[]);
 	// }, [dispatch]);
 
 	return (
 		<div className={clsx(classes.root)}>
 			<div className={classes.topBg} />
-
 			<div className={clsx(classes.contentCardWrapper, 'container')}>
 				<div className={classes.contentCard}>
 					<Hidden mdUp>
@@ -236,7 +305,7 @@ function ChatApp(props) {
 								}
 							}}
 						>
-							<ChatsSidebar />
+							<ChatsSidebar numbers={numbers} />
 						</Drawer>
 					</Hidden>
 					<Hidden smDown>
@@ -248,7 +317,7 @@ function ChatApp(props) {
 								paper: classes.drawerPaper
 							}}
 						>
-							<ChatsSidebar />
+							<ChatsSidebar numbers={numbers} onContactClick={(e)=>{getConversation(e)}} />
 						</Drawer>
 					</Hidden>
 					<Drawer
@@ -275,7 +344,7 @@ function ChatApp(props) {
 					</Drawer>
 
 					<main className={clsx(classes.contentWrapper, 'z-10')}>
-						{!chat ? (
+						{!selectedRecipient ? (
 							<div className="flex flex-col flex-1 items-center justify-center p-24">
 								<Paper className="rounded-full p-48">
 									<Icon className="block text-64" color="secondary">
@@ -321,24 +390,24 @@ function ChatApp(props) {
 											>
 												<div className="relative mx-8">
 													<div className="absolute right-0 bottom-0 -m-4 z-10">
-														<StatusIcon status={selectedContact.status} />
+														<StatusIcon status={selectedRecipient.status} />
 													</div>
 
-													<Avatar src={selectedContact.avatar} alt={selectedContact.name}>
-														{!selectedContact.avatar || selectedContact.avatar === ''
-															? selectedContact.name[0]
+													<Avatar src={selectedRecipient.avatar} alt={selectedRecipient.name}>
+														{!selectedRecipient.avatar || selectedRecipient.avatar === ''
+															? selectedRecipient.name[0]
 															: ''}
 													</Avatar>
 												</div>
 												<Typography color="inherit" className="text-18 font-600 px-4">
-													{selectedContact.name}
+													{selectedRecipient.name}
 												</Typography>
 											</div>
 										</Toolbar>
 									</AppBar>
 
 									<div className={classes.content}>
-										<Chat className="flex flex-1 z-10" />
+										<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} />
 									</div>
 								</>
 							)}

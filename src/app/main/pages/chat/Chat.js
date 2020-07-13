@@ -13,6 +13,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import Button from '@material-ui/core/Button';
 
+
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import PauseIcon from '@material-ui/icons/Pause';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import MicIcon from '@material-ui/icons/Mic'
+
 import * as Actions from './store/actions';
 const contacts = [
 	{
@@ -204,12 +213,27 @@ function Chat(props) {
 	const classes = useStyles(props);
 	const chatRef = useRef(null);
 	const [messageText, setMessageText] = useState('');
-
+	const [audioPath, setAudioPath] = React.useState('');
+	const [filename, setFilename] = React.useState('');
+	const [fileType, setFileType] = React.useState('');
+	const [audio, setAudio] = React.useState('');
+	const [play, setAudioState] = React.useState(false);
+	const audioPlayHandler = () => {
+	console.log("audio : ",audio)
+		if (play) {
+			setAudioState(false);
+			audio.pause();
+		} else {
+			setAudioState(true);
+			audio.play();
+		}
+	};
 	useEffect(() => {
-		if (chat) {
+		console.log("props.messages :", props.messages)
+		if (props.messages) {
 			scrollToBottom();
 		}
-	}, [chat]);
+	}, [props.messages]);
 
 	function scrollToBottom() {
 		chatRef.current.scrollTop = chatRef.current.scrollHeight;
@@ -217,8 +241,8 @@ function Chat(props) {
 
 	function shouldShowContactAvatar(item, i) {
 		return (
-			item.who === selectedContactId &&
-			((chat.dialog[i + 1] && chat.dialog[i + 1].who !== selectedContactId) || !chat.dialog[i + 1])
+			item.type === "inbound" &&
+			((props.messages[i + 1] && props.messages[i + 1].type !== props.selectedRecipient.id) || !props.messages[i + 1])
 		);
 	}
 
@@ -244,41 +268,78 @@ function Chat(props) {
 			setMessageText('');
 		});
 	}
+	const audioMessage = () => {
+		if (props.messages && props.messages !== null) {
+            props.messages.forEach((attribute) => {
+                if (attribute.attribute_name === 'url') {
+                    setAudioPath(attribute.attribute_value);
+                    setAudio(new Audio(attribute.attribute_value));
+                }
+
+                if (attribute.attribute_name === 'filename') {
+                    setFilename(`${attribute.attribute_value.slice(0, 25)}...`);
+                }
+
+                if (attribute.attribute_name === 'mime_type') {
+                    setFileType(`Format: ${attribute.attribute_value.split('/')[1]}`);
+                }
+            });
+        }
+		return (
+			<Card className={classes.root} >
+				<div>
+					<MicIcon style={{ position: 'absolute', color: '#72bcd4', top: 45, width: 20, marginTop: '7px', right: 230 }} />
+					<div>
+						<AccountCircleIcon style={{ width: 40, height: 40, marginTop: '8px' }} />
+
+						<IconButton onClick={audioPlayHandler} aria-label="play/pause" style={{ marginTop: '-30px' }}>
+							{!play && <PlayArrowIcon />}
+							{play && <PauseIcon />}
+						</IconButton>
+					</div>
+				</div>
+				<div style={{ display: 'flex', justifyContent: 'flex-end', flex: 1 }}>
+					<a href={audioPath} target={'_blank'}><GetAppIcon style={{ width: 22, fontSize: 40, color: 'grey', marginTop: '20px' }} /></a>
+				</div>
+			</Card >)
+	}
 
 	return (
 		<div className={clsx('flex flex-col relative', props.className)}>
 			<FuseScrollbars ref={chatRef} className="flex flex-1 flex-col overflow-y-auto">
-				{chat && chat.dialog.length > 0 ? (
+				{props.messages && props.messages.length > 0 ? (
 					<div className="flex flex-col pt-16 px-16 ltr:pl-56 rtl:pr-56 pb-40">
-						{chat.dialog.map((item, i) => {
-							const contact =
-								item.who === user.id ? user : contacts.find(_contact => _contact.id === item.who);
+						{props.messages.map((item, i) => {
+							const contact = null;
+							// 	item.type === "inbound" ? user : contacts.find(_contact => _contact.id === item.who);
 							return (
 								<div
 									key={item.time}
 									className={clsx(
 										classes.messageRow,
 										'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
-										{ me: item.who === user.id },
-										{ contact: item.who !== user.id },
+										{ me: item.type === "outbound" },
+										{ contact: item.type === "inbound" },
 										{ 'first-of-group': isFirstMessageOfGroup(item, i) },
 										{ 'last-of-group': isLastMessageOfGroup(item, i) },
-										i + 1 === chat.dialog.length && 'pb-96'
+										i + 1 === props.messages.length && 'pb-96'
 									)}
 								>
 									{shouldShowContactAvatar(item, i) && (
 										<Avatar
 											className="avatar absolute ltr:left-0 rtl:right-0 m-0 -mx-32"
-											src={contact.avatar}
+											src={props.selectedRecipient.avatar}
 										/>
 									)}
 									<div className="bubble flex relative items-center justify-center p-12 max-w-full">
-										<div className="leading-tight whitespace-pre-wrap">{item.message}</div>
+										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap">{item.message_body}</div> : null}
+										{item.message_type === "audio" ? audioMessage() : null}
+
 										<Typography
 											className="time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-no-wrap"
 											color="textSecondary"
 										>
-											{moment(item.time).format('MMMM Do YYYY, h:mm:ss a')}
+											{moment(item.dt).format('MMMM Do YYYY, h:mm:ss a')}
 										</Typography>
 									</div>
 								</div>
@@ -304,7 +365,7 @@ function Chat(props) {
 						<TextField
 							multiline={true}
 							rows="2"
-							style={{ height: 170, padding: 0, margin: 0, marginTop: -32,}}
+							style={{ height: 170, padding: 0, margin: 0, marginTop: -32, }}
 							autoFocus={false}
 							id="message-input"
 							className="flex-1"
@@ -323,10 +384,10 @@ function Chat(props) {
 							value={messageText}
 						/>
 						<IconButton style={{ position: 'absolute', left: 120, bottom: 3 }} type="submit">
-						<AttachFileIcon />
+							<AttachFileIcon />
 						</IconButton>
-						<Button variant="contained" style={{ position: 'absolute', left: 15, bottom: 13 ,fontSize:12,paddingTop: 7,paddingBottom: 7,paddingLeft: 30,paddingRight: 30,}}>Canned</Button>
-						<Button variant="contained" style={{ position: 'absolute', right: 15, bottom: 13 ,fontSize:12,paddingTop: 7,paddingBottom: 7,paddingLeft: 30,paddingRight: 30,backgroundColor: '#424141',color:'white'}}>Send</Button>
+						<Button variant="contained" style={{ position: 'absolute', left: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, }}>Canned</Button>
+						<Button variant="contained" style={{ position: 'absolute', right: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, backgroundColor: '#424141', color: 'white' }}>Send</Button>
 
 					</Paper>
 				</form>
