@@ -10647,6 +10647,11 @@ react-app-polyfill@1.0.6, react-app-polyfill@^1.0.6:
     regenerator-runtime "^0.13.3"
     whatwg-fetch "^3.0.0"
 
+react-audio-analyser@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/react-audio-analyser/-/react-audio-analyser-0.3.1.tgz#938af685da7059cc63475f4dde9812978d3cd8b5"
+  integrity sha512-GHqz+++rbPLXdyw7PU3UhtYGOuZTjqB1VuQixjn2GEbz4au+SKtI7oz5glg7O4GE94O3vzqJu9fLKc995198yw==
+
 react-autosuggest@10.0.0:
   version "10.0.0"
   resolved "https://registry.yarnpkg.com/react-autosuggest/-/react-autosuggest-10.0.0.tgz#49c69a5053d7b98b14f28716875883d11c95e945"
@@ -10717,6 +10722,11 @@ react-chartjs-2@2.9.0:
   dependencies:
     lodash "^4.17.4"
     prop-types "^15.5.8"
+
+react-csv@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/react-csv/-/react-csv-2.0.3.tgz#f5d17a3c71107d9bcbe580049350200debdc042a"
+  integrity sha512-exyAdFLAxtuM4wNwLYrlKyPYLiJ7e0mv9tqPAd3kq+k1CiJFtznevR3yP0icv5q/y200w+lzNgi7TQn1Wrhu0w==
 
 react-dev-utils@^10.2.1:
   version "10.2.1"

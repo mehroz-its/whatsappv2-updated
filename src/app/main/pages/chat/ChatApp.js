@@ -152,7 +152,7 @@ const user = {
 	status: "online"
 }
 const selectedContactId = "5725a680b3249760ea21de52";
-const chat=null
+const chat = null
 // const chat = {
 // 	id: "1725a680b3249760ea21de52",
 // 	dialog: [
@@ -212,94 +212,89 @@ function ChatApp(props) {
 	const [selectedRecipient, setselectedRecipient] = React.useState(null);
 	const [int_CustomerList, setint_CustomerList] = React.useState(null);
 	const [int_MessageLists, setint_MessageLists] = React.useState(null);
-	
+
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
+	const selectedRecipientt = (e) => {
+		// clearInterval(int_MessageLists);
+		setmessages([])
+		setselectedRecipient(e)
 
+	}
 	const getNumbers = () => {
 		CoreHttpHandler.request('conversations', 'numbers', {}, (response) => {
 			const numbers = response.data.data.customers;
 			const lastMessage = response.data.data.lastMessage;
 			if (lastMessage) {
 				const lastMessageDtu = new Date(lastMessage.dtu);
-
 				if (lastMessageTimestamp === null)
 					setlastMessageTimestamp(new Date(lastMessage.dtu))
-
 				if (lastMessageTimestamp < lastMessageDtu) {
 					// if (lastMessage.name !== null) {
 					//     this.setSnackBarMessage(`New Message From [${lastMessage.name}]`, 'success', 'new_message');
 					// } else this.setSnackBarMessage(`New Message From [${lastMessage.number}]`, 'success', 'new_message');
 					setlastMessageTimestamp(lastMessageDtu);
 					setlatestMessageSender(lastMessage.number);
-
 				}
 			}
 			setnumbers(numbers)
 		}, (response) => {
 		});
 	}
-	const getConversation = () => {
-		console.log("getConversation selectedRecipient :" ,  selectedRecipient);
-		
-        let params = {
-            key: ':number',
-            value: selectedRecipient.numbers,
-            key2: ':last_closed',
-            value2: selectedRecipient.last_closed
+	const getConversation = (e) => {
+		console.log("getConversation selectedRecipient :", e);
+		let params = {
+			key: ':number',
+			value: e.number,
+			key2: ':last_closed',
+			value2: e.last_closed
 
-        };
-        console.log("params : ", params);
-        CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
+		};
+		console.log("params : ", params);
+		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
 			console.log("response :", response);
-            if (response.data.data.chat.length > NewMessages.length) {
-                //   console.log("if");
+			if (response.data.data.chat.length > NewMessages.length) {
+				//   console.log("if");
 				const messages = response.data.data.chat;
 				setNewMessages(response.data.data.chat)
 				setmessages(messages)
 				setshowLatestMessage(true)
-            }
-            else {
+				setselectedRecipient(e)
+			}
+			else {
 				const messages = response.data.data.chat;
 				setmessages(messages)
 				setshowLatestMessage(false)
 			}
-			if (int_MessageLists === null) setint_MessageLists(setInterval(() => {
-                getConversation();
-            }, 3000));
-            CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: selectedRecipient.number }, (response) => {
+			// if (int_MessageLists === null) setint_MessageLists(setInterval(() => {
+			// 	getConversation(selectedRecipient);
+			// }, 4000));
+			CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: e.number }, (response) => {
 
-            }, (response) => {
+			}, (response) => {
 
-            })
+			})
 
-        }, (response) => {
+		}, (response) => {
 
-        });
+		});
 	}
-	
 	useEffect(() => {
-		if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
-            getNumbers();
-        }, 5000));
-		getNumbers()
-		// dispatch(Actions.getUserData());
-		// dispatch(Actions.getContacts());
-	},[]);
-	// }, [dispatch]);
-	const selectedRecipientt = (e) => {
-		// e !==selectedRecipient?setselectedRecipient(e):null
-		console.log(e.number,'numbersss')
-		if(e !==selectedRecipient){
-			setselectedRecipient(e)
-
-            getConversation();
-		}
+		console.log("selectedRecipient use efffact = > ", selectedRecipient);
 		
-            if (int_MessageLists === null) setint_MessageLists(setInterval(() => {
-               getConversation();
-            }, 3000));
-    }
+		if (selectedRecipient !== null) {
+			getConversation(selectedRecipient)
+		}
+		if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
+			getNumbers();
+		}, 5000));
+		getNumbers()
+		return () => {
+			clearInterval(int_CustomerList);
+			clearInterval(int_MessageLists);
+		}
+	}, [selectedRecipient]);
+	
 	return (
 		<div className={clsx(classes.root)}>
 			<div className={classes.topBg} />
@@ -338,7 +333,7 @@ function ChatApp(props) {
 								paper: classes.drawerPaper
 							}}
 						>
-							<ChatsSidebar numbers={numbers} onContactClick={(e)=>{selectedRecipientt(e)}} />
+							<ChatsSidebar numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
 						</Drawer>
 					</Hidden>
 					<Drawer
@@ -377,8 +372,7 @@ function ChatApp(props) {
 								</Typography>
 								<Typography
 									className="hidden md:flex px-16 pb-24 mt-24 text-center"
-									color="textSecondary"
-								>
+									color="textSecondary">
 									Select a contact to start a conversation!..
 								</Typography>
 								<Button

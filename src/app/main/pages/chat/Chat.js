@@ -12,11 +12,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import Button from '@material-ui/core/Button';
-import AudioMessageType from  './messageType/AudioMessageType'
-import ContactMessageType from  './messageType/ContactMessageType'
-import DocumentMessageType from  './messageType/DocumentMessageType'
-import ImageMessageType from  './messageType/ImageMessageType'
-import VideoMessageType from  './messageType/VideoMessageType'
+import AudioMessageType from './messageType/AudioMessageType'
+import ContactMessageType from './messageType/ContactMessageType'
+import DocumentMessageType from './messageType/DocumentMessageType'
+import ImageMessageType from './messageType/ImageMessageType'
+import VideoMessageType from './messageType/VideoMessageType'
 
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -26,6 +26,14 @@ import GetAppIcon from '@material-ui/icons/GetApp';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MicIcon from '@material-ui/icons/Mic'
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler';
+import XGlobalDialogCmp from '../../../../dialogs/XGlobalDialogCmp';
+import XGlobalDialog from '../../../../dialogs/XGlobalDialog';
+import { CSVLink, CSVDownload } from 'react-csv';
+import AttachmentDialogV2 from './dialog/chat/AttachmentDialogV2';
+
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Fade from '@material-ui/core/Fade'
 
 import * as Actions from './store/actions';
 const contacts = [
@@ -207,58 +215,58 @@ const useStyles = makeStyles(theme => ({
 		}
 	},
 	root: {
-        display: 'flex',
-        width: '250px',
-        height: '70px',
-        backgroundColor:'white'
-    },
-    rootDocu: {
-        display: 'flex',
-        width: '350px',
-        height: '100px',
-        alignContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'center',
+		display: 'flex',
+		width: '250px',
+		height: '70px',
+		backgroundColor: 'white'
+	},
+	rootDocu: {
+		display: 'flex',
+		width: '350px',
+		height: '100px',
+		alignContent: 'center',
+		alignItems: 'center',
+		alignSelf: 'center',
 
-    },
-    contact: {
-        display: 'flex',
-        width: '40%',
-        height: '150px'
-    },
-    details: {
-        flexDirection: 'column',
-    },
-    content: {
-        padding: '10px 10px 0 15px'
-    },
-    cover: {
-        width: 120,
-        height: 120,
-        float: 'right'
-    },
-    playIcon: {
-        height: 20,
-        width: 20,
-    },
-    playbtn: {
-        padding: 5,
-        margin: '0 5px'
-    },
-    HeadIcon: {
-        width: '34%',
-        height: '62px',
-        float: 'right'
-    },
-    Headbtn: {
-        padding: 5,
-        margin: '0 5px'
-    }
+	},
+	contact: {
+		display: 'flex',
+		width: '40%',
+		height: '150px'
+	},
+	details: {
+		flexDirection: 'column',
+	},
+	content: {
+		padding: '10px 10px 0 15px'
+	},
+	cover: {
+		width: 120,
+		height: 120,
+		float: 'right'
+	},
+	playIcon: {
+		height: 20,
+		width: 20,
+	},
+	playbtn: {
+		padding: 5,
+		margin: '0 5px'
+	},
+	HeadIcon: {
+		width: '34%',
+		height: '62px',
+		float: 'right'
+	},
+	Headbtn: {
+		padding: 5,
+		margin: '0 5px'
+	}
 }));
 
 function Chat(props) {
 	const dispatch = useDispatch();
-	const { messages } = props;
+	const { messages, selectedRecipient } = props;
 
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
 	// const selectedContactId = useSelector(({ chatApp }) => chatApp.contacts.selectedContactId);
@@ -268,19 +276,88 @@ function Chat(props) {
 	const classes = useStyles(props);
 	const chatRef = useRef(null);
 	const [messageText, setMessageText] = useState('');
-	const [audioPath, setAudioPath] = React.useState('');
-	const [filename, setFilename] = React.useState('');
-	const [fileType, setFileType] = React.useState('');
-	const [audio, setAudio] = React.useState('');
-	const [play, setAudioState] = React.useState(false);
-	const audioPlayHandler = () => {
-		if (play) {
-			setAudioState(false);
-			audio.pause();
-		} else {
-			setAudioState(true);
-			audio.play();
+	const [anchorEl, setAnchorEl] = React.useState(null);
+
+	const [sendDialogData, setsendDialogData] = React.useState({
+		url: '',
+		caption: '',
+		attributes: null,
+	});
+	const [dialogOpen, setdialogOpen] = React.useState(false);
+	const [shiftAgentsList, setshiftAgentsList] = React.useState([]);
+	const [dialogOpenShift, setdialogOpenShift] = React.useState(false);
+	const [sendActionType, setsendActionType] = React.useState(null);
+	const [sendDialogOpen, setsendDialogOpen] = React.useState(false);
+	const [sendDialogTitle, setsendDialogTitle] = React.useState(false);
+	const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
+
+	const sendDialogActions = [
+		{
+			handler: (event, index) => {
+				setsendActionType(null)
+				setsendDialogTitle('')
+				setsendDialogOpen(false)
+			},
+			options: {},
+			label: "Cancel",
+		},
+		{
+			handler: (event, index) => {
+				sendDialogActionCb();
+			},
+			options: {},
+			label: "Send",
 		}
+	];
+	const sendDialogActionCb = () => {
+		const args = {};
+
+		args[sendActionType] = {};
+
+		args[sendActionType]['type'] = sendActionType;
+
+		args[sendActionType][sendActionType] = {};
+
+		args[sendActionType][sendActionType]['message'] = sendDialogData;
+
+		args[sendActionType][sendActionType]['to'] = [selectedRecipient.number];
+
+		if (sendDialogData.attributes) {
+			Object.keys(sendDialogData.attributes).forEach(attr => {
+				args[sendActionType][sendActionType].message[attr] = sendDialogData.attributes[attr];
+			});
+		}
+
+		delete args[sendActionType][sendActionType].message.attributes;
+
+		CoreHttpHandler.request('conversations', 'send', { key: ':type', value: sendActionType, params: args[sendActionType] }, (response) => {
+			setsendActionType(null)
+			setsendDialogTitle('')
+			setsendDialogOpen(false)
+			setsendDialogData({
+				url: '',
+				caption: '',
+				attributes: null,
+			})
+			
+		}, (response) => {
+		})
+	};
+	const dialogOptionsConfirmBlock = {
+		onClose: function () {
+			setdialogOpenConfirmBlock(false)
+
+		},
+		'aria-labelledby': "form-dialog-title",
+		'aria-describedby': "form-dialog-title"
+	};
+	const open = Boolean(anchorEl);
+	const handleClick = (event) => {
+		console.log("event ", event.currentTarget)
+		setAnchorEl(event.currentTarget);
+	};
+	const handleClose = () => {
+		setAnchorEl(null);
 	};
 	useEffect(() => {
 		if (messages) {
@@ -322,25 +399,105 @@ function Chat(props) {
 		});
 	}
 	const sendMessage = () => {
-        let params = {
-            type: "text",
-            text: {
-                to: [props.selectedRecipient.number],
-                message: {
-                    text: messageText
-                }
-            }
-        };
-		console.log("params :",  params)
-        CoreHttpHandler.request('conversations', 'send_text', params, (response) => {
+		let params = {
+			type: "text",
+			text: {
+				to: [props.selectedRecipient.number],
+				message: {
+					text: messageText
+				}
+			}
+		};
+		console.log("params :", params)
+		CoreHttpHandler.request('conversations', 'send_text', params, (response) => {
 			setMessageText('')
-        }, (error) => {
-        });
-    }
-	 // send message
-	 const sendMessageHandler = (event) => {
-        sendMessage();
-    }
+		}, (error) => {
+		});
+	}
+	// send message
+	const sendMessageHandler = (event) => {
+		sendMessage();
+	}
+	const sendDialogInputHandler = (e) => {
+		const data = { ...sendDialogData };
+
+		if (e.caption) {
+			data['caption'] = e.caption;
+		}
+
+		if (e.url) {
+			data['url'] = e.url;
+		}
+
+		if (e.attributes) {
+			data['attributes'] = e.attributes;
+		}
+		setsendDialogData(data)
+	};
+	const conversationActionsCallback = (action) => {
+		setAnchorEl(null);
+		if (action === 'export') conversationExport();
+		if (action === 'email') conversationEmail();
+		if (action === 'shift') conversationShift();
+
+		if (action === 'audio') {
+			setsendActionType('audio')
+			setsendDialogTitle('Send An Audio File')
+			setsendDialogOpen(true)
+		}
+
+		if (action === 'video') {
+			setsendActionType('video')
+			setsendDialogTitle('Send A Video File')
+			setsendDialogOpen(true)
+		}
+		if (action === 'document') {
+			setsendActionType('document')
+			setsendDialogTitle('Send A Document')
+			setsendDialogOpen(true)
+		}
+		if (action === 'location') {
+			setsendActionType('location')
+			setsendDialogTitle('Send Location Data')
+			setsendDialogOpen(true)
+		}
+		if (action === 'image') {
+			setsendActionType('image')
+			setsendDialogTitle('Send An Image')
+			setsendDialogOpen(true)
+		}
+	}
+	const conversationEmail = () => {
+		setdialogOpen(true)
+	}
+
+	const conversationExport = () => {
+		let params = {
+			key: ':number',
+			value: selectedRecipient.number,
+			key2: ':last_closed',
+			value2: selectedRecipient.last_closed
+
+		};
+		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
+			const messages = response.data.data.chat;
+			const csvLink = (<CSVLink filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`} data={messages}>Your exported chat is ready for download</CSVLink>);
+			alert(messages)
+		}, (response) => {
+
+		});
+	}
+
+	const conversationShift = () => {
+		CoreHttpHandler.request('conversations', 'agent_list', { role: 64, columns: 'id, username, email, number' }, (response) => {
+			const data = response.data.data.agents.data;
+			setshiftAgentsList(data)
+			setdialogOpenShift(true)
+		}, (response) => {
+
+		});
+	}
+
 	return (
 		<div className={clsx('flex flex-col relative', props.className)}>
 			<FuseScrollbars ref={chatRef} className="flex flex-1 flex-col overflow-y-auto">
@@ -370,10 +527,10 @@ function Chat(props) {
 									)}
 									<div className="bubble flex relative items-center justify-center p-12 max-w-full">
 										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap">{item.message_body}</div> : null}
-										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item}/> : null}
-										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item}/> : null}
-										{item.message_type === "video" ? <VideoMessageType index={index} classes={classes} message={item}/> : null}
-										{item.message_type === "document" ? <DocumentMessageType index={index} classes={classes} message={item}/> : null}
+										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
+										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
+										{item.message_type === "video" ? <VideoMessageType index={index} classes={classes} message={item} /> : null}
+										{item.message_type === "document" ? <DocumentMessageType index={index} classes={classes} message={item} /> : null}
 
 										<Typography
 											className="time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-no-wrap"
@@ -423,15 +580,38 @@ function Chat(props) {
 							onChange={onInputChange}
 							value={messageText}
 						/>
-						<IconButton style={{ position: 'absolute', left: 120, bottom: 3 }} type="submit">
+						<IconButton aria-controls="fade-menu" aria-haspopup="true" onClick={handleClick} style={{ position: 'absolute', left: 120, bottom: 3 }}>
 							<AttachFileIcon />
+
 						</IconButton>
+						<Menu
+							id="fade-menu"
+							anchorEl={anchorEl}
+							keepMounted
+							open={open}
+							onClose={handleClose}
+							TransitionComponent={Fade}
+							style={{ marginTop: -20 }}
+						>
+							<MenuItem onClick={(e) => conversationActionsCallback('image')}>Image</MenuItem>
+							<MenuItem onClick={(e) => conversationActionsCallback('video')}>Video</MenuItem>
+							<MenuItem onClick={(e) => conversationActionsCallback('audio')}>Audio</MenuItem>
+							<MenuItem onClick={(e) => conversationActionsCallback('document')}>Document</MenuItem>
+							<MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
+							<MenuItem onClick={(e) => conversationActionsCallback('email')}>email</MenuItem>
+							<MenuItem onClick={(e) => conversationActionsCallback('shift')}>shift</MenuItem>
+						</Menu>
+
 						<Button variant="contained" style={{ position: 'absolute', left: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, }}>Canned</Button>
 						<Button variant="contained" style={{ position: 'absolute', right: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, backgroundColor: '#424141', color: 'white' }} onClick={sendMessageHandler}>Send</Button>
 
 					</Paper>
 				</form>
 			)}
+			<XGlobalDialogCmp onDialogPropsChange={sendDialogInputHandler} data={{ dialogType: sendActionType, attachment: sendDialogData }} dialogTitle={sendDialogTitle} options={dialogOptionsConfirmBlock} content={AttachmentDialogV2} defaultState={sendDialogOpen} actions={sendDialogActions} />
+			<XGlobalDialog onchange={(e) => {
+                    this.onchange(e);
+                }} dialogTitle={`Email [${this.state.selectedRecipient}]'s Conversation`} options={this.dialogOptions} content={ConversationsEmailDialog} defaultState={this.state.dialogOpen} actions={this.dialogActions} />
 		</div>
 	);
 }
