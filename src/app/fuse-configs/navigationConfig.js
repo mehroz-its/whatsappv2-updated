@@ -47,7 +47,7 @@ const navigationConfig = [
 				title: 'Chat',
 				translate: 'Chat',
 				type: 'collapse',
-				icon: 'today',
+				icon: 'chat',
 				// url: '/apps/groups/group',
 				children: [
 					{
@@ -74,7 +74,7 @@ const navigationConfig = [
 				title: 'Template',
 				translate: 'Template',
 				type: 'collapse',
-				icon: 'email',
+				icon: 'chrome_reader_mode',
 				// url: '/apps/groups/group',
 				children: [
 					{
@@ -105,7 +105,7 @@ const navigationConfig = [
 				title: 'Contact Book',
 				translate: 'CONTACT BOOK',
 				type: 'collapse',
-				icon: 'shopping_cart',
+				icon: 'contact_phone',
 				// url: '/apps/groups/group',
 				children: [
 					{
@@ -146,7 +146,7 @@ const navigationConfig = [
 				title: 'Gallery',
 				translate: 'GALLERY',
 				type: 'collapse',
-				icon: 'shopping_cart',
+				icon: 'apps',
 				children: [
 					{
 						id: 'Canned Messages',
@@ -164,7 +164,7 @@ const navigationConfig = [
 				title: 'REPORTS',
 				translate: 'REPORTS',
 				type: 'collapse',
-				icon: 'shopping_cart',
+				icon: 'assessment',
 				children: [
 					{
 						id: 'Chat',
@@ -195,7 +195,7 @@ const navigationConfig = [
 				title: 'SETTINGS',
 				translate: 'SETTINGS',
 				type: 'collapse',
-				icon: 'shopping_cart',
+				icon: 'build',
 				children: [
 					{
 						id: 'Countries',
