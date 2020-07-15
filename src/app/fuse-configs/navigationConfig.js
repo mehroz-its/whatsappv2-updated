@@ -195,7 +195,7 @@ const navigationConfig = [
 				title: 'SETTINGS',
 				translate: 'SETTINGS',
 				type: 'collapse',
-				icon: 'build',
+				icon: 'settings',
 				children: [
 					{
 						id: 'Countries',
