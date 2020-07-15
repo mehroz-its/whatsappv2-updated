@@ -21,20 +21,24 @@ import Typography from '@material-ui/core/Typography';
 
 function CitiesTable(props) {
 
-	
-	function closeDialog(){
+
+	function closeDialog() {
 		setOpen(false)
+		alert("fdff")
 	}
 	let data2 = props.dataa
 
-	console.log(props)
+	// console.log(props)
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState([]);
-	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
+	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
+
+	const [snackbarmessage, setSnackBarMessage] = React.useState('')
+
 
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -42,13 +46,13 @@ function CitiesTable(props) {
 		direction: 'asc',
 		id: null
 	});
-	const[dialogData,setDialogData]=useState({
-		enabled:'',
-		id:'',
-		name:'',
-		code:'',
-		country:''
-		
+	const [dialogData, setDialogData] = useState({
+		enabled: '',
+		id: '',
+		name: '',
+		code: '',
+		country: ''
+
 	})
 
 
@@ -68,11 +72,12 @@ function CitiesTable(props) {
 		});
 	}
 
-	const handleClose = () => {
+	const handleClose = (val) => {
 		// getData()
+		// props.snackbar(cal)
 
 		setOpen(false);
-		props.onClose()
+		props.onClose(val)
 	};
 
 	function handleSelectAllClick(event) {
@@ -85,20 +90,20 @@ function CitiesTable(props) {
 
 
 	function handleClick(n) {
-		console.log(n,'nnnnnnnn');
-		
+		// console.log(n,'nnnnnnnn');
+
 		setOpen(true)
-		console.log(dialogData,n,'asdsd');
+		// console.log(dialogData,n,'asdsd');
 		setDialogData({
-			enabled:n.enabled,
-			id:n.id,
-			name:n.name,
-			code:n.code,
-            country:n.country_id
-         })
-		
-		
-}
+			enabled: n.enabled,
+			id: n.id,
+			name: n.name,
+			code: n.code,
+			country: n.country_id
+		})
+
+
+	}
 
 
 	function handleCheck(event, id) {
@@ -143,6 +148,16 @@ function CitiesTable(props) {
 			);
 		}
 	}
+
+
+
+	const snackbar = (snackmsg) => {
+
+		// console.log(snackmsg,'snackmsg');
+	}
+
+
+
 	return (
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
@@ -207,9 +222,9 @@ function CitiesTable(props) {
 											{n.country}
 										</TableCell>
 										<TableCell component="th" scope="row" align="right">
-										{n.enabled ? (
+											{n.enabled ? (
 												<Icon className="text-green text-20">check_circle</Icon>
-												) : (
+											) : (
 													<Icon className="text-red text-20">cancel</Icon>
 												)}
 										</TableCell>
@@ -274,7 +289,19 @@ function CitiesTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-				{open ? <CitiesDialog  isOpen={open} closeDialog={closeDialog} type="Update" closeDialog={handleClose}  data={dialogData} />:null}
+			{open ?
+				<CitiesDialog
+					isOpen={open}
+					// closeDialog={(e) => {
+					// 	props.snackbar("update")
+					// 	handleCLose
+					// }}
+					type="Update"
+					data={dialogData}
+					snackbar={snackbar}
+				   closeDialog={handleClose}
+
+				/> : null}
 		</div>
 	);
 }

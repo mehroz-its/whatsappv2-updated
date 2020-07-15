@@ -55,9 +55,12 @@ const CitiesDialog = (props) => {
     const [city,setCities]=React.useState(props.data.cities)
     const [enabled, setEnabled] = React.useState(data.enabled);
     const[method,setMethod]=React.useState(data.country)
+    const [snackbaropen, setSnackBarOpen] = React.useState(props.snackopen)
+    const [snackbarmessage, setSnackBarMessage] = React.useState(props.snackmsg)
+    const [ok, setOK] = React.useState(props.snackok)
     
     const handleClose = () => {
-        props.closeDialog()
+        props.closeDialog("cancel")
         setopenDialog(false);
     };
     const classes = useStyles(props);
@@ -66,7 +69,7 @@ const CitiesDialog = (props) => {
       setMethod(event.target.value);
       };
 
-
+  
 
     const handleSubmit = () => {
          console.log(city,'city');
@@ -85,12 +88,16 @@ const CitiesDialog = (props) => {
           
           // props.getUpdatedData()
           console.log(response)
-          props.closeDialog()
-          setopenDialog(false);
+        
+         props.closeDialog('create')
+        //  props.snackbar("create")
+          setopenDialog(false)
+          
         }, (error) => {
-          props.closeDialog()
+          props.closeDialog('error')
+          // props.snackbar("error")
           setopenDialog(false);
-  
+            
         });
       } else {
       
@@ -106,16 +113,23 @@ const CitiesDialog = (props) => {
             country:method
           }
         }
-        console.log(update_params,'update_params')
+        // console.log(update_params,'update_params')
         // return
         CoreHttpHandler.request('locations', 'update_city', update_params, (response) => {
           // props.getUpdatedData()
-          console.log(response)
-          props.closeDialog()
+          // console.log(response)
+          setSnackBarOpen(true)
+          setSnackBarMessage('Updated Successfully')
+         
+          // props.snackbar("update")
+     
+          props.closeDialog("update")
           setopenDialog(false);
+         
         }, (error) => {
-          props.closeDialog()
+          props.closeDialog("error")
           setopenDialog(false);
+        
   
         });
       }
@@ -160,20 +174,20 @@ const loadCountries = () => {
 
 
 const createCountry = ()=>{
-  console.log('creteacalledd');
+  // console.log('creteacalledd');
   
   loadCountries().then(response => {
     const countries = response.data.data.list.data;
-    console.log(countries,'set counte');
+    // console.log(countries,'set counte');
     
     setCountry(countries)
   })
 }
 const createCountryDialog = () => {
-  console.log('createCitiescalledd')
+  // console.log('createCitiescalledd')
     loadCities().then(response => {
         const cities = response.data.data.list.data;
-      console.log('calledddddd',cities);
+      // console.log('calledddddd',cities);
       setCities(cities)
     });
     
@@ -190,7 +204,7 @@ const functioncalls = ()=>{
 const handleEnable = (event) => {
 
   setEnabled(event.target.checked);
-  console.log(enabled, 'enable')
+  // console.log(enabled, 'enable')
 };
 
 
@@ -199,7 +213,7 @@ React.useEffect(() => {
 }, []);
 
 
-console.log('method',method,enabled);
+// console.log('snacks',snackbarmessage,snackbaropen,ok);
 
     return (  
   
@@ -216,6 +230,7 @@ console.log('method',method,enabled);
     maxWidth="sm">
 <DialogTitle id="form-dialog-title">{type} City</DialogTitle>
 <DialogContent classes={{ root: 'p-24' }}>
+
             <div className="flex">
                 <div className="min-w-48 pt-20">
                     <Icon color="action">account_circle</Icon>
