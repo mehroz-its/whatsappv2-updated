@@ -11,6 +11,8 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import MaterialTable from 'material-table';
 import CampaingsHeader from './CampaingsHeader'
 import CampaingsTable from './CampaingsTable'
+import FuseAnimate from '@fuse/core/FuseAnimate';
+import Icon from '@material-ui/core/Icon';
 const useStyles = makeStyles({
 	layoutRoot: {}
 });
@@ -285,12 +287,18 @@ function CompaignsApp() {
 				header: 'min-h-160 h-160',
 			}}
 			header={
-				<div className="flex flex-col justify-between flex-1 px-24 pt-24">
-					{/* <div className="flex justify-between items-start"> */}
-					<Typography className="py-0 sm:py-24" variant="h4">
-						Welcome back, John!
-						</Typography>
-					{/* </div> */}
+				<div className="flex flex-1 w-full items-center justify-between px-16">
+					<div className="flex items-center">
+						<FuseAnimate animation="transition.expandIn" delay={300}>
+							<Icon className="text-32">hourglass_full</Icon>
+						</FuseAnimate>
+						<FuseAnimate animation="transition.slideLeftIn" delay={300}>
+							<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
+								Campaigns Report
+					</Typography>
+						</FuseAnimate>
+					</div>
+
 				</div>
 			}
 			content={

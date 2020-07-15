@@ -30,7 +30,7 @@ function CampaingsHeader(props) {
 				<div className="flex items-center">
 					
 					<FuseAnimate animation="transition.expandIn" delay={300}>
-						<Icon className="text-32">account_box</Icon>
+						<Icon className="text-32">bar_chart</Icon>
 					</FuseAnimate>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 						<Typography variant="h6" className="mx-12 hidden sm:flex">

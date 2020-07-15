@@ -12,6 +12,9 @@ import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 import ChartHeader from './ChartHeader'
 import ChartTable from './ChartTable'
+import FuseAnimate from '@fuse/core/FuseAnimate';
+import Icon from '@material-ui/core/Icon';
+
 
 const useStyles = makeStyles({
 	layoutRoot: {}
@@ -195,9 +198,9 @@ function ChatApp() {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
 	const [val, setVal] = React.useState('');
-	
-	const[data2,setData2]=React.useState([])
-    const [chartdata, setchartdata] = React.useState(null);
+
+	const [data2, setData2] = React.useState([])
+	const [chartdata, setchartdata] = React.useState(null);
 	const [state, setState] = React.useState({
 		columns: [
 			{ title: 'Number', field: 'number' },
@@ -210,14 +213,14 @@ function ChatApp() {
 
 	});
 	const [tableData, setTableData] = React.useState([]);
-	let data =[]
-	tableData.map((i,val)=>{
+	let data = []
+	tableData.map((i, val) => {
 		let filtered = {
-			incoming:new Date(i.incoming).toISOString(),
+			incoming: new Date(i.incoming).toISOString(),
 			outgoing: new Date(i.outgoing).toISOString(),
-			incoming_count:i.incoming_count,
-			outgoing_count:i.outgoing_count,
-			number:i.number
+			incoming_count: i.incoming_count,
+			outgoing_count: i.outgoing_count,
+			number: i.number
 		}
 		data.push(filtered)
 	})
@@ -241,51 +244,51 @@ function ChatApp() {
 		});
 	})
 	const dataSourceOptions = {
-        params: {
-            columns: "*",
-            sortby: "ASC",
-            orderby: "id",
-            where: "id != $1 AND displayed = false",
-            values: 0,
-        },
-        // type: 'dashboard',
-        // apiType: 'listing',
-    };
+		params: {
+			columns: "*",
+			sortby: "ASC",
+			orderby: "id",
+			where: "id != $1 AND displayed = false",
+			values: 0,
+		},
+		// type: 'dashboard',
+		// apiType: 'listing',
+	};
 	React.useEffect(() => {
 		CoreHttpHandler.request('reports', 'chatChartInOutCC', { ...dataSourceOptions }, dataSourceSuccess, dataSourceFailure);
-        CoreHttpHandler.request('reports', 'chatChartEngagments', { ...dataSourceOptions }, dataSourceSuccessEngagments, dataSourceFailureEngagments);
-        
+		CoreHttpHandler.request('reports', 'chatChartEngagments', { ...dataSourceOptions }, dataSourceSuccessEngagments, dataSourceFailureEngagments);
+
 		// incomingAndOutGoingCount()
 		// engagments()
 		getData()
-	},[])
+	}, [])
 	const dataSourceSuccess = (response) => {
-        const list = response.data.data.report.boxes;
-        const data = list.map((item, i) => {
-            const chartObj = {
-                category: item.type
-            };
-            for (let i = 0; i < item.value.length; i++) {
-                chartObj[item.value[i].direction] = item.value[i].count;
-            }
-            return chartObj;
-        });
-        setchartdata(data)
-        incomingAndOutGoingCount(data);
+		const list = response.data.data.report.boxes;
+		const data = list.map((item, i) => {
+			const chartObj = {
+				category: item.type
+			};
+			for (let i = 0; i < item.value.length; i++) {
+				chartObj[item.value[i].direction] = item.value[i].count;
+			}
+			return chartObj;
+		});
+		setchartdata(data)
+		incomingAndOutGoingCount(data);
 
-    };
+	};
 
-    const dataSourceFailure = (response) => {
-    };
+	const dataSourceFailure = (response) => {
+	};
 
-    const dataSourceSuccessEngagments = (response) => {
-        const list = response.data.data.report.boxes;
-        engagments(list)
-    };
+	const dataSourceSuccessEngagments = (response) => {
+		const list = response.data.data.report.boxes;
+		engagments(list)
+	};
 
-	console.log(chartdata,'chartdataaa');
-	
-    const dataSourceFailureEngagments = (response) => {
+	console.log(chartdata, 'chartdataaa');
+
+	const dataSourceFailureEngagments = (response) => {
 	};
 	// if (tableData.length === 0) {
 	// 	return (
@@ -295,12 +298,12 @@ function ChatApp() {
 	// 	);
 	// }
 
-	const searchContact =(value)=> {
-	setVal(value)
+	const searchContact = (value) => {
+		setVal(value)
 		// console.log('ceeleded', props.ValueForSearch, searchVal);
 
 		// setSearchVal(props.ValueForSearch)
-		setData2(data.filter(n =>n.number.toLowerCase().includes(value.toLowerCase())))
+		setData2(data.filter(n => n.number.toLowerCase().includes(value.toLowerCase())))
 		console.log(data2, 'filterssss');
 
 
@@ -312,13 +315,20 @@ function ChatApp() {
 				header: 'min-h-160 h-160',
 			}}
 			header={
-				<div className="flex flex-col justify-between flex-1 px-24 pt-24">
-					{/* <div className="flex justify-between items-start"> */}
-					<Typography className="py-0 sm:py-24" variant="h4">
-						Welcome back, John!
-						</Typography>
-					{/* </div> */}
+				<div className="flex flex-1 w-full items-center justify-between px-16">
+					<div className="flex items-center">
+						<FuseAnimate animation="transition.expandIn" delay={300}>
+							<Icon className="text-32">chat</Icon>
+						</FuseAnimate>
+						<FuseAnimate animation="transition.slideLeftIn" delay={300}>
+							<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
+								Chat Report
+					</Typography>
+						</FuseAnimate>
+					</div>
+
 				</div>
+
 			}
 			content={
 				<div className="p-24">
@@ -329,40 +339,40 @@ function ChatApp() {
 						}}>
 						<div className="widget flex w-full sm:w-1/1 md:w-1/2 p-12">
 							<Paper className="w-full rounded-8 shadow-none border-1">
-							<Typography variant="h5" className="header-card" >Conversation Count</Typography>
+								<Typography variant="h5" className="header-card" >Conversation Count</Typography>
 
 								<div id="chartdivv" style={{ width: "100%", height: "300px" }}></div>
 							</Paper>
 						</div>
 						<div className="widget flex w-full sm:w-1/1 md:w-1/2 p-12">
 							<Paper className="w-full rounded-8 shadow-none border-1">
-							<Typography variant="h5" className="header-card" >Engagements</Typography>
+								<Typography variant="h5" className="header-card" >Engagements</Typography>
 
 								<div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>
 							</Paper>
 						</div>
 					</FuseAnimateGroup>
-				
-				
-					<FusePageSimple
-		classes={{
-			contentWrapper: 'p-0 sm:p-24 pb-80 sm:pb-80 h-full',
-			content: 'flex flex-col h-full',
-			leftSidebar: 'w-256 border-0',
-			header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
-			wrapper: 'min-h-0'
-		}}
-						header={<ChartHeader  SearchVal={searchContact} />}
-						content={
-						
-						<ChartTable data={ val==''? data : data2} />}
-				
-						/>
-						
-						
-					
 
-				
+
+					<FusePageSimple
+						classes={{
+							contentWrapper: 'p-0 sm:p-24 pb-80 sm:pb-80 h-full',
+							content: 'flex flex-col h-full',
+							leftSidebar: 'w-256 border-0',
+							header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
+							wrapper: 'min-h-0'
+						}}
+						header={<ChartHeader SearchVal={searchContact} />}
+						content={
+
+							<ChartTable data={val == '' ? data : data2} />}
+
+					/>
+
+
+
+
+
 				</div>
 			}
 		/>

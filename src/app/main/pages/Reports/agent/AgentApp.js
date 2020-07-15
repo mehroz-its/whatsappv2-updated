@@ -11,6 +11,8 @@ import MaterialTable from 'material-table';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import AgentHeader from './AgentHeader'
 import AgentTable from './AgentTable'
+import FuseAnimate from '@fuse/core/FuseAnimate';
+import Icon from '@material-ui/core/Icon';
 const useStyles = makeStyles({
 	layoutRoot: {}
 });
@@ -292,13 +294,19 @@ function AgentApp() {
 				header: 'min-h-160 h-160',
 			}}
 			header={
-				<div className="flex flex-col justify-between flex-1 px-24 pt-24">
-					{/* <div className="flex justify-between items-start"> */}
-					<Typography className="py-0 sm:py-24" variant="h4">
-						Welcome back, John!
-						</Typography>
-					{/* </div> */}
+				<div className="flex flex-1 w-full items-center justify-between px-16">
+				<div className="flex items-center">
+					<FuseAnimate animation="transition.expandIn" delay={300}>
+						<Icon className="text-32">face</Icon>
+					</FuseAnimate>
+					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
+						<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
+							Agent Report
+				</Typography>
+					</FuseAnimate>
 				</div>
+
+			</div>
 			}
 			content={
 				<div className="p-24">
@@ -316,12 +324,14 @@ function AgentApp() {
 					</FuseAnimateGroup>
 
 					
-					<FusePageSimple
+					<FusePageSimple 
 		classes={{
-			contentWrapper: 'p-0 sm:p-24 pb-80 sm:pb-80 h-full',
-			content: 'flex flex-col h-full',
-			leftSidebar: 'w-256 border-0',
+			content: 'flex',
 			header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
+			contentWrapper: 'p-0 sm:p-24 pb-80 sm:pb-80 h-full',
+			// content: 'flex flex-col h-full',
+			leftSidebar: 'w-256 border-0',
+			// header: 'min-h-72 h-full sm:h-136 sm:min-h-136',
 			wrapper: 'min-h-0'
 		}}
 						header={<AgentHeader   SearchVal={searchContact} />}
