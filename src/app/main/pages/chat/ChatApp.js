@@ -216,10 +216,14 @@ function ChatApp(props) {
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
 	const selectedRecipientt = (e) => {
-		console.log("selectedRecipientt function",e);
+		console.log("selectedRecipientt");
+		clearInterval(int_MessageLists);
 		setselectedRecipient(e)
-		// getConversation(e)
-
+		if (selectedRecipient !== null) {
+			setint_MessageLists(setInterval(() => {
+				getConversation(selectedRecipient);
+			}, 3000));
+		}
 	}
 	const getNumbers = () => {
 		CoreHttpHandler.request('conversations', 'numbers', {}, (response) => {
@@ -266,14 +270,14 @@ function ChatApp(props) {
 				setmessages(messages)
 				setshowLatestMessage(false)
 			}
-			if (int_MessageLists === null) setint_MessageLists(setInterval(() => {
-				getConversation(e);
-			}, 4000));
-			CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: e.number }, (response) => {
+			// if (int_MessageLists === null) setint_MessageLists(setInterval(() => {
+			// 	getConversation(e);
+			// }, 6000));
+			// CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: e.number }, (response) => {
 
-			}, (response) => {
+			// }, (response) => {
 
-			})
+			// })
 
 		}, (response) => {
 
@@ -281,20 +285,16 @@ function ChatApp(props) {
 	}
 	useEffect(() => {
 		console.log("getNumbers use efffact = > ", selectedRecipient);
-		if (selectedRecipient !== null) {
-					// getConversation(selectedRecipient)
-				}
-		if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
-			getNumbers();
-		}, 5000));
 		getNumbers()
 		return () => {
 			clearInterval(int_CustomerList);
 			clearInterval(int_MessageLists);
 		}
-	}, []);
-	
-	
+	}, [selectedRecipient]);
+
+	if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
+		getNumbers();
+	}, 5000));
 	return (
 		<div className={clsx(classes.root)}>
 			<div className={classes.topBg} />
