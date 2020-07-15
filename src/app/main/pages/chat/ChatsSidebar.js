@@ -120,11 +120,13 @@ function a11yProps(index) {
 	};
 }
 function ChatsSidebar(props) {
+
 	const dispatch = useDispatch();
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
-	// console.log("contacts : " , contacts);
+	// console.log("contacts : " , props.numbers);
 
 	// const user = useSelector(({ chatApp }) => chatApp.user);
+	
 
 	const [searchText, setSearchText] = useState('');
 	const [statusMenuEl, setStatusMenuEl] = useState(null);
@@ -185,8 +187,6 @@ function ChatsSidebar(props) {
 							<Avatar src={user.avatar} alt={user.name} className="w-40 h-40">
 								{!user.avatar || user.avatar === '' ? user.name[0] : ''}
 							</Avatar>
-
-
 							<div
 								className="absolute right-0 bottom-0 -m-4 z-10 cursor-pointer"
 								aria-owns={statusMenuEl ? 'switch-menu' : null}
@@ -198,7 +198,6 @@ function ChatsSidebar(props) {
 							>
 								<StatusIcon status={user.status} />
 							</div>
-
 							<Menu
 								id="status-switch"
 								anchorEl={statusMenuEl}
@@ -216,10 +215,6 @@ function ChatsSidebar(props) {
 							</Menu>
 						</div>
 					)}
-
-
-
-
 					<div>
 						<IconButton
 							aria-owns={moreMenuEl ? 'chats-more-menu' : null}
@@ -262,137 +257,54 @@ function ChatsSidebar(props) {
 					[searchText]
 				)}
 			</AppBar>
-			<AppBar position="static">
-				<Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-					<Tab label="Chats" {...a11yProps(0)} />
-					<Tab label="Groups" {...a11yProps(1)} />
-				</Tabs>
-			</AppBar>
-
 			<FuseScrollbars className="overflow-y-auto flex-1">
-				<TabPanel value={value} index={0}>
-					<List className="w-full">
-						{useMemo(() => {
-							function getFilteredArray(arr, _searchText) {
-								if (_searchText.length === 0) {
-									return arr;
-								}
-								return FuseUtils.filterArrayByString(arr, _searchText);
-							}
+				<List className="w-full">
+					{
+					useMemo(() => {
+						// function getFilteredArray(arr, _searchText) {
+						// 	if (_searchText.length === 0) {
+						// 		return arr;
+						// 	}
+						// 	return FuseUtils.filterArrayByString(arr, _searchText);
+						// }
+						// const chatListContacts =
+						// 	contacts.length > 0 && user && user.chatList
+						// 		? user.chatList.map(_chat => ({
+						// 			..._chat,
+						// 			...contacts.find(_contact => _contact.id === _chat.contactId)
+						// 		}))
+						// 		: [];
+						// const contactsArr = getFilteredArray([...contacts], searchText);
+						// const chatListArr = getFilteredArray([...chatListContacts], searchText);
+						return (
+							<>
+								<FuseAnimateGroup
+									enter={{
+										animation: 'transition.expandIn'
+									}}
+									className="flex flex-col flex-shrink-0"
+								>
+									{props.numbers.length > 0 && (
+										<Typography className="font-300 text-20 px-16 py-24" color="secondary">
+											Chats
+										</Typography>
+									)}
+									{props.numbers.map(contactt => (
+										<ContactListItem
+											key={contactt.id}
+											contact={contactt}
+											onContactClick={(e)=>props.onContactClick(contactt)}
+										// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
+										// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
+										/>
+									))}
+								</FuseAnimateGroup>
+							</>
+						);
+					}, [props.numbers,])
+				}
+				</List>
 
-							const chatListContacts =
-								contacts.length > 0 && user && user.chatList
-									? user.chatList.map(_chat => ({
-										..._chat,
-										...contacts.find(_contact => _contact.id === _chat.contactId)
-									}))
-									: [];
-							const contactsArr = getFilteredArray([...contacts], searchText);
-							const chatListArr = getFilteredArray([...chatListContacts], searchText);
-
-							return (
-								<>
-									<FuseAnimateGroup
-										enter={{
-											animation: 'transition.expandIn'
-										}}
-										className="flex flex-col flex-shrink-0"
-									>
-										{chatListArr.length > 0 && (
-											<Typography className="font-300 text-20 px-16 py-24" color="secondary">
-												Chats
-											</Typography>
-										)}
-
-										{chatListArr.map(contact => (
-											<ContactListItem
-												key={contact.id}
-												contact={contact}
-												// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
-												// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
-											/>
-										))}
-
-										{contactsArr.length > 0 && (
-											<Typography className="font-300 text-20 px-16 py-24" color="secondary">
-												Contacts
-											</Typography>
-										)}
-
-										{contactsArr.map(contact => (
-											<ContactListItem
-												key={contact.id}
-												contact={contact}
-												// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
-											/>
-										))}
-									</FuseAnimateGroup>
-								</>
-							);
-						}, [contacts, user, searchText, dispatch])}
-					</List>
-				</TabPanel>
-				<TabPanel value={value} index={1}>
-					<List className="w-full">
-						{useMemo(() => {
-							function getFilteredArray(arr, _searchText) {
-								if (_searchText.length === 0) {
-									return arr;
-								}
-								return FuseUtils.filterArrayByString(arr, _searchText);
-							}
-
-							const chatListContacts =
-								contacts.length > 0 && user && user.chatList
-									? user.chatList.map(_chat => ({
-										..._chat,
-										...contacts.find(_contact => _contact.id === _chat.contactId)
-									}))
-									: [];
-							const contactsArr = getFilteredArray([...contacts], searchText);
-							const chatListArr = getFilteredArray([...chatListContacts], searchText);
-
-							return (
-								<>
-									<FuseAnimateGroup
-										enter={{
-											animation: 'transition.expandIn'
-										}}
-										className="flex flex-col flex-shrink-0"
-									>
-										{chatListArr.length > 0 && (
-											<Typography className="font-300 text-20 px-16 py-24" color="secondary">
-												Chats
-											</Typography>
-										)}
-
-										{chatListArr.map(contact => (
-											<ContactListItem
-												key={contact.id}
-												contact={contact}
-												// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
-											/>
-										))}
-
-										{contactsArr.length > 0 && (
-											<Typography className="font-300 text-20 px-16 py-24" color="secondary">
-												Contacts
-											</Typography>
-										)}
-
-										{contactsArr.map(contact => (
-											<ContactListItem
-												key={contact.id}
-												contact={contact}
-												// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
-											/>
-										))}
-									</FuseAnimateGroup>
-								</>
-							);
-						}, [contacts, user, searchText, dispatch])}
-					</List>
-				</TabPanel>
 			</FuseScrollbars>
 
 
