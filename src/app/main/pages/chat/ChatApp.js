@@ -219,11 +219,12 @@ function ChatApp(props) {
 		console.log("selectedRecipientt");
 		clearInterval(int_MessageLists);
 		setselectedRecipient(e)
-		if (selectedRecipient !== null) {
-			setint_MessageLists(setInterval(() => {
-				getConversation(selectedRecipient);
-			}, 3000));
-		}
+		getConversation(e);
+		// if (selectedRecipient !== null) {
+		setint_MessageLists(setInterval(() => {
+			getConversation(e);
+		}, 3000));
+		// }
 	}
 	const getNumbers = () => {
 		CoreHttpHandler.request('conversations', 'numbers', {}, (response) => {
@@ -273,11 +274,11 @@ function ChatApp(props) {
 			// if (int_MessageLists === null) setint_MessageLists(setInterval(() => {
 			// 	getConversation(e);
 			// }, 6000));
-			// CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: e.number }, (response) => {
+			CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: e.number }, (response) => {
 
-			// }, (response) => {
+			}, (response) => {
 
-			// })
+			})
 
 		}, (response) => {
 
@@ -294,7 +295,17 @@ function ChatApp(props) {
 
 	if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
 		getNumbers();
-	}, 5000));
+	}, 2000));
+	const clearData = () => {
+		setselectedRecipient(null)
+		setmessages([])
+		clearInterval(this.int_MessageLists);
+		clearInterval(this.int_CustomerList);
+		this.getNumbers();
+		setint_CustomerList = setInterval(() => {
+			getNumbers();
+		}, 10000);
+	}
 	return (
 		<div className={clsx(classes.root)}>
 			<div className={classes.topBg} />
@@ -321,7 +332,7 @@ function ChatApp(props) {
 								}
 							}}
 						>
-							<ChatsSidebar numbers={numbers} />
+							<ChatsSidebar numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
 						</Drawer>
 					</Hidden>
 					<Hidden smDown>
@@ -422,7 +433,7 @@ function ChatApp(props) {
 									</AppBar>
 
 									<div className={classes.content}>
-										<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} />
+										<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} agentShift={clearData} />
 									</div>
 								</>
 							)}

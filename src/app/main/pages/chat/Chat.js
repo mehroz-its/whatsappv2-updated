@@ -30,6 +30,7 @@ import XGlobalDialogCmp from '../../../../dialogs/XGlobalDialogCmp';
 import XGlobalDialog from '../../../../dialogs/XGlobalDialog';
 import { CSVLink, CSVDownload } from 'react-csv';
 import AttachmentDialogV2 from './dialog/chat/AttachmentDialogV2';
+import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -339,7 +340,7 @@ function Chat(props) {
 				caption: '',
 				attributes: null,
 			})
-			
+
 		}, (response) => {
 		})
 	};
@@ -435,7 +436,6 @@ function Chat(props) {
 	const conversationActionsCallback = (action) => {
 		setAnchorEl(null);
 		if (action === 'export') conversationExport();
-		if (action === 'email') conversationEmail();
 		if (action === 'shift') conversationShift();
 
 		if (action === 'audio') {
@@ -480,7 +480,7 @@ function Chat(props) {
 		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
 			const messages = response.data.data.chat;
 			const csvLink = (<CSVLink filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`} data={messages}>Your exported chat is ready for download</CSVLink>);
-			alert(messages)
+			alert(csvLink)
 		}, (response) => {
 
 		});
@@ -495,7 +495,44 @@ function Chat(props) {
 
 		});
 	}
+	const selectedShiftAgent = (agent) => {
 
+		CoreHttpHandler.request('conversations', 'transfer', {
+			key: ':id',
+			value: agent.id,
+			params: {
+				customer: selectedRecipient
+			}
+		}, (response) => {
+			setdialogOpenShift(false)
+
+			props.agentShift()
+			
+		
+		}, (response) => {
+
+		});
+	}
+	const dialogOptionsShift = {
+		onClose: function () {
+			setdialogOpenShift(false)
+		},
+		'aria-labelledby': "form-dialog-title",
+		'aria-describedby': "form-dialog-title"
+	}
+	const dialogActionsShift = [
+		{
+			handler: (event, index) => {
+				this.XGlobalDialogShiftClose()
+			},
+			options: {},
+			label: "Cancel",
+		},
+
+	];
+	const XGlobalDialogShiftClose = () => {
+		setdialogOpenShift(false)
+	}
 	return (
 		<div className={clsx('flex flex-col relative', props.className)}>
 			<FuseScrollbars ref={chatRef} className="flex flex-1 flex-col overflow-y-auto">
@@ -596,7 +633,6 @@ function Chat(props) {
 							<MenuItem onClick={(e) => conversationActionsCallback('audio')}>Audio</MenuItem>
 							<MenuItem onClick={(e) => conversationActionsCallback('document')}>Document</MenuItem>
 							<MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
-							<MenuItem onClick={(e) => conversationActionsCallback('email')}>email</MenuItem>
 							<MenuItem onClick={(e) => conversationActionsCallback('shift')}>shift</MenuItem>
 						</Menu>
 
@@ -607,6 +643,8 @@ function Chat(props) {
 				</form>
 			)}
 			<XGlobalDialogCmp onDialogPropsChange={sendDialogInputHandler} data={{ dialogType: sendActionType, attachment: sendDialogData }} dialogTitle={sendDialogTitle} options={dialogOptionsConfirmBlock} content={AttachmentDialogV2} defaultState={sendDialogOpen} actions={sendDialogActions} />
+			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
+
 			{/* <XGlobalDialog onchange={(e) => {
                     this.onchange(e);
                 }} dialogTitle={`Email [${this.state.selectedRecipient}]'s Conversation`} options={this.dialogOptions} content={ConversationsEmailDialog} defaultState={this.state.dialogOpen} actions={this.dialogActions} /> */}
