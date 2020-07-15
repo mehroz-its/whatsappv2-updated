@@ -216,9 +216,9 @@ function ChatApp(props) {
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
 	const selectedRecipientt = (e) => {
-		// clearInterval(int_MessageLists);
-		setmessages([])
+		console.log("selectedRecipientt function",e);
 		setselectedRecipient(e)
+		// getConversation(e)
 
 	}
 	const getNumbers = () => {
@@ -242,7 +242,7 @@ function ChatApp(props) {
 		});
 	}
 	const getConversation = (e) => {
-		console.log("getConversation selectedRecipient :", e);
+		// console.log("getConversation selectedRecipient :", e);
 		let params = {
 			key: ':number',
 			value: e.number,
@@ -252,23 +252,23 @@ function ChatApp(props) {
 		};
 		console.log("params : ", params);
 		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
-			console.log("response :", response);
+			// console.log("response :", response);
 			if (response.data.data.chat.length > NewMessages.length) {
 				//   console.log("if");
 				const messages = response.data.data.chat;
 				setNewMessages(response.data.data.chat)
 				setmessages(messages)
 				setshowLatestMessage(true)
-				setselectedRecipient(e)
+				// setselectedRecipient(e)
 			}
 			else {
 				const messages = response.data.data.chat;
 				setmessages(messages)
 				setshowLatestMessage(false)
 			}
-			// if (int_MessageLists === null) setint_MessageLists(setInterval(() => {
-			// 	getConversation(selectedRecipient);
-			// }, 4000));
+			if (int_MessageLists === null) setint_MessageLists(setInterval(() => {
+				getConversation(e);
+			}, 4000));
 			CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: e.number }, (response) => {
 
 			}, (response) => {
@@ -280,11 +280,10 @@ function ChatApp(props) {
 		});
 	}
 	useEffect(() => {
-		console.log("selectedRecipient use efffact = > ", selectedRecipient);
-		
+		console.log("getNumbers use efffact = > ", selectedRecipient);
 		if (selectedRecipient !== null) {
-			getConversation(selectedRecipient)
-		}
+					// getConversation(selectedRecipient)
+				}
 		if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
 			getNumbers();
 		}, 5000));
@@ -293,7 +292,8 @@ function ChatApp(props) {
 			clearInterval(int_CustomerList);
 			clearInterval(int_MessageLists);
 		}
-	}, [selectedRecipient]);
+	}, []);
+	
 	
 	return (
 		<div className={clsx(classes.root)}>

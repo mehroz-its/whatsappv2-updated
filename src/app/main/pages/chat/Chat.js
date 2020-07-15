@@ -353,7 +353,6 @@ function Chat(props) {
 	};
 	const open = Boolean(anchorEl);
 	const handleClick = (event) => {
-		console.log("event ", event.currentTarget)
 		setAnchorEl(event.currentTarget);
 	};
 	const handleClose = () => {
@@ -408,7 +407,6 @@ function Chat(props) {
 				}
 			}
 		};
-		console.log("params :", params)
 		CoreHttpHandler.request('conversations', 'send_text', params, (response) => {
 			setMessageText('')
 		}, (error) => {
