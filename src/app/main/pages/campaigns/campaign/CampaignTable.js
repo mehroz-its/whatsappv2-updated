@@ -18,7 +18,8 @@ import CampaignDialog from './CampaignDialog'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 import Typography from '@material-ui/core/Typography';
-
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 
 function CampaignTable(props) {
@@ -33,6 +34,9 @@ function CampaignTable(props) {
 	const [page, setPage] = useState(0);
 	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
 	const [rowsPerPage, setRowsPerPage] = useState(10);
+	const [snackbaropen, setSnackBarOpen] = React.useState(false)
+	const [snackbarmessage, setSnackBarMessage] = React.useState('')
+	const [ok, setOK] = React.useState('')
 	const [order, setOrder] = useState({
 		direction: 'asc',
 		id: null
@@ -72,6 +76,13 @@ function CampaignTable(props) {
 
 		});
 	})
+
+
+	setTimeout(() => {
+		setSnackBarOpen(false)
+		setSnackBarMessage("")
+	}, 3000);
+
 
 	React.useEffect(() => {
 		getData()
@@ -130,8 +141,10 @@ function CampaignTable(props) {
 	function handleClick(n) {
 		console.log("hadn lcick ");
 		if (n.completed) {
-			// setSnackBarMessage("Completed campaigns can not be edited", "warning");
-
+		// setSnackBarMessage("Completed campaigns can not be edited", "warning");
+        setSnackBarMessage("Completed campaigns can not be edited")
+			setOK("success")
+			setSnackBarOpen(true)
 		} else {
 			setDialogData({
 				id: n.id,
@@ -198,6 +211,19 @@ function CampaignTable(props) {
 	}
 
 	return (
+		<>
+		
+<Snackbar
+
+anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+open={snackbaropen}
+autoHideDuration={3000}
+
+>
+<Alert variant="filled" severity={ok}>
+	{snackbarmessage}
+</Alert>
+</Snackbar>
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
 				<Table className="min-w-xl" aria-labelledby="tableTitle">
@@ -340,6 +366,7 @@ function CampaignTable(props) {
 			/>
 			{open && <CampaignDialog isOpen={open} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} />}
 		</div>
+		</>
 	);
 }
 

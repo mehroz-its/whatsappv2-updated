@@ -20,7 +20,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import CannedDialog from './CannedDialog'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
-
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -41,7 +42,9 @@ const useStyles = makeStyles((theme) => ({
 function Canned(props) {
 	const [open, setOpen] = React.useState(false);
 	const [updateDialogOpen, setUpdateDialogOpen] = React.useState(false);
-
+	const [snackbaropen, setSnackBarOpen] = React.useState(false)
+	const [snackbarmessage, setSnackBarMessage] = React.useState('')
+	const [ok, setOK] = React.useState('')
 	const [val, setVal] = React.useState('')
 	const [data, setData] = React.useState([]);
 	const [data2, setData2] = React.useState(data);
@@ -71,8 +74,19 @@ function Canned(props) {
 			console.log(tableData)
 			setData(tableData)
 			setData2(tableData)
-
-		});
+			setTimeout(() => {
+				setSnackBarMessage('')
+			setSnackBarOpen(false)
+			}, 3000);
+			
+		})
+		.catch((error)=>{
+			setTimeout(() => {
+				setSnackBarMessage('')
+			setSnackBarOpen(false)
+			}, 3000);
+			
+		})
 	})
 
 	React.useEffect(() => {
@@ -86,7 +100,9 @@ function Canned(props) {
 		setAge(event.target.value);
 	};
 
-	const handleClose = () => {
+	const handleClose = (mes) => {
+		console.log(mes, 'messssssssssss');
+		snackbar(mes)
 		getData()
 		setOpen(false);
 		// setUpdateDialogOpen(false)
@@ -119,15 +135,50 @@ function Canned(props) {
 	
 	console.log(val, 'i m search value')
 
+	const snackbar = (snackmsg) => {
+		if (snackmsg == "create") {
+			setSnackBarMessage("Created Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+		}
+		else if (snackmsg == "update") {
+			setSnackBarMessage("Updated Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+		}
+
+		else if (snackmsg == "error") {
+			setSnackBarMessage("Error!Please Try Again Later")
+			setOK("error")
+			setSnackBarOpen(true)
+		}
+	
+
+	}
+
+
+
 	return (
 		<>
+
+<Snackbar
+
+anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+open={snackbaropen}
+autoHideDuration={3000}
+
+>
+<Alert variant="filled" severity={ok}>
+	{snackbarmessage}
+</Alert>
+</Snackbar>
 			<FusePageCarded
 				classes={{
 					content: 'flex',
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
 				header={<CannedHeader SearchVal={searchContact} />}
-				content={<CannedTable InsertedVal={val}  dataa={data2} ValueForSearch={val} isOpen={updateDialogOpen} onClickOpen={handleUpdateClickOpen} onClose={handleClose} />}
+				content={<CannedTable   snackbar={snackbar}InsertedVal={val}  dataa={data2} ValueForSearch={val} isOpen={updateDialogOpen} onClickOpen={handleUpdateClickOpen} onClose={handleClose} />}
 			// innerScroll
 			/>
 			<FuseAnimate animation="transition.expandIn" delay={300}>
@@ -141,7 +192,7 @@ function Canned(props) {
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-			{open && <CannedDialog type="Add Canned Message" isOpen={open} closeDialog={handleClose} data={dialogData} />}
+			{open && <CannedDialog  snackbar={snackbar} type="Add Canned Message" isOpen={open} closeDialog={handleClose} data={dialogData} />}
 		</>
 	);
 }

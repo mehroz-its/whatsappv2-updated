@@ -98,11 +98,11 @@ function CannedTable(props) {
 			id
 		});
 	}
-	const handleClose = () => {
+	const handleClose = (val) => {
 		// getData()
 
 		setOpen(false);
-		props.onClose()
+		props.onClose(val)
 	};
 	// const handleClose = props.onClose
 	const openDialog = props.onClickOpen

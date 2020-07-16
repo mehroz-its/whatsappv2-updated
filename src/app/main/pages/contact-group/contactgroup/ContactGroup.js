@@ -21,6 +21,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import ContactGroupDialog from './ContactGroupDialog'
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -45,9 +47,14 @@ function ContactGroup(props) {
 	const [data, setData] = React.useState([]);
 	const [data2, setData2] = React.useState(data);
 	const [updateDialogOpen, setUpdateDialogOpen] = React.useState(false);
+	const [snackbaropen, setSnackBarOpen] = React.useState(false)
+	const [snackbarmessage, setSnackBarMessage] = React.useState('')
+	const [ok, setOK] = React.useState('')
 
 
-	const handleClose = () => {
+	const handleClose = (mes) => {
+		console.log(mes, 'messssssssssss');
+		snackbar(mes)
 		getData()
 		setOpen(false);
 		// setUpdateDialogOpen(false)
@@ -79,7 +86,21 @@ function ContactGroup(props) {
 			console.log(tableData)
 			setData(tableData)
 			setData2(tableData)
-		});
+			setTimeout(() => {
+				setSnackBarMessage('')
+			setSnackBarOpen(false)
+			}, 3000);
+			
+		})
+		.catch((error)=>{
+			setTimeout(() => {
+				setSnackBarMessage('')
+			setSnackBarOpen(false)
+			}, 3000);
+			
+		})
+
+		
 	})
 
 	React.useEffect(() => {
@@ -107,8 +128,41 @@ function ContactGroup(props) {
 
 
 	}
+
+	const snackbar = (snackmsg) => {
+		if (snackmsg == "create") {
+			setSnackBarMessage("Created Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+		}
+		else if (snackmsg == "update") {
+			setSnackBarMessage("Updated Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+		}
+
+		else if (snackmsg == "error") {
+			setSnackBarMessage("Error!Please Try Again Later")
+			setOK("error")
+			setSnackBarOpen(true)
+		}
+	
+
+	}
 	return (
 		<>
+
+<Snackbar
+
+anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+open={snackbaropen}
+autoHideDuration={3000}
+
+>
+<Alert variant="filled" severity={ok}>
+	{snackbarmessage}
+</Alert>
+</Snackbar>
 			<FusePageCarded
 				classes={{
 					content: 'flex',

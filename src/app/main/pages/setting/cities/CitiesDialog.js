@@ -118,8 +118,7 @@ const CitiesDialog = (props) => {
         CoreHttpHandler.request('locations', 'update_city', update_params, (response) => {
           // props.getUpdatedData()
           // console.log(response)
-          setSnackBarOpen(true)
-          setSnackBarMessage('Updated Successfully')
+ 
          
           // props.snackbar("update")
      

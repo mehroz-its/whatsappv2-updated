@@ -76,10 +76,10 @@ const CampaignDialog = (props) => {
 			CoreHttpHandler.request('contact_group', 'create', params, (response) => {
 				// props.getUpdatedData()
 				console.log(response)
-				props.closeDialog()
+				props.closeDialog("create")
 				setopenDialog(false);
 			}, (error) => {
-				props.closeDialog()
+				props.closeDialog("error")
 				setopenDialog(false);
 
 			});
@@ -94,10 +94,11 @@ const CampaignDialog = (props) => {
 			CoreHttpHandler.request('contact_group', 'update', update_params, (response) => {
 				// props.getUpdatedData()
 				console.log(response)
-				props.closeDialog()
+				 
+				props.closeDialog('update')
 				setopenDialog(false);
 			}, (error) => {
-				props.closeDialog()
+				props.closeDialog('error')
 				setopenDialog(false);
 
 			});

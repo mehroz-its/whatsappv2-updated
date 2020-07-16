@@ -189,10 +189,10 @@ const PermissionDialog = (props) => {
       CoreHttpHandler.request('permissions', 'create', params, (response) => {
         // props.getUpdatedData()
         console.log(response)
-        props.closeDialog()
+        props.closeDialog('create')
         setopenDialog(false);
       }, (error) => {
-        props.closeDialog()
+        props.closeDialog("error")
         setopenDialog(false);
 
       });
@@ -220,10 +220,10 @@ const PermissionDialog = (props) => {
       CoreHttpHandler.request('permissions', 'update', update_params, (response) => {
         // props.getUpdatedData()
         console.log(response)
-        props.closeDialog()
+        props.closeDialog("update")
         setopenDialog(false);
       }, (error) => {
-        props.closeDialog()
+        props.closeDialog("error")
         setopenDialog(false);
 
       });

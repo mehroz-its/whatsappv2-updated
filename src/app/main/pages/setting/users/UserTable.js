@@ -23,9 +23,9 @@ import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 
 function UserTable(props) {
 
-	function closeDialog(){
+	function closeDialog(val){
 		setOpen(false)
-		props.onClose()
+		props.onClose(val)
 	}
 	console.log(props)
 	const dispatch = useDispatch();

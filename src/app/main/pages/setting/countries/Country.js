@@ -20,7 +20,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import Fab from '@material-ui/core/Fab';
 import CountryDialog from './CountryDialog'
-
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 import { makeStyles,withStyles } from '@material-ui/core/styles';
 import { enable } from 'promise/lib/rejection-tracking';
 
@@ -71,10 +72,15 @@ function Country(props) {
 	const [data2, setData2] = React.useState(data);
 	const [updateDialogOpen, setUpdateDialogOpen] = React.useState(false);
 	const classes = useStyles(props);
+	const [snackbaropen, setSnackBarOpen] = React.useState(false)
+	const [snackbarmessage, setSnackBarMessage] = React.useState('')
+	const [ok, setOK] = React.useState('')
 	
 
 
-	const handleClose = () => {
+	const handleClose = (mes) => {
+		console.log(mes, 'messssssssssss');
+		snackbar(mes)
 		getData()
 		setOpen(false);
 		// setUpdateDialogOpen(false)
@@ -105,6 +111,17 @@ function Country(props) {
 
 			setData(tableData)
 			setData2(tableData)
+			setTimeout(() => {
+				setSnackBarMessage('')
+			setSnackBarOpen(false)
+			}, 3000);
+			
+		})
+		.catch((error)=>{
+			setTimeout(() => {
+				setSnackBarMessage('')
+			setSnackBarOpen(false)
+			}, 3000);
 		});
 	})
 
@@ -124,13 +141,45 @@ function Country(props) {
 
 
 	}
+
+	const snackbar = (snackmsg) => {
+		if (snackmsg == "create") {
+			setSnackBarMessage("Created Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+		}
+		else if (snackmsg == "update") {
+			setSnackBarMessage("Update Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+		}
+
+		else if (snackmsg == "error") {
+			setSnackBarMessage("Error!Please Try Again Later")
+			setOK("error")
+			setSnackBarOpen(true)
+		}
+	
+
+	}
 	
 	return (
 		<>
+			<Snackbar
+
+anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+open={snackbaropen}
+autoHideDuration={1000}
+
+>
+<Alert variant="filled" severity={ok}>
+	{snackbarmessage}
+</Alert>
+</Snackbar>
 		<FusePageCarded
 		
 			header={<CountryHeader  SearchVal={searchContact} />}
-			content={<CountryTable   InsertedVal={val}  dataa={data2} ValueForSearch={val} isOpen={updateDialogOpen} onClickOpen={handleUpdateClickOpen} onClose={handleClose} />}   
+			content={<CountryTable   snackbar={snackbar}  InsertedVal={val}  dataa={data2} ValueForSearch={val} isOpen={updateDialogOpen} onClickOpen={handleUpdateClickOpen} onClose={handleClose} />}   
 	
 		/>
 <FuseAnimate animation="transition.expandIn" delay={300}>
@@ -144,7 +193,7 @@ function Country(props) {
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-	   {open ?<CountryDialog type="Add" isOpen={open} closeDialog={handleClose} data={dialogData} /> :null }
+	   {open ?<CountryDialog type="Add" isOpen={open} closeDialog={handleClose} data={dialogData}  snackbar={snackbar} /> :null }
 		</>
 	);
 }

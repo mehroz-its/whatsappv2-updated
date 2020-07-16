@@ -189,11 +189,11 @@ function ContactDialog(props) {
 			params: params
 		}, (response) => {
 			console.log(response)
-			props.closeDialog()
+			props.closeDialog("update")
 
 		}, (error) => {
 			console.log(error)
-			props.closeDialog()
+			props.closeDialog("error")
 		});
 
 		console.log(params, 'i am on submit')

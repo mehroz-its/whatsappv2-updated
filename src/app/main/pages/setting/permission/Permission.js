@@ -23,7 +23,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { green } from '@material-ui/core/colors';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
-
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -51,6 +52,9 @@ function Permissions(props) {
 	})
 	const [open, setOpen] = React.useState(false);
 	const [val, setVal] = React.useState('')
+	const [snackbaropen, setSnackBarOpen] = React.useState(false)
+	const [snackbarmessage, setSnackBarMessage] = React.useState('')
+	const [ok, setOK] = React.useState('')
 
 	const classes = useStyles(props);
 
@@ -72,8 +76,22 @@ function Permissions(props) {
 			console.log(tableData)
 			setData(tableData)
 			setData2(tableData)
+			
+			setTimeout(() => {
+				setSnackBarMessage('')
+			setSnackBarOpen(false)
+			}, 3000);
+			
+		})
+		.catch((error)=>{
+			setTimeout(() => {
+				setSnackBarMessage('')
+			setSnackBarOpen(false)
+			}, 3000);
+			
+		})
 		});
-	})
+
 	React.useEffect(() => {
 		getData()
 	}, []);
@@ -95,20 +113,58 @@ function Permissions(props) {
 
 	}
 
-	function closeDialog() {
-		setOpen(false)
+	function closeDialog(mes) {
+		console.log(mes, 'messssssssssss');
+		snackbar(mes)
 		getData()
+		setOpen(false);
 	}
+
+	const snackbar = (snackmsg) => {
+		console.log(snackmsg,'snackmsggggggggg');
+		if (snackmsg == "create") {
+			setSnackBarMessage("Created Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+		}
+		else if (snackmsg == "update") {
+			setSnackBarMessage("Update Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+		}
+
+		else if (snackmsg == "error") {
+			setSnackBarMessage("Error!Please Try Again Later")
+			setOK("error")
+			setSnackBarOpen(true)
+		}
+	
+
+	}
+
 
 	return (
 		<>
+
+<Snackbar
+
+anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+open={snackbaropen}
+autoHideDuration={1000}
+
+>
+<Alert variant="filled" severity={ok}>
+	{snackbarmessage}
+</Alert>
+</Snackbar>
+
 			<FusePageCarded
 				classes={{
 					content: 'flex',
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
 				header={<PermissionHeader SearchVal={search} />}
-				content={<PermissionTable ValueForSearch={val} dataa={data2} onClose={closeDialog} />}
+				content={<PermissionTable snackbar={snackbar} ValueForSearch={val} dataa={data2} onClose={closeDialog} />}
 			// innerScroll
 			/>
 
@@ -123,7 +179,7 @@ function Permissions(props) {
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-			{open ? <PermissionDialog isOpen={open} closeDialog={closeDialog} type="Add" data={dialogData} /> : null}
+			{open ? <PermissionDialog  snackbar={snackbar} isOpen={open} closeDialog={closeDialog} type="Add" data={dialogData} /> : null}
 		</>
 	);
 }

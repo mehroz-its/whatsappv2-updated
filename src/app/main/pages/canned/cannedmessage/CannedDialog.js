@@ -84,10 +84,11 @@ const CampaignDialog = (props) => {
 			CoreHttpHandler.request('canned_messages', 'create_message', params, (response) => {
 				// props.getUpdatedData()
 				console.log(response)
-				props.closeDialog()
+			  
+				props.closeDialog('create')
 				setopenDialog(false);
 			}, (error) => {
-				props.closeDialog()
+				props.closeDialog("error")
 				setopenDialog(false);
 
 			});
@@ -102,10 +103,10 @@ const CampaignDialog = (props) => {
 			CoreHttpHandler.request('canned_messages', 'update_message', update_params, (response) => {
 				// props.getUpdatedData()
 				console.log(response)
-				props.closeDialog()
+				props.closeDialog("update")
 				setopenDialog(false);
 			}, (error) => {
-				props.closeDialog()
+				props.closeDialog("error")
 				setopenDialog(false);
 
 			});

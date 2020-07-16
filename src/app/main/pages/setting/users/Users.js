@@ -20,6 +20,8 @@ import FormControl from '@material-ui/core/FormControl';
 import UserDialog from './UserDialog'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 const GreenCheckbox = withStyles({
 	root: {
@@ -65,9 +67,14 @@ function Users(props) {
 		checkedB: true
 
 	})
-	function closeDialog() {
-		setOpen(false)
+	const [snackbaropen, setSnackBarOpen] = React.useState(false)
+	const [snackbarmessage, setSnackBarMessage] = React.useState('')
+	const [ok, setOK] = React.useState('')
+	function closeDialog(mes) {
+		console.log(mes, 'messssssssssss');
+		snackbar(mes)
 		getData()
+		setOpen(false);
 	}
 	const updateText = (search) => {
 		setVal(search)
@@ -89,7 +96,19 @@ function Users(props) {
 			console.log(tableData)
 			setData(tableData)
 			setData2(tableData)
-		});
+			setTimeout(() => {
+				setSnackBarMessage('')
+			setSnackBarOpen(false)
+			}, 3000);
+			
+		})
+		.catch((error)=>{
+			setTimeout(() => {
+				setSnackBarMessage('')
+			setSnackBarOpen(false)
+			}, 3000);
+			
+		})
 	})
 
 	React.useEffect(() => {
@@ -111,15 +130,51 @@ function Users(props) {
 
 
 	}
+
+	
+	const snackbar = (snackmsg) => {
+		if (snackmsg == "create") {
+			setSnackBarMessage("Created Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+		}
+		else if (snackmsg == "update") {
+			setSnackBarMessage("Update Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+		}
+
+		else if (snackmsg == "error") {
+			setSnackBarMessage("Error!Please Try Again Later")
+			setOK("error")
+			setSnackBarOpen(true)
+		}
+	
+
+	}
+
 	return (
 		<>
+
+<Snackbar
+
+anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+open={snackbaropen}
+autoHideDuration={1000}
+
+>
+<Alert variant="filled" severity={ok}>
+	{snackbarmessage}
+</Alert>
+</Snackbar>
+
 			<FusePageCarded
 				classes={{
 					content: 'flex',
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
 				header={<UserHeader SearchVal={search} />}
-				content={<UserTable ValueForSearch={val} dataa={data2} onClose={closeDialog} />}
+				content={<UserTable  snackbar={snackbar} ValueForSearch={val} dataa={data2} onClose={closeDialog} />}
 			// innerScroll
 			/>
 			<FuseAnimate animation="transition.expandIn" delay={300}>
@@ -133,7 +188,7 @@ function Users(props) {
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-			{open ? <UserDialog isOpen={open} closeDialog={closeDialog} type="Add" data={dialogData} /> : null}
+			{open ? <UserDialog  snackbar={snackbar} isOpen={open} closeDialog={closeDialog} type="Add" data={dialogData} /> : null}
 
 
 		</>

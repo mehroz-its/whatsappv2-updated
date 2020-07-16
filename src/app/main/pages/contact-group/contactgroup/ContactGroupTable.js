@@ -123,11 +123,11 @@ function ContactGroupTable(props) {
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
 	}
-	const handleClose = () => {
+	const handleClose = (val) => {
 		// getData()
 
 		setOpen(false);
-		props.onClose()
+		props.onClose(val)
 	};
 	if(data2.length===0&&props.InsertedVal.length!=0)
 	{

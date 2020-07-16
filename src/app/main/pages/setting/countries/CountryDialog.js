@@ -60,7 +60,7 @@ const CountryDialog = (props) => {
     const [ok, setOK] = React.useState('')
 
     const handleClose = () => {
-        props.closeDialog()
+      props.closeDialog("cancel")
         setopenDialog(false);
     };
 
@@ -81,18 +81,15 @@ const CountryDialog = (props) => {
         (response) => {
        
           setopenDialog(false); 
-          setSnackBarOpen(true)
-          setSnackBarMessage('Successfully Created')
-          setOK('success')
-          props.closeDialog()
+         
+         
+          props.closeDialog('create')
         }, (error) => {
    
-       
+          props.closeDialog('error')
           console.log(error,'erroorr')
           setopenDialog(false);
-          setSnackBarOpen(true)
-          setSnackBarMessage('Country Not Created..Please Try Again Later')
-          setOK('error')
+         
           props.closeDialog()
         });
       } else {
@@ -114,17 +111,13 @@ const CountryDialog = (props) => {
         CoreHttpHandler.request('locations', 'update_country', update_params, (response) => {
           // props.getUpdatedData()
           console.log(response)
-          props.closeDialog()
+          props.closeDialog("update")
           setopenDialog(false);
-          setSnackBarOpen(true)
-          setSnackBarMessage('Successfully Created')
-          setOK('success')
+         
         }, (error) => {
-          props.closeDialog()
+          props.closeDialog("error")
           setopenDialog(false);
-          setSnackBarOpen(true)
-          setSnackBarMessage('Country Not Created..Please Try Again Later')
-          setOK('error')
+       
         });
       }
     }

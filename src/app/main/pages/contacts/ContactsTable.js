@@ -35,9 +35,11 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 	);
 });
 
-const EnhancedTable = ({ columns, data, getUpdatedData,onRowClick, openUnBlockDialog,openBlockDialog, blockRowData ,onBlockDialogClose}) => {
+const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUnBlockDialog,openBlockDialog, blockRowData ,onBlockDialogClose}) => {
 	const [open, setOpen] = React.useState(false);
-	const handleClose = () => {
+	const handleClose = (val) => {
+		console.log(val,'valuesssdsdsdsdsd');
+		giveVal(val)
 		setOpen(false);
 		onBlockDialogClose()
 		getUpdatedData()
