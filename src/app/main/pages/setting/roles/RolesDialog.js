@@ -135,10 +135,10 @@ const RolesDialog = (props) => {
             CoreHttpHandler.request('roles', 'create_role', params, (response) => {
                 // props.getUpdatedData()
                 console.log(response)
-                props.closeDialog()
+                props.closeDialog("create")
                 setopenDialog(false);
             }, (error) => {
-                props.closeDialog()
+                props.closeDialog("error")
                 setopenDialog(false);
 
             });
@@ -164,10 +164,10 @@ const RolesDialog = (props) => {
             CoreHttpHandler.request('roles', 'update_role', update_params, (response) => {
                 // props.getUpdatedData()
                 console.log(response)
-                props.closeDialog()
+                props.closeDialog("update")
                 setopenDialog(false);
             }, (error) => {
-                props.closeDialog()
+                props.closeDialog("error")
                 setopenDialog(false);
 
             });

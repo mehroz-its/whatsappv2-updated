@@ -11,6 +11,8 @@ import Icon from '@material-ui/core/Icon';
 import ContactDialog from './ContactDialog'
 import * as Actions from './store/actions';
 import { useDispatch } from 'react-redux';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 
 
@@ -50,14 +52,52 @@ function ContactsApp() {
 		  customers: [],
 		}
 	  )
+	  const [snackbaropen, setSnackBarOpen] = React.useState(false)
+	  const [snackbarmessage, setSnackBarMessage] = React.useState('')
+	  const [ok, setOK] = React.useState('')
 
 	  const updateText =(search)=>
 	  {
 		setVal(search)
 	  }
 
+	  const valueReceived = (value) =>{
+		if (value == "update") {
+			setSnackBarMessage("Updated Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+		}
+
+		else if (value == "error") {
+			setSnackBarMessage("Error!Please Try Again Later")
+			setOK("error")
+			setSnackBarOpen(true)
+		}
+	  }
+	  setTimeout(() => {
+		setSnackBarMessage('')
+		setSnackBarOpen(false)
+	}, 3000);
+	//   const snackbar = (snackmsg) => {
+	
+	
+	
+
+	// }
 	return (
 		<>
+
+<Snackbar
+
+anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+open={snackbaropen}
+autoHideDuration={3000}
+
+>
+<Alert variant="filled" severity={ok}>
+	{snackbarmessage}
+</Alert>
+</Snackbar>
 		<FusePageSimple
 		classes={{
 			contentWrapper: 'p-0 sm:p-24 pb-80 sm:pb-80 h-full',
@@ -68,7 +108,7 @@ function ContactsApp() {
 		}}
 		header={<ContactsHeader pageLayout={pageLayout}   SearchVal={updateText}/>}
 
-		content={<ContactsList   ValueForSearch={val} />}
+		content={<ContactsList   GiveVal ={valueReceived}  ValueForSearch={val} />}
 		
 			leftSidebarContent={<ContactsSidebarContent />}
 				sidebarInner

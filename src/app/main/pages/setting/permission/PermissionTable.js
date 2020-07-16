@@ -23,9 +23,9 @@ import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 function PermissionTable(props) {
 
 
-	function closeDialog() {
+	function closeDialog(val) {
 		setOpen(false)
-		props.onClose()
+		props.onClose(val)
 	}
 
 

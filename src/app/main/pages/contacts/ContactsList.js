@@ -292,7 +292,7 @@ function ContactsList(props) {
 
 					<Typography color="textSecondary" variant="h5">
 						{/* There are no contacts! */}
-					No Match Found!
+					No Data Found!
 				</Typography>
 				</div>
 			)
@@ -337,6 +337,7 @@ function ContactsList(props) {
 	return (
 		<FuseAnimate animation="transition.slideUpIn" delay={300}>
 			<ContactsTable
+			   giveVal={props.GiveVal}
 				getUpdatedData={() => { getData() }}
 				openUnBlockDialog={unblockDialog}
 				onBlockDialogClose={handleClose}

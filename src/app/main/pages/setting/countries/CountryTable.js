@@ -118,11 +118,11 @@ function CountryTable(props) {
 	
 
 	
-	const handleClose = () => {
+	const handleClose = (val) => {
 		// getData()
 
 		setOpen(false);
-		props.onClose()
+		props.onClose(val)
 	};
 	
 
@@ -265,7 +265,7 @@ function CountryTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-			{open ? <CountryDialog  isOpen={open} closeDialog={closeDialog} closeDialog={handleClose} type="Update" data={dialogData} />:null }
+			{open ? <CountryDialog  isOpen={open} closeDialog={handleClose} type="Update" data={dialogData} />:null }
 		</div>
 	);
 }

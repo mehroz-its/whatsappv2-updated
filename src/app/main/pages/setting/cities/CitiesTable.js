@@ -75,7 +75,7 @@ function CitiesTable(props) {
 	const handleClose = (val) => {
 		// getData()
 		// props.snackbar(cal)
-
+       
 		setOpen(false);
 		props.onClose(val)
 	};

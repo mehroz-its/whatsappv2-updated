@@ -122,10 +122,11 @@ const UserDialog = (props) => {
       CoreHttpHandler.request('users', 'create_user', params, (response) => {
         // props.getUpdatedData()
         console.log(response)
-        props.closeDialog()
+       
+        props.closeDialog('create')
         setopenDialog(false);
       }, (error) => {
-        props.closeDialog()
+        props.closeDialog("error")
         setopenDialog(false);
 
       });
@@ -151,10 +152,10 @@ const UserDialog = (props) => {
       CoreHttpHandler.request('users', 'update_user', update_params, (response) => {
         // props.getUpdatedData()
         console.log(response)
-        props.closeDialog()
+        props.closeDialog("update")
         setopenDialog(false);
       }, (error) => {
-        props.closeDialog()
+        props.closeDialog("error")
         setopenDialog(false);
 
       });

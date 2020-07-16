@@ -19,7 +19,8 @@ import Fab from '@material-ui/core/Fab';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import RolesDialog from './RolesDialog';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
-
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 
 const GreenCheckbox = withStyles({
@@ -47,7 +48,9 @@ function Roles(props) {
 
 	const [data, setData] = React.useState([]);
 	const [data2, setData2] = React.useState(data);
-
+	const [snackbaropen, setSnackBarOpen] = React.useState(false)
+	const [snackbarmessage, setSnackBarMessage] = React.useState('')
+	const [ok, setOK] = React.useState('')
 
 
 
@@ -72,9 +75,11 @@ function Roles(props) {
 
 
 
-	function closeDialog() {
-		setOpen(false)
+	function closeDialog(mes) {
+		console.log(mes, 'messssssssssss');
+		snackbar(mes)
 		getData()
+		setOpen(false);
 
 	}
 	const handleClose = () => {
@@ -102,7 +107,21 @@ function Roles(props) {
 			console.log(tableData)
 			setData(tableData)
 			setData2(tableData)
-		});
+			
+			setTimeout(() => {
+				setSnackBarMessage('')
+			setSnackBarOpen(false)
+			}, 3000);
+			
+		})
+		.catch((error)=>{
+			setTimeout(() => {
+				setSnackBarMessage('')
+			setSnackBarOpen(false)
+			}, 3000);
+			
+		})
+		
 	})
 
 	React.useEffect(() => {
@@ -116,15 +135,49 @@ function Roles(props) {
 
 
 	}
+
+
+	const snackbar = (snackmsg) => {
+		if (snackmsg == "create") {
+			setSnackBarMessage("Created Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+		}
+		else if (snackmsg == "update") {
+			setSnackBarMessage("Update Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+		}
+
+		else if (snackmsg == "error") {
+			setSnackBarMessage("Error!Please Try Again Later")
+			setOK("error")
+			setSnackBarOpen(true)
+		}
+	
+
+	}
+
 	return (
 		<>
+		<Snackbar
+
+anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+open={snackbaropen}
+autoHideDuration={1000}
+
+>
+<Alert variant="filled" severity={ok}>
+	{snackbarmessage}
+</Alert>
+</Snackbar>
 			<FusePageCarded
 				classes={{
 					content: 'flex',
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
 				header={<RolesHeader SearchVal={search} />}
-				content={<Rolestable dataa={data2} ValueForSearch={val} onClose={closeDialog} />}
+				content={<Rolestable  snackbar={snackbar}  dataa={data2} ValueForSearch={val} onClose={closeDialog} />}
 			// innerScroll
 			/>
 
@@ -139,7 +192,7 @@ function Roles(props) {
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-			{open ? <RolesDialog isOpen={open} closeDialog={closeDialog} type="Add" data={dialogData} /> : null}
+			{open ? <RolesDialog   snackbar={snackbar} isOpen={open} closeDialog={closeDialog} type="Add" data={dialogData} /> : null}
 		</>
 	);
 }

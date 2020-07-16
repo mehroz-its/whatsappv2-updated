@@ -94,6 +94,7 @@ function Cities(props) {
 
 
 
+
 	React.useEffect(() => {
 		getData()
 	}, []);
@@ -132,7 +133,7 @@ function Cities(props) {
 			setSnackBarOpen(true)
 		}
 		else if (snackmsg == "update") {
-			setSnackBarMessage("Update Successfully")
+			setSnackBarMessage("Updated Successfully")
 			setOK("success")
 			setSnackBarOpen(true)
 		}
@@ -154,7 +155,7 @@ function Cities(props) {
 
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 				open={snackbaropen}
-				autoHideDuration={1000}
+				autoHideDuration={3000}
 
 			>
 				<Alert variant="filled" severity={ok}>

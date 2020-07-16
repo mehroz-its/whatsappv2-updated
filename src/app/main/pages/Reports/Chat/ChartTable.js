@@ -11,7 +11,7 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-
+import Typography from '@material-ui/core/Typography';
 import ChartTableHead from './ChartTableHead';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
@@ -24,6 +24,8 @@ function ChartTable(props) {
 		setOpen(false)
 	}
 
+	let data2 = props.dataa
+
 	console.log(props)
 	// const dispatch = useDispatch();
 	// const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
@@ -32,7 +34,7 @@ function ChartTable(props) {
 	const [selected, setSelected] = useState([]);
 	// const [data, setData] = useState([]);
 	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
-	const [data2, setData2] = useState(data);
+
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -159,6 +161,25 @@ function ChartTable(props) {
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
 	}
+
+	if (data.length === 0) {
+		if (props.ValueForSearch !== '') {
+			return (
+				<div style={{alignItems:'flex-end',flex:1,display:'flex'}} className="flex flex-1 items-center justify-center h-full">
+					<Typography color="textSecondary" variant="h5">
+						No Data Found
+					</Typography>
+				</div>
+			)
+		} else {
+			return (
+				<div className="flex flex-1 items-center justify-center h-full">
+					<FuseLoading />
+				</div>
+			);
+		}
+	}
+
 
 	return (
 		<div className="w-full flex flex-col">
