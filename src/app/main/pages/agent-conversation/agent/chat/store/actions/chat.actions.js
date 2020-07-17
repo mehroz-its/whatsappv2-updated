@@ -7,8 +7,6 @@ export const REMOVE_CHAT = '[CHAT APP] REMOVE CHAT';
 export const SEND_MESSAGE = '[CHAT APP] SEND MESSAGE';
 
 export function getChat(contactId) {
-	console.log(contactId,'in action')
-	return;
 	return (dispatch, getState) => {
 		const { id: userId } = getState().chatPanel.user;
 		const request = axios.get('/api/chat/get-chat', {

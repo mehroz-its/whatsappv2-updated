@@ -23,18 +23,19 @@ const useStyles = makeStyles(theme => ({
 
 function ContactListItem(props) {
 	const classes = useStyles(props);
-
+	console.log("props.contact : " ,  props.contact);
+	
 	return (
 		<ListItem
 			button
 			className={clsx(classes.contactListItem, 'px-16 py-12 min-h-92', {
 				active: props.selectedContactId === props.contact.id
 			})}
-			// onClick={() => props.onContactClick(props.contact.id)}
+			onClick={() => props.onContactClick(props.contact)}
 		>
 			<div className="relative">
 				<div className="absolute right-0 bottom-0 -m-4 z-10">
-					<StatusIcon status={props.contact.status} />
+					<StatusIcon status={props.contact.name} />
 				</div>
 
 				<Avatar src={props.contact.avatar} alt={props.contact.name}>
@@ -48,24 +49,24 @@ function ContactListItem(props) {
 					secondary: 'truncate'
 				}}
 				primary={props.contact.name}
-				secondary={props.contact.mood}
+				secondary={props.contact.number === props.contact.name ? null : props.contact.number}
 			/>
 
-			{props.contact.chatId && (
+			{props.contact.message_count && (
 				<div className="flex flex-col justify-center items-end">
-					{props.contact.lastMessageTime && (
+					{props.contact.last_closed && (
 						<Typography className="whitespace-no-wrap mb-8">
-							{moment(props.contact.lastMessageTime).format('ll')}
+							{moment(props.contact.last_closed).format('ll')}
 						</Typography>
 					)}
-					{props.contact.unread && (
+					{props.contact.message_count > 0 && (
 						<div
 							className={clsx(
 								classes.unreadBadge,
 								'flex items-center justify-center min-w-24 h-24 rounded-full text-14 text-center'
 							)}
 						>
-							{props.contact.unread}
+							{props.contact.message_count}
 						</div>
 					)}
 				</div>

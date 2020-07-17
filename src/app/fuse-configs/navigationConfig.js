@@ -180,6 +180,13 @@ const navigationConfig = [
 						url: '/report/agent-report',
 						exact: true
 					},
+					{
+						id: 'Agent_Conversation',
+						title: 'Conversation',
+						type: 'item',
+						url: '/apps/agent',
+						exact: true
+					},
 				
 
 				]

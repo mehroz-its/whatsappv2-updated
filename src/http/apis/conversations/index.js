@@ -77,6 +77,13 @@ class APIS {
                 method: 'post',
                 path: '/messages/send/template'
             },
+            agent_list_a: {
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'post',
+                path: '/list/agentlist'
+            },
             agent_list: {
                 headers: {
                     'xt-user-token': null
@@ -125,6 +132,13 @@ class APIS {
                 },
                 method: 'post',
                 path: '/list/agents'
+            },
+            agents_list2: {
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'post',
+                path: '/list/agentlist'
             },
             agents_customer_list: {
                 headers: {
