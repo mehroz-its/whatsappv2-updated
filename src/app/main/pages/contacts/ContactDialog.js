@@ -47,7 +47,7 @@ function ContactDialog(props) {
 	const [value, setValue] = React.useState(data.gender);
 	const [selectedcountry, setSelectedCountry] = React.useState('Country');
 	const [country, setCountry] = React.useState(data.country);
-
+    const [valid,SetValid]=React.useState('')
 	const [city, setCity] = React.useState('Country');
 	const [countries, setCountries] = React.useState([]);
 	const [cities, setCities] = React.useState([]);
@@ -248,8 +248,17 @@ function ContactDialog(props) {
 		form.age=''
 	}
 
-	
+	if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+	.test(form.email))
+	{
+	var abc=false
+	}
+	else {
+var abc=true
+	}
 
+console.log(form.name,'name',abc,'valid');
+ 
 	return (
 		<Dialog
 			classes={{
@@ -270,7 +279,8 @@ function ContactDialog(props) {
 					<Avatar className="w-56 h-56" alt="contact avatar" src={form.avatar} />
 					{contactDialog.type === 'edit' && (
 						<Typography variant="h6" color="inherit" className="pt-0">
-							{form.name}
+					  {form.name =="N/AN/A" ?
+					  form.name='':form.name }
 						</Typography>
 					)}
 				</div>
@@ -553,7 +563,7 @@ function ContactDialog(props) {
 									type="submit"
 									onClick={handleSubmit}
 									disabled={!form.firstname||!form.lastname||!form.email||!form.age||country=="N/A"||form.email=="N/A"
-								||value=="N/A"}
+								||value=="N/A"||abc != true}
 								>
 									Save
 							</Button>
