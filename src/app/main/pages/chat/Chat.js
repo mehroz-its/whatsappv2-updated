@@ -30,11 +30,16 @@ import XGlobalDialogCmp from '../../../../dialogs/XGlobalDialogCmp';
 import XGlobalDialog from '../../../../dialogs/XGlobalDialog';
 import { CSVLink, CSVDownload } from 'react-csv';
 import AttachmentDialogV2 from './dialog/chat/AttachmentDialogV2';
+import CannedMessagesDialog from './dialog/chat/CannedMessagesDialog';
+import BlockConfirmDialog from './dialog/chat/BlockConfirmDialog';
+import CustomerProfileDialog from './dialog/chat/CustomerProfileDialog';
+
 import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
 
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Fade from '@material-ui/core/Fade'
+import copy from 'copy-to-clipboard';
 
 import * as Actions from './store/actions';
 const contacts = [
@@ -291,6 +296,17 @@ function Chat(props) {
 	const [sendDialogOpen, setsendDialogOpen] = React.useState(false);
 	const [sendDialogTitle, setsendDialogTitle] = React.useState(false);
 	const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
+	const [dialogOpenCanned, setdialogOpenCanned] = React.useState(false);
+	const [cannedMessagesList, setcannedMessagesList] = React.useState([]);
+	const [blockReason, setblockReason] = React.useState('');
+	const [customerProfileData, setcustomerProfileData] = React.useState({
+		id: 0,
+		number: null,
+		assign_name: '',
+		attributes: [],
+		countries: [],
+	});
+	const [dialogOpenCmp, setdialogOpenCmp] = React.useState(false);
 
 	const sendDialogActions = [
 		{
@@ -496,19 +512,18 @@ function Chat(props) {
 		});
 	}
 	const selectedShiftAgent = (agent) => {
+		console.log("selectedShiftAgent agent ", agent)
+		console.log("selectedShiftAgent selectedRecipient ", selectedRecipient)
 
 		CoreHttpHandler.request('conversations', 'transfer', {
 			key: ':id',
 			value: agent.id,
 			params: {
-				customer: selectedRecipient
+				customer: selectedRecipient.number
 			}
 		}, (response) => {
 			setdialogOpenShift(false)
-
 			props.agentShift()
-			
-		
 		}, (response) => {
 
 		});
@@ -533,6 +548,260 @@ function Chat(props) {
 	const XGlobalDialogShiftClose = () => {
 		setdialogOpenShift(false)
 	}
+	const selectedCannedMessage = (props) => {
+		const { message_text, message_type, attachment_url, attachment_name, attachment_type } = props;
+
+		if (message_type !== 'text') {
+			let params = {
+				type: message_type,
+			};
+
+			params[message_type] = {
+				to: [selectedRecipient.number],
+				message: {
+					filname: attachment_name,
+					mime_type: attachment_type,
+					url: attachment_url,
+					caption: (message_text) ? message_text : `You Shared A ${message_type.charAt(0).toUpperCase()}${message_type.slice(1)}`,
+				}
+			}
+
+			CoreHttpHandler.request('conversations', 'send', {
+				key: ':type',
+				value: message_type,
+				params,
+			}, (response) => {
+				setMessageText("")
+				setdialogOpenCanned(false)
+
+			}, (error) => {
+			});
+		} else {
+			setMessageText(message_text)
+			setdialogOpenCanned(false)
+		}
+	}
+	const dialogOptionsCanned = {
+		onClose: function () {
+			setdialogOpenCanned(false)
+		},
+		'aria-labelledby': "form-dialog-title",
+		'aria-describedby': "form-dialog-title"
+	};
+	const cannedMessagesDialog = () => {
+		CoreHttpHandler.request('canned_messages', 'listing', {
+			columns: "*",
+			sortby: "ASC",
+			orderby: "id",
+			where: "enabled = $1",
+			values: true,
+			page: 0,
+			limit: 0,
+		}, (response) => {
+			const data = response.data.data.list.data;
+			setcannedMessagesList(data)
+			setdialogOpenCanned(true)
+
+		}, (error) => {
+			// this.setSnackBarMessage('Failed to load canned messages, please try again later', 'error');
+		});
+	}
+	const dialogActionsCanned = [
+		{
+			handler: (event, index) => {
+				XGlobalDialogCannedClose()
+			},
+			options: {},
+			label: "Cancel",
+		}
+	];
+	const XGlobalDialogCannedClose = () => {
+		setdialogOpenCanned(false)
+	}
+	const conversationContextMenuCallback = (item) => {
+		if (item === 'customer_profile') {
+		    profileDialog();
+
+		}
+
+		if (item === 'canned_messages') {
+
+			cannedMessagesDialog()
+		}
+
+		if (item === 'block') {
+			setdialogOpenConfirmBlock(true)
+
+		}
+		if (item === 'copy') {
+		    copyContent();
+		}
+	}
+	const blockCustomerInputHandler = (props) => {
+		const {
+			key,
+			value,
+			event,
+			dataKey,
+		} = props;
+		setblockReason(value)
+	}
+
+	const dialogActionsConfirmBlock = [
+		{
+			handler: (event, index) => {
+				XGlobalDialogConfirmBlock()
+			},
+			options: {},
+			label: "Cancel",
+		},
+		{
+			handler: (event, index) => {
+				blockNumber()
+			},
+			options: {},
+			label: "Yes",
+		}
+	];
+	const XGlobalDialogConfirmBlock = () => {
+		setdialogOpenConfirmBlock(false)
+	}
+	const blockNumber = () => {
+		console.log('blockNumber');
+
+		CoreHttpHandler.request('conversations', 'block', {
+			key: ':number', value: selectedRecipient.number, params: {
+				reason: blockReason,
+			}
+		}, (response) => {
+			setdialogOpenConfirmBlock(false)
+			setblockReason('')
+			setAnchorEl(false)
+			props.agentShift()
+			// setselectedRecipient(null)
+			// setmessages([])
+			// clearInterval(this.int_MessageLists);
+		}, (error) => {
+			setAnchorEl(false)
+
+			setdialogOpenConfirmBlock(false)
+		});
+	}
+	const customerProfileInputHandler = (props) => {
+		const {
+			key,
+			value,
+			event,
+			dataKey,
+		} = props;
+
+		const data = { ...customerProfileData };
+
+		data[key] = value.attrs;
+		data['assign_name'] = value.assigned_name;
+		setcustomerProfileData(data)
+
+	}
+
+	const dialogOptionsCmp = {
+		onClose: function () {
+			setdialogOpenCmp(false)
+			
+		},
+		'aria-labelledby': "form-dialog-title",
+		'aria-describedby': "form-dialog-title"
+	};
+	const dialogActionsCmp = [
+		{
+			handler: (event, index) => {
+				XGlobalDialogCmpClose()
+			},
+			options: {},
+			label: "Close",
+		},
+		{
+			handler: (event, index) => {
+				profileUpdate();
+			},
+			options: {},
+			label: "Update",
+		},
+	];
+	const profileUpdate = () => {
+        const data = { ...customerProfileData };
+
+        data['number'] = selectedRecipient.number;
+
+        CoreHttpHandler.request('contact_book', 'update', {
+            key: ':id',
+            value: customerProfileData.id,
+            params: data
+        }, (response) => {
+			setdialogOpenCmp(false)
+         
+
+        }, (error) => {
+            // if (error.hasOwnProperty('response')) {
+            //     if (error.response.hasOwnProperty('data')) {
+            //         this.setSnackBarMessage(error.response.data.message, 'error');
+            //     }
+            // } else this.setSnackBarMessage('Failed to update profile, please try again later', 'error');
+
+        });
+    }
+	const XGlobalDialogCmpClose = () => {
+		setdialogOpenCmp(false)
+	}
+	const profileDialog = () => {
+        CoreHttpHandler.request('contact_book', 'fetch', {
+            key: ':number',
+            value: selectedRecipient.number
+        }, (response) => {
+			const customer = response.data.data.customer;
+			
+            loadCountries().then((response) => {
+				const countries = response.data.data.list.data;
+				
+				setcustomerProfileData({
+					id: customer.id,
+					number: selectedRecipient.number,
+					attributes: customer.attributes,
+					assign_name: '',
+					countries,
+				})
+			console.log("customer : ",customer);
+			setAnchorEl(false)
+				setdialogOpenCmp(true)
+				
+            })
+
+        }, (error) => {
+			setAnchorEl(false)
+			setdialogOpenCmp(false)
+            // this.setSnackBarMessage('Failed to customer profile, please try again later', 'error');
+        });
+	}
+	const loadCountries = () => {
+        return CoreHttpHandler.request('locations', 'get_countries', {
+            columns: "id, name",
+            sortby: "ASC",
+            orderby: "id",
+            where: "enabled = $1",
+            values: true,
+            page: 0,
+            limit: 0
+        }, null, null, true);
+	};
+	const copyContent = () => {
+
+		copy(selectedRecipient.number);
+		alert("copy")
+        // this.setSnackBarMessage('Copied', 'success', null);
+
+        // This is just personal preference.
+        // I prefer to not show the the whole text area selected.
+
+    }
 	return (
 		<div className={clsx('flex flex-col relative', props.className)}>
 			<FuseScrollbars ref={chatRef} className="flex flex-1 flex-col overflow-y-auto">
@@ -634,9 +903,14 @@ function Chat(props) {
 							<MenuItem onClick={(e) => conversationActionsCallback('document')}>Document</MenuItem>
 							<MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
 							<MenuItem onClick={(e) => conversationActionsCallback('shift')}>shift</MenuItem>
+
+							<MenuItem onClick={(e) => conversationContextMenuCallback('block')}>Block </MenuItem>
+							<MenuItem onClick={(e) => conversationContextMenuCallback('customer_profile')}>Customer Profile </MenuItem>
+							<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem>
+
 						</Menu>
 
-						<Button variant="contained" style={{ position: 'absolute', left: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, }}>Canned</Button>
+						<Button variant="contained" style={{ position: 'absolute', left: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, }} onClick={(e) => conversationContextMenuCallback("canned_messages")}>Canned</Button>
 						<Button variant="contained" style={{ position: 'absolute', right: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, backgroundColor: '#424141', color: 'white' }} onClick={sendMessageHandler}>Send</Button>
 
 					</Paper>
@@ -644,6 +918,9 @@ function Chat(props) {
 			)}
 			<XGlobalDialogCmp onDialogPropsChange={sendDialogInputHandler} data={{ dialogType: sendActionType, attachment: sendDialogData }} dialogTitle={sendDialogTitle} options={dialogOptionsConfirmBlock} content={AttachmentDialogV2} defaultState={sendDialogOpen} actions={sendDialogActions} />
 			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
+			<XGlobalDialogCmp onDialogPropsChange={selectedCannedMessage} data={cannedMessagesList} dialogTitle={`Canned Messages`} options={dialogOptionsCanned} content={CannedMessagesDialog} defaultState={dialogOpenCanned} actions={dialogActionsCanned} />
+			<XGlobalDialogCmp onDialogPropsChange={blockCustomerInputHandler} data={selectedRecipient} dialogTitle={`Confirm Block`} options={dialogOptionsConfirmBlock} content={BlockConfirmDialog} defaultState={dialogOpenConfirmBlock} actions={dialogActionsConfirmBlock} />
+			<XGlobalDialogCmp onDialogPropsChange={customerProfileInputHandler} data={customerProfileData} dialogTitle={`Customer Profile`} options={dialogOptionsCmp} content={CustomerProfileDialog} defaultState={dialogOpenCmp} actions={dialogActionsCmp} />
 
 			{/* <XGlobalDialog onchange={(e) => {
                     this.onchange(e);

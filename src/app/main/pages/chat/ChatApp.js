@@ -301,10 +301,10 @@ function ChatApp(props) {
 		setmessages([])
 		clearInterval(this.int_MessageLists);
 		clearInterval(this.int_CustomerList);
-		this.getNumbers();
+			getNumbers();
 		setint_CustomerList = setInterval(() => {
 			getNumbers();
-		}, 10000);
+		}, 1000);
 	}
 	return (
 		<div className={clsx(classes.root)}>
@@ -433,7 +433,7 @@ function ChatApp(props) {
 									</AppBar>
 
 									<div className={classes.content}>
-										<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} agentShift={clearData} />
+										<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} agentShift={clearData} clearBlock={clearData} />
 									</div>
 								</>
 							)}
