@@ -22,7 +22,17 @@ import * as Actions from './store/actions';
 import reducer from './store/reducers';
 import UserSidebar from './UserSidebar';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler';
-
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import AttachmentDialogV2 from './dialog/chat/AttachmentDialogV2';
+import CannedMessagesDialog from './dialog/chat/CannedMessagesDialog';
+import BlockConfirmDialog from './dialog/chat/BlockConfirmDialog';
+import CustomerProfileDialog from './dialog/chat/CustomerProfileDialog';
+import XGlobalDialogCmp from '../../../../dialogs/XGlobalDialogCmp';
+import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
+import { CSVLink, CSVDownload } from 'react-csv';
+import Fade from '@material-ui/core/Fade'
+import copy from 'copy-to-clipboard';
 const drawerWidth = 400;
 const headerHeight = 200;
 
@@ -212,6 +222,11 @@ function ChatApp(props) {
 	const [selectedRecipient, setselectedRecipient] = React.useState(null);
 	const [int_CustomerList, setint_CustomerList] = React.useState(null);
 	const [int_MessageLists, setint_MessageLists] = React.useState(null);
+	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
+	const [anchorEl, setAnchorEl] = React.useState(null);
+
+	// const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
+
 
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
@@ -284,6 +299,188 @@ function ChatApp(props) {
 
 		});
 	}
+	
+	const conversationActionsCallback = (action) => {
+		// setAnchorEl(null);
+		if (action === 'export') conversationExport();
+		if (action === 'shift') conversationShift();
+
+		
+	}
+	const conversationExport = () => {
+		let params = {
+			key: ':number',
+			value: selectedRecipient.number,
+			key2: ':last_closed',
+			value2: selectedRecipient.last_closed
+
+		};
+		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
+			const messages = response.data.data.chat;
+			const csvLink = (<CSVLink filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`} data={messages}>Your exported chat is ready for download</CSVLink>);
+			alert(csvLink)
+		}, (response) => {
+
+		});
+	}
+	const conversationShift = () => {
+		CoreHttpHandler.request('conversations', 'agent_list', { role: 64, columns: 'id, username, email, number' }, (response) => {
+			const data = response.data.data.agents.data;
+			setshiftAgentsList(data)
+			setdialogOpenShift(true)
+		}, (response) => {
+
+		});
+	}
+	const conversationContextMenuCallback = (item) => {
+		if (item === 'customer_profile') {
+		    profileDialog();
+
+		}
+
+		if (item === 'canned_messages') {
+
+			cannedMessagesDialog()
+		}
+
+		if (item === 'block') {
+			setdialogOpenConfirmBlock(true)
+
+		}
+		if (item === 'copy') {
+		    copyContent();
+		}
+	}
+	const profileDialog = () => {
+        CoreHttpHandler.request('contact_book', 'fetch', {
+            key: ':number',
+            value: selectedRecipient.number
+        }, (response) => {
+			const customer = response.data.data.customer;
+			
+            loadCountries().then((response) => {
+				const countries = response.data.data.list.data;
+				
+				setcustomerProfileData({
+					id: customer.id,
+					number: selectedRecipient.number,
+					attributes: customer.attributes,
+					assign_name: '',
+					countries,
+				})
+			console.log("customer : ",customer);
+			setAnchorEl(false)
+				setdialogOpenCmp(true)
+				
+            })
+
+        }, (error) => {
+			setAnchorEl(false)
+			setdialogOpenCmp(false)
+            // this.setSnackBarMessage('Failed to customer profile, please try again later', 'error');
+        });
+	}
+	const loadCountries = () => {
+        return CoreHttpHandler.request('locations', 'get_countries', {
+            columns: "id, name",
+            sortby: "ASC",
+            orderby: "id",
+            where: "enabled = $1",
+            values: true,
+            page: 0,
+            limit: 0
+        }, null, null, true);
+	};
+	const copyContent = () => {
+		copy(selectedRecipient.number);
+		alert("copy")
+        // this.setSnackBarMessage('Copied', 'success', null);
+	}
+	
+	const [sendDialogData, setsendDialogData] = React.useState({
+		url: '',
+		caption: '',
+		attributes: null,
+	});
+	const [dialogOpen, setdialogOpen] = React.useState(false);
+	const [shiftAgentsList, setshiftAgentsList] = React.useState([]);
+	const [dialogOpenShift, setdialogOpenShift] = React.useState(false);
+	const [sendActionType, setsendActionType] = React.useState(null);
+	const [sendDialogOpen, setsendDialogOpen] = React.useState(false);
+	const [sendDialogTitle, setsendDialogTitle] = React.useState(false);
+	const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
+	const [dialogOpenCanned, setdialogOpenCanned] = React.useState(false);
+	const [cannedMessagesList, setcannedMessagesList] = React.useState([]);
+	const [blockReason, setblockReason] = React.useState('');
+	const [customerProfileData, setcustomerProfileData] = React.useState({
+		id: 0,
+		number: null,
+		assign_name: '',
+		attributes: [],
+		countries: [],
+	});
+	const [dialogOpenCmp, setdialogOpenCmp] = React.useState(false);
+
+	const sendDialogActions = [
+		{
+			handler: (event, index) => {
+				setsendActionType(null)
+				setsendDialogTitle('')
+				setsendDialogOpen(false)
+			},
+			options: {},
+			label: "Cancel",
+		},
+		{
+			handler: (event, index) => {
+				sendDialogActionCb();
+			},
+			options: {},
+			label: "Send",
+		}
+	];
+	const sendDialogActionCb = () => {
+		const args = {};
+
+		args[sendActionType] = {};
+
+		args[sendActionType]['type'] = sendActionType;
+
+		args[sendActionType][sendActionType] = {};
+
+		args[sendActionType][sendActionType]['message'] = sendDialogData;
+
+		args[sendActionType][sendActionType]['to'] = [selectedRecipient.number];
+
+		if (sendDialogData.attributes) {
+			Object.keys(sendDialogData.attributes).forEach(attr => {
+				args[sendActionType][sendActionType].message[attr] = sendDialogData.attributes[attr];
+			});
+		}
+
+		delete args[sendActionType][sendActionType].message.attributes;
+
+		CoreHttpHandler.request('conversations', 'send', { key: ':type', value: sendActionType, params: args[sendActionType] }, (response) => {
+			setsendActionType(null)
+			setsendDialogTitle('')
+			setsendDialogOpen(false)
+			setsendDialogData({
+				url: '',
+				caption: '',
+				attributes: null,
+			})
+
+		}, (response) => {
+		})
+	};
+		const dialogOptionsConfirmBlock = {
+			onClose: function () {
+				setdialogOpenConfirmBlock(false)
+
+			},
+			'aria-labelledby': "form-dialog-title",
+			'aria-describedby': "form-dialog-title"
+		};
 	useEffect(() => {
 		console.log("getNumbers use efffact = > ", selectedRecipient);
 		getNumbers()
@@ -306,6 +503,248 @@ function ChatApp(props) {
 			getNumbers();
 		}, 1000);
 	}
+	function handleMoreMenuClick(event) {
+		setMoreMenuEl(event.currentTarget);
+	}
+	function handleMoreMenuClose(event) {
+		setMoreMenuEl(null);
+	}
+	const cannedMessagesDialog = () => {
+		CoreHttpHandler.request('canned_messages', 'listing', {
+			columns: "*",
+			sortby: "ASC",
+			orderby: "id",
+			where: "enabled = $1",
+			values: true,
+			page: 0,
+			limit: 0,
+		}, (response) => {
+			const data = response.data.data.list.data;
+			setcannedMessagesList(data)
+			setdialogOpenCanned(true)
+
+		}, (error) => {
+			// this.setSnackBarMessage('Failed to load canned messages, please try again later', 'error');
+		});
+	}
+	const sendDialogInputHandler = (e) => {
+		const data = { ...sendDialogData };
+
+		if (e.caption) {
+			data['caption'] = e.caption;
+		}
+
+		if (e.url) {
+			data['url'] = e.url;
+		}
+
+		if (e.attributes) {
+			data['attributes'] = e.attributes;
+		}
+		setsendDialogData(data)
+	};
+	const selectedShiftAgent = (agent) => {
+		console.log("selectedShiftAgent agent ", agent)
+		console.log("selectedShiftAgent selectedRecipient ", selectedRecipient)
+
+		CoreHttpHandler.request('conversations', 'transfer', {
+			key: ':id',
+			value: agent.id,
+			params: {
+				customer: selectedRecipient.number
+			}
+		}, (response) => {
+			setdialogOpenShift(false)
+			props.agentShift()
+		}, (response) => {
+
+		});
+	}
+	const dialogOptionsShift = {
+		onClose: function () {
+			setdialogOpenShift(false)
+		},
+		'aria-labelledby': "form-dialog-title",
+		'aria-describedby': "form-dialog-title"
+	}
+	const dialogActionsShift = [
+		{
+			handler: (event, index) => {
+				this.XGlobalDialogShiftClose()
+			},
+			options: {},
+			label: "Cancel",
+		},
+
+	];
+	const XGlobalDialogShiftClose = () => {
+		setdialogOpenShift(false)
+	}
+	const selectedCannedMessage = (props) => {
+		const { message_text, message_type, attachment_url, attachment_name, attachment_type } = props;
+
+		if (message_type !== 'text') {
+			let params = {
+				type: message_type,
+			};
+
+			params[message_type] = {
+				to: [selectedRecipient.number],
+				message: {
+					filname: attachment_name,
+					mime_type: attachment_type,
+					url: attachment_url,
+					caption: (message_text) ? message_text : `You Shared A ${message_type.charAt(0).toUpperCase()}${message_type.slice(1)}`,
+				}
+			}
+
+			CoreHttpHandler.request('conversations', 'send', {
+				key: ':type',
+				value: message_type,
+				params,
+			}, (response) => {
+				// setMessageText("")
+				setdialogOpenCanned(false)
+
+			}, (error) => {
+			});
+		} else {
+			// setMessageText(message_text)
+			setdialogOpenCanned(false)
+		}
+	}
+	const dialogOptionsCanned = {
+		onClose: function () {
+			setdialogOpenCanned(false)
+		},
+		'aria-labelledby': "form-dialog-title",
+		'aria-describedby': "form-dialog-title"
+	};
+	const dialogActionsCanned = [
+		{
+			handler: (event, index) => {
+				XGlobalDialogCannedClose()
+			},
+			options: {},
+			label: "Cancel",
+		}
+	];
+	const blockCustomerInputHandler = (props) => {
+		const {
+			key,
+			value,
+			event,
+			dataKey,
+		} = props;
+		setblockReason(value)
+	}
+	const dialogActionsConfirmBlock = [
+		{
+			handler: (event, index) => {
+				XGlobalDialogConfirmBlock()
+			},
+			options: {},
+			label: "Cancel",
+		},
+		{
+			handler: (event, index) => {
+				blockNumber()
+			},
+			options: {},
+			label: "Yes",
+		}
+	];
+	const blockNumber = () => {
+		console.log('blockNumber');
+
+		CoreHttpHandler.request('conversations', 'block', {
+			key: ':number', value: selectedRecipient.number, params: {
+				reason: blockReason,
+			}
+		}, (response) => {
+			setdialogOpenConfirmBlock(false)
+			setblockReason('')
+			setAnchorEl(false)
+			props.agentShift()
+			// setselectedRecipient(null)
+			// setmessages([])
+			// clearInterval(this.int_MessageLists);
+		}, (error) => {
+			setAnchorEl(false)
+
+			setdialogOpenConfirmBlock(false)
+		});
+	}
+	const customerProfileInputHandler = (props) => {
+		const {
+			key,
+			value,
+			event,
+			dataKey,
+		} = props;
+
+		const data = { ...customerProfileData };
+
+		data[key] = value.attrs;
+		data['assign_name'] = value.assigned_name;
+		setcustomerProfileData(data)
+
+	}
+	const dialogOptionsCmp = {
+		onClose: function () {
+			setdialogOpenCmp(false)
+			
+		},
+		'aria-labelledby': "form-dialog-title",
+		'aria-describedby': "form-dialog-title"
+	};
+	const XGlobalDialogCannedClose = () => {
+		setdialogOpenCanned(false)
+	}
+	const XGlobalDialogConfirmBlock = () => {
+		setdialogOpenConfirmBlock(false)
+	}
+	const dialogActionsCmp = [
+		{
+			handler: (event, index) => {
+				XGlobalDialogCmpClose()
+			},
+			options: {},
+			label: "Close",
+		},
+		{
+			handler: (event, index) => {
+				profileUpdate();
+			},
+			options: {},
+			label: "Update",
+		},
+	];
+	const XGlobalDialogCmpClose = () => {
+		setdialogOpenCmp(false)
+	}
+	const profileUpdate = () => {
+        const data = { ...customerProfileData };
+
+        data['number'] = selectedRecipient.number;
+
+        CoreHttpHandler.request('contact_book', 'update', {
+            key: ':id',
+            value: customerProfileData.id,
+            params: data
+        }, (response) => {
+			setdialogOpenCmp(false)
+         
+
+        }, (error) => {
+            // if (error.hasOwnProperty('response')) {
+            //     if (error.response.hasOwnProperty('data')) {
+            //         this.setSnackBarMessage(error.response.data.message, 'error');
+            //     }
+            // } else this.setSnackBarMessage('Failed to update profile, please try again later', 'error');
+
+        });
+    }
 	return (
 		<div className={clsx(classes.root)}>
 			<div className={classes.topBg} />
@@ -429,6 +868,28 @@ function ChatApp(props) {
 													{selectedRecipient.name}
 												</Typography>
 											</div>
+											<div style={{position:'absolute',right:1}}>
+						<IconButton
+							aria-owns={moreMenuEl ? 'chats-more-menu' : null}
+							aria-haspopup="true"
+							onClick={handleMoreMenuClick}
+							style={{color:'white'}}
+						>
+							<Icon>more_vert</Icon>
+						</IconButton>
+						<Menu
+							id="chats-more-menu"
+							anchorEl={moreMenuEl}
+							open={Boolean(moreMenuEl)}
+							onClose={handleMoreMenuClose}
+						>
+							<MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
+							<MenuItem onClick={(e) => conversationActionsCallback('shift')}>shift</MenuItem>
+							<MenuItem onClick={(e) => conversationContextMenuCallback('block')}>Block </MenuItem>
+							<MenuItem onClick={(e) => conversationContextMenuCallback('customer_profile')}>Customer Profile </MenuItem>
+							<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem>
+						</Menu>
+					</div>
 										</Toolbar>
 									</AppBar>
 
@@ -463,6 +924,11 @@ function ChatApp(props) {
 					</Drawer>
 				</div>
 			</div>
+			<XGlobalDialogCmp onDialogPropsChange={sendDialogInputHandler} data={{ dialogType: sendActionType, attachment: sendDialogData }} dialogTitle={sendDialogTitle} options={dialogOptionsConfirmBlock} content={AttachmentDialogV2} defaultState={sendDialogOpen} actions={sendDialogActions} />
+			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
+			<XGlobalDialogCmp onDialogPropsChange={selectedCannedMessage} data={cannedMessagesList} dialogTitle={`Canned Messages`} options={dialogOptionsCanned} content={CannedMessagesDialog} defaultState={dialogOpenCanned} actions={dialogActionsCanned} />
+			<XGlobalDialogCmp onDialogPropsChange={blockCustomerInputHandler} data={selectedRecipient} dialogTitle={`Confirm Block`} options={dialogOptionsConfirmBlock} content={BlockConfirmDialog} defaultState={dialogOpenConfirmBlock} actions={dialogActionsConfirmBlock} />
+			<XGlobalDialogCmp onDialogPropsChange={customerProfileInputHandler} data={customerProfileData} dialogTitle={`Customer Profile`} options={dialogOptionsCmp} content={CustomerProfileDialog} defaultState={dialogOpenCmp} actions={dialogActionsCmp} />
 		</div>
 	);
 }
