@@ -902,14 +902,14 @@ function ChatApp(props) {
 												</Typography>
 											</div>
 											<div style={{position:'absolute',right:1}}>
-						<IconButton
+						{/* <IconButton
 							aria-owns={moreMenuEl ? 'chats-more-menu' : null}
 							aria-haspopup="true"
 							onClick={handleMoreMenuClick}
 							style={{color:'white'}}
 						>
 							<Icon>more_vert</Icon>
-						</IconButton>
+						</IconButton> */}
 						<Menu
 							id="chats-more-menu"
 							anchorEl={moreMenuEl}
