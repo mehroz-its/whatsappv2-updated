@@ -195,7 +195,7 @@ console.log(data,'from this.props.')
 				<Button onClick={handleClose} color="primary">
 					Cancel
              </Button>
-				<Button onClick={handleClose} color="primary">
+				<Button onClick={handleClose} disabled={true} color="primary">
 					Done
          </Button>
 			</DialogActions>

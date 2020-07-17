@@ -91,16 +91,7 @@ autoHideDuration={3000}
 				content={<CampaignTable ValueForSearch={val} />}
 			// innerScroll
 			/>
-			<FuseAnimate animation="transition.expandIn" delay={300}>
-				<Fab
-					color="primary"
-					aria-label="add"
-					className={classes.addButton}
-					onClick={handleClickOpen}
-				>
-					<Icon>person_add</Icon>
-				</Fab>
-			</FuseAnimate>
+		
 			{open && <CampaignDialog  	isOpen={open} type='Add Campaign' data={dialogData} closeDialog={handleDialogClose} />}
 
 

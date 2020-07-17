@@ -180,13 +180,7 @@ const navigationConfig = [
 						url: '/report/agent-report',
 						exact: true
 					},
-					{
-						id: 'compaigns_report',
-						title: 'Compaigns',
-						translate: 'Compaigns',
-						type: 'item',
-						url: '/report/compaigns'
-					},
+				
 
 				]
 			},

@@ -307,7 +307,7 @@ const CampaignDialog = (props) => {
 				<Button onClick={handleDialogClose} color="primary">
 					Cancel
              </Button>
-				<Button onClick={handleSubmit} color="primary">
+				<Button onClick={handleSubmit} disabled={!name||!text||!canned_type} color="primary">
 					Done
          </Button>
 			</DialogActions>

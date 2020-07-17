@@ -365,7 +365,7 @@ function ChatApp() {
 						header={<ChartHeader SearchVal={searchContact} />}
 						content={
 
-							<ChartTable data={val == '' ? data : data2} />}
+							<ChartTable data={val == '' ? data : data2} val={val} />}
 
 					/>
 

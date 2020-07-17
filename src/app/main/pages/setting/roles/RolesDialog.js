@@ -278,7 +278,7 @@ const RolesDialog = (props) => {
                 <Button onClick={handleClose} color="primary">
                     Cancel
     </Button>
-                <Button onClick={handleSubmit} color="primary">
+                <Button onClick={handleSubmit} disabled={!name||!description||!permissions} color="primary">
                     Done
     </Button>
             </DialogActions>
