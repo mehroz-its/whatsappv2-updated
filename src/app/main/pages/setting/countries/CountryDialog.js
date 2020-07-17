@@ -215,10 +215,10 @@ console.log(snackbarmessage,snackbaropen,ok,name,'logsss');
 
 </DialogContent>
 <DialogActions>
-<Button onClick={handleClose} color="primary">
+<Button onClick={handleClose}  color="primary">
   Cancel
 </Button>
-<Button onClick={handleSubmit} color="primary">
+<Button onClick={handleSubmit} disabled={!name||!email} color="primary">
   Done
 </Button>
 </DialogActions>

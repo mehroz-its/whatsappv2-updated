@@ -284,7 +284,7 @@ const CampaignDialog = (props) => {
 
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={handleClose}   color="primary">
                     Cancel
              </Button>
                 <Button onClick={handleSubmit} color="primary">

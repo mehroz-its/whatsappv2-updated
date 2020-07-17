@@ -163,9 +163,11 @@ function ChartTable(props) {
 	}
 
 	if (data.length === 0) {
-		if (props.ValueForSearch !== '') {
+		if (props.val !== '') {
 			return (
-				<div style={{alignItems:'flex-end',flex:1,display:'flex'}} className="flex flex-1 items-center justify-center h-full">
+				<div 
+				style={{alignItems:'flex-end',flex:1,marginTop:'30%'}}
+				className="flex flex-1 items-center justify-center h-full">
 					<Typography color="textSecondary" variant="h5">
 						No Data Found
 					</Typography>
@@ -173,7 +175,9 @@ function ChartTable(props) {
 			)
 		} else {
 			return (
-				<div className="flex flex-1 items-center justify-center h-full">
+				<div 
+				style={{alignItems:'flex-end',flex:1,marginTop:'30%'}}
+				className="flex flex-1 items-center justify-center h-full">
 					<FuseLoading />
 				</div>
 			);

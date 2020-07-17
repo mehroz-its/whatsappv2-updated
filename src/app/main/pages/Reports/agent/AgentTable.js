@@ -11,7 +11,7 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-
+import Typography from '@material-ui/core/Typography';
 import AgentTableHead from './AgentTableHead';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
@@ -160,6 +160,27 @@ function AgentTable(props) {
 
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
+	}
+	if (data.length === 0) {
+		if (props.val !== '') {
+			return (
+				<div 
+				style={{alignItems:'flex-end',flex:1,marginTop:'30%'}}
+				className="flex flex-1 items-center justify-center h-full">
+					<Typography color="textSecondary" variant="h5">
+						No Data Found
+					</Typography>
+				</div>
+			)
+		} else {
+			return (
+				<div 
+				style={{alignItems:'flex-end',flex:1,marginTop:'30%'}}
+				className="flex flex-1 items-center justify-center h-full">
+					<FuseLoading />
+				</div>
+			);
+		}
 	}
 
 	return (

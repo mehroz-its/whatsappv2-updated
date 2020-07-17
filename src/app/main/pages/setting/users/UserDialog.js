@@ -291,8 +291,8 @@ const UserDialog = (props) => {
         <Button onClick={handleClose} color="primary">
           Cancel
 </Button>
-        <Button onClick={handleSubmit} color="primary">
-          Done
+        <Button onClick={handleSubmit} disabled={!userName||!email||!number||!roles||!currentRoles}  color="primary">
+          Done  
 </Button>
       </DialogActions>
     </Dialog>

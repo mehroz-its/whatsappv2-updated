@@ -182,7 +182,7 @@ function ContactDialog(props) {
 				{ attribute_id: data.attribute_idcity, city: selectedCity }
 			]
 		}
-		console.log(params)
+		console.log(params,'params')
 		CoreHttpHandler.request('contact_book', 'update', {
 			key: ':id',
 			value: data.id,
@@ -229,6 +229,26 @@ function ContactDialog(props) {
 	// 			// setDisplay(false);
 	// 		});
 	//  }
+	console.log(country,'country',defaultValueCountry,'default');
+
+	if(form.lastname=="N/A")
+	{
+		form.lastname=''
+	}
+	if(form.firstname=="N/A")
+	{
+		form.firstname=''
+	}
+	if(form.email=="N/A")
+	{
+		form.email=''
+	}
+	if(form.age=="N/A")
+	{
+		form.age=''
+	}
+
+	
 
 	return (
 		<Dialog
@@ -532,7 +552,8 @@ function ContactDialog(props) {
 									color="primary"
 									type="submit"
 									onClick={handleSubmit}
-									disabled={!canBeSubmitted()}
+									disabled={!form.firstname||!form.lastname||!form.email||!form.age||country=="N/A"||form.email=="N/A"
+								||value=="N/A"}
 								>
 									Save
 							</Button>

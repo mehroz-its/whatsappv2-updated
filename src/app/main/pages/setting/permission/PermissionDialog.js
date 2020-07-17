@@ -374,10 +374,10 @@ const PermissionDialog = (props) => {
                 </div> */}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleClose}  color="primary">
           Cancel
              </Button>
-        <Button onClick={handleSubmit} color="primary">
+        <Button onClick={handleSubmit} disabled={!title||!description||!consumer} color="primary">
           Done
          </Button>
       </DialogActions>
