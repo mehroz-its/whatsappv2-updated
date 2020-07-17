@@ -19,7 +19,7 @@ import PermissionConfig from './setting/permission/PermissionConfig'
 import RolesConfig from './setting/roles/RolesConfig'
 import UserConfig from './setting/users/UserConfig'
 import TemplateConfig from './template-message/TemplateConfig'
-import ReportsAppConfig from './reports/ReportsAppConfig'
+import ReportsAppConfig from './Reports/ReportsAppConfig'
 // import ReportsAppConfig from './reports/ReportsAppConfig'
 import AdminDashboardAppConfig from './adminDashboard/AdminDashboardAppConfig'
 import AgentConfig from './agent-conversation/AgentConfig'
@@ -29,9 +29,11 @@ import TokenConfig from './auth/token/TokenConfig'
 import ResetPassword2PageConfig from './auth/reset-password-2/ResetPassword2PageConfig'
 import BlockAppConfig from './BlockedContacts/BlockAppConfig'
 import ProfileAppConfig from './profile/ProfileAppConfig'
+import ChatHistoryConfig from './chat-history/ChatHistoryConfig'
 
 const pagesConfigs = [
 	ContactGroupConfig,
+	ChatHistoryConfig,
 	ProfileAppConfig,
 	BlockAppConfig,
 	BlockListConfig,

@@ -42,6 +42,24 @@ function UserNavbarHeader(props) {
 
 	const classes = useStyles();
 
+	let data = null
+	data = JSON.parse(localStorage.getItem('user_data'))
+	console.log(data)
+
+	let username = null
+	if (data !== null) {
+		function titleCase(str) {
+			str = str.toLowerCase().split(' ');
+			for (var i = 0; i < str.length; i++) {
+				str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
+			}
+			return str.join(' ');
+		}
+		console.log(data, 'from local storage')
+		username = titleCase(data.username);
+
+	}
+
 	return (
 		<AppBar
 			position="static"
@@ -52,11 +70,11 @@ function UserNavbarHeader(props) {
 		>
 			<Typography className="username text-16 whitespace-no-wrap" color="inherit">
 				{/* {user.data.displayName} */}
-				Admin
+				{username}
 			</Typography>
 			<Typography className="email text-13 mt-8 opacity-50 whitespace-no-wrap" color="inherit">
-				{/* {user.data.email} */}
-				admin@its.com.pk
+				{data.email}
+
 			</Typography>
 			<Avatar
 				className={clsx(classes.avatar, 'avatar')}
