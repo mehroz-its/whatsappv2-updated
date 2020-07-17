@@ -274,7 +274,7 @@ function AgentContent(props) {
 			</FormControl>
 			{
 				viewChat === true &&
-				<div style={{ marginTop: '20px' }}> <Chat numbers={numbers} selectedAgent={selectedAgent} reloadNumber={(e) => getAgentsCustomersReload()} /> </div>
+				 <Chat numbers={numbers} selectedAgent={selectedAgent} reloadNumber={(e) => getAgentsCustomersReload()} />
 
 
 			}
