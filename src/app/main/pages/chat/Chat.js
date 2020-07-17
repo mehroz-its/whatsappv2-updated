@@ -901,12 +901,12 @@ function Chat(props) {
 							<MenuItem onClick={(e) => conversationActionsCallback('video')}>Video</MenuItem>
 							<MenuItem onClick={(e) => conversationActionsCallback('audio')}>Audio</MenuItem>
 							<MenuItem onClick={(e) => conversationActionsCallback('document')}>Document</MenuItem>
-							<MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
+							{/* <MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
 							<MenuItem onClick={(e) => conversationActionsCallback('shift')}>shift</MenuItem>
 
 							<MenuItem onClick={(e) => conversationContextMenuCallback('block')}>Block </MenuItem>
 							<MenuItem onClick={(e) => conversationContextMenuCallback('customer_profile')}>Customer Profile </MenuItem>
-							<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem>
+							<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem> */}
 
 						</Menu>
 

@@ -319,6 +319,7 @@ function ChatApp(props) {
 			const messages = response.data.data.chat;
 			const csvLink = (<CSVLink filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`} data={messages}>Your exported chat is ready for download</CSVLink>);
 			alert(csvLink)
+			setMoreMenuEl(null);
 		}, (response) => {
 
 		});
@@ -328,27 +329,36 @@ function ChatApp(props) {
 			const data = response.data.data.agents.data;
 			setshiftAgentsList(data)
 			setdialogOpenShift(true)
+			setMoreMenuEl(null);
 		}, (response) => {
 
 		});
 	}
 	const conversationContextMenuCallback = (item) => {
 		if (item === 'customer_profile') {
-		    profileDialog();
+			profileDialog();
+			setMoreMenuEl(null);
+
 
 		}
 
 		if (item === 'canned_messages') {
 
 			cannedMessagesDialog()
+			setMoreMenuEl(null);
+
 		}
 
 		if (item === 'block') {
 			setdialogOpenConfirmBlock(true)
+			setMoreMenuEl(null);
+
 
 		}
 		if (item === 'copy') {
-		    copyContent();
+			copyContent();
+			setMoreMenuEl(null);
+
 		}
 	}
 	const profileDialog = () => {
@@ -485,7 +495,7 @@ function ChatApp(props) {
 		console.log("getNumbers use efffact = > ", selectedRecipient);
 		getNumbers()
 		return () => {
-			clearInterval(int_CustomerList);
+			// clearInterval(int_CustomerList);
 			clearInterval(int_MessageLists);
 		}
 	}, [selectedRecipient]);
@@ -497,12 +507,13 @@ function ChatApp(props) {
 		setselectedRecipient(null)
 		setmessages([])
 		clearInterval(this.int_MessageLists);
-		clearInterval(this.int_CustomerList);
-			getNumbers();
-		setint_CustomerList = setInterval(() => {
-			getNumbers();
-		}, 1000);
+			// clearInterval(this.int_CustomerList);
+			// 	getNumbers();
+			// setint_CustomerList = setInterval(() => {
+			// 	getNumbers();
+			// }, 1000);
 	}
+
 	function handleMoreMenuClick(event) {
 		setMoreMenuEl(event.currentTarget);
 	}
@@ -522,6 +533,8 @@ function ChatApp(props) {
 			const data = response.data.data.list.data;
 			setcannedMessagesList(data)
 			setdialogOpenCanned(true)
+			setMoreMenuEl(null);
+
 
 		}, (error) => {
 			// this.setSnackBarMessage('Failed to load canned messages, please try again later', 'error');
@@ -555,7 +568,7 @@ function ChatApp(props) {
 			}
 		}, (response) => {
 			setdialogOpenShift(false)
-			props.agentShift()
+			clearData()
 		}, (response) => {
 
 		});
@@ -570,7 +583,7 @@ function ChatApp(props) {
 	const dialogActionsShift = [
 		{
 			handler: (event, index) => {
-				this.XGlobalDialogShiftClose()
+				XGlobalDialogShiftClose()
 			},
 			options: {},
 			label: "Cancel",
@@ -665,7 +678,8 @@ function ChatApp(props) {
 			setdialogOpenConfirmBlock(false)
 			setblockReason('')
 			setAnchorEl(false)
-			props.agentShift()
+			clearData()
+			// props.agentShift()
 			// setselectedRecipient(null)
 			// setmessages([])
 			// clearInterval(this.int_MessageLists);
@@ -733,8 +747,18 @@ function ChatApp(props) {
             value: customerProfileData.id,
             params: data
         }, (response) => {
-			setdialogOpenCmp(false)
-         
+			setselectedRecipient(selectedRecipient)
+			// const clearData2 = () => {
+				setdialogOpenCmp(false)
+				// clearInterval(this.int_MessageLists);
+				// clearInterval(this.int_CustomerList);
+				// 	getNumbers();
+				// setint_CustomerList = setInterval(() => {
+				// 	getNumbers();
+				// }, 1000);
+			// }
+			
+			
 
         }, (error) => {
             // if (error.hasOwnProperty('response')) {
@@ -894,7 +918,7 @@ function ChatApp(props) {
 									</AppBar>
 
 									<div className={classes.content}>
-										<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} agentShift={clearData} clearBlock={clearData} />
+										<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient}  clearBlock={clearData} />
 									</div>
 								</>
 							)}
