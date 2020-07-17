@@ -19,6 +19,27 @@ const UserMenu =(props) => {
 
 	const [userMenu, setUserMenu] = useState(null);
 
+	let data = null
+	data = JSON.parse(localStorage.getItem('user_data'))
+	console.log(data)
+
+	let username = ''
+	if (data !== null) {
+		function titleCase(str) {
+			str = str.toLowerCase().split(' ');
+			for (var i = 0; i < str.length; i++) {
+				str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
+			}
+			return str.join(' ');
+		}
+		console.log(data)
+		username = titleCase(data.username);
+
+	}
+	// console.log(value, 'titleCasetitleCasetitleCase')
+
+
+
 	const userMenuClick = event => {
 		setUserMenu(event.currentTarget);
 	};
@@ -57,14 +78,14 @@ const UserMenu =(props) => {
 		<>
 			<Button className="h-64" onClick={userMenuClick}>
 				{user.data.photoURL ? (
-					<Avatar className="" alt="user photo" src={user.data.photoURL} />
+					<Avatar className=""  alt={username.charAt(0)} src="../../../" />
 				) : (
 						<Avatar className="">{user.data.displayName[0]}</Avatar>
 					)}
 
 				<div className="hidden md:flex flex-col mx-12 items-start">
 					<Typography component="span" className="normal-case font-600 flex">
-						{user.data.displayName}
+						{username}
 					</Typography>
 					<Typography className="text-11 capitalize" color="textSecondary">
 						{user.role.toString()}
