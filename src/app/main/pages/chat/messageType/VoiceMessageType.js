@@ -74,9 +74,9 @@ const VoiceMessageType = function (props) {
                         </IconButton>
                     </div>
                 </div>
-                <div style={{display:'flex',justifyContent:'flex-end',flex:1}}>
-                <a href={audioPath} target={'_blank'}><GetAppIcon style={{ width: 22, fontSize: 40, color: 'grey',marginTop:'20px' }} /></a>
-                </div>
+                {/* <div style={{display:'flex',justifyContent:'flex-end',flex:1}}>
+                <a href={audioPath} target={'_blank'}><GetAppIcon style={{ }} /></a>
+                </div> */}
             </Card>
         </div>
     )

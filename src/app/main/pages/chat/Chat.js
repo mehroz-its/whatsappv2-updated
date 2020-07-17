@@ -815,7 +815,7 @@ function Chat(props) {
 									key={item.time}
 									className={clsx(
 										classes.messageRow,
-										'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
+										'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-8',
 										{ me: item.type === "outbound" },
 										{ contact: item.type === "inbound" },
 										{ 'first-of-group': isFirstMessageOfGroup(item, index) },
@@ -829,7 +829,7 @@ function Chat(props) {
 											src={props.selectedRecipient.avatar}
 										/>
 									)}
-									<div className="bubble flex relative items-center justify-center p-12 max-w-full">
+									<div className="bubble flex relative items-center justify-center p-8 max-w-full">
 										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap">{item.message_body}</div> : null}
 										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
