@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
     large: {
         width: theme.spacing(12),
         height: theme.spacing(12),
+        
     }
 }));
 
@@ -122,12 +123,12 @@ function ProfileApp() {
                 <div className="flex flex-col justify-between flex-1 px-24 pt-24">
                     {/* <div className="flex justify-between items-start"> */}
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
-                        <div className='image-grid' style={{ marginTop: '5px', marginLeft: '-10px' }}>
-                            <Avatar alt="Remy Sharp" src={profileImage} className={classes.large} />
+                        <div className='image-grid' style={{ marginTop: '10px', marginLeft: '-10px' }}>
+                            <Avatar  alt="Remy Sharp"   src={profileImage} className={classes.large} />
                             <span>
                                 <input id="contained-button-file" type="file" name="url" style={{ display: "none" ,marginBottom:'0px'}} onChange={onChangeHandler} accept="image/*" />
                                 <label htmlFor="contained-button-file">
-                                    <Icon color="action" style={{marginLeft:'80px' ,cursor:'pointer',marginTop:'-30px'}}>linked_camera</Icon>
+                                    <Icon color="action" style={{marginLeft:'80px' ,cursor:'pointer',marginTop:'-10px',paddingTop:'0px'}}>linked_camera</Icon>
                                 </label>
                             </span>
                         </div>
