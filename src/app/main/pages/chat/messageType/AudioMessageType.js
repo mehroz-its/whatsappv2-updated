@@ -1,18 +1,82 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import MicIcon from '@material-ui/icons/Mic'
+
+import { makeStyles } from '@material-ui/core/styles';
+import AudioPlayer from 'material-ui-audio-player';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 
 const VoiceMessageType = function (props) {
-    console.log(props,'prpps');
-    
-    const {classes, message} = props;
+
+    const useStyles = makeStyles((theme) => {
+        return {
+            root: {
+                [theme.breakpoints.down('sm')]: {
+                    width: '150%',
+                },
+            },
+            loopIcon: {
+                color: '#3f51b5',
+                '&.selected': {
+                    color: '#0921a9',
+                },
+                '&:hover': {
+                    color: '#f50057',
+                },
+                [theme.breakpoints.down('sm')]: {
+                    display: 'none',
+                },
+            },
+            playIcon: {
+                color: '#f50057',
+                marginTop:'-5%',
+                '&:hover': {
+                    color: '#ff4081',
+                    marginTop:'-5%'
+                },
+            },
+            replayIcon: {
+                color: '#f50057',
+            },
+            pauseIcon: {
+                color: '#f50057',
+                marginTop:'-5%'
+            },
+            volumeIcon: {
+                display: 'none',
+                marginTop:'-5%'
+            },
+            volumeSlider: {
+                display: 'inline'
+            },
+            progressTime: {
+                color: 'rgba(0, 0, 0, 0.54)',
+
+
+                fontSize: 15,
+                fontWeight: 'bold'
+            },
+            mainSlider: {
+                color: '#3f51b5',
+                
+                '& .MuiSlider-rail': {
+                    color: '#7986cb',
+                
+                },
+                '& .MuiSlider-track': {
+                    color: '#3f51b5',
+                  
+                },
+                '& .MuiSlider-thumb': {
+                    color: '#303f9f',
+                
+
+                },
+            },
+        };
+    });
+    console.log(props, 'prpps');
+
+    const { classes, message } = props;
 
     const { attachments } = message;
 
@@ -20,6 +84,7 @@ const VoiceMessageType = function (props) {
     const [filename, setFilename] = React.useState('');
     const [fileType, setFileType] = React.useState('');
     const [audio, setAudio] = React.useState('');
+    const muiTheme = createMuiTheme({});
     const [play, setAudioState] = React.useState(false);
 
     const audioPlayHandler = () => {
@@ -54,22 +119,18 @@ const VoiceMessageType = function (props) {
 
     return (
         <div className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
-            <Card className={classes.root}>
-                <div>
-                    <MicIcon style={{position:'absolute',color:'#72bcd4',top:45,width:20,marginTop:'7px',right:230}} />
-                    <div>
-                        <AccountCircleIcon style={{width:40,height:40,marginTop:'8px'}}/>
-                       
-                        <IconButton onClick={audioPlayHandler} aria-label="play/pause" style={{marginTop:'-30px'}}>
-                            {!play && <PlayArrowIcon />}
-                            {play && <PauseIcon  />}
-                        </IconButton>
-                    </div>
-                </div>
-                <div style={{display:'flex',justifyContent:'flex-end',flex:1}}>
-                <a href={audioPath} target={'_blank'}><GetAppIcon style={{ width: 22, fontSize: 40, color: 'grey',marginTop:'20px' }} /></a>
-                </div>
+            <Card className={classes.root} style={{padding:10}}>
+                <ThemeProvider theme={muiTheme}>
+                    <AudioPlayer
+                        width="150%"
+                        src={audioPath}
+                        useStyles={useStyles}
+                        spacing="2"
+                        download
+                    />
+                </ThemeProvider>
             </Card>
+
         </div>
     )
 };

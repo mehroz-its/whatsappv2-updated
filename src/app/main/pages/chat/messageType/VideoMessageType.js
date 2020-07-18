@@ -33,7 +33,9 @@ const VideoMessageType = function (props) {
         {display && <Card style={{width: '350px', height: 'auto'}} className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
             <div style={{ position: "relative", display: 'inline-block' }}>
                 <ReactPlayer controls url={video} height="250px" width="350px" />
-                <p style={{ width: "100%", margin: '10px 5px 5px 0px' }}>{caption}</p>
+                <div style={{marginLeft:'3%'}}>
+                <p style={{ width: "100%", margin: '10px 10px 5px 0px',fontWeight:'bold' }}>{caption}</p>
+                </div>
             </div>
         </Card>}
         </div>
