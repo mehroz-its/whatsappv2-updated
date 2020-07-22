@@ -69,7 +69,7 @@ const useStyles = makeStyles(theme => ({
 				minHeight: 44
 			},
 			'& .list-item-text': {
-				padding: '0 0 0 8px'
+				padding: '0 0 0 0px'
 			}
 		}
 	},
@@ -80,15 +80,15 @@ const useStyles = makeStyles(theme => ({
 				height: 40,
 				minHeight: 40,
 				'& .list-item-text': {
-					padding: '0 0 0 8px'
+					padding: '0 0 0 0px'
 				}
 			},
 			'&.dense': {
 				'& .list-item': {
-					minHeight: 32,
-					height: 32,
+					minHeight: 2,
+					height: 2,
 					'& .list-item-text': {
-						padding: '0 0 0 8px'
+						padding: '0 0 0 0px'
 					}
 				}
 			}

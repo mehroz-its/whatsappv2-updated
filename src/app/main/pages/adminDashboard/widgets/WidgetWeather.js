@@ -37,7 +37,7 @@ function WidgetWeather(props) {
 			<div className="flex items-center justify-between px-4 pt-4">
 				<div className="flex items-center px-12">
 					<Icon color="action">location_on</Icon>
-					<Typography className="text-16 mx-8">
+					<Typography className="text-13 mx-8">
 						Karachi
 					</Typography>
 				</div>
@@ -45,14 +45,14 @@ function WidgetWeather(props) {
 					<Icon>more_vert</Icon>
 				</IconButton>
 			</div>
-			<div className="flex items-center justify-center p-16 pb-32">
-				<Icon className="meteocons text-40 ltr:mr-8 rtl:ml-8" color="action">
+			<div className="flex items-center justify-center p-13 pb-25">
+				<Icon className="meteocons text-25 ltr:mr-8 rtl:ml-8" color="action">
 				rainy2
 				</Icon>
-				<Typography className="text-44 mx-8" color="textSecondary">
+				<Typography className="text-40 mx-8" color="textSecondary">
 					22
 				</Typography>
-				<Typography className="text-48 font-300" color="textSecondary">
+				<Typography className="text-35 font-300" color="textSecondary">
 					°
 				</Typography>
 				<Typography className="text-44 font-300" color="textSecondary">
@@ -60,22 +60,22 @@ function WidgetWeather(props) {
 				</Typography>
 			</div>
 			<Divider />
-			<div className="flex justify-between items-center p-16">
+			<div className="flex justify-between items-center p-12">
 				<div className="flex items-center">
-					<Icon className="meteocons text-14" color="action">
+					<Icon className="meteocons text-10" color="action">
 						windy
 					</Icon>
-					<Typography className="mx-4">
+					<Typography className="mx-3">
 						12
 					</Typography>
 					<Typography color="textSecondary">KMH</Typography>
 				</div>
 
 				<div className="flex items-center">
-					<Icon className="meteocons text-14" color="action">
+					<Icon className="meteocons text-12" color="action">
 						compass
 					</Icon>
-					<Typography className="mx-4">
+					<Typography className="mx-3">
 					NW
 					</Typography>
 				</div>
@@ -84,7 +84,7 @@ function WidgetWeather(props) {
 					<Icon className="meteocons text-14" color="action">
 						rainy
 					</Icon>
-					<Typography className="mx-4">
+					<Typography className="mx-3">
 					98%
 					</Typography>
 				</div>

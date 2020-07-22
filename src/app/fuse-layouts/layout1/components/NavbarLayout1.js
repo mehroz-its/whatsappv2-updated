@@ -19,7 +19,7 @@ const useStyles = makeStyles({
 		background:
 			'linear-gradient(rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0) 30%), linear-gradient(rgba(0, 0, 0, 0.25) 0, rgba(0, 0, 0, 0) 40%)',
 		backgroundRepeat: 'no-repeat',
-		backgroundSize: '100% 40px, 100% 10px',
+		backgroundSize: '80% 40px, 80% 10px',
 		backgroundAttachment: 'local, scroll'
 	}
 });
@@ -34,7 +34,7 @@ function NavbarLayout1(props) {
 				color="primary"
 				position="static"
 				elevation={0}
-				className="flex flex-row items-center flex-shrink h-64 min-h-64 px-12"
+				className="flex flex-row items-center flex-shrink h-58 min-h-58 px-12"
 			>
 				<div className="flex flex-1 mx-8">
 					<Logo />

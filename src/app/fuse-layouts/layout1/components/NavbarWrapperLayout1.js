@@ -8,7 +8,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import NavbarLayout1 from './NavbarLayout1';
 
-const navbarWidth = 280;
+const navbarWidth = 230;
 
 const useStyles = makeStyles(theme => ({
 	wrapper: {

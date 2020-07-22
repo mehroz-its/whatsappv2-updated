@@ -72,7 +72,7 @@ function FuseNavVerticalItem(props) {
 			exact={item.exact}
 		>
 			{item.icon && (
-				<Icon className="list-item-icon text-16 flex-shrink-0" color="action">
+				<Icon className="list-item-icon text-14 flex-shrink-0" color="action">
 					{item.icon}
 				</Icon>
 			)}
@@ -80,7 +80,7 @@ function FuseNavVerticalItem(props) {
 			<ListItemText
 				className="list-item-text"
 				primary={item.translate ? t(item.translate) : item.title}
-				classes={{ primary: 'text-14 list-item-text-primary' }}
+				classes={{ primary: 'text-11 list-item-text-primary' }}
 			/>
 
 			{item.badge && <FuseNavBadge badge={item.badge} />}

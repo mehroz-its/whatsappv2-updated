@@ -258,7 +258,7 @@ function DashboardApp(props) {
 							enter={{
 								animation: 'transition.slideUpBigIn'
 							}}>
-							<Grid container spacing={3}>
+							<Grid container spacing={4}>
 								<Grid item md={8} sm={12} xs={12} >
 									<Grid container spacing={3}>
 										{box.map((value, index) => {
@@ -270,9 +270,9 @@ function DashboardApp(props) {
                                 })}
 									</Grid>
 								</Grid>
-								<Grid item md={4} sm={6} xs={12} >
-									<Card elevation={3} className="pt-12 pb-12">
-										<div id="chartdivv" style={{ width: "100%", height: "300px" }}></div>
+								<Grid item md={4} sm={4} xs={5} >
+									<Card elevation={3} className="pt-10 pb-10">
+										<div id="chartdivv" style={{ width: "110%", height: "250px",padding:25}}></div>
 									</Card>
 								</Grid>
 							</Grid>

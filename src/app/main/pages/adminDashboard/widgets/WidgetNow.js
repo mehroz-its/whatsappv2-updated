@@ -21,14 +21,14 @@ function WidgetNow() {
 	}
 
 	return (
-		<Paper className="w-full rounded-8 shadow-none border-1">
-			<div className="flex items-center justify-between px-4 pt-4">
-				<Typography className="text-16 px-12">{time.format('dddd, HH:mm:ss')}</Typography>
-				<IconButton aria-label="more">
+		<Paper className="rounded-8 shadow-none border-1" style={{height:'70%'}}>
+			<div className="flex items-center justify-between">
+				<Typography className="text-13 px-12">{time.format('dddd, HH:mm:ss')}</Typography>
+				<IconButton className="text">
 					<Icon>more_vert</Icon>
 				</IconButton>
 			</div>
-			<div className="text-center px-24 py-32">
+			<div className="text-center px-20 py-26">
 				<Typography className="text-24 leading-tight" color="textSecondary">
 					{time.format('MMMM')}
 				</Typography>
