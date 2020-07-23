@@ -129,9 +129,10 @@ function ChatsSidebar(props) {
 	
 
 	const [searchText, setSearchText] = useState('');
-	const [statusMenuEl, setStatusMenuEl] = useState(null);
+	const [statusMenuEl, setStatusMenuEl] = useState(false);
 	const [moreMenuEl, setMoreMenuEl] = useState(null);
 	const [value, setValue] = React.useState(0);
+	const [openuserStatusBar, setopenuserStatusBar] = React.useState(false);
 
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
@@ -179,8 +180,8 @@ function ChatsSidebar(props) {
 					{user && (
 						<div
 							className="relative w-40 h-40 p-0 mx-12 cursor-pointer"
-							onClick={() => dispatch(Actions.openUserSidebar())}
-							onKeyDown={() => dispatch(Actions.openUserSidebar())}
+							onClick={() => setStatusMenuEl(true)}
+							onKeyDown={() => handleStatusClose}
 							role="button"
 							tabIndex={0}
 						>

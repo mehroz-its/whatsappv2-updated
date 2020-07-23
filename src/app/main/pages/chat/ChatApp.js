@@ -221,16 +221,17 @@ function ChatApp(props) {
 	// const chat = useSelector(({ chatApp }) => chatApp.chat);
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
 	// const selectedContactId = useSelector(({ chatApp }) => chatApp.contacts.selectedContactId);
-	const mobileChatsSidebarOpen = false;
 	const userSidebarOpen = false;
 	const contactSidebarOpen = false;
-
+	var abc = []
+	const [mobileChatsSidebarOpen, setmobileChatsSidebarOpen] = React.useState(false);
 	const [lastMessageTimestamp, setlastMessageTimestamp] = React.useState(null);
 	const [latestMessageSender, setlatestMessageSender] = React.useState(null);
 	const [numbers, setnumbers] = React.useState([]);
 	const [messages, setmessages] = React.useState([]);
 	const [NewMessages, setNewMessages] = React.useState([]);
 	const [showLatestMessage, setshowLatestMessage] = React.useState(false);
+	const [userDrawer, setuserDrawer] = React.useState(false);
 	const [selectedRecipient, setselectedRecipient] = React.useState(null);
 	const [int_CustomerList, setint_CustomerList] = React.useState(null);
 	const [int_MessageLists, setint_MessageLists] = React.useState(null);
@@ -246,6 +247,7 @@ function ChatApp(props) {
 		console.log("selectedRecipientt");
 		clearInterval(int_MessageLists);
 		setselectedRecipient(e)
+		setmobileChatsSidebarOpen(false)
 		getConversation(e);
 		// if (selectedRecipient !== null) {
 		setint_MessageLists(setInterval(() => {
@@ -274,7 +276,6 @@ function ChatApp(props) {
 		});
 	}
 	const getConversation = (e) => {
-		// console.log("getConversation selectedRecipient :", e);
 		let params = {
 			key: ':number',
 			value: e.number,
@@ -284,23 +285,12 @@ function ChatApp(props) {
 		};
 		console.log("params : ", params);
 		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
-			// console.log("response :", response);
-			if (response.data.data.chat.length > NewMessages.length) {
-				//   console.log("if");
-				const messages = response.data.data.chat;
-				setNewMessages(response.data.data.chat)
-				setmessages(messages)
+			console.log("messages :", abc);
+			if (response.data.data.chat.length > abc.length) {
+				setmessages(response.data.data.chat)
+				abc = response.data.data.chat
 				setshowLatestMessage(true)
-				// setselectedRecipient(e)
 			}
-			else {
-				const messages = response.data.data.chat;
-				setmessages(messages)
-				setshowLatestMessage(false)
-			}
-			// if (int_MessageLists === null) setint_MessageLists(setInterval(() => {
-			// 	getConversation(e);
-			// }, 6000));
 			CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: e.number }, (response) => {
 
 			}, (response) => {
@@ -519,11 +509,7 @@ function ChatApp(props) {
 		setselectedRecipient(null)
 		setmessages([])
 		clearInterval(this.int_MessageLists);
-			// clearInterval(this.int_CustomerList);
-			// 	getNumbers();
-			// setint_CustomerList = setInterval(() => {
-			// 	getNumbers();
-			// }, 1000);
+			
 	}
 
 	function handleMoreMenuClick(event) {
@@ -792,7 +778,7 @@ function ChatApp(props) {
 							variant="temporary"
 							anchor="left"
 							open={mobileChatsSidebarOpen}
-							onClose={() => dispatch(Actions.closeMobileChatsSidebar())}
+							onClose={() =>setmobileChatsSidebarOpen(false)}
 							classes={{
 								paper: clsx(classes.drawerPaper, 'absolute ltr:left-0 rtl:right-0')
 							}}
@@ -865,7 +851,7 @@ function ChatApp(props) {
 									variant="outlined"
 									color="primary"
 									className="flex md:hidden normal-case"
-									onClick={() => dispatch(Actions.openMobileChatsSidebar())}
+									onClick={() =>setmobileChatsSidebarOpen(true)}
 								>
 									Select a contact to start a conversation!..
 								</Button>
@@ -877,7 +863,7 @@ function ChatApp(props) {
 											<IconButton
 												color="inherit"
 												aria-label="Open drawer"
-												onClick={() => dispatch(Actions.openMobileChatsSidebar())}
+												onClick={() => setmobileChatsSidebarOpen(true)}
 												className="flex md:hidden"
 												style={{marginTop:'-10px'}}
 											>
@@ -885,8 +871,8 @@ function ChatApp(props) {
 											</IconButton>
 											<div
 												className="flex items-center cursor-pointer"
-												onClick={() => dispatch(Actions.openContactSidebar())}
-												onKeyDown={() => dispatch(Actions.openContactSidebar())}
+												onClick={() => setuserDrawer(true)}
+												onKeyDown={() => setuserDrawer(false)}
 												role="button"
 												tabIndex={0}
 											>
@@ -945,8 +931,8 @@ function ChatApp(props) {
 						className="h-full absolute z-30"
 						variant="temporary"
 						anchor="right"
-						open={contactSidebarOpen}
-						onClose={() => dispatch(Actions.closeContactSidebar())}
+						open={userDrawer}
+						onClose={() => setuserDrawer(false)}
 						classes={{
 							paper: clsx(classes.drawerPaper, 'absolute ltr:right-0 rtl:left-0')
 						}}
@@ -961,7 +947,7 @@ function ChatApp(props) {
 							}
 						}}
 					>
-						<ContactSidebar />
+						{/* <ContactSidebar /> */}
 					</Drawer>
 				</div>
 			</div>
