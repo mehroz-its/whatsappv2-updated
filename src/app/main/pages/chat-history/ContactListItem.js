@@ -23,7 +23,6 @@ const useStyles = makeStyles(theme => ({
 
 function ContactListItem(props) {
 	const classes = useStyles(props);
-	console.log("props.contact : " ,  props.contact);
 	
 	return (
 		<ListItem

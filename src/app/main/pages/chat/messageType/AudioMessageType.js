@@ -74,7 +74,7 @@ const VoiceMessageType = function (props) {
             },
         };
     });
-    console.log(props, 'prpps');
+    // console.log(props, 'prpps');
 
     const { classes, message } = props;
 
@@ -88,7 +88,7 @@ const VoiceMessageType = function (props) {
     const [play, setAudioState] = React.useState(false);
 
     const audioPlayHandler = () => {
-        console.log(audio)
+        // console.log(audio)
         if (play) {
             setAudioState(false);
             audio.pause();
