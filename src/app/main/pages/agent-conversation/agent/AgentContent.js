@@ -2,6 +2,7 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -49,7 +50,7 @@ function AgentContent(props) {
 	const [dialogData, setDialogData] = React.useState(defaultDialogData)
 	const [textAreaNumbers, setTextAreaNumbers] = React.useState('');
 	const [agents, setagents] = React.useState([]);
-	const [selectedAgent, setselectedAgent] = React.useState('');
+	const [selectedAgent, setselectedAgent] = React.useState('Please Select');
 	const [numbers, setnumbers] = React.useState([]);
 	const [agentDropDownOpen, setagentDropDownOpen] = React.useState(false);
 
@@ -245,24 +246,27 @@ function AgentContent(props) {
 				<Grid container>
 					<Grid item xs={2} md={4}></Grid>
 					<Grid item xs={8} md={4} >
-
+					
 						<Select
-							labelId="demo-controlled-open-select-label"
+							
+							labelId="demo-controlled-select-label"
 							open={agentDropDownOpen}
 							onClose={handleCloseAgent}
 							onOpen={handleOpenAgent}
 							value={selectedAgent}
 							onChange={handleChangeAgent}
-							id="template_selection"
+							id="demo-simple-select"
 							fullWidth
-							style={{ width: '100%' }}
+							style={{ width: '100%',height:'60%'}}
 							inputProps={{
 								name: 'age',
 								id: 'outlined-age-native-simple',
 							}}
 						>
+							
 							{agents.map(data => {
 								return (
+								
 									<MenuItem key={`template_list_item_${data.id}`} value={data.id}>{data.username}</MenuItem>
 								)
 							})}

@@ -15,6 +15,14 @@ const useStyles = makeStyles(theme => ({
 			backgroundColor: theme.palette.background.paper
 		}
 	},
+	listItemText:{
+		fontSize:'12px',//Insert your required size
+		marginLeft:'4%'
+	  },
+	  listItemText2:{
+		fontSize:'11px',//Insert your required size
+		marginLeft:'4%'
+	  },
 	unreadBadge: {
 		backgroundColor: theme.palette.secondary.main,
 		color: theme.palette.secondary.contrastText
@@ -43,10 +51,7 @@ function ContactListItem(props) {
 			</div>
 
 			<ListItemText
-				classes={{
-					root: 'min-w-px px-16',
-					secondary: 'truncate'
-				}}
+			   classes={{primary:classes.listItemText,secondary:classes.listItemText2}}
 				primary={props.contact.name}
 				secondary={props.contact.number === props.contact.name ? null : props.contact.number}
 			/>
@@ -54,7 +59,7 @@ function ContactListItem(props) {
 			{props.contact.message_count && (
 				<div className="flex flex-col justify-center items-end">
 					{props.contact.last_closed && (
-						<Typography className="whitespace-no-wrap mb-8">
+						<Typography className="whitespace-no-wrap mb-8" style={{fontSize:'10px'}}>
 							{moment(props.contact.last_closed).format('ll')}
 						</Typography>
 					)}

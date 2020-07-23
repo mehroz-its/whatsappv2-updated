@@ -124,12 +124,13 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 	return (<div>
 		<TableContainer className="min-h-full sm:border-1 sm:rounded-16" >
 			<MaUTable {...getTableProps()}>
-				<TableHead>
+				<TableHead style={{fontSize:'12px'}}>
 					{headerGroups.map(headerGroup => (
 						<TableRow {...headerGroup.getHeaderGroupProps()}>
 							{headerGroup.headers.map(column => (
 								<TableCell
-									className="whitespace-no-wrap p-12"
+									className="whitespace-no-wrap p-12" 	
+									style={{fontSize:'12px',fontWeight:'bolder'}}
 									{...(!column.sortable
 										? column.getHeaderProps()
 										: column.getHeaderProps(column.getSortByToggleProps()))}
@@ -137,6 +138,7 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 									{column.render('Header')}
 									{column.sortable ? (
 										<TableSortLabel
+										style={{fontSize:'12px',fontWeight:'100'}}
 											active={column.isSorted}
 											// react-table has a unsorted state which is not treated here
 											direction={column.isSortedDesc ? 'desc' : 'asc'}
@@ -160,7 +162,7 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 								{row.cells.map(cell => {
 									return (
 										<TableCell
-										style={{fontSize:'12px'}}
+										     style={{fontSize:'12px'}}
 											{...cell.getCellProps()}
 											className={clsx('p-12', cell.column.className)}
 										>

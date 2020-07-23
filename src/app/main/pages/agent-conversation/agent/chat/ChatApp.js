@@ -33,7 +33,7 @@ import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
 import { CSVLink, CSVDownload } from 'react-csv';
 import Fade from '@material-ui/core/Fade'
 import copy from 'copy-to-clipboard';
-const drawerWidth = 400;
+const drawerWidth = 320;
 const headerHeight = 200;
 
 const useStyles = makeStyles(theme => ({
@@ -843,8 +843,8 @@ function ChatApp(props) {
 					<main className={clsx(classes.contentWrapper, 'z-10')}>
 						{!selectedRecipient ? (
 							<div className="flex flex-col flex-1 items-center justify-center p-24">
-								<Paper className="rounded-full p-48">
-									<Icon className="block text-64" color="secondary">
+								<Paper className="rounded-full p-24">
+									<Icon className="block text-32" color="secondary">
 										chat
 									</Icon>
 								</Paper>
@@ -867,8 +867,8 @@ function ChatApp(props) {
 							</div>
 						) : (
 								<>
-									<AppBar className="w-full" position="static" elevation={1}>
-										<Toolbar className="px-16">
+									<AppBar className="w-full" position="static" elevation={1} >
+										<Toolbar className="px-16"> 
 											<IconButton
 												color="inherit"
 												aria-label="Open drawer"
@@ -883,6 +883,7 @@ function ChatApp(props) {
 												onKeyDown={() => dispatch(Actions.openContactSidebar())}
 												role="button"
 												tabIndex={0}
+												style={{marginTop:'-10px'}}
 											>
 												<div className="relative mx-8">
 													<div className="absolute right-0 bottom-0 -m-4 z-10">
@@ -895,7 +896,7 @@ function ChatApp(props) {
 															: ''}
 													</Avatar>
 												</div>
-												<Typography color="inherit" className="text-18 font-600 px-4">
+												<Typography color="inherit" className="text-18 font-600 px-4" style={{marginTop:'-10px'}}>
 													{selectedRecipient.name}
 												</Typography>
 											</div>

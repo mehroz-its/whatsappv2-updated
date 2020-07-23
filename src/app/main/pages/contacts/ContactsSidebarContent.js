@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
 		color: 'inherit!important',
 		textDecoration: 'none!important',
 		height: 40,
+		fontSize:'12px',
 		width: 'calc(100% - 16px)',
 		borderRadius: '0 20px 20px 0',
 		paddingLeft: 24,
@@ -33,7 +34,17 @@ const useStyles = makeStyles(theme => ({
 		'& .list-item-icon': {
 			marginRight: 16
 		}
-	}
+	},
+	avatar: {
+	
+		padding:0,
+		width:30,
+		height:30
+	  },
+	  listItemText:{
+		fontSize:'100px',//Insert your required size
+	
+	  }
 }));
 
 function ContactsSidebarContent(props) {
@@ -65,8 +76,10 @@ function ContactsSidebarContent(props) {
 			<FuseAnimate animation="transition.slideLeftIn" delay={200}>
 				<Paper className="rounded-0 shadow-none lg:rounded-8 lg:shadow-1">
 					<div className="p-24 flex items-center">
-						<Avatar alt={value.charAt(0)} src="../../../" />
-						<Typography className="mx-12">{value}</Typography>
+						<Avatar alt={value.charAt(0)} src="../../../"  
+						className={classes.avatar}
+						/>
+						<Typography className="mx-12" style={{fontSize:'12px',marginTop:'1px'}}>{value}</Typography>
 					</div>
 					<Divider />
 					<List>
@@ -83,6 +96,8 @@ function ContactsSidebarContent(props) {
 							<ListItemText className="truncate" primary="All contacts" disableTypography />
 						</ListItem>
 						<ListItem
+						
+							 
 							button
 							component={NavLinkAdapter}
 							to="/apps/blocklist"
@@ -92,7 +107,9 @@ function ContactsSidebarContent(props) {
 							<Icon className="list-item-icon text-16" color="action">
 								block
 							</Icon>
-							<ListItemText className="truncate" primary="Blocked Contacts" disableTypography />
+							<ListItemText 
+						
+							primary="Blocked Contacts" disableTypography />
 						</ListItem>
 						{/* <ListItem
 							button
