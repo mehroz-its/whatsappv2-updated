@@ -196,7 +196,7 @@ function ChatsSidebar(props) {
 								role="button"
 								tabIndex={0}
 							>
-								<StatusIcon status={user.status} />
+								
 							</div>
 							<Menu
 								id="status-switch"
@@ -237,8 +237,8 @@ function ChatsSidebar(props) {
 				{useMemo(
 					() => (
 						<Toolbar className="px-16">
-							<Paper className="flex p-4 items-center w-full px-8 py-4 rounded-8" elevation={1}>
-								<Icon color="action">search</Icon>
+							<Paper className="flex p-4 items-center w-full px-8 py-4 rounded-0" elevation={1}>
+								<Icon color="action" fontSize="small">search</Icon>
 
 								<Input
 									placeholder="Search or start new chat"

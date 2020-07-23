@@ -8,13 +8,25 @@ import moment from 'moment';
 import React from 'react';
 import StatusIcon from './StatusIcon';
 
+
+
+
 const useStyles = makeStyles(theme => ({
 	contactListItem: {
 		borderBottom: `1px solid ${theme.palette.divider}`,
 		'&.active': {
 			backgroundColor: theme.palette.background.paper
-		}
+		},
+		
 	},
+	listItemText:{
+		fontSize:'12px',//Insert your required size
+		marginLeft:'4%'
+	  },
+	  listItemText2:{
+		fontSize:'11px',//Insert your required size
+		marginLeft:'4%'
+	  },
 	unreadBadge: {
 		backgroundColor: theme.palette.secondary.main,
 		color: theme.palette.secondary.contrastText
@@ -24,7 +36,7 @@ const useStyles = makeStyles(theme => ({
 function ContactListItem(props) {
 	const classes = useStyles(props);
 	console.log("props.contact : " ,  props.contact);
-	
+
 	return (
 		<ListItem
 			button
@@ -34,7 +46,7 @@ function ContactListItem(props) {
 			onClick={() => props.onContactClick(props.contact)}
 		>
 			<div className="relative">
-				<div className="absolute right-0 bottom-0 -m-4 z-10">
+				<div className="absolute right-0 bottom-0 -m-2 z-6">
 					<StatusIcon status={props.contact.name} />
 				</div>
 
@@ -44,10 +56,8 @@ function ContactListItem(props) {
 			</div>
 
 			<ListItemText
-				classes={{
-					root: 'min-w-px px-16',
-					secondary: 'truncate'
-				}}
+			   classes={{primary:classes.listItemText,secondary:classes.listItemText2}}
+	
 				primary={props.contact.name}
 				secondary={props.contact.number === props.contact.name ? null : props.contact.number}
 			/>
@@ -55,7 +65,7 @@ function ContactListItem(props) {
 			{props.contact.message_count && (
 				<div className="flex flex-col justify-center items-end">
 					{props.contact.last_closed && (
-						<Typography className="whitespace-no-wrap mb-8">
+						<Typography className="whitespace-no-wrap mb-1" style={{fontSize:'10px'}}>
 							{moment(props.contact.last_closed).format('ll')}
 						</Typography>
 					)}
@@ -63,7 +73,7 @@ function ContactListItem(props) {
 						<div
 							className={clsx(
 								classes.unreadBadge,
-								'flex items-center justify-center min-w-24 h-24 rounded-full text-14 text-center'
+								'flex items-center justify-center min-w-24 h-24 rounded-full text-10 text-center'
 							)}
 						>
 							{props.contact.message_count}

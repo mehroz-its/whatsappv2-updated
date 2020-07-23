@@ -33,8 +33,15 @@ import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
 import { CSVLink, CSVDownload } from 'react-csv';
 import Fade from '@material-ui/core/Fade'
 import copy from 'copy-to-clipboard';
-const drawerWidth = 400;
+const drawerWidth = 320;
 const headerHeight = 200;
+
+
+const styles = {
+	avatar: {
+	  margin: 100,
+	},
+}
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -46,6 +53,11 @@ const useStyles = makeStyles(theme => ({
 		height: 'auto',
 		backgroundColor: 'theme.palette.background.default'
 	},
+	avatar: {
+		marginTop:'-14px',
+		padding:0
+	  },
+  
 	topBg: {
 		position: 'absolute',
 		left: 0,
@@ -800,7 +812,7 @@ function ChatApp(props) {
 					</Hidden>
 					<Hidden smDown>
 						<Drawer
-							className="h-full z-20"
+							className="h-full z-15"
 							variant="permanent"
 							open
 							classes={{
@@ -841,7 +853,7 @@ function ChatApp(props) {
 										chat
 									</Icon>
 								</Paper>
-								<Typography variant="h6" style={{fontSize:'16px'}}>
+								<Typography variant="h6" style={{fontSize:'px'}}>
 									Chat App
 								</Typography>
 								<Typography
@@ -860,13 +872,14 @@ function ChatApp(props) {
 							</div>
 						) : (
 								<>
-									<AppBar className="w-full" position="static" elevation={1}>
+									<AppBar className="w-full" position="static" elevation={1} style={{height:'8%'}}>
 										<Toolbar className="px-16">
 											<IconButton
 												color="inherit"
 												aria-label="Open drawer"
 												onClick={() => dispatch(Actions.openMobileChatsSidebar())}
 												className="flex md:hidden"
+												style={{marginTop:'-10px'}}
 											>
 												<Icon>chat</Icon>
 											</IconButton>
@@ -877,29 +890,33 @@ function ChatApp(props) {
 												role="button"
 												tabIndex={0}
 											>
-												<div className="relative mx-8">
-													<div className="absolute right-0 bottom-0 -m-4 z-10">
+												<div className="relative mx-6">
+													{/* <div className="absolute right-0 bottom-0  -m-1 z-2">
+													
 														<StatusIcon status={selectedRecipient.status} />
-													</div>
+														
+													</div> */}
 
-													<Avatar src={selectedRecipient.avatar} alt={selectedRecipient.name}>
+													<Avatar 
+													
+													src={selectedRecipient.avatar} alt={selectedRecipient.name} className={classes.avatar}>
 														{!selectedRecipient.avatar || selectedRecipient.avatar === ''
 															? selectedRecipient.name[0]
 															: ''}
 													</Avatar>
 												</div>
-												<Typography color="inherit" className="text-16 font-600 px-4">
+												<Typography color="inherit" className="text-12 font-600 px-4" style={{marginTop:'-10px'}}>
 													{selectedRecipient.name}
 												</Typography>
 											</div>
-											<div style={{position:'absolute',right:1}}>
+											<div style={{position:'absolute',right:1,top:1}}>
 						<IconButton
 							aria-owns={moreMenuEl ? 'chats-more-menu' : null}
 							aria-haspopup="true"
 							onClick={handleMoreMenuClick}
 							style={{color:'white'}}
 						>
-							<Icon>more_vert</Icon>
+							<Icon fontSize="small" >more_vert</Icon>
 						</IconButton>
 						<Menu
 							id="chats-more-menu"

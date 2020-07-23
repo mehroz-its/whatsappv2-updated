@@ -830,7 +830,7 @@ function Chat(props) {
 										/>
 									)}
 									<div className="bubble flex relative items-center justify-center p-8 max-w-full">
-										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap">{item.message_body}</div> : null}
+										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{fontSize:'12px'}}>{item.message_body}</div> : null}
 										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "video" ? <VideoMessageType index={index} classes={classes} message={item} /> : null}
@@ -861,12 +861,12 @@ function Chat(props) {
 					)}
 			</FuseScrollbars>
 			{chat && (
-				<form onSubmit={onMessageSubmit} className="absolute bottom-0 right-0 left-0 ">
+				<form onSubmit={onMessageSubmit} className="absolute bottom-0 right-0 left-0 top-10">
 					<Paper className="flex items-center relative " elevation={1}>
 						<TextField
 							multiline={true}
 							rows="2"
-							style={{ height: 170, padding: 0, margin: 0, marginTop: -32, }}
+							style={{ height: 140, padding: 0, margin: 0, marginTop: -32, }}
 							autoFocus={false}
 							id="message-input"
 							className="flex-1"
@@ -884,6 +884,7 @@ function Chat(props) {
 							onChange={onInputChange}
 							value={messageText}
 						/>
+						
 						<IconButton aria-controls="fade-menu" aria-haspopup="true" onClick={handleClick} style={{ position: 'absolute', left: 120, bottom: 3 }}>
 							<AttachFileIcon />
 
@@ -910,7 +911,7 @@ function Chat(props) {
 
 						</Menu>
 
-						<Button variant="contained" style={{ position: 'absolute', left: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, }} onClick={(e) => conversationContextMenuCallback("canned_messages")}>Canned</Button>
+						<Button variant="contained" style={{ position: 'absolute', left: 15, bottom: 13, fontSize: 12, paddingTop: 5, paddingBottom: 5, paddingLeft: 28, paddingRight: 28, }} onClick={(e) => conversationContextMenuCallback("canned_messages")}>Canned</Button>
 						<Button variant="contained" style={{ position: 'absolute', right: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, backgroundColor: '#424141', color: 'white' }} onClick={sendMessageHandler}>Send</Button>
 
 					</Paper>
