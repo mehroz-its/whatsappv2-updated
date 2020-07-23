@@ -258,6 +258,7 @@ function ChatsSidebar(props) {
 					[searchText]
 				)}
 			</AppBar>
+		
 			<FuseScrollbars className="overflow-y-auto flex-1">
 				<List className="w-full">
 					{
@@ -310,6 +311,7 @@ function ChatsSidebar(props) {
 
 
 		</div>
+	
 	);
 }
 

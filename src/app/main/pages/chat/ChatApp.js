@@ -96,7 +96,7 @@ const useStyles = makeStyles(theme => ({
 		backgroundImage: 'url("/assets/images/patterns/rain-grey.png")',
 		backgroundColor: theme.palette.background.paper,
 		boxShadow: theme.shadows[1],
-		borderRadius: 8,
+		borderRadius: 0,
 		minHeight: 0,
 		overflow: 'hidden'
 	},
@@ -808,6 +808,7 @@ function ChatApp(props) {
 							<ChatsSidebar numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
 						</Drawer>
 					</Hidden>
+					
 					<Drawer
 						className="h-full absolute z-30"
 						variant="temporary"
