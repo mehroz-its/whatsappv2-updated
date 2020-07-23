@@ -13,13 +13,7 @@ function Campaign() {
 	const Agent = (value) => {
 		setSelectedAgent(value)
 		setViewChat(true)
-		// console.log('ceeleded', props.ValueForSearch, searchVal);
-
-		// setSearchVal(props.ValueForSearch)
-	
-		// console.log(data2, 'filterssss');
-
-
+		console.log(viewChat, value,'i am in main')
 	}
 
 	return (
@@ -29,8 +23,8 @@ function Campaign() {
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
 			header={<AgentHeader  Agent={Agent} />}
-			content={<AgentContent  val={selectedAgent} viewChat={viewChat} />}
-			// innerScroll
+			content={<AgentContent  selectedAgent={selectedAgent} displayChat={viewChat} />}
+			innerScroll
 		/>
 	);
 }

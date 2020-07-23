@@ -86,10 +86,11 @@ function AgentHeader(props) {
 		setagentDropDownOpen(true)
 	};
 	const handleChangeAgent = (event) => {
+		console.log('header')
 		setselectedAgent(event.target.value)
 		props.Agent(event.target.value)
 
-		getAgentsCustomers(event.target.value)
+		// getAgentsCustomers(event.target.value)
 
 	};
 
