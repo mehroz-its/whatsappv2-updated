@@ -29,7 +29,7 @@ const GreenCheckbox = withStyles({
 
 const useStyles = makeStyles((theme) => ({
 	addButton: {
-		position: 'absolute',
+		position: 'fixed',
 		bottom: 50,
 		right: 50,
 		zIndex: 99
@@ -176,6 +176,7 @@ function Cities(props) {
 				<Fab
 					color="primary"
 					aria-label="add"
+					size="medium"
 					className={classes.addButton}
 					onClick={handleClickOpen}
 				// onClick={ev => dispatch(Actions.openNewContactDialog())}

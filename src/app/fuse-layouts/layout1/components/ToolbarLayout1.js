@@ -33,6 +33,7 @@ function ToolbarLayout1(props) {
 				color="default"
 				style={{ backgroundColor: toolbarTheme.palette.background.default }}
 			>
+				<div style={{height:50}}>
 				<Toolbar className="p-0">
 					{config.navbar.display && config.navbar.position === 'left' && (
 						<Hidden lgUp>
@@ -69,6 +70,7 @@ function ToolbarLayout1(props) {
 						</Hidden>
 					)}
 				</Toolbar>
+				</div>
 			</AppBar>
 		</ThemeProvider>
 	);

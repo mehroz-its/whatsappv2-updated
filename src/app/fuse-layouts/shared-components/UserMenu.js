@@ -76,11 +76,12 @@ const UserMenu =(props) => {
 	console.log(props)
 	return (
 		<>
-			<Button className="h-64" onClick={userMenuClick}>
+		
+			<Button className="h-40" style={{marginTop:'4%'}} onClick={userMenuClick}>
 				{user.data.photoURL ? (
-					<Avatar className=""  alt={username.charAt(0)} src="../../../" />
+					<Avatar className=""  style={{width:'30px', height:'30px'}} alt={username.charAt(0)} src="../../../" />
 				) : (
-						<Avatar className="">{user.data.displayName[0]}</Avatar>
+						<Avatar className="" style={{width:'35px', height:'35px'}}>{user.data.displayName[0]}</Avatar>
 					)}
 
 				<div className="hidden md:flex flex-col mx-12 items-start">

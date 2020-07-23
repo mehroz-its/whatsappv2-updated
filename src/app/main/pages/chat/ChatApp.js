@@ -837,11 +837,11 @@ function ChatApp(props) {
 						{!selectedRecipient ? (
 							<div className="flex flex-col flex-1 items-center justify-center p-24">
 								<Paper className="rounded-full p-48">
-									<Icon className="block text-64" color="secondary">
+									<Icon className="block text-40" color="secondary">
 										chat
 									</Icon>
 								</Paper>
-								<Typography variant="h6" className="my-24">
+								<Typography variant="h6" style={{fontSize:'16px'}}>
 									Chat App
 								</Typography>
 								<Typography
@@ -888,7 +888,7 @@ function ChatApp(props) {
 															: ''}
 													</Avatar>
 												</div>
-												<Typography color="inherit" className="text-18 font-600 px-4">
+												<Typography color="inherit" className="text-16 font-600 px-4">
 													{selectedRecipient.name}
 												</Typography>
 											</div>

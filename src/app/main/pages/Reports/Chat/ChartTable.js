@@ -238,19 +238,19 @@ function ChartTable(props) {
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-										<TableCell component="th" scope="row" >
+										<TableCell component="th" scope="row" style={{fontSize:'12px'}}>
 											{n.incoming}
 										</TableCell>
-										<TableCell component="th" scope="row">
+										<TableCell component="th" scope="row" style={{fontSize:'12px'}}>
 											{n.incoming_count}
 										</TableCell>
-										<TableCell component="th" scope="row">
+										<TableCell component="th" scope="row" style={{fontSize:'12px'}}>
 											{n.number}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
+										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px'}}>
 											{n.outgoing}
 										</TableCell>
-                                        <TableCell component="th" scope="row" align="right">
+                                        <TableCell component="th" scope="row" align="right" style={{fontSize:'12px'}}>
 											{n.outgoing_count}
 										</TableCell>
 									

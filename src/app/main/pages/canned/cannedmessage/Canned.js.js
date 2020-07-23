@@ -27,7 +27,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
 	addButton: {
-		position: 'absolute',
+		position: 'fixed',
 		bottom: 50,
 		right: 50,
 		zIndex: 99
@@ -175,7 +175,7 @@ autoHideDuration={3000}
 			<FusePageCarded
 				classes={{
 					content: 'flex',
-					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
+					header: 'min-h-25 h-25 sm:h-25 sm:min-h-25'
 				}}
 				header={<CannedHeader SearchVal={searchContact} />}
 				content={<CannedTable   snackbar={snackbar}InsertedVal={val}  dataa={data2} ValueForSearch={val} isOpen={updateDialogOpen} onClickOpen={handleUpdateClickOpen} onClose={handleClose} />}
@@ -183,6 +183,7 @@ autoHideDuration={3000}
 			/>
 			<FuseAnimate animation="transition.expandIn" delay={300}>
 				<Fab
+				    size="medium"
 					color="primary"
 					aria-label="add"
 					className={classes.addButton}

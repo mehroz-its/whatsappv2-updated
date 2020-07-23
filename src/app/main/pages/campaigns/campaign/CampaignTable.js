@@ -276,50 +276,50 @@ autoHideDuration={3000}
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-										<TableCell component="th" scope="row" >
+										<TableCell component="th" scope="row" style={{fontSize:'12px'}}>
 											{n.id}
 										</TableCell>
-										<TableCell component="th" scope="row">
+										<TableCell component="th" scope="row" style={{fontSize:'12px'}}>
 											{n.name}
 										</TableCell>
-										<TableCell component="th" scope="row">
+										<TableCell component="th" scope="row" style={{fontSize:'12px'}}>
 											{n.description}
 										</TableCell>
-										{<TableCell component="th" scope="row" align="right">
+										{<TableCell component="th" scope="row" align="right" style={{fontSize:'12px'}}>
 											{n.begin_dt === null ? 'N/A' : n.begin_dt}
 										</TableCell>}
-										<TableCell component="th" scope="row" align="right">
+										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px'}}>
 											{n.activated ? (
-												<Icon className="text-green text-20">check_circle</Icon>
+												<Icon className="text-green text-16">check_circle</Icon>
 											) : (
-													<Icon className="text-red text-20">cancel</Icon>
+													<Icon className="text-red text-16">cancel</Icon>
 												)}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
-											{n.progress ? (
-												<Icon className="text-green text-20">check_circle</Icon>
+										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px'}}>
+											{n.progress ? ( 
+												<Icon className="text-green text-16">check_circle</Icon>
 											) : (
-													<Icon className="text-red text-20">cancel</Icon>
+													<Icon className="text-red text-16">cancel</Icon>
 												)}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
+										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px'}}>
 											{n.consumers}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
+										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px'}}>
 											{n.success}
-										</TableCell>
-										<TableCell component="th" scope="row" align="right">
+										</TableCell >
+										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px'}}>
 											{n.failures}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
+										{/* <TableCell component="th" scope="row" align="right" style={{fontSize:'12px'}}>
 											{n.dtu}
 									
-										</TableCell>
-										<TableCell component="th" scope="row" align="right">
+										</TableCell> */}
+										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px'}}>
 											{n.completed ? (
-												<Icon className="text-green text-20">check_circle</Icon>
+												<Icon className="text-green text-16">check_circle</Icon>
 											) : (
-													<Icon className="text-red text-20">cancel</Icon>
+													<Icon className="text-red text-16">cancel</Icon>
 												)}
 										</TableCell>
 										{/* 

@@ -106,6 +106,10 @@ input:-webkit-autofill {
     animation-fill-mode: both;
     -webkit-box-shadow:0 0 0 100px transparent inset!important;
 }
+input:focus
+{
+    outline: none;
+}
 
 @import 'print.css';
 

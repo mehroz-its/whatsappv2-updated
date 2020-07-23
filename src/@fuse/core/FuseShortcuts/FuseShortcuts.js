@@ -30,7 +30,7 @@ const useStyles = makeStyles({
 		color: 'inherit'
 	},
 	addIcon: {
-		color: amber[600]
+		color: amber[500]
 	}
 });
 
@@ -131,7 +131,7 @@ function FuseShortcuts(props) {
 									title={item.title}
 									placement={props.variant === 'horizontal' ? 'bottom' : 'left'}
 								>
-									<IconButton className="w-40 h-40 p-0">
+									<IconButton className="w-40 h-30 p-0">
 										{item.icon ? (
 											<Icon>{item.icon}</Icon>
 										) : (
@@ -148,7 +148,8 @@ function FuseShortcuts(props) {
 					placement={props.variant === 'horizontal' ? 'bottom' : 'left'}
 				>
 					<IconButton
-						className="w-40 h-40 p-0"
+					style={{marginTop:'-1%'}}
+						className="w-25 h-25 p-0"
 						aria-owns={addMenu ? 'add-menu' : null}
 						aria-haspopup="true"
 						onClick={addMenuClick}

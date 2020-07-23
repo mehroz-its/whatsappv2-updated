@@ -189,9 +189,9 @@ function CannedTable(props) {
 		}
 	}
 	return (
-		<div className="w-full flex flex-col">
-			<FuseScrollbars className="flex-grow overflow-x-auto">
-				<Table className="min-w-xl" aria-labelledby="tableTitle">
+		<div className="w-full flex flex-col" >
+			<FuseScrollbars className="flex-grow overflow-x-auto" >
+				<Table className="min-w-xl" aria-labelledby="tableTitle" >
 					<CannedTableHead
 						numSelected={selected.length}
 						order={order}
@@ -222,7 +222,7 @@ function CannedTable(props) {
 								const isSelected = selected.indexOf(n.id) !== -1;
 								return (
 									<TableRow
-										className="h-64 cursor-pointer"
+										className="h-6 cursor-pointer"
 										hover
 										role="checkbox"
 										aria-checked={isSelected}
@@ -239,26 +239,28 @@ function CannedTable(props) {
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-										<TableCell component="th" scope="row" >
+										<TableCell component="th" scope="row" size="small"
+										style={{fontSize:'12px'}}
+										>
 											{n.id}
 										</TableCell>
-										<TableCell component="th" scope="row">
+										<TableCell 		style={{fontSize:'12px'}} component="th" scope="row">
 											{n.message_name}
 										</TableCell>
-										<TableCell component="th" scope="row">
+										<TableCell 		style={{fontSize:'12px'}} component="th" scope="row">
 											{n.message_text}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
+										<TableCell  		style={{fontSize:'12px'}}component="th" scope="row" align="right">
 											{n.message_params}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
+										<TableCell  		style={{fontSize:'12px'}} component="th" scope="row" align="right">
 											{n.message_type}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
+										<TableCell  		style={{fontSize:'12px'}} component="th" scope="row" align="right">
 											{n.enabled ? (
-												<Icon className="text-green text-20">check_circle</Icon>
+												<Icon className="text-green text-16">check_circle</Icon>
 											) : (
-													<Icon className="text-red text-20">cancel</Icon>
+													<Icon className="text-red text-16">cancel</Icon>
 												)}
 										</TableCell>
 										{/* 

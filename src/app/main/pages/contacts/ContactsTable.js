@@ -152,6 +152,7 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 						prepareRow(row);
 						return (
 							<TableRow
+							style={{fontSize:'12px'}}
 								{...row.getRowProps()}
 								onClick={ev => handleClick(ev, row)}
 								className="truncate cursor-pointer"
@@ -159,6 +160,7 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 								{row.cells.map(cell => {
 									return (
 										<TableCell
+										style={{fontSize:'12px'}}
 											{...cell.getCellProps()}
 											className={clsx('p-12', cell.column.className)}
 										>

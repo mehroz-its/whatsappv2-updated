@@ -226,7 +226,7 @@ function DashboardApp(props) {
 		<FusePageSimple
 		classes={{
 			content: 'flex',
-			header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
+			header: 'min-h-150 h-150 sm:h-150 sm:min-h-150',
 			root: classes.layoutRoot,
 		}}
 			header={
@@ -244,10 +244,10 @@ function DashboardApp(props) {
 					textColor="primary"
 					variant="scrollable"
 					scrollButtons="off"
-					className="w-full border-b-1 px-24"
+					className="w-full border-b-1 px-10"
 				>
-					<Tab className="text-14 font-600 normal-case" label="Statics" />
-					<Tab className="text-14 font-600 normal-case" label="Charts" />
+					<Tab className="text-11 font-600 normal-case" label="Statics" />
+					<Tab className="text-11 font-600 normal-case" label="Charts" />
 				</Tabs>
 			}
 			content={
@@ -270,7 +270,7 @@ function DashboardApp(props) {
                                 })}
 									</Grid>
 								</Grid>
-								<Grid item md={4} sm={4} xs={5} >
+								<Grid item md={4} sm={5} xs={5} >
 									<Card elevation={3} className="pt-10 pb-10">
 										<div id="chartdivv" style={{ width: "110%", height: "250px",padding:25}}></div>
 									</Card>

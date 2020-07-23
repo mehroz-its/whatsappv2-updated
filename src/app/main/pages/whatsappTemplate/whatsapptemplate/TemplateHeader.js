@@ -19,11 +19,11 @@ function TemplateHeader(props) {
 		<div className="flex flex-1 w-full items-center justify-between">
 			<div className="flex items-center">
 				<FuseAnimate animation="transition.expandIn" delay={300}>
-					<Icon className="text-32">chrome_reader_mode</Icon>
+					<Icon className="text-26">chrome_reader_mode</Icon>
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 					<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-					Whatsapp Template
+					<span style={{fontSize:'15px'}}>Whtsapp Template</span>
 					</Typography>
 				</FuseAnimate>
 			</div>
@@ -32,18 +32,21 @@ function TemplateHeader(props) {
 				<ThemeProvider theme={mainTheme}>
 					<FuseAnimate animation="transition.slideDownIn" delay={300}>
 						<Paper className="flex items-center w-full max-w-512 px-8 py-4 rounded-8" elevation={1}>
-							<Icon color="action">search</Icon>
-
-							<Input
-								placeholder="Search"
-								className="flex flex-1 mx-8"
-								disableUnderline
-								fullWidth
-								onChange={e=>{
+						<Icon color="action" fontSize="small">search</Icon>
+							<input
+							style={{border:'none'}}
+							rows={1}
+							placeholder="Search"
+							className="flex flex-1 mx-8 "
+							disableUnderline
+							onChange={e=>{
 							
-									props.SearchVal(e.target.value)
-									
-								}}
+								props.SearchVal(e.target.value)
+								
+							}}
+							
+						   
+							placeholder="Search"
 							/>
 						</Paper>
 					</FuseAnimate>

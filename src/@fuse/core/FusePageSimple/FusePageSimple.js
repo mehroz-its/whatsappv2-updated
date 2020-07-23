@@ -6,8 +6,8 @@ import React, { useRef } from 'react';
 import FusePageSimpleHeader from './FusePageSimpleHeader';
 import FusePageSimpleSidebar from './FusePageSimpleSidebar';
 
-const headerHeight = 139;
-const toolbarHeight = 64;
+const headerHeight = 110;
+const toolbarHeight = 50;
 const drawerWidth = 200;
 
 const useStyles = makeStyles(theme => ({

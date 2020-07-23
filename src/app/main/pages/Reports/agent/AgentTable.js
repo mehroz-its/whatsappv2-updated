@@ -236,22 +236,22 @@ function AgentTable(props) {
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-										<TableCell component="th" scope="row"  align="center">
+										<TableCell component="th" scope="row"  align="center" style={{fontSize:'12px'}}>
 											{n.agent_id}
 										</TableCell>
-										<TableCell component="th" scope="row"  align="center">
+										<TableCell component="th" scope="row"  align="center" style={{fontSize:'12px'}}>
 											{n.agent_name}
 										</TableCell>
-										<TableCell component="th" scope="row"  align="center">
+										<TableCell component="th" scope="row"  align="center" style={{fontSize:'12px'}}>
 											{n.total_chat_count}
 										</TableCell>
-										<TableCell component="th" scope="row" align="center">
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px'}}>
 											{n.total_engagement_count}
 										</TableCell>
-                                        <TableCell component="th" scope="row" align="center">
+                                        <TableCell component="th" scope="row" align="center" style={{fontSize:'12px'}}>
 											{n.responsetime}
 										</TableCell>
-                                        <TableCell component="th" scope="row" align="center">
+                                        <TableCell component="th" scope="row" align="center" style={{fontSize:'12px'}}>
 											{n.account_status}
 										</TableCell>
 									

@@ -138,6 +138,7 @@ function TemplateTableHead(props) {
 				{rows.map(row => {
 					return (
 						<TableCell
+						style={{fontSize:'12px'}}
 							key={row.id}
 							align={row.align}
 							padding={row.disablePadding ? 'none' : 'default'}

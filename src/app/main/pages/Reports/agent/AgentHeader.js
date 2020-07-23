@@ -21,11 +21,11 @@ function AgentHeader(props) {
 				<div className="flex items-center">
 					
 					<FuseAnimate animation="transition.expandIn" delay={300}>
-						<Icon className="text-32">bar_chart</Icon>
+						<Icon className="text-26">bar_chart</Icon>
 					</FuseAnimate>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 						<Typography variant="h6" className="mx-12 hidden sm:flex">
-							Chart Report
+						<span style={{fontSize:'15px'}}>Chart Report</span>
 						</Typography>
 					</FuseAnimate>
 				</div>
@@ -34,22 +34,23 @@ function AgentHeader(props) {
 			<div className="flex flex-1 items-center justify-center px-8 sm:px-12">
 				<ThemeProvider theme={mainTheme}>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-						<Paper className="flex p-4 items-center w-full max-w-512 h-48 px-8 py-4" elevation={1}>
+						<Paper className="flex p-4 items-center w-full max-w-512 h-25 px-8 py-4" elevation={1}>
 							<Icon color="action">search</Icon>
 
-							<Input
-								placeholder="Search for anything"
-								className="flex flex-1 px-16"
-								disableUnderline
-								fullWidth
-								// value={searchText}
-								onChange={e=>{
-					
-									props.SearchVal(e.target.value)
-								}}
-									
-								// }}
-								// onChange={ev => dispatch(Actions.setSearchText(ev))}
+							<input
+							style={{border:'none'}}
+							rows={1}
+							placeholder="Search"
+							className="flex flex-1 mx-8 "
+							disableUnderline
+							onChange={e=>{
+							
+								props.SearchVal(e.target.value)
+								
+							}}
+							
+						   
+							placeholder="Search"
 							/>
 						</Paper>
 					</FuseAnimate>

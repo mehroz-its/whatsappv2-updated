@@ -191,23 +191,23 @@ function ContactGroupTable(props) {
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-										<TableCell component="th" scope="row" >
+										<TableCell component="th" scope="row" 	style={{fontSize:'12px'}}>
 											{n.id}
 										</TableCell>
-										<TableCell component="th" scope="row">
+										<TableCell component="th" scope="row" 	style={{fontSize:'12px'}}>
 											{n.title}
 										</TableCell>
-										<TableCell component="th" scope="row">
+										<TableCell component="th" scope="row" 	style={{fontSize:'12px'}}>
 											{n.description}
 										</TableCell>
-										<TableCell component="th" scope="row" align="left">
+										<TableCell component="th" scope="row" align="left" 	style={{fontSize:'12px'}}>
 											{n.customers.length}
 										</TableCell>
-										<TableCell component="th" scope="row" align="left">
+										<TableCell component="th" scope="row" align="left" 	style={{fontSize:'12px'}}>
 											{n.enabled ? (
-												<Icon className="text-green text-20">check_circle</Icon>
+												<Icon className="text-green text-16">check_circle</Icon>
 											) : (
-													<Icon className="text-red text-20">cancel</Icon>
+													<Icon className="text-red text-16">cancel</Icon>
 												)}
 										</TableCell>
 										{/* 

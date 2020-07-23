@@ -6,9 +6,9 @@ import React, { useRef } from 'react';
 import FusePageCardedHeader from './FusePageCardedHeader';
 import FusePageCardedSidebar from './FusePageCardedSidebar';
 
-const drawerWidth = 240;
-const headerHeight = 200;
-const toolbarHeight = 64;
+const drawerWidth = 0;
+const headerHeight = 150;
+const toolbarHeight = 34;
 const headerContentHeight = headerHeight - toolbarHeight;
 
 const useStyles = makeStyles(theme => ({

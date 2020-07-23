@@ -209,23 +209,23 @@ function CitiesTable(props) {
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-										<TableCell component="th" scope="row" >
+										<TableCell component="th" scope="row" style={{fontSize:'12px'}}>
 											{n.id}
 										</TableCell>
-										<TableCell component="th" scope="row">
+										<TableCell component="th" scope="row" style={{fontSize:'12px'}}>
 											{n.name}
 										</TableCell>
-										<TableCell component="th" scope="row">
+										<TableCell component="th" scope="row" style={{fontSize:'12px'}}>
 											{n.code}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
+										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px'}}>
 											{n.country}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
+										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px'}}>
 											{n.enabled ? (
-												<Icon className="text-green text-20">check_circle</Icon>
+												<Icon className="text-green text-16">check_circle</Icon>
 											) : (
-													<Icon className="text-red text-20">cancel</Icon>
+													<Icon className="text-red text-16">cancel</Icon>
 												)}
 										</TableCell>
 										{/* <TableCell component="th" scope="row" align="right">

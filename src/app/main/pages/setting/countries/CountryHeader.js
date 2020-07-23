@@ -29,11 +29,11 @@ function CountryHeader(props) {
 		<div className="flex flex-1 w-full items-center justify-between">
 			<div className="flex items-center">
 				<FuseAnimate animation="transition.expandIn" delay={300}>
-					<Icon className="text-32">public</Icon>
+					<Icon className="text-26">public</Icon>
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-					<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-					Countries List
+					<Typography className="hidden sm:flex mx-0 sm:mx-12 " variant="h6">
+					<span style={{fontSize:'15px'}}>Countries List</span>
 					</Typography>
 				</FuseAnimate>
 			</div>
@@ -42,19 +42,22 @@ function CountryHeader(props) {
 				<ThemeProvider theme={mainTheme}>
 					<FuseAnimate animation="transition.slideDownIn" delay={300}>
 						<Paper className="flex items-center w-full max-w-512 px-8 py-4 rounded-8" elevation={1}>
-							<Icon color="action">search</Icon>
+							<Icon color="action" fontSize="small">search</Icon>
 
-							<Input
-								placeholder="Search"
-								className="flex flex-1 mx-8"
-								disableUnderline
-								fullWidth
-							    onChange={e=>{
+							<input
+							style={{border:'none'}}
+							rows={1}
+							placeholder="Search"
+							className="flex flex-1 mx-8 "
+							disableUnderline
+							onChange={e=>{
+							
+								props.SearchVal(e.target.value)
 								
-									props.SearchVal(e.target.value)
-									
-								}}
-						
+							}}
+							
+						   
+							placeholder="Search"
 							/>
 						</Paper>
 					</FuseAnimate>
