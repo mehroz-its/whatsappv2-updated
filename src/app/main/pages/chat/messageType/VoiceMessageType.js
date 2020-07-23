@@ -10,8 +10,6 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MicIcon from '@material-ui/icons/Mic'
 
 const VoiceMessageType = function (props) {
-    console.log(props,'prpps');
-    
     const { classes, message, index } = props;
 
     const { attachments } = message;

@@ -22,7 +22,7 @@ const DocumentMessageType = function (props) {
 
         if (attachments && attachments !== null) {
             
-            console.log("DocumentMessageType attachments : " ,  attachments)
+            // console.log("DocumentMessageType attachments : " ,  attachments)
             attachments.forEach((attribute) => {
                 if (attribute.attribute_name === 'url') {
                     setDocumentPath(attribute.attribute_value);

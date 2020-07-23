@@ -382,7 +382,7 @@ function Chat(props) {
 	}, [messages,]);
 
 	function scrollToBottom() {
-		chatRef.current.scrollTop = chatRef.current.scrollHeight;
+		chatRef.current.scrollTop = chatRef.current.scrollHeight-100;
 	}
 
 	function shouldShowContactAvatar(item, i) {
@@ -512,8 +512,8 @@ function Chat(props) {
 		});
 	}
 	const selectedShiftAgent = (agent) => {
-		console.log("selectedShiftAgent agent ", agent)
-		console.log("selectedShiftAgent selectedRecipient ", selectedRecipient)
+		// console.log("selectedShiftAgent agent ", agent)
+		// console.log("selectedShiftAgent selectedRecipient ", selectedRecipient)
 
 		CoreHttpHandler.request('conversations', 'transfer', {
 			key: ':id',
@@ -667,7 +667,7 @@ function Chat(props) {
 		setdialogOpenConfirmBlock(false)
 	}
 	const blockNumber = () => {
-		console.log('blockNumber');
+		// console.log('blockNumber');
 
 		CoreHttpHandler.request('conversations', 'block', {
 			key: ':number', value: selectedRecipient.number, params: {
@@ -769,7 +769,7 @@ function Chat(props) {
 					assign_name: '',
 					countries,
 				})
-			console.log("customer : ",customer);
+			// console.log("customer : ",customer);
 			setAnchorEl(false)
 				setdialogOpenCmp(true)
 				

@@ -113,7 +113,6 @@ class CoreHttpHandler {
                     let ah = JSON.stringify(error)
                     let ff = JSON.parse(ah)
                     if (ff.message === "Request failed with status code 401") {
-                        console.log("pokaaa", ff);
                         alert("Your session has expired please try to login in again")
                         localStorage.clear()
                         window.location.reload(false);
