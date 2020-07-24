@@ -20,6 +20,7 @@ import Chat from './chat/ChatApp'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
 
 function AgentContent(props) {
+	console.log(props,'props in agentsadasdas');
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
@@ -27,7 +28,7 @@ function AgentContent(props) {
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(TableData);
 	const [dropdowntitile, setDropDownTitle] = useState('Agents');
-	const [viewChat, setViewChat] = useState(null);
+	const [viewChat, setViewChat] = useState(props.viewChat);
 
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -52,7 +53,7 @@ function AgentContent(props) {
 	const [agents, setagents] = React.useState([]);
 	const [selectedAgent, setselectedAgent] = React.useState('Please Select');
 	const [numbers, setnumbers] = React.useState([]);
-	const [agentDropDownOpen, setagentDropDownOpen] = React.useState(false);
+	
 
 
 	const useStyles = makeStyles(theme => ({
@@ -86,10 +87,12 @@ function AgentContent(props) {
 	// }, [dispatch]);
 
 	useEffect(() => {
-		getAgents()
+		// getAgents()
 		// if (selectedAgent === 'null') setint_CustomerList = setInterval(() => {
 		//    getAgentsCustomers();
 		// }, 10000);
+		getAgentsCustomers(props.val)
+
 	}, []);
 	const getAgents = () => {
 		CoreHttpHandler.request('conversations', 'agents_list', {
@@ -227,22 +230,10 @@ function AgentContent(props) {
 		}
 
 	}
-	const handleCloseAgent = () => {
-		setagentDropDownOpen(false)
-	};
-
-	const handleOpenAgent = () => {
-		setagentDropDownOpen(true)
-	};
-	const handleChangeAgent = (event) => {
-		setselectedAgent(event.target.value)
-
-		getAgentsCustomers(event.target.value)
-
-	};
+	
 	return (
 		<div className="w-full flex flex-col" style={{ marginTop: '20px' }}>
-			<FormControl variant="outlined" fullWidth className={classes.formControl}>
+			{/* <FormControl variant="outlined" fullWidth className={classes.formControl}>
 				<Grid container>
 					<Grid item xs={2} md={4}></Grid>
 					<Grid item xs={8} md={4} >
@@ -275,7 +266,7 @@ function AgentContent(props) {
 					</Grid>
 					<Grid item xs={2} md={4}></Grid>
 				</Grid>
-			</FormControl>
+			</FormControl> */}
 			{
 				viewChat === true &&
 				 <Chat numbers={numbers} selectedAgent={selectedAgent} reloadNumber={(e) => getAgentsCustomersReload()} />

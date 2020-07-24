@@ -306,7 +306,7 @@ const Login2Page = (props) => {
 
                 <FuseAnimate animation="transition.slideUpIn" delay={300}>
                     <Typography variant="h3" color="inherit" className="font-light mt-20">
-                        Welcome to the Intellexal Solutions!
+                        Welcome to Intellexal Solutions!
 					</Typography>
                 </FuseAnimate>
                 {/* <img src={require('../../../../../images/itsAppLogo.png')}
