@@ -141,73 +141,14 @@ const contacts = [
 
 
 ]
-const user = {
-	avatar: "assets/images/avatars/profile.jpg",
-	chatList: [
-		{
-			chatId: "1725a680b3249760ea21de52",
-			contactId: "5725a680b3249760ea21de52",
-			lastMessageTime: "2017-06-12T02:10:18.931Z"
-		},
-		{
-			chatId: "2725a680b8d240c011dd2243",
-			contactId: "5725a680606588342058356d",
-			lastMessageTime: "2017-02-18T10:30:18.931Z"
-		},
 
-	],
-	id: "5725a6802d10e277a0f35724",
-	mood: "it's a status....not your diary...",
-	name: "John Doe",
-	status: "online"
-}
 const selectedContactId = "5725a680b3249760ea21de52";
 const chat = null
-// const chat = {
-// 	id: "1725a680b3249760ea21de52",
-// 	dialog: [
-// 		{
-// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
-// 			time: "2017-03-22T08:54:28.299Z",
-// 			who: "5725a680b3249760ea21de52",
-// 		},
-// 		{
-// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
-// 			time: "2017-03-22T08:54:28.299Z",
-// 			who: "5725a680b3249760ea21de52",
-// 		},
-
-// 		{
-// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
-// 			time: "2017-03-22T08:54:28.299Z",
-// 			who: "5725a680b3249760ea21de52",
-// 		},
-// 		{
-// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
-// 			time: "2017-03-22T08:54:28.299Z",
-// 			who: "5725a680b3249760ea21de52",
-// 		},
-// 		{
-// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
-// 			time: "2017-03-22T08:54:28.299Z",
-// 			who: "5725a680b3249760ea21de52",
-// 		},
-// 		{
-// 			message: "I’m having breakfast right now, can’t you wait for 10 minutes?",
-// 			time: "2017-03-22T08:55:28.299Z",
-// 			who: "5725a6802d10e277a0f35724"
-// 		}, {
-// 			message: "We are losing money! Quick!",
-// 			time: "2017-03-22T09:00:28.299Z",
-// 			who: "5725a680b3249760ea21de52"
-// 		}
-// 	]
-// }
 
 function ChatApp(props) {
 	const dispatch = useDispatch();
-	const { numberr,selectedAgent } = props
-	console.log(numberr,'propssss')
+	const { numberr, selectedAgent } = props
+	console.log(numberr, 'propssss')
 
 	// const chat = useSelector(({ chatApp }) => chatApp.chat);
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
@@ -215,10 +156,10 @@ function ChatApp(props) {
 	const mobileChatsSidebarOpen = false;
 	const userSidebarOpen = false;
 	const contactSidebarOpen = false;
-
+	
 	const [lastMessageTimestamp, setlastMessageTimestamp] = React.useState(null);
 	const [latestMessageSender, setlatestMessageSender] = React.useState(null);
-	// const [selectedAgent, setselectedAgent] = React.useState(props.selectedAgent);
+	const [NewAgent, setNewAgent] = React.useState(selectedAgent);
 	const [numbers, setnumbers] = React.useState(numberr);
 
 	const [messages, setmessages] = React.useState([]);
@@ -229,6 +170,8 @@ function ChatApp(props) {
 	const [int_MessageLists, setint_MessageLists] = React.useState(null);
 	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
 	const [anchorEl, setAnchorEl] = React.useState(null);
+	console.log(NewAgent, 'iiiiii')
+	console.log(selectedAgent, 'iiiiii from props')
 
 	// const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
 
@@ -246,26 +189,26 @@ function ChatApp(props) {
 		}, 3000));
 		// }
 	}
-	const getNumbers = () => {
-		CoreHttpHandler.request('conversations', 'numbers', {}, (response) => {
-			const numbers = response.data.data.customers;
-			const lastMessage = response.data.data.lastMessage;
-			if (lastMessage) {
-				const lastMessageDtu = new Date(lastMessage.dtu);
-				if (lastMessageTimestamp === null)
-					setlastMessageTimestamp(new Date(lastMessage.dtu))
-				if (lastMessageTimestamp < lastMessageDtu) {
-					// if (lastMessage.name !== null) {
-					//     this.setSnackBarMessage(`New Message From [${lastMessage.name}]`, 'success', 'new_message');
-					// } else this.setSnackBarMessage(`New Message From [${lastMessage.number}]`, 'success', 'new_message');
-					setlastMessageTimestamp(lastMessageDtu);
-					setlatestMessageSender(lastMessage.number);
-				}
-			}
-			// setnumbers(numbers)
-		}, (response) => {
-		});
-	}
+	// const getNumbers = () => {
+	// 	CoreHttpHandler.request('conversations', 'numbers', {}, (response) => {
+	// 		const numbers = response.data.data.customers;
+	// 		const lastMessage = response.data.data.lastMessage;
+	// 		if (lastMessage) {
+	// 			const lastMessageDtu = new Date(lastMessage.dtu);
+	// 			if (lastMessageTimestamp === null)
+	// 				setlastMessageTimestamp(new Date(lastMessage.dtu))
+	// 			if (lastMessageTimestamp < lastMessageDtu) {
+	// 				// if (lastMessage.name !== null) {
+	// 				//     this.setSnackBarMessage(`New Message From [${lastMessage.name}]`, 'success', 'new_message');
+	// 				// } else this.setSnackBarMessage(`New Message From [${lastMessage.number}]`, 'success', 'new_message');
+	// 				setlastMessageTimestamp(lastMessageDtu);
+	// 				setlatestMessageSender(lastMessage.number);
+	// 			}
+	// 		}
+	// 		// setnumbers(numbers)
+	// 	}, (response) => {
+	// 	});
+	// }
 	const getConversation = (e) => {
 		// console.log("getConversation selectedRecipient :", e);
 		let params = {
@@ -276,6 +219,7 @@ function ChatApp(props) {
 			}
 
 		};
+	
 		console.log("params : ", params);
 		CoreHttpHandler.request('conversations', 'agents_customer_conversations', params, (response) => {
 			// console.log("response :", response);
@@ -495,18 +439,18 @@ function ChatApp(props) {
 		'aria-describedby': "form-dialog-title"
 	};
 	useEffect(() => {
-		// setmessages([])
-		// setselectedRecipient(null)
-		// alert("numbers")
-		console.log("numbers :L ",numbers);
+		setNewAgent(selectedAgent)
+		console.log("numbers :L ", numbers);
 		console.log("getNumbers use efffact = > ", selectedRecipient);
-		if (selectedRecipient === null) {
-			
+		if (NewAgent != selectedAgent) {
+		
+              setselectedRecipient(null)
 		}
 		return () => {
 			clearInterval(int_MessageLists);
 		}
-	}, [numberr,selectedRecipient]);
+	}, [numberr, selectedRecipient]);
+
 
 	const clearData = () => {
 		setselectedRecipient(null)
@@ -868,7 +812,7 @@ function ChatApp(props) {
 						) : (
 								<>
 									<AppBar className="w-full" position="static" elevation={1}  >
-										<Toolbar className="px-16"> 
+										<Toolbar className="px-16">
 											<IconButton
 												color="inherit"
 												aria-label="Open drawer"
@@ -883,7 +827,7 @@ function ChatApp(props) {
 												onKeyDown={() => dispatch(Actions.openContactSidebar())}
 												role="button"
 												tabIndex={0}
-												style={{marginTop:'-10px'}}
+												style={{ marginTop: '-10px' }}
 											>
 												<div className="relative mx-8">
 													<div className="absolute right-0 bottom-0 -m-4 z-10">
@@ -896,7 +840,7 @@ function ChatApp(props) {
 															: ''}
 													</Avatar>
 												</div>
-												<Typography color="inherit" className="text-18 font-600 px-4" style={{marginTop:'-10px'}}>
+												<Typography color="inherit" className="text-18 font-600 px-4" style={{ marginTop: '-10px' }}>
 													{selectedRecipient.name}
 												</Typography>
 											</div>
@@ -922,7 +866,7 @@ function ChatApp(props) {
 									</AppBar>
 
 									<div className={classes.content}>
-										<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} clearBlock={clearData} reloadNumber={()=>alert("ChatApp")} />
+										<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} clearBlock={clearData} reloadNumber={() => alert("ChatApp")} />
 									</div>
 								</>
 							)}
@@ -952,7 +896,7 @@ function ChatApp(props) {
 					</Drawer>
 				</div>
 			</div>
-			<XGlobalDialogCmp  onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
+			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
 
 		</div>
 	);
