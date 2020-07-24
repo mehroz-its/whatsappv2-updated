@@ -495,6 +495,8 @@ function ChatApp(props) {
 		'aria-describedby': "form-dialog-title"
 	};
 	useEffect(() => {
+		// setmessages([])
+		// setselectedRecipient(null)
 		// alert("numbers")
 		console.log("numbers :L ",numbers);
 		console.log("getNumbers use efffact = > ", selectedRecipient);

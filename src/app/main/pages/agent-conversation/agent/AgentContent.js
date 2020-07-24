@@ -91,7 +91,7 @@ function AgentContent(props) {
 	useEffect(() => {
 		
 		console.log("selectedAgent :", selectedAgent);
-		alert(selectedAgent)
+		// alert(selectedAgent)
 		// getAgents()
 		if (selectedAgent !== null) {
 			clearInterval(int_CustomerList)
@@ -243,7 +243,7 @@ function AgentContent(props) {
 	}
 
 	return (
-		<div className="w-full flex flex-col" style={{ marginTop: '20px' }}>
+		<div className="w-full flex flex-col" style={{ }}>
 			{
 				displayChat === true &&
 				<Chat numberr={numbers} selectedAgent={selectedAgent} reloadNumber={(e) => getAgentsCustomersReload()} />
