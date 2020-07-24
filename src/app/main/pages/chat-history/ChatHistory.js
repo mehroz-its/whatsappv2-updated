@@ -85,7 +85,7 @@ const useStyles = makeStyles(theme => ({
 		backgroundImage: 'url("/assets/images/patterns/rain-grey.png")',
 		backgroundColor: theme.palette.background.paper,
 		boxShadow: theme.shadows[1],
-		borderRadius: 8,
+		borderRadius: 0,
 		minHeight: 0,
 		overflow: 'hidden'
 	},
