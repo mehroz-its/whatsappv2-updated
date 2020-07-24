@@ -19,11 +19,11 @@ function AgentHeader(props) {
 		<div className="flex flex-1 w-full items-center justify-between">
 			<div className="flex items-center">
 				<FuseAnimate animation="transition.expandIn" delay={300}>
-					<Icon className="text-32">shopping_basket</Icon>
+					<Icon className="text-26">shopping_basket</Icon>
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 					<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-					Agent Chat History
+					<span style={{fontSize:'15px'}}>Agent Chat History</span>
 					</Typography>
 				</FuseAnimate>
 			</div>
@@ -32,18 +32,21 @@ function AgentHeader(props) {
 				<ThemeProvider theme={mainTheme}>
 					<FuseAnimate animation="transition.slideDownIn" delay={300}>
 						<Paper className="flex items-center w-full max-w-512 px-8 py-4 rounded-8" elevation={1}>
-							<Icon color="action">search</Icon>
-
-							<Input
-								placeholder="Search"
-								className="flex flex-1 mx-8"
-								disableUnderline
-								fullWidth
-								value={searchText}
-								inputProps={{
-									'aria-label': 'Search'
-								}}
-								onChange={ev => dispatch(Actions.setProductsSearchText(ev))}
+						<Icon color="action" fontSize="small">search</Icon>
+						<input
+							style={{border:'none'}}
+							rows={1}
+							placeholder="Search"
+							className="flex flex-1 mx-8 "
+							disableUnderline
+							onChange={e=>{
+							
+								props.SearchVal(e.target.value)
+								
+							}}
+							
+						   
+							placeholder="Search"
 							/>
 						</Paper>
 					</FuseAnimate>

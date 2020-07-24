@@ -832,7 +832,7 @@ function Chat(props) {
 										/>
 									)}
 									<div className="bubble flex relative items-center justify-center p-12 max-w-full">
-										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap">{item.message_body}</div> : null}
+										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{fontSize:'12px'}}>{item.message_body}</div> : null}
 										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "video" ? <VideoMessageType index={index} classes={classes} message={item} /> : null}

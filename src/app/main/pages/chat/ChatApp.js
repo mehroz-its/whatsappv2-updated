@@ -853,7 +853,7 @@ function ChatApp(props) {
 										chat
 									</Icon>
 								</Paper>
-								<Typography variant="h6" style={{fontSize:'px'}}>
+								<Typography variant="h6" style={{fontSize:'15px'}}>
 									Chat App
 								</Typography>
 								<Typography
@@ -872,7 +872,7 @@ function ChatApp(props) {
 							</div>
 						) : (
 								<>
-									<AppBar className="w-full" position="static" elevation={1} style={{height:'8%'}}>
+									<AppBar className="w-full" position="static" elevation={1} style={{height:'10%'}}>
 										<Toolbar className="px-16">
 											<IconButton
 												color="inherit"
