@@ -20,6 +20,8 @@ import Chat from './chat/ChatApp'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
 
 function AgentContent(props) {
+	const { displayChat, selectedAgent } = props
+	console.log(displayChat, 'props in agentsadasdas');
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
@@ -27,7 +29,7 @@ function AgentContent(props) {
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(TableData);
 	const [dropdowntitile, setDropDownTitle] = useState('Agents');
-	const [viewChat, setViewChat] = useState(null);
+	const [viewChat, setViewChat] = useState(displayChat);
 
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -50,9 +52,10 @@ function AgentContent(props) {
 	const [dialogData, setDialogData] = React.useState(defaultDialogData)
 	const [textAreaNumbers, setTextAreaNumbers] = React.useState('');
 	const [agents, setagents] = React.useState([]);
-	const [selectedAgent, setselectedAgent] = React.useState('Please Select');
+	const [int_CustomerList, setint_CustomerList] = React.useState();
 	const [numbers, setnumbers] = React.useState([]);
-	const [agentDropDownOpen, setagentDropDownOpen] = React.useState(false);
+
+
 
 
 	const useStyles = makeStyles(theme => ({
@@ -86,11 +89,22 @@ function AgentContent(props) {
 	// }, [dispatch]);
 
 	useEffect(() => {
-		getAgents()
-		// if (selectedAgent === 'null') setint_CustomerList = setInterval(() => {
-		//    getAgentsCustomers();
-		// }, 10000);
-	}, []);
+		
+		console.log("selectedAgent :", selectedAgent);
+		// alert(selectedAgent)
+		// getAgents()
+		if (selectedAgent !== null) {
+			clearInterval(int_CustomerList)
+			getAgentsCustomers()		
+			setint_CustomerList(setInterval(() => {
+			getAgentsCustomers();
+		}, 5000))
+	}
+
+		// getAgentsCustomers(props.selectedAgent)
+		console.log('i am called')
+
+	}, [selectedAgent]);
 	const getAgents = () => {
 		CoreHttpHandler.request('conversations', 'agents_list', {
 			columns: "USR.id, USR.username"
@@ -100,9 +114,9 @@ function AgentContent(props) {
 		}, (error) => {
 		});
 	}
-	const getAgentsCustomers = (event) => {
+	const getAgentsCustomers = () => {
 		let params = {
-			agentId: event
+			agentId: selectedAgent
 		}
 		CoreHttpHandler.request('conversations', 'agents_customer_list', {
 			params
@@ -110,9 +124,8 @@ function AgentContent(props) {
 			console.log("_response  ", _response);
 			const numbers = _response.data.data.customers;
 			console.log("numbers : ", numbers);
-
 			setnumbers(numbers)
-			setViewChat(true)
+			// setViewChat(true)
 		}, (error) => {
 			console.log("error  ", error);
 		});
@@ -125,9 +138,10 @@ function AgentContent(props) {
 		CoreHttpHandler.request('conversations', 'agents_customer_list', {
 			params
 		}, (_response) => {
-			console.log("_response  ", _response);
+			alert('reload')
+			// console.log("_response  ", _response);
 			const numbers = _response.data.data.customers;
-			console.log("numbers : ", numbers);
+			// console.log("numbers : ", numbers);
 
 			setnumbers(numbers)
 			setViewChat(true)
@@ -227,63 +241,13 @@ function AgentContent(props) {
 		}
 
 	}
-	const handleCloseAgent = () => {
-		setagentDropDownOpen(false)
-	};
 
-	const handleOpenAgent = () => {
-		setagentDropDownOpen(true)
-	};
-	const handleChangeAgent = (event) => {
-		setselectedAgent(event.target.value)
-
-		getAgentsCustomers(event.target.value)
-
-	};
 	return (
-		<div className="w-full flex flex-col" style={{ marginTop: '20px' }}>
-			<FormControl variant="outlined" fullWidth className={classes.formControl}>
-				<Grid container>
-					<Grid item xs={2} md={4}></Grid>
-					<Grid item xs={8} md={4} >
-					
-						<Select
-							
-							labelId="demo-controlled-select-label"
-							open={agentDropDownOpen}
-							onClose={handleCloseAgent}
-							onOpen={handleOpenAgent}
-							value={selectedAgent}
-							onChange={handleChangeAgent}
-							id="demo-simple-select"
-							fullWidth
-							style={{ width: '100%',height:'60%'}}
-							inputProps={{
-								name: 'age',
-								id: 'outlined-age-native-simple',
-							}}
-						>
-							
-							{agents.map(data => {
-								return (
-								
-									<MenuItem key={`template_list_item_${data.id}`} value={data.id}>{data.username}</MenuItem>
-								)
-							})}
-
-						</Select>
-					</Grid>
-					<Grid item xs={2} md={4}></Grid>
-				</Grid>
-			</FormControl>
+		<div className="w-full flex flex-col" style={{ }}>
 			{
-				viewChat === true &&
-				 <Chat numbers={numbers} selectedAgent={selectedAgent} reloadNumber={(e) => getAgentsCustomersReload()} />
-
-
+				displayChat === true &&
+				<Chat numberr={numbers} selectedAgent={selectedAgent} reloadNumber={(e) => getAgentsCustomersReload()} />
 			}
-
-
 		</div>
 	);
 }

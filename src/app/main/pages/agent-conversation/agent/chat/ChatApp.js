@@ -206,6 +206,9 @@ const chat = null
 
 function ChatApp(props) {
 	const dispatch = useDispatch();
+	const { numberr,selectedAgent } = props
+	console.log(numberr,'propssss')
+
 	// const chat = useSelector(({ chatApp }) => chatApp.chat);
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
 	// const selectedContactId = useSelector(({ chatApp }) => chatApp.contacts.selectedContactId);
@@ -215,8 +218,8 @@ function ChatApp(props) {
 
 	const [lastMessageTimestamp, setlastMessageTimestamp] = React.useState(null);
 	const [latestMessageSender, setlatestMessageSender] = React.useState(null);
-	const [numbers, setnumbers] = React.useState(props.numbers);
-	const [selectedAgent, setselectedAgent] = React.useState(props.selectedAgent);
+	// const [selectedAgent, setselectedAgent] = React.useState(props.selectedAgent);
+	const [numbers, setnumbers] = React.useState(numberr);
 
 	const [messages, setmessages] = React.useState([]);
 	const [NewMessages, setNewMessages] = React.useState([]);
@@ -259,7 +262,7 @@ function ChatApp(props) {
 					setlatestMessageSender(lastMessage.number);
 				}
 			}
-			setnumbers(numbers)
+			// setnumbers(numbers)
 		}, (response) => {
 		});
 	}
@@ -492,22 +495,19 @@ function ChatApp(props) {
 		'aria-describedby': "form-dialog-title"
 	};
 	useEffect(() => {
-		console.log("numbers :L ", props.numbers);
-
+		// setmessages([])
+		// setselectedRecipient(null)
+		// alert("numbers")
+		console.log("numbers :L ",numbers);
 		console.log("getNumbers use efffact = > ", selectedRecipient);
 		if (selectedRecipient === null) {
 			
 		}
-		// getNumbers()
 		return () => {
-			// clearInterval(int_CustomerList);
 			clearInterval(int_MessageLists);
 		}
-	}, [selectedRecipient]);
+	}, [numberr,selectedRecipient]);
 
-	// if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
-	// 	getNumbers();
-	// }, 2000));
 	const clearData = () => {
 		setselectedRecipient(null)
 		setmessages([])
@@ -802,7 +802,7 @@ function ChatApp(props) {
 								}
 							}}
 						>
-							<ChatsSidebar numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
+							<ChatsSidebar numbers={numberr} onContactClick={(e) => { selectedRecipientt(e) }} />
 						</Drawer>
 					</Hidden>
 					<Hidden smDown>
@@ -814,7 +814,7 @@ function ChatApp(props) {
 								paper: classes.drawerPaper
 							}}
 						>
-							<ChatsSidebar numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
+							<ChatsSidebar numbers={numberr} onContactClick={(e) => { selectedRecipientt(e) }} />
 						</Drawer>
 					</Hidden>
 					<Drawer
@@ -867,7 +867,7 @@ function ChatApp(props) {
 							</div>
 						) : (
 								<>
-									<AppBar className="w-full" position="static" elevation={1} >
+									<AppBar className="w-full" position="static" elevation={1}  >
 										<Toolbar className="px-16"> 
 											<IconButton
 												color="inherit"

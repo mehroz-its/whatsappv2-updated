@@ -6,15 +6,25 @@ import AgentHeader from './AgentHeader';
 import AgentContent from './AgentContent';
 
 function Campaign() {
+	const [viewChat,setViewChat] = React.useState(null)
+	const [selectedAgent,setSelectedAgent]  = React.useState(null)
+
+
+	const Agent = (value) => {
+		setSelectedAgent(value)
+		setViewChat(true)
+		console.log(viewChat, value,'i am in main')
+	}
+
 	return (
 		<FusePageCarded
 			classes={{
 				content: 'flex',
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
-			header={<AgentHeader />}
-			content={<AgentContent />}
-			// innerScroll
+			header={<AgentHeader  Agent={Agent} />}
+			content={<AgentContent  selectedAgent={selectedAgent} displayChat={viewChat} />}
+			innerScroll
 		/>
 	);
 }
