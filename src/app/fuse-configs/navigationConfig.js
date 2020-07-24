@@ -29,7 +29,7 @@ const navigationConfig = [
 	{
 		id: 'applications',
 		title: 'Applications',
-		translate: 'ADMIN',
+		translate: 'Navigation',
 		type: 'group',
 		icon: 'apps',
 		children: [

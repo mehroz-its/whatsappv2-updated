@@ -222,6 +222,24 @@ function DashboardApp(props) {
 			</div>
 		);
 	}
+
+	let data = null
+	data = JSON.parse(localStorage.getItem('user_data'))
+	console.log(data)
+
+	let username = ''
+	if (data !== null) {
+		function titleCase(str) {
+			str = str.toLowerCase().split(' ');
+			for (var i = 0; i < str.length; i++) {
+				str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
+			}
+			return str.join(' ');
+		}
+		console.log(data)
+		username = titleCase(data.username);
+
+	}
 	return (
 		<FusePageSimple
 		classes={{
@@ -231,9 +249,9 @@ function DashboardApp(props) {
 		}}
 			header={
 				<div className="flex flex-col justify-between flex-1 px-20 pt-20">
-					{/* <Typography className="py-0 sm:py-24" variant="h5">
-						Welcome back, John!
-						</Typography> */}
+					<Typography className="py-0 sm:py-24" variant="h5">
+						Welcome {username}
+						</Typography>
 				</div>
 			}
 			contentToolbar={
@@ -307,6 +325,8 @@ function DashboardApp(props) {
 					</div>
 				</FuseAnimateGroup>
 			}
+			innerScroll
+
 		/>
 	);
 }
