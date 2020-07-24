@@ -9,8 +9,12 @@ import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import moment from 'moment/moment';
 import React, { useEffect, useRef, useState } from 'react';
+import Picker from 'emoji-picker-react';
+
 import { useDispatch, useSelector } from 'react-redux';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
+import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
+
 import Button from '@material-ui/core/Button';
 import AudioMessageType from './messageType/AudioMessageType'
 import ContactMessageType from './messageType/ContactMessageType'
@@ -273,7 +277,12 @@ const useStyles = makeStyles(theme => ({
 function Chat(props) {
 	const dispatch = useDispatch();
 	const { messages, selectedRecipient } = props;
-
+	const [chosenEmoji, setChosenEmoji] = useState(false);
+	const onEmojiClick = (event, emojiObject) => {
+		console.log("emojiObject :" , emojiObject);
+		// setChosenEmoji(emojiObject);
+		setMessageText(emojiObject.emoji)
+	};
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
 	// const selectedContactId = useSelector(({ chatApp }) => chatApp.contacts.selectedContactId);
 	// const chat = useSelector(({ chatApp }) => chatApp.chat);
@@ -382,10 +391,11 @@ function Chat(props) {
 	}, [messages,]);
 
 	function scrollToBottom() {
-		chatRef.current.scrollTop = chatRef.current.scrollHeight-100;
+		chatRef.current.scrollTop = chatRef.current.scrollHeight - 100;
 	}
 
 	function shouldShowContactAvatar(item, i) {
+		
 		return (
 			item.type === "inbound" &&
 			((messages[i + 1] && messages[i + 1].type !== props.selectedRecipient.id) || !messages[i + 1])
@@ -432,6 +442,8 @@ function Chat(props) {
 	// send message
 	const sendMessageHandler = (event) => {
 		sendMessage();
+		setChosenEmoji(false)
+
 	}
 	const sendDialogInputHandler = (e) => {
 		const data = { ...sendDialogData };
@@ -620,7 +632,7 @@ function Chat(props) {
 	}
 	const conversationContextMenuCallback = (item) => {
 		if (item === 'customer_profile') {
-		    profileDialog();
+			profileDialog();
 
 		}
 
@@ -634,7 +646,7 @@ function Chat(props) {
 
 		}
 		if (item === 'copy') {
-		    copyContent();
+			copyContent();
 		}
 	}
 	const blockCustomerInputHandler = (props) => {
@@ -706,7 +718,7 @@ function Chat(props) {
 	const dialogOptionsCmp = {
 		onClose: function () {
 			setdialogOpenCmp(false)
-			
+
 		},
 		'aria-labelledby': "form-dialog-title",
 		'aria-describedby': "form-dialog-title"
@@ -728,40 +740,40 @@ function Chat(props) {
 		},
 	];
 	const profileUpdate = () => {
-        const data = { ...customerProfileData };
+		const data = { ...customerProfileData };
 
-        data['number'] = selectedRecipient.number;
+		data['number'] = selectedRecipient.number;
 
-        CoreHttpHandler.request('contact_book', 'update', {
-            key: ':id',
-            value: customerProfileData.id,
-            params: data
-        }, (response) => {
+		CoreHttpHandler.request('contact_book', 'update', {
+			key: ':id',
+			value: customerProfileData.id,
+			params: data
+		}, (response) => {
 			setdialogOpenCmp(false)
-         
 
-        }, (error) => {
-            // if (error.hasOwnProperty('response')) {
-            //     if (error.response.hasOwnProperty('data')) {
-            //         this.setSnackBarMessage(error.response.data.message, 'error');
-            //     }
-            // } else this.setSnackBarMessage('Failed to update profile, please try again later', 'error');
 
-        });
-    }
+		}, (error) => {
+			// if (error.hasOwnProperty('response')) {
+			//     if (error.response.hasOwnProperty('data')) {
+			//         this.setSnackBarMessage(error.response.data.message, 'error');
+			//     }
+			// } else this.setSnackBarMessage('Failed to update profile, please try again later', 'error');
+
+		});
+	}
 	const XGlobalDialogCmpClose = () => {
 		setdialogOpenCmp(false)
 	}
 	const profileDialog = () => {
-        CoreHttpHandler.request('contact_book', 'fetch', {
-            key: ':number',
-            value: selectedRecipient.number
-        }, (response) => {
+		CoreHttpHandler.request('contact_book', 'fetch', {
+			key: ':number',
+			value: selectedRecipient.number
+		}, (response) => {
 			const customer = response.data.data.customer;
-			
-            loadCountries().then((response) => {
+
+			loadCountries().then((response) => {
 				const countries = response.data.data.list.data;
-				
+
 				setcustomerProfileData({
 					id: customer.id,
 					number: selectedRecipient.number,
@@ -769,39 +781,39 @@ function Chat(props) {
 					assign_name: '',
 					countries,
 				})
-			// console.log("customer : ",customer);
-			setAnchorEl(false)
+				// console.log("customer : ",customer);
+				setAnchorEl(false)
 				setdialogOpenCmp(true)
-				
-            })
 
-        }, (error) => {
+			})
+
+		}, (error) => {
 			setAnchorEl(false)
 			setdialogOpenCmp(false)
-            // this.setSnackBarMessage('Failed to customer profile, please try again later', 'error');
-        });
+			// this.setSnackBarMessage('Failed to customer profile, please try again later', 'error');
+		});
 	}
 	const loadCountries = () => {
-        return CoreHttpHandler.request('locations', 'get_countries', {
-            columns: "id, name",
-            sortby: "ASC",
-            orderby: "id",
-            where: "enabled = $1",
-            values: true,
-            page: 0,
-            limit: 0
-        }, null, null, true);
+		return CoreHttpHandler.request('locations', 'get_countries', {
+			columns: "id, name",
+			sortby: "ASC",
+			orderby: "id",
+			where: "enabled = $1",
+			values: true,
+			page: 0,
+			limit: 0
+		}, null, null, true);
 	};
 	const copyContent = () => {
 
 		copy(selectedRecipient.number);
 		alert("copy")
-        // this.setSnackBarMessage('Copied', 'success', null);
+		// this.setSnackBarMessage('Copied', 'success', null);
 
-        // This is just personal preference.
-        // I prefer to not show the the whole text area selected.
+		// This is just personal preference.
+		// I prefer to not show the the whole text area selected.
 
-    }
+	}
 	return (
 		<div className={clsx('flex flex-col relative', props.className)}>
 			<FuseScrollbars ref={chatRef} className="flex flex-1 flex-col overflow-y-auto">
@@ -824,13 +836,14 @@ function Chat(props) {
 									)}
 								>
 									{shouldShowContactAvatar(item, index) && (
+									
 										<Avatar
 											className="avatar absolute ltr:left-0 rtl:right-0 m-0 -mx-32"
 											src={props.selectedRecipient.avatar}
 										/>
 									)}
 									<div className="bubble flex relative items-center justify-center p-8 max-w-full">
-										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{fontSize:'12px'}}>{item.message_body}</div> : null}
+										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px' }}>{item.message_body}</div> : null}
 										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "video" ? <VideoMessageType index={index} classes={classes} message={item} /> : null}
@@ -862,6 +875,9 @@ function Chat(props) {
 			</FuseScrollbars>
 			{chat && (
 				<form onSubmit={onMessageSubmit} className="absolute bottom-0 right-0 left-0 top-10">
+					{chosenEmoji === true ? (
+							<Picker onEmojiClick={onEmojiClick} />
+						) : null}
 					<Paper className="flex items-center relative " elevation={1}>
 						<TextField
 							multiline={true}
@@ -884,7 +900,7 @@ function Chat(props) {
 							onChange={onInputChange}
 							value={messageText}
 						/>
-						
+
 						<IconButton aria-controls="fade-menu" aria-haspopup="true" onClick={handleClick} style={{ position: 'absolute', left: 120, bottom: 3 }}>
 							<AttachFileIcon />
 
@@ -912,6 +928,12 @@ function Chat(props) {
 						</Menu>
 
 						<Button variant="contained" style={{ position: 'absolute', left: 15, bottom: 13, fontSize: 12, paddingTop: 5, paddingBottom: 5, paddingLeft: 28, paddingRight: 28, }} onClick={(e) => conversationContextMenuCallback("canned_messages")}>Canned</Button>
+						{/* <Button variant="contained" style={{ position: 'absolute', left: 160, bottom: 13, fontSize: 12, paddingTop: 5, paddingBottom: 5, paddingLeft: 28, paddingRight: 28, }} onClick={(e) =>setChosenEmoji(!chosenEmoji) }>Emo</Button> */}
+						<IconButton  onClick={(e) =>setChosenEmoji(!chosenEmoji) } style={{ position: 'absolute', left: 160, bottom: 13, paddingTop: 2, paddingBottom: 2, paddingLeft: 10, paddingRight: 10, }}>
+							<InsertEmoticonIcon />
+
+						</IconButton>
+						
 						<Button variant="contained" style={{ position: 'absolute', right: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, backgroundColor: '#424141', color: 'white' }} onClick={sendMessageHandler}>Send</Button>
 
 					</Paper>
