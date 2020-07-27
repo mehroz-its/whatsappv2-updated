@@ -221,7 +221,7 @@ function ChartTable(props) {
                                 
 								return (
 									<TableRow
-										className="h-64 cursor-pointer"
+										className="h-10 cursor-pointer"
 										hover
 										role="checkbox"
 										aria-checked={isSelected}
@@ -238,19 +238,19 @@ function ChartTable(props) {
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-										<TableCell component="th" scope="row" style={{fontSize:'12px'}}>
+										<TableCell component="th" scope="row" style={{fontSize:'12px',padding:'10px'}}>
 											{n.incoming}
 										</TableCell>
-										<TableCell component="th" scope="row" style={{fontSize:'12px'}}>
+										<TableCell component="th" scope="row" style={{fontSize:'12px' ,padding:'10px'}}>
 											{n.incoming_count}
 										</TableCell>
-										<TableCell component="th" scope="row" style={{fontSize:'12px'}}>
+										<TableCell component="th" scope="row" style={{fontSize:'12px' ,padding:'10px'}}>
 											{n.number}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px'}}>
+										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px' ,padding:'10px'}}>
 											{n.outgoing}
 										</TableCell>
-                                        <TableCell component="th" scope="row" align="right" style={{fontSize:'12px'}}>
+                                        <TableCell component="th" scope="row" align="right" style={{fontSize:'12px' ,padding:'10px'}}>
 											{n.outgoing_count}
 										</TableCell>
 									

@@ -219,9 +219,11 @@ function ContactsList(props) {
 				accessor: 'city',
 				sortable: true
 			},
+			
 
 			{
 				id: 'action',
+			    
 				width: 128,
 				sortable: false,
 				Cell: ({ row }) => (

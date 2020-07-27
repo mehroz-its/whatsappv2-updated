@@ -17,13 +17,22 @@ import CannedDialog from './CannedDialog'
 
 
 
+const useStyles = makeStyles((theme) => ({
+	addButton: {
+		position: 'fixed',
+		bottom: 50,
+		right: 50,
+		zIndex: 99
+	},
+	formControl: {
+		margin: theme.spacing(1),
+		minWidth: 330,
+
+	},
+}));
 
 
 
-
-const useStyles = makeStyles({
-	layoutRoot: {}
-});
 
 function ContactsApp() {
 	const classes = useStyles();
@@ -167,7 +176,7 @@ function ContactsApp() {
 				ref={pageLayout}
 			// innerScroll
 			/>
-			<FuseAnimate animation="transition.expandIn" delay={300}>
+					<FuseAnimate animation="transition.expandIn" delay={300}>
 				<Fab
 					size="medium"
 					color="primary"
