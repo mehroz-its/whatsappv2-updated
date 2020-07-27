@@ -7,6 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
+import AppBar from '@material-ui/core/AppBar';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -17,8 +18,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 import ContactGroupInDialog from './ContactGroupInDialog'
-// import ContactApp from '../contactslist/ContactsApp'
-
+import ContactApp from '../contactslist/ContactsApp'
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 
 
@@ -140,33 +141,42 @@ const CampaignDialog = (props) => {
 
 			fullWidth
 			maxWidth="xs"
-		>
-			<DialogTitle id="form-dialog-title">{props.type} </DialogTitle>
+			>
+			{/* <DialogTitle id="form-dialog-title">{props.type} </DialogTitle> */}
+			<AppBar position="static" elevation={1}>
+				
+				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
+        style={{paddingBottom:30,paddingTop:30}}>
+	      {type} Users
+				</div>
+			</AppBar>
 			<DialogContent classes={{ root: 'p-24' }}>
 				<div className="flex pb-20" >
 					<ContactGroupInDialog sendSelectedNumbers={getSelectedNumbers} rowData={data} />
 
 				</div>
 				<div className="flex">
-					<div className="min-w-48 pt-20">
+					<div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
 						<Icon color="action">account_circle</Icon>
 					</div>
 
 					<TextField
 						className="mb-24"
 						label="Title"
+						
 						autoFocus
 						id="title"
 						name="title"
 						value={title}
 						variant="outlined"
 						required
+						size="small"
 						fullWidth
 						onChange={onInputChange}
 					/>
 				</div>
 				<div className="flex">
-					<div className="min-w-48 pt-20">
+					<div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
 						<Icon color="action">account_circle</Icon>
 					</div>
 
@@ -174,6 +184,7 @@ const CampaignDialog = (props) => {
 						className="mb-24"
 						label="Description"
 						autoFocus
+						size="small"
 						id="description"
 						name="description"
 						value={description}
@@ -186,23 +197,30 @@ const CampaignDialog = (props) => {
 
 
 				<div className="flex">
-					<div className="min-w-48 pt-20">
+					<div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
 						<Icon color="action">account_circle</Icon>
 					</div>
 
-					<Checkbox
+					<FormControlLabel
+					control={	<Checkbox
+						
 						checked={enabled}
 						onChange={handleEnable}
-					/>
+					/>}
+					label="Enabled"
+				/>
 
 				</div>
 
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={handleDialogClose} color="primary">
+				<Button onClick={handleDialogClose} color="primary" size="small" variant="contained">
 					Cancel
              </Button>
-				<Button onClick={handleSubmit} disabled={!title || !description || !number} color="primary">
+				<Button 
+				onClick={handleSubmit} disabled={!title||!description||!number}  color="primary"
+				size="small"
+				variant="contained">
 					Done
          </Button>
 			</DialogActions>

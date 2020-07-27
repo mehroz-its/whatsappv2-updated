@@ -17,7 +17,7 @@ function WidgetWeather(props) {
 		},
 		{
 			icon: "cloudy",
-			name: "Monaday", 
+			name: "Monday", 
 			temp: {
 				C: "21",
 				F: "70"
@@ -49,42 +49,44 @@ function WidgetWeather(props) {
 				<Icon className="meteocons text-25 ltr:mr-8 rtl:ml-8" color="action">
 				rainy2
 				</Icon>
-				<Typography className="text-40 mx-8" color="textSecondary">
+				<Typography className="text-32 mx-8" color="textSecondary">
 					22
 				</Typography>
-				<Typography className="text-35 font-300" color="textSecondary">
+				<Typography className="text-32 font-300" color="textSecondary">
 					°
 				</Typography>
-				<Typography className="text-44 font-300" color="textSecondary">
+				<Typography className="text-32 font-300" color="textSecondary">
 					C
 				</Typography>
 			</div>
 			<Divider />
 			<div className="flex justify-between items-center p-12">
 				<div className="flex items-center">
-					<Icon className="meteocons text-10" color="action">
+					<Icon className="meteocons text-8" color="action">
 						windy
 					</Icon>
-					<Typography className="mx-3">
+					<Typography className="mx-2" style={{fontSize:'11px'}}>
 						12
 					</Typography>
-					<Typography color="textSecondary">KMH</Typography>
+					<Typography 
+					style={{fontSize:'11px'}}
+					color="textSecondary">KMH</Typography>
 				</div>
 
 				<div className="flex items-center">
-					<Icon className="meteocons text-12" color="action">
+					<Icon className="meteocons text-10" color="action">
 						compass
 					</Icon>
-					<Typography className="mx-3">
+					<Typography className="mx-2" style={{fontSize:'11px'}}>
 					NW
 					</Typography>
 				</div>
 
 				<div className="flex items-center">
-					<Icon className="meteocons text-14" color="action">
+					<Icon className="meteocons text-12" color="action">
 						rainy
 					</Icon>
-					<Typography className="mx-3">
+					<Typography className="mx-2" style={{fontSize:'11px'}}>
 					98%
 					</Typography>
 				</div>
@@ -93,13 +95,13 @@ function WidgetWeather(props) {
 			<div className="w-full py-16">
 				{items.map( (id,day) => (
 					<div className="flex items-center justify-between w-full py-16 px-24" key={day}>
-						<Typography className="text-15">{id.name}</Typography>
+						<Typography className="text-12">{id.name}</Typography>
 						<div className="flex items-center">
-							<Icon className="meteocons text-24 ltr:mr-16 rtl:ml-16" color="action">
+							<Icon className="meteocons text-20 ltr:mr-16 rtl:ml-16" color="action">
 							{id.icon}
 							</Icon>
-							<Typography className="text-20">{day.temp}</Typography>
-							<Typography className="text-20" color="textSecondary">
+							<Typography className="text-18">{day.temp}</Typography>
+							<Typography className="text-18" color="textSecondary">
 								&deg;
 							</Typography>
 						

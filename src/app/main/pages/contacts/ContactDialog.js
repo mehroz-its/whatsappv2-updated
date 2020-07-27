@@ -51,7 +51,7 @@ function ContactDialog(props) {
 	const [city, setCity] = React.useState('Country');
 	const [countries, setCountries] = React.useState([]);
 	const [cities, setCities] = React.useState([]);
-
+    const [initialSelect,setinitialSelect]= ("Select Gender")
 	const [countryopen, setSelectCountryOpen] = React.useState(false);
 	const [cityopen, setSelectCityOpen] = React.useState(false);
 	const [selectedCity, setSelectedCity] = React.useState('')
@@ -138,6 +138,7 @@ function ContactDialog(props) {
 	}
 	const handleRadio = (event) => {
 		setValue(event.target.value);
+		console.log(value,'this is valueeeeeee');
 	};
 	const handleCountryChange = (event) => {
 		setCountry(event.target.value);
@@ -256,6 +257,10 @@ function ContactDialog(props) {
 	else {
 var abc=true
 	}
+	const handleMethodChange = (e) => {
+	
+		}
+	
 
 console.log(form.name,'name',abc,'valid');
  
@@ -306,12 +311,13 @@ console.log(form.name,'name',abc,'valid');
 						/>
 					</div> */}
 					<div className="flex">
-						<div className="min-w-48 pt-20">
+						<div className="min-w-48 pt-20" style={{marginTop:'-10px'}}>
 							<Icon color="action">phone</Icon>
 						</div>
 						<TextField
 							className="mb-24"
 							label="Phone"
+							size="small"
 							id="phone"
 							name="phone"
 							value={form.number}
@@ -319,11 +325,12 @@ console.log(form.name,'name',abc,'valid');
 							variant="outlined"
 							fullWidth
 							disabled
+							type="number"
 						/>
 					</div>
 
 					<div className="flex">
-						<div className="min-w-48 pt-20">
+						<div className="min-w-48 pt-20" style={{marginTop:'-10px'}}>
 							<Icon color="action">account_circle</Icon>
 						</div>
 						<TextField
@@ -335,12 +342,13 @@ console.log(form.name,'name',abc,'valid');
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth
+							size="small"
 						/>
 					</div>
 
 					<div className="flex">
 						{/* <div className="min-w-48 pt-20" /> */}
-						<div className="min-w-48 pt-20">
+						<div className="min-w-48 pt-20" style={{marginTop:'-10px'}}>
 							<Icon color="action">account_circle</Icon>
 						</div>
 						<TextField
@@ -352,6 +360,7 @@ console.log(form.name,'name',abc,'valid');
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth
+							size="small"
 						/>
 					</div>
 
@@ -360,7 +369,7 @@ console.log(form.name,'name',abc,'valid');
 
 
 					<div className="flex">
-						<div className="min-w-48 pt-20">
+						<div className="min-w-48 pt-20" style={{marginTop:'-10px'}}>
 							<Icon color="action">email</Icon>
 						</div>
 						<TextField
@@ -372,11 +381,12 @@ console.log(form.name,'name',abc,'valid');
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth
+							size="small"
 						/>
 					</div>
 
 					<div className="flex">
-						<div className="min-w-48 pt-20">
+						<div className="min-w-48 pt-20" style={{marginTop:'-10px'}}>
 							<Icon color="action">child_care</Icon>
 						</div>
 						<TextField
@@ -388,10 +398,12 @@ console.log(form.name,'name',abc,'valid');
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth
+							type="number"
+							size="small"
 						/>
 					</div>
 
-					<div className="flex">
+					{/* <div className="flex">
 						<FormLabel component="legend">Gender</FormLabel>
 
 					</div>
@@ -400,6 +412,30 @@ console.log(form.name,'name',abc,'valid');
 							<FormControlLabel value="female" control={<Radio />} label="Female" />
 							<FormControlLabel value="male" control={<Radio />} label="Male" />
 						</RadioGroup>
+					</div> */}
+
+					
+<div className="flex mb-20">
+						{/* <div className="min-w-48 pt-20">
+						
+						</div> */}
+						{/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
+
+					
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  defaultValue='Select Gender'
+				  onChange={handleRadio}
+				  fullWidth
+				  value={value}
+                >
+                  <MenuItem value={initialSelect}>Select Gender</MenuItem>
+                  <MenuItem value="male">Male</MenuItem>
+                  <MenuItem value="female">Female</MenuItem>
+                  <MenuItem value="others">Others</MenuItem>
+              
+                </Select>
 					</div>
 
 
@@ -564,6 +600,7 @@ console.log(form.name,'name',abc,'valid');
 									onClick={handleSubmit}
 									disabled={!form.firstname||!form.lastname||!form.email||!form.age||country=="N/A"||form.email=="N/A"
 								||value=="N/A"||abc != true}
+									size="small"
 								>
 									Save
 							</Button>
@@ -577,6 +614,7 @@ console.log(form.name,'name',abc,'valid');
 									color="primary"
 									type="submit"
 									onClick={()=>{props.closeDialog()}}
+									size="small"
 								>
 									Cancel
 							</Button>

@@ -18,7 +18,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import { getUserData } from '../../chat/store/actions';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-
+import AppBar from '@material-ui/core/AppBar';
 
 
 
@@ -192,10 +192,18 @@ const CampaignDialog = (props) => {
 
 			fullWidth
 			maxWidth="xs">
-			<DialogTitle id="form-dialog-title">{props.type} </DialogTitle>
+			{/* <DialogTitle id="form-dialog-title">{props.type} </DialogTitle> */}
+			<AppBar position="static" elevation={1}>
+				
+				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
+        style={{paddingBottom:30,paddingTop:30}}>
+	      {props.type} 
+				</div>
+			</AppBar>
+			
 			<DialogContent classes={{ root: 'p-24' }}>
 				<div className="flex">
-					<div className="min-w-48 pt-20">
+					<div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
 						<Icon color="action">account_circle</Icon>
 					</div>
 
@@ -210,6 +218,7 @@ const CampaignDialog = (props) => {
 						required
 						fullWidth
 						onChange={onInputChange}
+						size="small"
 					/>
 				</div>
 				{/* <div className="flex">
@@ -234,7 +243,7 @@ const CampaignDialog = (props) => {
 				</div> */}
 
 				<div className="flex" style={{ marginBottom: 20 }}>
-					<div className="min-w-48 pt-20">
+					<div className="min-w-48 pt-20" style={{marginTop:'5px'}}>
 						<Icon color="action">account_circle</Icon>
 					</div>
 					<FormControl className={classes.formControl}>
@@ -258,7 +267,7 @@ const CampaignDialog = (props) => {
 					</FormControl>
 				</div>
 				{canned_type === 'text' ? (<div className="flex">
-					<div className="min-w-48 pt-20">
+					<div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
 						<Icon color="action">account_circle</Icon>
 					</div>
 					<TextField
@@ -272,15 +281,16 @@ const CampaignDialog = (props) => {
 						fullWidth
 						value={text}
 						onChange={onInputChange}
+						size="small"
 					/>
 				</div>) : canned_type !== 'text' ? (
 					<div container >
 						<div className="flex" >
-							<div className="min-w-48 mt-24">
+							<div className="min-w-48 mt-24" style={{marginTop:'25px'}}>
 								<Icon color="action">attach_file</Icon>
 							</div>
 							{isLoading === true ? <CircularProgress color="secondary" style={{ marginLeft: '40%' }} />
-								: <TextField className="mt-20 mb-20" id="outlined-basic-email" name={"url"} label="Url" variant="outlined" fullWidth disabled={true} onChange={onInputChange} value={uploadedFilePath} />
+								: <TextField size="small"className="mt-20 mb-20" id="outlined-basic-email" name={"url"} label="Url" variant="outlined" fullWidth disabled={true} onChange={onInputChange} value={uploadedFilePath} />
 							}
 						</div>
 						<div item xs={12} >
@@ -304,10 +314,10 @@ const CampaignDialog = (props) => {
 
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={handleDialogClose} color="primary">
+				<Button  	variant="contained" onClick={handleDialogClose} color="primary" size="small">
 					Cancel
              </Button>
-				<Button onClick={handleSubmit} disabled={!name||!text||!canned_type} color="primary">
+				<Button size="small" 	variant="contained" onClick={handleSubmit} disabled={!name||!text||!canned_type} color="primary">
 					Done
          </Button>
 			</DialogActions>

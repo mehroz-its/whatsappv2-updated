@@ -32,10 +32,10 @@ function WidgetNow() {
 				<Typography className="text-24 leading-tight" color="textSecondary">
 					{time.format('MMMM')}
 				</Typography>
-				<Typography className="text-72 leading-tight" color="textSecondary">
+				<Typography className="text-60 leading-tight" color="textSecondary">
 					{time.format('D')}
 				</Typography>
-				<Typography className="text-24 leading-tight" color="textSecondary">
+				<Typography className="text-24 leading-tight" color="textSecondary" style={{paddingBottom:'10%'}}>
 					{time.format('Y')}
 				</Typography>
 			</div>

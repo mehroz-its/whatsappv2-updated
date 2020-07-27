@@ -5,6 +5,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import AppBar from '@material-ui/core/AppBar';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
@@ -192,12 +193,19 @@ const UserDialog = (props) => {
 
       fullWidth
       maxWidth="sm">
-      <DialogTitle id="form-dialog-title">{type} Users</DialogTitle>
+      {/* <DialogTitle id="form-dialog-title">{type} Users</DialogTitle> */}
+      <AppBar position="static" elevation={1}>
+				
+				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
+        style={{paddingBottom:30,paddingTop:30}}>
+	      {type} Users
+				</div>
+			</AppBar>
       <DialogContent classes={{ root: 'p-24' }}>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <div style={{ flex: 1 }}>
             <div className="flex">
-              <div className="min-w-48 pt-20">
+              <div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
                 <Icon color="action">account_circle</Icon>
               </div>
 
@@ -212,11 +220,12 @@ const UserDialog = (props) => {
                 variant="outlined"
                 required
                 fullWidth
+                size="small" 
               />
             </div>
 
             <div className="flex">
-              <div className="min-w-48 pt-20">
+              <div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
                 <Icon color="action">account_circle</Icon>
               </div>
 
@@ -230,10 +239,11 @@ const UserDialog = (props) => {
                 variant="outlined"
                 required
                 fullWidth
+                size="small" 
               />
             </div>
             <div className="flex">
-              <div className="min-w-48 pt-20">
+              <div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
                 <Icon color="action">account_circle</Icon>
               </div>
 
@@ -247,10 +257,12 @@ const UserDialog = (props) => {
                 variant="outlined"
                 required
                 fullWidth
+                type="number"
+                size="small" 
               />
             </div>
             <div className="flex">
-              <div className="min-w-48 pt-20">
+              <div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
                 <Icon color="action">account_circle</Icon>
               </div>
 
@@ -264,7 +276,7 @@ const UserDialog = (props) => {
                 variant="outlined"
                 required
                 fullWidth
-
+                size="small" 
               />
             </div>
 
@@ -288,10 +300,10 @@ const UserDialog = (props) => {
 
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleClose} color="primary" size="small" variant="contained">
           Cancel
 </Button>
-        <Button onClick={handleSubmit} disabled={!userName||!email||!number||!roles||!currentRoles}  color="primary">
+        <Button size="small" variant="contained" onClick={handleSubmit} disabled={!userName||!email||!number||!roles||!currentRoles}  color="primary">
           Done  
 </Button>
       </DialogActions>

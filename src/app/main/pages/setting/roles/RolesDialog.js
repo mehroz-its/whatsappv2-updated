@@ -6,6 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Icon from '@material-ui/core/Icon';
+import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -206,12 +207,19 @@ const RolesDialog = (props) => {
 
             fullWidth
             maxWidth="sm">
-            <DialogTitle id="form-dialog-title">{type} Roles</DialogTitle>
+            {/* <DialogTitle id="form-dialog-title">{type} Roles</DialogTitle> */}
+            <AppBar position="static" elevation={1}>
+				
+				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
+        style={{paddingBottom:30,paddingTop:30}}>
+	      {type} Roles
+				</div>
+			</AppBar>
             <DialogContent classes={{ root: 'p-24' }}>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <div style={{ flex: 1 }}>
                         <div className="flex">
-                            <div className="min-w-48 pt-20">
+                            <div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
                                 <Icon color="action">account_circle</Icon>
                             </div>
 
@@ -227,11 +235,12 @@ const RolesDialog = (props) => {
                                 required
                                 disabled={props.type !== 'Update' ? false : true}
                                 fullWidth
+                                size="small"
                             />
                         </div>
 
                         <div className="flex">
-                            <div className="min-w-48 pt-20">
+                            <div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
                                 <Icon color="action">account_circle</Icon>
                             </div>
 
@@ -246,6 +255,7 @@ const RolesDialog = (props) => {
                                 variant="outlined"
                                 required
                                 fullWidth
+                                size="small"
                             />
                         </div>
                         <FormControlLabel
@@ -275,10 +285,10 @@ const RolesDialog = (props) => {
 
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose} color="primary">
+                <Button onClick={handleClose} color="primary" variant="contained" size="small">
                     Cancel
     </Button>
-                <Button onClick={handleSubmit} disabled={!name||!description||!permissions} color="primary">
+                <Button size="small" variant="contained" onClick={handleSubmit} disabled={!name||!description||!permissions} color="primary">
                     Done
     </Button>
             </DialogActions>
