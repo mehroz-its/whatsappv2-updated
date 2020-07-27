@@ -120,7 +120,7 @@ function CampaignTableHead(props) {
 
 	return (
 		<TableHead>
-			<TableRow className="h-64">
+			<TableRow className="h-10">
 				{/* <TableCell padding="none" className="relative w-64 text-center">
 					<Checkbox
 						indeterminate={props.numSelected > 0 && props.numSelected < props.rowCount}
@@ -166,7 +166,7 @@ function CampaignTableHead(props) {
 				{rows.map(row => {
 					return (
 						<TableCell
-						style={{fontSize:'12px'}}
+						style={{fontSize:'12px',padding:'10px'}}
 							key={row.id}
 							align={row.align}
 							padding={row.disablePadding ? 'none' : 'default'}
