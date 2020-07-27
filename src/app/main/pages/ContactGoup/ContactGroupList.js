@@ -12,13 +12,21 @@ import * as Actions from './store/actions';
 // import Data from './ContactData'
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 import { object } from 'prop-types';
+import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading'
+
 
 
 function ContactsList(props) {
 
-	const {data }  = props
+	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
+	const {data,onDialogClose,isSearched }  = props
+	// const [data2, setData2] = useState(props.data);
+
 	// const [data, setData] = React.useState([])
-	console.log(data,'datatdatadta')
+	// console.log(data2,data,'datatdatadta')
+	// if(data.length0){
+	// 	setData2(data)
+	// }
 
 	let filtered = []
 	let newobj = {
@@ -44,6 +52,20 @@ function ContactsList(props) {
 
 	})
 
+	// function search() {
+	// 	console.log('ceeleded', props.ValueForSearch, searchVal);
+
+	// 	setSearchVal(props.ValueForSearch)
+	// 	setData2(filtered.filter(n => n.firstname.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+	// 	console.log(data, 'filterssss');
+
+
+	// }
+	// if (searchVal !== props.ValueForSearch) {
+	// 	search() 
+	// 	console.log('i invoked')
+	// }
+
 	console.log(filtered, 'datadatadatadatadatadatadata')
 
 	let ContactsData = {
@@ -64,64 +86,14 @@ function ContactsList(props) {
 		}
 	}
 	const dispatch = useDispatch();
-	// const contacts = useSelector(({ contactsApp }) => contactsApp.contacts.entities);
 	const contacts = ContactsData.entities
-	// const [contacts,setContacts] = React.useState([])
 	const searchText = ContactsData.searchText
-	// const searchText = useSelector(({ contactsApp }) => console.log(contactsApp) );
-	// const user = useSelector(({ contactsApp }) => contactsApp.user);
 	const user = ContactsData.user
-	// const searchText = Data.searchText
 	console.log(ContactsData.entities, 'ContactsData.entities')
-
-	// const getData = ((loadData) => {
-	// 	console.log('called get data')
-	// 	loadData = () => {
-	// 		return CoreHttpHandler.request('contact_book', 'listing', {
-
-
-	// 			limit: 100,
-	// 			page: 0,
-	// 			columns: "*",
-	// 			sortby: "DESC",
-	// 			orderby: "id",
-	// 			where: "blocked = $1",
-	// 			values: true,
-	// 		}, null, null, true);
-	// 	};
-	// 	loadData().then((response) => {
-	// 		const tableData = response.data.data.list.data
-	// 		console.log(tableData)
-	// 		setData(tableData)
-
-	// 	});
-	// })
-
-	// React.useEffect(() => {
-	// 	getData()
-	// }, []);
-
-
-	const [filteredData, setFilteredData] = useState(null);
 
 	const columns = React.useMemo(
 		() => [
-			// {
-			// 	Header: ({ selectedFlatRows }) => {
-			// 		const selectedRowIds = selectedFlatRows.map(row => row.original.id);
 
-			// 		return (
-			// 			selectedFlatRows.length > 0 && <ContactsMultiSelectMenu selectedContactIds={selectedRowIds} />
-			// 		);
-			// 	},
-			// 	accessor: 'avatar',
-			// 	Cell: ({ row }) => {
-			// 		return <Avatar className="mx-8" alt={row.original.name} src={row.original.avatar} />;
-			// 	},
-			// 	className: 'justify-center',
-			// 	width: 64,
-			// 	sortable: false
-			// },
 			{
 				Header: 'ID',
 				accessor: 'id',
@@ -150,82 +122,28 @@ function ContactsList(props) {
 				accessor: 'enabled',
 				sortable: true
 			},
-			// {
-			// 	Header: 'Blocked',
-			// 	accessor: 'blocked',
-			// 	sortable: true
-			// },
-
-			// {
-			// 	id: 'action',
-			// 	width: 128,
-			// 	sortable: false,
-			// 	Cell: ({ row }) => (
-			// 		<div className="flex items-center">
-			// 			<IconButton
-			// 				onClick={ev => {
-			// 					ev.stopPropagation();
-			// 					dispatch(Actions.toggleStarredContact(row.original.id));
-			// 				}}
-			// 			>
-			// 				{user.starred && user.starred.includes(row.original.id) ? (
-			// 					<Icon>star</Icon>
-			// 				) : (
-			// 						<Icon>star_border</Icon>
-			// 					)}
-			// 			</IconButton>
-			// 			<IconButton
-			// 				onClick={ev => {
-			// 					ev.stopPropagation();
-			// 					dispatch(Actions.removeContact(row.original.id));
-			// 				}}
-			// 			>
-			// 				<Icon>delete</Icon>
-			// 			</IconButton>
-			// 		</div>
-			// 	)
-			// }
 		],
 		[dispatch, user.starred]
 	);
 
-	// useEffect(() => {
-	// 	function getFilteredArray(entities, _searchText) {
-	// 		const arr = Object.keys(entities).map(id => entities[id]);
-	// 		if (_searchText.length === 0) {
-	// 			return arr;
-	// 		}
-	// 		return FuseUtils.filterArrayByString(arr, _searchText);
-	// 	}
+	if (data.length === 0) {
+		if (isSearched !== '') {
+			return (
+				<div className="flex flex-1 items-center justify-center h-full">
 
-	// 	if (filtered) {
-	// 		setFilteredData(getFilteredArray(filtered, searchText));
-	// 	}
-	// }, [filtered, searchText]);
-
-	// if (!filteredData) {
-	// 	return null;
-	// }
-
-	// if (data.length > 0) {
-	// 	return (
-	// 		<div className="flex flex-1 items-center justify-center h-full">
-	// 			<Typography color="textSecondary" variant="h5">
-	// 				{/* There are no contacts! */}
-	// 				Loading Your Contacts
-	// 			</Typography>
-	// 		</div>
-	// 	);
-	// }
-	 if (data.length === 0) {
-		return (
-			<div className="flex flex-1 items-center justify-center h-full">
-				<Typography color="textSecondary" variant="h5">
-					{/* There are no contacts! */}
+					<Typography color="textSecondary" variant="h5">
+						{/* There are no contacts! */}
 					No Data Found!
-							</Typography>
-			</div>
-		);
+				</Typography>
+				</div>
+			)
+		} else {
+			return (
+				<div className="flex flex-1 items-center justify-center h-full">
+					<FuseLoading />
+				</div>
+			);
+		}
 
 	}
 	console.log(ContactsData, 'ContactsData')
@@ -251,6 +169,7 @@ function ContactsList(props) {
 					// }
 					console.log(row, 'rowrow')
 				}}
+				onClose={onDialogClose}
 			// onRowClick={console.log('i am clicked')}
 			/>
 		</FuseAnimate>

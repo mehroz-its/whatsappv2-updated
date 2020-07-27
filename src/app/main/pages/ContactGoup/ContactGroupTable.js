@@ -13,8 +13,9 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
 import clsx from 'clsx';
 import ContactsTablePaginationActions from './ContactsTablePaginationActions';
-import BlockListDialog from './ContactGroupDialog'
+import ContactGroupDialog from './ContactGroupDialog'
 import Icon from '@material-ui/core/Icon';
+import ContactGroup from '../contact-group/contactgroup/ContactGroup';
 
 
 const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
@@ -32,11 +33,12 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 	);
 });
 
-const EnhancedTable = ({ columns, data, onRowClick }) => {
+const EnhancedTable = ({ columns, data, onRowClick,onClose }) => {
 	console.log(data, 'data in tabel')
 	const [open, setOpen] = React.useState(false);
 	const handleClose = () => {
 		setOpen(false);
+		onClose()
 	};
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -110,6 +112,9 @@ const EnhancedTable = ({ columns, data, onRowClick }) => {
 		// }
 		console.log(row.original, 'rowrow')
 		setDialogData(row.original)
+		console.log(dialogData,'ContactGroupDialogContactGroupDialog')
+		setOpen(true);
+
 		handleClickOpen()
 		// console.log(dialogData,'dialogData')
 	}
@@ -206,7 +211,7 @@ const EnhancedTable = ({ columns, data, onRowClick }) => {
 				</TableFooter>
 			</MaUTable>
 		</TableContainer>
-		{open && <BlockListDialog type="Unblock Number" data={dialogData} isOpen={open} closeDialog={handleClose} />}
+		{open && <ContactGroupDialog type="Contact Group Details" data={dialogData} isOpen={open} closeDialog={handleClose} />}
 
 	</div>
 	);

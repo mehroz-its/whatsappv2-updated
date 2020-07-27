@@ -76,17 +76,17 @@ function Canned(props) {
 			setData2(tableData)
 			setTimeout(() => {
 				setSnackBarMessage('')
-			setSnackBarOpen(false)
+				setSnackBarOpen(false)
 			}, 3000);
-			
+
 		})
-		.catch((error)=>{
-			setTimeout(() => {
-				setSnackBarMessage('')
-			setSnackBarOpen(false)
-			}, 3000);
-			
-		})
+			.catch((error) => {
+				setTimeout(() => {
+					setSnackBarMessage('')
+					setSnackBarOpen(false)
+				}, 3000);
+
+			})
 	})
 
 	React.useEffect(() => {
@@ -114,7 +114,7 @@ function Canned(props) {
 	const handleUpdateClickOpen = () => {
 		setUpdateDialogOpen(true);
 	}
-	const searchContact =(value)=> {
+	const searchContact = (value) => {
 		setVal(value)
 		// console.log('ceeleded', props.ValueForSearch, searchVal);
 
@@ -132,7 +132,7 @@ function Canned(props) {
 
 	const [age, setAge] = React.useState('Text');
 
-	
+
 	console.log(val, 'i m search value')
 
 	const snackbar = (snackmsg) => {
@@ -152,7 +152,7 @@ function Canned(props) {
 			setOK("error")
 			setSnackBarOpen(true)
 		}
-	
+
 
 	}
 
@@ -161,29 +161,29 @@ function Canned(props) {
 	return (
 		<>
 
-<Snackbar
+			<Snackbar
 
-anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-open={snackbaropen}
-autoHideDuration={3000}
+				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+				open={snackbaropen}
+				autoHideDuration={3000}
 
->
-<Alert variant="filled" severity={ok}>
-	{snackbarmessage}
-</Alert>
-</Snackbar>
+			>
+				<Alert variant="filled" severity={ok}>
+					{snackbarmessage}
+				</Alert>
+			</Snackbar>
 			<FusePageCarded
 				classes={{
 					content: 'flex',
 					header: 'min-h-25 h-25 sm:h-25 sm:min-h-25'
 				}}
 				header={<CannedHeader SearchVal={searchContact} />}
-				content={<CannedTable   snackbar={snackbar}InsertedVal={val}  dataa={data2} ValueForSearch={val} isOpen={updateDialogOpen} onClickOpen={handleUpdateClickOpen} onClose={handleClose} />}
+				content={<CannedTable snackbar={snackbar} InsertedVal={val} dataa={data2} ValueForSearch={val} isOpen={updateDialogOpen} onClickOpen={handleUpdateClickOpen} onClose={handleClose} />}
 			// innerScroll
 			/>
 			<FuseAnimate animation="transition.expandIn" delay={300}>
 				<Fab
-				    size="medium"
+					size="medium"
 					color="primary"
 					aria-label="add"
 					className={classes.addButton}
@@ -193,7 +193,7 @@ autoHideDuration={3000}
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-			{open && <CannedDialog  snackbar={snackbar} type="Add Canned Message" isOpen={open} closeDialog={handleClose} data={dialogData} />}
+			{open && <CannedDialog snackbar={snackbar} type="Add Canned Message" isOpen={open} closeDialog={handleClose} data={dialogData} />}
 		</>
 	);
 }

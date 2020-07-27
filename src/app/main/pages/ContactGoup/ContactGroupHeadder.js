@@ -47,15 +47,19 @@ function ContactsHeader(props) {
 							<Icon color="action">search</Icon>
 
 							<Input
-								placeholder="Search for anything"
-								className="flex flex-1 px-16"
-								disableUnderline
-								fullWidth
-								// value={searchText}
-								inputProps={{
-									'aria-label': 'Search'
-								}}
-								// onChange={ev => dispatch(Actions.setSearchText(ev))}
+									style={{border:'none'}}
+									rows={1}
+									placeholder="Search"
+									className="flex flex-1 mx-8 "
+									disableUnderline
+									onChange={e=>{
+									
+										props.SearchVal(e.target.value)
+										
+									}}
+									
+								   
+									placeholder="Search"
 							/>
 						</Paper>
 					</FuseAnimate>
