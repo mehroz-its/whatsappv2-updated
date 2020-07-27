@@ -58,7 +58,7 @@ const CampaignDialog = (props) => {
 
 	const [description, setDescription] = React.useState('');
 	const [isLoading, setIsLoading] = React.useState(false);
-	const [uploadedFilePath, setUploadedFilePath] = React.useState(data.attachment_url);
+	const [uploadedFilePath, setUploadedFilePath] = React.useState(data.url);
 	const [attachment_name, setAttachment_name] = React.useState(data.file_name)
 	const [attachment_params, setAttachment_params] = React.useState('')
 

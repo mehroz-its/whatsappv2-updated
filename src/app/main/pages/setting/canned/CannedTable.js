@@ -35,7 +35,7 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 	console.log(data, 'data in tabel')
 	const [open, setOpen] = React.useState(false);
-	const handleClose = (val) => {
+	function closeDialog(val){
 		setOpen(false);
 		onClose()
 		displaySnack(val)
@@ -211,7 +211,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 				</TableFooter>
 			</MaUTable>
 		</TableContainer>
-		{open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={handleClose}/>}
+		{open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog}/>}
 
 	</div>
 	);

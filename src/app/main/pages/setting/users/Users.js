@@ -75,6 +75,7 @@ function Users(props) {
 		snackbar(mes)
 		getData()
 		setOpen(false);
+		alert('in user')
 	}
 	const updateText = (search) => {
 		setVal(search)
@@ -98,17 +99,17 @@ function Users(props) {
 			setData2(tableData)
 			setTimeout(() => {
 				setSnackBarMessage('')
-			setSnackBarOpen(false)
+				setSnackBarOpen(false)
 			}, 3000);
-			
+
 		})
-		.catch((error)=>{
-			setTimeout(() => {
-				setSnackBarMessage('')
-			setSnackBarOpen(false)
-			}, 3000);
-			
-		})
+			.catch((error) => {
+				setTimeout(() => {
+					setSnackBarMessage('')
+					setSnackBarOpen(false)
+				}, 3000);
+
+			})
 	})
 
 	React.useEffect(() => {
@@ -131,7 +132,7 @@ function Users(props) {
 
 	}
 
-	
+
 	const snackbar = (snackmsg) => {
 		if (snackmsg == "create") {
 			setSnackBarMessage("Created Successfully")
@@ -149,24 +150,24 @@ function Users(props) {
 			setOK("error")
 			setSnackBarOpen(true)
 		}
-	
+
 
 	}
 
 	return (
 		<>
 
-<Snackbar
+			<Snackbar
 
-anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-open={snackbaropen}
-autoHideDuration={1000}
+				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+				open={snackbaropen}
+				autoHideDuration={1000}
 
->
-<Alert variant="filled" severity={ok}>
-	{snackbarmessage}
-</Alert>
-</Snackbar>
+			>
+				<Alert variant="filled" severity={ok}>
+					{snackbarmessage}
+				</Alert>
+			</Snackbar>
 
 			<FusePageCarded
 				classes={{
@@ -174,12 +175,12 @@ autoHideDuration={1000}
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
 				header={<UserHeader SearchVal={search} />}
-				content={<UserTable  snackbar={snackbar} ValueForSearch={val} dataa={data2} onClose={closeDialog} />}
+				content={<UserTable snackbar={snackbar} ValueForSearch={val} dataa={data2} onClose={closeDialog} />}
 			// innerScroll
 			/>
 			<FuseAnimate animation="transition.expandIn" delay={300}>
 				<Fab
-				    size="medium"
+					size="medium"
 					color="primary"
 					aria-label="add"
 					className={classes.addButton}
@@ -189,7 +190,7 @@ autoHideDuration={1000}
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-			{open ? <UserDialog  snackbar={snackbar} isOpen={open} closeDialog={closeDialog} type="Add" data={dialogData} /> : null}
+			{open ? <UserDialog snackbar={snackbar} isOpen={open} closeDialog={closeDialog} type="Add" data={dialogData} /> : null}
 
 
 		</>
