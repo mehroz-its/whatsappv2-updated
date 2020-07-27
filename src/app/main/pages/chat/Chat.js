@@ -279,7 +279,7 @@ function Chat(props) {
 	const { messages, selectedRecipient } = props;
 	const [chosenEmoji, setChosenEmoji] = useState(false);
 	const onEmojiClick = (event, emojiObject) => {
-		console.log("emojiObject :" , emojiObject);
+		console.log("emojiObject :", emojiObject);
 		// setChosenEmoji(emojiObject);
 		setMessageText(emojiObject.emoji)
 	};
@@ -395,7 +395,7 @@ function Chat(props) {
 	}
 
 	function shouldShowContactAvatar(item, i) {
-		
+
 		return (
 			item.type === "inbound" &&
 			((messages[i + 1] && messages[i + 1].type !== props.selectedRecipient.id) || !messages[i + 1])
@@ -814,6 +814,11 @@ function Chat(props) {
 		// I prefer to not show the the whole text area selected.
 
 	}
+	const handleKeyPress = (event) => {
+		if (event.key === '#') {
+			conversationContextMenuCallback("canned_messages")
+		}
+	}
 	return (
 		<div className={clsx('flex flex-col relative', props.className)}>
 			<FuseScrollbars ref={chatRef} className="flex flex-1 flex-col overflow-y-auto">
@@ -835,13 +840,13 @@ function Chat(props) {
 										index + 1 === messages.length && 'pb-96'
 									)}
 								>
-									{shouldShowContactAvatar(item, index) && (
+									{/* {shouldShowContactAvatar(item, index) && (
 									
 										<Avatar
 											className="avatar absolute ltr:left-0 rtl:right-0 m-0 -mx-32"
 											src={props.selectedRecipient.avatar}
 										/>
-									)}
+									)} */}
 									<div className="bubble flex relative items-center justify-center p-8 max-w-full">
 										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px' }}>{item.message_body}</div> : null}
 										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
@@ -876,8 +881,8 @@ function Chat(props) {
 			{chat && (
 				<form onSubmit={onMessageSubmit} className="absolute bottom-0 right-0 left-0 top-10">
 					{chosenEmoji === true ? (
-							<Picker onEmojiClick={onEmojiClick} />
-						) : null}
+						<Picker onEmojiClick={onEmojiClick} />
+					) : null}
 					<Paper className="flex items-center relative " elevation={1}>
 						<TextField
 							multiline={true}
@@ -899,6 +904,7 @@ function Chat(props) {
 							}}
 							onChange={onInputChange}
 							value={messageText}
+							onKeyPress={handleKeyPress}
 						/>
 
 						<IconButton aria-controls="fade-menu" aria-haspopup="true" onClick={handleClick} style={{ position: 'absolute', left: 120, bottom: 3 }}>
@@ -929,11 +935,11 @@ function Chat(props) {
 
 						<Button variant="contained" style={{ position: 'absolute', left: 15, bottom: 13, fontSize: 12, paddingTop: 5, paddingBottom: 5, paddingLeft: 28, paddingRight: 28, }} onClick={(e) => conversationContextMenuCallback("canned_messages")}>Canned</Button>
 						{/* <Button variant="contained" style={{ position: 'absolute', left: 160, bottom: 13, fontSize: 12, paddingTop: 5, paddingBottom: 5, paddingLeft: 28, paddingRight: 28, }} onClick={(e) =>setChosenEmoji(!chosenEmoji) }>Emo</Button> */}
-						<IconButton  onClick={(e) =>setChosenEmoji(!chosenEmoji) } style={{ position: 'absolute', left: 160, bottom: 13, paddingTop: 2, paddingBottom: 2, paddingLeft: 10, paddingRight: 10, }}>
+						<IconButton onClick={(e) => setChosenEmoji(!chosenEmoji)} style={{ position: 'absolute', left: 160, bottom: 13, paddingTop: 2, paddingBottom: 2, paddingLeft: 10, paddingRight: 10, }}>
 							<InsertEmoticonIcon />
 
 						</IconButton>
-						
+
 						<Button variant="contained" style={{ position: 'absolute', right: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, backgroundColor: '#424141', color: 'white' }} onClick={sendMessageHandler}>Send</Button>
 
 					</Paper>
