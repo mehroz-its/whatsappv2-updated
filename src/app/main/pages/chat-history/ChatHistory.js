@@ -292,11 +292,11 @@ function ChatApp(props) {
 			// if (int_MessageLists === null) setint_MessageLists(setInterval(() => {
 			// 	getConversation(e);
 			// }, 6000));
-			CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: e.number }, (response) => {
+			// CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: e.number }, (response) => {
 
-			}, (response) => {
+			// }, (response) => {
 
-			})
+			// })
 
 		}, (response) => {
 

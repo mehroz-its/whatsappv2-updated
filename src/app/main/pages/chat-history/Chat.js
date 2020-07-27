@@ -382,7 +382,7 @@ function Chat(props) {
 	}, [messages,]);
 
 	function scrollToBottom() {
-		chatRef.current.scrollTop = chatRef.current.scrollHeight;
+		chatRef.current.scrollTop = chatRef.current.scrollHeight-200;
 	}
 
 	function shouldShowContactAvatar(item, i) {
