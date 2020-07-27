@@ -42,10 +42,7 @@ function ContactsApp() {
 	// 	setAge(event.target.value);
 	// };
 
-	const handleClose = () => {
-		setOpen(false);
-		getData()
-	};
+	
 	const handleClickOpen = () => {
 		setOpen(true);
 	}
@@ -100,14 +97,15 @@ function ContactsApp() {
 		getData()
 	}, []);
 
-	// const updateText =(search)=>
-	//   {
-	// 	setVal(search)
-	//   }
-
 	  const valueReceived = (value) =>{
+		  console.log('i am called')
 		if (value == "update") {
 			setSnackBarMessage("Updated Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+		}
+		else if (value == "create") {
+			setSnackBarMessage("Created Succecfully")
 			setOK("success")
 			setSnackBarOpen(true)
 		}
@@ -132,6 +130,11 @@ function ContactsApp() {
 
 
 	}
+	const handleClose = (val) => {
+		setOpen(false);
+		getData()
+		valueReceived(val)
+	};
 	return (
 		<>
 			<Snackbar
@@ -155,7 +158,7 @@ function ContactsApp() {
 				}}
 				header={<ContactsHeader pageLayout={pageLayout}  SearchVal={search} />}
 
-				content={<ContactsList isSearched={val} data={data2} onDialogClose={handleClose}  ValueForSearch={val}/>}
+				content={<ContactsList isSearched={val} data={data2} onDialogClose={handleClose}  ValueForSearch={val} displaySnack={valueReceived}/>}
 
 				leftSidebarContent={<ContactsSidebarContent />}
 				sidebarInner
@@ -175,7 +178,7 @@ function ContactsApp() {
 				</Fab>
 			</FuseAnimate>
 
-			{open && <ContactGroupDialog GiveVal={valueReceived} type="Create New Contact Group" isOpen={open} closeDialog={handleClose} data={dialogData} />}
+			{open && <ContactGroupDialog  isSearched={val} type="Create New Contact Group" isOpen={open} closeDialog={handleClose} data={dialogData} />}
 
 		</>
 	);

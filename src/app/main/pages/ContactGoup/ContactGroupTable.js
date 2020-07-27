@@ -33,12 +33,13 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 	);
 });
 
-const EnhancedTable = ({ columns, data, onRowClick,onClose }) => {
+const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 	console.log(data, 'data in tabel')
 	const [open, setOpen] = React.useState(false);
-	const handleClose = () => {
+	const handleClose = (val) => {
 		setOpen(false);
 		onClose()
+		displaySnack(val)
 	};
 	const handleClickOpen = () => {
 		setOpen(true);

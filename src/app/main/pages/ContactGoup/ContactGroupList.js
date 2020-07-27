@@ -7,7 +7,7 @@ import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading'
 
 
 function ContactsList(props) {
-	const {data,onDialogClose,isSearched }  = props
+	const {data,onDialogClose,isSearched,displaySnack }  = props
 	const columns = React.useMemo(
 		() => [
 			{
@@ -69,6 +69,7 @@ function ContactsList(props) {
 					console.log(row, 'rowrow')
 				}}
 				onClose={onDialogClose}
+				displaySnack={displaySnack}
 			/>
 		</FuseAnimate>
 	);
