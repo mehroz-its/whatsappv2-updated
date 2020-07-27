@@ -818,12 +818,15 @@ function Chat(props) {
 		if (event.key === '#') {
 			conversationContextMenuCallback("canned_messages")
 		}
+		if(event.key === 'Enter'){
+			sendMessageHandler()
+		}
 	}
 	return (
 		<div className={clsx('flex flex-col relative', props.className)}>
 			<FuseScrollbars ref={chatRef} className="flex flex-1 flex-col overflow-y-auto">
 				{messages && messages.length > 0 ? (
-					<div className="flex flex-col pt-16 px-16 ltr:pl-56 rtl:pr-56 pb-40">
+					<div className="flex flex-col pt-16 px-16 pb-40">
 						{messages.map((item, index) => {
 							const contact = null;
 							// 	item.type === "inbound" ? user : contacts.find(_contact => _contact.id === item.who);

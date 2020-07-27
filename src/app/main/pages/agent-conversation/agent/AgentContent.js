@@ -138,7 +138,6 @@ function AgentContent(props) {
 		CoreHttpHandler.request('conversations', 'agents_customer_list', {
 			params
 		}, (_response) => {
-			alert('reload')
 			// console.log("_response  ", _response);
 			const numbers = _response.data.data.customers;
 			// console.log("numbers : ", numbers);

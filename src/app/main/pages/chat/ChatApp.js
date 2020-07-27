@@ -39,7 +39,7 @@ const headerHeight = 200;
 
 const styles = {
 	avatar: {
-	  margin: 100,
+		margin: 100,
 	},
 }
 
@@ -54,10 +54,10 @@ const useStyles = makeStyles(theme => ({
 		backgroundColor: 'theme.palette.background.default'
 	},
 	avatar: {
-		marginTop:'-14px',
-		padding:0
-	  },
-  
+		marginTop: '-14px',
+		padding: 0
+	},
+
 	topBg: {
 		position: 'absolute',
 		left: 0,
@@ -301,13 +301,13 @@ function ChatApp(props) {
 
 		});
 	}
-	
+
 	const conversationActionsCallback = (action) => {
 		// setAnchorEl(null);
 		if (action === 'export') conversationExport();
 		if (action === 'shift') conversationShift();
 
-		
+
 	}
 	const conversationExport = () => {
 		let params = {
@@ -364,15 +364,15 @@ function ChatApp(props) {
 		}
 	}
 	const profileDialog = () => {
-        CoreHttpHandler.request('contact_book', 'fetch', {
-            key: ':number',
-            value: selectedRecipient.number
-        }, (response) => {
+		CoreHttpHandler.request('contact_book', 'fetch', {
+			key: ':number',
+			value: selectedRecipient.number
+		}, (response) => {
 			const customer = response.data.data.customer;
-			
-            loadCountries().then((response) => {
+
+			loadCountries().then((response) => {
 				const countries = response.data.data.list.data;
-				
+
 				setcustomerProfileData({
 					id: customer.id,
 					number: selectedRecipient.number,
@@ -380,35 +380,35 @@ function ChatApp(props) {
 					assign_name: '',
 					countries,
 				})
-			console.log("customer : ",customer);
-			setAnchorEl(false)
+				console.log("customer : ", customer);
+				setAnchorEl(false)
 				setdialogOpenCmp(true)
-				
-            })
 
-        }, (error) => {
+			})
+
+		}, (error) => {
 			setAnchorEl(false)
 			setdialogOpenCmp(false)
-            // this.setSnackBarMessage('Failed to customer profile, please try again later', 'error');
-        });
+			// this.setSnackBarMessage('Failed to customer profile, please try again later', 'error');
+		});
 	}
 	const loadCountries = () => {
-        return CoreHttpHandler.request('locations', 'get_countries', {
-            columns: "id, name",
-            sortby: "ASC",
-            orderby: "id",
-            where: "enabled = $1",
-            values: true,
-            page: 0,
-            limit: 0
-        }, null, null, true);
+		return CoreHttpHandler.request('locations', 'get_countries', {
+			columns: "id, name",
+			sortby: "ASC",
+			orderby: "id",
+			where: "enabled = $1",
+			values: true,
+			page: 0,
+			limit: 0
+		}, null, null, true);
 	};
 	const copyContent = () => {
 		copy(selectedRecipient.number);
 		alert("copy")
-        // this.setSnackBarMessage('Copied', 'success', null);
+		// this.setSnackBarMessage('Copied', 'success', null);
 	}
-	
+
 	const [sendDialogData, setsendDialogData] = React.useState({
 		url: '',
 		caption: '',
@@ -485,14 +485,14 @@ function ChatApp(props) {
 		}, (response) => {
 		})
 	};
-		const dialogOptionsConfirmBlock = {
-			onClose: function () {
-				setdialogOpenConfirmBlock(false)
+	const dialogOptionsConfirmBlock = {
+		onClose: function () {
+			setdialogOpenConfirmBlock(false)
 
-			},
-			'aria-labelledby': "form-dialog-title",
-			'aria-describedby': "form-dialog-title"
-		};
+		},
+		'aria-labelledby': "form-dialog-title",
+		'aria-describedby': "form-dialog-title"
+	};
 	useEffect(() => {
 		console.log("getNumbers use efffact = > ", selectedRecipient);
 		getNumbers()
@@ -509,7 +509,7 @@ function ChatApp(props) {
 		setselectedRecipient(null)
 		setmessages([])
 		clearInterval(this.int_MessageLists);
-			
+
 	}
 
 	function handleMoreMenuClick(event) {
@@ -705,7 +705,7 @@ function ChatApp(props) {
 	const dialogOptionsCmp = {
 		onClose: function () {
 			setdialogOpenCmp(false)
-			
+
 		},
 		'aria-labelledby': "form-dialog-title",
 		'aria-describedby': "form-dialog-title"
@@ -736,37 +736,49 @@ function ChatApp(props) {
 		setdialogOpenCmp(false)
 	}
 	const profileUpdate = () => {
-        const data = { ...customerProfileData };
+		const data = { ...customerProfileData };
 
-        data['number'] = selectedRecipient.number;
+		data['number'] = selectedRecipient.number;
 
-        CoreHttpHandler.request('contact_book', 'update', {
-            key: ':id',
-            value: customerProfileData.id,
-            params: data
-        }, (response) => {
+		CoreHttpHandler.request('contact_book', 'update', {
+			key: ':id',
+			value: customerProfileData.id,
+			params: data
+		}, (response) => {
 			setselectedRecipient(selectedRecipient)
 			// const clearData2 = () => {
-				setdialogOpenCmp(false)
-				// clearInterval(this.int_MessageLists);
-				// clearInterval(this.int_CustomerList);
-				// 	getNumbers();
-				// setint_CustomerList = setInterval(() => {
-				// 	getNumbers();
-				// }, 1000);
+			setdialogOpenCmp(false)
+			// clearInterval(this.int_MessageLists);
+			// clearInterval(this.int_CustomerList);
+			// 	getNumbers();
+			// setint_CustomerList = setInterval(() => {
+			// 	getNumbers();
+			// }, 1000);
 			// }
-			
-			
 
-        }, (error) => {
-            // if (error.hasOwnProperty('response')) {
-            //     if (error.response.hasOwnProperty('data')) {
-            //         this.setSnackBarMessage(error.response.data.message, 'error');
-            //     }
-            // } else this.setSnackBarMessage('Failed to update profile, please try again later', 'error');
 
-        });
-    }
+
+		}, (error) => {
+			// if (error.hasOwnProperty('response')) {
+			//     if (error.response.hasOwnProperty('data')) {
+			//         this.setSnackBarMessage(error.response.data.message, 'error');
+			//     }
+			// } else this.setSnackBarMessage('Failed to update profile, please try again later', 'error');
+
+		});
+	}
+	const endConversation = () => {
+		CoreHttpHandler.request('conversations', 'end', { key: ':number', value: selectedRecipient.number }, (response) => {
+			setselectedRecipient(null)
+			setmessages([])
+			clearInterval(this.int_MessageLists);
+		}, (error) => {
+			console.log("error : , error", error);
+
+
+		});
+	}
+
 	return (
 		<div className={clsx(classes.root)}>
 			<div className={classes.topBg} />
@@ -778,7 +790,7 @@ function ChatApp(props) {
 							variant="temporary"
 							anchor="left"
 							open={mobileChatsSidebarOpen}
-							onClose={() =>setmobileChatsSidebarOpen(false)}
+							onClose={() => setmobileChatsSidebarOpen(false)}
 							classes={{
 								paper: clsx(classes.drawerPaper, 'absolute ltr:left-0 rtl:right-0')
 							}}
@@ -808,7 +820,7 @@ function ChatApp(props) {
 							<ChatsSidebar numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
 						</Drawer>
 					</Hidden>
-					
+
 					<Drawer
 						className="h-full absolute z-30"
 						variant="temporary"
@@ -840,7 +852,7 @@ function ChatApp(props) {
 										chat
 									</Icon>
 								</Paper>
-								<Typography variant="h6" style={{fontSize:'15px'}}>
+								<Typography variant="h6" style={{ fontSize: '15px' }}>
 									Chat App
 								</Typography>
 								<Typography
@@ -852,21 +864,21 @@ function ChatApp(props) {
 									variant="outlined"
 									color="primary"
 									className="flex md:hidden normal-case"
-									onClick={() =>setmobileChatsSidebarOpen(true)}
+									onClick={() => setmobileChatsSidebarOpen(true)}
 								>
 									Select a contact to start a conversation!..
 								</Button>
 							</div>
 						) : (
 								<>
-									<AppBar className="w-full" position="static" elevation={1} style={{height:'10%'}}>
+									<AppBar className="w-full" position="static" elevation={1} style={{ height: '10%' }}>
 										<Toolbar className="px-16">
 											<IconButton
 												color="inherit"
 												aria-label="Open drawer"
 												onClick={() => setmobileChatsSidebarOpen(true)}
 												className="flex md:hidden"
-												style={{marginTop:'-10px'}}
+												style={{ marginTop: '-10px' }}
 											>
 												<Icon>chat</Icon>
 											</IconButton>
@@ -884,45 +896,55 @@ function ChatApp(props) {
 														
 													</div> */}
 
-													<Avatar 
-													
-													src={selectedRecipient.avatar} alt={selectedRecipient.name} className={classes.avatar}>
+													<Avatar
+
+														src={selectedRecipient.avatar} alt={selectedRecipient.name} className={classes.avatar}>
 														{!selectedRecipient.avatar || selectedRecipient.avatar === ''
 															? selectedRecipient.name[0]
 															: ''}
 													</Avatar>
 												</div>
-												<Typography color="inherit" className="text-12 font-600 px-4" style={{marginTop:'-10px'}}>
+												<Typography color="inherit" className="text-12 font-600 px-4" style={{ marginTop: '-10px' }}>
 													{selectedRecipient.name}
 												</Typography>
 											</div>
-											<div style={{position:'absolute',right:1,top:1}}>
-						<IconButton
-							aria-owns={moreMenuEl ? 'chats-more-menu' : null}
-							aria-haspopup="true"
-							onClick={handleMoreMenuClick}
-							style={{color:'white'}}
-						>
-							<Icon fontSize="small" >more_vert</Icon>
-						</IconButton>
-						<Menu
-							id="chats-more-menu"
-							anchorEl={moreMenuEl}
-							open={Boolean(moreMenuEl)}
-							onClose={handleMoreMenuClose}
-						>
-							<MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
-							<MenuItem onClick={(e) => conversationActionsCallback('shift')}>shift</MenuItem>
-							<MenuItem onClick={(e) => conversationContextMenuCallback('block')}>Block </MenuItem>
-							<MenuItem onClick={(e) => conversationContextMenuCallback('customer_profile')}>Customer Profile </MenuItem>
-							<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem>
-						</Menu>
-					</div>
+											<div style={{ position: 'absolute', right: 1, top: 1 }}>
+												<IconButton
+													aria-owns={moreMenuEl ? 'chats-more-menu' : null}
+													aria-haspopup="true"
+													onClick={handleMoreMenuClick}
+													style={{ color: 'white' }}
+												>
+													<Icon fontSize="small" >more_vert</Icon>
+												</IconButton>
+												<Menu
+													id="chats-more-menu"
+													anchorEl={moreMenuEl}
+													open={Boolean(moreMenuEl)}
+													onClose={handleMoreMenuClose}
+												>
+													<MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
+													<MenuItem onClick={(e) => conversationActionsCallback('shift')}>shift</MenuItem>
+													<MenuItem onClick={(e) => conversationContextMenuCallback('block')}>Block </MenuItem>
+													<MenuItem onClick={(e) => conversationContextMenuCallback('customer_profile')}>Customer Profile </MenuItem>
+													<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem>
+												</Menu>
+											</div>
+											<div style={{ position: 'absolute', right: 40, top: 1 }}>
+												<IconButton
+													aria-haspopup="true"
+													onClick={endConversation}
+													style={{ color: 'white' }}
+												>
+													<Icon fontSize="small" >settings_power</Icon>
+												</IconButton>
+												
+											</div>
 										</Toolbar>
 									</AppBar>
 
 									<div className={classes.content}>
-										<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient}  clearBlock={clearData} />
+										<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} clearBlock={clearData} endConversation={endConversation} />
 									</div>
 								</>
 							)}
