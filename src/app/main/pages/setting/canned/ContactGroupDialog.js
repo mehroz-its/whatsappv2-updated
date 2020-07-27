@@ -15,10 +15,9 @@ import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
-import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
-import { getUserData } from '../../chat/store/actions';
+import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 import ContactGroupInDialog from './ContactGroupInDialog'
-import ContactApp from '../contactslist/ContactsApp'
+// import ContactApp from '../contactslist/ContactsApp'
 
 
 
@@ -44,13 +43,13 @@ const CampaignDialog = (props) => {
 	const classes = useStyles(props);
 
 	const { isOpen, type, getUpdatedData, data } = props
-	console.log(data,'in grp dialog')
+	console.log(data, 'in grp dialog')
 	const [openDialog, setopenDialog] = React.useState(isOpen);
 	const [title, setTitle] = React.useState(data.title);
 	const [enabled, setEnabled] = React.useState(data.enabled);
 	const [description, setDescription] = React.useState(data.description);
 	const [open, setOpen] = React.useState(false);
-	const [number,setNumbers]= React.useState(data.customers)
+	const [number, setNumbers] = React.useState(data.customers)
 
 
 
@@ -66,13 +65,14 @@ const CampaignDialog = (props) => {
 
 		// let fileName = uploadedFilePath.split('https://upload.its.com.pk/')
 		let params = {
-			title:title,
-			description:description,
-			customers:number,
-			enabled:enabled
+			title: title,
+			description: description,
+			customers: number,
+			enabled: enabled
 		};
-		console.log(params,'newSelected in dialog done')
+		console.log(params, 'newSelected in dialog done')
 		if (type !== 'Contact Group Details') {
+			
 			CoreHttpHandler.request('contact_group', 'create', params, (response) => {
 				// props.getUpdatedData()
 				console.log(response)
@@ -94,7 +94,7 @@ const CampaignDialog = (props) => {
 			CoreHttpHandler.request('contact_group', 'update', update_params, (response) => {
 				// props.getUpdatedData()
 				console.log(response)
-				 
+
 				props.closeDialog('update')
 				setopenDialog(false);
 			}, (error) => {
@@ -140,11 +140,11 @@ const CampaignDialog = (props) => {
 
 			fullWidth
 			maxWidth="xs"
-			>
+		>
 			<DialogTitle id="form-dialog-title">{props.type} </DialogTitle>
 			<DialogContent classes={{ root: 'p-24' }}>
 				<div className="flex pb-20" >
-					<ContactGroupInDialog sendSelectedNumbers={getSelectedNumbers} rowData={data}/>
+					<ContactGroupInDialog sendSelectedNumbers={getSelectedNumbers} rowData={data} />
 
 				</div>
 				<div className="flex">
@@ -202,7 +202,7 @@ const CampaignDialog = (props) => {
 				<Button onClick={handleDialogClose} color="primary">
 					Cancel
              </Button>
-				<Button onClick={handleSubmit} disabled={!title||!description||!number}  color="primary">
+				<Button onClick={handleSubmit} disabled={!title || !description || !number} color="primary">
 					Done
          </Button>
 			</DialogActions>

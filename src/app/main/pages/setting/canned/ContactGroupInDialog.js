@@ -11,13 +11,9 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import * as Actions from '../store/actions';
 import NumberTableHead from './NumberTableHead';
 import { Button, Paper } from '@material-ui/core';
-
-import TableData from '../CannedData'
-// import CannedDialog from './CannedDialog'
-import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 
 
 function NumberTable(props) {
