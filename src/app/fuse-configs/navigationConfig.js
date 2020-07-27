@@ -104,41 +104,9 @@ const navigationConfig = [
 				id: 'Contact Book',
 				title: 'Contact Book',
 				translate: 'CONTACT BOOK',
-				type: 'collapse',
+				type: 'item',
 				icon: 'contact_phone',
-				// url: '/apps/groups/group',
-				children: [
-					{
-						id: 'Contacts',
-						title: 'Contacts',
-						translate: 'Contacts',
-						type: 'item',
-						exact: true,
-						url: '/apps/contacts/all',
-
-					},
-					{
-						id: 'Contact Book',
-						title: 'Contact Groups',
-						translate: 'Contact Groups',
-						type: 'item',
-						exact: true,
-						url: '/apps/contact-groups',
-						children: [
-
-						]
-					},
-					// {
-					// 	id: 'Block List',
-					// 	title: 'Block List ',
-					// 	translate: 'Block List',
-					// 	type: 'item',
-					// 	exact: true,
-					// 	url: '/apps/block-list',
-
-					// }
-
-				]
+				url: '/apps/contacts/all',
 			},
 
 			{
