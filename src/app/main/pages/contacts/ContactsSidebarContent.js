@@ -109,7 +109,7 @@ function ContactsSidebarContent(props) {
 							</Icon>
 							<ListItemText 
 						
-							primary="Blocked Contacts" disableTypography />
+							primary="Blocked Lists" disableTypography />
 						</ListItem>
 						{/* <ListItem
 							button

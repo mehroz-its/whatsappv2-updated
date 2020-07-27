@@ -39,15 +39,15 @@ function NavbarLayout1(props) {
 				<div className="flex flex-1 mx-8">
 					<Logo />
 				</div>
-
+                 <div style={{marginTop:'1.8px'}}>
 				<Hidden mdDown>
-					<NavbarFoldedToggleButton className="w-40 h-40 p-0" />
+					<NavbarFoldedToggleButton className="w-40 h-55 p-50"  />
 				</Hidden>
-
+				</div>
 				<Hidden lgUp>
-					<NavbarMobileToggleButton className="w-40 h-40 p-0">
-						<Icon>{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}"</Icon>
-					</NavbarMobileToggleButton>
+						<NavbarMobileToggleButton className="w-40 h-40 p-0">
+							<Icon>{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}"</Icon>
+						</NavbarMobileToggleButton>
 				</Hidden>
 			</AppBar>
 

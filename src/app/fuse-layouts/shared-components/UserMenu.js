@@ -11,6 +11,33 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CoreHttpHandler from '../../../http/services/CoreHttpHandler';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+	contactListItem: {
+		borderBottom: `1px solid ${theme.palette.divider}`,
+		'&.active': {
+			backgroundColor: theme.palette.background.paper
+		},
+		
+	},
+	listItemText:{
+		fontSize:'10px',//Insert your required size
+		marginLeft:'4%',
+		fontWeight:'bold',
+		paddingLeft:'10px', 
+		paddingRight:'10px',
+
+	  },
+	  listItemText2:{
+		fontSize:'11px',//Insert your required size
+		marginLeft:'4%'
+	  },
+	unreadBadge: {
+		backgroundColor: theme.palette.secondary.main,
+		color: theme.palette.secondary.contrastText
+	}
+}));
 
 
 const UserMenu =(props) => {
@@ -63,6 +90,7 @@ const UserMenu =(props) => {
 		);
 
 	}
+	const classes = useStyles(props);
 
 	const handleProfile = () =>{
 		// props.history.push({
@@ -123,31 +151,37 @@ const UserMenu =(props) => {
 							<ListItemText primary="Login" />
 						</MenuItem> */}
 						<MenuItem component={Button} onClick={handleLogOut} role="button">
-							<ListItemIcon className="min-w-40">
-								<Icon size={40}>lock</Icon>
+							<ListItemIcon className="min-w-20" style={{marginLeft:'10px'}}>
+								<Icon size={20}>lock</Icon>
 							</ListItemIcon>
-							<ListItemText primary="Log out" />
+							<ListItemText 
+							primary="Log out" 
+							classes={{primary:classes.listItemText}}
+							/>
 						</MenuItem>
 						<MenuItem component={Button} onClick={handleProfile} role="button">
-							<ListItemIcon className="min-w-40">
-								<Icon>person_add</Icon>
+							<ListItemIcon className="min-w-20" style={{marginLeft:'10px'}}>
+								<Icon size={20}>person_add</Icon>
 							</ListItemIcon>
-							<ListItemText primary="Profile" />
+							<ListItemText 
+							primary="Profile" 
+							classes={{primary:classes.listItemText}}
+							/>
 						</MenuItem>
 					</>
 				) : (
 						<>
 							<MenuItem component={Link} to="/pages/profile" onClick={userMenuClose} role="button">
-								<ListItemIcon className="min-w-40">
+								<ListItemIcon className="min-w-20" style={{marginLeft:'10px'}}>
 									<Icon>account_circle</Icon>
 								</ListItemIcon>
-								<ListItemText primary="My Profile" />
+								<ListItemText primary="My Profile" 	classes={{primary:classes.listItemText}}/>
 							</MenuItem>
 							<MenuItem component={Link} to="/apps/mail" onClick={userMenuClose} role="button">
-								<ListItemIcon className="min-w-40">
+								<ListItemIcon className="min-w-20" style={{marginLeft:'10px'}}>
 									<Icon>mail</Icon>
 								</ListItemIcon>
-								<ListItemText primary="Inbox" />
+								<ListItemText primary="Inbox" 	classes={{primary:classes.listItemText}}/>
 							</MenuItem>
 							<MenuItem
 								onClick={() => {

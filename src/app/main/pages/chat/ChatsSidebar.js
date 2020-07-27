@@ -25,34 +25,34 @@ import PropTypes from 'prop-types';
 import StatusIcon from './StatusIcon';
 import * as Actions from './store/actions';
 
-const contacts = [
-	{
-		avatar: "assets/images/avatars/alice.jpg",
-		id: "5725a680b3249760ea21de52",
-		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-		name: "Alice Freeman",
-		status: "online",
-		unread: "2",
-	},
-	{
-		avatar: "assets/images/avatars/Arnold.jpg",
-		id: "5725a680606588342058356d",
-		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-		name: "Arnold",
-		status: "do-not-disturb",
-		unread: "3"
-	},
-	{
-		avatar: "assets/images/avatars/Barrera.jpg",
-		id: "5725a68009e20d0a9e9acf2a",
-		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-		name: "Arnold",
-		status: "do-not-disturb",
-		unread: "3"
-	},
+// const contacts = [
+// 	{
+// 		avatar: "assets/images/avatars/alice.jpg",
+// 		id: "5725a680b3249760ea21de52",
+// 		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+// 		name: "Alice Freeman",
+// 		status: "online",
+// 		unread: "2",
+// 	},
+// 	{
+// 		avatar: "assets/images/avatars/Arnold.jpg",
+// 		id: "5725a680606588342058356d",
+// 		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+// 		name: "Arnold",
+// 		status: "do-not-disturb",
+// 		unread: "3"
+// 	},
+// 	{
+// 		avatar: "assets/images/avatars/Barrera.jpg",
+// 		id: "5725a68009e20d0a9e9acf2a",
+// 		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+// 		name: "Arnold",
+// 		status: "do-not-disturb",
+// 		unread: "3"
+// 	},
 
 
-]
+// ]
 const user = {
 	avatar: "assets/images/avatars/profile.jpg",
 	chatList: [

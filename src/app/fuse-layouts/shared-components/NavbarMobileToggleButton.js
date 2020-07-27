@@ -9,7 +9,7 @@ function NavbarMobileToggleButton(props) {
 
 	return (
 		<IconButton
-			className={props.className}
+			style={{marginTop:'-10px'}}
 			onClick={ev => dispatch(Actions.navbarToggleMobile())}
 			color="inherit"
 			disableRipple

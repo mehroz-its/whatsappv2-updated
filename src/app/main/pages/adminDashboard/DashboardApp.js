@@ -244,10 +244,14 @@ function DashboardApp(props) {
 					textColor="primary"
 					variant="scrollable"
 					scrollButtons="off"
-					className="w-full border-b-1 px-10"
+					className="w-full border-b-1 px-100 text-center h-48 "
 				>
-					<Tab className="text-11 font-600 normal-case" label="Statics" />
-					<Tab className="text-11 font-600 normal-case" label="Charts" />
+					<Tab 
+					style={{marginTop:'0.2%'}}
+					className="text-12 font-600 normal-case" label="Statics" />
+					<Tab 
+					style={{marginTop:'0.2%'}}
+					className="text-12 font-600 normal-case" label="Charts" />
 				</Tabs>
 			}
 			content={
@@ -272,7 +276,7 @@ function DashboardApp(props) {
 								</Grid>
 								<Grid item md={4} sm={5} xs={5} >
 									<Card elevation={3} className="pt-10 pb-10">
-										<div id="chartdivv" style={{ width: "110%", height: "250px",padding:25}}></div>
+										<div id="chartdivv" style={{ width: "110%", height: "275px",padding:25}}></div>
 									</Card>
 								</Grid>
 							</Grid>

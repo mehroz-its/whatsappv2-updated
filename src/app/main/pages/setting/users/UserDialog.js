@@ -247,6 +247,7 @@ const UserDialog = (props) => {
                 variant="outlined"
                 required
                 fullWidth
+                type="number"
               />
             </div>
             <div className="flex">
