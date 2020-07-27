@@ -10,10 +10,10 @@ const CampaignConfig = {
 		// 	path: '/apps/campaign/group-detail',
 		// 	component: React.lazy(() => import('./group-detail/GroupDetail'))
 		// },
-		{
-			path: '/apps/contact-groups',
-			component: React.lazy(() => import('./contactgroup/ContactGroup'))
-		}
+		// {
+		// 	path: '/app',
+		// 	component: React.lazy(() => import('./contactgroup/ContactGroup'))
+		// }
 		// {
 		// 	path: '/apps/campaigns',
 		// 	component: () => <Redirect to="/ca/group" />
