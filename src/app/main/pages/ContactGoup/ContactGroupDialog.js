@@ -18,7 +18,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 import ContactGroupInDialog from './ContactGroupInDialog'
-import ContactApp from '../contactslist/ContactsApp'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 
