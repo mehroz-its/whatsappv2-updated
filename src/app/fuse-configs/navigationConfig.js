@@ -29,7 +29,7 @@ const navigationConfig = [
 	{
 		id: 'applications',
 		title: 'Applications',
-		translate: 'ADMIN',
+		translate: 'Navigation',
 		type: 'group',
 		icon: 'apps',
 		children: [
@@ -140,25 +140,6 @@ const navigationConfig = [
 
 				]
 			},
-
-			{
-				id: 'Gallery',
-				title: 'Gallery',
-				translate: 'GALLERY',
-				type: 'collapse',
-				icon: 'apps',
-				children: [
-					{
-						id: 'Canned Messages',
-						title: 'Canned Messages',
-						type: 'item',
-						url: '/apps/canned-messages',
-						exact: true,
-					}
-
-
-				]
-			},
 			{
 				id: 'REPORTS',
 				title: 'REPORTS',
@@ -199,18 +180,11 @@ const navigationConfig = [
 				icon: 'settings',
 				children: [
 					{
-						id: 'Countries',
-						title: 'Countries',
+						id: 'Canned Messages',
+						title: 'Canned Messages',
 						type: 'item',
-						url: '/apps/countries',
-						exact: true
-					},
-					{
-						id: 'Cities',
-						title: 'Cities',
-						type: 'item',
-						url: '/apps/cities',
-						exact: true
+						url: '/apps/canned-messages',
+						exact: true,
 					},
 					{
 						id: 'Roles',
