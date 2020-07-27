@@ -13,6 +13,9 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
 import clsx from 'clsx';
 import ContactsTablePaginationActions from './ContactsTablePaginationActions';
+import Icon from '@material-ui/core/Icon';
+import CannedDialog from './CannedDialog'
+
 
 const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
 	const defaultRef = React.useRef();
@@ -29,7 +32,21 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 	);
 });
 
-const EnhancedTable = ({ columns, data, onRowClick }) => {
+const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
+	console.log(data, 'data in tabel')
+	const [open, setOpen] = React.useState(false);
+	const handleClose = (val) => {
+		setOpen(false);
+		onClose()
+		displaySnack(val)
+	};
+	const handleClickOpen = () => {
+		setOpen(true);
+	}
+	const [dialogData, setDialogData] = React.useState()
+
+
+
 	const {
 		getTableProps,
 		headerGroups,
@@ -89,9 +106,22 @@ const EnhancedTable = ({ columns, data, onRowClick }) => {
 		setPageSize(Number(event.target.value));
 	};
 
+	const handleClick = (ev, row) => {
+		// if (row) {
+		// 	dispatch(Actions.openEditContactDialog(row.original));
+		// }
+		console.log(row.original, 'rowrow')
+		setDialogData(row.original)
+		console.log(dialogData,'ContactGroupDialogContactGroupDialog')
+		setOpen(true);
+
+		handleClickOpen()
+		// console.log(dialogData,'dialogData')
+	}
+
 	// Render the UI for your table
-	return ( <div>
-	<TableContainer className="min-h-full sm:border-1 sm:rounded-16" >
+	return (<div>
+		<TableContainer className="min-h-full sm:border-1 sm:rounded-16" >
 			<MaUTable {...getTableProps()}>
 				<TableHead>
 					{headerGroups.map(headerGroup => (
@@ -122,18 +152,35 @@ const EnhancedTable = ({ columns, data, onRowClick }) => {
 						return (
 							<TableRow
 								{...row.getRowProps()}
-								onClick={ev => onRowClick(ev, row)}
+								onClick={ev => handleClick(ev, row)}
 								className="truncate cursor-pointer"
 							>
 								{row.cells.map(cell => {
-									return (
-										<TableCell
-											{...cell.getCellProps()}
-											className={clsx('p-2', cell.column.className)}
-										>
-											{cell.render('Cell')}
-										</TableCell>
-									);
+									console.log(row.original, 'cell')
+									if (cell.column.Header === 'Enable') {
+										if (row.original.enabled === true) {
+											return (
+												<TableCell component="th" scope="row" align="center">
+													<Icon className="text-green text-20">check_circle</Icon>
+												</TableCell>
+											)
+										} else if (row.original.enabled === false) {
+											return (
+												<TableCell component="th" scope="row" align="center">
+													<Icon className="text-red text-20">cancel</Icon>
+												</TableCell>
+											)
+										}
+									} else {
+										return (
+											<TableCell
+												{...cell.getCellProps()}
+												className={clsx('p-12', cell.column.className)}
+											>
+												{cell.render('Cell')}
+											</TableCell>
+										);
+									}
 								})}
 							</TableRow>
 						);
@@ -164,10 +211,13 @@ const EnhancedTable = ({ columns, data, onRowClick }) => {
 				</TableFooter>
 			</MaUTable>
 		</TableContainer>
-		</div>
-	);};
-	
-	
+		{open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={handleClose}/>}
+
+	</div>
+	);
+};
+
+
 
 
 EnhancedTable.propTypes = {

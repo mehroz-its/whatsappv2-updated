@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 	  }
 }));
 
-function ContactsSidebarContent(props) {
+function CannedSideBar(props) {
 	const user = null;
 	let data = null
 	data = JSON.parse(localStorage.getItem('user_data'))
@@ -86,47 +86,79 @@ function ContactsSidebarContent(props) {
 						<ListItem
 							button
 							component={NavLinkAdapter}
-							to="/apps/contacts/all"
+							to="/apps/canned-messages"
 							activeClassName="active"
 							className={classes.listItem}
 						>
 							<Icon className="list-item-icon text-16" color="action">
-								people
+							rate_review
 							</Icon>
-							<ListItemText className="truncate" primary="All contacts" disableTypography />
+							<ListItemText className="truncate" primary="All Messages" disableTypography />
 						</ListItem>
 						<ListItem
 						
 							 
 							button
 							component={NavLinkAdapter}
-							to="/apps/blocklist"
+							to="/text"
 							activeClassName="active"
 							className={classes.listItem}
 						>
 							<Icon className="list-item-icon text-16" color="action">
-								block
+							textsms
 							</Icon>
 							<ListItemText 
 						
-							primary="Blocked Contacts" disableTypography />
+							primary="Text Messages" disableTypography />
 						</ListItem>
 						<ListItem
 						
 							 
 							button
 							component={NavLinkAdapter}
-							to="/apps/contact-groups"
+							to="/audio"
 							activeClassName="active"
 							className={classes.listItem}
 						>
 							<Icon className="list-item-icon text-16" color="action">
-							people
+							audiotrack
 							</Icon>
 							<ListItemText 
 						
-							primary="Contact Groups" disableTypography />
+							primary="Audio Messages" disableTypography />
 						</ListItem>
+						<ListItem
+						
+							 
+						button
+						component={NavLinkAdapter}
+						to="/image"
+						activeClassName="active"
+						className={classes.listItem}
+					>
+						<Icon className="list-item-icon text-16" color="action">
+						image
+						</Icon>
+						<ListItemText 
+					
+						primary="Image Messages" disableTypography />
+					</ListItem>
+					<ListItem
+						
+							 
+						button
+						component={NavLinkAdapter}
+						to="/video"
+						activeClassName="active"
+						className={classes.listItem}
+					>
+						<Icon className="list-item-icon text-16" color="action">
+						switch_video
+						</Icon>
+						<ListItemText 
+					
+						primary="Video Messages" disableTypography />
+					</ListItem>
 						{/* <ListItem
 							button
 							component={NavLinkAdapter}
@@ -146,4 +178,4 @@ function ContactsSidebarContent(props) {
 	);
 }
 
-export default ContactsSidebarContent;
+export default CannedSideBar;

@@ -267,23 +267,6 @@ function ContactsList(props) {
 		[dispatch, user.starred]
 	);
 
-	// useEffect(() => {
-	// 	function getFilteredArray(entities, _searchText) {
-	// 		const arr = Object.keys(entities).map(id => entities[id]);
-	// 		if (_searchText.length === 0) {
-	// 			return arr;
-	// 		}
-	// 		return FuseUtils.filterArrayByString(arr, _searchText);
-	// 	}
-
-	// 	if (filtered) {
-	// 		setFilteredData(getFilteredArray(filtered, searchText));
-	// 	}
-	// }, [filtered, searchText]);
-
-	// if (!filteredData) {
-	// 	return null;
-	// }
 
 	if (filtered.length === 0) {
 		if (searchVal !== '') {

@@ -111,6 +111,22 @@ function ContactsSidebarContent(props) {
 						
 							primary="Blocked Contacts" disableTypography />
 						</ListItem>
+						<ListItem
+						
+							 
+							button
+							component={NavLinkAdapter}
+							to="/apps/contact-groups"
+							activeClassName="active"
+							className={classes.listItem}
+						>
+							<Icon className="list-item-icon text-16" color="action">
+							people
+							</Icon>
+							<ListItemText 
+						
+							primary="Contact Groups" disableTypography />
+						</ListItem>
 						{/* <ListItem
 							button
 							component={NavLinkAdapter}
