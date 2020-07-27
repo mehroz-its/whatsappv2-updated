@@ -311,12 +311,13 @@ console.log(form.name,'name',abc,'valid');
 						/>
 					</div> */}
 					<div className="flex">
-						<div className="min-w-48 pt-20">
+						<div className="min-w-48 pt-20" style={{marginTop:'-10px'}}>
 							<Icon color="action">phone</Icon>
 						</div>
 						<TextField
 							className="mb-24"
 							label="Phone"
+							size="small"
 							id="phone"
 							name="phone"
 							value={form.number}
@@ -329,7 +330,7 @@ console.log(form.name,'name',abc,'valid');
 					</div>
 
 					<div className="flex">
-						<div className="min-w-48 pt-20">
+						<div className="min-w-48 pt-20" style={{marginTop:'-10px'}}>
 							<Icon color="action">account_circle</Icon>
 						</div>
 						<TextField
@@ -341,12 +342,13 @@ console.log(form.name,'name',abc,'valid');
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth
+							size="small"
 						/>
 					</div>
 
 					<div className="flex">
 						{/* <div className="min-w-48 pt-20" /> */}
-						<div className="min-w-48 pt-20">
+						<div className="min-w-48 pt-20" style={{marginTop:'-10px'}}>
 							<Icon color="action">account_circle</Icon>
 						</div>
 						<TextField
@@ -358,6 +360,7 @@ console.log(form.name,'name',abc,'valid');
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth
+							size="small"
 						/>
 					</div>
 
@@ -366,7 +369,7 @@ console.log(form.name,'name',abc,'valid');
 
 
 					<div className="flex">
-						<div className="min-w-48 pt-20">
+						<div className="min-w-48 pt-20" style={{marginTop:'-10px'}}>
 							<Icon color="action">email</Icon>
 						</div>
 						<TextField
@@ -378,11 +381,12 @@ console.log(form.name,'name',abc,'valid');
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth
+							size="small"
 						/>
 					</div>
 
 					<div className="flex">
-						<div className="min-w-48 pt-20">
+						<div className="min-w-48 pt-20" style={{marginTop:'-10px'}}>
 							<Icon color="action">child_care</Icon>
 						</div>
 						<TextField
@@ -395,6 +399,7 @@ console.log(form.name,'name',abc,'valid');
 							variant="outlined"
 							fullWidth
 							type="number"
+							size="small"
 						/>
 					</div>
 
@@ -595,6 +600,7 @@ console.log(form.name,'name',abc,'valid');
 									onClick={handleSubmit}
 									disabled={!form.firstname||!form.lastname||!form.email||!form.age||country=="N/A"||form.email=="N/A"
 								||value=="N/A"||abc != true}
+									size="small"
 								>
 									Save
 							</Button>
@@ -608,6 +614,7 @@ console.log(form.name,'name',abc,'valid');
 									color="primary"
 									type="submit"
 									onClick={()=>{props.closeDialog()}}
+									size="small"
 								>
 									Cancel
 							</Button>

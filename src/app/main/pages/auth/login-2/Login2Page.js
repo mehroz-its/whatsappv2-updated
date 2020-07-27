@@ -23,11 +23,11 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        background: `linear-gradient(to right, ${theme.palette.primary.dark} 0%, ${darken(
-            theme.palette.primary.dark,
-            0.5
-        )} 100%)`,
-        color: theme.palette.primary.contrastText
+        // background: `linear-gradient(to right, ${theme.palette.primary.dark} 0%, ${darken(
+        //     theme.palette.primary.dark,
+        //     0.5
+        // )} 100%)`,
+        // color: theme.palette.primary.contrastText
     }
 }));
 
@@ -295,11 +295,17 @@ const Login2Page = (props) => {
 
     return (
         <div
-            className={clsx(classes.root, 'flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}>
+            className={clsx('flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}
+            style={{backgroundImage: 'url(' + require('../../../../../images/background-04.jpg') + ')',
+        width:'100%',
+        height:'500px',
+        backgroundSize:'cover'
+    }}
+            >
             <div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
                 <FuseAnimate animation="transition.expandIn">
                         {/* <img className="w-128 mb-32" src="../../../../../images/itsAppLogo.png" alt="logo" /> */}
-                        <img src={require('../../../../../images/its_logo.png')}
+                        <img src={require('../../../../../images/logo_animation.gif')}
                             style={{width:100}} />
 
                 </FuseAnimate>

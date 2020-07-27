@@ -7,10 +7,13 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
+import AppBar from '@material-ui/core/AppBar';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import { green } from '@material-ui/core/colors';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -273,12 +276,19 @@ const PermissionDialog = (props) => {
 
       fullWidth
       maxWidth="sm">
-      <DialogTitle id="form-dialog-title">{type} Permissions</DialogTitle>
+        <AppBar position="static" elevation={1}>
+				
+				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
+        style={{paddingBottom:30,paddingTop:30}}>
+	      {type} Permissions
+				</div>
+			</AppBar>
+      {/* <DialogTitle id="form-dialog-title">{type} Permissions</DialogTitle> */}
       <DialogContent classes={{ root: 'p-24' }}>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <div>
             <div className="flex">
-              <div className="min-w-48 pt-20">
+              <div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
                 <Icon color="action">account_circle</Icon>
               </div>
 
@@ -294,11 +304,12 @@ const PermissionDialog = (props) => {
                 required
                 fullWidth
                 disabled={type === "Update"?true:false}
+                size="small" 
               />
             </div>
 
             <div className="flex">
-              <div className="min-w-48 pt-20">
+              <div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
                 <Icon color="action">account_circle</Icon>
               </div>
 
@@ -314,6 +325,7 @@ const PermissionDialog = (props) => {
                 required
                 fullWidth
                 disabled={type === "Update"?true:false}
+                size="small" 
 
               />
             </div>
@@ -374,10 +386,10 @@ const PermissionDialog = (props) => {
                 </div> */}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}  color="primary">
+        <Button size="small" variant="contained" onClick={handleClose}  color="primary">
           Cancel
              </Button>
-        <Button onClick={handleSubmit} disabled={!title||!description||!consumer} color="primary">
+        <Button size="small" variant="contained" onClick={handleSubmit} disabled={!title||!description||!consumer} color="primary">
           Done
          </Button>
       </DialogActions>
