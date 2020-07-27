@@ -15,7 +15,6 @@ import clsx from 'clsx';
 import ContactsTablePaginationActions from './ContactsTablePaginationActions';
 import ContactGroupDialog from './ContactGroupDialog'
 import Icon from '@material-ui/core/Icon';
-// import ContactGroup from '../contact-group/contactgroup/ContactGroup';
 
 
 const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {

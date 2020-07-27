@@ -13,9 +13,7 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
 import clsx from 'clsx';
 import ContactsTablePaginationActions from './ContactsTablePaginationActions';
-import ContactGroupDialog from './ContactGroupDialog'
 import Icon from '@material-ui/core/Icon';
-// import ContactGroup from '../contact-group/contactgroup/ContactGroup';
 
 
 const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
@@ -212,7 +210,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 				</TableFooter>
 			</MaUTable>
 		</TableContainer>
-		{open && <ContactGroupDialog type="Contact Group Details" data={dialogData} isOpen={open} closeDialog={handleClose} />}
+		{/* {open && <ContactGroupDialog type="Contact Group Details" data={dialogData} isOpen={open} closeDialog={handleClose} />} */}
 
 	</div>
 	);

@@ -2,16 +2,15 @@ import DemoContent from '@fuse/core/DemoContent';
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useRef } from 'react';
-import ContactsHeader from './ContactGroupHeadder';
-import ContactsList from './ContactGroupList';
-import ContactsSidebarContent from './ContactsGroupSidebarContent';
+import CannedHeader from './CannedHeader';
+import CannedList from './CannedList';
+import CannedSideBar from './CannedSideBar';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Fab from '@material-ui/core/Fab';
 import Icon from '@material-ui/core/Icon';
 import * as Actions from './store/actions';
 import { useDispatch } from 'react-redux';
-import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
-import ContactGroupDialog from './ContactGroupDialog'
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 
@@ -60,7 +59,7 @@ function ContactsApp() {
 	const getData = ((loadData) => {
 		console.log('called get data')
 		loadData = () => {
-			return CoreHttpHandler.request('contact_group', 'listing', {
+			return CoreHttpHandler.request('canned_messages', 'listing', {
 
 				limit: 100,
 				page: 0,
@@ -125,7 +124,7 @@ function ContactsApp() {
 		// console.log('ceeleded', props.ValueForSearch, searchVal);
 
 		setVal(val)
-		setData2(data.filter(n => n.title.toLowerCase().includes(val.toLowerCase())))
+		setData2(data.filter(n => n.message_name.toLowerCase().includes(val.toLowerCase())))
 		console.log(data, 'filterssss');
 
 
@@ -156,11 +155,11 @@ function ContactsApp() {
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
 					wrapper: 'min-h-0'
 				}}
-				header={<ContactsHeader pageLayout={pageLayout}  SearchVal={search} />}
+				header={<CannedHeader pageLayout={pageLayout}  SearchVal={search} />}
 
-				content={<ContactsList isSearched={val} data={data2} onDialogClose={handleClose}  ValueForSearch={val} displaySnack={valueReceived}/>}
+				content={<CannedList isSearched={val} data={data2} onDialogClose={handleClose}  ValueForSearch={val} displaySnack={valueReceived}/>}
 
-				leftSidebarContent={<ContactsSidebarContent />}
+				leftSidebarContent={<CannedSideBar />}
 				sidebarInner
 				ref={pageLayout}
 			// innerScroll
@@ -178,7 +177,7 @@ function ContactsApp() {
 				</Fab>
 			</FuseAnimate>
 
-			{open && <ContactGroupDialog  isSearched={val} type="Create New Contact Group" isOpen={open} closeDialog={handleClose} data={dialogData} />}
+			{/* {open && <ContactGroupDialog  isSearched={val} type="Create New Contact Group" isOpen={open} closeDialog={handleClose} data={dialogData} />} */}
 
 		</>
 	);

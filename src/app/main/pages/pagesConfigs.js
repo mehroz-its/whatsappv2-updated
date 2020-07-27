@@ -12,7 +12,7 @@ import GroupConfig from './groups/GroupConfig';
 import ContactsAppConfig from './contacts/ContactsAppConfig';
 import CampaignConfig from './campaigns/CampaignConfig';
 import WhatsAppTemplateConfig from  './whatsappTemplate/WhatsAppTemplateConfig'
-import CannedMessageConfig from './canned/CannedMessageConfig'
+import CannedAppConfig from './setting/canned/CannedAppConfig'
 import CitiesConfig from './setting/cities/CitiesConfig'
 import CountryConfig from './setting/countries/CountryConfig'
 import PermissionConfig from './setting/permission/PermissionConfig'
@@ -53,7 +53,7 @@ const pagesConfigs = [
 	ContactsAppConfig,
 	CampaignConfig,
 	WhatsAppTemplateConfig,
-	CannedMessageConfig,
+	CannedAppConfig,
 	CitiesConfig,
 	CountryConfig,
 	PermissionConfig,

@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-function ContactsHeader(props) {
+function CannedHeader(props) {
 	const dispatch = useDispatch();
 	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
 
@@ -30,11 +30,11 @@ function ContactsHeader(props) {
 				<div className="flex items-center">
 					
 					<FuseAnimate animation="transition.expandIn" delay={300}>
-						<Icon className="text-32">account_box</Icon>
+						<Icon className="text-32">rate_review</Icon>
 					</FuseAnimate>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 						<Typography variant="h6" className="mx-12 hidden sm:flex">
-							Contacts
+							Canned Messages
 						</Typography>
 					</FuseAnimate>
 				</div>
@@ -69,4 +69,4 @@ function ContactsHeader(props) {
 	);
 }
 
-export default ContactsHeader;
+export default CannedHeader;

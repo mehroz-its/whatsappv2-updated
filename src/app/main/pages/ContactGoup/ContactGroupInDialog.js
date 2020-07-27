@@ -18,9 +18,9 @@ import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 
 function NumberTable(props) {
   console.log(props)
-  const dispatch = useDispatch();
-  const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
-  const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
+  // const dispatch = useDispatch();
+  // const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
+  // const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 
   const [selected, setSelected] = useState(props.rowData.customers);
   const [open, setOpen] = React.useState(false);

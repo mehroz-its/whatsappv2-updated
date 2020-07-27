@@ -1,12 +1,12 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Typography from '@material-ui/core/Typography';
 import React, { useEffect, useState } from 'react';
-import BlockContactsTable from './ContactGroupTable';
-import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading'
+import CannedTable from './CannedTable';
+import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 
 
 
-function ContactsList(props) {
+function CannedList(props) {
 	const {data,onDialogClose,isSearched,displaySnack }  = props
 	const columns = React.useMemo(
 		() => [
@@ -17,20 +17,25 @@ function ContactsList(props) {
 				sortable: true
 			},
 			{
-				Header: 'Title',
-				accessor: 'title',
+				Header: 'Name',
+				accessor: 'message_name',
 				className: 'font-bold',
 				sortable: true
 			},
 			{
-				Header: 'Decsription',
-				accessor: 'description',
+				Header: 'Text',
+				accessor: 'message_text',
 				className: 'font-bold',
 				sortable: true
 			},
 			{
-				Header: 'Total Consumer',
-				accessor: 'customers.length',
+				Header: 'Params',
+				accessor: 'message_params',
+				sortable: true
+			},
+			{
+				Header: 'Type',
+				accessor: 'message_type',
 				sortable: true
 			},
 			{
@@ -61,7 +66,7 @@ function ContactsList(props) {
 	}
 	return (
 		<FuseAnimate animation="transition.slideUpIn" delay={300}>
-			<BlockContactsTable
+			<CannedTable
 				columns={columns}
 				data={data}
 				onRowClick={(ev, row) => {
@@ -75,4 +80,4 @@ function ContactsList(props) {
 	);
 }
 
-export default ContactsList;
+export default CannedList;

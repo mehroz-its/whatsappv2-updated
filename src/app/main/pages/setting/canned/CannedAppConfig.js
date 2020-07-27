@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 
-const ContactGroupConfig = {
+const CannedAppConfig = {
 	settings: {
 		layout: {
 			config: {}
@@ -13,10 +13,10 @@ const ContactGroupConfig = {
 		// 	component: React.lazy(() => import('./BlockContactApp'))
 		// },
 		{
-			path: '/apps/contact-groups',
-			component: React.lazy(() => import('./ContactGroupApp'))
+			path: '/apps/canned-messages',
+			component: React.lazy(() => import('./Canned'))
 	}
 	]
 };
 
-export default ContactGroupConfig;
+export default CannedAppConfig;
