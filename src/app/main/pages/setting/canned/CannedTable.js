@@ -14,6 +14,7 @@ import { useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } fro
 import clsx from 'clsx';
 import ContactsTablePaginationActions from './ContactsTablePaginationActions';
 import Icon from '@material-ui/core/Icon';
+import CannedDialog from './CannedDialog'
 
 
 const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
@@ -210,7 +211,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 				</TableFooter>
 			</MaUTable>
 		</TableContainer>
-		{/* {open && <ContactGroupDialog type="Contact Group Details" data={dialogData} isOpen={open} closeDialog={handleClose} />} */}
+		{open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={handleClose}/>}
 
 	</div>
 	);

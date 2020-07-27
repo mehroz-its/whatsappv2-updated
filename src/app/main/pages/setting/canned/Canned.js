@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
+import CannedDialog from './CannedDialog'
 
 
 
@@ -177,7 +178,7 @@ function ContactsApp() {
 				</Fab>
 			</FuseAnimate>
 
-			{/* {open && <ContactGroupDialog  isSearched={val} type="Create New Contact Group" isOpen={open} closeDialog={handleClose} data={dialogData} />} */}
+			{open && <CannedDialog  isSearched={val} type="Add Canned Message" isOpen={open} closeDialog={handleClose} data={dialogData} />}
 
 		</>
 	);
