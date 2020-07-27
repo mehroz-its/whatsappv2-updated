@@ -76,7 +76,7 @@ function Roles(props) {
 
 
 	function closeDialog(mes) {
-		console.log(mes, 'messssssssssss');
+		console.log('messssssssssss');
 		snackbar(mes)
 		getData()
 		setOpen(false);

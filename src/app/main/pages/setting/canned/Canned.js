@@ -35,14 +35,14 @@ function ContactsApp() {
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [ok, setOK] = React.useState('')
-	const[val,setVal]=React.useState('')
+	const [val, setVal] = React.useState('')
 
 
 	// const handleChange = (event) => {
 	// 	setAge(event.target.value);
 	// };
 
-	
+
 	const handleClickOpen = () => {
 		setOpen(true);
 	}
@@ -97,8 +97,8 @@ function ContactsApp() {
 		getData()
 	}, []);
 
-	  const valueReceived = (value) =>{
-		  console.log('i am called')
+	const valueReceived = (value) => {
+		console.log('i am called')
 		if (value == "update") {
 			setSnackBarMessage("Updated Successfully")
 			setOK("success")
@@ -115,8 +115,8 @@ function ContactsApp() {
 			setOK("error")
 			setSnackBarOpen(true)
 		}
-	  }
-	  setTimeout(() => {
+	}
+	setTimeout(() => {
 		setSnackBarMessage('')
 		setSnackBarOpen(false)
 	}, 3000);
@@ -130,11 +130,13 @@ function ContactsApp() {
 
 
 	}
-	const handleClose = (val) => {
+	function closeDialog(val) {
 		setOpen(false);
 		getData()
 		valueReceived(val)
+		alert('called in canned')
 	};
+
 	return (
 		<>
 			<Snackbar
@@ -156,9 +158,9 @@ function ContactsApp() {
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
 					wrapper: 'min-h-0'
 				}}
-				header={<CannedHeader pageLayout={pageLayout}  SearchVal={search} />}
+				header={<CannedHeader pageLayout={pageLayout} SearchVal={search} />}
 
-				content={<CannedList isSearched={val} data={data2} onDialogClose={handleClose}  ValueForSearch={val} displaySnack={valueReceived}/>}
+				content={<CannedList isSearched={val} data={data2} onDialogClose={closeDialog} ValueForSearch={val} displaySnack={valueReceived} />}
 
 				leftSidebarContent={<CannedSideBar />}
 				sidebarInner
@@ -178,7 +180,7 @@ function ContactsApp() {
 				</Fab>
 			</FuseAnimate>
 
-			{open && <CannedDialog  isSearched={val} type="Add Canned Message" isOpen={open} closeDialog={handleClose} data={dialogData} />}
+			{open ? <CannedDialog isSearched={val} type="Add Canned Message" isOpen={open} closeDialog={closeDialog} data={dialogData} />:null}
 
 		</>
 	);

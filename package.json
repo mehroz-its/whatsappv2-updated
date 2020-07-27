@@ -41,6 +41,7 @@
         "mobile-detect": "1.4.4",
         "moment": "2.24.0",
         "notistack": "0.9.9",
+        "openweather-apis": "^4.3.1",
         "path-to-regexp": "3.2.0",
         "perfect-scrollbar": "1.5.0",
         "prismjs": "1.20.0",
