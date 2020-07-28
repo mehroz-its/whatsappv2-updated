@@ -313,19 +313,16 @@ function ChatApp() {
 	}
 	return (
 		<FusePageSimple
-			classes={{
-				root: classes.layoutRoot,
-				header: 'min-h-160 h-160',
-			}}
+		
 			header={
 				<div className="flex flex-1 w-full items-center justify-between px-16">
 					<div className="flex items-center">
 						<FuseAnimate animation="transition.expandIn" delay={300}>
-							<Icon className="text-32">chat</Icon>
+							<Icon className="text-26">chat</Icon>
 						</FuseAnimate>
 						<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 							<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-								Chat Report
+							<span style={{fontSize:'15px'}}>Chat Report</span>
 					</Typography>
 						</FuseAnimate>
 					</div>
@@ -342,14 +339,14 @@ function ChatApp() {
 						}}>
 						<div className="widget flex w-full sm:w-1/1 md:w-1/2 p-12">
 							<Paper className="w-full rounded-8 shadow-none border-1">
-								<Typography variant="h5" className="header-card" >Conversation Count</Typography>
+								<Typography variant="h6" className="header-card text-center" >Conversation Count</Typography>
 
 								<div id="chartdivv" style={{ width: "100%", height: "300px" }}></div>
 							</Paper>
 						</div>
 						<div className="widget flex w-full sm:w-1/1 md:w-1/2 p-12">
 							<Paper className="w-full rounded-8 shadow-none border-1">
-								<Typography variant="h5" className="header-card" >Engagements</Typography>
+								<Typography variant="h6" className="header-card text-center" >Engagements</Typography>
 
 								<div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>
 							</Paper>

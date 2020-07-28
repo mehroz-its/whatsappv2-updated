@@ -219,7 +219,7 @@ function AgentTable(props) {
                                 
 								return (
 									<TableRow
-										className="h-64 cursor-pointer"
+										className="h-10 cursor-pointer"
 										hover
 										role="checkbox"
 										aria-checked={isSelected}
@@ -245,13 +245,13 @@ function AgentTable(props) {
 										<TableCell component="th" scope="row"  align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.total_chat_count}
 										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px' ,padding:'10px'}}>
 											{n.total_engagement_count}
 										</TableCell>
-                                        <TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+                                        <TableCell component="th" scope="row" align="center" style={{fontSize:'12px' ,padding:'10px'}}>
 											{n.responsetime}
 										</TableCell>
-                                        <TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+                                        <TableCell component="th" scope="row" align="center" style={{fontSize:'12px' ,padding:'10px'}}>
 											{n.account_status}
 										</TableCell>
 									

@@ -184,7 +184,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 										return (
 											<TableCell
 												{...cell.getCellProps()}
-												className={clsx('p-0', cell.column.className)}
+												className={clsx('p-0')}
 											>
 												{cell.render('Cell')}
 											</TableCell>

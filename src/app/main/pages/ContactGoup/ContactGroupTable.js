@@ -154,7 +154,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 								{...row.getRowProps()}
 								onClick={ev => handleClick(ev, row)}
 								className="truncate cursor-pointer"
-								style={{height:'2%'}}
+								
 							>
 								{row.cells.map(cell => {
 									console.log(row.original, 'cell')
@@ -180,7 +180,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 										return (
 											<TableCell
 												{...cell.getCellProps()}
-												className={clsx('p-0', cell.column.className)}
+												className={clsx('p-0',)}
 											>
 												{cell.render('Cell')}
 											</TableCell>

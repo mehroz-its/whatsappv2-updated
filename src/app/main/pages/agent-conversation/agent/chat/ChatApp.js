@@ -840,7 +840,7 @@ function ChatApp(props) {
 															: ''}
 													</Avatar>
 												</div>
-												<Typography color="inherit" className="text-18 font-600 px-4" style={{ marginTop: '-10px' }}>
+												<Typography color="inherit" className="text-18 font-600 px-4">
 													{selectedRecipient.name}
 												</Typography>
 											</div>
