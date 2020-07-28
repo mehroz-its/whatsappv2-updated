@@ -219,7 +219,7 @@ function AgentTable(props) {
                                 
 								return (
 									<TableRow
-										className="h-64 cursor-pointer"
+										className="h-10 cursor-pointer"
 										hover
 										role="checkbox"
 										aria-checked={isSelected}
@@ -236,22 +236,22 @@ function AgentTable(props) {
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-										<TableCell component="th" scope="row"  align="center" style={{fontSize:'12px'}}>
+										<TableCell component="th" scope="row"  align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.agent_id}
 										</TableCell>
-										<TableCell component="th" scope="row"  align="center" style={{fontSize:'12px'}}>
+										<TableCell component="th" scope="row"  align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.agent_name}
 										</TableCell>
-										<TableCell component="th" scope="row"  align="center" style={{fontSize:'12px'}}>
+										<TableCell component="th" scope="row"  align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.total_chat_count}
 										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px' ,padding:'10px'}}>
 											{n.total_engagement_count}
 										</TableCell>
-                                        <TableCell component="th" scope="row" align="center" style={{fontSize:'12px'}}>
+                                        <TableCell component="th" scope="row" align="center" style={{fontSize:'12px' ,padding:'10px'}}>
 											{n.responsetime}
 										</TableCell>
-                                        <TableCell component="th" scope="row" align="center" style={{fontSize:'12px'}}>
+                                        <TableCell component="th" scope="row" align="center" style={{fontSize:'12px' ,padding:'10px'}}>
 											{n.account_status}
 										</TableCell>
 									

@@ -6,16 +6,30 @@ import Paper from '@material-ui/core/Paper';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
+import { makeStyles } from '@material-ui/core/styles';
 
 import * as Actions from '../store/actions';
-
+const useStyles = makeStyles((theme) => ({
+	formControl: {
+	  margin: theme.spacing(1),
+	  minWidth: 300,
+	  borderWidth:'2px',
+	  borderColor:'black'
+	},
+	selectEmpty: {
+	  marginTop: theme.spacing(2),
+	},
+  }));
 function AgentHeader(props) {
+	const classes = useStyles();
+
 	const dispatch = useDispatch();
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
@@ -55,7 +69,7 @@ function AgentHeader(props) {
 	}
 
 
-	
+
 	useEffect(() => {
 		getAgents()
 		// if (selectedAgent === 'null') setint_CustomerList = setInterval(() => {
@@ -102,40 +116,44 @@ function AgentHeader(props) {
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 					<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-					<span style={{fontSize:'15px'}}>Agent Chat History</span>
+						<span style={{ fontSize: '15px' }}>Agent Chat History</span>
 					</Typography>
 				</FuseAnimate>
 			</div>
 
 			<div className="flex flex-1 items-center justify-center px-12">
-				<ThemeProvider theme={mainTheme}>
-					<FuseAnimate animation="transition.slideDownIn" delay={300}>
-					<Select
-							
-							labelId="demo-controlled-select-label"
+
+				<FuseAnimate animation="transition.slideDownIn" delay={300}>
+					<FormControl variant="outlined" className={classes.formControl}>
+						<InputLabel id="demo-simple-select-outlined-label" style={{color:'white'}}>Agent</InputLabel>
+						<Select
+							fullWidth
+							label="Agent"
+							labelId="demo-simple-select-outlined-label"
+							id="demo-simple-select-outlined"
 							open={agentDropDownOpen}
 							onClose={handleCloseAgent}
 							onOpen={handleOpenAgent}
 							value={selectedAgent}
 							onChange={handleChangeAgent}
-							id="demo-simple-select"
-							fullWidth
-							style={{ width: '100%',height:'60%'}}
 							inputProps={{
-								name: 'age',
+								name: 'Agent',
 								id: 'outlined-age-native-simple',
 							}}
 						>
-							
+							<MenuItem value="">
+								<em>None</em>
+							</MenuItem>
 							{agents.map(data => {
 								return (
-								
+
 									<MenuItem key={`template_list_item_${data.id}`} value={data.id}>{data.username}</MenuItem>
 								)
 							})}
 
 						</Select>
-						{/* <Paper className="flex items-center w-full max-w-512 px-8 py-4 rounded-8" elevation={1}>
+					</FormControl>
+					{/* <Paper className="flex items-center w-full max-w-512 px-8 py-4 rounded-8" elevation={1}>
 						<Icon color="action" fontSize="small">search</Icon>
 						<input
 							style={{border:'none'}}
@@ -153,10 +171,12 @@ function AgentHeader(props) {
 							placeholder="Search"
 							/>
 						</Paper> */}
-					</FuseAnimate>
-				</ThemeProvider>
+
+				</FuseAnimate>
+
+
 			</div>
-		
+
 		</div>
 	);
 }

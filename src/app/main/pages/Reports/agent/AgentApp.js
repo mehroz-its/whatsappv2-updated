@@ -292,19 +292,16 @@ function AgentApp() {
 		}
 	return (
 		<FusePageSimple
-			classes={{
-				root: classes.layoutRoot,
-				header: 'min-h-160 h-160',
-			}}
+		
 			header={
 				<div className="flex flex-1 w-full items-center justify-between px-16">
 				<div className="flex items-center">
 					<FuseAnimate animation="transition.expandIn" delay={300}>
-						<Icon className="text-32">face</Icon>
+						<Icon className="text-26">face</Icon>
 					</FuseAnimate>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 						<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-							Agent Report
+						<span style={{fontSize:'15px'}}>Agent Report</span>
 				</Typography>
 					</FuseAnimate>
 				</div>
