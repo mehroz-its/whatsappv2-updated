@@ -128,7 +128,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 						<TableRow {...headerGroup.getHeaderGroupProps()}>
 							{headerGroup.headers.map(column => (
 								<TableCell
-									className="whitespace-no-wrap p-12"
+									className="whitespace-no-wrap p-0"
 									{...(!column.sortable
 										? column.getHeaderProps()
 										: column.getHeaderProps(column.getSortByToggleProps()))}
@@ -154,19 +154,24 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 								{...row.getRowProps()}
 								onClick={ev => handleClick(ev, row)}
 								className="truncate cursor-pointer"
+								style={{height:'2%'}}
 							>
 								{row.cells.map(cell => {
 									console.log(row.original, 'cell')
 									if (cell.column.Header === 'Enable') {
 										if (row.original.enabled === true) {
 											return (
-												<TableCell component="th" scope="row" align="center">
+												<TableCell 
+												style={{height: 10}}
+												component="th" scope="row" align="center">
 													<Icon className="text-green text-20">check_circle</Icon>
 												</TableCell>
 											)
 										} else if (row.original.enabled === false) {
 											return (
-												<TableCell component="th" scope="row" align="center">
+												<TableCell 
+												style={{height: 10}}
+												component="th" scope="row" align="center">
 													<Icon className="text-red text-20">cancel</Icon>
 												</TableCell>
 											)
@@ -175,7 +180,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 										return (
 											<TableCell
 												{...cell.getCellProps()}
-												className={clsx('p-12', cell.column.className)}
+												className={clsx('p-0', cell.column.className)}
 											>
 												{cell.render('Cell')}
 											</TableCell>

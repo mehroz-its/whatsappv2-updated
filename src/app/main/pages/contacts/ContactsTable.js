@@ -129,8 +129,8 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 						<TableRow {...headerGroup.getHeaderGroupProps()}>
 							{headerGroup.headers.map(column => (
 								<TableCell
-									className="whitespace-no-wrap p-12" 	
-									style={{fontSize:'12px',fontWeight:'bolder'}}
+									className="whitespace-no-wrap px-50 py-0" 	
+									style={{fontSize:'120px',fontWeight:'bolder'}}
 									{...(!column.sortable
 										? column.getHeaderProps()
 										: column.getHeaderProps(column.getSortByToggleProps()))}
@@ -138,7 +138,7 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 									{column.render('Header')}
 									{column.sortable ? (
 										<TableSortLabel
-										style={{fontSize:'12px',fontWeight:'100'}}
+										style={{fontSize:'120px',fontWeight:'100'}}
 											active={column.isSorted}
 											// react-table has a unsorted state which is not treated here
 											direction={column.isSortedDesc ? 'desc' : 'asc'}
@@ -162,9 +162,9 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 								{row.cells.map(cell => {
 									return (
 										<TableCell
-										     style={{fontSize:'12px'}}
-											{...cell.getCellProps()}
-											className={clsx('p-12', cell.column.className)}
+										     	style={{fontSize:'12px',textAlign:'center'}}
+												{...cell.getCellProps()}
+												className={clsx('p-0', cell.column.className)}
 										>
 											{cell.render('Cell')}
 										</TableCell>
