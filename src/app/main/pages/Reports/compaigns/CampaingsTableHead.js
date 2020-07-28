@@ -18,42 +18,42 @@ import React, { useState } from 'react';
 const rows = [	
 	{
 		id: 'Agent_id',
-		align: 'left',
+		align: 'center',
 		disablePadding: false,
 		label: 'Agent_id',
 		sort: true
 	},
 	{
 		id: 'agent_name',
-		align: 'left',
+		align: 'center',
 		disablePadding: false,
 		label: 'agent_name',
 		sort: true
 	},
 	{
 		id: 'total_chat_count',
-		align: 'left',
+		align: 'center',
 		disablePadding: false,
 		label: 'Total_chat_count',
 		sort: true
 	},
 	{
 		id: 'total_engagement_count',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Total_engagement_count',
 		sort: true
 	},
 	{
 		id: 'responsetime',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'responsetime',
 		sort: true
 	},
 	{
 		id: 'account_status',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Acount_status',
 		sort: true
@@ -94,7 +94,7 @@ function CampaingsTableHead(props) {
 					{props.numSelected > 0 && (
 						<div
 							className={clsx(
-								'flex items-center justify-center absolute w-64 top-0 ltr:left-0 rtl:right-0 mx-56 h-64 z-10',
+								'flex items-center justify-center absolute w-64 top-0 ltr:center-0 rtl:center-0 mx-56 h-64 z-10',
 								classes.actionsButtonWrapper
 							)}
 						>
@@ -131,6 +131,7 @@ function CampaingsTableHead(props) {
 					return (
 						<TableCell
 							key={row.id}
+							style={{ fontSize: '12px', padding: '10px 0px 10px 20px' }}
 							align={row.align}
 							padding={row.disablePadding ? 'none' : 'default'}
 							sortDirection={props.order.id === row.id ? props.order.direction : false}
@@ -138,7 +139,7 @@ function CampaingsTableHead(props) {
 							{row.sort && (
 								<Tooltip
 									title="Sort"
-									placement={row.align === 'right' ? 'bottom-end' : 'bottom-start'}
+									placement={row.align === 'center' ? 'bottom-end' : 'bottom-start'}
 									enterDelay={300}
 								>
 									<TableSortLabel

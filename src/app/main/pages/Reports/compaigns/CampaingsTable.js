@@ -216,40 +216,40 @@ function CampaingsTable(props) {
 										<TableCell component="th" scope="row" >
 											{n.incoming}
 										</TableCell>
-										<TableCell component="th" scope="row">
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.incoming_count}
 										</TableCell>
-										<TableCell component="th" scope="row">
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.number}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.outgoing}
 										</TableCell>
-                                        <TableCell component="th" scope="row" align="right">
+                                        <TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}} >
 											{n.outgoing_count}
 										</TableCell>
 									
-										{/* <TableCell component="th" scope="row" align="right">
+										{/* <TableCell component="th" scope="row" align="center">
 											{n.progress ? (
 												<Icon className="text-red text-20">check_circle</Icon>
 												) : (
 													<Icon className="text-green text-20">remove_circle</Icon>
 												)}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
+										<TableCell component="th" scope="row" align="center">
 											{n.consumers}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
+										<TableCell component="th" scope="row" align="center">
 											{n.success}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
+										<TableCell component="th" scope="row" align="center">
 											{n.failure}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right">
+										<TableCell component="th" scope="row" align="center">
 											{n.lastUpdated}
 										</TableCell> */}
 										{/* 
-										<TableCell component="th" scope="row" align="right">
+										<TableCell component="th" scope="row" align="center">
 											{n.quantity}
 											<i
 												className={clsx(
@@ -261,7 +261,7 @@ function CampaingsTable(props) {
 											/>
 										</TableCell> */}
 
-										{/* <TableCell component="th" scope="row" align="right">
+										{/* <TableCell component="th" scope="row" align="center">
 											{n.active ? (
 												<Icon className="text-green text-20">check_circle</Icon>
 											) : (

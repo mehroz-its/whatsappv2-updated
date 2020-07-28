@@ -18,35 +18,35 @@ import React, { useState } from 'react';
 const rows = [
 	{
 		id: 'id',
-		align: 'left',
+		align: 'center',
 		disablePadding: false,
 		label: 'ID',
 		sort: true
 	},
 	{
 		id: 'username',
-		align: 'left',
+		align: 'center',
 		disablePadding: false,
 		label: 'Username',
 		sort: true
 	},
 	{
 		id: 'email',
-		align: 'left',
+		align: 'center',
 		disablePadding: false,
 		label: 'Email',
 		sort: true
 	},
 	{
 		id: 'number',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Number',
 		sort: true
 	},
 	{
 		id: 'enabled',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Enabled',
 		sort: true
@@ -88,7 +88,7 @@ function UserTableHead(props) {
 					{props.numSelected > 0 && (
 						<div
 							className={clsx(
-								'flex items-center justify-center absolute w-64 top-0 ltr:left-0 rtl:right-0 mx-56 h-64 z-10',
+								'flex items-center justify-center absolute w-64 top-0 ltr:center-0 rtl:center-0 mx-56 h-64 z-10',
 								classes.actionsButtonWrapper
 							)}
 						>
@@ -124,7 +124,7 @@ function UserTableHead(props) {
 				{rows.map(row => {
 					return (
 						<TableCell
-						style={{fontSize:'12px',padding:'15px'}}
+						style={{ fontSize: '12px', padding: '10px 0px 10px 20px' }}
 							key={row.id}
 							align={row.align}
 							padding={row.disablePadding ? 'none' : 'default'}
@@ -133,7 +133,7 @@ function UserTableHead(props) {
 							{row.sort && (
 								<Tooltip
 									title="Sort"
-									placement={row.align === 'right' ? 'bottom-end' : 'bottom-start'}
+									placement={row.align === 'center' ? 'bottom-end' : 'bottom-start'}
 									enterDelay={300}
 								>
 									<TableSortLabel

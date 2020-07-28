@@ -215,7 +215,7 @@ function CampaignTable(props) {
 		
 <Snackbar
 
-anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
 open={snackbaropen}
 autoHideDuration={3000}
 
@@ -276,46 +276,46 @@ autoHideDuration={3000}
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-										<TableCell component="th" scope="row" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.id}
 										</TableCell>
-										<TableCell component="th" scope="row" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center"  style={{fontSize:'12px',padding:'10px'}}>
 											{n.name}
 										</TableCell>
-										<TableCell component="th" scope="row" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.description}
 										</TableCell>
-										{<TableCell component="th" scope="row" align="right" style={{fontSize:'12px',padding:'10px'}}>
+										{<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.begin_dt === null ? 'N/A' : n.begin_dt}
 										</TableCell>}
-										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.activated ? (
 												<Icon className="text-green text-16">check_circle</Icon>
 											) : (
 													<Icon className="text-red text-16">cancel</Icon>
 												)}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.progress ? ( 
 												<Icon className="text-green text-16">check_circle</Icon>
 											) : (
 													<Icon className="text-red text-16">cancel</Icon>
 												)}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.consumers}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.success}
 										</TableCell >
-										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.failures}
 										</TableCell>
-										{/* <TableCell component="th" scope="row" align="right" style={{fontSize:'12px',padding:'10px'}}>
+										{/* <TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.dtu}
 									
 										</TableCell> */}
-										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.completed ? (
 												<Icon className="text-green text-16">check_circle</Icon>
 											) : (
@@ -323,7 +323,7 @@ autoHideDuration={3000}
 												)}
 										</TableCell>
 										{/* 
-										<TableCell component="th" scope="row" align="right">
+										<TableCell component="th" scope="row" align="center">
 											{n.quantity}
 											<i
 												className={clsx(
@@ -335,7 +335,7 @@ autoHideDuration={3000}
 											/>
 										</TableCell> */}
 
-										{/* <TableCell component="th" scope="row" align="right">
+										{/* <TableCell component="th" scope="row" align="center">
 											{n.active ? (
 												<Icon className="text-green text-20">check_circle</Icon>
 											) : (

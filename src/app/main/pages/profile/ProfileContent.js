@@ -187,7 +187,19 @@ const Profile = function (props) {
                         return (
                             <Grid key={`user_attribute_grid_holder_${i}`} item md={6} xs={12}>
                                 <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
-                                    <TextField id={`id-${id}`} key={`user_attribute_data_${i}`} value={''} name={keys[1]} autoFocus label={`${keys[1].toUpperCase()}` === 'ADDESS' ? 'ADDRESS' : 'Uzair'} variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
+                                    <TextField 
+                                    id={`id-${id}`} 
+                                    key={`user_attribute_data_${i}`} 
+                                    value={''} name={keys[1]} 
+                                    autoFocus
+                                     label={`${keys[1].toUpperCase()}` === 'ADDESS' ? 'ADDRESS' : 'Uzair'} 
+                                     variant="outlined" 
+                                     fullWidth 
+                                     autoComplete="off" 
+                                     onChange={onInputChange} 
+                                     size="small"
+                                     className="mb-16"
+                                     />
                                 </div>
                             </Grid>
                         );
@@ -200,8 +212,9 @@ const Profile = function (props) {
                             return (
                                 <Grid key={`user_attribute_grid_holder_${i}`} item md={6} xs={12}>
                                     <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
-                                        <TextField disabled id={`id-${id}`} key={`user_attribute_data_${i}`} value={value} name={keys[1]} autoFocus label={`${keys[1].toUpperCase()}`}
-
+                                        <TextField disabled  size="small"
+ id={`id-${id}`} key={`user_attribute_data_${i}`} value={value} name={keys[1]} autoFocus label={`${keys[1].toUpperCase()}`}
+                                            
                                             variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
                                     </div>
                                 </Grid>
@@ -211,6 +224,8 @@ const Profile = function (props) {
                                 <Grid key={`user_attribute_grid_holder_${i}`} item md={6} xs={12}>
                                     <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
                                         <TextField id="date" fullWidth
+                                                                             size="small"
+
                                             name={"dob"} label="D.O.B" type="date" onChange={handleDate} defaultValue={dob} InputLabelProps={{ shrink: true }}
                                         />
                                     </div>
@@ -226,6 +241,8 @@ const Profile = function (props) {
                                             key={`user_attribute_data_${i}`}
                                             value={value} name={keys[1]} autoFocus
                                             label={`${keys[1].toUpperCase()}`}
+                                            size="small"
+
                                             onInput={(e) => {
                                                 e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 13)
                                             }}
@@ -245,6 +262,8 @@ const Profile = function (props) {
                                             (
                                                 <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
                                                     <TextField required id={`id-${id}`}
+                                                                                         size="small"
+
                                                         key={`user_attribute_data_${i}`}
                                                         value={value} name={keys[1]} autoFocus
                                                         label={`${keys[1].toUpperCase()}`}
@@ -255,6 +274,8 @@ const Profile = function (props) {
                                             <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
                                                 <TextField required id={`id-${id}`}
                                                     key={`user_attribute_data_${i}`}
+                                                    size="small"
+
                                                     value={value} name={keys[1]} autoFocus
                                                     label={`${keys[1].toUpperCase()}`}
                                                     type={'number'}

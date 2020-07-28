@@ -262,16 +262,16 @@ function PermissionTable(props) {
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-										<TableCell component="th" scope="row" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.id}
 										</TableCell>
-										<TableCell component="th" scope="row" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.title}
 										</TableCell>
-										<TableCell component="th" scope="row" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.method !== 'APP' ? `${n.method}END` : n.method}
 										</TableCell>
-										<TableCell component="th" scope="row" align="left" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.enabled ? (
 												<Icon className="text-green text-16">check_circle</Icon>
 											) : (

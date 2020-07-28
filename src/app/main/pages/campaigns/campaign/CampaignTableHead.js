@@ -18,21 +18,21 @@ import React, { useState } from 'react';
 const rows = [
 	{
 		id: 'id',
-		align: 'left',
+		align: 'center',
 		disablePadding: false,
 		label: 'ID',
 		sort: true
 	},
 	{
 		id: 'name',
-		align: 'left',
+		align: 'center',
 		disablePadding: false,
 		label: 'Name',
 		sort: true
 	},
 	{
 		id: 'description',
-		align: 'left',
+		align: 'center',
 		disablePadding: false,
 		label: 'Description',
 		sort: true
@@ -46,49 +46,49 @@ const rows = [
 	},
 	{
 		id: 'activated',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Activated',
 		sort: true
 	},
 	{
 		id: 'progress',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'In Progress',
 		sort: true
 	},
 	{
 		id: 'consumer',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Consumer',
 		sort: true
 	},
 	{
 		id: 'success',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Success',
 		sort: true
 	},
 	{
 		id: 'faliure',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Failure',
 		sort: true
 	},
 	// {
 	// 	id: 'lastUpdated',
-	// 	align: 'right',
+	// 	align: 'center',
 	// 	disablePadding: false,
 	// 	label: 'Last Updated',
 	// 	sort: true
 	// },
 	{
 		id: 'completed',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Completed',
 		sort: true
@@ -121,7 +121,7 @@ function CampaignTableHead(props) {
 	return (
 		<TableHead>
 			<TableRow className="h-10">
-				{/* <TableCell padding="none" className="relative w-64 text-center">
+				{/* <TableCell padding="none" className="relative w-64 text-right">
 					<Checkbox
 						indeterminate={props.numSelected > 0 && props.numSelected < props.rowCount}
 						checked={props.numSelected === props.rowCount}
@@ -130,7 +130,7 @@ function CampaignTableHead(props) {
 					{props.numSelected > 0 && (
 						<div
 							className={clsx(
-								'flex items-center justify-center absolute w-64 top-0 ltr:left-0 rtl:right-0 mx-56 h-64 z-10',
+								'flex items-right justify-right absolute w-64 top-0 ltr:center-0 rtl:right-0 mx-56 h-64 z-10',
 								classes.actionsButtonWrapper
 							)}
 						>
@@ -166,7 +166,7 @@ function CampaignTableHead(props) {
 				{rows.map(row => {
 					return (
 						<TableCell
-						style={{fontSize:'12px',padding:'10px'}}
+							style={{ fontSize: '12px', padding: '10px 0px 10px 20px' }}
 							key={row.id}
 							align={row.align}
 							padding={row.disablePadding ? 'none' : 'default'}
@@ -175,7 +175,7 @@ function CampaignTableHead(props) {
 							{row.sort && (
 								<Tooltip
 									title="Sort"
-									placement={row.align === 'right' ? 'bottom-end' : 'bottom-start'}
+									placement={row.align === 'center' ? 'bottom-end' : 'bottom-start'}
 									enterDelay={300}
 								>
 									<TableSortLabel

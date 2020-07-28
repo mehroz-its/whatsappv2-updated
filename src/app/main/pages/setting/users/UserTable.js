@@ -254,19 +254,19 @@ function UserTable(props) {
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-										<TableCell component="th" scope="row" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.id}
 										</TableCell>
-										<TableCell component="th" scope="row" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.username}
 										</TableCell>
-										<TableCell component="th" scope="row" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.email}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.number}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.enabled ? (
 												<Icon className="text-green text-16">check_circle</Icon>
 											) : (
@@ -275,7 +275,7 @@ function UserTable(props) {
 										</TableCell>
 
 										{/* 
-										<TableCell component="th" scope="row" align="right">
+										<TableCell component="th" scope="row" align="center">
 											{n.quantity}
 											<i
 												className={clsx(
@@ -287,7 +287,7 @@ function UserTable(props) {
 											/>
 										</TableCell> */}
 
-										{/* <TableCell component="th" scope="row" align="right">
+										{/* <TableCell component="th" scope="row" align="center">
 											{n.active ? (
 												<Icon className="text-green text-20">check_circle</Icon>
 											) : (

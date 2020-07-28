@@ -18,28 +18,28 @@ import React, { useState } from 'react';
 const rows = [
 	{
 		id: 'id',
-		align: 'left',
+		align: 'center',
 		disablePadding: false,
 		label: 'ID',
 		sort: true
 	},
 	{
 		id: 'title',
-		align: 'left',
+		align: 'center',
 		disablePadding: false,
 		label: 'Title',
 		sort: true
 	},
 	{
 		id: 'consumer',
-		align: 'left',
+		align: 'center',
 		disablePadding: false,
 		label: 'Consumer',
 		sort: true
 	},
 	{
 		id: 'enabled',
-		align: 'left',
+		align: 'center',
 		disablePadding: false,
 		label: 'Enabled',
 		sort: true
@@ -80,7 +80,7 @@ function PermissionTableHead(props) {
 					{props.numSelected > 0 && (
 						<div
 							className={clsx(
-								'flex items-center justify-center absolute w-64 top-0 ltr:left-0 rtl:right-0 mx-56 h-64 z-10',
+								'flex items-center justify-center absolute w-64 top-0 ltr:center-0 rtl:right-0 mx-56 h-64 z-10',
 								classes.actionsButtonWrapper
 							)}
 						>
@@ -116,8 +116,8 @@ function PermissionTableHead(props) {
 				{rows.map(row => {
 					return (
 						<TableCell
-							style={{fontSize:'12px',padding:'15px'}}
-							key={row.id}
+						style={{ fontSize: '12px', padding: '10px 0px 10px 20px' }}
+						key={row.id}
 							align={row.align}
 							padding={row.disablePadding ? 'none' : 'default'}
 							sortDirection={props.order.id === row.id ? props.order.direction : false}
@@ -125,7 +125,7 @@ function PermissionTableHead(props) {
 							{row.sort && (
 								<Tooltip
 									title="Sort"
-									placement={row.align === 'right' ? 'bottom-end' : 'bottom-start'}
+									placement={row.align === 'center' ? 'bottom-end' : 'bottom-start'}
 									enterDelay={300}
 								>
 									<TableSortLabel

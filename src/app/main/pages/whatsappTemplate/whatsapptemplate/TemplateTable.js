@@ -188,32 +188,32 @@ function TemplateTable(props) {
 										onClick={event => handleRowClick(n)}
 									>
 
-										<TableCell component="th" scope="row" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.id}
 										</TableCell>
-										<TableCell component="th" scope="row" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.template_name}
 										</TableCell>
-										<TableCell component="th" scope="row" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.template_text}
 										</TableCell>
-										{n.params === null ? (<TableCell component="th" scope="row" align="right" style={{fontSize:'12px',padding:'10px'}}>
+										{n.params === null ? (<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.template_params}
 										</TableCell>) :
-											(<TableCell component="th" scope="row" align="right" style={{fontSize:'12px',padding:'10px'}}>
+											(<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 												Null
 											</TableCell>)}
-										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.template_type}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.approved ? (
 												<Icon className="text-green text-16">check_circle</Icon>
 											) : (
 													<Icon className="text-red text-16">cancel</Icon>
 												)}
 										</TableCell>
-										<TableCell component="th" scope="row" align="right" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.enabled ? (
 												<Icon className="text-green text-16">check_circle</Icon>
 											) : (
