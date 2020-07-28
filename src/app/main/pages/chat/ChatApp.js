@@ -34,7 +34,7 @@ import { CSVLink, CSVDownload } from 'react-csv';
 import Fade from '@material-ui/core/Fade'
 import copy from 'copy-to-clipboard';
 const drawerWidth = 320;
-const headerHeight = 200;
+const headerHeight = 100;
 
 
 const styles = {
@@ -871,14 +871,14 @@ function ChatApp(props) {
 							</div>
 						) : (
 								<>
-									<AppBar className="w-full" position="static" elevation={1} style={{ height: '10%' }}>
+									<AppBar className="w-full" position="static" elevation={1} style={{ height: '9%' }}>
 										<Toolbar className="px-16">
 											<IconButton
 												color="inherit"
 												aria-label="Open drawer"
 												onClick={() => setmobileChatsSidebarOpen(true)}
 												className="flex md:hidden"
-												style={{ marginTop: '-10px' }}
+												
 											>
 												<Icon>chat</Icon>
 											</IconButton>
@@ -889,7 +889,7 @@ function ChatApp(props) {
 												role="button"
 												tabIndex={0}
 											>
-												<div className="relative mx-6">
+												<div className="relative mx-6 w-32 h-32" style={{marginTop:'20px'}}>
 													{/* <div className="absolute right-0 bottom-0  -m-1 z-2">
 													
 														<StatusIcon status={selectedRecipient.status} />
@@ -904,11 +904,11 @@ function ChatApp(props) {
 															: ''}
 													</Avatar>
 												</div>
-												<Typography color="inherit" className="text-12 font-600 px-4" style={{ marginTop: '-10px' }}>
+												<Typography color="inherit" className="text-12 font-600 px-4" style={{marginTop:'5px'}}>
 													{selectedRecipient.name}
 												</Typography>
 											</div>
-											<div style={{ position: 'absolute', right: 1, top: 1 }}>
+											<div style={{ position: 'absolute', right: 1, top: 11 }} >
 												<IconButton
 													aria-owns={moreMenuEl ? 'chats-more-menu' : null}
 													aria-haspopup="true"
@@ -930,7 +930,7 @@ function ChatApp(props) {
 													<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem>
 												</Menu>
 											</div>
-											<div style={{ position: 'absolute', right: 40, top: 1 }}>
+											<div style={{ position: 'absolute', right: 40, top: 11}}>
 												<IconButton
 													aria-haspopup="true"
 													onClick={endConversation}

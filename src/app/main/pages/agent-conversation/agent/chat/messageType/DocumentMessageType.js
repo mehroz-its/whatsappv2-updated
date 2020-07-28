@@ -22,7 +22,7 @@ const DocumentMessageType = function (props) {
 
         if (attachments && attachments !== null) {
             
-            console.log("DocumentMessageType attachments : " ,  attachments)
+            // console.log("DocumentMessageType attachments : " ,  attachments)
             attachments.forEach((attribute) => {
                 if (attribute.attribute_name === 'url') {
                     setDocumentPath(attribute.attribute_value);
@@ -47,24 +47,33 @@ const DocumentMessageType = function (props) {
                 <div style={{ width: '100%' }}>
                     <CardContent style={{ padding: '10px 10px' }} >
                         <div style={{ display: 'flex', flexDirection: 'row', backgroundColor: 'whitesmoke', }}>
-                            <CardMedia style={{ width: '20%', padding: 0 }}>
+                           
+                            <CardMedia>
                                 {mimeType === "application/pdf" ?
-                                    <PictureAsPdfIcon style={{ width: 50, fontSize: 40, padding: '14px 0', color: 'red' }} />
-                                    :  <DescriptionIcon style={{ width: 50, fontSize: 40, padding: '14px 0', color: 'Blue' }} />
+                                    <PictureAsPdfIcon style={{ marginRight:'2%',marginTop:'2%',width: 30,height:30, fontSize: 40,  color: 'red' }} />
+                                    :  <DescriptionIcon style={{ width: 30,height:30, fontSize: 40,  color: 'Blue' }} />
                                 }
                             </CardMedia>
-                            <div style={{ width: '80%', padding: 0, alignSelf: 'center' }}>
+                            {/* <div style={{flex:1,display:'flex',justifyContent:'center',alignItems:'center'}}>
+                            <span style={{textAlign:'center'}}>{caption}</span>
+                            </div> */}
+                            <div style={{ width: '80%',marginLeft:'2%', padding: 0, alignSelf: 'center' }}>
                                 <Typography variant="subtitle1" style={{ padding: 0 }} >
                                     {filename}
                                 </Typography>
                             </div>
-                            <CardMedia style={{ width: '20%', padding: '10px 0' }}>
+                            {/* <CardMedia style={{ width: '20%', padding: '10px 0' }}>
                                 <a href={documentPath} target={'_blank'}><GetAppIcon style={{ width: 50, fontSize: 40, padding: 5, color: 'grey', marginTop: '-2px' }} /></a>
-                            </CardMedia>
-
+                            </CardMedia> */}
+                       <span>
+                           
+                       <a href={documentPath} target={'_blank'}>
+                           <GetAppIcon  style={{textAlign:'center',height:25,width:25,marginTop:5}} />
+                           </a>
+                        </span>
                         </div>
-                        <p style={{ width: "100%", margin: '5px 5px 5px 0px' }}>{caption}</p>
-
+                        <p style={{fontWeight:'bold',marginLeft:'1%',marginTop:'2%'}}>{caption}</p>
+                      
                     </CardContent>
                 </div>
 

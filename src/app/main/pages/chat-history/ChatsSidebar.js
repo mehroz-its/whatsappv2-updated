@@ -236,9 +236,9 @@ function ChatsSidebar(props) {
 				</Toolbar>
 				{useMemo(
 					() => (
-						<Toolbar className="px-16">
-							<Paper className="flex p-4 items-center w-full px-8 py-4 rounded-8" elevation={1}>
-								<Icon color="action">search</Icon>
+						<Toolbar className="px-10" style={{marginTop:'-15px'}}>
+							<Paper className="flex p-4 items-center w-full px-8 py-4 rounded-0" elevation={1}>
+								<Icon color="action" fontSize="small">search</Icon>
 
 								<Input
 									placeholder="Search or start new chat"
@@ -249,11 +249,7 @@ function ChatsSidebar(props) {
 									inputProps={{
 										'aria-label': 'Search'
 									}}
-									// onChange={handleSearchText}
-									onChange={(e)=>{
-										props.searchedContact(e.target.value)
-										setSearchText(e.target.value)
-									}}
+									onChange={handleSearchText}
 								/>
 							</Paper>
 						</Toolbar>

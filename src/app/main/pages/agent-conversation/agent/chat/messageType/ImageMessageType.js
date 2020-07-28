@@ -39,7 +39,7 @@ const ImageMessageType = function (props) {
                     src={imageSrc}
                     style={{ width: '100%', objectFit: 'cover' }}
                 />
-                {imageCaption !== '' ?   <p style={{ width: "100%", margin: '10px' }}>{imageCaption}</p> : null}
+                {imageCaption !== '' ?   <p style={{ width: "100%", margin: '10px',fontWeight:'bold' }}>{imageCaption}</p> : null}
               
             </Card>
             {isOpen && (
