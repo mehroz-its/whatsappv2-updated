@@ -336,7 +336,7 @@ const Login2Page = (props) => {
             <FuseAnimate animation={{ translateX: [0, '100%'] }}>
                 <Card className="w-full max-w-400 mx-auto m-16 md:m-0" square>
                     <CardContent className="flex flex-col items-center justify-center p-32 md:p-48 md:pt-128 ">
-                        <Typography variant="h6" className="md:w-full mb-32">
+                        <Typography variant="h6" className="md:w-full mb-32 text-center">
                             LOGIN TO YOUR ACCOUNT
 						</Typography>
 
@@ -358,6 +358,7 @@ const Login2Page = (props) => {
                                 required
                                 style={formItem}
                                 fullWidth
+                                size="small"
                                 onKeyDown={_handleKeyDown}
                             />
 
@@ -366,7 +367,7 @@ const Login2Page = (props) => {
                                 label="Password"
                                 type="password"
                                 name="password"
-
+                                size="small"
                                 onChange={handlePassordInput}
                                 variant="outlined"
                                 value={passsword}

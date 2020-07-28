@@ -109,15 +109,20 @@ function ForgotPasswordPage(props) {
 	}
 
 	return (
-		<div className={clsx(classes.root, 'flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}>
+		<div className={clsx('flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}
+		style={{backgroundImage: 'url(' + require('../../../../../images/background-04.jpg') + ')',
+        width:'100%',
+        height:'500px',
+        backgroundSize:'cover'
+    }}>
 			<div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
 				<FuseAnimate animation="transition.expandIn">
-					<img  style={{ width: 500, height: 100, }} src={require('../../../../../images/itsAppLogo.png')} alt="logo" />
+					<img  style={{ width: 500, height: 100, }} src={require('../../../../../images/logo_animation.gif')} alt="logo" />
 				</FuseAnimate>
 
 				<FuseAnimate animation="transition.slideUpIn" delay={300}>
 					<Typography variant="h3" color="inherit" className="font-light mt-20">
-					Welcome to the Intellexal Solutions!
+					Welcome to Intellexal Solutions!
 					</Typography>
 				</FuseAnimate>
 
@@ -132,7 +137,7 @@ function ForgotPasswordPage(props) {
 			<FuseAnimate animation={{ translateX: [0, '100%'] }}>
 				<Card className="w-full max-w-400 mx-auto m-16 md:m-0" square>
 					<CardContent className="flex flex-col items-center justify-center p-32 md:p-48 md:pt-128 ">
-						<Typography variant="h6" className="md:w-full mb-32">
+						<Typography variant="h6" className="md:w-full mb-32 text-center" >
 							RECOVER YOUR PASSWORD
 						</Typography>
 
@@ -158,6 +163,7 @@ function ForgotPasswordPage(props) {
 								variant="outlined"
 								required
 								fullWidth
+								size="small"
 							/>
 
 							<Button

@@ -237,7 +237,7 @@ function ChatsSidebar(props) {
 				</Toolbar>
 				{useMemo(
 					() => (
-						<Toolbar className="px-16">
+						<Toolbar className="px-10" style={{marginTop:'-15px'}}>
 							<Paper className="flex p-4 items-center w-full px-8 py-4 rounded-0" elevation={1}>
 								<Icon color="action" fontSize="small">search</Icon>
 
