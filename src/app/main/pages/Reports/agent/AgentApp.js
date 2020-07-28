@@ -7,6 +7,8 @@ import Paper from '@material-ui/core/Paper';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import am4themes_material from "@amcharts/amcharts4/themes/material";
+
 import MaterialTable from 'material-table';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import AgentHeader from './AgentHeader'
@@ -16,7 +18,8 @@ import Icon from '@material-ui/core/Icon';
 const useStyles = makeStyles({
 	layoutRoot: {}
 });
-
+am4core.useTheme(am4themes_material);
+am4core.useTheme(am4themes_animated);
 const incomingAndOutGoingCount = (data) => {
 	let chart = am4core.create("chartdivv", am4charts.XYChart);
 	chart.data = data;

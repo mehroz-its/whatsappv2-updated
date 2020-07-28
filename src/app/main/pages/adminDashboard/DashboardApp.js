@@ -24,7 +24,8 @@ import WidgetWeather from './widgets/WidgetWeather';
 import Widget5 from './/widgets/Widget5'
 import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading'
 
-
+am4core.useTheme(am4themes_material);
+am4core.useTheme(am4themes_animated);
 const useStyles = makeStyles({
 	layoutRoot: {},
 	// root: {
@@ -133,6 +134,7 @@ const rader_chart = (list) => {
 		chart.cursor = new am4charts.RadarCursor();
 	}
 
+
 }
 const newMessageList = [
 	{ category: "My-Locations", value: "0", full: "100" },
@@ -176,21 +178,6 @@ function DashboardApp(props) {
 		],
 	});
 
-	// React.useEffect(() => {
-	// 	// pie_chart()
-	// 	if (hasPermission('app', 'view_dashboard_stats')) {
-	// 		CoreHttpHandler.request('dashboard', 'listing', { }, dataSourceSuccess =>{}, dataSourceFailure =>{});
-	// 		// CoreHttpHandler.request('dashboard', 'messagestate', { ...dataSourceOptions.params }, messagestateSuccess, messagestateFailure);
-	// 	}
-	// 	// if (hasPermission('app', 'view_dashboard_reports')) {
-	// 	//     CoreHttpHandler.request('dashboard', 'messagestate', { ...dataSourceOptions.params }, messagestateSuccess, messagestateFailure);
-	// 	// }
-	// 	// else{
-
-	// 	// }
-	// }, []);
-
-
 	const dataSourceOptions = {
 		params: {
 			columns: "*",
@@ -202,13 +189,140 @@ function DashboardApp(props) {
 		type: 'dashboard',
 		apiType: 'listing',
 	};
+	const dataSourceOptionss = {
+		params: {
+			columns: "*",
 
+		},
+	};
 	React.useEffect(() => {
 
 		CoreHttpHandler.request('dashboard', 'listing', { ...dataSourceOptions.params }, dataSourceSuccess, dataSourceFailure);
 		CoreHttpHandler.request('dashboard', 'messagestate', { ...dataSourceOptions.params }, messagestateSuccess, messagestateFailure);
+		CoreHttpHandler.request('reports', 'campaignChart', { ...dataSourceOptionss.params }, dataSourceSuccesss, dataSourceFailuree);
 
 	}, [])
+	const dataSourceSuccesss = (response) => {
+		const list = response.data.data.report;
+		// setBox(list)
+		const data = list.map((item, i) => {
+			const chartObj = {
+				country: item.name,
+				units: item.total,
+				pie: []
+
+			};
+			for (let i = 0; i < item.statistic.length; i++) {
+				let key = Object.keys(item.statistic[i])
+				let value = Object.values(item.statistic[i])
+				chartObj.pie = [{
+					value: parseInt(value[0]),
+					title: key[0]
+				}]
+				//    chartObj.pie{"value"} = Object.values(item.statistic[i])
+				//    chartObj.pie['title'] = Object.keys(item.statistic[i])
+			}
+			return chartObj;
+		});
+		campaign_report_chart(data);
+		// setLoading(false)
+		// rader_chart()
+	};
+
+	const dataSourceFailuree = (response) => {
+	};
+	const campaign_report_chart = (dataa) => {
+		let data = dataa
+		// Create chart instance
+		let chart = am4core.create("chartdivcampaign", am4charts.XYChart);
+		chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+
+		// Add data
+		chart.data = data;
+
+		// Create axes
+		let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+		categoryAxis.dataFields.category = "country";
+		categoryAxis.renderer.grid.template.disabled = true;
+
+		let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+		valueAxis.title.text = "Campaigns Report";
+		valueAxis.min = 0;
+		valueAxis.renderer.baseGrid.disabled = true;
+		valueAxis.renderer.grid.template.strokeOpacity = 0.07;
+
+		// Create series
+		let series = chart.series.push(new am4charts.ColumnSeries());
+		series.dataFields.valueY = "units";
+		series.dataFields.categoryX = "country";
+		series.tooltip.pointerOrientation = "vertical";
+
+
+		let columnTemplate = series.columns.template;
+		// add tooltip on column, not template, so that slices could also have tooltip
+		columnTemplate.column.tooltipText = "Series: {name}\nCategory: {categoryX}\nValue: {valueY}";
+		columnTemplate.column.tooltipY = 0;
+		columnTemplate.column.cornerRadiusTopLeft = 20;
+		columnTemplate.column.cornerRadiusTopRight = 20;
+		columnTemplate.strokeOpacity = 0;
+
+
+		// as by default columns of the same series are of the same color, we add adapter which takes colors from chart.colors color set
+		// columnTemplate.adapter.add("fill", function (fill, target) {
+		//     let color = chart.colors.getIndex(target.dataItem.index * 3);
+		//     return color;
+		// });
+
+		// create pie chart as a column child
+		let pieChart = series.columns.template.createChild(am4charts.PieChart);
+		pieChart.width = am4core.percent(80);
+		pieChart.height = am4core.percent(80);
+		pieChart.align = "center";
+		pieChart.valign = "middle";
+		pieChart.dataFields.data = "pie";
+
+		let pieSeries = pieChart.series.push(new am4charts.PieSeries());
+		pieSeries.dataFields.value = "value";
+		pieSeries.dataFields.category = "title";
+		pieSeries.labels.template.disabled = true;
+		pieSeries.ticks.template.disabled = true;
+		pieSeries.slices.template.strokeWidth = 1;
+
+		// pieSeries.slices.template.adapter.add("stroke", function (stroke, target) {
+		//     return chart.colors.getIndex(target.parent.parent.dataItem.index * 3);
+		// });
+
+		pieSeries.slices.template.adapter.add("fill", function (fill, target) {
+			return am4core.color("#ffffff")
+		});
+
+		pieSeries.slices.template.adapter.add("fillOpacity", function (fillOpacity, target) {
+			return (target.dataItem.index + 1) * 0.2;
+		});
+
+		pieSeries.hiddenState.properties.startAngle = -90;
+		pieSeries.hiddenState.properties.endAngle = 270;
+
+		// this moves the pie out of the column if column is too small
+		pieChart.adapter.add("verticalCenter", function (verticalCenter, target) {
+			let point = am4core.utils.spritePointToSprite({ x: 0, y: 0 }, target.seriesContainer, chart.plotContainer);
+			point.y -= target.dy;
+
+			if (point.y > chart.plotContainer.measuredHeight - 15) {
+				target.dy = -target.seriesContainer.measuredHeight - 15;
+			}
+			else {
+				target.dy = 0;
+			}
+			return verticalCenter
+		})
+
+		// chart.cursor = new am4charts.XYCursor();
+		// chart.cursor.xAxis = dateAxis;
+		chart.scrollbarX = new am4core.Scrollbar();
+
+
+	}
 	const dataSourceSuccess = (response) => {
 		const list = response.data.data.dashboardBoxInfo.boxes;
 		console.log("list :", list);
@@ -229,6 +343,11 @@ function DashboardApp(props) {
 	};
 	function handleChangeTab(event, value) {
 		setTabValue(value);
+		if (value === 0) {
+			CoreHttpHandler.request('dashboard', 'listing', { ...dataSourceOptions.params }, dataSourceSuccess, dataSourceFailure);
+			CoreHttpHandler.request('dashboard', 'messagestate', { ...dataSourceOptions.params }, messagestateSuccess, messagestateFailure);
+			CoreHttpHandler.request('reports', 'campaignChart', { ...dataSourceOptionss.params }, dataSourceSuccesss, dataSourceFailuree);
+		}
 	}
 	if (box.length === 0 && radarList.length === 0) {
 		return (
@@ -293,12 +412,12 @@ function DashboardApp(props) {
 					scrollButtons="off"
 					className="w-full border-b-1 px-100 text-center h-48 "
 				>
-					<Tab 
-					style={{marginTop:'0.2%'}}
-					className="text-12 font-600 normal-case" label="Statics" />
-					<Tab 
-					style={{marginTop:'0.2%'}}
-					className="text-12 font-600 normal-case" label="Charts" />
+					<Tab
+						style={{ marginTop: '0.2%' }}
+						className="text-12 font-600 normal-case" label="Statics" />
+					<Tab
+						style={{ marginTop: '0.2%' }}
+						className="text-12 font-600 normal-case" label="Charts" />
 				</Tabs>
 			}
 			content={
@@ -324,9 +443,19 @@ function DashboardApp(props) {
 										</Grid>
 									</Grid>
 									<Grid item md={4} sm={5} xs={5} >
-										<Card elevation={3} className="pt-10 pb-10">
+										<Paper className="w-full rounded-8 shadow-none border-1 pt-10 pb-10">
+
 											<div id="chartdivv" style={{ width: "110%", height: "275px", padding: 25 }}></div>
-										</Card>
+										</Paper>
+									</Grid>
+								</Grid>
+								<Grid container spacing={3} style={{ marginTop: 10 }}>
+
+									<Grid item md={12} sm={12} xs={12} >
+										<Paper className="w-full rounded-8 shadow-none border-1">
+
+											<div id="chartdivcampaign" style={{ width: "100%", height: "280px" }}></div>
+										</Paper>
 									</Grid>
 								</Grid>
 							</FuseAnimateGroup>
@@ -345,7 +474,7 @@ function DashboardApp(props) {
 						)}
 
 					</div>
-					<div style={{ height: 600 }}></div>
+					<div style={{ height: 250 }}></div>
 				</>
 			}
 			rightSidebarContent={

@@ -79,13 +79,13 @@ const rows = [
 		label: 'Failure',
 		sort: true
 	},
-	{
-		id: 'lastUpdated',
-		align: 'right',
-		disablePadding: false,
-		label: 'Last Updated',
-		sort: true
-	},
+	// {
+	// 	id: 'lastUpdated',
+	// 	align: 'right',
+	// 	disablePadding: false,
+	// 	label: 'Last Updated',
+	// 	sort: true
+	// },
 	{
 		id: 'completed',
 		align: 'right',

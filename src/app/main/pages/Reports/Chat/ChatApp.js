@@ -7,6 +7,8 @@ import Paper from '@material-ui/core/Paper';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import am4themes_material from "@amcharts/amcharts4/themes/material";
+
 import MaterialTable from 'material-table';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
@@ -15,7 +17,8 @@ import ChartTable from './ChartTable'
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
 
-
+am4core.useTheme(am4themes_material);
+am4core.useTheme(am4themes_animated);
 const useStyles = makeStyles({
 	layoutRoot: {}
 });
