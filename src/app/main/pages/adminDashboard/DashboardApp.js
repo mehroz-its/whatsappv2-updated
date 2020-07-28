@@ -435,14 +435,14 @@ function DashboardApp(props) {
 										<Grid container spacing={3}>
 											{box.map((value, index) => {
 												return (
-													<Grid item md={4} sm={6} xs={12} >
+													<Grid item md={4} sm={12} xs={12} >
 														<Widget2 title={value.title} count={value.value} bottom_title={value.subtitle} />
 													</Grid>
 												)
 											})}
 										</Grid>
 									</Grid>
-									<Grid item md={4} sm={5} xs={5} >
+									<Grid item md={4} sm={12} xs={12} >
 										<Paper className="w-full rounded-8 shadow-none border-1 pt-10 pb-10">
 
 											<div id="chartdivv" style={{ width: "110%", height: "275px", padding: 25 }}></div>

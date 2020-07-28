@@ -22,11 +22,12 @@ const useStyles = makeStyles(theme => ({
 		
 	},
 	listItemText:{
-		fontSize:'10px',//Insert your required size
-		marginLeft:'4%',
-		fontWeight:'bold',
+		fontSize:'13px',//Insert your required size
+		marginLeft:'2%',
+		// fontWeight:'bold',
 		paddingLeft:'10px', 
 		paddingRight:'10px',
+		textTransform:'capitalize'
 
 	  },
 	  listItemText2:{
@@ -150,24 +151,25 @@ const UserMenu =(props) => {
 							</ListItemIcon>
 							<ListItemText primary="Login" />
 						</MenuItem> */}
-						<MenuItem component={Button} onClick={handleLogOut} role="button">
-							<ListItemIcon className="min-w-20" style={{marginLeft:'10px'}}>
-								<Icon size={20}>lock</Icon>
-							</ListItemIcon>
-							<ListItemText 
-							primary="Log out" 
-							classes={{primary:classes.listItemText}}
-							/>
-						</MenuItem>
-						<MenuItem component={Button} onClick={handleProfile} role="button">
-							<ListItemIcon className="min-w-20" style={{marginLeft:'10px'}}>
-								<Icon size={20}>person_add</Icon>
-							</ListItemIcon>
+							<MenuItem component={Button} onClick={handleProfile} role="button">
+							{/* <ListItemIcon>
+								<Icon size={12}>person_add</Icon>
+							</ListItemIcon> */}
 							<ListItemText 
 							primary="Profile" 
 							classes={{primary:classes.listItemText}}
 							/>
 						</MenuItem>
+						<MenuItem component={Button} onClick={handleLogOut} role="button">
+							{/* <ListItemIcon>
+								<Icon size={12}>lock</Icon>
+							</ListItemIcon> */}
+							<ListItemText 
+							primary="Logout" 
+							classes={{primary:classes.listItemText}}
+							/>
+						</MenuItem>
+					
 					</>
 				) : (
 						<>

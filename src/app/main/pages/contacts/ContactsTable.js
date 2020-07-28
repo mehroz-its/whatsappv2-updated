@@ -124,13 +124,14 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 	return (<div>
 		<TableContainer className="min-h-full sm:border-1 sm:rounded-16" >
 			<MaUTable {...getTableProps()}>
-				<TableHead style={{fontSize:'12px'}}>
+				<TableHead style={{fontSize:'11px'}}>
 					{headerGroups.map(headerGroup => (
 						<TableRow {...headerGroup.getHeaderGroupProps()}>
 							{headerGroup.headers.map(column => (
 								<TableCell
+								style={{fontSize:'11px'}}
+								align="center"
 									className="whitespace-no-wrap px-50 py-0" 	
-									style={{fontSize:'120px',fontWeight:'bolder'}}
 									{...(!column.sortable
 										? column.getHeaderProps()
 										: column.getHeaderProps(column.getSortByToggleProps()))}
@@ -138,7 +139,6 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 									{column.render('Header')}
 									{column.sortable ? (
 										<TableSortLabel
-										style={{fontSize:'120px',fontWeight:'100'}}
 											active={column.isSorted}
 											// react-table has a unsorted state which is not treated here
 											direction={column.isSortedDesc ? 'desc' : 'asc'}
@@ -154,7 +154,7 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 						prepareRow(row);
 						return (
 							<TableRow
-							style={{fontSize:'12px'}}
+							style={{fontSize:'11px'}}
 								{...row.getRowProps()}
 								onClick={ev => handleClick(ev, row)}
 								className="truncate cursor-pointer"
@@ -162,9 +162,10 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 								{row.cells.map(cell => {
 									return (
 										<TableCell
-										     	style={{fontSize:'12px',textAlign:'center'}}
+										align="center"
+										     	style={{fontSize:'11px',textAlign:'center'}}
 												{...cell.getCellProps()}
-												className={clsx('p-0', cell.column.className)}
+												className={clsx('p-0', )}
 										>
 											{cell.render('Cell')}
 										</TableCell>

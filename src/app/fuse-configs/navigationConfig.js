@@ -103,15 +103,15 @@ const navigationConfig = [
 			{
 				id: 'Contact Book',
 				title: 'Contact Book',
-				translate: 'CONTACT BOOK',
+				translate: 'Contact Book',
 				type: 'item',
 				icon: 'contact_phone',
 				url: '/apps/contacts/all',
 			},
 			{
-				id: 'REPORTS',
-				title: 'REPORTS',
-				translate: 'REPORTS',
+				id: 'Reports',
+				title: 'Reports',
+				translate: 'Reports',
 				type: 'collapse',
 				icon: 'assessment',
 				children: [
@@ -141,9 +141,9 @@ const navigationConfig = [
 				]
 			},
 			{
-				id: 'SETTINGS',
-				title: 'SETTINGS',
-				translate: 'SETTINGS',
+				id: 'Settings',
+				title: 'Settings',
+				translate: 'Settings',
 				type: 'collapse',
 				icon: 'settings',
 				children: [

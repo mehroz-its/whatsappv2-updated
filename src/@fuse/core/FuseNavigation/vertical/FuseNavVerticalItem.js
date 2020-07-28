@@ -80,7 +80,7 @@ function FuseNavVerticalItem(props) {
 			<ListItemText
 				className="list-item-text"
 				primary={item.translate ? t(item.translate) : item.title}
-				classes={{ primary: 'text-11 list-item-text-primary' }}
+				classes={{ primary: 'text-12 list-item-text-primary' }}
 			/>
 
 			{item.badge && <FuseNavBadge badge={item.badge} />}

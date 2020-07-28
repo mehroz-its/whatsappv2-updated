@@ -23,7 +23,7 @@ function TemplateHeader(props) {
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 					<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-					<span style={{fontSize:'15px'}}>Whtsapp Template</span>
+					<span style={{fontSize:'15px'}}>Whatsapp Template</span>
 					</Typography>
 				</FuseAnimate>
 			</div>

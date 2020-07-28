@@ -848,17 +848,17 @@ function ChatApp(props) {
 						{!selectedRecipient ? (
 							<div className="flex flex-col flex-1 items-center justify-center p-24">
 								<Paper className="rounded-full p-48">
-									<Icon className="block text-40" color="secondary">
+									<Icon className="block text-64" color="secondary">
 										chat
 									</Icon>
 								</Paper>
-								<Typography variant="h6" style={{ fontSize: '15px' }}>
+								<Typography variant="h6" style={{ fontSize: '18px',paddingTop:'10px' }}>
 									Chat App
 								</Typography>
 								<Typography
-									className="hidden md:flex px-16 pb-24 mt-24 text-center"
+									className="hidden md:flex px-16 pb-24 mt-10 text-center"
 									color="textSecondary">
-									Select a contact to start a conversation!..
+									Select a contact to start a conversation!
 								</Typography>
 								<Button
 									variant="outlined"
@@ -866,12 +866,12 @@ function ChatApp(props) {
 									className="flex md:hidden normal-case"
 									onClick={() => setmobileChatsSidebarOpen(true)}
 								>
-									Select a contact to start a conversation!..
+									Select a contact to start a conversation!
 								</Button>
 							</div>
 						) : (
 								<>
-									<AppBar className="w-full" position="static" elevation={1} style={{ height: '12%' }}>
+									<AppBar className="w-full" position="static" elevation={1} style={{ height: '7%' }}>
 										<Toolbar className="px-16">
 											<IconButton
 												color="inherit"

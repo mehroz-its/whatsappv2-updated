@@ -123,7 +123,7 @@ function ChartTableHead(props) {
 				{rows.map(row => {
 					return (
 						<TableCell
-						style={{ fontSize: '12px', padding: '10px 0px 10px 20px' }}
+						style={{ fontSize: '11px', padding: '10px 0px 10px 20px' }}
 						key={row.id}
 							align={row.align}
 							padding={row.disablePadding ? 'none' : 'default'}

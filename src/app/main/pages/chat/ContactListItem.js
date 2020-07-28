@@ -38,7 +38,7 @@ function ContactListItem(props) {
 	return (
 		<ListItem
 			button
-			className={clsx(classes.contactListItem, 'px-12 py-12 min-h-36', {
+			className={clsx(classes.contactListItem, 'px-18 py-12 min-h-36', {
 				active: props.selectedContactId === props.contact.id
 			})}
 			onClick={() => props.onContactClick(props.contact)}

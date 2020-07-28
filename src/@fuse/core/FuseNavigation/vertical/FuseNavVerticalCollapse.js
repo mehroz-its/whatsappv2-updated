@@ -109,7 +109,7 @@ function FuseNavVerticalCollapse(props) {
 				<ListItemText
 					className="list-item-text"
 					primary={item.translate ? t(item.translate) : item.title}
-					classes={{ primary: 'text-11' }}
+					classes={{ primary: 'text-12' }}
 				/>
 
 				{item.badge && <FuseNavBadge className="mx-4" badge={item.badge} />}

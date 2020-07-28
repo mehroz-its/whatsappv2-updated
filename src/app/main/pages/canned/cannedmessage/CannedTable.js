@@ -107,7 +107,7 @@ function CannedTable(props) {
 	// const handleClose = props.onClose
 	const openDialog = props.onClickOpen
 	let openDialogValue = props.isOpen
-	console.log(openDialogValue,'openDialogValue')
+	console.log(openDialogValue, 'openDialogValue')
 	const handleClickOpen = () => {
 		setOpen(true);
 	}
@@ -239,24 +239,23 @@ function CannedTable(props) {
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-										<TableCell component="th" scope="row" size="small"
-										style={{fontSize:'12px'}}
+										<TableCell component="th" scope="row" style={{ fontSize: '12px' }}
 										>
 											{n.id}
 										</TableCell>
-										<TableCell 		style={{fontSize:'12px'}} component="th" scope="row">
+										<TableCell style={{ fontSize: '12px' }} component="th" scope="row">
 											{n.message_name}
 										</TableCell>
-										<TableCell 		style={{fontSize:'12px'}} component="th" scope="row">
+										<TableCell style={{ fontSize: '12px' }} component="th" scope="row">
 											{n.message_text}
 										</TableCell>
-										<TableCell  		style={{fontSize:'12px'}}component="th" scope="row" align="right">
+										<TableCell style={{ fontSize: '12px' }} component="th" scope="row" align="right">
 											{n.message_params}
 										</TableCell>
-										<TableCell  		style={{fontSize:'12px'}} component="th" scope="row" align="right">
+										<TableCell style={{ fontSize: '12px' }} component="th" scope="row" align="right">
 											{n.message_type}
 										</TableCell>
-										<TableCell  		style={{fontSize:'12px'}} component="th" scope="row" align="right">
+										<TableCell style={{ fontSize: '12px' }} component="th" scope="row" align="right">
 											{n.enabled ? (
 												<Icon className="text-green text-16">check_circle</Icon>
 											) : (

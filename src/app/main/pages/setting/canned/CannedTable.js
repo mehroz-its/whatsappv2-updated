@@ -163,9 +163,11 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 										if (row.original.enabled === true) {
 											return (
 												<TableCell
+
 												style={{ height: 'auto !important' }}
-												component="th" scope="row" align="center"
-												className={clsx('p-0', cell.column.className)}
+												component="th" scope="row" 
+												align="left"
+												className={clsx('p-0')}
 												>
 													<Icon className="text-green text-20">check_circle</Icon>
 												</TableCell>
@@ -173,9 +175,11 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 										} else if (row.original.enabled === false) {
 											return (
 												<TableCell 
-												className={clsx('p-0', cell.column.className)}
+												
+												className={clsx('p-0')}
 												style={{ height: 'auto !important' }}
-												component="th" scope="row" align="center">
+												component="th" scope="row" 
+												align="left">
 													<Icon className="text-red text-20">cancel</Icon>
 												</TableCell>
 											)
@@ -183,6 +187,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 									} else {
 										return (
 											<TableCell
+											style={{fontSize:'12px'}}
 												{...cell.getCellProps()}
 												className={clsx('p-0')}
 											>

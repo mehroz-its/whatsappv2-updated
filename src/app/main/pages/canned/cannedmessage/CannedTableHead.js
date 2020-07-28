@@ -18,42 +18,42 @@ import React, { useState } from 'react';
 const rows = [
 	{
 		id: 'id',
-		align: 'left',
+		align: 'center',
 		disablePadding: false,
 		label: 'ID',
 		sort: true
 	},
 	{
 		id: 'name',
-		align: 'left',
+		align: 'center',
 		disablePadding: false,
 		label: 'Name',
 		sort: true
 	},
 	{
 		id: 'text',
-		align: 'left',
+		align: 'center',
 		disablePadding: false,
 		label: 'Text',
 		sort: true
 	},
 	{
 		id: 'params',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Params',
 		sort: true
 	},
 	{
 		id: 'type',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Type',
 		sort: true
 	},
 	{
 		id: 'enable',
-		align: 'right',
+		align: 'center',
 		disablePadding: false,
 		label: 'Enable',
 		sort: true
@@ -94,7 +94,7 @@ function CannedTableHead(props) {
 					{props.numSelected > 0 && (
 						<div
 							className={clsx(
-								'flex items-center justify-center absolute w-64 top-0 ltr:left-0 rtl:right-0 mx-56 h-64 z-10',
+								'flex items-center justify-center absolute w-64 top-0 ltr:center-0 rtl:center-0 mx-56 h-64 z-10',
 								classes.actionsButtonWrapper
 							)}
 						>
@@ -130,7 +130,7 @@ function CannedTableHead(props) {
 				{rows.map(row => {
 					return (
 						<TableCell
-						    style={{fontSize:'12px'}}
+						    style={{fontSize:'11px'}}
 							key={row.id}
 							align={row.align}
 							padding={row.disablePadding ? 'none' : 'default'}
@@ -139,7 +139,7 @@ function CannedTableHead(props) {
 							{row.sort && (
 								<Tooltip
 									title="Sort"
-									placement={row.align === 'right' ? 'bottom-end' : 'bottom-start'}
+									placement={row.align === 'center' ? 'bottom-end' : 'bottom-start'}
 									enterDelay={300}
 								>
 									<TableSortLabel
