@@ -37,6 +37,7 @@ import AttachmentDialogV2 from './dialog/chat/AttachmentDialogV2';
 import CannedMessagesDialog from './dialog/chat/CannedMessagesDialog';
 import BlockConfirmDialog from './dialog/chat/BlockConfirmDialog';
 import CustomerProfileDialog from './dialog/chat/CustomerProfileDialog';
+import { EventRegister } from 'react-event-listeners'
 
 import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
 
@@ -390,7 +391,14 @@ function Chat(props) {
 		if (messages) {
 			scrollToBottom();
 		}
+
+		// this.listener = EventRegister.addEventListener('online', (data) => {
+		// 	console.log(data,'in chat')
+		// });
+
 	}, [messages,]);
+
+	
 
 	function scrollToBottom() {
 		chatRef.current.scrollTop = chatRef.current.scrollHeight - 100;
