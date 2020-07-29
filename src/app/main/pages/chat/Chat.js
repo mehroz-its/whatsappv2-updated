@@ -390,9 +390,9 @@ function Chat(props) {
 			scrollToBottom();
 		}
 
-		this.listener = EventRegister.addEventListener('online', (data) => {
-			console.log(data,'in chat')
-		});
+		// this.listener = EventRegister.addEventListener('online', (data) => {
+		// 	console.log(data,'in chat')
+		// });
 
 	}, [messages,]);
 
