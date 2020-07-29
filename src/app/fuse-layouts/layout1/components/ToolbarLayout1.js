@@ -8,8 +8,12 @@ import NavbarMobileToggleButton from 'app/fuse-layouts/shared-components/NavbarM
 import QuickPanelToggleButton from 'app/fuse-layouts/shared-components/quickPanel/QuickPanelToggleButton';
 import UserMenu from 'app/fuse-layouts/shared-components/UserMenu';
 import React from 'react';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 import { useSelector } from 'react-redux';
 import LanguageSwitcher from '../../shared-components/LanguageSwitcher';
+import { EventRegister } from 'react-event-listeners'
+
 
 const useStyles = makeStyles(theme => ({
 	separator: {
@@ -22,6 +26,7 @@ const useStyles = makeStyles(theme => ({
 function ToolbarLayout1(props) {
 	const config = useSelector(({ fuse }) => fuse.settings.current.layout.config);
 	const toolbarTheme = useSelector(({ fuse }) => fuse.settings.toolbarTheme);
+	const [online,setOnline] = React.useState(JSON.parse(localStorage.getItem('online')))
 
 	const classes = useStyles(props);
 
@@ -49,6 +54,25 @@ function ToolbarLayout1(props) {
 					</div>
 
 					<div className="flex">
+					<div style={{marginTop:'4%'}}>
+					<FormControlLabel
+                            // style={{ color: '#252525' }}
+                            control={
+                                <Switch
+                                    checked={online}
+                                    onChange={(e)=>{
+										setOnline(true)
+										console.log(e.target,'e.target.value')
+										EventRegister.emit('online')
+
+									}}
+                                    name="online"
+                                    color="primary"
+                                />
+                            }
+                            label={	online ? 'Go Offline' : 'Go Online'}
+                        />
+					</div>
 						<UserMenu />
 
 						<div className={classes.separator} />
