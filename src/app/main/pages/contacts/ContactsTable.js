@@ -162,9 +162,10 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 								{row.cells.map(cell => {
 									return (
 										<TableCell
+										className="whitespace-no-wrap px-50 py-0"
 										align="center"
-										     	style={{fontSize:'11px',textAlign:'center'}}
-												{...cell.getCellProps()}
+										     	
+							  
 										
 										>
 											{cell.render('Cell')}
