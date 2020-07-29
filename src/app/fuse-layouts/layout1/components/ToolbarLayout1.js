@@ -13,6 +13,7 @@ import Switch from '@material-ui/core/Switch';
 import { useSelector } from 'react-redux';
 import LanguageSwitcher from '../../shared-components/LanguageSwitcher';
 import { EventRegister } from 'react-event-listeners'
+import CoreHttpHandler from 'http/services/CoreHttpHandler'
 
 
 const useStyles = makeStyles(theme => ({
@@ -26,9 +27,49 @@ const useStyles = makeStyles(theme => ({
 function ToolbarLayout1(props) {
 	const config = useSelector(({ fuse }) => fuse.settings.current.layout.config);
 	const toolbarTheme = useSelector(({ fuse }) => fuse.settings.toolbarTheme);
-	const [online,setOnline] = React.useState(JSON.parse(localStorage.getItem('online')))
+	const [online, setOnline] = React.useState(JSON.parse(localStorage.getItem('online')))
 
 	const classes = useStyles(props);
+
+
+	const setAgentOnline = (e) => {
+		console.log(e.target, 'eee')
+		const isOnline = e.target.checked;
+		console.log(isOnline, 'isss')
+
+		if (isOnline) {
+			CoreHttpHandler.request('core', 'online', {}, (response) => {
+				localStorage.setItem('online', true)
+				setOnline(true)
+			}, (response) => {
+
+			});
+			// this.getNumbers();
+			// clearInterval(this.int_CustomerList);
+			// clearInterval(this.int_MessageLists);
+
+
+		} else {
+			CoreHttpHandler.request('core', 'offline', {}, (response) => {
+				// clearInterval(this.int_CustomerList);
+				// clearInterval(this.int_MessageLists);
+				// this.setState({ })
+				localStorage.setItem('online', false)
+				setOnline(false)
+
+
+			}, (response) => {
+
+			});
+			// this.setState({ numbers: [], messages: [], selectedRecipient: null, selectedConversation: null })
+
+		}
+
+		// this.setState({ online: isOnline }, () => {
+		//     localStorage.setItem('online', this.state.online);
+		// });
+	};
+
 
 	return (
 		<ThemeProvider theme={toolbarTheme}>
@@ -38,62 +79,62 @@ function ToolbarLayout1(props) {
 				color="default"
 				style={{ backgroundColor: toolbarTheme.palette.background.default }}
 			>
-				<div style={{height:50}}>
-				<Toolbar className="p-0">
-					{config.navbar.display && config.navbar.position === 'left' && (
-						<Hidden lgUp>
-							<NavbarMobileToggleButton className="w-64 h-0 p-10" />
+				<div style={{ height: 50 }}>
+					<Toolbar className="p-0">
+						{config.navbar.display && config.navbar.position === 'left' && (
+							<Hidden lgUp>
+								<NavbarMobileToggleButton className="w-64 h-0 p-10" />
+								<div className={classes.separator} />
+							</Hidden>
+						)}
+
+						<div className="flex flex-1">
+							<Hidden mdDown>
+								<FuseShortcuts className="px-16" />
+							</Hidden>
+						</div>
+
+						<div className="flex">
+							<div style={{ marginTop: '4%' }}>
+								<FormControlLabel
+									// style={{ color: '#252525' }}
+									control={
+										<Switch
+											checked={online}
+											// onChange={(e)=>{
+											// setOnline(true)
+											// 	// console.log(e.target,'e.target.value')
+
+											// }}
+											onChange={setAgentOnline}
+											name="online"
+											color="primary"
+										/>
+									}
+									label={online ? 'Go Offline' : 'Go Online'}
+								/>
+							</div>
+							<UserMenu />
+
 							<div className={classes.separator} />
-						</Hidden>
-					)}
 
-					<div className="flex flex-1">
-						<Hidden mdDown>
-							<FuseShortcuts className="px-16" />
-						</Hidden>
-					</div>
+							{/* <FuseSearch /> */}
 
-					<div className="flex">
-					<div style={{marginTop:'4%'}}>
-					<FormControlLabel
-                            // style={{ color: '#252525' }}
-                            control={
-                                <Switch
-                                    checked={online}
-                                    onChange={(e)=>{
-										setOnline(true)
-										console.log(e.target,'e.target.value')
-										EventRegister.emit('online')
+							<div className={classes.separator} />
 
-									}}
-                                    name="online"
-                                    color="primary"
-                                />
-                            }
-                            label={	online ? 'Go Offline' : 'Go Online'}
-                        />
-					</div>
-						<UserMenu />
+							{/* <LanguageSwitcher /> */}
 
-						<div className={classes.separator} />
+							<div className={classes.separator} />
 
-						{/* <FuseSearch /> */}
+							{/* <QuickPanelToggleButton /> */}
+						</div>
 
-						<div className={classes.separator} />
-
-						{/* <LanguageSwitcher /> */}
-
-						<div className={classes.separator} />
-
-						{/* <QuickPanelToggleButton /> */}
-					</div>
-
-					{config.navbar.display && config.navbar.position === 'right' && (
-						<Hidden lgUp>
-							<NavbarMobileToggleButton />
-						</Hidden>
-					)}
-				</Toolbar>
+						{config.navbar.display && config.navbar.position === 'right' && (
+							<Hidden lgUp>
+								<NavbarMobileToggleButton />
+							</Hidden>
+						)}
+					</Toolbar>
 				</div>
 			</AppBar>
 		</ThemeProvider>

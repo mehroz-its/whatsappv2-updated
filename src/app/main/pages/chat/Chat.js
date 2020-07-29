@@ -390,12 +390,13 @@ function Chat(props) {
 			scrollToBottom();
 		}
 
-		this.listener = EventRegister.addEventListener('online', () => {
-            console.log("convo userIDLE");
-               
+		this.listener = EventRegister.addEventListener('online', (data) => {
+			console.log(data,'in chat')
 		});
-		
+
 	}, [messages,]);
+
+	
 
 	function scrollToBottom() {
 		chatRef.current.scrollTop = chatRef.current.scrollHeight - 100;
@@ -825,7 +826,7 @@ function Chat(props) {
 		if (event.key === '#') {
 			conversationContextMenuCallback("canned_messages")
 		}
-		if(event.key === 'Enter'){
+		if (event.key === 'Enter') {
 			sendMessageHandler()
 		}
 	}
