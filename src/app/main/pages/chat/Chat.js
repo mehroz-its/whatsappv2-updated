@@ -315,8 +315,10 @@ function Chat(props) {
 		attributes: [],
 		countries: [],
 	});
+	const [textLength, setTextLength] = useState(2000)
 	const [dialogOpenCmp, setdialogOpenCmp] = React.useState(false);
-
+	// const [messageInputLimit, setMessageInputLimit] = React.useState(2000);
+	let messageInputLimit = 2000
 	const sendDialogActions = [
 		{
 			handler: (event, index) => {
@@ -410,8 +412,22 @@ function Chat(props) {
 		return i === chat.dialog.length - 1 || (chat.dialog[i + 1] && chat.dialog[i + 1].who !== item.who);
 	}
 
+	let _handleKeyDown = (e) => {
+		let inputLength = messageText.length + 1
+		if (e.key === 'Backspace') {
+			if(messageText.length !== 0){
+				messageInputLimit = textLength +1
+				setTextLength(messageInputLimit)
+			}
+		} else {
+			messageInputLimit = messageInputLimit - inputLength
+			setTextLength(messageInputLimit)
+		}
+	};
+
 	function onInputChange(ev) {
 		setMessageText(ev.target.value);
+
 	}
 
 	function onMessageSubmit(ev) {
@@ -818,7 +834,7 @@ function Chat(props) {
 		if (event.key === '#') {
 			conversationContextMenuCallback("canned_messages")
 		}
-		if(event.key === 'Enter'){
+		if (event.key === 'Enter') {
 			sendMessageHandler()
 		}
 	}
@@ -894,12 +910,18 @@ function Chat(props) {
 							autoFocus={false}
 							id="message-input"
 							className="flex-1"
+							maxLength="2"
+							inputProps={{
+								maxLength: 2000,
+								minLength: 1
+							}}
 							InputProps={{
 								disableUnderline: true,
 								classes: {
 									root: 'flex flex-grow flex-shrink-0 mx-16 ltr:mr-48 rtl:ml-48 my-8',
 								},
-								placeholder: 'Type your message'
+								placeholder: 'Type your message',
+
 							}}
 							InputLabelProps={{
 								shrink: false,
@@ -908,6 +930,7 @@ function Chat(props) {
 							onChange={onInputChange}
 							value={messageText}
 							onKeyPress={handleKeyPress}
+							onKeyDown={_handleKeyDown}
 						/>
 
 						<IconButton aria-controls="fade-menu" aria-haspopup="true" onClick={handleClick} style={{ position: 'absolute', left: 120, bottom: 3 }}>
@@ -942,10 +965,11 @@ function Chat(props) {
 							<InsertEmoticonIcon />
 
 						</IconButton>
-
+						<p style={{ position: 'absolute',color:'grey', fontSize:10, left: 165, bottom: 13, paddingTop: 2, paddingBottom: 4, paddingLeft: 35, paddingRight: 10, }}>{textLength}</p>
 						<Button variant="contained" style={{ position: 'absolute', right: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, backgroundColor: '#424141', color: 'white' }} onClick={sendMessageHandler}>Send</Button>
 
 					</Paper>
+
 				</form>
 			)}
 			<XGlobalDialogCmp onDialogPropsChange={sendDialogInputHandler} data={{ dialogType: sendActionType, attachment: sendDialogData }} dialogTitle={sendDialogTitle} options={dialogOptionsConfirmBlock} content={AttachmentDialogV2} defaultState={sendDialogOpen} actions={sendDialogActions} />
