@@ -315,10 +315,10 @@ function Chat(props) {
 		attributes: [],
 		countries: [],
 	});
-	const [textLength, setTextLength] = useState(2000)
+	const [textLength, setTextLength] = useState(800)
 	const [dialogOpenCmp, setdialogOpenCmp] = React.useState(false);
 	// const [messageInputLimit, setMessageInputLimit] = React.useState(2000);
-	let messageInputLimit = 2000
+	let messageInputLimit = 800
 	const sendDialogActions = [
 		{
 			handler: (event, index) => {
@@ -912,7 +912,7 @@ function Chat(props) {
 							className="flex-1"
 							maxLength="2"
 							inputProps={{
-								maxLength: 2000,
+								maxLength: 800,
 								minLength: 1
 							}}
 							InputProps={{
@@ -960,13 +960,20 @@ function Chat(props) {
 						</Menu>
 
 						<Button variant="contained" style={{ position: 'absolute', left: 15, bottom: 13, fontSize: 12, paddingTop: 5, paddingBottom: 5, paddingLeft: 28, paddingRight: 28, }} onClick={(e) => conversationContextMenuCallback("canned_messages")}>Canned</Button>
+						{/* <Icon  className="text-100" style={{ position: 'absolute', left: 15, bottom: 13, fontSize: 12, paddingTop: 5, paddingBottom: 5, paddingLeft: 28, paddingRight: 28, }} color="disabled">
+						collections_bookmark
+							</Icon> */}
 						{/* <Button variant="contained" style={{ position: 'absolute', left: 160, bottom: 13, fontSize: 12, paddingTop: 5, paddingBottom: 5, paddingLeft: 28, paddingRight: 28, }} onClick={(e) =>setChosenEmoji(!chosenEmoji) }>Emo</Button> */}
 						<IconButton onClick={(e) => setChosenEmoji(!chosenEmoji)} style={{ position: 'absolute', left: 160, bottom: 13, paddingTop: 2, paddingBottom: 2, paddingLeft: 10, paddingRight: 10, }}>
 							<InsertEmoticonIcon />
 
 						</IconButton>
-						<p style={{ position: 'absolute',color:'grey', fontSize:10, left: 165, bottom: 13, paddingTop: 2, paddingBottom: 4, paddingLeft: 35, paddingRight: 10, }}>{textLength}</p>
+						<p style={{ position: 'absolute',color:'grey', fontSize:11, left: 165, bottom: 13, paddingTop: 2, paddingBottom: 4, paddingLeft: 35, paddingRight: 10, }}>{textLength}</p>
 						<Button variant="contained" style={{ position: 'absolute', right: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, backgroundColor: '#424141', color: 'white' }} onClick={sendMessageHandler}>Send</Button>
+						{/* <Icon  className="text-50" style={{postion:'absolute',paddingTop:'10px'}} color="disabled">
+									send
+							</Icon> */}
+						
 
 					</Paper>
 
