@@ -7,12 +7,14 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
+import AppBar from '@material-ui/core/AppBar';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { makeStyles } from '@material-ui/core/styles';
+import { green } from '@material-ui/core/colors';
+import { makeStyles,ThemeProvider,createMuiTheme,withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
@@ -33,10 +35,26 @@ const useStyles = makeStyles((theme) => ({
         minWidth: 330,
 
     },
+    margin: {
+	  
+		color:'white',
+		paddingLeft:'14px',
+		fontWeight:'bold',
+		paddingRight:'14px',
+		paddingTop:'5px',
+		paddingBottom:'5px',
+		fontSize:'12px',
+	   
+	  },
 }));
 
 
 
+const theme = createMuiTheme({
+	palette: {
+	  primary: green,
+	},
+	});
 
 const BlockDialog = (props) => {
     const classes = useStyles(props);
@@ -96,7 +114,14 @@ const BlockDialog = (props) => {
 
             fullWidth
             maxWidth="xs">
-            <DialogTitle id="form-dialog-title">{props.type} </DialogTitle>
+            {/* <DialogTitle id="form-dialog-title">{props.type} </DialogTitle> */}
+            <AppBar position="static" elevation={1}>
+				
+				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
+        style={{paddingBottom:20,paddingTop:20}}>
+	      {props.type}
+				</div>
+			</AppBar>
             <DialogContent classes={{ root: 'p-24' }}>
                 <div className="flex mt-10">
                     <div className="min-w-48 mb-20">
@@ -125,12 +150,20 @@ const BlockDialog = (props) => {
 
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleDialogClose} color="primary">
+                <Button onClick={handleDialogClose} color="primary" variant="contained" size="small">
                     Cancel
              </Button>
-                <Button onClick={handleSubmit} color="primary">
+          
+                <Button  
+                size="small" 
+                onClick={handleSubmit} 
+                color="primary" 
+                variant="contained"
+                // className={classes.margin}
+                >
                     Done
          </Button>
+
             </DialogActions>
         </Dialog>
 
