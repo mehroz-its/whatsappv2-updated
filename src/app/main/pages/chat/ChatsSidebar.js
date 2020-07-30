@@ -199,21 +199,7 @@ function ChatsSidebar(props) {
 							>
 								
 							</div>
-							<Menu
-								id="status-switch"
-								anchorEl={statusMenuEl}
-								open={Boolean(statusMenuEl)}
-								onClose={handleStatusClose}
-							>
-								{statusArr.map(status => (
-									<MenuItem onClick={ev => handleStatusSelect(ev, status.value)} key={status.value}>
-										<ListItemIcon className="min-w-40">
-											<StatusIcon status={status.value} />
-										</ListItemIcon>
-										<ListItemText primary={status.title} />
-									</MenuItem>
-								))}
-							</Menu>
+							
 						</div>
 					)}
 					<div>
