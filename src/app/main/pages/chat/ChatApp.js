@@ -32,6 +32,8 @@ import XGlobalDialogCmp from '../../../../dialogs/XGlobalDialogCmp';
 import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
 import { CSVLink, CSVDownload } from 'react-csv';
 import Fade from '@material-ui/core/Fade'
+import Tooltip from '@material-ui/core/Tooltip';
+import { EventEmitter } from '../../../../events'
 import copy from 'copy-to-clipboard';
 const drawerWidth = 320;
 const headerHeight = 100;
@@ -494,6 +496,7 @@ function ChatApp(props) {
 		'aria-describedby': "form-dialog-title"
 	};
 	useEffect(() => {
+		EventEmitter.subscribe('Online', (event) => checkOnline(event))
 		console.log("getNumbers use efffact = > ", selectedRecipient);
 		getNumbers()
 		return () => {
@@ -502,6 +505,18 @@ function ChatApp(props) {
 		}
 	}, [selectedRecipient]);
 
+	const checkOnline = (online) => {
+		if (online === false) {
+			setselectedRecipient(null)
+			setmessages([])
+			clearInterval(int_MessageLists);
+		}
+		else {
+			clearInterval(int_MessageLists);
+			getNumbers();
+		}
+
+	}
 	if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
 		getNumbers();
 	}, 2000));
@@ -780,6 +795,7 @@ function ChatApp(props) {
 	}
 	let userOnline = JSON.parse(localStorage.getItem('online'))
 
+
 	return (
 		<div className={clsx(classes.root)}>
 			<div className={classes.topBg} />
@@ -849,112 +865,114 @@ function ChatApp(props) {
 						<UserSidebar />
 					</Drawer>
 
-				{ userOnline ?
-					<main className={clsx(classes.contentWrapper, 'z-10')}>
-						{!selectedRecipient ? (
-							<div className="flex flex-col flex-1 items-center justify-center p-24">
-								<Paper className="rounded-full p-48">
-									<Icon className="block text-64" color="secondary">
-										chat
+					{userOnline ?
+						<main className={clsx(classes.contentWrapper, 'z-10')}>
+							{!selectedRecipient ? (
+								<div className="flex flex-col flex-1 items-center justify-center p-24">
+									<Paper className="rounded-full p-48">
+										<Icon className="block text-64" color="secondary">
+											chat
 									</Icon>
-								</Paper>
-								<Typography variant="h6" style={{ fontSize: '18px', paddingTop: '10px' }}>
-									Chat App
+									</Paper>
+									<Typography variant="h6" style={{ fontSize: '18px', paddingTop: '10px' }}>
+										Chat App
 								</Typography>
-								<Typography
-									className="hidden md:flex px-16 pb-24 mt-10 text-center"
-									color="textSecondary">
-									Select a contact to start a conversation!
+									<Typography
+										className="hidden md:flex px-16 pb-24 mt-10 text-center"
+										color="textSecondary">
+										Select a contact to start a conversation!
 								</Typography>
-								<Button
-									variant="outlined"
-									color="primary"
-									className="flex md:hidden normal-case"
-									onClick={() => setmobileChatsSidebarOpen(true)}
-								>
-									Select a contact to start a conversation!
+									<Button
+										variant="outlined"
+										color="primary"
+										className="flex md:hidden normal-case"
+										onClick={() => setmobileChatsSidebarOpen(true)}
+									>
+										Select a contact to start a conversation!
 								</Button>
-							</div>
-						) : (
-								<>
-									<AppBar className="w-full" position="static" elevation={1} style={{ height: '70px' }}>
-										<Toolbar className="px-16">
-											<IconButton
-												color="inherit"
-												aria-label="Open drawer"
-												onClick={() => setmobileChatsSidebarOpen(true)}
-												className="flex md:hidden"
+								</div>
+							) : (
+									<>
+										<AppBar className="w-full" position="static" elevation={1} style={{ height: '70px' }}>
+											<Toolbar className="px-16">
+												<IconButton
+													color="inherit"
+													aria-label="Open drawer"
+													onClick={() => setmobileChatsSidebarOpen(true)}
+													className="flex md:hidden"
 
-											>
-												<Icon>chat</Icon>
-											</IconButton>
-											<div
-												className="flex items-center cursor-pointer"
-												onClick={() => setuserDrawer(true)}
-												onKeyDown={() => setuserDrawer(false)}
-												role="button"
-												tabIndex={0}
-											>
-												<div className="relative mx-6 w-32 h-32" style={{ marginTop: '20px' }}>
-													{/* <div className="absolute right-0 bottom-0  -m-1 z-2">
+												>
+													<Icon>chat</Icon>
+												</IconButton>
+												<div
+													className="flex items-center cursor-pointer"
+													onClick={() => setuserDrawer(true)}
+													onKeyDown={() => setuserDrawer(false)}
+													role="button"
+													tabIndex={0}
+												>
+													<div className="relative mx-6 w-32 h-32" style={{ marginTop: '20px' }}>
+														{/* <div className="absolute right-0 bottom-0  -m-1 z-2">
 													
 														<StatusIcon status={selectedRecipient.status} />
 														
 													</div> */}
 
-													<Avatar
+														<Avatar
 
-														src={selectedRecipient.avatar} alt={selectedRecipient.name} className={classes.avatar}>
-														{!selectedRecipient.avatar || selectedRecipient.avatar === ''
-															? selectedRecipient.name[0]
-															: ''}
-													</Avatar>
+															src={selectedRecipient.avatar} alt={selectedRecipient.name} className={classes.avatar}>
+															{!selectedRecipient.avatar || selectedRecipient.avatar === ''
+																? selectedRecipient.name[0]
+																: ''}
+														</Avatar>
+													</div>
+													<Typography color="inherit" className="text-12 font-600 px-4" style={{ marginTop: '5px' }}>
+														{selectedRecipient.name}
+													</Typography>
 												</div>
-												<Typography color="inherit" className="text-12 font-600 px-4" style={{ marginTop: '5px' }}>
-													{selectedRecipient.name}
-												</Typography>
-											</div>
-											<div style={{ position: 'absolute', right: 1, top: 11 }} >
-												<IconButton
-													aria-owns={moreMenuEl ? 'chats-more-menu' : null}
-													aria-haspopup="true"
-													onClick={handleMoreMenuClick}
-													style={{ color: 'white' }}
-												>
-													<Icon fontSize="small" >more_vert</Icon>
-												</IconButton>
-												<Menu
-													id="chats-more-menu"
-													anchorEl={moreMenuEl}
-													open={Boolean(moreMenuEl)}
-													onClose={handleMoreMenuClose}
-												>
-													<MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
-													<MenuItem onClick={(e) => conversationActionsCallback('shift')}>shift</MenuItem>
-													<MenuItem onClick={(e) => conversationContextMenuCallback('block')}>Block </MenuItem>
-													<MenuItem onClick={(e) => conversationContextMenuCallback('customer_profile')}>Customer Profile </MenuItem>
-													<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem>
-												</Menu>
-											</div>
-											<div style={{ position: 'absolute', right: 40, top: 11 }}>
-												<IconButton
-													aria-haspopup="true"
-													onClick={endConversation}
-													style={{ color: 'white' }}
-												>
-													<Icon fontSize="small" >settings_power</Icon>
-												</IconButton>
+												<div style={{ position: 'absolute', right: 1, top: 11 }} >
+													<IconButton
+														aria-owns={moreMenuEl ? 'chats-more-menu' : null}
+														aria-haspopup="true"
+														onClick={handleMoreMenuClick}
+														style={{ color: 'white' }}
+													>
+														<Icon fontSize="small" >more_vert</Icon>
+													</IconButton>
+													<Menu
+														id="chats-more-menu"
+														anchorEl={moreMenuEl}
+														open={Boolean(moreMenuEl)}
+														onClose={handleMoreMenuClose}
+													>
+														<MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
+														<MenuItem onClick={(e) => conversationActionsCallback('shift')}>shift</MenuItem>
+														<MenuItem onClick={(e) => conversationContextMenuCallback('block')}>Block </MenuItem>
+														<MenuItem onClick={(e) => conversationContextMenuCallback('customer_profile')}>Customer Profile </MenuItem>
+														<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem>
+													</Menu>
+												</div>
+												<div style={{ position: 'absolute', right: 40, top: 11 }}>
+													<Tooltip title="End Conversation">
+														<IconButton
+															aria-haspopup="true"
+															onClick={endConversation}
+															style={{ color: 'white' }}
+														>
+															<Icon fontSize="small" >settings_power</Icon>
+														</IconButton>
+													</Tooltip>
 
-											</div>
-										</Toolbar>
-									</AppBar>
+												</div>
+											</Toolbar>
+										</AppBar>
 
-									<div className={classes.content}>
-										<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} clearBlock={clearData} endConversation={endConversation} />
-									</div>
-								</>
-							)}
-					</main>:null}
+										<div className={classes.content}>
+											<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} clearBlock={clearData} endConversation={endConversation} />
+										</div>
+									</>
+								)}
+						</main> : null}
 
 					<Drawer
 						className="h-full absolute z-30"

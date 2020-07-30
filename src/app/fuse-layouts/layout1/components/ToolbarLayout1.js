@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import LanguageSwitcher from '../../shared-components/LanguageSwitcher';
 import { EventRegister } from 'react-event-listeners'
 import CoreHttpHandler from 'http/services/CoreHttpHandler'
-
+import { EventEmitter } from '../../../../events'
 
 const useStyles = makeStyles(theme => ({
 	separator: {
@@ -38,9 +38,11 @@ function ToolbarLayout1(props) {
 		console.log(isOnline, 'isss')
 
 		if (isOnline) {
+			EventEmitter.dispatch('Online',true)
+			localStorage.setItem('online', true)
+			setOnline(true)
 			CoreHttpHandler.request('core', 'online', {}, (response) => {
 				localStorage.setItem('online', true)
-				setOnline(true)
 			}, (response) => {
 
 			});
@@ -50,14 +52,14 @@ function ToolbarLayout1(props) {
 
 
 		} else {
+			EventEmitter.dispatch('Online',false)
+			localStorage.setItem('online', false)
+				setOnline(false)
 			CoreHttpHandler.request('core', 'offline', {}, (response) => {
 				// clearInterval(this.int_CustomerList);
 				// clearInterval(this.int_MessageLists);
 				// this.setState({ })
-				localStorage.setItem('online', false)
-				setOnline(false)
-
-
+				
 			}, (response) => {
 
 			});

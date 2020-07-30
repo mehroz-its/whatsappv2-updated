@@ -10,6 +10,7 @@ import clsx from 'clsx';
 import moment from 'moment/moment';
 import React, { useEffect, useRef, useState } from 'react';
 import Picker from 'emoji-picker-react';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import { useDispatch, useSelector } from 'react-redux';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
@@ -21,7 +22,7 @@ import ContactMessageType from './messageType/ContactMessageType'
 import DocumentMessageType from './messageType/DocumentMessageType'
 import ImageMessageType from './messageType/ImageMessageType'
 import VideoMessageType from './messageType/VideoMessageType'
-
+import SendIcon from '@material-ui/icons/Send';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
@@ -38,7 +39,7 @@ import CannedMessagesDialog from './dialog/chat/CannedMessagesDialog';
 import BlockConfirmDialog from './dialog/chat/BlockConfirmDialog';
 import CustomerProfileDialog from './dialog/chat/CustomerProfileDialog';
 import { EventRegister } from 'react-event-listeners'
-
+import NoteIcon from '@material-ui/icons/Note';
 import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
 
 import Menu from '@material-ui/core/Menu';
@@ -443,19 +444,21 @@ function Chat(props) {
 			text: {
 				to: [props.selectedRecipient.number],
 				message: {
-					text: messageText
+					text: messageTextNew
 				}
 			}
 		};
 		CoreHttpHandler.request('conversations', 'send_text', params, (response) => {
 			setMessageText('')
+			setMessageTextNew('')
+			setEmo('')
 		}, (error) => {
 		});
 	}
 	// send message
 	const sendMessageHandler = (event) => {
-		sendMessage();
 		setChosenEmoji(false)
+		sendMessage();
 
 	}
 	const sendDialogInputHandler = (e) => {
@@ -843,26 +846,13 @@ function Chat(props) {
 		setEmo('')
 		if (prevCount !== ev.target.value) {
 			setMessageText(ev.target.value);
-
-		} 
-
+		}
 	}
-	
+
 	const onEmojiClick = (event, emojiObject) => {
-		
-		// setChosenEmoji(emojiObject);
 		setEmo(emojiObject.emoji)
-		// emojis.push(emojiObject.emoji)
-		// if(messageText === ''){
-		// 	setMessageText(emojiObject.emoji)
-		// }else{
-		// 	setMessageText(`${messageText}${emojiObject.emoji}`)
-		// }
-		// console.log(messageText,'messageTextmessageText')
 	};
 	useEffect(() => {
-
-
 		setMessageTextNew(`${messageText + emo}`)
 		console.log("messageTextNew : ", messageText);
 		console.log("messageTextNew : ", emo);
@@ -968,10 +958,7 @@ function Chat(props) {
 							onKeyDown={_handleKeyDown}
 						/>
 
-						<IconButton aria-controls="fade-menu" aria-haspopup="true" onClick={handleClick} style={{ position: 'absolute', left: 120, bottom: 3 }}>
-							<AttachFileIcon />
 
-						</IconButton>
 						<Menu
 							id="fade-menu"
 							anchorEl={anchorEl}
@@ -993,23 +980,29 @@ function Chat(props) {
 							<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem> */}
 
 						</Menu>
-
-						<Button variant="contained" style={{ position: 'absolute', left: 15, bottom: 13, fontSize: 12, paddingTop: 5, paddingBottom: 5, paddingLeft: 28, paddingRight: 28, }} onClick={(e) => conversationContextMenuCallback("canned_messages")}>Canned</Button>
-						{/* <Icon  className="text-100" style={{ position: 'absolute', left: 15, bottom: 13, fontSize: 12, paddingTop: 5, paddingBottom: 5, paddingLeft: 28, paddingRight: 28, }} color="disabled">
+						<Tooltip title="Canned Message">
+						<IconButton style={{ position: 'absolute', fontSize: 10,left: 10, bottom: 13, paddingTop: 2, paddingBottom: 2, paddingLeft: 10, paddingRight: 10, }} onClick={(e) => conversationContextMenuCallback("canned_messages")}>
+						<Icon >
 						collections_bookmark
-							</Icon> */}
-						{/* <Button variant="contained" style={{ position: 'absolute', left: 160, bottom: 13, fontSize: 12, paddingTop: 5, paddingBottom: 5, paddingLeft: 28, paddingRight: 28, }} onClick={(e) =>setChosenEmoji(!chosenEmoji) }>Emo</Button> */}
-						<IconButton onClick={(e) => setChosenEmoji(!chosenEmoji)} style={{ position: 'absolute', left: 160, bottom: 13, paddingTop: 2, paddingBottom: 2, paddingLeft: 10, paddingRight: 10, }}>
-							<InsertEmoticonIcon />
-
+							</Icon>
 						</IconButton>
-						<p style={{ position: 'absolute', color: 'grey', fontSize: 11, left: 165, bottom: 13, paddingTop: 2, paddingBottom: 4, paddingLeft: 35, paddingRight: 10, }}>{textLength}</p>
-						<Button variant="contained" style={{ position: 'absolute', right: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, backgroundColor: '#424141', color: 'white' }} onClick={sendMessageHandler}>Send</Button>
-						{/* <Icon  className="text-50" style={{postion:'absolute',paddingTop:'10px'}} color="disabled">
-									send
-							</Icon> */}
-
-
+						</Tooltip>
+						<Tooltip title="Smiler">
+						<IconButton onClick={(e) => setChosenEmoji(!chosenEmoji)} style={{ fontSize: 10, position: 'absolute', left: 50, bottom: 13, paddingTop: 2, paddingBottom: 2, paddingLeft: 10, paddingRight: 10, }}>
+							<InsertEmoticonIcon />
+						</IconButton>
+						</Tooltip>
+						<Tooltip title="Attachment">
+							<IconButton aria-controls="fade-menu" aria-haspopup="true" onClick={handleClick} style={{ position: 'absolute', left: 90, bottom: 3, fontSize: 10, }}>
+								<AttachFileIcon />
+							</IconButton>
+						</Tooltip>
+						<p style={{ position: 'absolute', color: 'grey', fontSize: 10, left: 120, bottom: 13, paddingTop: 2, paddingBottom: 4, paddingLeft: 35, paddingRight: 10, }}>{textLength}</p>
+						<Tooltip title="Send Message">
+							<IconButton aria-controls="fade-menu" aria-haspopup="true" style={{ position: 'absolute',fontSize: 10, right: 15, bottom: 5, color: 'grey' }} onClick={sendMessageHandler}>
+								<SendIcon />
+							</IconButton>
+						</Tooltip>
 					</Paper>
 
 				</form>
@@ -1019,10 +1012,6 @@ function Chat(props) {
 			<XGlobalDialogCmp onDialogPropsChange={selectedCannedMessage} data={cannedMessagesList} dialogTitle={`Canned Messages`} options={dialogOptionsCanned} content={CannedMessagesDialog} defaultState={dialogOpenCanned} actions={dialogActionsCanned} />
 			<XGlobalDialogCmp onDialogPropsChange={blockCustomerInputHandler} data={selectedRecipient} dialogTitle={`Confirm Block`} options={dialogOptionsConfirmBlock} content={BlockConfirmDialog} defaultState={dialogOpenConfirmBlock} actions={dialogActionsConfirmBlock} />
 			<XGlobalDialogCmp onDialogPropsChange={customerProfileInputHandler} data={customerProfileData} dialogTitle={`Customer Profile`} options={dialogOptionsCmp} content={CustomerProfileDialog} defaultState={dialogOpenCmp} actions={dialogActionsCmp} />
-
-			{/* <XGlobalDialog onchange={(e) => {
-                    this.onchange(e);
-                }} dialogTitle={`Email [${this.state.selectedRecipient}]'s Conversation`} options={this.dialogOptions} content={ConversationsEmailDialog} defaultState={this.state.dialogOpen} actions={this.dialogActions} /> */}
 		</div>
 	);
 }
