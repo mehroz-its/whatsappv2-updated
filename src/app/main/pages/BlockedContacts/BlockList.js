@@ -12,10 +12,16 @@ import * as Actions from './store/actions';
 // import Data from './ContactData'
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 import { object } from 'prop-types';
+import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading'
+
 
 
 function ContactsList(props) {
 	const [data, setData] = React.useState([])
+	const [filteredData, setFilteredData] = useState(null);
+	const [data2, setData2] = useState([]);
+	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
+
 
 	let filtered = []
 	let newobj = {
@@ -95,28 +101,29 @@ function ContactsList(props) {
 	React.useEffect(() => {
 		getData()
 	}, []);
+	if (searchVal !== props.ValueForSearch) {
+		{ search() }
+	}
+
+	function search() {
+		console.log('ceeleded', props.ValueForSearch, searchVal);
+
+		setSearchVal(props.ValueForSearch)
+		setData2(filtered.filter(n => n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+		console.log(data, 'filterssss');
 
 
-	const [filteredData, setFilteredData] = useState(null);
+	}
+
+	if (data2.length > 0) {
+		filtered = data2
+	} else if (data2.length === 0 && searchVal !== '') {
+		filtered = data2
+	}
 
 	const columns = React.useMemo(
 		() => [
-			// {
-			// 	Header: ({ selectedFlatRows }) => {
-			// 		const selectedRowIds = selectedFlatRows.map(row => row.original.id);
 
-			// 		return (
-			// 			selectedFlatRows.length > 0 && <ContactsMultiSelectMenu selectedContactIds={selectedRowIds} />
-			// 		);
-			// 	},
-			// 	accessor: 'avatar',
-			// 	Cell: ({ row }) => {
-			// 		return <Avatar className="mx-8" alt={row.original.name} src={row.original.avatar} />;
-			// 	},
-			// 	className: 'justify-center',
-			// 	width: 64,
-			// 	sortable: false
-			// },
 			{
 				Header: 'ID',
 				accessor: 'id',
@@ -184,6 +191,28 @@ function ContactsList(props) {
 		[dispatch, user.starred]
 	);
 
+	if (filtered.length === 0) {
+		if (searchVal !== '') {
+			return (
+				<div className="flex flex-1 items-center justify-center h-full">
+
+					<Typography color="textSecondary" variant="h5">
+						{/* There are no contacts! */}
+					No Data Found!
+				</Typography>
+				</div>
+			)
+
+
+		} else {
+			return (
+				<div className="flex flex-1 items-center justify-center h-full">
+					<FuseLoading />
+				</div>
+			);
+		}
+
+	}
 	// useEffect(() => {
 	// 	function getFilteredArray(entities, _searchText) {
 	// 		const arr = Object.keys(entities).map(id => entities[id]);
@@ -202,26 +231,26 @@ function ContactsList(props) {
 	// 	return null;
 	// }
 
-	if (filtered.length > 0) {
-		return (
-			<div className="flex flex-1 items-center justify-center h-full">
-				<Typography color="textSecondary" variant="h5">
-					{/* There are no contacts! */}
-					Loading Your Contacts
-				</Typography>
-			</div>
-		);
-	} if (filtered.length === 0) {
-		return (
-			<div className="flex flex-1 items-center justify-center h-full">
-				<Typography color="textSecondary" variant="h5">
-					{/* There are no contacts! */}
-					There are no blocked contacts!
-							</Typography>
-			</div>
-		);
+	// if (filtered.length > 0) {
+	// 	return (
+	// 		<div className="flex flex-1 items-center justify-center h-full">
+	// 			<Typography color="textSecondary" variant="h5">
+	// 				{/* There are no contacts! */}
+	// 				Loading Your Contacts
+	// 			</Typography>
+	// 		</div>
+	// 	);
+	// } if (filtered.length === 0) {
+	// 	return (
+	// 		<div className="flex flex-1 items-center justify-center h-full">
+	// 			<Typography color="textSecondary" variant="h5">
+	// 				{/* There are no contacts! */}
+	// 				There are no blocked contacts!
+	// 						</Typography>
+	// 		</div>
+	// 	);
 
-	}
+	// }
 	console.log(ContactsData, 'ContactsData')
 	// console.log(user, 'user')
 
@@ -237,8 +266,10 @@ function ContactsList(props) {
 	return (
 		<FuseAnimate animation="transition.slideUpIn" delay={300}>
 			<BlockContactsTable
+				giveVal={props.GiveVal}
 				columns={columns}
 				data={data}
+				getData={getData}
 				onRowClick={(ev, row) => {
 					// if (row) {
 					// 	dispatch(Actions.openEditContactDialog(row.original));

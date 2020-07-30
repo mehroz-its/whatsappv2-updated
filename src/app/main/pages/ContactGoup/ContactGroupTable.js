@@ -128,7 +128,8 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 						<TableRow {...headerGroup.getHeaderGroupProps()}>
 							{headerGroup.headers.map(column => (
 								<TableCell
-									className="whitespace-no-wrap p-0"
+								align="center"
+								className="whitespace-no-wrap px-50 py-0 mx-12"
 									{...(!column.sortable
 										? column.getHeaderProps()
 										: column.getHeaderProps(column.getSortByToggleProps()))}
@@ -162,7 +163,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 										if (row.original.enabled === true) {
 											return (
 												<TableCell 
-												
+												className="whitespace-no-wrap px-50 py-0"
 												component="th" scope="row" align="center">
 													<Icon className="text-green text-20">check_circle</Icon>
 												</TableCell>
@@ -170,7 +171,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 										} else if (row.original.enabled === false) {
 											return (
 												<TableCell 
-											
+												className="whitespace-no-wrap px-50 py-0"
 												component="th" scope="row" align="center">
 													<Icon className="text-red text-20">cancel</Icon>
 												</TableCell>
@@ -179,8 +180,9 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 									} else {
 										return (
 											<TableCell
-												{...cell.getCellProps()}
-												className={clsx('p-0')}
+											className="whitespace-no-wrap px-50 py-0"
+											align="center"
+											
 											>
 												{cell.render('Cell')}
 											</TableCell>
