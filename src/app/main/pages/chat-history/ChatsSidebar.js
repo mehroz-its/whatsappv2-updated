@@ -120,7 +120,7 @@ function a11yProps(index) {
 	};
 }
 function ChatsSidebar(props) {
-
+	const {numbers} = props
 	const dispatch = useDispatch();
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
 	// console.log("contacts : " , props.numbers);
@@ -171,18 +171,15 @@ function ChatsSidebar(props) {
 	function handleSearchText(event) {
 		setSearchText(event.target.value);
 	}
-
+	let filtered = props.numbers
+	filtered = searchText.charAt(0) === '9' ? numbers.filter((number => number.number.includes(searchText))) : numbers.filter((number => number.name.toLowerCase().includes(searchText.toLowerCase())))
 	return (
 		<div className="flex flex-col flex-auto h-full">
 			<AppBar position="static" color="default" elevation={1} className="">
 				<Toolbar className="flex justify-between items-center px-4">
 					{user && (
 						<div
-							className="relative w-40 h-40 p-0 mx-12 cursor-pointer"
-							onClick={() => dispatch(Actions.openUserSidebar())}
-							onKeyDown={() => dispatch(Actions.openUserSidebar())}
-							role="button"
-							tabIndex={0}
+							
 						>
 							<Avatar src={user.avatar} alt={user.name} className="w-40 h-40">
 								{!user.avatar || user.avatar === '' ? user.name[0] : ''}
@@ -275,7 +272,7 @@ function ChatsSidebar(props) {
 											Chats
 										</Typography>
 									)}
-									{props.numbers.map(contactt => (
+									{filtered.map(contactt => (
 										<ContactListItem
 											key={contactt.id}
 											contact={contactt}
@@ -287,7 +284,7 @@ function ChatsSidebar(props) {
 								</FuseAnimateGroup>
 							</>
 						);
-					}, [props.numbers,])
+					}, [props.numbers,filtered])
 				}
 				</List>
 

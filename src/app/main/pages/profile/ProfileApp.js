@@ -46,8 +46,8 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(2),
     },
     large: {
-        width: theme.spacing(12),
-        height: theme.spacing(12),
+        width: theme.spacing(8),
+        height: theme.spacing(8),
         
     }
 }));
@@ -61,7 +61,7 @@ function ProfileApp() {
     const [headerData, setHeaderData] = useState('Your Profile');
     const [profileImage, setProfileImage] = React.useState(picture)
 
-
+    console.log(profileImage,'image');
 
 
     React.useEffect(() => {
@@ -79,6 +79,7 @@ function ProfileApp() {
     }
     const updatedProfileImage = (data) => {
         setProfileImage(data)
+        console.log('i am called',data)
     }
 
     const onChangeHandler = event => {
@@ -117,22 +118,26 @@ function ProfileApp() {
         <FusePageSimple
             classes={{
                 root: classes.layoutRoot,
-                header: 'min-h-160 h-160',
+                header: 'min-h-100 h-100',
             }}
             header={
-                <div className="flex flex-col justify-between flex-1 px-24 pt-24">
+                <div className="flex flex-col justify-between flex-1 px-24 pt-12">
                     {/* <div className="flex justify-between items-start"> */}
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                         <div className='image-grid' style={{ marginTop: '10px', marginLeft: '-10px' }}>
                             <Avatar  alt="Remy Sharp"   src={profileImage} className={classes.large} />
                             <span>
-                                <input id="contained-button-file" type="file" name="url" style={{ display: "none" ,marginBottom:'0px'}} onChange={onChangeHandler} accept="image/*" />
+                                <input id="contained-button-file" type="file" name="url" style={{   cursor: 'pointer',display: "none" ,marginBottom:'0px'}} onChange={onChangeHandler} accept="image/*" />
                                 <label htmlFor="contained-button-file">
-                                    <Icon color="action" style={{marginLeft:'80px' ,cursor:'pointer',marginTop:'-10px',paddingTop:'0px'}}>linked_camera</Icon>
+                                    <Icon color="action" 
+                                    style={{position:'absolute',left:60,top:65}} 
+                                    fontSize="small" 
+                                    >
+                                        linked_camera</Icon>
                                 </label>
                             </span>
                         </div>
-                        <Typography className="py-0 sm:py-24 ml-24 mt-5" variant="h4">
+                        <Typography className="py-20 sm:py-24 ml-6 mt-8 text-16" variant="h6">
                             {headerData}
                         </Typography>
                     </div>

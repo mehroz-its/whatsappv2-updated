@@ -823,10 +823,8 @@ function ChatApp(props) {
 											</IconButton>
 											<div
 												className="flex items-center cursor-pointer"
-												onClick={() => dispatch(Actions.openContactSidebar())}
-												onKeyDown={() => dispatch(Actions.openContactSidebar())}
-												role="button"
-												tabIndex={0}
+										
+										
 												style={{ marginTop: '-10px' }}
 											>
 												<div className="relative mx-8 " style={{marginTop:'3px'}}>

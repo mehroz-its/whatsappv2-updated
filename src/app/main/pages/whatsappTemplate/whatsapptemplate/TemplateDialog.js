@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 const CampaignDialog = (props) => {
 	const classes = useStyles(props);
 
-	const { isOpen ,data} = props
+	const { isOpen, data } = props
 	const [openDialog, setopenDialog] = React.useState(isOpen);
 	const [age, setAge] = React.useState('');
 	const [params, setParams] = React.useState(data.params);
@@ -45,7 +45,7 @@ const CampaignDialog = (props) => {
 
 	const [filteredParams, setfilteredParams] = React.useState(null);
 
-console.log(data,'from this.props.')
+	console.log(data, 'from this.props.')
 
 	const handleClose = () => {
 		props.closeDialog()
@@ -75,12 +75,12 @@ console.log(data,'from this.props.')
 
 	const onInputChange = e => {
 
-        switch (e.target.name) {
-            case "name":
-                setName(e.target.value)
-                break;
-        }
-    }
+		switch (e.target.name) {
+			case "name":
+				setName(e.target.value)
+				break;
+		}
+	}
 
 
 	return (
@@ -93,15 +93,15 @@ console.log(data,'from this.props.')
 			maxWidth="xs">
 			{/* <DialogTitle id="form-dialog-title">{props.type} </DialogTitle> */}
 			<AppBar position="static" elevation={1}>
-				
+
 				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
-        style={{paddingBottom:20,paddingTop:20}}>
-	      {props.type} 
+					style={{ paddingBottom: 20, paddingTop: 20 }}>
+					{props.type}
 				</div>
 			</AppBar>
 			<DialogContent classes={{ root: 'p-24' }}>
 				<div className="flex">
-					<div className="min-w-48 pt-20">
+					<div className="min-w-48 pt-10">
 						<Icon color="action">account_circle</Icon>
 					</div>
 
@@ -134,7 +134,7 @@ console.log(data,'from this.props.')
 						variant="outlined"
 						fullWidth
 						onChange={handleParams}
-						 />
+					/>
 				</div>
 
 
@@ -202,11 +202,11 @@ console.log(data,'from this.props.')
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={handleClose} color="primary" size="small"
-				variant="contained">
+					variant="contained">
 					Cancel
              </Button>
 				<Button onClick={handleClose} disabled={true} color="primary" size="small"
-				variant="contained" >
+					variant="contained" >
 					Done
          </Button>
 			</DialogActions>

@@ -32,6 +32,9 @@ import XGlobalDialogCmp from '../../../../dialogs/XGlobalDialogCmp';
 import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
 import { CSVLink, CSVDownload } from 'react-csv';
 import Fade from '@material-ui/core/Fade'
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
+
 import copy from 'copy-to-clipboard';
 const drawerWidth = 320;
 const headerHeight = 100;
@@ -393,6 +396,7 @@ function ChatApp(props) {
 		});
 	}
 	const loadCountries = () => {
+		console.log('insdie hit of load count');
 		return CoreHttpHandler.request('locations', 'get_countries', {
 			columns: "id, name",
 			sortby: "ASC",
@@ -405,9 +409,22 @@ function ChatApp(props) {
 	};
 	const copyContent = () => {
 		copy(selectedRecipient.number);
-		alert("copy")
+		setSnackBarMessage("Copied Successfully")
+		setOK("success")
+		setSnackBarOpen(true)
+
+		setTimeout(() => {
+			setSnackBarMessage('')
+			setSnackBarOpen(false)
+		}, 6000);
+
 		// this.setSnackBarMessage('Copied', 'success', null);
 	}
+
+	setTimeout(() => {
+		setSnackBarMessage('')
+		setSnackBarOpen(false)
+	}, 6000);
 
 	const [sendDialogData, setsendDialogData] = React.useState({
 		url: '',
@@ -424,6 +441,9 @@ function ChatApp(props) {
 	const [dialogOpenCanned, setdialogOpenCanned] = React.useState(false);
 	const [cannedMessagesList, setcannedMessagesList] = React.useState([]);
 	const [blockReason, setblockReason] = React.useState('');
+	const [snackbaropen, setSnackBarOpen] = React.useState(false)
+	const [snackbarmessage, setSnackBarMessage] = React.useState('')
+	const [ok, setOK] = React.useState('')
 	const [customerProfileData, setcustomerProfileData] = React.useState({
 		id: 0,
 		number: null,
@@ -780,19 +800,196 @@ function ChatApp(props) {
 	}
 
 	return (
-		<div className={clsx(classes.root)}>
-			<div className={classes.topBg} />
-			<div className={clsx(classes.contentCardWrapper, 'container')}>
-				<div className={classes.contentCard}>
-					<Hidden mdUp>
+		<>
+			<Snackbar
+
+				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+				open={snackbaropen}
+				autoHideDuration={6000}
+
+			>
+				<Alert variant="filled" severity={ok}>
+					{snackbarmessage}
+				</Alert>
+			</Snackbar>
+			<div className={clsx(classes.root)}>
+				<div className={classes.topBg} />
+				<div className={clsx(classes.contentCardWrapper, 'container')}>
+					<div className={classes.contentCard}>
+						<Hidden mdUp>
+							<Drawer
+								className="h-full absolute z-20"
+								variant="temporary"
+								anchor="left"
+								open={mobileChatsSidebarOpen}
+								onClose={() => setmobileChatsSidebarOpen(false)}
+								classes={{
+									paper: clsx(classes.drawerPaper, 'absolute ltr:left-0 rtl:right-0')
+								}}
+								style={{ position: 'absolute' }}
+								ModalProps={{
+									keepMounted: true,
+									disablePortal: true,
+									BackdropProps: {
+										classes: {
+											root: 'absolute'
+										}
+									}
+								}}
+							>
+								<ChatsSidebar numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
+							</Drawer>
+						</Hidden>
+						<Hidden smDown>
+							<Drawer
+								className="h-full z-15"
+								variant="permanent"
+								open
+								classes={{
+									paper: classes.drawerPaper
+								}}
+							>
+								<ChatsSidebar numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
+							</Drawer>
+						</Hidden>
+
 						<Drawer
-							className="h-full absolute z-20"
+							className="h-full absolute z-30"
 							variant="temporary"
 							anchor="left"
-							open={mobileChatsSidebarOpen}
-							onClose={() => setmobileChatsSidebarOpen(false)}
+							open={userSidebarOpen}
+							onClose={() => dispatch(Actions.closeUserSidebar())}
 							classes={{
-								paper: clsx(classes.drawerPaper, 'absolute ltr:left-0 rtl:right-0')
+								paper: clsx(classes.drawerPaper, 'absolute left-0')
+							}}
+							style={{ position: 'absolute' }}
+							ModalProps={{
+								keepMounted: false,
+								disablePortal: true,
+								BackdropProps: {
+									classes: {
+										root: 'absolute'
+									}
+								}
+							}}
+						>
+							<UserSidebar />
+						</Drawer>
+
+						<main className={clsx(classes.contentWrapper, 'z-10')}>
+							{!selectedRecipient ? (
+								<div className="flex flex-col flex-1 items-center justify-center p-24">
+									<Paper className="rounded-full p-48">
+										<Icon className="block text-64" color="secondary">
+											chat
+									</Icon>
+									</Paper>
+									<Typography variant="h6" style={{ fontSize: '18px', paddingTop: '10px' }}>
+										Chat App
+								</Typography>
+									<Typography
+										className="hidden md:flex px-16 pb-24 mt-10 text-center"
+										color="textSecondary">
+										Select a contact to start a conversation!
+								</Typography>
+									<Button
+										variant="outlined"
+										color="primary"
+										className="flex md:hidden normal-case"
+										onClick={() => setmobileChatsSidebarOpen(true)}
+									>
+										Select a contact to start a conversation!
+								</Button>
+								</div>
+							) : (
+									<>
+										<AppBar className="w-full" position="static" elevation={1} style={{ height: '70px' }}>
+											<Toolbar className="px-16">
+												<IconButton
+													color="inherit"
+													aria-label="Open drawer"
+													onClick={() => setmobileChatsSidebarOpen(true)}
+													className="flex md:hidden"
+
+												>
+													<Icon>chat</Icon>
+												</IconButton>
+												<div
+													className="flex items-center cursor-pointer"
+												// onClick={() => setuserDrawer(true)}
+												// onKeyDown={() => setuserDrawer(false)}
+												// role="button"
+												// tabIndex={0}
+												>
+													<div className="relative mx-6 w-32 h-32" style={{ marginTop: '20px', marginRight: '10px' }}>
+														{/* <div className="absolute right-0 bottom-0  -m-1 z-2">
+													
+														<StatusIcon status={selectedRecipient.status} />
+														
+													</div> */}
+
+														<Avatar
+
+															src={selectedRecipient.avatar} alt={selectedRecipient.name} className={classes.avatar}>
+															{!selectedRecipient.avatar || selectedRecipient.avatar === ''
+																? selectedRecipient.name[0]
+																: ''}
+														</Avatar>
+													</div>
+													<Typography color="inherit" className="text-12 font-600 px-4" style={{ marginTop: '5px' }}>
+														{selectedRecipient.name}
+													</Typography>
+												</div>
+												<div style={{ position: 'absolute', right: 1, top: 11 }} >
+													<IconButton
+														aria-owns={moreMenuEl ? 'chats-more-menu' : null}
+														aria-haspopup="true"
+														onClick={handleMoreMenuClick}
+														style={{ color: 'white' }}
+													>
+														<Icon fontSize="small" >more_vert</Icon>
+													</IconButton>
+													<Menu
+														id="chats-more-menu"
+														anchorEl={moreMenuEl}
+														open={Boolean(moreMenuEl)}
+														onClose={handleMoreMenuClose}
+													>
+														<MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
+														<MenuItem onClick={(e) => conversationActionsCallback('shift')}>Shift</MenuItem>
+														<MenuItem onClick={(e) => conversationContextMenuCallback('block')}>Block </MenuItem>
+														<MenuItem onClick={(e) => conversationContextMenuCallback('customer_profile')}>Customer Profile </MenuItem>
+														<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem>
+													</Menu>
+												</div>
+												<div style={{ position: 'absolute', right: 40, top: 11 }}>
+													<IconButton
+														aria-haspopup="true"
+														onClick={endConversation}
+														style={{ color: 'white' }}
+													>
+														<Icon fontSize="small" >settings_power</Icon>
+													</IconButton>
+
+												</div>
+											</Toolbar>
+										</AppBar>
+
+										<div className={classes.content}>
+											<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} clearBlock={clearData} endConversation={endConversation} />
+										</div>
+									</>
+								)}
+						</main>
+
+						<Drawer
+							className="h-full absolute z-30"
+							variant="temporary"
+							anchor="right"
+							open={userDrawer}
+							onClose={() => setuserDrawer(false)}
+							classes={{
+								paper: clsx(classes.drawerPaper, 'absolute ltr:right-0 rtl:left-0')
 							}}
 							style={{ position: 'absolute' }}
 							ModalProps={{
@@ -805,181 +1002,17 @@ function ChatApp(props) {
 								}
 							}}
 						>
-							<ChatsSidebar numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
+							{/* <ContactSidebar /> */}
 						</Drawer>
-					</Hidden>
-					<Hidden smDown>
-						<Drawer
-							className="h-full z-15"
-							variant="permanent"
-							open
-							classes={{
-								paper: classes.drawerPaper
-							}}
-						>
-							<ChatsSidebar numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
-						</Drawer>
-					</Hidden>
-
-					<Drawer
-						className="h-full absolute z-30"
-						variant="temporary"
-						anchor="left"
-						open={userSidebarOpen}
-						onClose={() => dispatch(Actions.closeUserSidebar())}
-						classes={{
-							paper: clsx(classes.drawerPaper, 'absolute left-0')
-						}}
-						style={{ position: 'absolute' }}
-						ModalProps={{
-							keepMounted: false,
-							disablePortal: true,
-							BackdropProps: {
-								classes: {
-									root: 'absolute'
-								}
-							}
-						}}
-					>
-						<UserSidebar />
-					</Drawer>
-
-					<main className={clsx(classes.contentWrapper, 'z-10')}>
-						{!selectedRecipient ? (
-							<div className="flex flex-col flex-1 items-center justify-center p-24">
-								<Paper className="rounded-full p-48">
-									<Icon className="block text-64" color="secondary">
-										chat
-									</Icon>
-								</Paper>
-								<Typography variant="h6" style={{ fontSize: '18px',paddingTop:'10px' }}>
-									Chat App
-								</Typography>
-								<Typography
-									className="hidden md:flex px-16 pb-24 mt-10 text-center"
-									color="textSecondary">
-									Select a contact to start a conversation!
-								</Typography>
-								<Button
-									variant="outlined"
-									color="primary"
-									className="flex md:hidden normal-case"
-									onClick={() => setmobileChatsSidebarOpen(true)}
-								>
-									Select a contact to start a conversation!
-								</Button>
-							</div>
-						) : (
-								<>
-									<AppBar className="w-full" position="static" elevation={1} style={{ height: '70px' }}>
-										<Toolbar className="px-16">
-											<IconButton
-												color="inherit"
-												aria-label="Open drawer"
-												onClick={() => setmobileChatsSidebarOpen(true)}
-												className="flex md:hidden"
-												
-											>
-												<Icon>chat</Icon>
-											</IconButton>
-											<div
-												className="flex items-center cursor-pointer"
-												onClick={() => setuserDrawer(true)}
-												onKeyDown={() => setuserDrawer(false)}
-												role="button"
-												tabIndex={0}
-											>
-												<div className="relative mx-6 w-32 h-32" style={{marginTop:'20px'}}>
-													{/* <div className="absolute right-0 bottom-0  -m-1 z-2">
-													
-														<StatusIcon status={selectedRecipient.status} />
-														
-													</div> */}
-
-													<Avatar
-
-														src={selectedRecipient.avatar} alt={selectedRecipient.name} className={classes.avatar}>
-														{!selectedRecipient.avatar || selectedRecipient.avatar === ''
-															? selectedRecipient.name[0]
-															: ''}
-													</Avatar>
-												</div>
-												<Typography color="inherit" className="text-12 font-600 px-4" style={{marginTop:'5px'}}>
-													{selectedRecipient.name}
-												</Typography>
-											</div>
-											<div style={{ position: 'absolute', right: 1, top: 11 }} >
-												<IconButton
-													aria-owns={moreMenuEl ? 'chats-more-menu' : null}
-													aria-haspopup="true"
-													onClick={handleMoreMenuClick}
-													style={{ color: 'white' }}
-												>
-													<Icon fontSize="small" >more_vert</Icon>
-												</IconButton>
-												<Menu
-													id="chats-more-menu"
-													anchorEl={moreMenuEl}
-													open={Boolean(moreMenuEl)}
-													onClose={handleMoreMenuClose}
-												>
-													<MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
-													<MenuItem onClick={(e) => conversationActionsCallback('shift')}>shift</MenuItem>
-													<MenuItem onClick={(e) => conversationContextMenuCallback('block')}>Block </MenuItem>
-													<MenuItem onClick={(e) => conversationContextMenuCallback('customer_profile')}>Customer Profile </MenuItem>
-													<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem>
-												</Menu>
-											</div>
-											<div style={{ position: 'absolute', right: 40, top: 11}}>
-												<IconButton
-													aria-haspopup="true"
-													onClick={endConversation}
-													style={{ color: 'white' }}
-												>
-													<Icon fontSize="small" >settings_power</Icon>
-												</IconButton>
-												
-											</div>
-										</Toolbar>
-									</AppBar>
-
-									<div className={classes.content}>
-										<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} clearBlock={clearData} endConversation={endConversation} />
-									</div>
-								</>
-							)}
-					</main>
-
-					<Drawer
-						className="h-full absolute z-30"
-						variant="temporary"
-						anchor="right"
-						open={userDrawer}
-						onClose={() => setuserDrawer(false)}
-						classes={{
-							paper: clsx(classes.drawerPaper, 'absolute ltr:right-0 rtl:left-0')
-						}}
-						style={{ position: 'absolute' }}
-						ModalProps={{
-							keepMounted: true,
-							disablePortal: true,
-							BackdropProps: {
-								classes: {
-									root: 'absolute'
-								}
-							}
-						}}
-					>
-						{/* <ContactSidebar /> */}
-					</Drawer>
+					</div>
 				</div>
+				<XGlobalDialogCmp onDialogPropsChange={sendDialogInputHandler} data={{ dialogType: sendActionType, attachment: sendDialogData }} dialogTitle={sendDialogTitle} options={dialogOptionsConfirmBlock} content={AttachmentDialogV2} defaultState={sendDialogOpen} actions={sendDialogActions} />
+				<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
+				<XGlobalDialogCmp onDialogPropsChange={selectedCannedMessage} data={cannedMessagesList} dialogTitle={`Canned Messages`} options={dialogOptionsCanned} content={CannedMessagesDialog} defaultState={dialogOpenCanned} actions={dialogActionsCanned} />
+				<XGlobalDialogCmp onDialogPropsChange={blockCustomerInputHandler} data={selectedRecipient} dialogTitle={`Confirm Block`} options={dialogOptionsConfirmBlock} content={BlockConfirmDialog} defaultState={dialogOpenConfirmBlock} actions={dialogActionsConfirmBlock} />
+				<XGlobalDialogCmp onDialogPropsChange={customerProfileInputHandler} data={customerProfileData} dialogTitle={`Customer Profile`} options={dialogOptionsCmp} content={CustomerProfileDialog} defaultState={dialogOpenCmp} actions={dialogActionsCmp} />
 			</div>
-			<XGlobalDialogCmp onDialogPropsChange={sendDialogInputHandler} data={{ dialogType: sendActionType, attachment: sendDialogData }} dialogTitle={sendDialogTitle} options={dialogOptionsConfirmBlock} content={AttachmentDialogV2} defaultState={sendDialogOpen} actions={sendDialogActions} />
-			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
-			<XGlobalDialogCmp onDialogPropsChange={selectedCannedMessage} data={cannedMessagesList} dialogTitle={`Canned Messages`} options={dialogOptionsCanned} content={CannedMessagesDialog} defaultState={dialogOpenCanned} actions={dialogActionsCanned} />
-			<XGlobalDialogCmp onDialogPropsChange={blockCustomerInputHandler} data={selectedRecipient} dialogTitle={`Confirm Block`} options={dialogOptionsConfirmBlock} content={BlockConfirmDialog} defaultState={dialogOpenConfirmBlock} actions={dialogActionsConfirmBlock} />
-			<XGlobalDialogCmp onDialogPropsChange={customerProfileInputHandler} data={customerProfileData} dialogTitle={`Customer Profile`} options={dialogOptionsCmp} content={CustomerProfileDialog} defaultState={dialogOpenCmp} actions={dialogActionsCmp} />
-		</div>
+		</>
 	);
 }
 

@@ -119,8 +119,8 @@ const CustomerProfileDialog = function (props) {
         <DialogContent >
             <Grid container spacing={2}>
                 <Grid item md={12} xs={12}>
-                    <div style={{ marginBottom: 20 }}>
-                        <TextField value={number} name={'number'} label="Phone Number" variant="outlined" fullWidth autoComplete="off" disabled={true} />
+                    <div style={{ marginBottom: 20,marginTop:20}}>
+                        <TextField  size="small" value={number} name={'number'} label="Phone Number" variant="outlined" fullWidth autoComplete="off" disabled={true} />
                     </div>
                     {customerAttributes.map((attribute, i) => {
                         const _field = (obj, props) => {
@@ -159,13 +159,13 @@ const CustomerProfileDialog = function (props) {
                         else if (keys[1] === "age") {
                             return (
                                 <div key={`customer_attribute_data_holder_${i}`} style={{ marginBottom: 20 }}>
-                                    <TextField id={`attribute_id-${id}`} key={`customer_attribute_data_${i}`} value={value} name={keys[1]} autoFocus label={`${keys[1].toUpperCase()}`} variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
+                                    <TextField  size="small" id={`attribute_id-${id}`} key={`customer_attribute_data_${i}`} value={value} name={keys[1]} autoFocus label={`${keys[1].toUpperCase()}`} variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
                                 </div>
                             );
                         } else {
                             return (
                                 <div key={`customer_attribute_data_holder_${i}`} style={{ marginBottom: 20 }}>
-                                    <TextField id={`attribute_id-${id}`} key={`customer_attribute_data_${i}`} value={value} name={keys[1]} autoFocus label={`${keys[1].toUpperCase()}`} variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
+                                    <TextField  size="small" id={`attribute_id-${id}`} key={`customer_attribute_data_${i}`} value={value} name={keys[1]} autoFocus label={`${keys[1].toUpperCase()}`} variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
                                 </div>
                             );
                         }

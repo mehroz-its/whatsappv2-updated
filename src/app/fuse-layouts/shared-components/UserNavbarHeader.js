@@ -47,6 +47,7 @@ function UserNavbarHeader(props) {
 	console.log(data)
 
 	let username = null
+	let lastname = null
 	if (data !== null) {
 		function titleCase(str) {
 			str = str.toLowerCase().split(' ');
@@ -56,7 +57,9 @@ function UserNavbarHeader(props) {
 			return str.join(' ');
 		}
 		console.log(data, 'from local storage')
-		username = titleCase(data.username);
+		username = titleCase(data.firstName);
+		lastname = titleCase(data.lastName);
+
 
 	}
 
@@ -70,7 +73,8 @@ function UserNavbarHeader(props) {
 		>
 			<Typography className="username text-14 whitespace-no-wrap" color="inherit">
 				{/* {user.data.displayName} */}
-				{username}
+				{`${username} ${lastname}`}
+				
 			</Typography>
 			<Typography className="email text-11 mt-8 opacity-50 whitespace-no-wrap" color="inherit">
 				{data.email}
@@ -81,9 +85,9 @@ function UserNavbarHeader(props) {
 				alt="user photo"
 				style={{width:60,height:60 }}
 				src={
-					user.data.photoURL && user.data.photoURL !== ''
-						? user.data.photoURL
-						: 'assets/images/avatars/profile.jpg'
+					data.image && data.image !== ''
+						? data.image
+						: '../../../'
 				}
 			/>
 		</AppBar>

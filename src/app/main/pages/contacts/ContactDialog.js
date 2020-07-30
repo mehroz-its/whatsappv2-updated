@@ -288,7 +288,7 @@ var abc=true
 		}
 	
 
-console.log(form.name,'name',abc,'valid');
+console.log(value,'vlsssssssssssssssssss');
  
 	return (
 		<Dialog
@@ -453,7 +453,7 @@ console.log(form.name,'name',abc,'valid');
 				  fullWidth
 				  value={value}
                 >
-                  <MenuItem value={initialSelect}>Select Gender</MenuItem>
+                  <MenuItem value={value}>Select Gender</MenuItem>
                   <MenuItem value="male">Male</MenuItem>
                   <MenuItem value="female">Female</MenuItem>
                   <MenuItem value="others">Others</MenuItem>
@@ -624,7 +624,7 @@ console.log(form.name,'name',abc,'valid');
 									type="submit"
 									onClick={handleSubmit}
 									disabled={!form.firstname||!form.lastname||!form.email||!form.age||country=="N/A"||form.email=="N/A"
-								||value=="N/A"||abc != true}
+								||value=="N/A"||value=="select" ||abc != true}
 									size="small"
 								>
 									Save
