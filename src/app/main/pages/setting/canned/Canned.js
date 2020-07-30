@@ -143,7 +143,7 @@ function ContactsApp() {
 		setOpen(false);
 		getData()
 		valueReceived(val)
-		alert('called in canned')
+	
 	};
 
 	return (

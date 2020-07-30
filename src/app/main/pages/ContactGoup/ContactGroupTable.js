@@ -162,7 +162,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 										if (row.original.enabled === true) {
 											return (
 												<TableCell 
-												style={{height: 10}}
+												
 												component="th" scope="row" align="center">
 													<Icon className="text-green text-20">check_circle</Icon>
 												</TableCell>
@@ -170,7 +170,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 										} else if (row.original.enabled === false) {
 											return (
 												<TableCell 
-												style={{height: 10}}
+											
 												component="th" scope="row" align="center">
 													<Icon className="text-red text-20">cancel</Icon>
 												</TableCell>
@@ -180,7 +180,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 										return (
 											<TableCell
 												{...cell.getCellProps()}
-												className={clsx('p-0',)}
+												className={clsx('p-0')}
 											>
 												{cell.render('Cell')}
 											</TableCell>

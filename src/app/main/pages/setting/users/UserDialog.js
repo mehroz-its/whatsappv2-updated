@@ -13,7 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { green } from '@material-ui/core/colors';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles,ThemeProvider,createMuiTheme } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
@@ -41,9 +41,27 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 330,
 
   },
+  margin: {
+	  
+		color:'white',
+		paddingLeft:'14px',
+		fontWeight:'bold',
+		paddingRight:'14px',
+		paddingTop:'5px',
+		paddingBottom:'5px',
+		fontSize:'12px',
+	   
+	  },
 }))
 
 
+const theme = createMuiTheme({
+	palette: {
+	  primary: green,
+	},
+	});
+
+    
 
 
 const UserDialog = (props) => {
@@ -197,7 +215,7 @@ const UserDialog = (props) => {
       <AppBar position="static" elevation={1}>
 				
 				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
-        style={{paddingBottom:30,paddingTop:30}}>
+        style={{paddingBottom:20,paddingTop:20}}>
 	      {type} Users
 				</div>
 			</AppBar>
@@ -303,9 +321,11 @@ const UserDialog = (props) => {
         <Button onClick={handleClose} color="primary" size="small" variant="contained">
           Cancel
 </Button>
-        <Button size="small" variant="contained" onClick={handleSubmit} disabled={!userName||!email||!number||!roles||!currentRoles}  color="primary">
+<ThemeProvider theme={theme}>
+        <Button size="small" className={classes.margin} variant="contained" onClick={handleSubmit} disabled={!userName||!email||!number||!roles||!currentRoles}  color="primary">
           Done  
 </Button>
+</ThemeProvider>
       </DialogActions>
     </Dialog>
 

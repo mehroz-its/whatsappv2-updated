@@ -12,14 +12,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles,ThemeProvider,createMuiTheme } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import { getUserData } from '../../chat/store/actions';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AppBar from '@material-ui/core/AppBar';
-
+import { green, purple } from '@material-ui/core/colors';
 
 
 
@@ -35,9 +35,27 @@ const useStyles = makeStyles((theme) => ({
 		minWidth: 330,
 
 	},
+	margin: {
+	  
+		color:'white',
+		paddingLeft:'14px',
+		fontWeight:'bold',
+		paddingRight:'14px',
+		paddingTop:'5px',
+		paddingBottom:'5px',
+		fontSize:'12px',
+	   
+	  },
+
 }));
 
 
+
+const theme = createMuiTheme({
+	palette: {
+	  primary: green,
+	},
+	});
 
 
 const CampaignDialog = (props) => {
@@ -58,9 +76,10 @@ const CampaignDialog = (props) => {
 
 	const [description, setDescription] = React.useState('');
 	const [isLoading, setIsLoading] = React.useState(false);
-	const [uploadedFilePath, setUploadedFilePath] = React.useState(data.url);
+	const [uploadedFilePath, setUploadedFilePath] = React.useState(data.attachment_url);
 	const [attachment_name, setAttachment_name] = React.useState(data.file_name)
 	const [attachment_params, setAttachment_params] = React.useState('')
+console.log(data,'dataaaa');
 
 
 
@@ -72,7 +91,13 @@ const CampaignDialog = (props) => {
 
 	const handleSubmit = () => {
 
-		let fileName = uploadedFilePath.split('https://upload.its.com.pk/')
+
+		let fileName 
+		if(uploadedFilePath !=''){
+			fileName = uploadedFilePath.split('https://upload.its.com.pk/')
+		}else{
+			fileName=''
+		}
 		let params = {
 			message_name: name,
 			message_text: text,
@@ -199,7 +224,7 @@ const CampaignDialog = (props) => {
 			<AppBar position="static" elevation={1}>
 				
 				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
-        style={{paddingBottom:30,paddingTop:30}}>
+        style={{paddingBottom:20,paddingTop:20}}>
 	      {props.type} 
 				</div>
 			</AppBar>
@@ -319,9 +344,11 @@ const CampaignDialog = (props) => {
 				<Button variant="contained" onClick={handleDialogClose} color="primary" size="small">
 					Cancel
              </Button>
-				<Button  size="small" variant="contained" onClick={handleSubmit} disabled={!name||!text||!canned_type} color="primary">
+			 <ThemeProvider theme={theme}>
+				<Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} disabled={!name||!text||!canned_type} color="primary">
 					Done
          </Button>
+		 </ThemeProvider>
 			</DialogActions>
 		</Dialog>
 

@@ -13,7 +13,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
-
+import AppBar from '@material-ui/core/AppBar';
 
 
 
@@ -91,7 +91,14 @@ console.log(data,'from this.props.')
 
 			fullWidth
 			maxWidth="xs">
-			<DialogTitle id="form-dialog-title">{props.type} </DialogTitle>
+			{/* <DialogTitle id="form-dialog-title">{props.type} </DialogTitle> */}
+			<AppBar position="static" elevation={1}>
+				
+				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
+        style={{paddingBottom:20,paddingTop:20}}>
+	      {props.type} 
+				</div>
+			</AppBar>
 			<DialogContent classes={{ root: 'p-24' }}>
 				<div className="flex">
 					<div className="min-w-48 pt-20">
@@ -102,6 +109,7 @@ console.log(data,'from this.props.')
 						className="mb-24"
 						label="Name"
 						autoFocus
+						size="small"
 						id="name"
 						name="name"
 						variant="outlined"
@@ -122,6 +130,7 @@ console.log(data,'from this.props.')
 						disabled={true}
 						rows="4"
 						label="Params"
+						size="small"
 						variant="outlined"
 						fullWidth
 						onChange={handleParams}
@@ -192,10 +201,12 @@ console.log(data,'from this.props.')
 
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={handleClose} color="primary">
+				<Button onClick={handleClose} color="primary" size="small"
+				variant="contained">
 					Cancel
              </Button>
-				<Button onClick={handleClose} disabled={true} color="primary">
+				<Button onClick={handleClose} disabled={true} color="primary" size="small"
+				variant="contained" >
 					Done
          </Button>
 			</DialogActions>

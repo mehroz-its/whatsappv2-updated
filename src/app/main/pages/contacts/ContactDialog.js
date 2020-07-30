@@ -10,7 +10,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Icon from '@material-ui/core/Icon';
 import InputLabel from '@material-ui/core/InputLabel';
-
+import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { green, purple } from '@material-ui/core/colors';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -40,7 +41,31 @@ const defaultFormState = {
 	notes: ''
 };
 
+
+
+
+const useStyles = makeStyles((theme) => ({
+margin: {
+  
+  color:'white',
+  paddingLeft:'14px',
+  fontWeight:'bold',
+  paddingRight:'14px',
+  paddingTop:'5px',
+  paddingBottom:'5px',
+  fontSize:'12px',
+ 
+},
+}));
+
+const theme = createMuiTheme({
+palette: {
+  primary: green,
+},
+});
+
 function ContactDialog(props) {
+	const classes = useStyles();
 	const { data, isOpen, type } = props
 	const dispatch = useDispatch();
 	const contactDialog = { data: data, props: { open: isOpen }, type: type }
@@ -92,6 +117,7 @@ function ContactDialog(props) {
 
 
 
+	  
 
 
 	React.useEffect(() => {
@@ -275,12 +301,9 @@ console.log(form.name,'name',abc,'valid');
 			maxWidth="xs"
 		>
 			<AppBar position="static" elevation={1}>
-				<Toolbar className="flex w-full">
-					<Typography variant="subtitle1" color="inherit">
-						{contactDialog.type === 'new' ? 'New Contact' : 'Edit Contact'}
-					</Typography>
-				</Toolbar>
-				<div className="flex flex-col items-center justify-center pb-10">
+			
+				<div className="flex flex-col items-center justify-center pb-10 pt-10">
+				
 					<Avatar className="w-56 h-56" alt="contact avatar" src={form.avatar} />
 					{contactDialog.type === 'edit' && (
 						<Typography variant="h6" color="inherit" className="pt-0">
@@ -592,10 +615,12 @@ console.log(form.name,'name',abc,'valid');
 					</DialogActions>
 				) : (
 						<DialogActions className="justify-between p-8">
-							<div className="px-16">
+							<div>
+							<ThemeProvider theme={theme}>
 								<Button
 									variant="contained"
 									color="primary"
+									className={classes.margin}
 									type="submit"
 									onClick={handleSubmit}
 									disabled={!form.firstname||!form.lastname||!form.email||!form.age||country=="N/A"||form.email=="N/A"
@@ -604,11 +629,12 @@ console.log(form.name,'name',abc,'valid');
 								>
 									Save
 							</Button>
+							</ThemeProvider>
 							</div>
 							{/* <IconButton onClick={handleRemove}>
 								<Icon>delete</Icon>
 							</IconButton> */}
-							<div >
+							<div>
 								<Button
 									variant="contained"
 									color="primary"

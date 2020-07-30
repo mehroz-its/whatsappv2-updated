@@ -829,7 +829,7 @@ function ChatApp(props) {
 												tabIndex={0}
 												style={{ marginTop: '-10px' }}
 											>
-												<div className="relative mx-8">
+												<div className="relative mx-8 " style={{marginTop:'3px'}}>
 													<div className="absolute right-0 bottom-0 -m-4 z-10">
 														<StatusIcon status={selectedRecipient.status} />
 													</div>
@@ -840,11 +840,13 @@ function ChatApp(props) {
 															: ''}
 													</Avatar>
 												</div>
-												<Typography color="inherit" className="text-18 font-600 px-4">
+												<div style={{marginTop:'3px'}}>
+												<Typography color="inherit" className="text-12 font-600 px-4">
 													{selectedRecipient.name}
 												</Typography>
+												</div>
 											</div>
-											<div style={{ position: 'absolute', right: 1 }}>
+											<div style={{ position: 'absolute', right: 1,top:2 }}>
 												<IconButton
 													aria-owns={moreMenuEl ? 'chats-more-menu' : null}
 													aria-haspopup="true"

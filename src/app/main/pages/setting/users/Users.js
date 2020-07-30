@@ -75,7 +75,7 @@ function Users(props) {
 		snackbar(mes)
 		getData()
 		setOpen(false);
-		alert('in user')
+	
 	}
 	const updateText = (search) => {
 		setVal(search)

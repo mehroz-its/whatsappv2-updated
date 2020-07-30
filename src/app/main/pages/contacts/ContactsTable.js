@@ -165,7 +165,7 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 										align="center"
 										     	style={{fontSize:'11px',textAlign:'center'}}
 												{...cell.getCellProps()}
-												className={clsx('p-0', )}
+										
 										>
 											{cell.render('Cell')}
 										</TableCell>

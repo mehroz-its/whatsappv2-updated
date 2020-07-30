@@ -13,7 +13,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { makeStyles } from '@material-ui/core/styles';
+import { green, purple } from '@material-ui/core/colors';
+import { makeStyles,ThemeProvider,createMuiTheme } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
@@ -34,7 +35,28 @@ const useStyles = makeStyles((theme) => ({
 		minWidth: 330,
 
 	},
+	margin: {
+	  
+		color:'white',
+		paddingLeft:'14px',
+		fontWeight:'bold',
+		paddingRight:'14px',
+		paddingTop:'5px',
+		paddingBottom:'5px',
+		fontSize:'12px',
+	   
+	  },
 }));
+
+
+
+
+const theme = createMuiTheme({
+	palette: {
+	  primary: green,
+	},
+	});
+
 
 
 
@@ -146,7 +168,7 @@ const CampaignDialog = (props) => {
 				
 				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
         style={{paddingBottom:30,paddingTop:30}}>
-	      {type} Users
+	      {type} 
 				</div>
 			</AppBar>
 			<DialogContent classes={{ root: 'p-24' }}>
@@ -216,12 +238,16 @@ const CampaignDialog = (props) => {
 				<Button onClick={handleDialogClose} color="primary" size="small" variant="contained">
 					Cancel
              </Button>
+			 <ThemeProvider theme={theme}>
 				<Button 
-				onClick={handleSubmit} disabled={!title||!description||!number}  color="primary"
+				color="primary"
+				className={classes.margin}
+				onClick={handleSubmit} disabled={!title||!description||!number} 
 				size="small"
 				variant="contained">
 					Done
          </Button>
+		 </ThemeProvider>
 			</DialogActions>
 		</Dialog>
 

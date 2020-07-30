@@ -15,7 +15,7 @@ import Select from '@material-ui/core/Select';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { green } from '@material-ui/core/colors';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { makeStyles,ThemeProvider,createMuiTheme,withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
@@ -43,7 +43,26 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 330,
 
   },
+  margin: {
+	  
+		color:'white',
+		paddingLeft:'14px',
+		fontWeight:'bold',
+		paddingRight:'14px',
+		paddingTop:'5px',
+		paddingBottom:'5px',
+		fontSize:'12px',
+	   
+	  },
 }))
+
+const theme = createMuiTheme({
+	palette: {
+	  primary: green,
+	},
+	});
+
+    
 
 
 const PermissionDialog = (props) => {
@@ -60,7 +79,7 @@ const PermissionDialog = (props) => {
   const [currentRules, setCurrenconsumertRules] = React.useState(data.rule_set);
   const [enabled, setEnabled] = React.useState(data.enabled);
   const [consumer, setConsumer] = React.useState(data.consumer);
-  console.log(data.method)
+  console.log(data.consumer,data.rule_set,data.method,data.title,'consumerrrr')
 
 
   const handleClose = () => {
@@ -201,7 +220,7 @@ const PermissionDialog = (props) => {
       });
     } else {
 
-      console.log(props.data, 'datasss');
+      
       let params = {
         id: data.id,
         method: data.method,
@@ -216,7 +235,7 @@ const PermissionDialog = (props) => {
       };
 
       let update_params = {
-        key: 'id',
+        key: ':id',
         value: props.data.id,
         params: params
       }
@@ -279,7 +298,7 @@ const PermissionDialog = (props) => {
         <AppBar position="static" elevation={1}>
 				
 				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
-        style={{paddingBottom:30,paddingTop:30}}>
+        style={{paddingBottom:20,paddingTop:20}}>
 	      {type} Permissions
 				</div>
 			</AppBar>
@@ -389,9 +408,11 @@ const PermissionDialog = (props) => {
         <Button size="small" variant="contained" onClick={handleClose}  color="primary">
           Cancel
              </Button>
-        <Button size="small" variant="contained" onClick={handleSubmit} disabled={!title||!description||!consumer} color="primary">
+             <ThemeProvider theme={theme}>
+        <Button size="small" className={classes.margin} variant="contained" onClick={handleSubmit} disabled={!title||!description||!consumer} color="primary">
           Done
          </Button>
+         </ThemeProvider>
       </DialogActions>
     </Dialog>
 
