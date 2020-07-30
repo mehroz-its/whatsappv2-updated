@@ -280,17 +280,9 @@ function Chat(props) {
 	const { messages, selectedRecipient } = props;
 	const [chosenEmoji, setChosenEmoji] = useState(false);
 	let emojis = []
-	const onEmojiClick = (event, emojiObject) => {
-		console.log("emojiObject :", emojiObject);
-		// setChosenEmoji(emojiObject);
-		emojis.push(emojiObject.emoji)
-		if(messageText === ''){
-			setMessageText(emojiObject.emoji)
-		}else{
-			setMessageText(`${messageText}${emojiObject.emoji}`)
-		}
-		console.log(messageText,'messageTextmessageText')
-	};
+
+
+
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
 	// const selectedContactId = useSelector(({ chatApp }) => chatApp.contacts.selectedContactId);
 	// const chat = useSelector(({ chatApp }) => chatApp.chat);
@@ -299,8 +291,10 @@ function Chat(props) {
 	const classes = useStyles(props);
 	const chatRef = useRef(null);
 	const [messageText, setMessageText] = useState('');
+	const [messageTextNew, setMessageTextNew] = useState('');
+	const [emo, setEmo] = useState('');
 	const [anchorEl, setAnchorEl] = React.useState(null);
-	
+
 
 	const [sendDialogData, setsendDialogData] = React.useState({
 		url: '',
@@ -395,18 +389,8 @@ function Chat(props) {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
-	useEffect(() => {
-		if (messages) {
-			scrollToBottom();
-		}
 
-		// this.listener = EventRegister.addEventListener('online', (data) => {
-		// 	console.log(data,'in chat')
-		// });
 
-	}, [messages,]);
-
-	
 
 	function scrollToBottom() {
 		chatRef.current.scrollTop = chatRef.current.scrollHeight - 100;
@@ -431,8 +415,8 @@ function Chat(props) {
 	let _handleKeyDown = (e) => {
 		let inputLength = messageText.length + 1
 		if (e.key === 'Backspace') {
-			if(messageText.length !== 0){
-				messageInputLimit = textLength +1
+			if (messageText.length !== 0) {
+				messageInputLimit = textLength + 1
 				setTextLength(messageInputLimit)
 			}
 		} else {
@@ -441,10 +425,7 @@ function Chat(props) {
 		}
 	};
 
-	function onInputChange(ev) {
-		setMessageText(ev.target.value);
 
-	}
 
 	function onMessageSubmit(ev) {
 		ev.preventDefault();
@@ -854,6 +835,44 @@ function Chat(props) {
 			sendMessageHandler()
 		}
 	}
+	const prevCountRef = useRef();
+	prevCountRef.current = messageText;
+	const prevCount = prevCountRef.current;
+
+	function onInputChange(ev) {
+		setEmo('')
+		if (prevCount !== ev.target.value) {
+			setMessageText(ev.target.value);
+
+		} 
+
+	}
+	
+	const onEmojiClick = (event, emojiObject) => {
+		
+		// setChosenEmoji(emojiObject);
+		setEmo(emojiObject.emoji)
+		// emojis.push(emojiObject.emoji)
+		// if(messageText === ''){
+		// 	setMessageText(emojiObject.emoji)
+		// }else{
+		// 	setMessageText(`${messageText}${emojiObject.emoji}`)
+		// }
+		// console.log(messageText,'messageTextmessageText')
+	};
+	useEffect(() => {
+
+
+		setMessageTextNew(`${messageText + emo}`)
+		console.log("messageTextNew : ", messageText);
+		console.log("messageTextNew : ", emo);
+
+		if (messages) {
+			scrollToBottom();
+		}
+
+	}, [messages, emo, messageText]);
+
 	return (
 		<div className={clsx('flex flex-col relative', props.className)}>
 			<FuseScrollbars ref={chatRef} className="flex flex-1 flex-col overflow-y-auto">
@@ -944,7 +963,7 @@ function Chat(props) {
 								className: classes.bootstrapFormLabel
 							}}
 							onChange={onInputChange}
-							value={messageText}
+							value={messageTextNew}
 							onKeyPress={handleKeyPress}
 							onKeyDown={_handleKeyDown}
 						/>
@@ -984,12 +1003,12 @@ function Chat(props) {
 							<InsertEmoticonIcon />
 
 						</IconButton>
-						<p style={{ position: 'absolute',color:'grey', fontSize:11, left: 165, bottom: 13, paddingTop: 2, paddingBottom: 4, paddingLeft: 35, paddingRight: 10, }}>{textLength}</p>
+						<p style={{ position: 'absolute', color: 'grey', fontSize: 11, left: 165, bottom: 13, paddingTop: 2, paddingBottom: 4, paddingLeft: 35, paddingRight: 10, }}>{textLength}</p>
 						<Button variant="contained" style={{ position: 'absolute', right: 15, bottom: 13, fontSize: 12, paddingTop: 7, paddingBottom: 7, paddingLeft: 30, paddingRight: 30, backgroundColor: '#424141', color: 'white' }} onClick={sendMessageHandler}>Send</Button>
 						{/* <Icon  className="text-50" style={{postion:'absolute',paddingTop:'10px'}} color="disabled">
 									send
 							</Icon> */}
-						
+
 
 					</Paper>
 
