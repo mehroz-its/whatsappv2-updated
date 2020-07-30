@@ -9,6 +9,8 @@ import picture from './profileImage.png';
 import { Button } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 // import Validation from "js-textfield-validation";
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 
 
@@ -30,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Profile = function (props) {
     const classes = useStyles();
+    const { updateImage } = props
 
     const [profileUsername, setProfileUsername] = React.useState('Your Profile');
     const [profileId, setProfileId] = React.useState('');
@@ -37,9 +40,12 @@ const Profile = function (props) {
     const [profileImage, setProfileImage] = React.useState(picture)
     const [dob, setDOB] = React.useState(null);
 
+    const [snackbaropen, setSnackBarOpen] = React.useState(false)
+    const [snackbarmessage, setSnackBarMessage] = React.useState('')
+    const [ok, setOK] = React.useState('')
 
 
-    const { setSnackBarMessage } = props;
+
 
 
     const handleDate = (e) => {
@@ -84,24 +90,39 @@ const Profile = function (props) {
 
         });
         setProfileData(attrs);
+
     };
 
     const _update = () => {
         profileData[7] = { id: "8", image: props.urlImageHeader }
+        console.log(profileData, 'profileDataprofileData')
 
         let data = {
             key: 'id',
             value: profileId,
             attributes: profileData
         }
+        setTimeout(() => {
+            setSnackBarMessage('')
+            setSnackBarOpen(false)
+        }, 4000);
 
-        console.log(profileData)
+        console.log(profileData, 'dataaaaa')
+
         // return
         // urlImageHeader
         CoreHttpHandler.request('profile', 'update', data, response => {
+            setSnackBarMessage("Updated Successfully")
+            setOK("success")
+            setSnackBarOpen(true)
+            console.log(response, 'responseresponse');
+
             // setSnackBarMessage("Profile updated successfully", "success");
         },
             error => {
+                setSnackBarMessage("Error! Please Try Again Later")
+                setOK("error")
+                setSnackBarOpen(true)
                 // setSnackBarMessage(
                 //     "Please try again later, Profile not updated",
                 //     "error"
@@ -112,10 +133,12 @@ const Profile = function (props) {
 
     const loadProfile = () => {
         return CoreHttpHandler.request('profile', 'get_profile', {}, null, null, true);
+
     };
 
     React.useEffect(() => {
         loadProfile().then((response) => {
+            console.log('inside hittttttttttt');
             const profileData = response.data.data.attribute;
             const user = JSON.parse(localStorage.getItem('user_data'));
 
@@ -133,7 +156,7 @@ const Profile = function (props) {
                 }
             })
             setProfileImage(image)
-            props.updateImage(image)
+            updateImage(image)
 
         });
     }, []);
@@ -154,6 +177,7 @@ const Profile = function (props) {
 
             CoreHttpHandler.request("content", "upload", { params: _data },
                 response => {
+
                     let url = response.data.data.link
                     setProfileImage(url)
                     profileData.map((val, id) => {
@@ -163,6 +187,7 @@ const Profile = function (props) {
                         }
                     })
                     setProfileData(profileData)
+
                 },
                 error => {
                     // console.log("error :  ", error);
@@ -171,122 +196,134 @@ const Profile = function (props) {
     };
 
     return (
-        <div className={classes.root}>
-            <Grid container spacing={2} style={{ marginTop: 10, paddingRight: 30, paddingLeft: 20 }} >
-                {profileData.map((attribute, i) => {
-                    console.log(attribute)
-                    const _field = (obj, props) => {
-                        const [attribute_id, attribute_value] = props;
+        <>
+            <Snackbar
 
-                        return { id: obj[attribute_id], value: obj[attribute_value], keys: props };
-                    };
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                open={snackbaropen}
+                autoHideDuration={6000}
 
-                    const { id, value, keys } = _field(attribute, Object.keys(attribute));
-                    if (value === 'N/A') {
-                        console.log(`${keys[1].toUpperCase()}`, 'here i am')
-                        return (
-                            <Grid key={`user_attribute_grid_holder_${i}`} item md={6} xs={12}>
-                                <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
-                                    <TextField 
-                                    id={`id-${id}`} 
-                                    key={`user_attribute_data_${i}`} 
-                                    value={''} name={keys[1]} 
-                                    autoFocus
-                                     label={`${keys[1].toUpperCase()}` === 'ADDESS' ? 'ADDRESS' : 'Uzair'} 
-                                     variant="outlined" 
-                                     fullWidth 
-                                     autoComplete="off" 
-                                     onChange={onInputChange} 
-                                     size="small"
-                                     className="mb-16"
-                                     />
-                                </div>
-                            </Grid>
-                        );
-                    } else {
-                        console.log(`${keys[1].toUpperCase()}`, 'here i am')
+            >
+                <Alert variant="filled" severity={ok}>
+                    {snackbarmessage}
+                </Alert>
+            </Snackbar>
+            <div className={classes.root}>
+                <Grid container spacing={2} style={{ marginTop: 10, paddingRight: 30, paddingLeft: 20 }} >
+                    {profileData.map((attribute, i) => {
+                        console.log(attribute)
+                        const _field = (obj, props) => {
+                            const [attribute_id, attribute_value] = props;
 
-                        if (attribute.image) {
-                            console.log(`${keys[1].toUpperCase()}`, 'here i if')
+                            return { id: obj[attribute_id], value: obj[attribute_value], keys: props };
+                        };
 
+                        const { id, value, keys } = _field(attribute, Object.keys(attribute));
+                        if (value === 'N/A') {
+                            console.log(`${keys[1].toUpperCase()}`, 'here i am')
                             return (
                                 <Grid key={`user_attribute_grid_holder_${i}`} item md={6} xs={12}>
                                     <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
-                                        <TextField disabled  size="small"
- id={`id-${id}`} key={`user_attribute_data_${i}`} value={value} name={keys[1]} autoFocus label={`${keys[1].toUpperCase()}`}
-                                            
-                                            variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
-                                    </div>
-                                </Grid>
-                            );
-                        } else if (attribute.dob) {
-                            return (
-                                <Grid key={`user_attribute_grid_holder_${i}`} item md={6} xs={12}>
-                                    <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
-                                        <TextField id="date" fullWidth
-                                                                             size="small"
-
-                                            name={"dob"} label="D.O.B" type="date" onChange={handleDate} defaultValue={dob} InputLabelProps={{ shrink: true }}
+                                        <TextField
+                                            id={`id-${id}`}
+                                            key={`user_attribute_data_${i}`}
+                                            value={''} name={keys[1]}
+                                            autoFocus
+                                            label={`${keys[1].toUpperCase()}` === 'ADDESS' ? 'ADDRESS' : ''}
+                                            variant="outlined"
+                                            fullWidth
+                                            autoComplete="off"
+                                            onChange={onInputChange}
+                                            size="small"
+                                            className="mb-16"
                                         />
                                     </div>
                                 </Grid>
+                            );
+                        } else {
+                            console.log(`${keys[1].toUpperCase()}`, 'here i am')
 
-                            )
-                        } else if (attribute.cnic) {
-                            return (
-                                <Grid key={`user_attribute_grid_holder_${i}`} item md={6} xs={12}>
+                            if (attribute.image) {
+                                console.log(`${keys[1].toUpperCase()}`, 'here i if')
 
-                                    <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
-                                        <TextField required id={`id-${id}`}
-                                            key={`user_attribute_data_${i}`}
-                                            value={value} name={keys[1]} autoFocus
-                                            label={`${keys[1].toUpperCase()}`}
-                                            size="small"
+                                return (
+                                    <Grid key={`user_attribute_grid_holder_${i}`} item md={6} xs={12}>
+                                        <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
+                                            <TextField disabled size="small"
+                                                id={`id-${id}`} key={`user_attribute_data_${i}`} value={value} name={keys[1]} autoFocus label={`${keys[1].toUpperCase()}`}
 
-                                            onInput={(e) => {
-                                                e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 13)
-                                            }}
-                                            type={keys[1] !== 'cnic' ? 'text' : keys[1] === 'cnic' ? 'number' : null}
-                                            variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
-                                    </div>
-                                </Grid>
-                            )
-                        }
-                        else {
-                            console.log(keys[1], 'here i else')
+                                                variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
+                                        </div>
+                                    </Grid>
+                                );
+                            } else if (attribute.dob) {
+                                return (
+                                    <Grid key={`user_attribute_grid_holder_${i}`} item md={6} xs={12}>
+                                        <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
+                                            <TextField id="date" fullWidth
+                                                size="small"
 
-                            return (
-                                <Grid key={`user_attribute_grid_holder_${i}`} item md={6} xs={12}>
-                                    {
-                                        (keys[1] !== 'age' && 'dob') ?
-                                            (
+                                                name={"dob"} label="D.O.B" type="date" onChange={handleDate} defaultValue={dob} InputLabelProps={{ shrink: true }}
+                                            />
+                                        </div>
+                                    </Grid>
+
+                                )
+                            } else if (attribute.cnic) {
+                                return (
+                                    <Grid key={`user_attribute_grid_holder_${i}`} item md={6} xs={12}>
+
+                                        <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
+                                            <TextField required id={`id-${id}`}
+                                                key={`user_attribute_data_${i}`}
+                                                value={value} name={keys[1]} autoFocus
+                                                label={`${keys[1].toUpperCase()}`}
+                                                size="small"
+
+                                                onInput={(e) => {
+                                                    e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 13)
+                                                }}
+                                                type={keys[1] !== 'cnic' ? 'text' : keys[1] === 'cnic' ? 'number' : null}
+                                                variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
+                                        </div>
+                                    </Grid>
+                                )
+                            }
+                            else {
+                                console.log(keys[1], 'here i else')
+
+                                return (
+                                    <Grid key={`user_attribute_grid_holder_${i}`} item md={6} xs={12}>
+                                        {
+                                            (keys[1] !== 'age' && 'dob') ?
+                                                (
+                                                    <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
+                                                        <TextField required id={`id-${id}`}
+                                                            size="small"
+
+                                                            key={`user_attribute_data_${i}`}
+                                                            value={value} name={keys[1]} autoFocus
+                                                            label={`${keys[1].toUpperCase()}`}
+                                                            type={keys[1] !== 'cnic' ? 'text' : keys[1] === 'cnic' ? 'number' : null}
+                                                            variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
+                                                    </div>
+                                                ) :
                                                 <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
                                                     <TextField required id={`id-${id}`}
-                                                                                         size="small"
-
                                                         key={`user_attribute_data_${i}`}
+                                                        size="small"
+
                                                         value={value} name={keys[1]} autoFocus
                                                         label={`${keys[1].toUpperCase()}`}
-                                                        type={keys[1] !== 'cnic' ? 'text' : keys[1] === 'cnic' ? 'number' : null}
+                                                        type={'number'}
+                                                        onInput={(e) => {
+                                                            e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 3)
+                                                        }}
                                                         variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
                                                 </div>
-                                            ) :
-                                            <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
-                                                <TextField required id={`id-${id}`}
-                                                    key={`user_attribute_data_${i}`}
-                                                    size="small"
 
-                                                    value={value} name={keys[1]} autoFocus
-                                                    label={`${keys[1].toUpperCase()}`}
-                                                    type={'number'}
-                                                    onInput={(e) => {
-                                                        e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 3)
-                                                    }}
-                                                    variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
-                                            </div>
-
-                                    }
-                                    {/* <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
+                                        }
+                                        {/* <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
                                         <TextField required id={`id-${id}`}
                                          key={`user_attribute_data_${i}`} 
                                          value={value} name={keys[1]} autoFocus 
@@ -295,31 +332,33 @@ const Profile = function (props) {
                                          variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
                                     </div> */}
 
-                                </Grid>
-                            );
+                                    </Grid>
+                                );
+                            }
                         }
-                    }
-                })}
+                    })}
 
-                {/* <Grid item md={6} xs={12}>
+                    {/* <Grid item md={6} xs={12}>
                     <Button fullWidth variant="contained" color="primary" onClick={_update} style={{ marginTop: 8 }} >
                         Save
                     </Button>
                 </Grid> */}
-            </Grid>
-
-
-            <Grid container spacing={2} style={{ marginTop: 10, paddingRight: 15, paddingLeft: 15 }} >
-                <Grid item md={3} xs={12}></Grid>
-                <Grid item md={6} xs={12}>
-                    <Button fullWidth variant="contained" color="primary" onClick={_update} style={{ marginTop: 8 }} >
-                        Save
-                    </Button>
                 </Grid>
-                <Grid item md={3} xs={12}></Grid>
 
-            </Grid>
-        </div>
+
+                <Grid container spacing={2} style={{ marginTop: 10, paddingRight: 15, paddingLeft: 15 }} >
+                    <Grid item md={3} xs={12}></Grid>
+                    <Grid item md={6} xs={12}>
+                        <Button fullWidth variant="contained" color="primary" onClick={_update} style={{ marginTop: 8 }} >
+                            Save
+                    </Button>
+                    </Grid>
+                    <Grid item md={3} xs={12}></Grid>
+                    <div style={{ height: 500 }}></div>
+
+                </Grid>
+            </div>
+        </>
     );
 };
 export default Profile;

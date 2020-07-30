@@ -32,10 +32,11 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 	);
 });
 
-const EnhancedTable = ({ columns, data, onRowClick }) => {
+const EnhancedTable = ({ columns, data, onRowClick,getData }) => {
 	const [open, setOpen] = React.useState(false);
 	const handleClose = () => {
 		setOpen(false);
+		getData()
 	};
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -122,7 +123,9 @@ const EnhancedTable = ({ columns, data, onRowClick }) => {
 						<TableRow {...headerGroup.getHeaderGroupProps()}>
 							{headerGroup.headers.map(column => (
 								<TableCell
-									className="whitespace-no-wrap p-12"
+								className="whitespace-no-wrap px-50 py-0"
+								align="center"
+								style={{fontSize:'11px'}}
 									{...(!column.sortable
 										? column.getHeaderProps()
 										: column.getHeaderProps(column.getSortByToggleProps()))}
@@ -145,6 +148,7 @@ const EnhancedTable = ({ columns, data, onRowClick }) => {
 						prepareRow(row);
 						return (
 							<TableRow
+							style={{fontSize:'11px'}}
 								{...row.getRowProps()}
 								onClick={ev => handleClick(ev, row)}
 								className="truncate cursor-pointer"
@@ -152,15 +156,17 @@ const EnhancedTable = ({ columns, data, onRowClick }) => {
 								{row.cells.map(cell => {
 									if (cell.column.Header === 'Blocked') {
 										return (
-											<TableCell component="th" scope="row" align="center">
+											<TableCell 
+											className="whitespace-no-wrap px-50 py-0"
+											component="th" scope="row" align="center">
 												<Icon className="text-green text-20">check_circle</Icon>
 											</TableCell>
 										)
 									} else {
 										return (
 											<TableCell
-												{...cell.getCellProps()}
-												className={clsx('p-12', cell.column.className)}
+											className="whitespace-no-wrap px-50 py-0"
+											align="center"
 											>
 												{cell.render('Cell')}
 											</TableCell>

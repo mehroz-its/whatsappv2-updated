@@ -79,8 +79,9 @@ const BlockDialog = (props) => {
 
     const handleSubmit = () => {
         console.log(data,'i am in dialog')
+
         CoreHttpHandler.request('conversations', 'block', {
-            key: ':number', value: data.id, params: {
+            key: ':number', value: data.number, params: {
                 reason: description,
             }
         },
@@ -154,16 +155,17 @@ const BlockDialog = (props) => {
                     Cancel
              </Button>
           
+          <ThemeProvider theme={theme}>
                 <Button  
                 size="small" 
                 onClick={handleSubmit} 
                 color="primary" 
                 variant="contained"
-                // className={classes.margin}
+                className={classes.margin}
                 >
                     Done
          </Button>
-
+         </ThemeProvider>
             </DialogActions>
         </Dialog>
 

@@ -120,13 +120,14 @@ function a11yProps(index) {
 	};
 }
 function ChatsSidebar(props) {
+	const { numbers } = props
 
 	const dispatch = useDispatch();
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
 	// console.log("contacts : " , props.numbers);
 
 	// const user = useSelector(({ chatApp }) => chatApp.user);
-	
+
 
 	const [searchText, setSearchText] = useState('');
 	const [statusMenuEl, setStatusMenuEl] = useState(false);
@@ -170,8 +171,12 @@ function ChatsSidebar(props) {
 	}
 
 	function handleSearchText(event) {
+		console.log(event.target.value, 'event.target.value')
 		setSearchText(event.target.value);
 	}
+	let filtered = props.numbers
+	filtered = searchText.charAt(0) === '9' ? numbers.filter((number => number.number.includes(searchText))) : numbers.filter((number => number.name.toLowerCase().includes(searchText.toLowerCase())))
+
 
 	return (
 		<div className="flex flex-col flex-auto h-full">
@@ -179,15 +184,21 @@ function ChatsSidebar(props) {
 				<Toolbar className="flex justify-between items-center px-4">
 					{user && (
 						<div
-							className="relative w-40 h-40 p-0 mx-12 cursor-pointer"
-							onClick={() => setStatusMenuEl(true)}
-							onKeyDown={() => handleStatusClose}
-							role="button"
-							tabIndex={0}
+
 						>
-							<Avatar src={user.avatar} alt={user.name} className="w-40 h-40">
+
+							<Avatar
+								src={user.avatar}
+								alt={user.name}
+
+
+
+							>
 								{!user.avatar || user.avatar === '' ? user.name[0] : ''}
 							</Avatar>
+
+
+
 							<div
 								className="absolute right-0 bottom-0 -m-4 z-10 cursor-pointer"
 								aria-owns={statusMenuEl ? 'switch-menu' : null}
@@ -197,9 +208,9 @@ function ChatsSidebar(props) {
 								role="button"
 								tabIndex={0}
 							>
-								
+
 							</div>
-							
+
 						</div>
 					)}
 					<div>
@@ -223,7 +234,7 @@ function ChatsSidebar(props) {
 				</Toolbar>
 				{useMemo(
 					() => (
-						<Toolbar className="px-10" style={{marginTop:'-15px'}}>
+						<Toolbar className="px-10" style={{ marginTop: '-15px' }}>
 							<Paper className="flex p-4 items-center w-full px-8 py-4 rounded-0" elevation={1}>
 								<Icon color="action" fontSize="small">search</Icon>
 
@@ -244,60 +255,60 @@ function ChatsSidebar(props) {
 					[searchText]
 				)}
 			</AppBar>
-		
+
 			<FuseScrollbars className="overflow-y-auto flex-1">
 				<List className="w-full">
 					{
-					useMemo(() => {
-						// function getFilteredArray(arr, _searchText) {
-						// 	if (_searchText.length === 0) {
-						// 		return arr;
-						// 	}
-						// 	return FuseUtils.filterArrayByString(arr, _searchText);
-						// }
-						// const chatListContacts =
-						// 	contacts.length > 0 && user && user.chatList
-						// 		? user.chatList.map(_chat => ({
-						// 			..._chat,
-						// 			...contacts.find(_contact => _contact.id === _chat.contactId)
-						// 		}))
-						// 		: [];
-						// const contactsArr = getFilteredArray([...contacts], searchText);
-						// const chatListArr = getFilteredArray([...chatListContacts], searchText);
-						return (
-							<>
-								<FuseAnimateGroup
-									enter={{
-										animation: 'transition.expandIn'
-									}}
-									className="flex flex-col flex-shrink-0"
-								>
-									{props.numbers.length > 0 && (
-										<Typography className="font-300 text-20 px-20 py-8" color="secondary">
-											Chats
-										</Typography>
-									)}
-									{props.numbers.map(contactt => (
-										<ContactListItem
-											key={contactt.id}
-											contact={contactt}
-											onContactClick={(e)=>props.onContactClick(contactt)}
-										// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
-										// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
-										/>
-									))}
-								</FuseAnimateGroup>
-							</>
-						);
-					}, [props.numbers,])
-				}
+						useMemo(() => {
+							// function getFilteredArray(arr, _searchText) {
+							// 	if (_searchText.length === 0) {
+							// 		return arr;
+							// 	}
+							// 	return FuseUtils.filterArrayByString(arr, _searchText);
+							// }
+							// const chatListContacts =
+							// 	contacts.length > 0 && user && user.chatList
+							// 		? user.chatList.map(_chat => ({
+							// 			..._chat,
+							// 			...contacts.find(_contact => _contact.id === _chat.contactId)
+							// 		}))
+							// 		: [];
+							// const contactsArr = getFilteredArray([...contacts], searchText);
+							// const chatListArr = getFilteredArray([...chatListContacts], searchText);
+							return (
+								<>
+									<FuseAnimateGroup
+										enter={{
+											animation: 'transition.expandIn'
+										}}
+										className="flex flex-col flex-shrink-0"
+									>
+										{props.numbers.length > 0 && (
+											<Typography className="font-300 text-20 px-20 py-8" color="secondary">
+												Chats
+											</Typography>
+										)}
+										{filtered.map(contactt => (
+											<ContactListItem
+												key={contactt.id}
+												contact={contactt}
+												onContactClick={(e) => props.onContactClick(contactt)}
+											// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
+											// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
+											/>
+										))}
+									</FuseAnimateGroup>
+								</>
+							);
+						}, [props.numbers,filtered])
+					}
 				</List>
 
 			</FuseScrollbars>
 
 
 		</div>
-	
+
 	);
 }
 

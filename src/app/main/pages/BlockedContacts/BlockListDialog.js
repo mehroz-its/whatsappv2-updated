@@ -12,13 +12,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { makeStyles } from '@material-ui/core/styles';
+
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 // import { getUserData } from '../../chat/store/actions';
-
-
+import AppBar from '@material-ui/core/AppBar';
+import { green } from '@material-ui/core/colors';
+import { makeStyles,ThemeProvider,createMuiTheme,withStyles } from '@material-ui/core/styles';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,10 +34,28 @@ const useStyles = makeStyles((theme) => ({
 		minWidth: 330,
 
 	},
+	margin: {
+	  
+		color:'white',
+		paddingLeft:'14px',
+		fontWeight:'bold',
+		paddingRight:'14px',
+		paddingTop:'5px',
+		paddingBottom:'5px',
+		fontSize:'12px',
+	   
+	  },
 }));
 
 
 
+const theme = createMuiTheme({
+	palette: {
+	  primary: green,
+	},
+	});
+
+    
 
 const BlockDialog = (props) => {
 	const classes = useStyles(props);
@@ -152,7 +171,14 @@ const BlockDialog = (props) => {
 
 			fullWidth
 			maxWidth="xs">
-			<DialogTitle id="form-dialog-title">{props.type} </DialogTitle>
+			{/* <DialogTitle id="form-dialog-title">{props.type} </DialogTitle> */}
+			<AppBar position="static" elevation={1}>
+				
+				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
+        style={{paddingBottom:20,paddingTop:20}}>
+	      {props.type} 
+				</div>
+				</AppBar>
 			<DialogContent classes={{ root: 'p-24' }}>
 				<div className="flex">
 					<div className="min-w-48 pt-10">
@@ -162,12 +188,14 @@ const BlockDialog = (props) => {
 				</div>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={handleDialogClose} color="primary">
+				<Button onClick={handleDialogClose} color="primary" size="small" variant="contained" >
 					Cancel
              </Button>
-				<Button onClick={handleSubmit} color="primary">
+			 <ThemeProvider theme={theme}>
+				<Button variant="contained" onClick={handleSubmit} color="primary" size="small" className={classes.margin}>
 					Done
          </Button>
+		 </ThemeProvider>
 			</DialogActions>
 		</Dialog>
 
