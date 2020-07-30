@@ -778,6 +778,7 @@ function ChatApp(props) {
 
 		});
 	}
+	let userOnline = JSON.parse(localStorage.getItem('online'))
 
 	return (
 		<div className={clsx(classes.root)}>
@@ -808,18 +809,22 @@ function ChatApp(props) {
 							<ChatsSidebar numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
 						</Drawer>
 					</Hidden>
-					<Hidden smDown>
-						<Drawer
-							className="h-full z-15"
-							variant="permanent"
-							open
-							classes={{
-								paper: classes.drawerPaper
-							}}
-						>
-							<ChatsSidebar numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
-						</Drawer>
-					</Hidden>
+					{
+						userOnline ?
+							<Hidden smDown>
+								<Drawer
+									className="h-full z-15"
+									variant="permanent"
+									open
+									classes={{
+										paper: classes.drawerPaper
+									}}
+								>
+									<ChatsSidebar numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
+								</Drawer>
+							</Hidden> : null
+					}
+
 
 					<Drawer
 						className="h-full absolute z-30"
@@ -844,6 +849,7 @@ function ChatApp(props) {
 						<UserSidebar />
 					</Drawer>
 
+				{ userOnline ?
 					<main className={clsx(classes.contentWrapper, 'z-10')}>
 						{!selectedRecipient ? (
 							<div className="flex flex-col flex-1 items-center justify-center p-24">
@@ -852,7 +858,7 @@ function ChatApp(props) {
 										chat
 									</Icon>
 								</Paper>
-								<Typography variant="h6" style={{ fontSize: '18px',paddingTop:'10px' }}>
+								<Typography variant="h6" style={{ fontSize: '18px', paddingTop: '10px' }}>
 									Chat App
 								</Typography>
 								<Typography
@@ -878,7 +884,7 @@ function ChatApp(props) {
 												aria-label="Open drawer"
 												onClick={() => setmobileChatsSidebarOpen(true)}
 												className="flex md:hidden"
-												
+
 											>
 												<Icon>chat</Icon>
 											</IconButton>
@@ -889,7 +895,7 @@ function ChatApp(props) {
 												role="button"
 												tabIndex={0}
 											>
-												<div className="relative mx-6 w-32 h-32" style={{marginTop:'20px'}}>
+												<div className="relative mx-6 w-32 h-32" style={{ marginTop: '20px' }}>
 													{/* <div className="absolute right-0 bottom-0  -m-1 z-2">
 													
 														<StatusIcon status={selectedRecipient.status} />
@@ -904,7 +910,7 @@ function ChatApp(props) {
 															: ''}
 													</Avatar>
 												</div>
-												<Typography color="inherit" className="text-12 font-600 px-4" style={{marginTop:'5px'}}>
+												<Typography color="inherit" className="text-12 font-600 px-4" style={{ marginTop: '5px' }}>
 													{selectedRecipient.name}
 												</Typography>
 											</div>
@@ -930,7 +936,7 @@ function ChatApp(props) {
 													<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem>
 												</Menu>
 											</div>
-											<div style={{ position: 'absolute', right: 40, top: 11}}>
+											<div style={{ position: 'absolute', right: 40, top: 11 }}>
 												<IconButton
 													aria-haspopup="true"
 													onClick={endConversation}
@@ -938,7 +944,7 @@ function ChatApp(props) {
 												>
 													<Icon fontSize="small" >settings_power</Icon>
 												</IconButton>
-												
+
 											</div>
 										</Toolbar>
 									</AppBar>
@@ -948,7 +954,7 @@ function ChatApp(props) {
 									</div>
 								</>
 							)}
-					</main>
+					</main>:null}
 
 					<Drawer
 						className="h-full absolute z-30"

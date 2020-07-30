@@ -279,10 +279,17 @@ function Chat(props) {
 	const dispatch = useDispatch();
 	const { messages, selectedRecipient } = props;
 	const [chosenEmoji, setChosenEmoji] = useState(false);
+	let emojis = []
 	const onEmojiClick = (event, emojiObject) => {
 		console.log("emojiObject :", emojiObject);
 		// setChosenEmoji(emojiObject);
-		setMessageText(emojiObject.emoji)
+		emojis.push(emojiObject.emoji)
+		if(messageText === ''){
+			setMessageText(emojiObject.emoji)
+		}else{
+			setMessageText(`${messageText}${emojiObject.emoji}`)
+		}
+		console.log(messageText,'messageTextmessageText')
 	};
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
 	// const selectedContactId = useSelector(({ chatApp }) => chatApp.contacts.selectedContactId);
@@ -293,6 +300,7 @@ function Chat(props) {
 	const chatRef = useRef(null);
 	const [messageText, setMessageText] = useState('');
 	const [anchorEl, setAnchorEl] = React.useState(null);
+	
 
 	const [sendDialogData, setsendDialogData] = React.useState({
 		url: '',
