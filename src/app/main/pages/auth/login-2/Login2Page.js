@@ -195,7 +195,7 @@ const Login2Page = (props) => {
         // this.setState({ error_message: '', snackbaropen: true, snackbarmsg: 'Successfully LoggedIn', ok: 'success' })
         setErrorMessage('')
         setSnackBarOpen(true)
-        setSnackBarMessage('Successfully LoggedIn')
+        setSnackBarMessage('Successfully Logged In')
         setOK('success')
         // setIsLoading(false)
 
@@ -306,13 +306,23 @@ const Login2Page = (props) => {
                 <FuseAnimate animation="transition.expandIn">
                         {/* <img className="w-128 mb-32" src="../../../../../images/itsAppLogo.png" alt="logo" /> */}
                         <img src={require('../../../../../images/logo_animation.gif')}
-                            style={{width:100}} />
+                            style={{width:70}} />
 
                 </FuseAnimate>
 
                 <FuseAnimate animation="transition.slideUpIn" delay={300}>
                     <Typography variant="h3" color="inherit" className="font-light mt-20">
                         Welcome to Intellexal Solutions!
+					</Typography>
+                </FuseAnimate>
+                <FuseAnimate animation="transition.slideUpIn" delay={400}>
+                    <Typography variant="subtitle1" color="inherit" className="font-light mt-20 ">
+                    Using our experience from across industries and continents, we tailor solutions that fit your business needs.
+					</Typography>
+                </FuseAnimate>
+                <FuseAnimate animation="transition.slideUpIn" delay={500}>
+                    <Typography variant="subtitle1" color="inherit" className="font-light mt-20">
+                    As a WhatsApp Business Solution Provider, we enable enterprises to connect to WhatsApp directly – either through our API or using our web-based interface.
 					</Typography>
                 </FuseAnimate>
                 {/* <img src={require('../../../../../images/itsAppLogo.png')}

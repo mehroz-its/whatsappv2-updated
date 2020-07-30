@@ -942,12 +942,12 @@ function ChatApp(props) {
 													</IconButton>
 													<div
 														className="flex items-center cursor-pointer"
-														onClick={() => setuserDrawer(true)}
-														onKeyDown={() => setuserDrawer(false)}
-														role="button"
-														tabIndex={0}
+														// onClick={() => setuserDrawer(true)}
+														// onKeyDown={() => setuserDrawer(false)}
+														// role="button"
+														// tabIndex={0}
 													>
-														<div className="relative mx-6 w-32 h-32" style={{ marginTop: '20px' }}>
+														<div className="relative mx-6 w-32 h-32" style={{ marginTop: '20px',marginLeft:'10px' }}>
 															{/* <div className="absolute right-0 bottom-0  -m-1 z-2">
 													
 														<StatusIcon status={selectedRecipient.status} />
@@ -982,7 +982,7 @@ function ChatApp(props) {
 															onClose={handleMoreMenuClose}
 														>
 															<MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
-															<MenuItem onClick={(e) => conversationActionsCallback('shift')}>shift</MenuItem>
+															<MenuItem onClick={(e) => conversationActionsCallback('shift')}>Shift</MenuItem>
 															<MenuItem onClick={(e) => conversationContextMenuCallback('block')}>Block </MenuItem>
 															<MenuItem onClick={(e) => conversationContextMenuCallback('customer_profile')}>Customer Profile </MenuItem>
 															<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem>

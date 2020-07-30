@@ -77,9 +77,9 @@ function SettingsPanel() {
 
 	return (
 		<>
-			{/* <Button id="fuse-settings" className={classes.button} variant="contained" onClick={handleOpen}>
+			<Button id="fuse-settings" className={classes.button} variant="contained" onClick={handleOpen}>
 				<Icon className={classes.buttonIcon}>settings</Icon>
-			</Button> */}
+			</Button>
 
 			<Dialog
 				TransitionComponent={Transition}
