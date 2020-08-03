@@ -12,41 +12,67 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CoreHttpHandler from '../../../http/services/CoreHttpHandler';
 import { makeStyles } from '@material-ui/core/styles';
-
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 const useStyles = makeStyles(theme => ({
 	contactListItem: {
 		borderBottom: `1px solid ${theme.palette.divider}`,
 		'&.active': {
 			backgroundColor: theme.palette.background.paper
 		},
-		
-	},
-	listItemText:{
-		fontSize:'13px',//Insert your required size
-		marginLeft:'2%',
-		// fontWeight:'bold',
-		paddingLeft:'10px', 
-		paddingRight:'10px',
-		textTransform:'capitalize'
 
-	  },
-	  listItemText2:{
-		fontSize:'11px',//Insert your required size
-		marginLeft:'4%'
-	  },
+	},
+	listItemText: {
+		fontSize: '13px',//Insert your required size
+		marginLeft: '2%',
+		// fontWeight:'bold',
+		paddingLeft: '10px',
+		paddingRight: '10px',
+		textTransform: 'capitalize'
+
+	},
+	listItemText2: {
+		fontSize: '11px',//Insert your required size
+		marginLeft: '4%'
+	},
 	unreadBadge: {
 		backgroundColor: theme.palette.secondary.main,
 		color: theme.palette.secondary.contrastText
 	}
 }));
 
-
-const UserMenu =(props) => {
+function Alert(props) {
+	return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+const UserMenu = (props) => {
 	const dispatch = useDispatch();
 	const user = useSelector(({ auth }) => auth.user);
 
 	const [userMenu, setUserMenu] = useState(null);
+	const [state, setState] = React.useState({
+		open: false,
+		vertical: 'bottom',
+		horizontal: 'right',
+	});
+	const handleClick = () => {
+		setState({
+			open: true,
+			vertical: 'bottom',
+			horizontal: 'right',
+		});
+	};
+	const { vertical, horizontal, open } = state;
 
+	const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setState({
+            open: false, vertical: 'bottom',
+            horizontal: 'right',
+        });
+    };
 	let data = null
 	data = JSON.parse(localStorage.getItem('user_data'))
 	console.log(data)
@@ -77,23 +103,30 @@ const UserMenu =(props) => {
 	};
 
 	const handleLogOut = () => {
-		console.log('i am logout')
+		let onlineStatus = JSON.parse(localStorage.getItem('online'));
+		onlineStatus = onlineStatus === null ? false : onlineStatus;
+		if (onlineStatus === true) {
+			console.log("onlineStatus", onlineStatus);
+			handleClick()
 
-		CoreHttpHandler.request(
-			'core',
-			'userLogout',
-			{},
-			(response) => {
-				window.location.href = '/login';
-				localStorage.clear();
-			},
-			(response) => { }
-		);
+		} else {
+			console.log('i am logout')
+			CoreHttpHandler.request(
+				'core',
+				'userLogout',
+				{},
+				(response) => {
+					window.location.href = '/login';
+					localStorage.clear();
+				},
+				(response) => { }
+			);
+		}
 
 	}
 	const classes = useStyles(props);
 
-	const handleProfile = () =>{
+	const handleProfile = () => {
 		// props.history.push({
 		// 	pathname: '/pages/profile',
 
@@ -105,12 +138,12 @@ const UserMenu =(props) => {
 	console.log(props)
 	return (
 		<>
-		
-			<Button className="h-40" style={{marginTop:'4%'}} onClick={userMenuClick}>
+
+			<Button className="h-40" style={{ marginTop: '4%' }} onClick={userMenuClick}>
 				{user.data.photoURL ? (
-					<Avatar className=""  style={{width:'30px', height:'30px'}} alt={username.charAt(0)} src="../../../" />
+					<Avatar className="" style={{ width: '30px', height: '30px' }} alt={username.charAt(0)} src="../../../" />
 				) : (
-						<Avatar className="" style={{width:'35px', height:'35px'}}>{user.data.displayName[0]}</Avatar>
+						<Avatar className="" style={{ width: '35px', height: '35px' }}>{user.data.displayName[0]}</Avatar>
 					)}
 
 				<div className="hidden md:flex flex-col mx-12 items-start">
@@ -151,39 +184,39 @@ const UserMenu =(props) => {
 							</ListItemIcon>
 							<ListItemText primary="Login" />
 						</MenuItem> */}
-							<MenuItem component={Button} onClick={handleProfile} role="button">
+						<MenuItem component={Button} onClick={handleProfile} role="button">
 							{/* <ListItemIcon>
 								<Icon size={12}>person_add</Icon>
 							</ListItemIcon> */}
-							<ListItemText 
-							primary="Profile" 
-							classes={{primary:classes.listItemText}}
+							<ListItemText
+								primary="Profile"
+								classes={{ primary: classes.listItemText }}
 							/>
 						</MenuItem>
 						<MenuItem component={Button} onClick={handleLogOut} role="button">
 							{/* <ListItemIcon>
 								<Icon size={12}>lock</Icon>
 							</ListItemIcon> */}
-							<ListItemText 
-							primary="Logout" 
-							classes={{primary:classes.listItemText}}
+							<ListItemText
+								primary="Logout"
+								classes={{ primary: classes.listItemText }}
 							/>
 						</MenuItem>
-					
+
 					</>
 				) : (
 						<>
 							<MenuItem component={Link} to="/pages/profile" onClick={userMenuClose} role="button">
-								<ListItemIcon className="min-w-20" style={{marginLeft:'10px'}}>
+								<ListItemIcon className="min-w-20" style={{ marginLeft: '10px' }}>
 									<Icon>account_circle</Icon>
 								</ListItemIcon>
-								<ListItemText primary="My Profile" 	classes={{primary:classes.listItemText}}/>
+								<ListItemText primary="My Profile" classes={{ primary: classes.listItemText }} />
 							</MenuItem>
 							<MenuItem component={Link} to="/apps/mail" onClick={userMenuClose} role="button">
-								<ListItemIcon className="min-w-20" style={{marginLeft:'10px'}}>
+								<ListItemIcon className="min-w-20" style={{ marginLeft: '10px' }}>
 									<Icon>mail</Icon>
 								</ListItemIcon>
-								<ListItemText primary="Inbox" 	classes={{primary:classes.listItemText}}/>
+								<ListItemText primary="Inbox" classes={{ primary: classes.listItemText }} />
 							</MenuItem>
 							<MenuItem
 								onClick={() => {
@@ -199,6 +232,12 @@ const UserMenu =(props) => {
 						</>
 					)}
 			</Popover>
+			<Snackbar open={open} anchorOrigin={{ vertical, horizontal }}
+				autoHideDuration={3000} onClose={handleClose}>
+				<Alert onClose={handleClose} severity="error">
+					Please change status to offline first!
+        </Alert>
+			</Snackbar>
 		</>
 	);
 }
