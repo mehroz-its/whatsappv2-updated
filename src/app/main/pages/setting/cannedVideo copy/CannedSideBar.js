@@ -1,5 +1,5 @@
-import FuseAnimate from '@fuse/core/FuseAnimate';
-import NavLinkAdapter from '@fuse/core/NavLinkAdapter';
+import FuseAnimate from './node_modules/@fuse/core/FuseAnimate';
+import NavLinkAdapter from './node_modules/@fuse/core/NavLinkAdapter';
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import Icon from '@material-ui/core/Icon';

@@ -136,13 +136,13 @@ const Profile = function (props) {
         // return
         // urlImageHeader
         CoreHttpHandler.request('profile', 'update', data, response => {
+            console.log("response ", response);
+            console.log(response.data.data.user_data, 'responseresponse');
+            // localStorage.removeItem('user_data')
+            // localStorage.setItem('user_data', JSON.stringify(response.data.data.user_data))
             setSnackBarMessage("Updated Successfully")
             setOK("success")
             setSnackBarOpen(true)
-            let user_data = response.data.data.user_data
-            console.log(user_data, 'responseresponse');
-
-            localStorage.setItem('user_data',user_data)
 
             // setSnackBarMessage("Profile updated successfully", "success");
         },
@@ -168,13 +168,19 @@ const Profile = function (props) {
             console.log('inside hittttttttttt');
             const profileData = response.data.data.attribute;
             const user = JSON.parse(localStorage.getItem('user_data'));
-
-            const nameCapitalized = user.username.charAt(0).toUpperCase() + user.username.slice(1);
+            let nameCapitalized = ''
+            let lastname = ''
+            if (user.firstName) {
+                nameCapitalized = user.firstName.charAt(0).toUpperCase() + user.firstName.slice(1);
+            }
+            if (user.lastName) {
+                lastname = user.lastName.charAt(0).toUpperCase() + user.lastName.slice(1);
+            }
 
             setProfileUsername(`${nameCapitalized}'s Profile`);
             setProfileId(user.id)
             setProfileData(profileData);
-            props.onChange(`${nameCapitalized}'s Profile`)
+            props.onChange(`${nameCapitalized} ${lastname}`)
 
             let image = null
             profileData.map((val, id) => {

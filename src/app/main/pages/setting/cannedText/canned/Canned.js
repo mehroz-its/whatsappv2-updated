@@ -1,11 +1,11 @@
-import DemoContent from '@fuse/core/DemoContent';
-import FusePageSimple from '@fuse/core/FusePageSimple';
+import DemoContent from '../../cannedVideo/node_modules/@fuse/core/DemoContent';
+import FusePageSimple from '../../cannedVideo/node_modules/@fuse/core/FusePageSimple';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useRef } from 'react';
 import CannedHeader from './CannedHeader';
 import CannedList from './CannedList';
 import CannedSideBar from './CannedSideBar';
-import FuseAnimate from '@fuse/core/FuseAnimate';
+import FuseAnimate from '../../cannedVideo/node_modules/@fuse/core/FuseAnimate';
 import Fab from '@material-ui/core/Fab';
 import Icon from '@material-ui/core/Icon';
 import * as Actions from './store/actions';
@@ -63,7 +63,6 @@ function ContactsApp() {
 			description: '',
 			enabled: true,
 			customers: [],
-			attachment_url:''
 		}
 	)
 

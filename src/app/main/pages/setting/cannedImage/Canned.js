@@ -64,6 +64,7 @@ function ContactsApp() {
 			enabled: true,
 			customers: [],
 			attachment_url:''
+
 		}
 	)
 
@@ -73,7 +74,7 @@ function ContactsApp() {
 			return CoreHttpHandler.request('canned_messages', 'listing', {
 				limit: 100,
 				key:':type',
-				value:'all',
+				value:'image',
 				page: 0,
 				columns: "*",
 				sortby: "DESC",
