@@ -118,7 +118,7 @@ const Profile = function (props) {
     };
 
     const _update = () => {
-        profileData[7] = { id: "8", image: props.urlImageHeader }
+        // profileData[7] = { id: "8", image: props.urlImageHeader }
         console.log(profileData, 'profileDataprofileData')
 
         let data = {
