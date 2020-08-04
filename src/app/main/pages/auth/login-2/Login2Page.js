@@ -7,7 +7,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { makeStyles } from '@material-ui/core/styles';
+
 import { darken } from '@material-ui/core/styles/colorManipulator';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -19,17 +19,47 @@ import { Link } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
+
 
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        // background: `linear-gradient(to right, ${theme.palette.primary.dark} 0%, ${darken(
-        //     theme.palette.primary.dark,
-        //     0.5
-        // )} 100%)`,
-        // color: theme.palette.primary.contrastText
-    }
+
+    underline: {
+        "&&&:before": {
+          borderBottom: "30px"
+        },
+        "&&:after": {
+          borderBottom: "none"
+        },
+        "&:focus":{
+        border:"none"
+        }
+      },
+      root: {
+        '& .MuiTextField-root': {
+          margin: theme.spacing(1),
+          width: '35ch',
+        },
+        
+      },
+    
 }));
+
+const HeaderStyle = createMuiTheme({
+	overrides: {
+        MuiTextField: {
+		root: {
+        border:'none',
+		  "&:focus": {
+            paddingRight: 500,
+            borderColor:'pink',
+            paddingTop:600
+		  }
+		}
+	  }
+	}
+  });
 
 
 
@@ -302,26 +332,29 @@ const Login2Page = (props) => {
         backgroundSize:'cover'
     }}
             >
-            <div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
+            <div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 sm:p-16 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
                 <FuseAnimate animation="transition.expandIn">
+
                         {/* <img className="w-128 mb-32" src="../../../../../images/itsAppLogo.png" alt="logo" /> */}
+                        <div style={{marginLeft:-200}}>
                         <img src={require('../../../../../images/logo_animation.gif')}
-                            style={{width:70}} />
+                    />
+                    </div>
 
                 </FuseAnimate>
 
                 <FuseAnimate animation="transition.slideUpIn" delay={300}>
-                    <Typography variant="h3" color="inherit" className="font-light mt-20">
+                    <Typography variant="h3" color="inherit" className="font-light mt-20 md:text-center text-13 sm:text-20 md:text-20 lg:text-25 xl:text-30">
                         Welcome to Intellexal Solutions!
 					</Typography>
                 </FuseAnimate>
                 <FuseAnimate animation="transition.slideUpIn" delay={400}>
-                    <Typography variant="subtitle1" color="inherit" className="font-light mt-20 ">
+                    <Typography variant="subtitle1" color="inherit" className="font-light mt-20 text-13 sm:text-20 md:text-20 lg:text-25 xl:text-30">
                     Using our experience from across industries and continents, we tailor solutions that fit your business needs.
 					</Typography>
                 </FuseAnimate>
                 <FuseAnimate animation="transition.slideUpIn" delay={500}>
-                    <Typography variant="subtitle1" color="inherit" className="font-light mt-20">
+                    <Typography variant="subtitle1" color="inherit" className="font-light mt-20 text-13 sm:text-20 md:text-20 lg:text-25 xl:text-30">
                     As a WhatsApp Business Solution Provider, we enable enterprises to connect to WhatsApp directly – either through our API or using our web-based interface.
 					</Typography>
                 </FuseAnimate>
@@ -345,19 +378,21 @@ const Login2Page = (props) => {
 
             <FuseAnimate animation={{ translateX: [0, '100%'] }}>
                 <Card className="w-full max-w-400 mx-auto m-16 md:m-0" square>
-                    <CardContent className="flex flex-col items-center justify-center p-32 md:p-48 md:pt-128 ">
-                        <Typography variant="h6" className="md:w-full mb-32 text-center">
+                    <CardContent className="flex flex-col items-center justify-center p-32 md:p-48 md:pt-128 sm:p-0">
+                        <Typography variant="h6" className="md:w-full mb-16 sm:mb-0 text-center text-13 sm:text-20 md:text-20 lg:text-25 xl:text-30 sm:p-0">
                             LOGIN TO YOUR ACCOUNT
 						</Typography>
 
                         <form
                             name="loginForm"
                             noValidate
-                            className="flex flex-col justify-center w-full"
+                            
+                            className={classes.root}
 
                         >
+                         
                             <TextField
-                                className="mb-16"
+                                className="mb-16 sm:mb-4"
                                 label="Username"
                                 autoFocus
                                 type="email"
@@ -372,21 +407,24 @@ const Login2Page = (props) => {
                                 onKeyDown={_handleKeyDown}
                             />
 
+
+                          
                             <TextField
-                                className="mb-16"
+                                className="mb-16 sm:mb-4"
                                 label="Password"
                                 type="password"
                                 name="password"
                                 size="small"
                                 onChange={handlePassordInput}
                                 variant="outlined"
+                           
                                 value={passsword}
                                 required
                                 style={formItem}
                                 fullWidth
                                 onKeyDown={_handleKeyDown}
                             />
-
+                       
 
                             <div className="flex items-center justify-between">
                                 {/* <FormControl>
@@ -407,7 +445,7 @@ const Login2Page = (props) => {
                                 : <Button
                                     variant="contained"
                                     color="primary"
-                                    className="w-full mx-auto mt-16"
+                                    className="w-full mx-auto mt-16 sm:mt-0"
                                     aria-label="LOG IN"
 
                                     onClick={login}

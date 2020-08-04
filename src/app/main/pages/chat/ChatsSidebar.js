@@ -184,7 +184,7 @@ function ChatsSidebar(props) {
 				<Toolbar className="flex justify-between items-center px-4">
 					{user && (
 						<div
-
+								style={{marginLeft:'4%'}}
 						>
 
 							<Avatar
@@ -235,7 +235,7 @@ function ChatsSidebar(props) {
 				{useMemo(
 					() => (
 						<Toolbar className="px-10" style={{ marginTop: '-15px' }}>
-							<Paper className="flex p-4 items-center w-full px-8 py-4 rounded-0" elevation={1}>
+							<Paper className="flex p-4 items-center w-full px-10 py-6 rounded-0" elevation={1}>
 								<Icon color="action" fontSize="small">search</Icon>
 
 								<Input

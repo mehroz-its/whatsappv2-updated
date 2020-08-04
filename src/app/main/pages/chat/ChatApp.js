@@ -35,6 +35,9 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { EventEmitter } from '../../../../events'
 import copy from 'copy-to-clipboard';
 import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
+
 const drawerWidth = 320;
 const headerHeight = 100;
 
@@ -249,6 +252,7 @@ function ChatApp(props) {
 	const [int_MessageLists, setint_MessageLists] = React.useState(null);
 	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
 	const [anchorEl, setAnchorEl] = React.useState(null);
+	
 
 	// const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
 
@@ -321,6 +325,26 @@ function ChatApp(props) {
 
 
 	}
+
+	// const onSnackBarClose() {
+    //     this.setState({ snackBarMessage: "", snackBarOpen: false }, () => {
+    //         if (this.state.showLatestMessage) this.setState({ showLatestMessage: false });
+    //     })
+	// }
+	
+	// const setSnackBarMessage = (message, severity, type = null) => {
+	// 	console.log('caleddddddddddddddd');
+    //     this.setState({
+    //         snackBarAlertSeverity: severity,
+    //         snackBarMessage: message,
+    //         snackBarOpen: true,
+    //     }, () => {
+    //         if (type === 'new_message') {
+    //             if (!this.state.showLatestMessage) this.setState({ showLatestMessage: true });
+    //         }
+    //     })
+	// }
+	
 	const conversationExport = () => {
 		let params = {
 			key: ':number',
@@ -331,8 +355,12 @@ function ChatApp(props) {
 		};
 		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
 			const messages = response.data.data.chat;
-			const csvLink = (<CSVLink filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`} data={messages}>Your exported chat is ready for download</CSVLink>);
-			alert(csvLink)
+			const csvLink = (<CSVLink filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`} data={messages}><span style={{color:'white'}}>Your exported chat is ready for download</span></CSVLink>);
+			setSnackBarMessage(csvLink)
+			setOK("success")
+			setSnackBarOpen(true)
+	
+		
 			setMoreMenuEl(null);
 		}, (response) => {
 
@@ -344,6 +372,7 @@ function ChatApp(props) {
 			setshiftAgentsList(data)
 			setdialogOpenShift(true)
 			setMoreMenuEl(null);
+			
 		}, (response) => {
 
 		});
@@ -422,18 +451,12 @@ function ChatApp(props) {
 		setOK("success")
 		setSnackBarOpen(true)
 
-		setTimeout(() => {
-			setSnackBarMessage('')
-			setSnackBarOpen(false)
-		}, 6000);
+	
 
 		// this.setSnackBarMessage('Copied', 'success', null);
 	}
 
-	setTimeout(() => {
-		setSnackBarMessage('')
-		setSnackBarOpen(false)
-	}, 6000);
+
 
 	const [sendDialogData, setsendDialogData] = React.useState({
 		url: '',
@@ -825,6 +848,17 @@ function ChatApp(props) {
 
 	return (
 		<>
+		<Snackbar
+
+anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+open={snackbaropen}
+autoHideDuration={4000}
+onClose={()=>setSnackBarOpen(false)}
+>
+<Alert variant="filled" severity={ok}>
+	{snackbarmessage}
+</Alert>
+</Snackbar>
 
 			<div className={clsx(classes.root)}>
 				<div className={classes.topBg} />

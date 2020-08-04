@@ -463,11 +463,8 @@ console.log(value,'vlsssssssssssssssssss');
 
 
 
-					<div className="flex mb-20">
-						{/* <div className="min-w-48 pt-20">
-						
-						</div> */}
-						{/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
+					{/* <div className="flex mb-20">
+					
 
 						<Select
 							labelId="demo-controlled-open-select-label"
@@ -480,9 +477,7 @@ console.log(value,'vlsssssssssssssssssss');
 							fullWidth
 
 						>
-							{/* <MenuItem value="0">
-								<em>None</em>
-							</MenuItem> */}
+							
 							<MenuItem key={`country_list_item_0`} value={defaultValueCountry}>Select Country</MenuItem>
 							{countries.length > 1 ? countries.map((country, i) => {
 								let item = null;
@@ -494,11 +489,11 @@ console.log(value,'vlsssssssssssssssssss');
 								return item;
 							}) : null}
 						</Select>
-					</div>
+					</div> */}
 
 
-					<div className="flex">
-						<CitiesDropDown country={country} selectedCity={getSelectedCity} />
+					{/* <div className="flex">
+						<CitiesDropDown country={country} selectedCity={getSelectedCity} /> */}
 						{/* <div className="min-w-48 pt-20">
 							<Icon color="action">work</Icon>
 						</div> */}
@@ -524,7 +519,7 @@ console.log(value,'vlsssssssssssssssssss');
 							})}
 							<MenuItem value={30}>Thirty</MenuItem>
 						</Select> */}
-					</div>
+					{/* </div> */}
 
 
 
@@ -623,7 +618,7 @@ console.log(value,'vlsssssssssssssssssss');
 									className={classes.margin}
 									type="submit"
 									onClick={handleSubmit}
-									disabled={!form.firstname||!form.lastname||!form.email||!form.age||country=="N/A"||form.email=="N/A"
+									disabled={!form.firstname||!form.lastname||!form.email||!form.age||form.email=="N/A"
 								||value=="N/A"||value=="select" ||abc != true}
 									size="small"
 								>

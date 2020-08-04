@@ -74,7 +74,7 @@ function ContactsList(props) {
 	const user = ContactsData.user
 	// const searchText = Data.searchText
 	console.log(ContactsData.entities, 'ContactsData.entities')
-
+	console.log(ContactsData.entities.length,'lenghjhhhhhhhhhhhhhhhhhhh',searchVal)
 	const getData = ((loadData) => {
 		console.log('called get data')
 		loadData = () => {
@@ -120,6 +120,17 @@ function ContactsList(props) {
 	} else if (data2.length === 0 && searchVal !== '') {
 		filtered = data2
 	}
+
+	// if(ContactsData.entities.length==0)
+	// {
+	// 	alert('non zero')
+	// 	return (
+	// 	<div>
+	// 		asdasa
+	// 		</div>
+	// 	)
+	// }
+
 
 	const columns = React.useMemo(
 		() => [
@@ -190,6 +201,22 @@ function ContactsList(props) {
 		],
 		[dispatch, user.starred]
 	);
+	setTimeout(() => {
+		return( <FuseLoading/>)
+	}, 5000);
+
+	if(ContactsData.entities.length==0)
+	{
+	
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+			<Typography color="textSecondary" variant="h5">
+			No Blocked Contacts
+		</Typography>
+		</div>
+		)
+	}
+
 
 	if (filtered.length === 0) {
 		if (searchVal !== '') {
@@ -213,6 +240,10 @@ function ContactsList(props) {
 		}
 
 	}
+
+	console.log(ContactsData.entities.length,'lenghjhhhhhhhhhhhhhhhhhhh',searchVal)
+
+
 	// useEffect(() => {
 	// 	function getFilteredArray(entities, _searchText) {
 	// 		const arr = Object.keys(entities).map(id => entities[id]);
@@ -252,6 +283,7 @@ function ContactsList(props) {
 
 	// }
 	console.log(ContactsData, 'ContactsData')
+	console.log(searchVal,'seacrcccccccccccccccccccc');
 	// console.log(user, 'user')
 
 	function handleClick(n) {

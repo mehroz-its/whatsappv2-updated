@@ -81,7 +81,7 @@ function UserNavbarHeader(props) {
 				{`${username} ${lastname}`}
 
 			</Typography>
-			<Typography className="email text-11 mt-8 opacity-50 whitespace-no-wrap" color="inherit">
+			<Typography className="email text-11 mt-8  whitespace-no-wrap" color="inherit">
 				{data.email}
 
 			</Typography>

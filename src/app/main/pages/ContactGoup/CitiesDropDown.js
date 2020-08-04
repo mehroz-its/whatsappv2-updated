@@ -66,27 +66,28 @@ function CitiesDropDown(props) {
     const byName = true
 
     return (
-        <Select
-            labelId="demo-controlled-open-select-label"
-            id="demo-controlled-open-select"
-            open={cityopen}
-            onClose={handleCityClose}
-            onOpen={handleCityOpen}
-            value={defaultValueCity}
-            onChange={handleCityChange}
-            fullWidth
-        >
-            <MenuItem key={`city_list_item_0`} value={defaultValueCity}>Select City</MenuItem>
-            {cities.map((city, i) => {
-                let item = null;
+        <div/>
+        // <Select
+        //     labelId="demo-controlled-open-select-label"
+        //     id="demo-controlled-open-select"
+        //     open={cityopen}
+        //     onClose={handleCityClose}
+        //     onOpen={handleCityOpen}
+        //     value={defaultValueCity}
+        //     onChange={handleCityChange}
+        //     fullWidth
+        // >
+        //     <MenuItem key={`city_list_item_0`} value={defaultValueCity}>Select City</MenuItem>
+        //     {cities.map((city, i) => {
+        //         let item = null;
 
-                if (byName) {
-                    item = <MenuItem key={`city_list_item_${i}`} value={city.name}>{city.name}</MenuItem>;
-                } else item = <MenuItem key={`city_list_item_${i}`} value={city.id}>{city.name}</MenuItem>;
+        //         if (byName) {
+        //             item = <MenuItem key={`city_list_item_${i}`} value={city.name}>{city.name}</MenuItem>;
+        //         } else item = <MenuItem key={`city_list_item_${i}`} value={city.id}>{city.name}</MenuItem>;
 
-                return item;
-            })}
-        </Select>
+        //         return item;
+        //     })}
+        // </Select>
     )
 }
 

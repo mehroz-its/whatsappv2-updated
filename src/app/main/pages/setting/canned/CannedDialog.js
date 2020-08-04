@@ -39,11 +39,11 @@ const useStyles = makeStyles((theme) => ({
 	  
 		color:'white',
 		paddingLeft:'14px',
-		fontWeight:'bold',
+		fontWeight:'300',
 		paddingRight:'14px',
 		paddingTop:'5px',
 		paddingBottom:'5px',
-		fontSize:'12px',
+		fontSize:'13px',
 	   
 	  },
 
