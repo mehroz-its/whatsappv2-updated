@@ -361,7 +361,8 @@ function DashboardApp(props) {
 	data = JSON.parse(localStorage.getItem('user_data'))
 	console.log(data)
 
-	let username = ''
+	let firstName = ''
+	let lastName = ''
 	if (data !== null) {
 		function titleCase(str) {
 			str = str.toLowerCase().split(' ');
@@ -371,7 +372,8 @@ function DashboardApp(props) {
 			return str.join(' ');
 		}
 		console.log(data)
-		username = titleCase(data.username);
+		firstName = titleCase(data.firstName);
+		lastName = titleCase(data.firstName);
 
 	}
 	return (
@@ -393,7 +395,7 @@ function DashboardApp(props) {
 						</FuseAnimate>
 						<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 							<Typography className=" py-0 sm:py-24 hidden sm:flex mx-0 sm:mx-12 text-20" variant="h6">
-								Welcome {username}
+								Welcome {firstName} {lastName}
 							</Typography>
 						</FuseAnimate>
 					</div>

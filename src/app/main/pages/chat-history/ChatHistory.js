@@ -213,6 +213,7 @@ function ChatApp(props) {
 	const mobileChatsSidebarOpen = false;
 	const userSidebarOpen = false;
 	const contactSidebarOpen = false;
+	var abc = []
 
 	const [lastMessageTimestamp, setlastMessageTimestamp] = React.useState(null);
 	const [latestMessageSender, setlatestMessageSender] = React.useState(null);
@@ -275,28 +276,17 @@ function ChatApp(props) {
 		};
 		console.log("params : ", params);
 		CoreHttpHandler.request('conversations', 'historyConversations', params, (response) => {
-			// console.log("response :", response);
-			if (response.data.data.chat.length > NewMessages.length) {
-				//   console.log("if");
-				const messages = response.data.data.chat;
-				setNewMessages(response.data.data.chat)
-				setmessages(messages)
+			console.log("messages :", abc);
+			if (response.data.data.chat.length > abc.length) {
+				setmessages(response.data.data.chat)
+				abc = response.data.data.chat
 				setshowLatestMessage(true)
-				// setselectedRecipient(e)
 			}
-			else {
-				const messages = response.data.data.chat;
-				setmessages(messages)
-				setshowLatestMessage(false)
-			}
-			// if (int_MessageLists === null) setint_MessageLists(setInterval(() => {
-			// 	getConversation(e);
-			// }, 6000));
-			// CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: e.number }, (response) => {
+			CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: e.number }, (response) => {
 
-			// }, (response) => {
+			}, (response) => {
 
-			// })
+			})
 
 		}, (response) => {
 
