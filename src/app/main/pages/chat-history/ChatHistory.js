@@ -846,17 +846,17 @@ function ChatApp(props) {
 						{!selectedRecipient ? (
 							<div className="flex flex-col flex-1 items-center justify-center p-24">
 								<Paper className="rounded-full p-48">
-									<Icon className="block text-40" color="secondary">
+									<Icon className="block text-64" color="secondary">
 										chat
 									</Icon>
 								</Paper>
-								<Typography variant="h6"  style={{fontSize:'15px'}}>
-									Chat History
+								<Typography variant="h6" style={{ fontSize: '18px', paddingTop: '14px' }}>
+											Chat History
 								</Typography>
-								<Typography
-									className="hidden md:flex px-16 pb-24 mt-24 text-center"
-									color="textSecondary">
-									Select a contact to see Chat History!..
+										<Typography
+											className="hidden md:flex px-16 pb-24 mt-10 text-center"
+											color="textSecondary">
+											Select a contact to start a conversation!
 								</Typography>
 								<Button
 									variant="outlined"

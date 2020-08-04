@@ -219,7 +219,11 @@ function ContactsList(props) {
 				accessor: 'city',
 				sortable: true
 			},
-			
+			// {
+			// 	Header: 'Blocked',
+			// 	accessor: 'Blocked',
+			// 	sortable: true
+			// },
 
 			{
 				id: 'action',

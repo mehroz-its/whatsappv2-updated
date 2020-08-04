@@ -97,7 +97,7 @@ function ToolbarLayout1(props) {
 						</div>
 
 						<div className="flex">
-							<div style={{ marginTop: '4%' }}>
+							<div style={{ marginTop: '2.3%' }}>
 								<FormControlLabel
 									// style={{ color: '#252525' }}
 									control={

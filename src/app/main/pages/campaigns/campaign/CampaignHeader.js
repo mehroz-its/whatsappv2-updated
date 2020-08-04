@@ -26,7 +26,7 @@ function CampaignHeader(props) {
 				<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 					<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
 					
-					<span style={{fontSize:'15px'}}>Campaingns Management</span>
+					<span style={{fontSize:'15px'}}>Campaigns Management</span>
 					</Typography>
 				</FuseAnimate>
 			</div>

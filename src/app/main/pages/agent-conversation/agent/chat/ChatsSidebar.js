@@ -199,14 +199,14 @@ function ChatsSidebar(props) {
 						</div>
 					)}
 					<div>
-						<IconButton
+						{/* <IconButton
 							aria-owns={moreMenuEl ? 'chats-more-menu' : null}
 							aria-haspopup="true"
 							onClick={handleMoreMenuClick}
 						>
-							<Icon>more_vert</Icon>
-						</IconButton>
-						<Menu
+						
+						</IconButton> */}
+						{/* <Menu
 							id="chats-more-menu"
 							anchorEl={moreMenuEl}
 							open={Boolean(moreMenuEl)}
@@ -214,7 +214,7 @@ function ChatsSidebar(props) {
 						>
 							<MenuItem onClick={handleMoreMenuClose}>Profile</MenuItem>
 							<MenuItem onClick={handleMoreMenuClose}>Logout</MenuItem>
-						</Menu>
+						</Menu> */}
 					</div>
 				</Toolbar>
 				{useMemo(

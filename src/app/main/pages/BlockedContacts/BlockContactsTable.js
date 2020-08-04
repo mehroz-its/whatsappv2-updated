@@ -15,6 +15,58 @@ import clsx from 'clsx';
 import ContactsTablePaginationActions from './ContactsTablePaginationActions';
 import BlockListDialog from './BlockListDialog'
 import Icon from '@material-ui/core/Icon';
+import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+	addButton: {
+		position: 'absolute',
+		bottom: 50,
+		right: 50,
+		zIndex: 99
+	},
+	formControl: {
+		margin: theme.spacing(1),
+		minWidth: 330,
+
+	},
+	margin: {
+	  
+		  fontSize:'50px'
+	   
+	  },
+}));
+
+const BodyStyle = createMuiTheme({
+	overrides: {
+	  MuiTableCell: {
+		root: {
+		  paddingTop: 4,
+		  fontSize:'12px',
+		  paddingBottom: 4,
+		//   "&:last-child": {
+		// 	paddingRight: 5
+		//   }
+		}
+	  }
+	}
+  });
+
+const HeaderStyle = createMuiTheme({
+	overrides: {
+	  MuiTableCell: {
+		root: {
+	
+		  paddingLeft:40,
+
+		  fontSize:'12px',
+		  paddingBottom: 4,
+		  "&:first-child": {
+			paddingRight: 40
+		  }
+		}
+	  }
+	}
+  });
 
 
 const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
@@ -32,7 +84,8 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 	);
 });
 
-const EnhancedTable = ({ columns, data, onRowClick,getData }) => {
+const EnhancedTable = ({ columns, data, onRowClick,getData,props }) => {
+	const classes = useStyles(props);
 	const [open, setOpen] = React.useState(false);
 	const handleClose = () => {
 		setOpen(false);
@@ -122,10 +175,13 @@ const EnhancedTable = ({ columns, data, onRowClick,getData }) => {
 					{headerGroups.map(headerGroup => (
 						<TableRow {...headerGroup.getHeaderGroupProps()}>
 							{headerGroup.headers.map(column => (
+								<MuiThemeProvider theme={HeaderStyle}>
 								<TableCell
+								classes={classes.margin}
+								size="medium"
 								className="whitespace-no-wrap px-50 py-0"
 								align="center"
-								style={{fontSize:'11px'}}
+							
 									{...(!column.sortable
 										? column.getHeaderProps()
 										: column.getHeaderProps(column.getSortByToggleProps()))}
@@ -139,6 +195,7 @@ const EnhancedTable = ({ columns, data, onRowClick,getData }) => {
 										/>
 									) : null}
 								</TableCell>
+								</MuiThemeProvider>
 							))}
 						</TableRow>
 					))}
@@ -148,7 +205,7 @@ const EnhancedTable = ({ columns, data, onRowClick,getData }) => {
 						prepareRow(row);
 						return (
 							<TableRow
-							style={{fontSize:'11px'}}
+						
 								{...row.getRowProps()}
 								onClick={ev => handleClick(ev, row)}
 								className="truncate cursor-pointer"
@@ -156,20 +213,29 @@ const EnhancedTable = ({ columns, data, onRowClick,getData }) => {
 								{row.cells.map(cell => {
 									if (cell.column.Header === 'Blocked') {
 										return (
+											<MuiThemeProvider theme={BodyStyle}>
 											<TableCell 
+											classes={classes.margin}
+											size="medium"
 											className="whitespace-no-wrap px-50 py-0"
+											bod
 											component="th" scope="row" align="center">
 												<Icon className="text-green text-20">check_circle</Icon>
 											</TableCell>
+											</MuiThemeProvider>
 										)
 									} else {
 										return (
+											<MuiThemeProvider theme={BodyStyle}>
 											<TableCell
-											className="whitespace-no-wrap px-50 py-0"
+											classes={classes.margin}
+											size="medium"
+											className="whitespace-no-wrap px-50 py-0 text-50"
 											align="center"
 											>
 												{cell.render('Cell')}
 											</TableCell>
+											</MuiThemeProvider>
 										);
 									}
 								})}

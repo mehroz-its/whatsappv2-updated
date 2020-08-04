@@ -262,7 +262,7 @@ const Login2Page = (props) => {
             setIsLoading(false)
             // this.setState({ snackbaropen: true, snackbarmsg: 'Please Fill Every Detail', ok: 'error' })
             setSnackBarOpen(true)
-            setSnackBarMessage('Please Fill Every Detail')
+            setSnackBarMessage('Please Fill The Required Fields')
             setOK('error')
         }
         else {
@@ -358,7 +358,7 @@ const Login2Page = (props) => {
                         >
                             <TextField
                                 className="mb-16"
-                                label="Email"
+                                label="Username"
                                 autoFocus
                                 type="email"
                                 name="email"

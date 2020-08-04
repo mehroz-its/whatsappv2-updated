@@ -11,9 +11,32 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CoreHttpHandler from '../../../http/services/CoreHttpHandler';
-import { makeStyles } from '@material-ui/core/styles';
+
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
+import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
+
+
+const AvatarStyle = createMuiTheme({
+	overrides: {
+		MuiAvatar: {
+		root: {
+		fontSize:'18px',
+		  height:'30px',
+		  width:'30px',
+		  padding:'10px',
+		//   "&:hover":{
+		// 	  background:null,
+		// 	  backgroundColor:'white'
+		//   }
+		//   "&:last-child": {
+		// 	paddingRight: 5
+		//   }
+		}
+	  }
+	}
+  });
+
 const useStyles = makeStyles(theme => ({
 	contactListItem: {
 		borderBottom: `1px solid ${theme.palette.divider}`,
@@ -139,14 +162,18 @@ const UserMenu = (props) => {
 	return (
 		<>
 
-			<Button className="h-40" style={{ marginTop: '4%' }} onClick={userMenuClick}>
+			<Button className="h-40" style={{ height: '50px',padding: '8px 0 0 10px', margin: '0px',borderRadius:0}} 
+			onClick={userMenuClick}>
 				{user.data.photoURL ? (
-					<Avatar className="" style={{ width: '30px', height: '30px' }} alt={username.charAt(0)} src="../../../" />
-				) : (
-						<Avatar className="" style={{ width: '35px', height: '35px' }}>{user.data.displayName[0]}</Avatar>
-					)}
+					<MuiThemeProvider theme={AvatarStyle}>
+					<Avatar   style={{marginTop:'-8px'}} alt={username.charAt(0)} src="../../../" />
+				</MuiThemeProvider>
+				) : (<MuiThemeProvider theme={AvatarStyle}>
+						<Avatar style={{marginTop:'-8px'}} >{user.data.displayName[0]}</Avatar>
+					 </MuiThemeProvider>
+					 )}
 
-				<div className="hidden md:flex flex-col mx-12 items-start">
+				<div className="hidden md:flex flex-col mx-0 items-start" style={{marginTop:'-9px',marginLeft:'7px'}}>
 					<Typography component="span" className="normal-case font-600 flex">
 						{username}
 					</Typography>
@@ -154,10 +181,11 @@ const UserMenu = (props) => {
 						{user.role.toString()}
 					</Typography>
 				</div>
-
+					<div style={{marginTop:'-7px',marginLeft:'2px'}}>
 				<Icon className="text-16 hidden sm:flex" variant="action">
 					keyboard_arrow_down
 				</Icon>
+				</div>
 			</Button>
 
 			<Popover

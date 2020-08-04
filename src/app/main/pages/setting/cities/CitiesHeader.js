@@ -3,12 +3,34 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Input from '@material-ui/core/Input';
 import Paper from '@material-ui/core/Paper';
-import { ThemeProvider } from '@material-ui/core/styles';
+
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import * as Actions from './store/actions';
+import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
+
+const SearchStyle = createMuiTheme({
+	overrides: {
+		MuiInput: {
+		root: {
+		  paddingTop: 0,
+		  fontSize:'12px',
+		  paddingBottom: 0,
+		  margin:0,
+		  border:0,
+		  borderRadius:0,
+		  height:'30px'
+		//   "&:last-child": {
+		// 	paddingRight: 5
+		//   }
+		}
+	  }
+	}
+  });
+
+
 
 function CitiesHeader(props) {
 	const dispatch = useDispatch();
@@ -31,9 +53,9 @@ function CitiesHeader(props) {
 			<div className="flex flex-1 items-center justify-center px-12">
 				<ThemeProvider theme={mainTheme}>
 					<FuseAnimate animation="transition.slideDownIn" delay={300}>
-						<Paper className="flex items-center w-full max-w-512 px-8 py-4 rounded-8" elevation={1}>
+						<Paper className="flex items-center w-full max-w-512 px-8 py-4 " elevation={1}>
 							<Icon color="action" size="small">search</Icon>
-							<input
+							<Input
 							style={{border:'none'}}
 							rows={1}
 							placeholder="Search"

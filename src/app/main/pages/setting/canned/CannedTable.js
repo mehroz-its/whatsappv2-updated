@@ -166,7 +166,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 
 												style={{ height: 'auto !important' }}
 												component="th" scope="row" 
-												align="left"
+												align="center"
 												className={clsx('p-0')}
 												>
 													<Icon className="text-green text-20">check_circle</Icon>
@@ -179,7 +179,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 												className={clsx('p-0')}
 												style={{ height: 'auto !important' }}
 												component="th" scope="row" 
-												align="left">
+												align="center">
 													<Icon className="text-red text-20">cancel</Icon>
 												</TableCell>
 											)

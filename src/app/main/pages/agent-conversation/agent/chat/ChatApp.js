@@ -6,7 +6,7 @@ import Hidden from '@material-ui/core/Hidden';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
+
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -33,8 +33,26 @@ import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
 import { CSVLink, CSVDownload } from 'react-csv';
 import Fade from '@material-ui/core/Fade'
 import copy from 'copy-to-clipboard';
+import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
 const drawerWidth = 320;
 const headerHeight = 200;
+
+const AvatarStyle = createMuiTheme({
+	overrides: {
+		MuiAvatar: {
+		root: {
+		  paddingTop: 4,
+		  fontSize:'15px',
+		  height:'35px',
+		  width:'35px',
+		  paddingBottom: 4,
+		//   "&:last-child": {
+		// 	paddingRight: 5
+		//   }
+		}
+	  }
+	}
+  });
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -787,18 +805,18 @@ function ChatApp(props) {
 					<main className={clsx(classes.contentWrapper, 'z-10')}>
 						{!selectedRecipient ? (
 							<div className="flex flex-col flex-1 items-center justify-center p-24">
-								<Paper className="rounded-full p-24">
-									<Icon className="block text-32" color="secondary">
+								<Paper className="rounded-full p-48">
+									<Icon className="block text-64" color="secondary">
 										chat
 									</Icon>
 								</Paper>
-								<Typography variant="h6" className="my-24">
-									Chat App
+								<Typography variant="h6" style={{ fontSize: '18px', paddingTop: '14px'}}>
+											Chat App
 								</Typography>
-								<Typography
-									className="hidden md:flex px-16 pb-24 mt-24 text-center"
-									color="textSecondary">
-									Select a contact to start a conversation!..
+										<Typography
+											className="hidden md:flex px-16 pb-24 mt-10 text-center"
+											color="textSecondary">
+											Select a contact to start a conversation!
 								</Typography>
 								<Button
 									variant="outlined"
@@ -825,34 +843,46 @@ function ChatApp(props) {
 												className="flex items-center cursor-pointer"
 										
 										
-												style={{ marginTop: '-10px' }}
+												style={{ marginTop: '-4px' }}
 											>
 												<div className="relative mx-8 " style={{marginTop:'3px'}}>
 													<div className="absolute right-0 bottom-0 -m-4 z-10">
 														<StatusIcon status={selectedRecipient.status} />
 													</div>
-
-													<Avatar src={selectedRecipient.avatar} alt={selectedRecipient.name}>
+												 	<MuiThemeProvider theme={AvatarStyle}>
+													<Avatar 
+													
+													src={selectedRecipient.avatar} alt={selectedRecipient.name}>
 														{!selectedRecipient.avatar || selectedRecipient.avatar === ''
 															? selectedRecipient.name[0]
 															: ''}
 													</Avatar>
+													</MuiThemeProvider>
+												
 												</div>
 												<div style={{marginTop:'3px'}}>
-												<Typography color="inherit" className="text-12 font-600 px-4">
+												<Typography color="inherit" className="text-14 font-600 px-4">
 													{selectedRecipient.name}
 												</Typography>
 												</div>
 											</div>
-											<div style={{ position: 'absolute', right: 1,top:2 }}>
-												<IconButton
+											<div style={{ position: 'absolute', right:20,top:17 }}>
+												<Button
+												onClick={(e) => conversationActionsCallback('shift')}
+												fullWidth
+												variant="contained"
+												size="small"
+												>
+											 Take Over
+												</Button>
+												{/* <IconButton
 													aria-owns={moreMenuEl ? 'chats-more-menu' : null}
 													aria-haspopup="true"
 													onClick={handleMoreMenuClick}
 													style={{ color: 'white' }}
 												>
 													<Icon>more_vert</Icon>
-												</IconButton>
+												</IconButton> */}
 												<Menu
 													id="chats-more-menu"
 													anchorEl={moreMenuEl}
@@ -896,7 +926,7 @@ function ChatApp(props) {
 					</Drawer>
 				</div>
 			</div>
-			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
+			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Admin `} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
 
 		</div>
 	);
