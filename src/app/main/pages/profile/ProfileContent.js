@@ -11,6 +11,8 @@ import Avatar from '@material-ui/core/Avatar';
 // import Validation from "js-textfield-validation";
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
+import moment from 'moment';
+
 
 
 
@@ -50,6 +52,28 @@ const Profile = function (props) {
 
     const handleDate = (e) => {
         setDOB(e.target.value)
+        let changedDate = dob
+        const id = e.target.id.split('-');
+        const name = e.target.name;
+        console.log(profileData, 'name name')
+        const attrs = profileData.map((attr, i) => {
+            // console.log(attr,'i am atrr')
+            if (attr.dob) {
+                console.log(attr, i, 'i nattr aifff')
+                attr[name] = e.target.value;
+                return attr;
+
+                //   setProfileData(profileData[i].dob===changedDate)
+            }
+            else return attr;
+            // if (attr[id[0]] === id[1]) {
+            //     attr[name] = e.target.value;
+            //     console.log(attr, 'attrrr')
+            //     return attrs;
+            // } else return attr;
+        });
+
+        setProfileData(attrs);
     }
     const onInputChange = (e) => {
         const id = e.target.id.split('-');
@@ -98,7 +122,7 @@ const Profile = function (props) {
         console.log(profileData, 'profileDataprofileData')
 
         let data = {
-            key: 'id',
+            key: ':id',
             value: profileId,
             attributes: profileData
         }
@@ -115,7 +139,10 @@ const Profile = function (props) {
             setSnackBarMessage("Updated Successfully")
             setOK("success")
             setSnackBarOpen(true)
-            console.log(response, 'responseresponse');
+            let user_data = response.data.data.user_data
+            console.log(user_data, 'responseresponse');
+
+            localStorage.setItem('user_data',user_data)
 
             // setSnackBarMessage("Profile updated successfully", "success");
         },
@@ -225,11 +252,13 @@ const Profile = function (props) {
                                 <Grid key={`user_attribute_grid_holder_${i}`} item md={6} xs={12}>
                                     <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
                                         <TextField
+                                            type={`${keys[1].toUpperCase()}` === "DOB" ? 'date' : null}
                                             id={`id-${id}`}
+                                            name={keys[1]}
+                                            value={`${keys[1].toUpperCase()}` === "DOB" ? dob : ''}
                                             key={`user_attribute_data_${i}`}
-                                            value={''} name={keys[1]}
                                             autoFocus
-                                            label={`${keys[1].toUpperCase()}` === 'ADDESS' ? 'ADDRESS' : ''}
+                                            label={`${keys[1].toUpperCase()}` === 'ADDRESS' ? 'ADDRESS' : `${keys[1].toUpperCase()}` === 'FIRSTNAME' ? 'FIRSTNAME' : `${keys[1].toUpperCase()}` === 'LASTNAME' ? 'LASTNAME' : `${keys[1].toUpperCase()}` === 'AGE' ? 'AGE' : `${keys[1].toUpperCase()}` === 'GENDER' ? 'GENDER' : `${keys[1].toUpperCase()}` === 'CNIC' ? 'CNIC' : `${keys[1].toUpperCase()}` === "DOB" ? null : `${keys[1].toUpperCase()}` === 'COUNTRY' ? 'COUNTRY' : `${keys[1].toUpperCase()}` === "CITY" ? "CITY" : `${keys[1].toUpperCase()}` === "IMAGE" ? "IMAGE" : null}
                                             variant="outlined"
                                             fullWidth
                                             autoComplete="off"
@@ -260,10 +289,7 @@ const Profile = function (props) {
                                 return (
                                     <Grid key={`user_attribute_grid_holder_${i}`} item md={6} xs={12}>
                                         <div key={`user_attribute_data_holder_${i}`} style={{ marginBottom: 20 }} >
-                                            <TextField id="date" fullWidth
-                                                size="small"
-
-                                                name={"dob"} label="D.O.B" type="date" onChange={handleDate} defaultValue={dob} InputLabelProps={{ shrink: true }}
+                                            <TextField id="date" fullWidth value={moment(attribute.dob).format('YYYY-MM-DD')} size="small" name={"dob"} label="D.O.B" type="date" onChange={handleDate} defaultValue={dob} InputLabelProps={{ shrink: true }}
                                             />
                                         </div>
                                     </Grid>

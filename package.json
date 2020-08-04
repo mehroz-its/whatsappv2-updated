@@ -39,7 +39,7 @@
         "material-ui-audio-player": "^1.1.9",
         "material-ui-popup-state": "1.5.4",
         "mobile-detect": "1.4.4",
-        "moment": "2.24.0",
+        "moment": "^2.24.0",
         "notistack": "0.9.9",
         "openweather-apis": "^4.3.1",
         "path-to-regexp": "3.2.0",
