@@ -126,20 +126,19 @@ const Profile = function (props) {
             value: profileId,
             attributes: profileData
         }
+        console.log(data,'data')
         setTimeout(() => {
             setSnackBarMessage('')
             setSnackBarOpen(false)
         }, 4000);
 
-        console.log(profileData, 'dataaaaa')
+        // console.log(profileData, 'dataaaaa')
 
         // return
         // urlImageHeader
         CoreHttpHandler.request('profile', 'update', data, response => {
-            console.log("response ", response);
-            console.log(response.data.data.user_data, 'responseresponse');
-            // localStorage.removeItem('user_data')
-            // localStorage.setItem('user_data', JSON.stringify(response.data.data.user_data))
+            // console.log("response ", response);
+            // console.log(response.data.data.user_data, 'responseresponse');
             setSnackBarMessage("Updated Successfully")
             setOK("success")
             setSnackBarOpen(true)
