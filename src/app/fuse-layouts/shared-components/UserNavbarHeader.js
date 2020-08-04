@@ -58,11 +58,13 @@ function UserNavbarHeader(props) {
 			return str.join(' ');
 		}
 		console.log(data, 'from local storage')
-		if (data.firstName) {
+		if(data.firstName){
 			username = titleCase(data.firstName);
+
 		}
-		if (data.lastName) {
+		if(data.lastName){
 			lastname = titleCase(data.lastName);
+
 		}
 
 

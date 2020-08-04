@@ -63,6 +63,7 @@ function ContactsApp() {
 			description: '',
 			enabled: true,
 			customers: [],
+			attachment_url:''
 		}
 	)
 
@@ -70,8 +71,9 @@ function ContactsApp() {
 		console.log('called get data')
 		loadData = () => {
 			return CoreHttpHandler.request('canned_messages', 'listing', {
-
 				limit: 100,
+				key:':type',
+				value:'all',
 				page: 0,
 				columns: "*",
 				sortby: "DESC",
@@ -143,7 +145,7 @@ function ContactsApp() {
 		setOpen(false);
 		getData()
 		valueReceived(val)
-	
+
 	};
 
 	return (
@@ -176,7 +178,7 @@ function ContactsApp() {
 				ref={pageLayout}
 			// innerScroll
 			/>
-					<FuseAnimate animation="transition.expandIn" delay={300}>
+			<FuseAnimate animation="transition.expandIn" delay={300}>
 				<Fab
 					size="medium"
 					color="primary"
@@ -189,7 +191,7 @@ function ContactsApp() {
 				</Fab>
 			</FuseAnimate>
 
-			{open ? <CannedDialog isSearched={val} type="Add Canned Message" isOpen={open} closeDialog={closeDialog} data={dialogData} />:null}
+			{open ? <CannedDialog isSearched={val} type="Add Canned Message" isOpen={open} closeDialog={closeDialog} data={dialogData} /> : null}
 
 		</>
 	);

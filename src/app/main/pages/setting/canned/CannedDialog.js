@@ -90,6 +90,7 @@ console.log(data,'dataaaa');
 	};
 
 	const handleSubmit = () => {
+		// console.log(object)
 
 
 		let fileName 
@@ -107,7 +108,8 @@ console.log(data,'dataaaa');
 			message_type: canned_type,
 			enabled: enabled
 		};
-		console.log(params)
+		console.log(params,'params')
+
 		if (type !== 'Update Canned Message') {
 			CoreHttpHandler.request('canned_messages', 'create_message', params, (response) => {
 				// props.getUpdatedData()
@@ -237,7 +239,7 @@ console.log(data,'dataaaa');
 					<TextField
 						className="mb-24"
 						label="Name"
-						autoFocus
+						// autoFocus
 						id="name"
 						name="name"
 						value={name}

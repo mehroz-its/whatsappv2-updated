@@ -6,7 +6,7 @@ class APIS {
                     'xt-user-token': null
                 },
                 method: 'post',
-                path: '/backend/fetch/list/canned_messages'
+                path: '/backend/canned/messages/:type'
             },
             create_message: {
                 headers: {

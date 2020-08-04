@@ -61,7 +61,7 @@ function ProfileApp() {
     const [headerData, setHeaderData] = useState('Your Profile');
     const [profileImage, setProfileImage] = React.useState(picture)
 
-    console.log(profileImage,'image');
+    console.log(headerData,'imagesss');
 
 
     React.useEffect(() => {

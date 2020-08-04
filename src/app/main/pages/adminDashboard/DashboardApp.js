@@ -372,11 +372,15 @@ function DashboardApp(props) {
 			return str.join(' ');
 		}
 		console.log(data)
-		if (data.firstName) {
+		// firstName = titleCase(data.firstName);
+		// lastName = titleCase(data.firstName);
+		if(data.firstName){
 			firstName = titleCase(data.firstName);
+
 		}
-		if (data.lastName) {
+		if(data.lastName){
 			lastName = titleCase(data.lastName);
+
 		}
 
 

@@ -45,7 +45,7 @@ const CampaignDialog = (props) => {
 
 	const [filteredParams, setfilteredParams] = React.useState(null);
 
-	console.log(data, 'from this.props.')
+	console.log(props, 'from this.props.')
 
 	const handleClose = () => {
 		props.closeDialog()
@@ -122,7 +122,7 @@ const CampaignDialog = (props) => {
 				</div>
 				<div className="flex">
 					<div className="min-w-48 pt-20">
-						<Icon color="action">account_circle</Icon>
+						<Icon color="action">notinsert_commentes</Icon>
 					</div>
 					<TextField id="outlined-basic-email" multiline
 						name={'params'}
