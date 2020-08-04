@@ -102,8 +102,9 @@ function TemplateTable(props) {
 	}
 
 	function handleRowClick(n) {
+		console.log(n,'hi i am n')
 		setOpen(true)
-		setDialogData({ name: n.template_name, params: n.template_params })
+		setDialogData({ name: n.template_name, params: n.template_text })
 
 
 
