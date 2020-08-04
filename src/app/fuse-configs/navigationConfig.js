@@ -131,7 +131,7 @@ const navigationConfig = [
 					},
 					{
 						id: 'Agent_Conversation',
-						title: 'Conversation',
+						title: 'Agent History',
 						type: 'item',
 						url: '/apps/agent',
 						exact: true

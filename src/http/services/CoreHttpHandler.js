@@ -6,7 +6,7 @@ class CoreHttpHandler {
     constructor() {
         //this.apiEndpoint = process.env.REACT_APP_FRONTEND_ENDPOINT;
         //this.apiEndpoint = 'https://terminus-demo.its.com.pk/v1';
-        this.apiEndpoint = 'https://terminus-whatsapp-beta.its.com.pk/v1';
+        this.apiEndpoint = 'https://terminus-business-whatsapp.its.com.pk/v1';
         // this.apiEndpoint = 'https://local-whatsapp.its.com.pk/v1';
         // this.apiEndpoint = 'http://localhost:3000/v1';
 

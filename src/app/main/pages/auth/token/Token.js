@@ -52,10 +52,20 @@ function ResetPasswordPage2(props) {
 				</FuseAnimate>
 
 				<FuseAnimate animation="transition.slideUpIn" delay={300}>
-					<Typography variant="h3" color="inherit" className="font-light mt-10">
-						Welcome to the Intellexal Solutions!
+                    <Typography variant="h3" color="inherit" className="font-light mt-20">
+                        Welcome to Intellexal Solutions!
 					</Typography>
-				</FuseAnimate>
+                </FuseAnimate>
+                <FuseAnimate animation="transition.slideUpIn" delay={400}>
+                    <Typography variant="subtitle1" color="inherit" className="font-light mt-20 ">
+                    Using our experience from across industries and continents, we tailor solutions that fit your business needs.
+					</Typography>
+                </FuseAnimate>
+                <FuseAnimate animation="transition.slideUpIn" delay={500}>
+                    <Typography variant="subtitle1" color="inherit" className="font-light mt-20">
+                    As a WhatsApp Business Solution Provider, we enable enterprises to connect to WhatsApp directly – either through our API or using our web-based interface.
+					</Typography>
+                </FuseAnimate>
 
 				{/* <FuseAnimate delay={400}>
 					<Typography variant="subtitle1" color="inherit" className="max-w-512 mt-16">
@@ -71,6 +81,9 @@ function ResetPasswordPage2(props) {
 						<Typography variant="h6" className="md:w-full mb-32">
 							RESET YOUR PASSWORD
 						</Typography>
+
+				
+
 
 						<form
 							name="resetForm"

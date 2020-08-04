@@ -6,7 +6,6 @@ import Hidden from '@material-ui/core/Hidden';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -35,15 +34,26 @@ import Fade from '@material-ui/core/Fade'
 import Tooltip from '@material-ui/core/Tooltip';
 import { EventEmitter } from '../../../../events'
 import copy from 'copy-to-clipboard';
+import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
 const drawerWidth = 320;
 const headerHeight = 100;
 
+const AvatarStyle = createMuiTheme({
+	overrides: {
+		MuiAvatar: {
+		root: {
+		fontSize:'15px',
+		  height:'35px',
+		  width:'35px',
+		  paddingBottom: 4,
+		//   "&:last-child": {
+		// 	paddingRight: 5
+		//   }
+		}
+	  }
+	}
+  });
 
-const styles = {
-	avatar: {
-		margin: 100,
-	},
-}
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -910,7 +920,7 @@ function ChatApp(props) {
 												chat
 									</Icon>
 										</Paper>
-										<Typography variant="h6" style={{ fontSize: '18px', paddingTop: '10px' }}>
+										<Typography variant="h6" style={{ fontSize: '18px', paddingTop: '14px'}}>
 											Chat App
 								</Typography>
 										<Typography
@@ -947,13 +957,13 @@ function ChatApp(props) {
 														// role="button"
 														// tabIndex={0}
 													>
-														<div className="relative mx-6 w-32 h-32" style={{ marginTop: '20px',marginLeft:'10px' }}>
+														<div className="relative mx-6 w-32 h-32" style={{ marginTop: '30px',marginLeft:'10px' }}>
 															{/* <div className="absolute right-0 bottom-0  -m-1 z-2">
 													
 														<StatusIcon status={selectedRecipient.status} />
 														
 													</div> */}
-
+															<MuiThemeProvider theme={AvatarStyle}>
 															<Avatar
 
 																src={selectedRecipient.avatar} alt={selectedRecipient.name} className={classes.avatar}>
@@ -961,8 +971,9 @@ function ChatApp(props) {
 																	? selectedRecipient.name[0]
 																	: ''}
 															</Avatar>
+															</MuiThemeProvider> 
 														</div>
-														<Typography color="inherit" className="text-12 font-600 px-4" style={{ marginTop: '5px' }}>
+														<Typography color="inherit" className="text-14 font-600 px-4" style={{ marginTop: '5px' }}>
 															{selectedRecipient.name}
 														</Typography>
 													</div>

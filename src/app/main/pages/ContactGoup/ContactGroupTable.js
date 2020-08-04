@@ -15,6 +15,41 @@ import clsx from 'clsx';
 import ContactsTablePaginationActions from './ContactsTablePaginationActions';
 import ContactGroupDialog from './ContactGroupDialog'
 import Icon from '@material-ui/core/Icon';
+import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
+
+
+
+const BodyStyle = createMuiTheme({
+	overrides: {
+	  MuiTableCell: {
+		root: {
+		  paddingTop: 4,
+		  fontSize:'12px',
+		  paddingBottom: 4,
+		//   "&:last-child": {
+		// 	paddingRight: 5
+		//   }
+		}
+	  }
+	}
+  });
+
+const HeaderStyle = createMuiTheme({
+	overrides: {
+	  MuiTableCell: {
+		root: {
+	
+		  paddingLeft:40,
+
+		  fontSize:'12px',
+		  paddingBottom: 4,
+		  "&:first-child": {
+			paddingRight: 40
+		  }
+		}
+	  }
+	}
+  });
 
 
 const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
@@ -127,6 +162,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 					{headerGroups.map(headerGroup => (
 						<TableRow {...headerGroup.getHeaderGroupProps()}>
 							{headerGroup.headers.map(column => (
+									<MuiThemeProvider theme={HeaderStyle}>
 								<TableCell
 								align="center"
 								className="whitespace-no-wrap px-50 py-0 mx-12"
@@ -143,6 +179,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 										/>
 									) : null}
 								</TableCell>
+								</MuiThemeProvider>
 							))}
 						</TableRow>
 					))}
@@ -162,11 +199,13 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 									if (cell.column.Header === 'Enable') {
 										if (row.original.enabled === true) {
 											return (
+												<MuiThemeProvider theme={BodyStyle}>
 												<TableCell 
 												className="whitespace-no-wrap px-50 py-0"
 												component="th" scope="row" align="center">
 													<Icon className="text-green text-20">check_circle</Icon>
 												</TableCell>
+												</MuiThemeProvider> 
 											)
 										} else if (row.original.enabled === false) {
 											return (
@@ -179,6 +218,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 										}
 									} else {
 										return (
+											<MuiThemeProvider theme={BodyStyle}>
 											<TableCell
 											className="whitespace-no-wrap px-50 py-0"
 											align="center"
@@ -186,6 +226,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 											>
 												{cell.render('Cell')}
 											</TableCell>
+											</MuiThemeProvider>
 										);
 									}
 								})}

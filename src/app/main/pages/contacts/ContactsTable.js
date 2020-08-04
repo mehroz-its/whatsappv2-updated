@@ -16,7 +16,40 @@ import ContactsTablePaginationActions from './ContactsTablePaginationActions';
 import ContactDialog from './ContactDialog'
 import BlockContactInDialog from './BlockContactInDialog'
 import BlockDialog from '../BlockedContacts/BlockListDialog'
+import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
 
+
+const BodyStyle = createMuiTheme({
+	overrides: {
+	  MuiTableCell: {
+		root: {
+		  paddingTop: 4,
+		  fontSize:'12px',
+		  paddingBottom: 4,
+		//   "&:last-child": {
+		// 	paddingRight: 5
+		//   }
+		}
+	  }
+	}
+  });
+
+const HeaderStyle = createMuiTheme({
+	overrides: {
+	  MuiTableCell: {
+		root: {
+	
+		  paddingLeft:40,
+
+		  fontSize:'12px',
+		  paddingBottom: 4,
+		  "&:first-child": {
+			paddingRight: 40
+		  }
+		}
+	  }
+	}
+  });
 
 
 
@@ -128,6 +161,7 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 					{headerGroups.map(headerGroup => (
 						<TableRow {...headerGroup.getHeaderGroupProps()}>
 							{headerGroup.headers.map(column => (
+									<MuiThemeProvider theme={HeaderStyle}>
 								<TableCell
 								style={{fontSize:'11px'}}
 								align="center"
@@ -145,6 +179,7 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 										/>
 									) : null}
 								</TableCell>
+								</MuiThemeProvider>
 							))}
 						</TableRow>
 					))}
@@ -161,7 +196,9 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 							>
 								{row.cells.map(cell => {
 									return (
+										<MuiThemeProvider theme={BodyStyle}>
 										<TableCell
+										
 										className="whitespace-no-wrap px-50 py-0"
 										align="center"
 										     	
@@ -170,6 +207,7 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 										>
 											{cell.render('Cell')}
 										</TableCell>
+										</MuiThemeProvider>
 									);
 								})}
 							</TableRow>

@@ -214,7 +214,7 @@ function ChatsSidebar(props) {
 						</div>
 					)}
 					<div>
-						<IconButton
+						{/* <IconButton
 							aria-owns={moreMenuEl ? 'chats-more-menu' : null}
 							aria-haspopup="true"
 							onClick={handleMoreMenuClick}
@@ -229,7 +229,7 @@ function ChatsSidebar(props) {
 						>
 							<MenuItem onClick={handleMoreMenuClose}>Profile</MenuItem>
 							<MenuItem onClick={handleMoreMenuClose}>Logout</MenuItem>
-						</Menu>
+						</Menu> */}
 					</div>
 				</Toolbar>
 				{useMemo(
