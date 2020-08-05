@@ -156,8 +156,8 @@ const useStyles = makeStyles(theme => ({
 				color: theme.palette.primary.contrastText,
 				borderTopLeftRadius: 5,
 				borderBottomLeftRadius: 5,
-				borderTopRightRadius: 20,
-				borderBottomRightRadius: 20,
+				borderTopRightRadius: 6,
+				borderBottomRightRadius: 6,
 				width: 'auto',
     			maxWidth: '35vw',
 				borderTopRightRadius: 6,
@@ -188,8 +188,8 @@ const useStyles = makeStyles(theme => ({
 				marginLeft: 'auto',
 				backgroundColor: theme.palette.grey[50],
 				color: theme.palette.getContrastText(theme.palette.grey[300]),
-				borderTopLeftRadius: 20,
-				borderBottomLeftRadius: 20,
+				borderTopLeftRadius: 6,
+				borderBottomLeftRadius: 6,
 				borderTopRightRadius: 5,
 				borderBottomRightRadius: 5,
 				width: 'auto',
@@ -202,31 +202,31 @@ const useStyles = makeStyles(theme => ({
 			},
 			'&.first-of-group': {
 				'& .bubble': {
-					borderTopRightRadius: 20
+					borderTopRightRadius: 6
 				}
 			},
 
 			'&.last-of-group': {
 				'& .bubble': {
-					borderBottomRightRadius: 20
+					borderBottomRightRadius: 6
 				}
 			}
 		},
 		'&.contact + .me, &.me + .contact': {
-			paddingTop: 20,
-			marginTop: 20,
-			paddingBottom: 30
+			paddingTop: 6,
+			marginTop: 6,
+			paddingBottom: 6
 		},
 		'&.first-of-group': {
 			'& .bubble': {
-				borderTopLeftRadius: 20,
-				paddingTop: 13
+				borderTopLeftRadius: 6,
+				paddingTop: 6
 			}
 		},
 		'&.last-of-group': {
 			'& .bubble': {
-				borderBottomLeftRadius: 20,
-				paddingBottom: 13,
+				borderBottomLeftRadius: 6,
+				paddingBottom: 6,
 				'& .time': {
 					display: 'flex'
 				}

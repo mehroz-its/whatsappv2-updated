@@ -150,6 +150,8 @@ const useStyles = makeStyles(theme => ({
 				color: theme.palette.primary.contrastText,
 				borderTopLeftRadius: 5,
 				borderBottomLeftRadius: 5,
+				width: 'auto',
+    			maxWidth: '35vw',
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
 				'& .time': {
@@ -178,8 +180,10 @@ const useStyles = makeStyles(theme => ({
 				marginLeft: 'auto',
 				backgroundColor: theme.palette.grey[50],
 				color: theme.palette.getContrastText(theme.palette.grey[300]),
-				borderTopLeftRadius: 20,
-				borderBottomLeftRadius: 20,
+				borderTopLeftRadius: 6,
+				borderBottomLeftRadius: 6,
+				width: 'auto',
+    			maxWidth: '35vw',
 				borderTopRightRadius: 5,
 				borderBottomRightRadius: 5,
 				'& .time': {
@@ -190,13 +194,13 @@ const useStyles = makeStyles(theme => ({
 			},
 			'&.first-of-group': {
 				'& .bubble': {
-					borderTopRightRadius: 20
+					borderTopRightRadius: 6
 				}
 			},
 
 			'&.last-of-group': {
 				'& .bubble': {
-					borderBottomRightRadius: 20
+					borderBottomRightRadius: 6
 				}
 			}
 		},
@@ -206,13 +210,13 @@ const useStyles = makeStyles(theme => ({
 		},
 		'&.first-of-group': {
 			'& .bubble': {
-				borderTopLeftRadius: 20,
+				borderTopLeftRadius: 6,
 				paddingTop: 13
 			}
 		},
 		'&.last-of-group': {
 			'& .bubble': {
-				borderBottomLeftRadius: 20,
+				borderBottomLeftRadius: 6,
 				paddingBottom: 13,
 				'& .time': {
 					display: 'flex'
@@ -817,6 +821,7 @@ function Chat(props) {
 										item.message_type === "text" ?
 											clsx(
 												classes.messageRow,
+												'text-message-w-control',
 												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
 												{ me: item.type === "outbound" },
 												{ contact: item.type === "inbound" },
@@ -825,6 +830,7 @@ function Chat(props) {
 												index + 1 === messages.length && 'pb-96'
 											) : clsx(
 												// classes.messageRow,
+												'text-message-w-control',
 												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
 												{ me: item.type === "outbound" },
 												{ contact: item.type === "inbound" },

@@ -151,6 +151,8 @@ const useStyles = makeStyles(theme => ({
 				borderTopLeftRadius: 5,
 				borderBottomLeftRadius: 5,
 				borderTopRightRadius: 6,
+				width: 'auto',
+    			maxWidth: '35vw',
 				borderBottomRightRadius: 6,
 				'& .time': {
 					marginLeft: 12
@@ -180,6 +182,8 @@ const useStyles = makeStyles(theme => ({
 				color: theme.palette.getContrastText(theme.palette.grey[300]),
 				borderTopLeftRadius: 6,
 				borderBottomLeftRadius: 6,
+				width: 'auto',
+    			maxWidth: '35vw',
 				borderTopRightRadius: 5,
 				borderBottomRightRadius: 5,
 				'& .time': {
@@ -820,6 +824,7 @@ function Chat(props) {
 										item.message_type === "text" ?
 											clsx(
 												classes.messageRow,
+												'text-message-w-control',
 												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
 												{ me: item.type === "outbound" },
 												{ contact: item.type === "inbound" },
@@ -828,6 +833,7 @@ function Chat(props) {
 												index + 1 === messages.length && 'pb-96'
 											) : clsx(
 												// classes.messageRow,
+												'text-message-w-control',
 												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
 												{ me: item.type === "outbound" },
 												{ contact: item.type === "inbound" },
