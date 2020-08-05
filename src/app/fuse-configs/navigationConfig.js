@@ -142,7 +142,7 @@ const navigationConfig = [
 					},
 					{
 						id: 'Agent_Conversation',
-						title: 'Agent History',
+						title: 'Ongoing Chats',
 						type: 'item',
 						url: '/apps/agent',
 						exact: true

@@ -6,6 +6,7 @@ import React from 'react';
 const useStyles = makeStyles(theme => ({
 	root: {
 		'& .logo-icon': {
+			
 			width: 24,
 			height: 24,
 			transition: theme.transitions.create(['width', 'height'], {
@@ -31,7 +32,7 @@ function Logo() {
 
 	return (
 		<div className={clsx(classes.root, 'flex items-center')}>
-			<img className="logo-icon" src="assets/images/logos/itsAppLogo.png" alt="logo" />
+			<img style={{marginLeft:'-4px'}} className="logo-icon" src="assets/images/logos/itsAppLogo.png" alt="logo" />
 			<Typography className="text-12 mx-12 font-light logo-text" color="inherit">
 				ITS - WHATSAPP
 			</Typography>

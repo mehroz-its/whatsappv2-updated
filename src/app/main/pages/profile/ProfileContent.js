@@ -119,14 +119,18 @@ const Profile = function (props) {
 
     const _update = () => {
         // profileData[7] = { id: "8", image: props.urlImageHeader }
-        console.log(profileData, 'profileDataprofileData')
+        let newData =  profileData
+        profileData.map((item,index)=>{
+            if(item.image){
+                return newData[index]={id:item.id,image:props.urlImageHeader}
+            }
+        })
 
         let data = {
             key: ':id',
             value: profileId,
-            attributes: profileData
+            attributes: newData
         }
-        console.log(data,'data')
         setTimeout(() => {
             setSnackBarMessage('')
             setSnackBarOpen(false)

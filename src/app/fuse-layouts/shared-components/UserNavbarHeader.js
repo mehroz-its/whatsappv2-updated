@@ -90,7 +90,7 @@ function UserNavbarHeader(props) {
 			<Avatar
 				className={clsx(classes.avatar, 'avatar')}
 				alt="user photo"
-				style={{ width: 60, height: 60 }}
+				// style={{ width: 60, height: 60 }}
 				src={
 					data.image && data.image !== ''
 						? data.image
