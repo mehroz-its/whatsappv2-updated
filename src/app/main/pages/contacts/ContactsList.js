@@ -209,16 +209,16 @@ function ContactsList(props) {
 				accessor: 'email',
 				sortable: true
 			},
-			{
-				Header: 'Country',
-				accessor: 'country',
-				sortable: true
-			},
-			{
-				Header: 'City',
-				accessor: 'city',
-				sortable: true
-			},
+			// {
+			// 	Header: 'Country',
+			// 	accessor: 'country',
+			// 	sortable: true
+			// },
+			// {
+			// 	Header: 'City',
+			// 	accessor: 'city',
+			// 	sortable: true
+			// },
 			// {
 			// 	Header: 'Blocked',
 			// 	accessor: 'Blocked',
@@ -252,7 +252,7 @@ function ContactsList(props) {
 										handleClick(row)
 									}}
 								>
-									<Icon name='lock'>phone_locked</Icon>
+									<Icon name='lock'>block</Icon>
 								</IconButton>
 							) : (
 								<IconButton

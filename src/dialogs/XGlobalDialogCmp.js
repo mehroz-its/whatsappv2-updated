@@ -59,10 +59,10 @@ const XGlobalDialog = function XGlobalDialog(props) {
                 <ThemeProvider theme={theme}>
                 <Button key={`global_dialog_action_${i}`} 
                     onClick={(event, index) => {item.handler(event, index, defaultState)
-                        setSnackBarMessage("Updated Successfully")
-                        setOK("success")
-                        setSnackBarOpen(true)
-                        console.log(item.handler,'item handler')
+                        // setSnackBarMessage("Updated Successfully")
+                        // setOK("success")
+                        // setSnackBarOpen(true)
+                        // console.log(item.handler,'item handler')
                  }
                     } 
                     { ...item.options }

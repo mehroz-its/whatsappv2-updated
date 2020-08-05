@@ -15,7 +15,7 @@ const PortableCountryDropdown = function (props) {
     
     return (
         <div style={{ marginBottom: 20 }}>
-            <Select
+            {/* <Select
                 name={(controlId) ? `${controlId}-country` : "country"}
                 fullWidth
                 style={{ width: '100%' }}
@@ -32,16 +32,8 @@ const PortableCountryDropdown = function (props) {
     
                         return item;
                     }) : null}
-                {/* {countries.map((country, i) => {
-                    let item = null;
-
-                    if (byName) {
-                        item = <MenuItem key={`country_list_item_${i}`} value={country.name}>{country.name}</MenuItem>;
-                    } else item = <MenuItem key={`country_list_item_${i}`} value={country.id}>{country.name}</MenuItem>;
-
-                    return item;
-                })} */}
-            </Select>
+              
+            </Select> */}
         </div>
     );
 };

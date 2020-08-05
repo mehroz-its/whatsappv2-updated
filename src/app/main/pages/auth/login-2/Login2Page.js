@@ -22,13 +22,18 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        // background: `linear-gradient(to right, ${theme.palette.primary.dark} 0%, ${darken(
-        //     theme.palette.primary.dark,
-        //     0.5
-        // )} 100%)`,
-        // color: theme.palette.primary.contrastText
-    }
+
+    underline: {
+        "&&&:before": {
+          borderBottom: "30px"
+        },
+        "&&:after": {
+          borderBottom: "none"
+        },
+        "&:focus":{
+        border:"none"
+        }
+      }
 }));
 
 
@@ -380,6 +385,7 @@ const Login2Page = (props) => {
                                 size="small"
                                 onChange={handlePassordInput}
                                 variant="outlined"
+                                InputProps={{classes}}
                                 value={passsword}
                                 required
                                 style={formItem}

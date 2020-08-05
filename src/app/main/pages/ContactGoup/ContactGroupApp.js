@@ -17,13 +17,20 @@ import Alert from '@material-ui/lab/Alert';
 
 
 
+const useStyles = makeStyles((theme) => ({
+	addButton: {
+		position: 'fixed',
+		bottom: 50,
+		right: 50,
+		zIndex: 99
+	},
+
+}))
 
 
 
 
-const useStyles = makeStyles({
-	layoutRoot: {}
-});
+
 
 function ContactsApp() {
 	const classes = useStyles();
@@ -142,6 +149,8 @@ function ContactsApp() {
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 				open={snackbaropen}
 				autoHideDuration={3000}
+
+				
 
 			>
 				<Alert variant="filled" severity={ok}>
