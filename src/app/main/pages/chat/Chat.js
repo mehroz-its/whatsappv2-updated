@@ -876,7 +876,8 @@ function Chat(props) {
 									key={item.time}
 									className={clsx(
 										classes.messageRow,
-										'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-8',
+										'text-message-w-control',
+										'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-8 ',
 										{ me: item.type === "outbound" },
 										{ contact: item.type === "inbound" },
 										{ 'first-of-group': isFirstMessageOfGroup(item, index) },
