@@ -131,7 +131,7 @@ function FuseShortcuts(props) {
 									title={item.title}
 									placement={props.variant === 'horizontal' ? 'center' : 'center'}
 								>
-									<IconButton className="w-40 h-10 p-0" style={{marginTop:'-37%'}}>
+									<IconButton className="w-40 h-0 p-0" style={{marginTop:'-30%'}}>
 										{item.icon ? (
 											<Icon >{item.icon}</Icon>
 										) : (
