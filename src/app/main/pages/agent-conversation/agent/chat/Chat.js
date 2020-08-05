@@ -824,7 +824,7 @@ function Chat(props) {
 										item.message_type === "text" ?
 											clsx(
 												classes.messageRow,
-												'text-message-w-control',
+												// 'text-message-w-control',
 												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
 												{ me: item.type === "outbound" },
 												{ contact: item.type === "inbound" },
@@ -833,7 +833,7 @@ function Chat(props) {
 												index + 1 === messages.length && 'pb-96'
 											) : clsx(
 												// classes.messageRow,
-												'text-message-w-control',
+												// 'text-message-w-control',
 												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
 												{ me: item.type === "outbound" },
 												{ contact: item.type === "inbound" },
