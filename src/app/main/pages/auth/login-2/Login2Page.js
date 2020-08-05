@@ -334,6 +334,7 @@ const Login2Page = (props) => {
             >
             <div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 sm:p-16 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
                 <FuseAnimate animation="transition.expandIn">
+
                         {/* <img className="w-128 mb-32" src="../../../../../images/itsAppLogo.png" alt="logo" /> */}
                         <div style={{marginLeft:-200}}>
                         <img src={require('../../../../../images/logo_animation.gif')}
@@ -353,7 +354,7 @@ const Login2Page = (props) => {
 					</Typography>
                 </FuseAnimate>
                 <FuseAnimate animation="transition.slideUpIn" delay={500}>
-                    <Typography variant="subtitle1" color="inherit" className="font-light mt-20 text-13 sm:text-17 md:text-20 lg:text-25 xl:text-30">
+                    <Typography variant="subtitle1" color="inherit" className="font-light mt-20 text-13 sm:text-20 md:text-20 lg:text-25 xl:text-30">
                     As a WhatsApp Business Solution Provider, we enable enterprises to connect to WhatsApp directly – either through our API or using our web-based interface.
 					</Typography>
                 </FuseAnimate>
@@ -377,8 +378,8 @@ const Login2Page = (props) => {
 
             <FuseAnimate animation={{ translateX: [0, '100%'] }}>
                 <Card className="w-full max-w-400 mx-auto m-16 md:m-0" square>
-                    <CardContent className="flex flex-col items-center justify-center p-32 md:p-48 md:pt-128  sm:p-20 xl:p-20 lg:p-20">
-                        <Typography variant="h6" className="md:w-full mb-32 text-center">
+                    <CardContent className="flex flex-col items-center justify-center p-32 md:p-48 md:pt-128 sm:p-0">
+                        <Typography variant="h6" className="md:w-full mb-16 sm:mb-0 text-center text-13 sm:text-20 md:text-20 lg:text-25 xl:text-30 sm:p-0">
                             LOGIN TO YOUR ACCOUNT
 						</Typography>
 
@@ -391,7 +392,7 @@ const Login2Page = (props) => {
                         >
                          
                             <TextField
-                                className="mb-16"
+                                className="mb-16 sm:mb-4"
                                 label="Username"
                                 autoFocus
                                 type="email"
@@ -409,7 +410,7 @@ const Login2Page = (props) => {
 
                           
                             <TextField
-                                className="mb-16"
+                                className="mb-16 sm:mb-4"
                                 label="Password"
                                 type="password"
                                 name="password"
@@ -444,7 +445,7 @@ const Login2Page = (props) => {
                                 : <Button
                                     variant="contained"
                                     color="primary"
-                                    className="w-full mx-auto mt-16"
+                                    className="w-full mx-auto mt-16 sm:mt-0"
                                     aria-label="LOG IN"
 
                                     onClick={login}
