@@ -355,7 +355,7 @@ function ChatApp(props) {
 		};
 		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
 			const messages = response.data.data.chat;
-			const csvLink = (<CSVLink filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`} data={messages}>Your exported chat is ready for download</CSVLink>);
+			const csvLink = (<CSVLink filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`} data={messages}><span style={{color:'white'}}>Your exported chat is ready for download</span></CSVLink>);
 			setSnackBarMessage(csvLink)
 			setOK("success")
 			setSnackBarOpen(true)
@@ -372,6 +372,7 @@ function ChatApp(props) {
 			setshiftAgentsList(data)
 			setdialogOpenShift(true)
 			setMoreMenuEl(null);
+			
 		}, (response) => {
 
 		});
