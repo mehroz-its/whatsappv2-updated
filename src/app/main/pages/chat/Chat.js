@@ -158,6 +158,8 @@ const useStyles = makeStyles(theme => ({
 				borderBottomLeftRadius: 5,
 				borderTopRightRadius: 20,
 				borderBottomRightRadius: 20,
+				width: 'auto',
+    			maxWidth: '35vw',
 				'& .time': {
 					marginLeft: 12
 				}
@@ -188,6 +190,8 @@ const useStyles = makeStyles(theme => ({
 				borderBottomLeftRadius: 20,
 				borderTopRightRadius: 5,
 				borderBottomRightRadius: 5,
+				width: 'auto',
+    			maxWidth: '35vw',
 				'& .time': {
 					justifyContent: 'flex-end',
 					right: 0,
@@ -208,7 +212,8 @@ const useStyles = makeStyles(theme => ({
 		},
 		'&.contact + .me, &.me + .contact': {
 			paddingTop: 20,
-			marginTop: 20
+			marginTop: 20,
+			paddingBottom: 30
 		},
 		'&.first-of-group': {
 			'& .bubble': {
@@ -900,7 +905,7 @@ function Chat(props) {
 										{item.message_type === "document" ? <DocumentMessageType index={index} classes={classes} message={item} /> : null}
 
 										<Typography
-											className="time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-no-wrap"
+											className="time hidden absolute w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-no-wrap"
 											color="textSecondary"
 										>
 											{moment(item.dt).format('MMMM Do YYYY, h:mm:ss a')}
