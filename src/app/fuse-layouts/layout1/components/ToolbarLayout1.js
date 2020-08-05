@@ -90,9 +90,9 @@ function ToolbarLayout1(props) {
 							</Hidden>
 						)}
 
-						<div className="flex flex-1">
-							<Hidden mdDown>
-								<FuseShortcuts className="px-16" />
+						<div className="flex flex-1" style={{marginTop:'-0.4%'}}>
+							<Hidden mdDown >
+								<FuseShortcuts className="px-16 py-0"  />
 							</Hidden>
 						</div>
 

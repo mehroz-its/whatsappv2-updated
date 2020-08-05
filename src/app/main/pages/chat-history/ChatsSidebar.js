@@ -180,7 +180,6 @@ function ChatsSidebar(props) {
 					{user && (
 						<div
 						style={{marginLeft:'4%'}}
-
 						>
 							<Avatar src={user.avatar} alt={user.name} className="w-40 h-40">
 								{!user.avatar || user.avatar === '' ? user.name[0] : ''}
