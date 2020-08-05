@@ -226,7 +226,7 @@ const AttachmentDialogV2 = function (props) {
                                         <Grid item xs={4}>
                                             <label htmlFor="contained-button-file">
 
-                                                <Button disabled={disableUpload} id='content-upload-button' variant="contained" color="secondary" component="span" fullWidth>
+                                                <Button disabled={disableUpload} id='content-upload-button' variant="contained"  color="secondary" component="span" fullWidth>
                                                     Upload
                                             </Button>
                                             </label>
