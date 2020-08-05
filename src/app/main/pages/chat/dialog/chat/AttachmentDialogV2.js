@@ -215,8 +215,9 @@ const AttachmentDialogV2 = function (props) {
                                                     <Button onClick={() => controlAudio("paused")} id='content-record-button' variant="contained" color="primary" component="span" style={{width:'99%',marginLeft:'2px'}}>
                                                         {IconResolver.resolve("mic")}
                                             paused
-                                    </Button>}
-                                            </AudioAnalyser>  </Grid>
+                                         </Button>}
+                                            </AudioAnalyser> 
+                                             </Grid>
                                         <Grid item xs={4}>
                                         {status === "recording" &&
                                             <Button onClick={() => controlAudio("inactive")} id='content-record-button' variant="contained" color="primary" component="span" style={{width:'99%',marginLeft:'2px'}}>
@@ -231,7 +232,7 @@ const AttachmentDialogV2 = function (props) {
                                             </Button>
                                             </label>
                                         </Grid>
-                                    </Grid> : <div className="text-align-center"><CircularProgress /></div>
+                                    </Grid> : <div style={{marginLeft:'42%'}} className="text-align-center"><CircularProgress  style={{marginLeft:'50%'}}/></div>
                                 }</div> : null
                         }
                     </Grid>
@@ -246,7 +247,7 @@ const AttachmentDialogV2 = function (props) {
                                             </Button>
                                     </label>
                                 </Grid>
-                                : <div className="text-align-center"><CircularProgress /></div>
+                                : <div className="text-align-center" style={{marginLeft:'42%'}}><CircularProgress style={{marginLeft:'50%'}} /></div>
                             }
                         </Grid>
                         : null}
