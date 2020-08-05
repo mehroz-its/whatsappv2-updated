@@ -21,8 +21,8 @@ const useStyles = makeStyles(theme => ({
 		right: 0,
 		top: 160,
 		minWidth: 48,
-		width: 48,
-		height: 48,
+		width: 32,
+		height: 36,
 		opacity: 0.9,
 		padding: 0,
 		borderBottomRightRadius: 0,
@@ -44,7 +44,8 @@ const useStyles = makeStyles(theme => ({
 		}
 	},
 	buttonIcon: {
-		animation: '$rotating 3s linear infinite'
+		animation: '$rotating 3s linear infinite',
+		size:'10'
 	},
 	dialogPaper: {
 		position: 'fixed',

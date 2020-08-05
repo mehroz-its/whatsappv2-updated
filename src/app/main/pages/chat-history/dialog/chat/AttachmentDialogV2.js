@@ -205,28 +205,28 @@ const AttachmentDialogV2 = function (props) {
                                         <Grid item xs={4}>
                                             <AudioAnalyser {...audioProps}>
                                                 {status !== "recording" &&
-                                                    <Button onClick={() => controlAudio("recording")} id='content-record-button' variant="contained" color="secondary" component="span" fullWidth>
+                                                    <Button onClick={() => controlAudio("recording")} id='content-record-button' variant="contained" color="primary" component="span" fullWidth>
                                                         {IconResolver.resolve("mic")}
                                                      Record
                                                        </Button>
                                                 }
                                                 {status === "recording" &&
-                                                    <Button onClick={() => controlAudio("paused")} id='content-record-button' variant="contained" color="secondary" component="span" fullWidth>
+                                                    <Button onClick={() => controlAudio("paused")} id='content-record-button' variant="contained" color="primary" component="span" fullWidth>
                                                         {IconResolver.resolve("mic")}
                                             paused
                                     </Button>}
                                             </AudioAnalyser>  </Grid>
                                         <Grid item xs={4}>
-                                        {status === "recording" &&
-                                            <Button onClick={() => controlAudio("inactive")} id='content-record-button' variant="contained" color="secondary" component="span" fullWidth>
-                                                {IconResolver.resolve("mic")}
+                                            {status === "recording" &&
+                                                <Button onClick={() => controlAudio("inactive")} id='content-record-button' variant="contained" color="primary" component="span" fullWidth>
+                                                    {IconResolver.resolve("mic")}
                                             Stop
                                     </Button>}
                                         </Grid>
                                         <Grid item xs={4}>
                                             <label htmlFor="contained-button-file">
 
-                                                <Button disabled={disableUpload} id='content-upload-button' variant="contained" color="secondary" component="span" fullWidth>
+                                                <Button disabled={disableUpload} id='content-upload-button' variant="contained" color="primary" component="span" fullWidth>
                                                     Upload
                                             </Button>
                                             </label>
@@ -241,7 +241,7 @@ const AttachmentDialogV2 = function (props) {
                                 <Grid item xs={12}>
                                     <label htmlFor="contained-button-file">
 
-                                        <Button disabled={disableUpload} id='content-upload-button' variant="contained" color="secondary" component="span" fullWidth>
+                                        <Button disabled={disableUpload} id='content-upload-button' variant="contained" color="primary" component="span" fullWidth>
                                             Upload
                                             </Button>
                                     </label>
@@ -250,10 +250,10 @@ const AttachmentDialogV2 = function (props) {
                             }
                         </Grid>
                         : null}
-                          {dialogType !== 'audio' ?
-                    <Grid item xs={12} style={{ marginTop: 10 }}>
-                        <TextField onChange={dialogInputHandler} value={attachmentCaption} name={'caption'} id="outlined-basic-email" autoFocus label="Caption" variant="outlined" fullWidth autoComplete="off" />
-                    </Grid> : null}
+                    {dialogType !== 'audio' ?
+                        <Grid item xs={12} style={{ marginTop: 10 }}>
+                            <TextField onChange={dialogInputHandler} value={attachmentCaption} name={'caption'} id="outlined-basic-email" autoFocus label="Caption" variant="outlined" fullWidth autoComplete="off" />
+                        </Grid> : null}
                 </Grid>
             }
         </DialogContent>

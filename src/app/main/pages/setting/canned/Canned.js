@@ -70,7 +70,7 @@ function ContactsApp() {
 	const getData = ((loadData) => {
 		console.log('called get data')
 		loadData = () => {
-			return CoreHttpHandler.request('canned_messages', 'listing', {
+			return CoreHttpHandler.request('canned_messages', 'type_listing', {
 				limit: 100,
 				key:':type',
 				value:'all',

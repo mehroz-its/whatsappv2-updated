@@ -31,7 +31,7 @@ const ImageMessageType = function (props) {
 
     return (
         <div>
-            <Card style={{ width: '350px', height: 'auto' }} onClick={() => setIsOpen(true)} className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
+            <Card style={{ width: '350px', height: 'auto',borderBlockColor:'white' }} onClick={() => setIsOpen(true)} className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
                 <LazyLoadImage
                     key={`message_list_item_type_image_${index}`}
                     alt={imageCaption}

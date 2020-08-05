@@ -12,6 +12,7 @@ import AudioAnalyser from "react-audio-analyser"
 
 const AttachmentDialogV2 = function (props) {
     const { onDialogPropsChange, data } = props;
+    console.log(props,'AttachmentDialogV2AttachmentDialogV2')
 
     const { dialogType, attachment } = data;
 
@@ -165,7 +166,7 @@ const AttachmentDialogV2 = function (props) {
     }
 
     return (
-        <DialogContent>
+        <DialogContent style={{marginTop:'10px'}}>
             {/* <CircularProgress /> */}
             {dialogType === 'location' &&
                 <p>Location Dialog</p>
@@ -205,33 +206,33 @@ const AttachmentDialogV2 = function (props) {
                                         <Grid item xs={4}>
                                             <AudioAnalyser {...audioProps}>
                                                 {status !== "recording" &&
-                                                    <Button onClick={() => controlAudio("recording")} id='content-record-button' variant="contained" color="secondary" component="span" fullWidth>
+                                                    <Button onClick={() => controlAudio("recording")} id='content-record-button' variant="contained" color="primary" component="span" style={{width:'99%',marginLeft:'2px'}}>
                                                         {IconResolver.resolve("mic")}
                                                      Record
                                                        </Button>
                                                 }
                                                 {status === "recording" &&
-                                                    <Button onClick={() => controlAudio("paused")} id='content-record-button' variant="contained" color="secondary" component="span" fullWidth>
+                                                    <Button onClick={() => controlAudio("paused")} id='content-record-button' variant="contained" color="primary" component="span" style={{width:'99%',marginLeft:'2px'}}>
                                                         {IconResolver.resolve("mic")}
                                             paused
-                                    </Button>}
-                                            </AudioAnalyser>  </Grid>
+                                         </Button>}
+                                            </AudioAnalyser> 
+                                             </Grid>
                                         <Grid item xs={4}>
                                         {status === "recording" &&
-                                            <Button onClick={() => controlAudio("inactive")} id='content-record-button' variant="contained" color="secondary" component="span" fullWidth>
+                                            <Button onClick={() => controlAudio("inactive")} id='content-record-button' variant="contained" color="primary" component="span" style={{width:'99%',marginLeft:'2px'}}>
                                                 {IconResolver.resolve("mic")}
                                             Stop
                                     </Button>}
                                         </Grid>
                                         <Grid item xs={4}>
                                             <label htmlFor="contained-button-file">
-
-                                                <Button disabled={disableUpload} id='content-upload-button' variant="contained" color="secondary" component="span" fullWidth>
+                                                <Button  disabled={disableUpload} style={{paddingleft:'2px'}} id='content-upload-button' variant="contained"  color="primary" component="span" style={{width:'99%',marginLeft:'2px'}}>
                                                     Upload
                                             </Button>
                                             </label>
                                         </Grid>
-                                    </Grid> : <div className="text-align-center"><CircularProgress /></div>
+                                    </Grid> : <div style={{marginLeft:'42%'}} className="text-align-center"><CircularProgress  style={{marginLeft:'50%'}}/></div>
                                 }</div> : null
                         }
                     </Grid>
@@ -241,12 +242,12 @@ const AttachmentDialogV2 = function (props) {
                                 <Grid item xs={12}>
                                     <label htmlFor="contained-button-file">
 
-                                        <Button disabled={disableUpload} id='content-upload-button' variant="contained" color="secondary" component="span" fullWidth>
+                                        <Button disabled={disableUpload} style={{paddingleft:'2px'}} id='content-upload-button' variant="contained" color="primary" component="span" style={{width:'99%',marginLeft:'2px'}}>
                                             Upload
                                             </Button>
                                     </label>
                                 </Grid>
-                                : <div className="text-align-center"><CircularProgress /></div>
+                                : <div className="text-align-center" style={{marginLeft:'42%'}}><CircularProgress style={{marginLeft:'50%'}} /></div>
                             }
                         </Grid>
                         : null}

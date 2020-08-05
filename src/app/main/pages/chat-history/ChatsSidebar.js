@@ -179,7 +179,8 @@ function ChatsSidebar(props) {
 				<Toolbar className="flex justify-between items-center px-4">
 					{user && (
 						<div
-							
+						style={{marginLeft:'4%'}}
+
 						>
 							<Avatar src={user.avatar} alt={user.name} className="w-40 h-40">
 								{!user.avatar || user.avatar === '' ? user.name[0] : ''}
@@ -214,7 +215,7 @@ function ChatsSidebar(props) {
 				{useMemo(
 					() => (
 						<Toolbar className="px-10" style={{marginTop:'-15px'}}>
-							<Paper className="flex p-4 items-center w-full px-8 py-4 rounded-0" elevation={1}>
+							<Paper className="flex p-4 items-center w-full px-10 py-6 rounded-0" elevation={1}>
 								<Icon color="action" fontSize="small">search</Icon>
 
 								<Input
@@ -262,7 +263,7 @@ function ChatsSidebar(props) {
 									className="flex flex-col flex-shrink-0"
 								>
 									{props.numbers.length > 0 && (
-										<Typography className="font-300 text-20 px-8 py-8" color="secondary">
+										<Typography className="font-300 text-20 px-20 py-8" color="secondary">
 											Chats
 										</Typography>
 									)}

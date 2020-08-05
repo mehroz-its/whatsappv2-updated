@@ -426,9 +426,9 @@ function DashboardApp(props) {
 					<Tab
 						style={{ marginTop: '0.2%' }}
 						className="text-12 font-600 normal-case" label="Statics" />
-					<Tab
+					{/* <Tab
 						style={{ marginTop: '0.2%' }}
-						className="text-12 font-600 normal-case" label="Charts" />
+						className="text-12 font-600 normal-case" label="Charts" /> */}
 				</Tabs>
 			}
 			content={

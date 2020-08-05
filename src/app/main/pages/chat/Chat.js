@@ -160,18 +160,20 @@ const useStyles = makeStyles(theme => ({
 				borderBottomRightRadius: 20,
 				width: 'auto',
     			maxWidth: '35vw',
+				borderTopRightRadius: 6,
+				borderBottomRightRadius: 6,
 				'& .time': {
 					marginLeft: 12
 				}
 			},
 			'&.first-of-group': {
 				'& .bubble': {
-					borderTopLeftRadius: 20
+					borderTopLeftRadius: 6
 				}
 			},
 			'&.last-of-group': {
 				'& .bubble': {
-					borderBottomLeftRadius: 20
+					borderBottomLeftRadius: 6
 				}
 			}
 		},
@@ -184,7 +186,7 @@ const useStyles = makeStyles(theme => ({
 			},
 			'& .bubble': {
 				marginLeft: 'auto',
-				backgroundColor: theme.palette.grey[300],
+				backgroundColor: theme.palette.grey[50],
 				color: theme.palette.getContrastText(theme.palette.grey[300]),
 				borderTopLeftRadius: 20,
 				borderBottomLeftRadius: 20,
@@ -879,16 +881,28 @@ function Chat(props) {
 							return (
 								<div
 									key={item.time}
-									className={clsx(
-										classes.messageRow,
-										'text-message-w-control',
-										'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-8 ',
-										{ me: item.type === "outbound" },
-										{ contact: item.type === "inbound" },
-										{ 'first-of-group': isFirstMessageOfGroup(item, index) },
-										{ 'last-of-group': isLastMessageOfGroup(item, index) },
-										index + 1 === messages.length && 'pb-96'
-									)}
+									className={
+										item.message_type === "text" ?
+											clsx(
+												classes.messageRow,
+												'text-message-w-control',
+												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
+												{ me: item.type === "outbound" },
+												{ contact: item.type === "inbound" },
+												{ 'first-of-group': isFirstMessageOfGroup(item, index) },
+												{ 'last-of-group': isLastMessageOfGroup(item, index) },
+												index + 1 === messages.length && 'pb-96'
+											) : clsx(
+												// classes.messageRow,
+												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
+												{ me: item.type === "outbound" },
+												{ contact: item.type === "inbound" },
+												{ 'first-of-group': isFirstMessageOfGroup(item, index) },
+												{ 'last-of-group': isLastMessageOfGroup(item, index) },
+												index + 1 === messages.length && 'pb-96'
+											)
+									}
+									
 								>
 									{/* {shouldShowContactAvatar(item, index) && (
 									

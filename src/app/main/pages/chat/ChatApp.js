@@ -34,7 +34,7 @@ import Fade from '@material-ui/core/Fade'
 import Tooltip from '@material-ui/core/Tooltip';
 import { EventEmitter } from '../../../../events'
 import copy from 'copy-to-clipboard';
-import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 
@@ -44,18 +44,18 @@ const headerHeight = 100;
 const AvatarStyle = createMuiTheme({
 	overrides: {
 		MuiAvatar: {
-		root: {
-		fontSize:'15px',
-		  height:'35px',
-		  width:'35px',
-		  paddingBottom: 4,
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
+			root: {
+				fontSize: '15px',
+				height: '35px',
+				width: '35px',
+				paddingBottom: 4,
+				//   "&:last-child": {
+				// 	paddingRight: 5
+				//   }
+			}
 		}
-	  }
 	}
-  });
+});
 
 
 const useStyles = makeStyles(theme => ({
@@ -252,7 +252,7 @@ function ChatApp(props) {
 	const [int_MessageLists, setint_MessageLists] = React.useState(null);
 	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
 	const [anchorEl, setAnchorEl] = React.useState(null);
-	
+
 
 	// const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
 
@@ -327,24 +327,24 @@ function ChatApp(props) {
 	}
 
 	// const onSnackBarClose() {
-    //     this.setState({ snackBarMessage: "", snackBarOpen: false }, () => {
-    //         if (this.state.showLatestMessage) this.setState({ showLatestMessage: false });
-    //     })
+	//     this.setState({ snackBarMessage: "", snackBarOpen: false }, () => {
+	//         if (this.state.showLatestMessage) this.setState({ showLatestMessage: false });
+	//     })
 	// }
-	
+
 	// const setSnackBarMessage = (message, severity, type = null) => {
 	// 	console.log('caleddddddddddddddd');
-    //     this.setState({
-    //         snackBarAlertSeverity: severity,
-    //         snackBarMessage: message,
-    //         snackBarOpen: true,
-    //     }, () => {
-    //         if (type === 'new_message') {
-    //             if (!this.state.showLatestMessage) this.setState({ showLatestMessage: true });
-    //         }
-    //     })
+	//     this.setState({
+	//         snackBarAlertSeverity: severity,
+	//         snackBarMessage: message,
+	//         snackBarOpen: true,
+	//     }, () => {
+	//         if (type === 'new_message') {
+	//             if (!this.state.showLatestMessage) this.setState({ showLatestMessage: true });
+	//         }
+	//     })
 	// }
-	
+
 	const conversationExport = () => {
 		let params = {
 			key: ':number',
@@ -355,12 +355,12 @@ function ChatApp(props) {
 		};
 		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
 			const messages = response.data.data.chat;
-			const csvLink = (<CSVLink filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`} data={messages}><span style={{color:'white'}}>Your exported chat is ready for download</span></CSVLink>);
+			const csvLink = (<CSVLink filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`} data={messages}><span style={{ color: 'white' }}>Your exported chat is ready for download</span></CSVLink>);
 			setSnackBarMessage(csvLink)
 			setOK("success")
 			setSnackBarOpen(true)
-	
-		
+
+
 			setMoreMenuEl(null);
 		}, (response) => {
 
@@ -372,7 +372,7 @@ function ChatApp(props) {
 			setshiftAgentsList(data)
 			setdialogOpenShift(true)
 			setMoreMenuEl(null);
-			
+
 		}, (response) => {
 
 		});
@@ -451,7 +451,7 @@ function ChatApp(props) {
 		setOK("success")
 		setSnackBarOpen(true)
 
-	
+
 
 		// this.setSnackBarMessage('Copied', 'success', null);
 	}
@@ -848,17 +848,17 @@ function ChatApp(props) {
 
 	return (
 		<>
-		<Snackbar
+			<Snackbar
 
-anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-open={snackbaropen}
-autoHideDuration={4000}
-onClose={()=>setSnackBarOpen(false)}
->
-<Alert variant="filled" severity={ok}>
-	{snackbarmessage}
-</Alert>
-</Snackbar>
+				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+				open={snackbaropen}
+				autoHideDuration={4000}
+				onClose={() => setSnackBarOpen(false)}
+			>
+				<Alert variant="filled" severity={ok}>
+					{snackbarmessage}
+				</Alert>
+			</Snackbar>
 
 			<div className={clsx(classes.root)}>
 				<div className={classes.topBg} />
@@ -954,7 +954,7 @@ onClose={()=>setSnackBarOpen(false)}
 												chat
 									</Icon>
 										</Paper>
-										<Typography variant="h6" style={{ fontSize: '18px', paddingTop: '14px'}}>
+										<Typography variant="h6" style={{ fontSize: '18px', paddingTop: '14px' }}>
 											Chat App
 								</Typography>
 										<Typography
@@ -986,26 +986,26 @@ onClose={()=>setSnackBarOpen(false)}
 													</IconButton>
 													<div
 														className="flex items-center cursor-pointer"
-														// onClick={() => setuserDrawer(true)}
-														// onKeyDown={() => setuserDrawer(false)}
-														// role="button"
-														// tabIndex={0}
+													// onClick={() => setuserDrawer(true)}
+													// onKeyDown={() => setuserDrawer(false)}
+													// role="button"
+													// tabIndex={0}
 													>
-														<div className="relative mx-6 w-32 h-32" style={{ marginTop: '30px',marginLeft:'10px' }}>
+														<div className="relative mx-6 w-32 h-32" style={{ marginTop: '30px', marginLeft: '10px' }}>
 															{/* <div className="absolute right-0 bottom-0  -m-1 z-2">
 													
 														<StatusIcon status={selectedRecipient.status} />
 														
 													</div> */}
 															<MuiThemeProvider theme={AvatarStyle}>
-															<Avatar
+																<Avatar
 
-																src={selectedRecipient.avatar} alt={selectedRecipient.name} className={classes.avatar}>
-																{!selectedRecipient.avatar || selectedRecipient.avatar === ''
-																	? selectedRecipient.name[0]
-																	: ''}
-															</Avatar>
-															</MuiThemeProvider> 
+																	src={selectedRecipient.avatar} alt={selectedRecipient.name} className={classes.avatar}>
+																	{!selectedRecipient.avatar || selectedRecipient.avatar === ''
+																		? selectedRecipient.name[0]
+																		: ''}
+																</Avatar>
+															</MuiThemeProvider>
 														</div>
 														<Typography color="inherit" className="text-14 font-600 px-4" style={{ marginTop: '5px' }}>
 															{selectedRecipient.name}
