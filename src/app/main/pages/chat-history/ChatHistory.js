@@ -34,6 +34,8 @@ import { CSVLink, CSVDownload } from 'react-csv';
 import Fade from '@material-ui/core/Fade'
 import copy from 'copy-to-clipboard';
 import { setSearchText } from '../contacts/store/actions';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 const drawerWidth = 320;
 const headerHeight = 200;
 
@@ -228,6 +230,9 @@ function ChatApp(props) {
 	const [int_MessageLists, setint_MessageLists] = React.useState(null);
 	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
 	const [anchorEl, setAnchorEl] = React.useState(null);
+	const [snackbaropen, setSnackBarOpen] = React.useState(false)
+	const [snackbarmessage, setSnackBarMessage] = React.useState('')
+	const [ok, setOK] = React.useState('')
 
 	// const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
 
@@ -292,13 +297,13 @@ function ChatApp(props) {
 
 		});
 	}
-	
+
 	const conversationActionsCallback = (action) => {
 		// setAnchorEl(null);
 		if (action === 'export') conversationExport();
 		if (action === 'shift') conversationShift();
 
-		
+
 	}
 	const conversationExport = () => {
 		let params = {
@@ -310,8 +315,11 @@ function ChatApp(props) {
 		};
 		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
 			const messages = response.data.data.chat;
-			const csvLink = (<CSVLink filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`} data={messages}>Your exported chat is ready for download</CSVLink>);
-			alert(csvLink)
+			const csvLink = (<CSVLink filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`} data={messages}><span style={{ color: 'white' }}>Your exported chat is ready for download</span></CSVLink>);
+			// alert(csvLink)
+			setSnackBarMessage(csvLink)
+			setOK("success")
+			setSnackBarOpen(true)
 			setMoreMenuEl(null);
 		}, (response) => {
 
@@ -355,15 +363,15 @@ function ChatApp(props) {
 		}
 	}
 	const profileDialog = () => {
-        CoreHttpHandler.request('contact_book', 'fetch', {
-            key: ':number',
-            value: selectedRecipient.number
-        }, (response) => {
+		CoreHttpHandler.request('contact_book', 'fetch', {
+			key: ':number',
+			value: selectedRecipient.number
+		}, (response) => {
 			const customer = response.data.data.customer;
-			
-            loadCountries().then((response) => {
+
+			loadCountries().then((response) => {
 				const countries = response.data.data.list.data;
-				
+
 				setcustomerProfileData({
 					id: customer.id,
 					number: selectedRecipient.number,
@@ -371,35 +379,37 @@ function ChatApp(props) {
 					assign_name: '',
 					countries,
 				})
-			console.log("customer : ",customer);
-			setAnchorEl(false)
+				console.log("customer : ", customer);
+				setAnchorEl(false)
 				setdialogOpenCmp(true)
-				
-            })
 
-        }, (error) => {
+			})
+
+		}, (error) => {
 			setAnchorEl(false)
 			setdialogOpenCmp(false)
-            // this.setSnackBarMessage('Failed to customer profile, please try again later', 'error');
-        });
+			// this.setSnackBarMessage('Failed to customer profile, please try again later', 'error');
+		});
 	}
 	const loadCountries = () => {
-        return CoreHttpHandler.request('locations', 'get_countries', {
-            columns: "id, name",
-            sortby: "ASC",
-            orderby: "id",
-            where: "enabled = $1",
-            values: true,
-            page: 0,
-            limit: 0
-        }, null, null, true);
+		return CoreHttpHandler.request('locations', 'get_countries', {
+			columns: "id, name",
+			sortby: "ASC",
+			orderby: "id",
+			where: "enabled = $1",
+			values: true,
+			page: 0,
+			limit: 0
+		}, null, null, true);
 	};
 	const copyContent = () => {
 		copy(selectedRecipient.number);
-		alert("copy")
-        // this.setSnackBarMessage('Copied', 'success', null);
+		setSnackBarMessage("Copied Successfully")
+		setOK("success")
+		setSnackBarOpen(true)
+		// this.setSnackBarMessage('Copied', 'success', null);
 	}
-	
+
 	const [sendDialogData, setsendDialogData] = React.useState({
 		url: '',
 		caption: '',
@@ -476,14 +486,14 @@ function ChatApp(props) {
 		}, (response) => {
 		})
 	};
-		const dialogOptionsConfirmBlock = {
-			onClose: function () {
-				setdialogOpenConfirmBlock(false)
+	const dialogOptionsConfirmBlock = {
+		onClose: function () {
+			setdialogOpenConfirmBlock(false)
 
-			},
-			'aria-labelledby': "form-dialog-title",
-			'aria-describedby': "form-dialog-title"
-		};
+		},
+		'aria-labelledby': "form-dialog-title",
+		'aria-describedby': "form-dialog-title"
+	};
 	useEffect(() => {
 		console.log("getNumbers use efffact = > ", selectedRecipient);
 		getNumbers()
@@ -500,11 +510,11 @@ function ChatApp(props) {
 		setselectedRecipient(null)
 		setmessages([])
 		clearInterval(this.int_MessageLists);
-			// clearInterval(this.int_CustomerList);
-			// 	getNumbers();
-			// setint_CustomerList = setInterval(() => {
-			// 	getNumbers();
-			// }, 1000);
+		// clearInterval(this.int_CustomerList);
+		// 	getNumbers();
+		// setint_CustomerList = setInterval(() => {
+		// 	getNumbers();
+		// }, 1000);
 	}
 
 	function handleMoreMenuClick(event) {
@@ -700,7 +710,7 @@ function ChatApp(props) {
 	const dialogOptionsCmp = {
 		onClose: function () {
 			setdialogOpenCmp(false)
-			
+
 		},
 		'aria-labelledby': "form-dialog-title",
 		'aria-describedby': "form-dialog-title"
@@ -731,57 +741,220 @@ function ChatApp(props) {
 		setdialogOpenCmp(false)
 	}
 	const profileUpdate = () => {
-        const data = { ...customerProfileData };
+		const data = { ...customerProfileData };
 
-        data['number'] = selectedRecipient.number;
+		data['number'] = selectedRecipient.number;
 
-        CoreHttpHandler.request('contact_book', 'update', {
-            key: ':id',
-            value: customerProfileData.id,
-            params: data
-        }, (response) => {
+		CoreHttpHandler.request('contact_book', 'update', {
+			key: ':id',
+			value: customerProfileData.id,
+			params: data
+		}, (response) => {
 			setselectedRecipient(selectedRecipient)
 			// const clearData2 = () => {
-				setdialogOpenCmp(false)
-				// clearInterval(this.int_MessageLists);
-				// clearInterval(this.int_CustomerList);
-				// 	getNumbers();
-				// setint_CustomerList = setInterval(() => {
-				// 	getNumbers();
-				// }, 1000);
+			setdialogOpenCmp(false)
+			// clearInterval(this.int_MessageLists);
+			// clearInterval(this.int_CustomerList);
+			// 	getNumbers();
+			// setint_CustomerList = setInterval(() => {
+			// 	getNumbers();
+			// }, 1000);
 			// }
-			
-			
 
-        }, (error) => {
-            // if (error.hasOwnProperty('response')) {
-            //     if (error.response.hasOwnProperty('data')) {
-            //         this.setSnackBarMessage(error.response.data.message, 'error');
-            //     }
-            // } else this.setSnackBarMessage('Failed to update profile, please try again later', 'error');
 
-        });
+
+		}, (error) => {
+			// if (error.hasOwnProperty('response')) {
+			//     if (error.response.hasOwnProperty('data')) {
+			//         this.setSnackBarMessage(error.response.data.message, 'error');
+			//     }
+			// } else this.setSnackBarMessage('Failed to update profile, please try again later', 'error');
+
+		});
 	}
-	const onSearchInput = (val) =>{
+	const onSearchInput = (val) => {
 		setSearchedContact(val)
-		console.log(searchedContact,'i amsearched')
+		console.log(searchedContact, 'i amsearched')
 	}
 	// const {numbers,searchedContact}=this.state
-        const filtered=  searchedContact.charAt(0) === '9'? numbers.filter((number=>number.number.includes(searchedContact))) :numbers.filter((number=>number.name.toLowerCase().includes(searchedContact.toLowerCase())))
+	const filtered = searchedContact.charAt(0) === '9' ? numbers.filter((number => number.number.includes(searchedContact))) : numbers.filter((number => number.name.toLowerCase().includes(searchedContact.toLowerCase())))
 	return (
-		<div className={clsx(classes.root)}>
-			<div className={classes.topBg} />
-			<div className={clsx(classes.contentCardWrapper, 'container')}>
-				<div className={classes.contentCard}>
-					<Hidden mdUp>
+		<>
+			<Snackbar
+
+				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+				open={snackbaropen}
+				autoHideDuration={4000}
+				onClose={() => setSnackBarOpen(false)}
+			>
+				<Alert variant="filled" severity={ok}>
+					{snackbarmessage}
+				</Alert>
+			</Snackbar>
+
+			<div className={clsx(classes.root)}>
+				<div className={classes.topBg} />
+				<div className={clsx(classes.contentCardWrapper, 'container')}>
+					<div className={classes.contentCard}>
+						<Hidden mdUp>
+							<Drawer
+								className="h-full absolute z-20"
+								variant="temporary"
+								anchor="left"
+								open={mobileChatsSidebarOpen}
+								onClose={() => dispatch(Actions.closeMobileChatsSidebar())}
+								classes={{
+									paper: clsx(classes.drawerPaper, 'absolute ltr:left-0 rtl:right-0')
+								}}
+								style={{ position: 'absolute' }}
+								ModalProps={{
+									keepMounted: true,
+									disablePortal: true,
+									BackdropProps: {
+										classes: {
+											root: 'absolute'
+										}
+									}
+								}}
+							>
+								<ChatsSidebar numbers={filtered} onContactClick={(e) => { selectedRecipientt(e) }} />
+							</Drawer>
+						</Hidden>
+						<Hidden smDown>
+							<Drawer
+								className="h-full z-20"
+								variant="permanent"
+								open
+								classes={{
+									paper: classes.drawerPaper
+								}}
+							>
+								<ChatsSidebar searchedContact={onSearchInput} numbers={filtered} onContactClick={(e) => { selectedRecipientt(e) }} />
+							</Drawer>
+						</Hidden>
 						<Drawer
-							className="h-full absolute z-20"
+							className="h-full absolute z-30"
 							variant="temporary"
 							anchor="left"
-							open={mobileChatsSidebarOpen}
-							onClose={() => dispatch(Actions.closeMobileChatsSidebar())}
+							open={userSidebarOpen}
+							onClose={() => dispatch(Actions.closeUserSidebar())}
 							classes={{
-								paper: clsx(classes.drawerPaper, 'absolute ltr:left-0 rtl:right-0')
+								paper: clsx(classes.drawerPaper, 'absolute left-0')
+							}}
+							style={{ position: 'absolute' }}
+							ModalProps={{
+								keepMounted: false,
+								disablePortal: true,
+								BackdropProps: {
+									classes: {
+										root: 'absolute'
+									}
+								}
+							}}
+						>
+							<UserSidebar />
+						</Drawer>
+
+						<main className={clsx(classes.contentWrapper, 'z-10')}>
+							{!selectedRecipient ? (
+								<div className="flex flex-col flex-1 items-center justify-center p-24">
+									<Paper className="rounded-full p-48">
+										<Icon className="block text-64" color="secondary">
+											chat
+									</Icon>
+									</Paper>
+									<Typography variant="h6" style={{ fontSize: '18px', paddingTop: '14px' }}>
+										Chat History
+								</Typography>
+									<Typography
+										className="hidden md:flex px-16 pb-24 mt-10 text-center"
+										color="textSecondary">
+										Select a contact to start a conversation!
+								</Typography>
+									<Button
+										variant="outlined"
+										color="primary"
+										className="flex md:hidden normal-case"
+										onClick={() => dispatch(Actions.openMobileChatsSidebar())}
+									>
+										Select a contact to start a conversation!..
+								</Button>
+								</div>
+							) : (
+									<>
+										<AppBar className="w-full" position="static" elevation={1} style={{ height: '70px' }}>
+											<Toolbar className="px-16">
+												<IconButton
+													color="inherit"
+													aria-label="Open drawer"
+													onClick={() => dispatch(Actions.openMobileChatsSidebar())}
+													className="flex md:hidden"
+													style={{ marginTop: '-10px' }}
+												>
+													<Icon>chat</Icon>
+												</IconButton>
+												<div
+													className="flex items-center cursor-pointer"
+												// onClick={() => dispatch(Actions.openContactSidebar())}
+												// onKeyDown={() => dispatch(Actions.openContactSidebar())}
+												// role="button"
+												// tabIndex={0}
+												>
+													<div className="relative mx-8">
+														<div className="absolute right-0 bottom-0 -m-4 z-10">
+															<StatusIcon status={selectedRecipient.status} />
+														</div>
+
+														<Avatar src={selectedRecipient.avatar} alt={selectedRecipient.name}>
+															{!selectedRecipient.avatar || selectedRecipient.avatar === ''
+																? selectedRecipient.name[0]
+																: ''}
+														</Avatar>
+													</div>
+													<Typography color="inherit" className="text-12 font-600 px-4">
+														{selectedRecipient.name}
+													</Typography>
+												</div>
+												<div style={{ position: 'absolute', right: 1 }}>
+													<IconButton
+														aria-owns={moreMenuEl ? 'chats-more-menu' : null}
+														aria-haspopup="true"
+														onClick={handleMoreMenuClick}
+														style={{ color: 'white' }}
+													>
+														<Icon>more_vert</Icon>
+													</IconButton>
+													<Menu
+														id="chats-more-menu"
+														anchorEl={moreMenuEl}
+														open={Boolean(moreMenuEl)}
+														onClose={handleMoreMenuClose}
+													>
+														<MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
+														{/* <MenuItem onClick={(e) => conversationActionsCallback('shift')}>shift</MenuItem> */}
+														<MenuItem onClick={(e) => conversationContextMenuCallback('block')}>Block </MenuItem>
+														<MenuItem onClick={(e) => conversationContextMenuCallback('customer_profile')}>Customer Profile </MenuItem>
+														<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem>
+													</Menu>
+												</div>
+											</Toolbar>
+										</AppBar>
+
+										<div className={classes.content}>
+											<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} clearBlock={clearData} />
+										</div>
+									</>
+								)}
+						</main>
+
+						<Drawer
+							className="h-full absolute z-30"
+							variant="temporary"
+							anchor="right"
+							open={contactSidebarOpen}
+							onClose={() => dispatch(Actions.closeContactSidebar())}
+							classes={{
+								paper: clsx(classes.drawerPaper, 'absolute ltr:right-0 rtl:left-0')
 							}}
 							style={{ position: 'absolute' }}
 							ModalProps={{
@@ -794,166 +967,17 @@ function ChatApp(props) {
 								}
 							}}
 						>
-							<ChatsSidebar numbers={filtered} onContactClick={(e) => { selectedRecipientt(e) }} />
+							<ContactSidebar />
 						</Drawer>
-					</Hidden>
-					<Hidden smDown>
-						<Drawer
-							className="h-full z-20"
-							variant="permanent"
-							open
-							classes={{
-								paper: classes.drawerPaper
-							}}
-						>
-							<ChatsSidebar searchedContact={onSearchInput} numbers={filtered} onContactClick={(e) => { selectedRecipientt(e) }} />
-						</Drawer>
-					</Hidden>
-					<Drawer
-						className="h-full absolute z-30"
-						variant="temporary"
-						anchor="left"
-						open={userSidebarOpen}
-						onClose={() => dispatch(Actions.closeUserSidebar())}
-						classes={{
-							paper: clsx(classes.drawerPaper, 'absolute left-0')
-						}}
-						style={{ position: 'absolute' }}
-						ModalProps={{
-							keepMounted: false,
-							disablePortal: true,
-							BackdropProps: {
-								classes: {
-									root: 'absolute'
-								}
-							}
-						}}
-					>
-						<UserSidebar />
-					</Drawer>
-
-					<main className={clsx(classes.contentWrapper, 'z-10')}>
-						{!selectedRecipient ? (
-							<div className="flex flex-col flex-1 items-center justify-center p-24">
-								<Paper className="rounded-full p-48">
-									<Icon className="block text-64" color="secondary">
-										chat
-									</Icon>
-								</Paper>
-								<Typography variant="h6" style={{ fontSize: '18px', paddingTop: '14px' }}>
-											Chat History
-								</Typography>
-										<Typography
-											className="hidden md:flex px-16 pb-24 mt-10 text-center"
-											color="textSecondary">
-											Select a contact to start a conversation!
-								</Typography>
-								<Button
-									variant="outlined"
-									color="primary"
-									className="flex md:hidden normal-case"
-									onClick={() => dispatch(Actions.openMobileChatsSidebar())}
-								>
-									Select a contact to start a conversation!..
-								</Button>
-							</div>
-						) : (
-								<>
-									<AppBar className="w-full" position="static" elevation={1} style={{height:'70px'}}>
-										<Toolbar className="px-16">
-											<IconButton
-												color="inherit"
-												aria-label="Open drawer"
-												onClick={() => dispatch(Actions.openMobileChatsSidebar())}
-												className="flex md:hidden"
-												style={{marginTop:'-10px'}}
-											>
-												<Icon>chat</Icon>
-											</IconButton>
-											<div
-												className="flex items-center cursor-pointer"
-												// onClick={() => dispatch(Actions.openContactSidebar())}
-												// onKeyDown={() => dispatch(Actions.openContactSidebar())}
-												// role="button"
-												// tabIndex={0}
-											>
-												<div className="relative mx-8">
-													<div className="absolute right-0 bottom-0 -m-4 z-10">
-														<StatusIcon status={selectedRecipient.status} />
-													</div>
-
-													<Avatar src={selectedRecipient.avatar} alt={selectedRecipient.name}>
-														{!selectedRecipient.avatar || selectedRecipient.avatar === ''
-															? selectedRecipient.name[0]
-															: ''}
-													</Avatar>
-												</div>
-												<Typography color="inherit" className="text-12 font-600 px-4">
-													{selectedRecipient.name}
-												</Typography>
-											</div>
-											<div style={{position:'absolute',right:1}}>
-						{/* <IconButton
-							aria-owns={moreMenuEl ? 'chats-more-menu' : null}
-							aria-haspopup="true"
-							onClick={handleMoreMenuClick}
-							style={{color:'white'}}
-						>
-							<Icon>more_vert</Icon>
-						</IconButton> */}
-						<Menu
-							id="chats-more-menu"
-							anchorEl={moreMenuEl}
-							open={Boolean(moreMenuEl)}
-							onClose={handleMoreMenuClose}
-						>
-							<MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
-							<MenuItem onClick={(e) => conversationActionsCallback('shift')}>shift</MenuItem>
-							<MenuItem onClick={(e) => conversationContextMenuCallback('block')}>Block </MenuItem>
-							<MenuItem onClick={(e) => conversationContextMenuCallback('customer_profile')}>Customer Profile </MenuItem>
-							<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem>
-						</Menu>
 					</div>
-										</Toolbar>
-									</AppBar>
-
-									<div className={classes.content}>
-										<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient}  clearBlock={clearData} />
-									</div>
-								</>
-							)}
-					</main>
-
-					<Drawer
-						className="h-full absolute z-30"
-						variant="temporary"
-						anchor="right"
-						open={contactSidebarOpen}
-						onClose={() => dispatch(Actions.closeContactSidebar())}
-						classes={{
-							paper: clsx(classes.drawerPaper, 'absolute ltr:right-0 rtl:left-0')
-						}}
-						style={{ position: 'absolute' }}
-						ModalProps={{
-							keepMounted: true,
-							disablePortal: true,
-							BackdropProps: {
-								classes: {
-									root: 'absolute'
-								}
-							}
-						}}
-					>
-						<ContactSidebar />
-					</Drawer>
 				</div>
+				<XGlobalDialogCmp onDialogPropsChange={sendDialogInputHandler} data={{ dialogType: sendActionType, attachment: sendDialogData }} dialogTitle={sendDialogTitle} options={dialogOptionsConfirmBlock} content={AttachmentDialogV2} defaultState={sendDialogOpen} actions={sendDialogActions} />
+				<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
+				<XGlobalDialogCmp onDialogPropsChange={selectedCannedMessage} data={cannedMessagesList} dialogTitle={`Canned Messages`} options={dialogOptionsCanned} content={CannedMessagesDialog} defaultState={dialogOpenCanned} actions={dialogActionsCanned} />
+				<XGlobalDialogCmp onDialogPropsChange={blockCustomerInputHandler} data={selectedRecipient} dialogTitle={`Confirm Block`} options={dialogOptionsConfirmBlock} content={BlockConfirmDialog} defaultState={dialogOpenConfirmBlock} actions={dialogActionsConfirmBlock} />
+				<XGlobalDialogCmp onDialogPropsChange={customerProfileInputHandler} data={customerProfileData} dialogTitle={`Customer Profile`} options={dialogOptionsCmp} content={CustomerProfileDialog} defaultState={dialogOpenCmp} actions={dialogActionsCmp} />
 			</div>
-			<XGlobalDialogCmp onDialogPropsChange={sendDialogInputHandler} data={{ dialogType: sendActionType, attachment: sendDialogData }} dialogTitle={sendDialogTitle} options={dialogOptionsConfirmBlock} content={AttachmentDialogV2} defaultState={sendDialogOpen} actions={sendDialogActions} />
-			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
-			<XGlobalDialogCmp onDialogPropsChange={selectedCannedMessage} data={cannedMessagesList} dialogTitle={`Canned Messages`} options={dialogOptionsCanned} content={CannedMessagesDialog} defaultState={dialogOpenCanned} actions={dialogActionsCanned} />
-			<XGlobalDialogCmp onDialogPropsChange={blockCustomerInputHandler} data={selectedRecipient} dialogTitle={`Confirm Block`} options={dialogOptionsConfirmBlock} content={BlockConfirmDialog} defaultState={dialogOpenConfirmBlock} actions={dialogActionsConfirmBlock} />
-			<XGlobalDialogCmp onDialogPropsChange={customerProfileInputHandler} data={customerProfileData} dialogTitle={`Customer Profile`} options={dialogOptionsCmp} content={CustomerProfileDialog} defaultState={dialogOpenCmp} actions={dialogActionsCmp} />
-		</div>
+		</>
 	);
 }
 
