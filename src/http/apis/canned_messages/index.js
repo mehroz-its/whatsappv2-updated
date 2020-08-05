@@ -1,12 +1,19 @@
 class APIS {
     apis() {
         return {
-            listing: {
+            type_listing: {
                 headers: {
                     'xt-user-token': null
                 },
                 method: 'post',
                 path: '/backend/canned/messages/:type'
+            },
+            listing: {
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'post',
+                path: '/backend/fetch/list/canned_messages'
             },
             create_message: {
                 headers: {
