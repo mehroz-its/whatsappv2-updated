@@ -162,6 +162,7 @@ const useStyles = makeStyles(theme => ({
     			maxWidth: '35vw',
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
+				marginBottom:70,
 				'& .time': {
 					marginLeft: 12
 				}
@@ -886,7 +887,7 @@ function Chat(props) {
 											clsx(
 												classes.messageRow,
 												'text-message-w-control',
-												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
+												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative pb-4',
 												{ me: item.type === "outbound" },
 												{ contact: item.type === "inbound" },
 												{ 'first-of-group': isFirstMessageOfGroup(item, index) },
@@ -894,7 +895,7 @@ function Chat(props) {
 												index + 1 === messages.length && 'pb-96'
 											) : clsx(
 												// classes.messageRow,
-												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
+												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative  pb-4',
 												{ me: item.type === "outbound" },
 												{ contact: item.type === "inbound" },
 												{ 'first-of-group': isFirstMessageOfGroup(item, index) },
@@ -943,11 +944,12 @@ function Chat(props) {
 					)}
 			</FuseScrollbars>
 			{chat && (
-				<form onSubmit={onMessageSubmit} className="absolute bottom-0 right-0 left-0 top-10">
+				<form onSubmit={onMessageSubmit} className="absolute bottom-0 right-0 left-0 top-20">
 					{chosenEmoji === true ? (
 						<Picker onEmojiClick={onEmojiClick} />
 					) : null}
 					<Paper className="flex items-center relative " elevation={1}>
+					{/* <div style={{ backgroundColor:'white'}}> */}
 						<TextField
 							multiline={true}
 							rows="2"
@@ -1023,6 +1025,7 @@ function Chat(props) {
 								<SendIcon />
 							</IconButton>
 						</Tooltip>
+						{/* </div> */}
 					</Paper>
 
 				</form>

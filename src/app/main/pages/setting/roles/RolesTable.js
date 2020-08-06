@@ -23,7 +23,7 @@ import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 
 function RolesTable(props) {
 
-	function closeDialog(val){
+	function closeDialog(val) {
 		setOpen(false)
 		props.onClose(val)
 	}
@@ -38,14 +38,14 @@ function RolesTable(props) {
 	// const [data, setData] = useState(TableData);
 	const [page, setPage] = useState(0);
 	// const [data2, setData2] = useState(data);
-	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
+	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
 	const [rowsPerPage, setRowsPerPage] = useState(10);
-	const[dialogData,setDialogData]=useState({
-		enabled:'',
-		id:'0',
-		name:'',
-		description:'',
-		permission:[]
+	const [dialogData, setDialogData] = useState({
+		enabled: '',
+		id: '0',
+		name: '',
+		description: '',
+		permission: []
 	})
 	const [order, setOrder] = useState({
 		direction: 'asc',
@@ -123,7 +123,7 @@ function RolesTable(props) {
 			);
 		}
 	}
-	
+
 	// function handleSelectAllClick(event) {
 	// 	if (event.target.checked) {
 	// 		setSelected(data.map(n => n.id));
@@ -131,36 +131,36 @@ function RolesTable(props) {
 	// 	}
 	// 	setSelected([]);
 	// }
-    let  loadPermissions = () => {
-        return CoreHttpHandler.request('permissions', 'listing', {
-            columns: "id, title",
-            sortby: "ASC",
-            orderby: "id",
-            where: "displayed = $1",
-            values: true,
-            page: 0,
-            limit: 0
-        }, null, null, true);
-    };
+	let loadPermissions = () => {
+		return CoreHttpHandler.request('permissions', 'listing', {
+			columns: "id, title",
+			sortby: "ASC",
+			orderby: "id",
+			where: "displayed = $1",
+			values: true,
+			page: 0,
+			limit: 0
+		}, null, null, true);
+	};
 
 	function handleClick(n) {
-		console.log(n,'nnnnnnnnnnnnnn');
+		console.log(n, 'nnnnnnnnnnnnnn');
 
 		// loadPermissions = () => {
-        //     return CoreHttpHandler.request('permissions', 'listing', {
-        //         columns: "id, title",
-        //         sortby: "ASC",
-        //         orderby: "id",
-        //         where: "displayed = $1",
-        //         values: true,
-        //         page: 0,
-        //         limit: 0
-        //     }, null, null, true);
-        // };
+		//     return CoreHttpHandler.request('permissions', 'listing', {
+		//         columns: "id, title",
+		//         sortby: "ASC",
+		//         orderby: "id",
+		//         where: "displayed = $1",
+		//         values: true,
+		//         page: 0,
+		//         limit: 0
+		//     }, null, null, true);
+		// };
 		// loadPermissions().then((response) => {
 		// 	const permissions = response.data.data.list.data
-        //     console.log(permissions,'in ')
-        //     // setPermissions(tableData)
+		//     console.log(permissions,'in ')
+		//     // setPermissions(tableData)
 		// 	setDialogData({
 		// 		role: {
 		// 			id: n.id,
@@ -174,18 +174,18 @@ function RolesTable(props) {
 		// 	});
 
 		// });
-		console.log(dialogData,'i am dialog data')
+		console.log(dialogData, 'i am dialog data')
 
 		setOpen(true)
 		setDialogData({
-			enabled:n.enabled,
-			id:n.id,
-			name:n.name,
-			description:n.description,
-			permission:n.permissions
-			
-	})
-		
+			enabled: n.enabled,
+			id: n.id,
+			name: n.name,
+			description: n.description,
+			permission: n.permissions
+
+		})
+
 	}
 
 
@@ -218,20 +218,24 @@ function RolesTable(props) {
 	// {
 	// 	{search()}
 	// }
-	
+
 	// if(searchVal.length===0)
 	// {
 	// 	{getData()}
 	// }
 
 
-	
 
-//    if(props.PressedVal==8){
-// 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-// }
 
-	
+	//    if(props.PressedVal==8){
+	// 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+	// }
+
+	const hadleDelete = (event,n) => {
+		event.stopPropagation()
+		console.log(n, 'eventtt')
+
+	}
 	return (
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
@@ -283,23 +287,26 @@ function RolesTable(props) {
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 											{n.id}
 										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px' ,padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 											{n.name}
 										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px' ,padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 											{n.description}
 										</TableCell>
 
-										<TableCell component="th" scope="row" align="center"  style={{fontSize:'12px' ,padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 											{n.enabled ? (
 												<Icon className="text-green text-16">check_circle</Icon>
 											) : (
 													<Icon className="text-red text-16">cancel</Icon>
 												)}
 										</TableCell>
+										{/* <TableCell className="w-64 text-center" padding="none">
+											<Icon onClick={event => hadleDelete(event,n)} className="text-16">delete_outline</Icon>
+										</TableCell> */}
 
 										{/* 
 										<TableCell component="th" scope="row" align="right">
@@ -343,7 +350,7 @@ function RolesTable(props) {
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 			/>
-			{open ? <RolesDialog  isOpen={open} closeDialog={closeDialog} type="Update"  data={dialogData} />:null}
+			{open ? <RolesDialog isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData} /> : null}
 		</div>
 	);
 }
