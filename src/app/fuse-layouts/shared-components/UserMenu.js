@@ -181,7 +181,7 @@ const UserMenu = (props) => {
 						{user.role.toString()}
 					</Typography>
 				</div>
-					<div style={{marginTop:'-7px',marginLeft:'2px'}}>
+					<div style={{marginTop:'-7px',marginLeft:'2px',marginRight:'20%'}}>
 				<Icon className="text-16 hidden sm:flex" variant="action">
 					keyboard_arrow_down
 				</Icon>

@@ -100,6 +100,8 @@ form label {
         background: transparent;
     }
 }
+
+
 input:-webkit-autofill {
     animation-delay: 1s;
     animation-name: autofill!important;

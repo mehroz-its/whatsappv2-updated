@@ -33,6 +33,23 @@ const BodyStyle = createMuiTheme({
 	  }
 	}
   });
+  
+const PaginationStyle = createMuiTheme({
+	overrides: {
+		MuiTypography: {
+		root: {
+		  paddingTop: 4,
+		  fontSize:'1.1rem',
+		  paddingBottom: 4,
+		  height:'5%'
+		//   "&:last-child": {
+		// 	paddingRight: 5
+		//   }
+		}
+	  }
+	}
+  });
+
 
 const HeaderStyle = createMuiTheme({
 	overrides: {
@@ -51,6 +68,30 @@ const HeaderStyle = createMuiTheme({
 	}
   });
 
+  const useStyles = makeStyles((theme) => ({
+	addButton: {
+		position: 'absolute',
+		bottom: 50,
+		right: 50,
+		zIndex: 99
+	},
+	formControl: {
+		margin: theme.spacing(1),
+		minWidth: 330,
+
+	},
+	margin: {
+	  
+		color:'white',
+		paddingLeft:'14px',
+		
+		paddingRight:'14px',
+		paddingTop:'5px',
+		paddingBottom:'5px',
+		fontSize:'12px',
+	   
+	  },
+}));
 
 
 const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
@@ -68,8 +109,9 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 	);
 });
 
-const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUnBlockDialog,openBlockDialog, blockRowData ,onBlockDialogClose}) => {
+const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, props,openUnBlockDialog,openBlockDialog, blockRowData ,onBlockDialogClose}) => {
 	const [open, setOpen] = React.useState(false);
+	const classes = useStyles(props);
 	const handleClose = (val) => {
 		console.log(val,'valuesssdsdsdsdsd');
 		giveVal(val)
@@ -216,12 +258,11 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 				</TableBody>
 
 				<TableFooter>
+				
 					<TableRow>
+				
 						<TablePagination
-							classes={{
-								root: 'overflow-hidden',
-								spacer: 'w-0 max-w-0'
-							}}
+							
 							rowsPerPageOptions={[5, 10, 25, { label: 'All', value: data.length + 1 }]}
 							colSpan={5}
 							count={data.length}
@@ -231,11 +272,14 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, openUn
 								inputProps: { 'aria-label': 'rows per page' },
 								native: false
 							}}
+						
 							onChangePage={handleChangePage}
 							onChangeRowsPerPage={handleChangeRowsPerPage}
 							ActionsComponent={ContactsTablePaginationActions}
 						/>
+					
 					</TableRow>
+			
 				</TableFooter>
 			</MaUTable>
 		</TableContainer>

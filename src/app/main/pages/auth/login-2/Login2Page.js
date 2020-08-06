@@ -337,7 +337,8 @@ const Login2Page = (props) => {
 
                         {/* <img className="w-128 mb-32" src="../../../../../images/itsAppLogo.png" alt="logo" /> */}
                         <div style={{marginLeft:-200}}>
-                        <img src={require('../../../../../images/logo_animation.gif')}
+                        <img src={require('../../../../../images/LOGO-1-01.gif')}
+                        style={{width:400,marginLeft:'-6%'}}
                     />
                     </div>
 
@@ -379,7 +380,7 @@ const Login2Page = (props) => {
             <FuseAnimate animation={{ translateX: [0, '100%'] }}>
                 <Card className="w-full max-w-400 mx-auto m-16 md:m-0" square>
                     <CardContent className="flex flex-col items-center justify-center p-32 md:p-48 md:pt-128 sm:p-0">
-                        <Typography variant="h6" className="md:w-full mb-16 sm:mb-0 text-center text-13 sm:text-20 md:text-20 lg:text-25 xl:text-30 sm:p-0">
+                        <Typography  style={{marginTop:'2%'}} variant="h6" className="mt-32 md:w-full mb-16 sm:mb-0 text-center text-13 sm:text-20 md:text-20 lg:text-25 xl:text-30 sm:p-0">
                             LOGIN TO YOUR ACCOUNT
 						</Typography>
 
@@ -426,7 +427,7 @@ const Login2Page = (props) => {
                             />
                        
 
-                            <div className="flex items-center justify-between">
+                            <div className="flex items-center justify-between mt-16 mb-32">
                                 {/* <FormControl>
 									<FormControlLabel
 										control={

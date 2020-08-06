@@ -302,7 +302,7 @@ console.log(value,'vlsssssssssssssssssss');
 		>
 			<AppBar position="static" elevation={1}>
 			
-				<div className="flex flex-col items-center justify-center pb-10 pt-10">
+				<div className="flex flex-col items-center justify-center pb-10 pt-16">
 				
 					<Avatar className="w-56 h-56" alt="contact avatar" src={form.avatar} />
 					{contactDialog.type === 'edit' && (
@@ -334,7 +334,7 @@ console.log(value,'vlsssssssssssssssssss');
 						/>
 					</div> */}
 					<div className="flex">
-						<div className="min-w-48 pt-20" style={{marginTop:'-10px'}}>
+						<div className="min-w-48 pt-24" >
 							<Icon color="action">phone</Icon>
 						</div>
 						<TextField

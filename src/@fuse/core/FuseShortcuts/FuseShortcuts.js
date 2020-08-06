@@ -85,13 +85,13 @@ function FuseShortcuts(props) {
 		return (
 			<Link to={item.url} className={classes.item} role="button">
 				<MenuItem key={item.id}>
-					<ListItemIcon className="min-w-40">
+					{/* <ListItemIcon className="min-w-40">
 						{item.icon ? (
 							<Icon>{item.icon}</Icon>
 						) : (
 							<span className="text-20 font-bold uppercase text-center">{item.title[0]}</span>
 						)}
-					</ListItemIcon>
+					</ListItemIcon> */}
 					<ListItemText primary={item.title} />
 					<IconButton
 						onClick={ev => {
@@ -129,11 +129,11 @@ function FuseShortcuts(props) {
 							<Link to={item.url} key={item.id} className={classes.item} role="button">
 								<Tooltip
 									title={item.title}
-									placement={props.variant === 'horizontal' ? 'bottom' : 'left'}
+									placement={props.variant === 'horizontal' ? 'center' : 'center'}
 								>
-									<IconButton className="w-40 h-30 p-0">
+									<IconButton className="w-40 h-10 p-0" style={{marginTop:'-37%'}}>
 										{item.icon ? (
-											<Icon>{item.icon}</Icon>
+											<Icon >{item.icon}</Icon>
 										) : (
 											<span className="text-20 font-bold uppercase">{item.title[0]}</span>
 										)}
