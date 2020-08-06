@@ -199,30 +199,31 @@ let NewNav = navigationConfig
 if (userAcl !== null) {
 	let it = Object.keys(userAcl)
 	var itv;
-	// console.log("Parent userAcl", userAcl);
-	NewNav.map((item, i) => {
+	NewNav.map((item, ii) => {
 		if (item.children) {
 			var i;
 			for (i = 0; i < item.children.length; i++) {
 				if (item.children[i].url) {
-					// it.map((itt, iti) => {
-					console.log(" Second [`FRONT:${item.children[i].url}`]", [`FRONT:${item.children[i].url}`]);
 					if (!userAcl.hasOwnProperty([`FRONT:${item.children[i].url}`])) {
-						console.log("second here");
-						item.children.splice(i, 1);
+						item.children.splice(i, item.children.length);
 					}
 				}
 				else {
-					var sub;
-					for (let sub = 0; sub < item.children[i].children.length; sub++) {
-						// if (item.children[i].children[sub].url) {
-							console.log("Parent Usub", item.children[i].children[sub].url);
-							// if (!userAcl.hasOwnProperty(`FRONT:${item.children[i].children[sub].url}`)) {
-							// 	console.log("Parent  hasOwnProperty Usub", `FRONT:${item.children[i].children[sub].url}`);
-							// 	item.children[i].children.splice(sub, 1);
-							// }
-						// }
+					if (item.children[i].children.length > 0) {
+						console.log("item.children[i].children :" ,  item.children[i].children);
+						item.children[i].children.map((child, childIndex) => {
+							if (child.url) {
+								if (!userAcl.hasOwnProperty(`FRONT:${child.url}`)) {
+									item.children[i].children.splice(childIndex, item.children[i].children.length);
+								}
+							}
+						})
 					}
+					else{
+						alert("elsee ")
+						// item.children[i].children.splice(item.children[i], 0);
+					}
+
 				}
 			}
 		}
