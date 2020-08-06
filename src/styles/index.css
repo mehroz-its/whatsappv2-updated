@@ -121,21 +121,4 @@ input:focus
 @import 'tailwind.css';
 
 /* chat window text overflow */
-.text-message-w-control {
-    width: 60vw;
-}
-
-@media only screen and (max-width: 1920px) {
-}
-
-@media only screen and (max-width: 1366px) {
-    .text-message-w-control {
-        width: 55vw;
-    }
-}
-
-@media only screen and (max-width: 768px) {
-}
-
-@media only screen and (max-width: 600px) {
-}
+.text-message-w-control { width: auto; }
