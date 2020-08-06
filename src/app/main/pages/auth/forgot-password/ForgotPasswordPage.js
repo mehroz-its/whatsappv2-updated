@@ -110,31 +110,34 @@ function ForgotPasswordPage(props) {
 
 	return (
 		<div className={clsx('flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}
-		style={{backgroundImage: 'url(' + require('../../../../../images/background-04.jpg') + ')',
-        width:'100%',
-        height:'500px',
-        backgroundSize:'cover'
-    }}>
+			style={{
+				backgroundImage: 'url(' + require('../../../../../images/background-04.jpg') + ')',
+				backgroundSize: 'cover'
+			}}>
 			<div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
 				<FuseAnimate animation="transition.expandIn">
-					<img  style={{ width: 500, height: 100, }} src={require('../../../../../images/logo_animation.gif')} alt="logo" />
+					{/* <img className="w-128 mb-32" src="../../../../../images/itsAppLogo.png" alt="logo" /> */}
+					<div style={{ marginLeft: -200 }}>
+						<img src={require('../../../../../images/LOGO-1-01.gif')}
+							style={{ width: 400, marginLeft: '-6%' }}
+						/>
+					</div>
 				</FuseAnimate>
-
 				<FuseAnimate animation="transition.slideUpIn" delay={300}>
-                    <Typography variant="h3" color="inherit" className="font-light mt-20">
+				<Typography variant="h3" color="inherit" className="font-light mt-20">
                         Welcome to Intellexal Solutions!
 					</Typography>
-                </FuseAnimate>
-                <FuseAnimate animation="transition.slideUpIn" delay={400}>
-                    <Typography variant="subtitle1" color="inherit" className="font-light mt-20 ">
-                    Using our experience from across industries and continents, we tailor solutions that fit your business needs.
+				</FuseAnimate>
+				<FuseAnimate animation="transition.slideUpIn" delay={400}>
+					<Typography variant="subtitle1" color="inherit" className="font-light mt-20 ">
+						Using our experience from across industries and continents, we tailor solutions that fit your business needs.
 					</Typography>
-                </FuseAnimate>
-                <FuseAnimate animation="transition.slideUpIn" delay={500}>
-                    <Typography variant="subtitle1" color="inherit" className="font-light mt-20">
-                    As a WhatsApp Business Solution Provider, we enable enterprises to connect to WhatsApp directly – either through our API or using our web-based interface.
+				</FuseAnimate>
+				<FuseAnimate animation="transition.slideUpIn" delay={500}>
+					<Typography variant="subtitle1" color="inherit" className="font-light mt-20">
+						As a WhatsApp Business Solution Provider, we enable enterprises to connect to WhatsApp directly – either through our API or using our web-based interface.
 					</Typography>
-                </FuseAnimate>
+				</FuseAnimate>
 
 				{/* <FuseAnimate delay={400}>
 					<Typography variant="subtitle1" color="inherit" className="max-w-512 mt-16">
@@ -157,8 +160,8 @@ function ForgotPasswordPage(props) {
 							className="flex flex-col justify-center w-full"
 						// onSubmit={handleSubmit}
 						>
-								{alertmessage ? (
-								<Alert style={{marginBottom:'10px'}}  severity={alertseveirty}>
+							{alertmessage ? (
+								<Alert style={{ marginBottom: '10px' }} severity={alertseveirty}>
 									{alertmessage}
 								</Alert>
 							) : null}
