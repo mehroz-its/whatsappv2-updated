@@ -47,8 +47,13 @@ function ResetPasswordPage2(props) {
 	return (
 		<div className={clsx(classes.root, 'flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}>
 			<div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
-				<FuseAnimate animation="transition.expandIn">
-					<img   style={{ width: 500, height: 100, }} src={require('../../../../../images/itsAppLogo.png')} alt="logo" />
+			<FuseAnimate animation="transition.expandIn">
+					{/* <img className="w-128 mb-32" src="../../../../../images/itsAppLogo.png" alt="logo" /> */}
+					<div style={{ marginLeft: -200 }}>
+						<img src={require('../../../../../images/LOGO-1-01.gif')}
+							style={{ width: 400, marginLeft: '-6%' }}
+						/>
+					</div>
 				</FuseAnimate>
 
 				<FuseAnimate animation="transition.slideUpIn" delay={300}>
