@@ -203,6 +203,7 @@ if (userAcl !== null) {
 		if (item.children) {
 			var i;
 			for (i = 0; i < item.children.length; i++) {
+				console.log("item.children : ", item.children[i]);
 				if (item.children[i].url) {
 					if (!userAcl.hasOwnProperty([`FRONT:${item.children[i].url}`])) {
 						item.children.splice(i, item.children.length);
@@ -210,26 +211,38 @@ if (userAcl !== null) {
 				}
 				else {
 					if (item.children[i].children.length > 0) {
-						console.log("item.children[i].children :" ,  item.children[i].children);
-						item.children[i].children.map((child, childIndex) => {
-							if (child.url) {
-								if (!userAcl.hasOwnProperty(`FRONT:${child.url}`)) {
-									item.children[i].children.splice(childIndex, item.children[i].children.length);
+						console.log("item.children[i].children :", item.children[i].children);
+						if (item.children[i].children.length > 0) {
+							item.children[i].children.map((child, childIndex) => {
+								if (child.url) {
+									if (!userAcl.hasOwnProperty(`FRONT:${child.url}`)) {
+										item.children[i].children.splice(childIndex, item.children[i].children.length);
+									}
 								}
-							}
-						})
-					}
-					else{
-						alert("elsee ")
-						// item.children[i].children.splice(item.children[i], 0);
+							})
+						}
+
 					}
 
 				}
 			}
+
 		}
 	})
 }
-
+let uzair = NewNav;
+console.log("uzair : ", uzair);
+uzair.map((uzairitem, uzairii) => {
+	if (uzairitem.children.length > 0) {
+	uzairitem.children.map((uzairitemCh, uzairitemChInc) => {
+		console.log("uzairitemCh : ", uzairitemCh);
+		if (uzairitemCh.children <= 0) {
+			uzairitem.children.splice(uzairitemChInc, 1);
+		}
+	})
+	
+	}
+})
 console.log("NewNav :", NewNav);
 
-export default NewNav;
+export default uzair;
