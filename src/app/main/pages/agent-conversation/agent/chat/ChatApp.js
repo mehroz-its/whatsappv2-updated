@@ -6,7 +6,7 @@ import Hidden from '@material-ui/core/Hidden';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
-
+import ChatSidebar from '../NewUiPages/ChatSidebar'
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -15,6 +15,8 @@ import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Chat from './Chat';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 import ChatsSidebar from './ChatsSidebar';
 import ContactSidebar from './ContactSidebar';
 import StatusIcon from './StatusIcon';
@@ -165,8 +167,8 @@ const chat = null
 
 function ChatApp(props) {
 	const dispatch = useDispatch();
-	const { numberr, selectedAgent } = props
-	console.log(numberr, 'propssss')
+	const { numberr } = props
+	console.log(numberr, 'propssss',props)
 
 	// const chat = useSelector(({ chatApp }) => chatApp.chat);
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
@@ -179,7 +181,8 @@ function ChatApp(props) {
 	const [latestMessageSender, setlatestMessageSender] = React.useState(null);
 	const [NewAgent, setNewAgent] = React.useState(selectedAgent);
 	const [numbers, setnumbers] = React.useState(numberr);
-
+	const [viewChat,setViewChat] = React.useState(null)
+	const [selectedAgent,setSelectedAgent]  = React.useState(null)
 	const [messages, setmessages] = React.useState([]);
 	const [NewMessages, setNewMessages] = React.useState([]);
 	const [showLatestMessage, setshowLatestMessage] = React.useState(false);
@@ -381,6 +384,9 @@ function ChatApp(props) {
 	const [shiftAgentsList, setshiftAgentsList] = React.useState([]);
 	const [dialogOpenShift, setdialogOpenShift] = React.useState(false);
 	const [sendActionType, setsendActionType] = React.useState(null);
+	const [snackbaropen, setSnackBarOpen] = React.useState(false)
+	const [snackbarmessage, setSnackBarMessage] = React.useState('')
+	const [ok, setOK] = React.useState('')
 	const [sendDialogOpen, setsendDialogOpen] = React.useState(false);
 	const [sendDialogTitle, setsendDialogTitle] = React.useState(false);
 	const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
@@ -457,6 +463,7 @@ function ChatApp(props) {
 		'aria-describedby': "form-dialog-title"
 	};
 	useEffect(() => {
+	
 		setNewAgent(selectedAgent)
 		console.log("numbers :L ", numbers);
 		console.log("getNumbers use efffact = > ", selectedRecipient);
@@ -467,8 +474,25 @@ function ChatApp(props) {
 		return () => {
 			clearInterval(int_MessageLists);
 		}
-	}, [numberr, selectedRecipient]);
+	}, [selectedAgent]);
 
+	// const getAgentsCustomers = () => {
+	// 	console.log(selectedAgent,'agent inside getAgent ');
+	// 	let params = {
+	// 		agentId: selectedAgent
+	// 	}
+	// 	CoreHttpHandler.request('conversations', 'agents_customer_list', {
+	// 		params
+	// 	}, (_response) => {
+	// 		console.log("_response  ", _response);
+	// 		const numbers = _response.data.data.customers;
+	// 		console.log("numbers : ", numbers);
+	// 		setnumbers(numbers)
+	// 		// setViewChat(true)
+	// 	}, (error) => {
+	// 		console.log("error  ", error);
+	// 	});
+	// }
 
 	const clearData = () => {
 		setselectedRecipient(null)
@@ -738,7 +762,36 @@ function ChatApp(props) {
 
 		});
 	}
+
+
+	const Agent = (value) => {
+		setSelectedAgent(value)
+		props.Agent(value)
+		setViewChat(true)
+		console.log(viewChat, value,selectedAgent,'i am in main')
+	}
+
+	console.log(numberr,'numberrrrrrrrrrrrrrrrrr');
+// if(numberr.length==0)
+// {
+// 	setSnackBarMessage("No Contacts Found For The Selected Agent")
+// 	setSnackBarOpen(true)
+// 	setOK("error")
+// }
+
 	return (
+<>
+<Snackbar
+anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+open={snackbaropen}
+autoHideDuration={3000}
+onClose={()=>setSnackBarOpen(false)}
+>
+<Alert variant="filled" severity={ok}>
+	{snackbarmessage}
+</Alert>
+</Snackbar>
+
 		<div className={clsx(classes.root)}>
 			<div className={classes.topBg} />
 			<div className={clsx(classes.contentCardWrapper, 'container')}>
@@ -767,9 +820,28 @@ function ChatApp(props) {
 							<ChatsSidebar numbers={numberr} onContactClick={(e) => { selectedRecipientt(e) }} />
 						</Drawer>
 					</Hidden>
+
+					{/* Double Drawer */}
+
 					<Hidden smDown>
 						<Drawer
-							className="h-full z-20"
+						
+							variant="permanent"
+							open
+							classes={{
+								paper: classes.drawerPaper
+							}}
+						>
+							<ChatSidebar agents={props.agents}   Agent={Agent}/>
+						</Drawer>
+					</Hidden>
+					{
+					
+					numberr.length!=0 ?
+					<Hidden smDown>
+			
+						<Drawer
+						
 							variant="permanent"
 							open
 							classes={{
@@ -778,7 +850,10 @@ function ChatApp(props) {
 						>
 							<ChatsSidebar numbers={numberr} onContactClick={(e) => { selectedRecipientt(e) }} />
 						</Drawer>
-					</Hidden>
+					</Hidden> :null
+}
+   
+					{/* Double Drawer */}
 					<Drawer
 						className="h-full absolute z-30"
 						variant="temporary"
@@ -929,6 +1004,7 @@ function ChatApp(props) {
 			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Admin `} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
 
 		</div>
+		</>
 	);
 }
 

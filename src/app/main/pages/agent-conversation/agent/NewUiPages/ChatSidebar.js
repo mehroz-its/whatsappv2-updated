@@ -7,6 +7,7 @@ import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import List from '@material-ui/core/List';
+
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
@@ -22,8 +23,8 @@ import Box from '@material-ui/core/Box';
 import ContactListItem from './ContactListItem';
 import PropTypes from 'prop-types';
 
-import StatusIcon from './StatusIcon';
-import * as Actions from './store/actions';
+// import StatusIcon from './StatusIcon';
+// import * as Actions from './store/actions';
 
 
 const user = {
@@ -75,8 +76,8 @@ function a11yProps(index) {
 		'aria-controls': `simple-tabpanel-${index}`,
 	};
 }
-function ChatsSidebar(props) {
-	const { numbers } = props
+function ChatSidebar(props) {
+	console.log(props,'props in chatsidebarrrrrrr');
 	const dispatch = useDispatch();
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
 	// console.log("contacts : " , props.numbers);
@@ -106,17 +107,17 @@ function ChatsSidebar(props) {
 		setStatusMenuEl(event.currentTarget);
 	}
 
-	function handleStatusSelect(event, status) {
-		event.preventDefault();
-		event.stopPropagation();
-		dispatch(
-			Actions.updateUserData({
-				...user,
-				status
-			})
-		);
-		setStatusMenuEl(null);
-	}
+	// function handleStatusSelect(event, status) {
+	// 	event.preventDefault();
+	// 	event.stopPropagation();
+	// 	dispatch(
+	// 		Actions.updateUserData({
+	// 			...user,
+	// 			status
+	// 		})
+	// 	);
+	// 	setStatusMenuEl(null);
+	// }
 
 	function handleStatusClose(event) {
 		event.preventDefault();
@@ -127,9 +128,18 @@ function ChatsSidebar(props) {
 	function handleSearchText(event) {
 		setSearchText(event.target.value);
 	}
-	let filtered = props.numbers
-	filtered = searchText.charAt(0) === '9' ? numbers.filter((number => number.number.includes(searchText))) : numbers.filter((number => number.name.toLowerCase().includes(searchText.toLowerCase())))
-			console.log('insideeeeeeeeee chatsideeeeeeeeeeeeee');
+
+	const handleChangeAgent = (event) => {
+		console.log('header',event)
+		// setselectedAgent(event.target.value)
+		props.Agent(event.id)
+
+		// getAgentsCustomers(event.target.value)
+
+	};
+
+	// let filtered = props.numbers
+	// filtered = searchText.charAt(0) === '9' ? numbers.filter((number => number.number.includes(searchText))) : numbers.filter((number => number.name.toLowerCase().includes(searchText.toLowerCase())))
 	return (
 		<div className="flex flex-col flex-auto h-full">
 			<AppBar position="static" color="default" elevation={1} className="">
@@ -174,8 +184,7 @@ function ChatsSidebar(props) {
 						</Menu> */}
 					</div>
 				</Toolbar>
-				{useMemo(
-					() => (
+				
 						<Toolbar className="px-16">
 							<Paper className="flex p-4 items-center w-full px-8 py-4 rounded-8" elevation={1}>
 								<Icon color="action">search</Icon>
@@ -193,9 +202,9 @@ function ChatsSidebar(props) {
 								/>
 							</Paper>
 						</Toolbar>
-					),
-					[searchText]
-				)}
+					
+				
+				
 			</AppBar>
 			<FuseScrollbars className="overflow-y-auto flex-1">
 				<List className="w-full">
@@ -224,25 +233,26 @@ function ChatsSidebar(props) {
 										}}
 										className="flex flex-col flex-shrink-0"
 									>
-										{props.numbers.length > 0 && (
+										{props.agents.length > 0 && (
 											<Typography className="font-300 text-20 px-8 py-8" color="secondary">
-												Chats
+												Agents
 											</Typography>
 										)}
-										{filtered.map(contactt => (
+										{props.agents.map(contactt => (
 											<ContactListItem
 												key={contactt.id}
 												contact={contactt}
-												onContactClick={(e) => props.onContactClick(contactt)}
+												onContactClick={(e) => handleChangeAgent(contactt)}
 											// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
 											// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
 											/>
 										))}
 									</FuseAnimateGroup>
-									
 								</>
 							);
-						}, [props.numbers,filtered])
+                        }, 
+                        // [props.numbers,filtered]
+                        )
 					}
 				</List>
 
@@ -253,4 +263,4 @@ function ChatsSidebar(props) {
 	);
 }
 
-export default ChatsSidebar;
+export default ChatSidebar;

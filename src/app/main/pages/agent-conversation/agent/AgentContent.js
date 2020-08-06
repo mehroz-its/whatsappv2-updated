@@ -1,15 +1,11 @@
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
+
 import _ from '@lodash';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+
+import ChatSidebar from '../agent/NewUiPages/ChatSidebar'
+
 import { makeStyles } from '@material-ui/core/styles';
-import MuiAlert from '@material-ui/lab/Alert';
-import clsx from 'clsx';
+
+import Drawer from '@material-ui/core/Drawer';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -18,15 +14,16 @@ import * as Actions from '../store/actions';
 import TableData from '../agentdata'
 import Chat from './chat/ChatApp'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
+import Agent from './Agent';
 
 function AgentContent(props) {
-	const { displayChat, selectedAgent } = props
+	 const { displayChat } = props
 	console.log(displayChat, 'props in agentsadasdas');
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 
-	const [selected, setSelected] = useState([]);
+	// const [selected, setSelectedAgent] = useState([]);
 	const [data, setData] = useState(TableData);
 	const [dropdowntitile, setDropDownTitle] = useState('Agents');
 	const [viewChat, setViewChat] = useState(displayChat);
@@ -54,32 +51,137 @@ function AgentContent(props) {
 	const [agents, setagents] = React.useState([]);
 	const [int_CustomerList, setint_CustomerList] = React.useState();
 	const [numbers, setnumbers] = React.useState([]);
-
+	const [selectedAgent,setSelectedAgent]  = React.useState(null)
 
 
 
 	const useStyles = makeStyles(theme => ({
+		// bootstrapFormLabel:{backgroundColor: 'red',},
+		messageRow: {
+			'&.contact': {
+				'& .bubble': {
+					backgroundColor: theme.palette.primary.main,
+					color: theme.palette.primary.contrastText,
+					borderTopLeftRadius: 5,
+					borderBottomLeftRadius: 5,
+					borderTopRightRadius: 20,
+					borderBottomRightRadius: 20,
+					'& .time': {
+						marginLeft: 12
+					}
+				},
+				'&.first-of-group': {
+					'& .bubble': {
+						borderTopLeftRadius: 20
+					}
+				},
+				'&.last-of-group': {
+					'& .bubble': {
+						borderBottomLeftRadius: 20
+					}
+				}
+			},
+			'&.me': {
+				paddingLeft: 40,
+	
+				'& .avatar': {
+					order: 2,
+					margin: '0 0 0 16px'
+				},
+				'& .bubble': {
+					marginLeft: 'auto',
+					backgroundColor: theme.palette.grey[300],
+					color: theme.palette.getContrastText(theme.palette.grey[300]),
+					borderTopLeftRadius: 20,
+					borderBottomLeftRadius: 20,
+					borderTopRightRadius: 5,
+					borderBottomRightRadius: 5,
+					'& .time': {
+						justifyContent: 'flex-end',
+						right: 0,
+						marginRight: 12
+					}
+				},
+				'&.first-of-group': {
+					'& .bubble': {
+						borderTopRightRadius: 20
+					}
+				},
+	
+				'&.last-of-group': {
+					'& .bubble': {
+						borderBottomRightRadius: 20
+					}
+				}
+			},
+			'&.contact + .me, &.me + .contact': {
+				paddingTop: 20,
+				marginTop: 20
+			},
+			'&.first-of-group': {
+				'& .bubble': {
+					borderTopLeftRadius: 20,
+					paddingTop: 13
+				}
+			},
+			'&.last-of-group': {
+				'& .bubble': {
+					borderBottomLeftRadius: 20,
+					paddingBottom: 13,
+					'& .time': {
+						display: 'flex'
+					}
+				}
+			}
+		},
 		root: {
-			width: '100%',
+			display: 'flex',
+			width: '250px',
+			height: '70px',
+			backgroundColor: 'white'
 		},
-		paper: {
-			width: '100%',
-			marginBottom: theme.spacing(2),
+		rootDocu: {
+			display: 'flex',
+			width: '350px',
+			height: '100px',
+			alignContent: 'center',
+			alignItems: 'center',
+			alignSelf: 'center',
+	
 		},
-		table: {
-			minWidth: 750,
+		contact: {
+			display: 'flex',
+			width: '40%',
+			height: '150px'
 		},
-		visuallyHidden: {
-			border: 0,
-			clip: 'rect(0 0 0 0)',
-			height: 1,
-			margin: -1,
-			overflow: 'hidden',
-			padding: 0,
-			position: 'absolute',
-			top: 20,
-			width: 1,
+		details: {
+			flexDirection: 'column',
 		},
+		content: {
+			padding: '10px 10px 0 15px'
+		},
+		cover: {
+			width: 120,
+			height: 120,
+			float: 'right'
+		},
+		playIcon: {
+			height: 20,
+			width: 20,
+		},
+		playbtn: {
+			padding: 5,
+			margin: '0 5px'
+		},
+		HeadIcon: {
+			width: '34%',
+			height: '62px',
+			float: 'right'
+		},
+		Headbtn: {
+			padding: 5,
+			margin: '0 5px'
+		}
 	}));
 
 	const classes = useStyles();
@@ -92,7 +194,7 @@ function AgentContent(props) {
 		
 		console.log("selectedAgent :", selectedAgent);
 		// alert(selectedAgent)
-		// getAgents()
+		 getAgents()
 		if (selectedAgent !== null) {
 			clearInterval(int_CustomerList)
 			getAgentsCustomers()		
@@ -194,34 +296,34 @@ function AgentContent(props) {
 		})
 	};
 
-	function handleSelectAllClick(event) {
-		if (event.target.checked) {
-			setSelected(data.map(n => n.id));
-			return;
-		}
-		setSelected([]);
-	}
+	// function handleSelectAllClick(event) {
+	// 	if (event.target.checked) {
+	// 		setSelected(data.map(n => n.id));
+	// 		return;
+	// 	}
+	// 	setSelected([]);
+	// }
 
 	function handleClick(n) {
 		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
 	}
 
-	function handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
+	// function handleCheck(event, id) {
+	// 	const selectedIndex = selected.indexOf(id);
+	// 	let newSelected = [];
 
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
+	// 	if (selectedIndex === -1) {
+	// 		newSelected = newSelected.concat(selected, id);
+	// 	} else if (selectedIndex === 0) {
+	// 		newSelected = newSelected.concat(selected.slice(1));
+	// 	} else if (selectedIndex === selected.length - 1) {
+	// 		newSelected = newSelected.concat(selected.slice(0, -1));
+	// 	} else if (selectedIndex > 0) {
+	// 		newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+	// 	}
 
-		setSelected(newSelected);
-	}
+	// 	setSelected(newSelected);
+	// }
 
 	function handleChangePage(event, value) {
 		setPage(value);
@@ -241,12 +343,30 @@ function AgentContent(props) {
 
 	}
 
+	const Agent = (value) => {
+		setSelectedAgent(value)
+		setViewChat(true)
+		console.log(viewChat, selectedAgent,value,'i am in main agent content')
+	}
+
+
+console.log('inside agent content');
 	return (
 		<div className="w-full flex flex-col" style={{ }}>
-			{
-				displayChat === true &&
-				<Chat numberr={numbers} selectedAgent={selectedAgent} reloadNumber={(e) => getAgentsCustomersReload()} />
-			}
+						{/* <Drawer
+							className="h-full z-20"
+							variant="permanent"
+							open
+							classes={{
+								paper: classes.drawerPaper
+							}}
+						>
+							<ChatSidebar  />
+						</Drawer> */}
+			
+			
+				<Chat agents={agents} Agent={Agent} numberr={numbers} selectedAgent={selectedAgent} reloadNumber={(e) => getAgentsCustomersReload()} />
+			
 		</div>
 	);
 }
