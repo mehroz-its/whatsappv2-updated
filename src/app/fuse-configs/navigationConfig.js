@@ -195,42 +195,40 @@ const navigationConfig = [
 		]
 	},
 ];
-console.log(" NewNav navigationConfig :", navigationConfig);
-console.log("userAcl navigationConfig :", userAcl);
 let NewNav = navigationConfig
 if (userAcl !== null) {
-	navigationConfig.map((item, i) => {
-		if (item.url) {
-			if (!userAcl[`FRONT:${item.url}`]) {
-				navigationConfig.splice(item, 1);
-			}
-		}
+	let it = Object.keys(userAcl)
+	var itv;
+	// console.log("Parent userAcl", userAcl);
+	NewNav.map((item, i) => {
 		if (item.children) {
-			item.children.map((child, ci) => {
-				if (child.url) {
-					if (!userAcl[`FRONT:${child.url}`]) {
-						console.log("child is url here", ci, child);
-						console.log("FRONT", `FRONT:${child.url}`);
-						item.children.splice(ci, 1);
+			var i;
+			for (i = 0; i < item.children.length; i++) {
+				if (item.children[i].url) {
+					// it.map((itt, iti) => {
+					console.log(" Second [`FRONT:${item.children[i].url}`]", [`FRONT:${item.children[i].url}`]);
+					if (!userAcl.hasOwnProperty([`FRONT:${item.children[i].url}`])) {
+						console.log("second here");
+						item.children.splice(i, 1);
 					}
 				}
-				else if (child.children) {
-					child.children.map((childd, cid) => {
-						if (childd.url) {
-							console.log("childd :", childd);
-							if (!userAcl[`FRONT:${childd.url}`]) {
-								console.log("child  child is url hereeeeee", ci, childd);
-								console.log("FRONT", `FRONT:${childd.url}`);
-								child.children.splice(childd, 1);
-							}
-						}
-					})
+				else {
+					var sub;
+					for (let sub = 0; sub < item.children[i].children.length; sub++) {
+						// if (item.children[i].children[sub].url) {
+							console.log("Parent Usub", item.children[i].children[sub].url);
+							// if (!userAcl.hasOwnProperty(`FRONT:${item.children[i].children[sub].url}`)) {
+							// 	console.log("Parent  hasOwnProperty Usub", `FRONT:${item.children[i].children[sub].url}`);
+							// 	item.children[i].children.splice(sub, 1);
+							// }
+						// }
+					}
 				}
-			})
+			}
 		}
 	})
 }
 
 console.log("NewNav :", NewNav);
 
-export default navigationConfig;
+export default NewNav;
