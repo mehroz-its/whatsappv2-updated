@@ -345,9 +345,15 @@ console.log(data,'dataaaa');
 					Cancel
              </Button>
 			 <ThemeProvider theme={theme}>
-				<Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} disabled={!name||!text||!canned_type} color="primary">
+			 {canned_type ==='text' ?
+		<Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} disabled={!name||!text||!canned_type} color="primary">
 					Done
          </Button>
+   : 
+<Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} disabled={!name||!uploadedFilePath||!canned_type} color="primary">
+					Done
+					</Button> 
+					}
 		 </ThemeProvider>
 			</DialogActions>
 		</Dialog>
