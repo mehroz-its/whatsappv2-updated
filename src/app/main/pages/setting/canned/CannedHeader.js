@@ -56,7 +56,7 @@ function CannedHeader(props) {
 					</FuseAnimate>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 						<Typography variant="h6" className="mx-12 hidden sm:flex">
-						<span style={{fontSize:'15px'}}>Canned Messages</span>
+						<span style={{fontSize:'15px'}}>Canned Replies</span>
 						</Typography>
 					</FuseAnimate>
 				</div>
