@@ -166,10 +166,10 @@ const UserMenu = (props) => {
 			onClick={userMenuClick}>
 				{user.data.photoURL ? (
 					<MuiThemeProvider theme={AvatarStyle}>
-					<Avatar   style={{marginTop:'-8px'}} alt={username.charAt(0)} src="../../../" />
+					<Avatar   style={{marginTop:'-8px',marginLeft:'6px'}} alt={username.charAt(0)} src="../../../" />
 				</MuiThemeProvider>
 				) : (<MuiThemeProvider theme={AvatarStyle}>
-						<Avatar style={{marginTop:'-8px'}} >{user.data.displayName[0]}</Avatar>
+						<Avatar style={{marginTop:'-8px',marginLeft:'6px'}} >{user.data.displayName[0]}</Avatar>
 					 </MuiThemeProvider>
 					 )}
 
