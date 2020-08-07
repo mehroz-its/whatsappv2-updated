@@ -113,7 +113,9 @@ input:focus
     outline: none;
     font-size: 12px
 }
-
+.audioContainer canvas{
+    display:none
+}
 @import 'print.css';
 
 @import 'tables.css';
