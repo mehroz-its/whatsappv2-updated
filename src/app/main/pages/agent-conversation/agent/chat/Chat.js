@@ -152,10 +152,12 @@ const useStyles = makeStyles(theme => ({
 				borderBottomLeftRadius: 5,
 				borderTopRightRadius: 6,
 				width: 'auto',
-    			maxWidth: '35vw',
+				maxWidth: '35vw',
 				borderBottomRightRadius: 6,
 				'& .time': {
-					marginLeft: 12
+					marginLeft: '0px',
+					marginBottom: '-11px',
+					marginTop: '5px'
 				}
 			},
 			'&.first-of-group': {
@@ -183,13 +185,15 @@ const useStyles = makeStyles(theme => ({
 				borderTopLeftRadius: 6,
 				borderBottomLeftRadius: 6,
 				width: 'auto',
-    			maxWidth: '35vw',
+				maxWidth: '35vw',
 				borderTopRightRadius: 5,
 				borderBottomRightRadius: 5,
 				'& .time': {
 					justifyContent: 'flex-end',
 					right: 0,
-					marginRight: 12
+					marginRight: 2,
+					marginBottom: '-11px',
+					marginTop: '5px',
 				}
 			},
 			'&.first-of-group': {
@@ -814,7 +818,7 @@ function Chat(props) {
 				{messages && messages.length > 0 ? (
 					<div className="flex flex-col pt-16 px-16 ltr:pl-56 rtl:pr-56 pb-40">
 						{messages.map((item, index) => {
-							console.log(item.sender_name,'itemitem')
+							console.log(item.sender_name, 'itemitem')
 							const contact = null;
 							// 	item.type === "inbound" ? user : contacts.find(_contact => _contact.id === item.who);
 							return (
@@ -840,7 +844,7 @@ function Chat(props) {
 												{ 'first-of-group': isFirstMessageOfGroup(item, index) },
 												{ 'last-of-group': isLastMessageOfGroup(item, index) },
 												index + 1 === messages.length && 'pb-96'
-											) 
+											)
 
 									}
 
@@ -853,18 +857,20 @@ function Chat(props) {
 									)} */}
 									{item.message_type === "text" ?
 										<div className="bubble flex relative items-center justify-center p-12 max-w-full">
-											{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px' }}>{item.message_body}</div> : null}
-											{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
+											{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px', textAlign: 'justify' }}>
+												{item.message_body}
+												<Typography className="time hidden w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm a')}</Typography>
+											</div> : null}											{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
 											{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
 											{item.message_type === "video" ? <VideoMessageType index={index} classes={classes} message={item} /> : null}
 											{item.message_type === "document" ? <DocumentMessageType index={index} classes={classes} message={item} /> : null}
 
-											<Typography
+											{/* <Typography
 												className="time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-no-wrap"
 												color="textSecondary"
 											>
 												{moment(item.dt).format('MMMM Do YYYY, h:mm:ss a')}
-											</Typography>
+											</Typography> */}
 										</div> :
 										<div className="flex relative items-center justify-center  max-w-full">
 											{/* {item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px' }}>{item.message_body}</div> : null} */}
@@ -872,13 +878,12 @@ function Chat(props) {
 											{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
 											{item.message_type === "video" ? <VideoMessageType index={index} classes={classes} message={item} /> : null}
 											{item.message_type === "document" ? <DocumentMessageType index={index} classes={classes} message={item} /> : null}
-
-											<Typography
+											{/* <Typography
 												className="time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-no-wrap"
 												color="textSecondary"
 											>
 												{moment(item.dt).format('MMMM Do YYYY, h:mm:ss a')}
-											</Typography>
+											</Typography> */}
 										</div>
 									}
 								</div>

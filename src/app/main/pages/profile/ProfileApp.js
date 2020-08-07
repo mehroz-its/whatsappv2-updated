@@ -144,23 +144,7 @@ function ProfileApp() {
                     {/* </div> */}
                 </div>
             }
-            // contentToolbar={
-            // 	<Tabs
-            // 		value={tabValue}
-            // 		onChange={handleChangeTab}
-            // 		indicatorColor="primary"
-            // 		textColor="primary"
-            // 		variant="scrollable"
-            // 		scrollButtons="off"
-            // 		className="w-full border-b-1 px-24"
-            // 	>
-            // 		<Tab className="text-14 font-600 normal-case" label="Business Details" />
-            // 		<Tab className="text-14 font-600 normal-case" label="WhatsApp Account Details" />
-            // 		<Tab className="text-14 font-600 normal-case" label="Create Profile" />
-            // 		{/* <Tab className="text-14 font-600 normal-case" label="WhatsApp Account Details" />
-            // 		<Tab className="text-14 font-600 normal-case" label="WhatsApp Account Details" /> */}
-            // 	</Tabs>
-            // }
+
             content={<ProfileContent onChange={updateHeaderData} updateImage={updatedProfileImage} urlImageHeader={profileImage} />}
 
         />
