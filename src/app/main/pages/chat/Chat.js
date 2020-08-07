@@ -862,8 +862,10 @@ function Chat(props) {
 	};
 	useEffect(() => {
 		setMessageTextNew(`${messageText + emo}`)
+		setChosenEmoji(false)
 		console.log("messageTextNew : ", messageText);
 		console.log("messageTextNew : ", emo);
+
 
 		if (messages) {
 			scrollToBottom();
