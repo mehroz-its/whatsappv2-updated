@@ -8,6 +8,8 @@ import PauseIcon from '@material-ui/icons/Pause';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import MicIcon from '@material-ui/icons/Mic'
+import moment from 'moment/moment';
+
 
 const VoiceMessageType = function (props) {
     console.log(props,'prpps');
@@ -77,6 +79,8 @@ const VoiceMessageType = function (props) {
                 <div style={{display:'flex',justifyContent:'flex-end',flex:1}}>
                 <a href={audioPath} target={'_blank'}><GetAppIcon style={{ width: 22, fontSize: 40, color: 'grey',marginTop:'20px' }} /></a>
                 </div>
+                <p style={{ width: "100%", margin: '10px', fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}</p>
+
             </Card>
         </div>
     )

@@ -857,20 +857,19 @@ function Chat(props) {
 									)} */}
 									{item.message_type === "text" ?
 										<div className="bubble flex relative items-center justify-center p-12 max-w-full">
-											{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px', textAlign: 'justify' }}>
-												{item.message_body}
-												<Typography className="time hidden w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm a')}</Typography>
-											</div> : null}											{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
+											{item.message_type === "text" ?
+												<div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px' }}>
+													{item.sender_name !== 'inbound' ?
+														<div style={{ marginTop: '-5px', paddingBottom: '10px', marginLeft: '-3px', fontWeight: '300', fontSize: '12px' }}> {`${item.sender_name.charAt(0).toUpperCase()}${item.sender_name.substring(1)}`}  </div> : null}
+													{item.message_body}
+													<Typography className="time hidden w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm a')}</Typography>
+												</div> : null}
+
+
+											{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
 											{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
 											{item.message_type === "video" ? <VideoMessageType index={index} classes={classes} message={item} /> : null}
 											{item.message_type === "document" ? <DocumentMessageType index={index} classes={classes} message={item} /> : null}
-
-											{/* <Typography
-												className="time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-no-wrap"
-												color="textSecondary"
-											>
-												{moment(item.dt).format('MMMM Do YYYY, h:mm:ss a')}
-											</Typography> */}
 										</div> :
 										<div className="flex relative items-center justify-center  max-w-full">
 											{/* {item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px' }}>{item.message_body}</div> : null} */}

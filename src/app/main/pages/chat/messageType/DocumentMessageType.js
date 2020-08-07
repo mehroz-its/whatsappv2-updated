@@ -7,6 +7,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import DescriptionIcon from '@material-ui/icons/Description';
+import moment from 'moment/moment';
+
 
 const DocumentMessageType = function (props) {
     const { message, index, classes } = props;
@@ -72,7 +74,9 @@ const DocumentMessageType = function (props) {
                            </a>
                         </span>
                         </div>
-                        <p style={{fontWeight:'bold',marginLeft:'1%',marginTop:'2%'}}>{caption}</p>
+                        <p style={{fontWeight:'bold',marginLeft:'1%',marginTop:'2%'}}>{caption}</p>                        <p style={{ width: "100%", margin: '10px',marginLeft:'1%',fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}</p>
+                        <p style={{ width: "100%", margin: '10px',marginLeft:'1%',fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}</p>
+
                       
                     </CardContent>
                 </div>

@@ -3,6 +3,8 @@ import IconButton from '@material-ui/core/IconButton';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import ReactPlayer from 'react-player'
 import { Card } from '@material-ui/core';
+import moment from 'moment/moment';
+
 
 const VideoMessageType = function (props) {
     const { message, index, http } = props;
@@ -33,8 +35,10 @@ const VideoMessageType = function (props) {
         {display && <Card style={{width: '350px', height: 'auto'}} className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
             <div style={{ position: "relative", display: 'inline-block' }}>
                 <ReactPlayer controls url={video} height="250px" width="350px" />
-                <p style={{ width: "100%", margin: '10px 5px 5px 0px' }}>{caption}</p>
+                <p style={{ width: "100%", margin: '10px 5px 5px 7px' }}>{caption}</p>
             </div>
+            <p style={{ width: "100%", margin: '10px', fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}</p>
+
         </Card>}
         </div>
     )
