@@ -113,6 +113,9 @@ input:-webkit-autofill {
     outline: none;
     font-size: 12px
 }
+.audioContainer canvas{
+    display: none
+}
 
 @import 'print.css';
 

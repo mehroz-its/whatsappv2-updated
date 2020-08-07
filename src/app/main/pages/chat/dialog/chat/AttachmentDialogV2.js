@@ -206,13 +206,13 @@ const AttachmentDialogV2 = function (props) {
                                         <Grid item xs={4}>
                                         <AudioAnalyser {...audioProps}>
                                                 {status !== "recording" &&
-                                                    <Button onClick={() => controlAudio("recording")} id='content-record-button' variant="contained" color="secondary" component="span" fullWidth>
+                                                    <Button onClick={() => controlAudio("recording")} id='content-record-button' variant="contained" color="primary" component="span" fullWidth>
                                                         {IconResolver.resolve("mic")}
                                                      Record
                                                        </Button>
                                                 }
                                                 {status === "recording" &&
-                                                    <Button onClick={() => controlAudio("paused")} id='content-record-button' variant="contained" color="secondary" component="span" fullWidth>
+                                                    <Button onClick={() => controlAudio("paused")} id='content-record-button' variant="contained" color="primary" component="span" fullWidth>
                                                         {IconResolver.resolve("mic")}
                                             paused
                                     </Button>}
