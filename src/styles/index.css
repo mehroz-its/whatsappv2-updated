@@ -108,7 +108,7 @@ input:-webkit-autofill {
     animation-fill-mode: both;
     -webkit-box-shadow:0 0 0 100px transparent inset!important;
 }
-input:focus
+:-webkit-textfield-decoration-container
 {
     outline: none;
     font-size: 12px

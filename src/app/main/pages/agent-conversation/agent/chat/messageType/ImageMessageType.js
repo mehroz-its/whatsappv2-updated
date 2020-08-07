@@ -4,6 +4,8 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
+import moment from 'moment/moment';
+
 
 const ImageMessageType = function (props) {
     const { message, index } = props;
@@ -40,7 +42,8 @@ const ImageMessageType = function (props) {
                     style={{ width: '100%', objectFit: 'cover' }}
                 />
                 {imageCaption !== '' ?   <p style={{ width: "100%", margin: '10px',fontWeight:'bold' }}>{imageCaption}</p> : null}
-              
+                <p style={{ width: "100%", margin: '10px' ,fontSize:'10px'}}>{moment(message.dt).format('MMM Do YY, h:mm a')}</p>
+
             </Card>
             {isOpen && (
                 <Lightbox mainSrc={imageSrc} onCloseRequest={() => setIsOpen(false)} />

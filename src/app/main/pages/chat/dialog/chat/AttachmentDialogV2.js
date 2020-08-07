@@ -204,18 +204,18 @@ const AttachmentDialogV2 = function (props) {
                                 {!loading ?
                                     <Grid container spacing={1}>
                                         <Grid item xs={4}>
-                                            <AudioAnalyser {...audioProps}>
+                                        <AudioAnalyser {...audioProps}>
                                                 {status !== "recording" &&
-                                                    <Button onClick={() => controlAudio("recording")} id='content-record-button' variant="contained" color="primary" component="span" style={{width:'99%',marginLeft:'2px'}}>
+                                                    <Button onClick={() => controlAudio("recording")} id='content-record-button' variant="contained" color="secondary" component="span" fullWidth>
                                                         {IconResolver.resolve("mic")}
                                                      Record
                                                        </Button>
                                                 }
                                                 {status === "recording" &&
-                                                    <Button onClick={() => controlAudio("paused")} id='content-record-button' variant="contained" color="primary" component="span" style={{width:'99%',marginLeft:'2px'}}>
+                                                    <Button onClick={() => controlAudio("paused")} id='content-record-button' variant="contained" color="secondary" component="span" fullWidth>
                                                         {IconResolver.resolve("mic")}
                                             paused
-                                         </Button>}
+                                    </Button>}
                                             </AudioAnalyser> 
                                              </Grid>
                                         <Grid item xs={4}>

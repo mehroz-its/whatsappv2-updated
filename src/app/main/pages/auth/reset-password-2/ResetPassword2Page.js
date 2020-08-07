@@ -47,7 +47,7 @@ function ResetPasswordPage2(props) {
 		ev.preventDefault();
 		// resetForm();
 		let data = {
-			resetToken:props.location.token,
+			resetToken: props.location.token,
 			password: form.password,
 			cpassword: form.passwordConfirm
 		}
@@ -67,7 +67,7 @@ function ResetPasswordPage2(props) {
 				setTimeout(() => {
 					props.history.push({
 						pathname: '/'
-						
+
 					});
 				}, 1000);
 			},
@@ -82,7 +82,7 @@ function ResetPasswordPage2(props) {
 					setTimeout(() => {
 						props.history.push({
 							pathname: '/pages/auth/forgot-password'
-							
+
 						});
 					}, 1000);
 				} else {
@@ -101,7 +101,7 @@ function ResetPasswordPage2(props) {
 	return (
 		<div className={clsx(classes.root, 'flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}>
 			<div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
-			<FuseAnimate animation="transition.expandIn">
+				<FuseAnimate animation="transition.expandIn">
 					{/* <img className="w-128 mb-32" src="../../../../../images/itsAppLogo.png" alt="logo" /> */}
 					<div style={{ marginLeft: -200 }}>
 						<img src={require('../../../../../images/LOGO-1-01.gif')}
@@ -111,20 +111,20 @@ function ResetPasswordPage2(props) {
 				</FuseAnimate>
 
 				<FuseAnimate animation="transition.slideUpIn" delay={300}>
-                    <Typography variant="h3" color="inherit" className="font-light mt-20">
-                        Welcome to Intellexal Solutions!
+					<Typography variant="h3" color="inherit" className="font-light mt-20">
+						Welcome to Intellexal Solutions!
 					</Typography>
-                </FuseAnimate>
-                <FuseAnimate animation="transition.slideUpIn" delay={400}>
-                    <Typography variant="subtitle1" color="inherit" className="font-light mt-20 ">
-                    Using our experience from across industries and continents, we tailor solutions that fit your business needs.
+				</FuseAnimate>
+				<FuseAnimate animation="transition.slideUpIn" delay={400}>
+					<Typography variant="subtitle1" color="inherit" className="font-light mt-20 ">
+						Using our experience from across industries and continents, we tailor solutions that fit your business needs.
 					</Typography>
-                </FuseAnimate>
-                <FuseAnimate animation="transition.slideUpIn" delay={500}>
-                    <Typography variant="subtitle1" color="inherit" className="font-light mt-20">
-                    As a WhatsApp Business Solution Provider, we enable enterprises to connect to WhatsApp directly – either through our API or using our web-based interface.
+				</FuseAnimate>
+				<FuseAnimate animation="transition.slideUpIn" delay={500}>
+					<Typography variant="subtitle1" color="inherit" className="font-light mt-20">
+						As a WhatsApp Business Solution Provider, we enable enterprises to connect to WhatsApp directly – either through our API or using our web-based interface.
 					</Typography>
-                </FuseAnimate>
+				</FuseAnimate>
 
 				{/* <FuseAnimate delay={400}>
 					<Typography variant="subtitle1" color="inherit" className="max-w-512 mt-16">
@@ -148,13 +148,14 @@ function ResetPasswordPage2(props) {
 						// onSubmit={handleSubmit}
 						>
 							{alertmessage ? (
-								<Alert style={{marginBottom:'10px'}}  severity={alertseveirty}>
+								<Alert style={{ marginBottom: '10px' }} severity={alertseveirty}>
 									{alertmessage}
 								</Alert>
 							) : null}
 
 							<TextField
-								className="mb-16"
+								className="mb-16 sm:mb-4"
+								size="small"
 								label="Password"
 								type="password"
 								name="password"
@@ -166,7 +167,8 @@ function ResetPasswordPage2(props) {
 							/>
 
 							<TextField
-								className="mb-16"
+								className="sm:mb-4"
+								size="small"
 								label="Password (Confirm)"
 								type="password"
 								name="passwordConfirm"
