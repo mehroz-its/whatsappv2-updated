@@ -97,7 +97,7 @@ function ResetPasswordPage2(props) {
 							onSubmit={handleSubmit}
 						>
 							<TextField
-								className="mb-16"
+                                className="mb-16 sm:mb-4"
 								label="Token"
 								autoFocus
 								type="token"
@@ -107,6 +107,8 @@ function ResetPasswordPage2(props) {
 								variant="outlined"
 								required
 								fullWidth
+								size="small"
+
 							/>
 
 							<Button
