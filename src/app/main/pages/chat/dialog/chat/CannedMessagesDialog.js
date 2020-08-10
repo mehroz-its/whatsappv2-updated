@@ -62,6 +62,8 @@ const CannedMessagesDialog = function (props) {
         setDocument(!document);
     };
     const { onDialogPropsChange, data } = props;
+    console.log(data,'datada5a')
+
     const classes = useStyles();
     const [audio, setAudio] = React.useState(false);
     const [video, setVideo] = React.useState(false);
@@ -74,7 +76,7 @@ const CannedMessagesDialog = function (props) {
 
                 <Grid item xs={10} onClick={audioHandleExpandClick}>
 
-                    <h4 style={{ fontWeight: 500, fontSize: 18, }}>Audio</h4>
+                    <h4 style={{ fontWeight: 500, fontSize: 18, }}>Audio{data.length >0 && data[1].list.length}</h4>
                 </Grid>
                 <Grid item xs={2}>  <IconButton
                     className={clsx(classes.expand, {
@@ -90,7 +92,7 @@ const CannedMessagesDialog = function (props) {
                     <Collapse in={audio} timeout="auto" unmountOnExit>
                         <div style={{ width: '100%' }}>
                             <List>
-                                {data.map((item, i) => (
+                                {data.length >0 && data[1].list.map((item, i) => (
                                     item.message_type === "audio" ?
 
                                         <ListItem onClick={(e) => onDialogPropsChange(item)} button key={`item-${i}`}>
@@ -104,7 +106,7 @@ const CannedMessagesDialog = function (props) {
                 </Grid>
 
                 <Grid item xs={10} onClick={videoHandleExpandClick}>
-                    <h4 style={{ fontWeight: 500, fontSize: 18, }}>Video</h4>
+                    <h4 style={{ fontWeight: 500, fontSize: 18, }}>Video{data.length >0 && data[2].list.length}</h4>
                 </Grid>
                 <Grid item xs={2}>  <IconButton
                     className={clsx(classes.expand, {
@@ -120,7 +122,7 @@ const CannedMessagesDialog = function (props) {
                     <Collapse in={video} timeout="auto" unmountOnExit>
                         <div style={{ width: '100%' }}>
                             <List>
-                                {data.map((item, i) => (
+                                {data.length >0 && data[2].list.map((item, i) => (
                                     item.message_type === "video" ?
 
                                         <ListItem onClick={(e) => onDialogPropsChange(item)} button key={`item-${i}`}>
@@ -134,7 +136,7 @@ const CannedMessagesDialog = function (props) {
                 </Grid>
 
                 <Grid item xs={10} onClick={textHandleExpandClick}>
-                    <h4 style={{ fontWeight: 500, fontSize: 18, }}>Text</h4>
+                    <h4 style={{ fontWeight: 500, fontSize: 18, }}>Text{data.length >0 && data[3].list.length}</h4>
                 </Grid>
                 <Grid item xs={2}>  <IconButton
                     className={clsx(classes.expand, {
@@ -150,7 +152,7 @@ const CannedMessagesDialog = function (props) {
                     <Collapse in={text} timeout="auto" unmountOnExit>
                         <div style={{ width: '100%' }}>
                             <List>
-                                {data.map((item, i) => (
+                                {data.length >0 && data[3].list.map((item, i) => (
                                     item.message_type === "text" ?
 
                                         <ListItem onClick={(e) => onDialogPropsChange(item)} button key={`item-${i}`}>
@@ -164,7 +166,7 @@ const CannedMessagesDialog = function (props) {
                 </Grid>
 
                 <Grid item xs={10} onClick={imageHandleExpandClick}>
-                    <h4 style={{ fontWeight: 500, fontSize: 18, }}>Image</h4>
+                    <h4 style={{ fontWeight: 500, fontSize: 18, }}>Image{data.length >0 && data[4].list.length}</h4>
                 </Grid>
                 <Grid item xs={2}>  <IconButton
                     className={clsx(classes.expand, {
@@ -180,7 +182,7 @@ const CannedMessagesDialog = function (props) {
                     <Collapse in={image} timeout="auto" unmountOnExit>
                         <div style={{ width: '100%' }}>
                             <List>
-                                {data.map((item, i) => (
+                                {data.length >0 && data[4].list.map((item, i) => (
                                     item.message_type === "image" ?
 
                                         <ListItem onClick={(e) => onDialogPropsChange(item)} button key={`item-${i}`}>
@@ -199,7 +201,7 @@ const CannedMessagesDialog = function (props) {
                 </Grid>
 
                 <Grid item xs={10} onClick={documentHandleExpandClick}>
-                    <h4 style={{ fontWeight: 500, fontSize: 18, }}>Document</h4>
+                    <h4 style={{ fontWeight: 500, fontSize: 18, }}>Document{data.length >0 && data[0].list.length}  </h4>
                 </Grid>
                 <Grid item xs={2}>  <IconButton
                     className={clsx(classes.expand, {
@@ -215,7 +217,7 @@ const CannedMessagesDialog = function (props) {
                     <Collapse in={document} timeout="auto" unmountOnExit>
                         <div style={{ width: '100%' }}>
                             <List>
-                                {data.map((item, i) => (
+                                {data.length >0 && data[0].list.map((item, i) => (
                                     item.message_type === "document" ?
 
                                         <ListItem onClick={(e) => onDialogPropsChange(item)} button key={`item-${i}`}>

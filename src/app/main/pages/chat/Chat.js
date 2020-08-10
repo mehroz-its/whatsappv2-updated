@@ -642,7 +642,7 @@ function Chat(props) {
 			limit: 0,
 		}, (response) => {
 			const data = response.data.data.list.data;
-			setcannedMessagesList(data)
+			// setcannedMessagesList(data)
 			setdialogOpenCanned(true)
 
 			var cannedData = [];
@@ -658,8 +658,8 @@ function Chat(props) {
 			cannedData.push({ dataType: 'video', list: videos });
 			cannedData.push({ dataType: 'text', list: texts });
 			cannedData.push({ dataType: 'image', list: images });
+			setcannedMessagesList(cannedData)
 
-			console.log("canned documents", cannedData);
 
 		}, (error) => {
 			// this.setSnackBarMessage('Failed to load canned messages, please try again later', 'error');
