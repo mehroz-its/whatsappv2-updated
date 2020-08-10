@@ -32,7 +32,8 @@ const CannedMessagesDialog = function (props) {
             paddingTop: '56.25%', // 16:9
         },
         expand: {
-            marginTop: 10,
+
+            // marginTop: 10,
             transform: 'rotate(0deg)',
             marginLeft: 'auto',
             transition: theme.transitions.create('transform', {
@@ -45,6 +46,9 @@ const CannedMessagesDialog = function (props) {
         avatar: {
             backgroundColor: red[500],
         },
+        ContinerExpand: {
+            backgroundColor: '#F9F9F9', alignSelf: 'center', padding: '0px 20px', alignItems: 'center', border: '1px solid #F1F1F1'
+        }
     }));
     const audioHandleExpandClick = () => {
         setAudio(!audio);
@@ -62,7 +66,7 @@ const CannedMessagesDialog = function (props) {
         setDocument(!document);
     };
     const { onDialogPropsChange, data } = props;
-    console.log(data,'datada5a')
+    console.log(data, 'datada5a')
 
     const classes = useStyles();
     const [audio, setAudio] = React.useState(false);
@@ -72,31 +76,33 @@ const CannedMessagesDialog = function (props) {
     const [document, setDocument] = React.useState(false);
     return (
         <DialogContent >
-            <Grid container style={{ margin: '0 0 20px 0' }}>
-
-                <Grid item xs={10} onClick={audioHandleExpandClick}>
-
-                    <h4 style={{ fontWeight: 500, fontSize: 18, }}>Audio{data.length >0 && data[1].list.length}</h4>
+            <Grid container className={classes.ContinerExpand}>
+                <Grid item xs={10} onClick={audioHandleExpandClick} >
+                    <h4 style={{ fontWeight: 500, fontSize: 17, }}>Audio{data.length > 0 && data[1].list.length}</h4>
                 </Grid>
-                <Grid item xs={2}>  <IconButton
-                    className={clsx(classes.expand, {
-                        [classes.expandOpen]: audio,
-                    })}
-                    onClick={audioHandleExpandClick}
-                    aria-expanded={audio}
-                    aria-label="show more"
-                >
-                    <ExpandMoreIcon />
-                </IconButton></Grid>
+                <Grid item xs={2}>
+                    <IconButton
+                        className={clsx(classes.expand, {
+                            [classes.expandOpen]: audio,
+                        })}
+                        onClick={audioHandleExpandClick}
+                        aria-expanded={audio}
+                        aria-label="show more" >
+                        <ExpandMoreIcon />
+                    </IconButton>
+                </Grid>
+            </Grid>
+
+            <Grid container style={{ margin: '0 0 20px 0', }}>
                 <Grid item xs={12}>
                     <Collapse in={audio} timeout="auto" unmountOnExit>
                         <div style={{ width: '100%' }}>
                             <List>
-                                {data.length >0 && data[1].list.map((item, i) => (
+                                {data.length > 0 && data[1].list.map((item, i) => (
                                     item.message_type === "audio" ?
 
                                         <ListItem onClick={(e) => onDialogPropsChange(item)} button key={`item-${i}`}>
-                                            <ListItemText  primary={`${item.message_name}`} secondary={`${item.message_text}`} />
+                                            <ListItemText primary={`${item.message_name}`} secondary={`${item.message_text}`} />
                                         </ListItem> : null
                                 ))}
                             </List>
@@ -104,29 +110,36 @@ const CannedMessagesDialog = function (props) {
                         </div>
                     </Collapse>
                 </Grid>
+            </Grid>
 
+            <Grid container className={classes.ContinerExpand}>
                 <Grid item xs={10} onClick={videoHandleExpandClick}>
-                    <h4 style={{ fontWeight: 500, fontSize: 18, }}>Video{data.length >0 && data[2].list.length}</h4>
+                    <h4 style={{ fontWeight: 500, fontSize: 17, }}>Video{data.length > 0 && data[2].list.length}</h4>
                 </Grid>
-                <Grid item xs={2}>  <IconButton
-                    className={clsx(classes.expand, {
-                        [classes.expandOpen]: video,
-                    })}
-                    onClick={videoHandleExpandClick}
-                    aria-expanded={video}
-                    aria-label="show more"
-                >
-                    <ExpandMoreIcon />
-                </IconButton></Grid>
+                <Grid item xs={2} >
+                    <IconButton
+                        className={clsx(classes.expand, {
+                            [classes.expandOpen]: video,
+                        })}
+                        onClick={videoHandleExpandClick}
+                        aria-expanded={video}
+                        aria-label="show more"
+                    >
+                        <ExpandMoreIcon />
+                    </IconButton>
+                </Grid>
+            </Grid>
+
+            <Grid container style={{ margin: '0 0 20px 0', }}>
                 <Grid item xs={12}>
                     <Collapse in={video} timeout="auto" unmountOnExit>
                         <div style={{ width: '100%' }}>
                             <List>
-                                {data.length >0 && data[2].list.map((item, i) => (
+                                {data.length > 0 && data[2].list.map((item, i) => (
                                     item.message_type === "video" ?
 
                                         <ListItem onClick={(e) => onDialogPropsChange(item)} button key={`item-${i}`}>
-                                            <ListItemText  primary={`${item.message_name}`} secondary={`${item.message_text}`} />
+                                            <ListItemText primary={`${item.message_name}`} secondary={`${item.message_text}`} />
                                         </ListItem> : null
                                 ))}
                             </List>
@@ -134,9 +147,11 @@ const CannedMessagesDialog = function (props) {
                         </div>
                     </Collapse>
                 </Grid>
+            </Grid>
 
+            <Grid container className={classes.ContinerExpand}>
                 <Grid item xs={10} onClick={textHandleExpandClick}>
-                    <h4 style={{ fontWeight: 500, fontSize: 18, }}>Text{data.length >0 && data[3].list.length}</h4>
+                    <h4 style={{ fontWeight: 500, fontSize: 17, }}>Text{data.length > 0 && data[3].list.length}</h4>
                 </Grid>
                 <Grid item xs={2}>  <IconButton
                     className={clsx(classes.expand, {
@@ -147,16 +162,21 @@ const CannedMessagesDialog = function (props) {
                     aria-label="show more"
                 >
                     <ExpandMoreIcon />
-                </IconButton></Grid>
+                </IconButton>
+                </Grid>
+            </Grid>
+
+            <Grid container style={{ margin: '0 0 20px 0', }}>
+
                 <Grid item xs={12}>
                     <Collapse in={text} timeout="auto" unmountOnExit>
                         <div style={{ width: '100%' }}>
                             <List>
-                                {data.length >0 && data[3].list.map((item, i) => (
+                                {data.length > 0 && data[3].list.map((item, i) => (
                                     item.message_type === "text" ?
 
                                         <ListItem onClick={(e) => onDialogPropsChange(item)} button key={`item-${i}`}>
-                                            <ListItemText  primary={`${item.message_name}`} secondary={`${item.message_text}`} />
+                                            <ListItemText primary={`${item.message_name}`} secondary={`${item.message_text}`} />
                                         </ListItem> : null
                                 ))}
                             </List>
@@ -164,9 +184,11 @@ const CannedMessagesDialog = function (props) {
                         </div>
                     </Collapse>
                 </Grid>
+            </Grid>
 
+            <Grid container className={classes.ContinerExpand}>
                 <Grid item xs={10} onClick={imageHandleExpandClick}>
-                    <h4 style={{ fontWeight: 500, fontSize: 18, }}>Image{data.length >0 && data[4].list.length}</h4>
+                    <h4 style={{ fontWeight: 500, fontSize: 17, }}>Image{data.length > 0 && data[4].list.length}</h4>
                 </Grid>
                 <Grid item xs={2}>  <IconButton
                     className={clsx(classes.expand, {
@@ -177,21 +199,25 @@ const CannedMessagesDialog = function (props) {
                     aria-label="show more"
                 >
                     <ExpandMoreIcon />
-                </IconButton></Grid>
+                </IconButton>
+                </Grid>
+            </Grid>
+
+            <Grid container style={{ margin: '0 0 20px 0', }}>
                 <Grid item xs={12}>
                     <Collapse in={image} timeout="auto" unmountOnExit>
                         <div style={{ width: '100%' }}>
                             <List>
-                                {data.length >0 && data[4].list.map((item, i) => (
+                                {data.length > 0 && data[4].list.map((item, i) => (
                                     item.message_type === "image" ?
 
                                         <ListItem onClick={(e) => onDialogPropsChange(item)} button key={`item-${i}`}>
-<img 
-      src={item.attachment_url}
-      alt="new" style={{width:'20%',marginRight:10}}
-      />
-      <ListItemText  primary={`${item.message_name}`} secondary={`${item.message_text}`} />
-                                        
+                                            <img
+                                                src={item.attachment_url}
+                                                alt="new" style={{ width: '20%', marginRight: 10 }}
+                                            />
+                                            <ListItemText primary={`${item.message_name}`} secondary={`${item.message_text}`} />
+
                                         </ListItem> : null
                                 ))}
                             </List>
@@ -199,9 +225,11 @@ const CannedMessagesDialog = function (props) {
                         </div>
                     </Collapse>
                 </Grid>
+            </Grid>
 
+            <Grid container className={classes.ContinerExpand}>
                 <Grid item xs={10} onClick={documentHandleExpandClick}>
-                    <h4 style={{ fontWeight: 500, fontSize: 18, }}>Document{data.length >0 && data[0].list.length}  </h4>
+                    <h4 style={{ fontWeight: 500, fontSize: 17, }}>Document{data.length > 0 && data[0].list.length}  </h4>
                 </Grid>
                 <Grid item xs={2}>  <IconButton
                     className={clsx(classes.expand, {
@@ -212,26 +240,30 @@ const CannedMessagesDialog = function (props) {
                     aria-label="show more"
                 >
                     <ExpandMoreIcon />
-                </IconButton></Grid>
-                <Grid item xs={12}>
-                    <Collapse in={document} timeout="auto" unmountOnExit>
-                        <div style={{ width: '100%' }}>
-                            <List>
-                                {data.length >0 && data[0].list.map((item, i) => (
-                                    item.message_type === "document" ?
-
-                                        <ListItem onClick={(e) => onDialogPropsChange(item)} button key={`item-${i}`}>
-                                            <ListItemText  primary={`${item.message_name}`} secondary={`${item.message_text}`} />
-                                        </ListItem> : null
-                                ))}
-                            </List>
-                            <Divider />
-                        </div>
-                    </Collapse>
+                </IconButton>
                 </Grid>
+            </Grid>
+
+            <Grid container style={{ margin: '0 0 20px 0', }}>
+            <Grid item xs={12}>
+                <Collapse in={document} timeout="auto" unmountOnExit>
+                    <div style={{ width: '100%' }}>
+                        <List>
+                            {data.length > 0 && data[0].list.map((item, i) => (
+                                item.message_type === "document" ?
+
+                                    <ListItem onClick={(e) => onDialogPropsChange(item)} button key={`item-${i}`}>
+                                        <ListItemText primary={`${item.message_name}`} secondary={`${item.message_text}`} />
+                                    </ListItem> : null
+                            ))}
+                        </List>
+                        <Divider />
+                    </div>
+                </Collapse>
+            </Grid>
 
             </Grid>
-        </DialogContent>
+        </DialogContent >
     );
 };
 
