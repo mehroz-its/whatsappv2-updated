@@ -25,7 +25,34 @@ import PropTypes from 'prop-types';
 import StatusIcon from './StatusIcon';
 import * as Actions from './store/actions';
 
+const contacts = [
+	{
+		avatar: "assets/images/avatars/alice.jpg",
+		id: "5725a680b3249760ea21de52",
+		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+		name: "Alice Freeman",
+		status: "online",
+		unread: "2",
+	},
+	{
+		avatar: "assets/images/avatars/Arnold.jpg",
+		id: "5725a680606588342058356d",
+		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+		name: "Arnold",
+		status: "do-not-disturb",
+		unread: "3"
+	},
+	{
+		avatar: "assets/images/avatars/Barrera.jpg",
+		id: "5725a68009e20d0a9e9acf2a",
+		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+		name: "Arnold",
+		status: "do-not-disturb",
+		unread: "3"
+	},
 
+
+]
 const user = {
 	avatar: "assets/images/avatars/profile.jpg",
 	chatList: [
@@ -46,7 +73,24 @@ const user = {
 	name: "John Doe",
 	status: "online"
 }
-
+const statusArr = [
+	{
+		title: 'Online',
+		value: 'online'
+	},
+	{
+		title: 'Away',
+		value: 'away'
+	},
+	{
+		title: 'Do not disturb',
+		value: 'do-not-disturb'
+	},
+	{
+		title: 'Offline',
+		value: 'offline'
+	}
+];
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
 
@@ -129,7 +173,6 @@ function ChatsSidebar(props) {
 	}
 	let filtered = props.numbers
 	filtered = searchText.charAt(0) === '9' ? numbers.filter((number => number.number.includes(searchText))) : numbers.filter((number => number.name.toLowerCase().includes(searchText.toLowerCase())))
-			console.log('insideeeeeeeeee chatsideeeeeeeeeeeeee');
 	return (
 		<div className="flex flex-col flex-auto h-full">
 			<AppBar position="static" color="default" elevation={1} className="">
@@ -156,14 +199,14 @@ function ChatsSidebar(props) {
 						</div>
 					)}
 					<div>
-						{/* <IconButton
+						<IconButton
 							aria-owns={moreMenuEl ? 'chats-more-menu' : null}
 							aria-haspopup="true"
 							onClick={handleMoreMenuClick}
 						>
-						
-						</IconButton> */}
-						{/* <Menu
+							<Icon>more_vert</Icon>
+						</IconButton>
+						<Menu
 							id="chats-more-menu"
 							anchorEl={moreMenuEl}
 							open={Boolean(moreMenuEl)}
@@ -171,7 +214,7 @@ function ChatsSidebar(props) {
 						>
 							<MenuItem onClick={handleMoreMenuClose}>Profile</MenuItem>
 							<MenuItem onClick={handleMoreMenuClose}>Logout</MenuItem>
-						</Menu> */}
+						</Menu>
 					</div>
 				</Toolbar>
 				{useMemo(
@@ -239,7 +282,6 @@ function ChatsSidebar(props) {
 											/>
 										))}
 									</FuseAnimateGroup>
-									
 								</>
 							);
 						}, [props.numbers,filtered])

@@ -39,7 +39,7 @@ console.log(selectedCountry,'selectedCountry -----')
 
     return (
         <div style={{ marginBottom: 20 }}>
-            {/* {displayDropdown && <Select
+            {displayDropdown && <Select
                 name={(controlId) ? `${controlId}-city` : "city"}
                 fullWidth
                 style={{ width: '100%' }}
@@ -56,7 +56,7 @@ console.log(selectedCountry,'selectedCountry -----')
 
                     return item;
                 })}
-            </Select>} */}
+            </Select>}
         </div>
     );
 };
