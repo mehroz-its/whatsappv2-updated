@@ -6,18 +6,10 @@ const UserConfig = {
 		layout: {}
 	},
 	routes: [
-		// {
-		// 	path: '/apps/campaign/group-detail',
-		// 	component: React.lazy(() => import('./group-detail/GroupDetail'))
-		// },
 		{
 			path: '/apps/users',
 			component: React.lazy(() => import('./Users'))
 		}
-		// {
-		// 	path: '/apps/campaigns',
-		// 	component: () => <Redirect to="/ca/group" />
-		// }
 	]
 };
 

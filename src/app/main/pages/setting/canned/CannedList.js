@@ -3,9 +3,6 @@ import Typography from '@material-ui/core/Typography';
 import React, { useEffect, useState } from 'react';
 import CannedTable from './CannedTable';
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
-
-
-
 function CannedList(props) {
 	const {data,onDialogClose,isSearched,displaySnack }  = props
 	const columns = React.useMemo(
@@ -79,5 +76,4 @@ function CannedList(props) {
 		</FuseAnimate>
 	);
 }
-
 export default CannedList;

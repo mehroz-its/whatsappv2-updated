@@ -22,9 +22,6 @@ const SearchStyle = createMuiTheme({
 		  border:0,
 		  borderRadius:0,
 		  height:'30px'
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
 		}
 	  }
 	}
@@ -48,7 +45,6 @@ function PermissionHeader(props) {
 					</Typography>
 				</FuseAnimate>
 			</div>
-
 			<div className="flex flex-1 items-center justify-center px-12">
 				<ThemeProvider theme={mainTheme}>
 					<FuseAnimate animation="transition.slideDownIn" delay={300}>
@@ -66,8 +62,6 @@ function PermissionHeader(props) {
 								props.SearchVal(e.target.value)
 								
 							}}
-							
-						   
 							placeholder="Search"
 							/>
 							</MuiThemeProvider>

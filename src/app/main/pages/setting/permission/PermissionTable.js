@@ -13,7 +13,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as Actions from './store/actions';
 import Typography from '@material-ui/core/Typography';
-
 import PermissionTableHead from './PermissionTableHead';
 import TableData from './PermissionData'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
@@ -35,9 +34,6 @@ function PermissionTable(props) {
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
-	// const [data, setData] = useState([]);
-	// const [data2, setData2] = useState(data);
-	// const [searchVal, setSearchVal] = useState(props.ValueForSearch)
 	const [userRules, setUserRules] = useState([])
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -45,27 +41,6 @@ function PermissionTable(props) {
 		direction: 'asc',
 		id: null
 	});
-
-	// const getData = ((loadData) => {
-	// 	loadData = () => {
-	// 		return CoreHttpHandler.request('permissions', 'listing', {
-
-	// 			limit: 100,
-	// 			page: 0,
-	// 			columns: "*",
-	// 			sortby: "ASC",
-	// 			orderby: "id",
-	// 			where: "displayed = $1",
-	// 			values: true,
-	// 		}, null, null, true);
-	// 	};
-	// 	loadData().then((response) => {
-	// 		const tableData = response.data.data.list.data
-	// 		console.log(tableData)
-	// 		setData(tableData)
-	// 		setData2(tableData)
-	// 	});
-	// })
 
 	const [dialogData, setDialogData] = useState({
 		enabled: '',
@@ -76,56 +51,28 @@ function PermissionTable(props) {
 		rule_set: [],
 		consumer: ""
 	})
-
-	// React.useEffect(() => {
-	// 	getData()
-	// }, []);
-
 	const loadRuleSets = () => {
 		return CoreHttpHandler.request('permissions', 'rule_set', {
 		}, null, null, true);
 	};
-
 	React.useEffect(() => {
 		loadRuleSets().then(response => {
 			let rules = (response.data.data.rule_set);
 			setUserRules(response.data.data.rule_set)
-			// rules = 
-			console.log(response.data.data.rule_set, 'in table')
-
 		});
 	}, []);
-
 	let data2 = props.dataa
-
-	// useEffect(() => {
-	// 	dispatch(Actions.getProducts());
-	// }, [dispatch]);
-
-	// useEffect(() => {
-	// 	if (searchText.length !== 0) {
-	// 		setData(_.filter(products, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
-	// 		setPage(0);
-	// 	} else {
-	// 		setData(products);
-	// 		console.log(products,'here in prdoducts table')
-	// 	}
-	// }, [products, searchText]);
-
 	function handleRequestSort(event, property) {
 		const id = property;
 		let direction = 'desc';
-
 		if (order.id === property && order.direction === 'desc') {
 			direction = 'asc';
 		}
-
 		setOrder({
 			direction,
 			id
 		});
 	}
-
 	if (data2.length === 0) {
 		if (props.ValueForSearch !== '') {
 			return (
@@ -143,14 +90,6 @@ function PermissionTable(props) {
 			);
 		}
 	}
-	// function handleSelectAllClick(event) {
-	// 	if (event.target.checked) {
-	// 		setSelected(data.map(n => n.id));
-	// 		return;
-	// 	}
-	// 	setSelected([]);
-	// }
-
 	function handleClick(n) {
 		console.log(n, 'mmmmm');
 		setDialogData({
@@ -165,9 +104,7 @@ function PermissionTable(props) {
 
 		})
 		setOpen(true)
-
 	}
-
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
@@ -182,7 +119,6 @@ function PermissionTable(props) {
 		} else if (selectedIndex > 0) {
 			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
 		}
-
 		setSelected(newSelected);
 	}
 
@@ -193,23 +129,6 @@ function PermissionTable(props) {
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
 	}
-	// if (searchVal !== props.ValueForSearch) {
-	// 	{ search() }
-	// }
-
-	// if(searchVal.length===0)
-	// {
-	// 	{getData()}
-	// }
-
-
-
-
-	//    if(props.PressedVal==8){
-	// 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-	// }
-
-
 
 	return (
 		<div className="w-full flex flex-col">
@@ -254,7 +173,6 @@ function PermissionTable(props) {
 										selected={isSelected}
 										onClick={event => handleClick(n)}
 									>
-
 										{/* <TableCell className="w-64 text-center" padding="none">
 											<Checkbox
 												checked={isSelected}
@@ -278,26 +196,6 @@ function PermissionTable(props) {
 													<Icon className="text-red text-16">cancel</Icon>
 												)}
 										</TableCell>
-										{/* 
-										<TableCell component="th" scope="row" align="right">
-											{n.quantity}
-											<i
-												className={clsx(
-													'inline-block w-8 h-8 rounded mx-8',
-													n.quantity <= 5 && 'bg-red',
-													n.quantity > 5 && n.quantity <= 25 && 'bg-orange',
-													n.quantity > 25 && 'bg-green'
-												)}
-											/>
-										</TableCell> */}
-
-										{/* <TableCell component="th" scope="row" align="right">
-											{n.active ? (
-												<Icon className="text-green text-20">check_circle</Icon>
-											) : (
-													<Icon className="text-red text-20">remove_circle</Icon>
-												)}
-										</TableCell> */}
 									</TableRow>
 								);
 							})}

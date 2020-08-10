@@ -62,7 +62,6 @@ function Users(props) {
 	const [data, setData] = React.useState([]);
 	const [data2, setData2] = React.useState(data);
 	const [state, setState] = React.useState({
-
 		checkedG: true,
 		checkedB: true
 
@@ -71,11 +70,9 @@ function Users(props) {
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [ok, setOK] = React.useState('')
 	function closeDialog(mes) {
-		console.log(mes, 'messssssssssss');
 		snackbar(mes)
 		getData()
 		setOpen(false);
-	
 	}
 	const updateText = (search) => {
 		setVal(search)
@@ -94,7 +91,6 @@ function Users(props) {
 		};
 		loadData().then((response) => {
 			const tableData = response.data.data.list.data
-			console.log(tableData)
 			setData(tableData)
 			setData2(tableData)
 			setTimeout(() => {
@@ -123,15 +119,9 @@ function Users(props) {
 	};
 
 	function search(value) {
-		// console.log('ceeleded',props.ValueForSearch,searchVal);
 		setVal(value)
-		// setSearchVal(props.ValueForSearch)
 		setData2(data.filter(n => n.username.toLowerCase().includes(value.toLowerCase())))
-		console.log(data, 'filterssss');
-
-
 	}
-
 
 	const snackbar = (snackmsg) => {
 		if (snackmsg == "create") {
@@ -144,31 +134,24 @@ function Users(props) {
 			setOK("success")
 			setSnackBarOpen(true)
 		}
-
 		else if (snackmsg == "error") {
 			setSnackBarMessage("Error!Please Try Again Later")
 			setOK("error")
 			setSnackBarOpen(true)
 		}
-
-
 	}
 
 	return (
 		<>
-
 			<Snackbar
-
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 				open={snackbaropen}
 				autoHideDuration={1000}
-
 			>
 				<Alert variant="filled" severity={ok}>
 					{snackbarmessage}
 				</Alert>
 			</Snackbar>
-
 			<FusePageCarded
 				classes={{
 					content: 'flex',
@@ -191,8 +174,6 @@ function Users(props) {
 				</Fab>
 			</FuseAnimate>
 			{open ? <UserDialog snackbar={snackbar} isOpen={open} closeDialog={closeDialog} type="Add" data={dialogData} /> : null}
-
-
 		</>
 	);
 }

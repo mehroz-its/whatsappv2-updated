@@ -5,7 +5,6 @@ import Icon from '@material-ui/core/Icon';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import Typography from '@material-ui/core/Typography';
-
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
@@ -22,22 +21,16 @@ import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 
 
 function RolesTable(props) {
-
 	function closeDialog(val) {
 		setOpen(false)
 		props.onClose(val)
 	}
-
-
-	console.log(props)
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
-	// const [data, setData] = useState(TableData);
 	const [page, setPage] = useState(0);
-	// const [data2, setData2] = useState(data);
 	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [dialogData, setDialogData] = useState({
@@ -51,61 +44,18 @@ function RolesTable(props) {
 		direction: 'asc',
 		id: null
 	});
-
-	// const getData = ((loadData) => {
-	// 	loadData = () => {
-	// 		return CoreHttpHandler.request('roles', 'listing', {
-
-	// 			limit: 100,
-	// 			page: 0,
-	// 			columns: "*",
-	// 			sortby: "ASC",
-	// 			orderby: "id",
-	// 			where: "displayed = $1",
-	// 			values: true,
-	// 		}, null, null, true);
-	// 	};
-	// 	loadData().then((response) => {
-	// 		const tableData = response.data.data.list.data
-	// 		console.log(tableData)
-	// 		setData(tableData)
-	// 		setData2(tableData)
-	// 	});
-	// })
-
-	// React.useEffect(() => {
-	// 	getData()
-	// }, []);
-	// useEffect(() => {
-	// 	dispatch(Actions.getProducts());
-	// }, [dispatch]);
-
-	// useEffect(() => {
-	// 	if (searchText.length !== 0) {
-	// 		setData(_.filter(products, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
-	// 		setPage(0);
-	// 	} else {
-	// 		setData(products);
-	// 		console.log(products,'here in prdoducts table')
-	// 	}
-	// }, [products, searchText]);
 	let data2 = props.dataa
-
 	function handleRequestSort(event, property) {
 		const id = property;
 		let direction = 'desc';
-
 		if (order.id === property && order.direction === 'desc') {
 			direction = 'asc';
 		}
-
 		setOrder({
 			direction,
 			id
 		});
 	}
-
-
 	if (data2.length === 0) {
 		if (props.ValueForSearch !== '') {
 			return (
@@ -123,14 +73,6 @@ function RolesTable(props) {
 			);
 		}
 	}
-
-	// function handleSelectAllClick(event) {
-	// 	if (event.target.checked) {
-	// 		setSelected(data.map(n => n.id));
-	// 		return;
-	// 	}
-	// 	setSelected([]);
-	// }
 	let loadPermissions = () => {
 		return CoreHttpHandler.request('permissions', 'listing', {
 			columns: "id, title",
@@ -142,40 +84,7 @@ function RolesTable(props) {
 			limit: 0
 		}, null, null, true);
 	};
-
 	function handleClick(n) {
-		console.log(n, 'nnnnnnnnnnnnnn');
-
-		// loadPermissions = () => {
-		//     return CoreHttpHandler.request('permissions', 'listing', {
-		//         columns: "id, title",
-		//         sortby: "ASC",
-		//         orderby: "id",
-		//         where: "displayed = $1",
-		//         values: true,
-		//         page: 0,
-		//         limit: 0
-		//     }, null, null, true);
-		// };
-		// loadPermissions().then((response) => {
-		// 	const permissions = response.data.data.list.data
-		//     console.log(permissions,'in ')
-		//     // setPermissions(tableData)
-		// 	setDialogData({
-		// 		role: {
-		// 			id: n.id,
-		// 			name: n.name,
-		// 			description: n.description,
-		// 			permissions: n.permissions,
-		// 			enabled: true,
-		// 			displayed: true,
-		// 		},
-		// 		permissions,
-		// 	});
-
-		// });
-		console.log(dialogData, 'i am dialog data')
-
 		setOpen(true)
 		setDialogData({
 			enabled: n.enabled,
@@ -183,16 +92,12 @@ function RolesTable(props) {
 			name: n.name,
 			description: n.description,
 			permission: n.permissions
-
 		})
-
 	}
-
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
-
 		if (selectedIndex === -1) {
 			newSelected = newSelected.concat(selected, id);
 		} else if (selectedIndex === 0) {
@@ -202,10 +107,8 @@ function RolesTable(props) {
 		} else if (selectedIndex > 0) {
 			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
 		}
-
 		setSelected(newSelected);
 	}
-
 	function handleChangePage(event, value) {
 		setPage(value);
 	}
@@ -213,25 +116,7 @@ function RolesTable(props) {
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
 	}
-
-	// if(searchVal!==props.ValueForSearch)
-	// {
-	// 	{search()}
-	// }
-
-	// if(searchVal.length===0)
-	// {
-	// 	{getData()}
-	// }
-
-
-
-
-	//    if(props.PressedVal==8){
-	// 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-	// }
-
-	const hadleDelete = (event,n) => {
+	const hadleDelete = (event, n) => {
 		event.stopPropagation()
 		console.log(n, 'eventtt')
 
@@ -279,7 +164,6 @@ function RolesTable(props) {
 										selected={isSelected}
 										onClick={event => handleClick(n)}
 									>
-
 										{/* <TableCell className="w-64 text-center" padding="none">
 											<Checkbox
 												checked={isSelected}
@@ -304,37 +188,12 @@ function RolesTable(props) {
 													<Icon className="text-red text-16">cancel</Icon>
 												)}
 										</TableCell>
-										{/* <TableCell className="w-64 text-center" padding="none">
-											<Icon onClick={event => hadleDelete(event,n)} className="text-16">delete_outline</Icon>
-										</TableCell> */}
-
-										{/* 
-										<TableCell component="th" scope="row" align="right">
-											{n.quantity}
-											<i
-												className={clsx(
-													'inline-block w-8 h-8 rounded mx-8',
-													n.quantity <= 5 && 'bg-red',
-													n.quantity > 5 && n.quantity <= 25 && 'bg-orange',
-													n.quantity > 25 && 'bg-green'
-												)}
-											/>
-										</TableCell> */}
-
-										{/* <TableCell component="th" scope="row" align="right">
-											{n.active ? (
-												<Icon className="text-green text-20">check_circle</Icon>
-											) : (
-													<Icon className="text-red text-20">remove_circle</Icon>
-												)}
-										</TableCell> */}
 									</TableRow>
 								);
 							})}
 					</TableBody>
 				</Table>
 			</FuseScrollbars>
-
 			<TablePagination
 				className="overflow-hidden"
 				component="div"

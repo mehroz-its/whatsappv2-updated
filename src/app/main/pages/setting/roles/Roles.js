@@ -42,20 +42,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-
-
 function Roles(props) {
-
 	const [data, setData] = React.useState([]);
 	const [data2, setData2] = React.useState(data);
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [ok, setOK] = React.useState('')
-
-
-
-
-
 	const [state, setState] = React.useState({
 
 		checkedG: false,
@@ -72,11 +64,7 @@ function Roles(props) {
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
-
-
-
 	function closeDialog(mes) {
-		console.log('messssssssssss');
 		snackbar(mes)
 		getData()
 		setOpen(false);
@@ -92,7 +80,6 @@ function Roles(props) {
 	const getData = ((loadData) => {
 		loadData = () => {
 			return CoreHttpHandler.request('roles', 'listing', {
-
 				limit: 100,
 				page: 0,
 				columns: "*",
@@ -104,39 +91,28 @@ function Roles(props) {
 		};
 		loadData().then((response) => {
 			const tableData = response.data.data.list.data
-			console.log(tableData)
 			setData(tableData)
 			setData2(tableData)
-			
 			setTimeout(() => {
 				setSnackBarMessage('')
-			setSnackBarOpen(false)
+				setSnackBarOpen(false)
 			}, 3000);
-			
 		})
-		.catch((error)=>{
-			setTimeout(() => {
-				setSnackBarMessage('')
-			setSnackBarOpen(false)
-			}, 3000);
-			
-		})
-		
-	})
+			.catch((error) => {
+				setTimeout(() => {
+					setSnackBarMessage('')
+					setSnackBarOpen(false)
+				}, 3000);
 
+			})
+	})
 	React.useEffect(() => {
 		getData()
 	}, []);
 	function search(value) {
-		console.log('ceeleded', value);
 		setVal(value)
 		setData2(data.filter(n => n.name.toLowerCase().includes(value.toLowerCase())))
-		console.log(data, 'filterssss');
-
-
 	}
-
-
 	const snackbar = (snackmsg) => {
 		if (snackmsg == "create") {
 			setSnackBarMessage("Created Successfully")
@@ -154,36 +130,31 @@ function Roles(props) {
 			setOK("error")
 			setSnackBarOpen(true)
 		}
-	
-
 	}
 
 	return (
 		<>
-		<Snackbar
-
-anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-open={snackbaropen}
-autoHideDuration={1000}
-
->
-<Alert variant="filled" severity={ok}>
-	{snackbarmessage}
-</Alert>
-</Snackbar>
+			<Snackbar
+				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+				open={snackbaropen}
+				autoHideDuration={1000}
+			>
+				<Alert variant="filled" severity={ok}>
+					{snackbarmessage}
+				</Alert>
+			</Snackbar>
 			<FusePageCarded
 				classes={{
 					content: 'flex',
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
 				header={<RolesHeader SearchVal={search} />}
-				content={<Rolestable  snackbar={snackbar}  dataa={data2} ValueForSearch={val} onClose={closeDialog} />}
+				content={<Rolestable snackbar={snackbar} dataa={data2} ValueForSearch={val} onClose={closeDialog} />}
 			// innerScroll
 			/>
-
 			<FuseAnimate animation="transition.expandIn" delay={300}>
 				<Fab
-				    size="medium"
+					size="medium"
 					color="primary"
 					aria-label="add"
 					className={classes.addButton}
@@ -193,7 +164,7 @@ autoHideDuration={1000}
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-			{open ? <RolesDialog   snackbar={snackbar} isOpen={open} closeDialog={closeDialog} type="Add" data={dialogData} /> : null}
+			{open ? <RolesDialog snackbar={snackbar} isOpen={open} closeDialog={closeDialog} type="Add" data={dialogData} /> : null}
 		</>
 	);
 }

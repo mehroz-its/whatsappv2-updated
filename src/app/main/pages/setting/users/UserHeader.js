@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Input from '@material-ui/core/Input';
 import Paper from '@material-ui/core/Paper';
-
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,9 +21,6 @@ const SearchStyle = createMuiTheme({
 		  border:0,
 		  borderRadius:0,
 		  height:'30px'
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
 		}
 	  }
 	}
@@ -47,7 +43,6 @@ function UserHeader(props) {
 					</Typography>
 				</FuseAnimate>
 			</div>
-
 			<div className="flex flex-1 items-center justify-center px-12">
 				<ThemeProvider theme={mainTheme}>
 					<FuseAnimate animation="transition.slideDownIn" delay={300}>
@@ -65,8 +60,6 @@ function UserHeader(props) {
 								props.SearchVal(e.target.value)
 								
 							}}
-							
-						   
 							placeholder="Search"
 							/>
 							</MuiThemeProvider>
@@ -74,7 +67,6 @@ function UserHeader(props) {
 					</FuseAnimate>
 				</ThemeProvider>
 			</div>
-		
 		</div>
 	);
 }
