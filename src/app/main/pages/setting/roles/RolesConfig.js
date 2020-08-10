@@ -6,18 +6,10 @@ const RolesConfig = {
 		layout: {}
 	},
 	routes: [
-		// {
-		// 	path: '/apps/campaign/group-detail',
-		// 	component: React.lazy(() => import('./group-detail/GroupDetail'))
-		// },
 		{
 			path: '/apps/roles',
 			component: React.lazy(() => import('./Roles'))
 		}
-		// {
-		// 	path: '/apps/campaigns',
-		// 	component: () => <Redirect to="/ca/group" />
-		// }
 	]
 };
 

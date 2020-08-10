@@ -13,7 +13,7 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { green } from '@material-ui/core/colors';
-import { makeStyles,ThemeProvider,createMuiTheme,withStyles } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme, withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
@@ -42,57 +42,44 @@ const useStyles = makeStyles((theme) => ({
 
     },
     margin: {
-	  
-		color:'white',
-		paddingLeft:'14px',
-		fontWeight:'300',
-		paddingRight:'14px',
-		paddingTop:'5px',
-		paddingBottom:'5px',
-		fontSize:'13px',
-	   
-	  },
+
+        color: 'white',
+        paddingLeft: '14px',
+        fontWeight: '300',
+        paddingRight: '14px',
+        paddingTop: '5px',
+        paddingBottom: '5px',
+        fontSize: '13px',
+
+    },
 }))
 
 const theme = createMuiTheme({
-	palette: {
-	  primary: green,
-	},
-	});
+    palette: {
+        primary: green,
+    },
+});
 
-    
+
 
 const RolesDialog = (props) => {
-    // const {
-    //     permissions,
-    //     role,
-    // } = props.data;
-    // // console.log(object)
-    console.log(props.type, ' props.data in dialog')
     const { isOpen, type, data } = props
     const [currentPermissions, setCurrentPermissions] = React.useState(type === 'Update' ? data.permission : []);
     const [selected, setSelected] = React.useState([])
     const [openDialog, setopenDialog] = React.useState(isOpen);
     const [name, setName] = React.useState(data.name);
     const [permissions, setPermissions] = React.useState([]);
-
     const [description, setDescription] = React.useState(data.description);
     const [isToggled, setIsToggled] = React.useState(data.enabled);
-    console.log(isToggled, 'asdasd');
     const handleClose = () => {
         props.closeDialog()
         setopenDialog(false);
     };
     const classes = useStyles(props);
-
-
     const handleToggleChange = () => {
         setIsToggled(!isToggled)
     };
-
-
     const getRoles = ((loadPermissions) => {
-        console.log('called get data')
         loadPermissions = () => {
             return CoreHttpHandler.request('permissions', 'listing', {
                 columns: "id, title",
@@ -108,40 +95,23 @@ const RolesDialog = (props) => {
             const tableData = response.data.data.list.data
             console.log(tableData, 'in ')
             setPermissions(tableData)
-            // setData(tableData)
-            // setData2(tableData)
-
         });
     })
-
-
 
     React.useEffect(() => {
         getRoles()
     }, []);
 
     const handleChange = (event) => {
-        console.log(event.target.name, event.target.checked, 'event', event);
-
         setState({ ...state, [event.target.name]: event.target.checked });
-
     };
     const [state, setState] = React.useState({
-
         Agentback: false,
         Agentfront: false,
         AgentApplication: false,
-
     });
     const result = Object.values(state)
-
     const handleSubmit = () => {
-        //         console.log(currentPermissions,'selected permissions here')
-        // return;
-
-        // let fileName = uploadedFilePath.split('https://upload.its.com.pk/')
-
-        // return;
         if (type !== 'Update') {
             let params = {
                 id: 0,
@@ -152,7 +122,6 @@ const RolesDialog = (props) => {
                 displayed: true,
             };
             CoreHttpHandler.request('roles', 'create_role', params, (response) => {
-                // props.getUpdatedData()
                 console.log(response)
                 props.closeDialog("create")
                 setopenDialog(false);
@@ -170,18 +139,12 @@ const RolesDialog = (props) => {
                 enabled: isToggled,
                 displayed: true,
             };
-
-            console.log(params, 'datasss');
-
             let update_params = {
                 key: 'id',
                 value: data.id,
                 params: params
             }
-            console.log(update_params, 'update_params')
-            // return
             CoreHttpHandler.request('roles', 'update_role', update_params, (response) => {
-                // props.getUpdatedData()
                 console.log(response)
                 props.closeDialog("update")
                 setopenDialog(false);
@@ -196,51 +159,40 @@ const RolesDialog = (props) => {
     const onInputChange = (e) => {
         console.log(e.target.name, e.target.value)
         let value = null;
-
         if (e.target.name === 'permissions') {
             const roleIndex = currentPermissions.indexOf(e.target.value);
-
             if (roleIndex === -1) {
                 currentPermissions.push(e.target.value);
             } else {
                 currentPermissions.splice(roleIndex, 1);
             }
-
             value = [...currentPermissions];
-
             setCurrentPermissions(value);
         } else {
             if (e.target.name === 'enabled') {
                 value = e.target.checked;
             } else value = e.target.value;
-
-            // _func(value);
         }
     }
     return (
-        // <div> {isOpen}</div>
         <Dialog open={openDialog} onClose={handleClose} aria-labelledby="form-dialog-title" classes={{
             paper: 'm-24'
         }}
-
             fullWidth
             maxWidth="sm">
-            {/* <DialogTitle id="form-dialog-title">{type} Roles</DialogTitle> */}
             <AppBar position="static" elevation={1}>
-				
-				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
-        style={{paddingBottom:20,paddingTop:20}}>
-	      {type} Roles
+                <div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
+                    style={{ paddingBottom: 20, paddingTop: 20 }}>
+                    {type} Roles
 				</div>
-			</AppBar>
+            </AppBar>
             <DialogContent classes={{ root: 'p-24' }}>
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <div style={{ flex: 1 }}>
                         <div className="flex">
-                            <div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
+                            <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
                                 <Icon color="action">account_circle</Icon>
                             </div>
-
                             <TextField
                                 className="mb-24"
                                 label="Name"
@@ -256,12 +208,10 @@ const RolesDialog = (props) => {
                                 size="small"
                             />
                         </div>
-
                         <div className="flex">
-                            <div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
+                            <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
                                 <Icon color="action">account_circle</Icon>
                             </div>
-
                             <TextField
                                 className="mb-24"
                                 label="Description"
@@ -282,43 +232,21 @@ const RolesDialog = (props) => {
                         />
                     </div>
                     <div style={{ flexDirection: 'column', flex: 1, display: 'flex', marginLeft: 10 }}>
-
-                        {/* <FormControlLabel
-
-    control={<GreenCheckbox checked={state.Agentback} onChange={handleChange} name="Agentback"  value={0} />}
-    label="Agent Backend Access"
-    />
-    <FormControlLabel
-    control={<GreenCheckbox checked={state.Agentfront} onChange={handleChange} name="Agentfront"  />}
-    label="Agent FrontEnd Access"
-    />
-    <FormControlLabel
-    control={<GreenCheckbox checked={state.AgentApplication} onChange={handleChange} name="AgentApplication" />}
-    label="Agent Application Access"
-    /> */}
-
                         <PermissionsListInDialog edit permissions={permissions} onInputChange={onInputChange} checkedPermissions={currentPermissions} classes={classes} />
                     </div>
                 </div>
-
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary" variant="contained" size="small">
                     Cancel
-    </Button>
-    <ThemeProvider theme={theme}>
-                <Button size="small" className={classes.margin} variant="contained" onClick={handleSubmit} disabled={!name||!description||!permissions} color="primary">
-                    Done
-    </Button>
-    </ThemeProvider>
+                 </Button>
+                <ThemeProvider theme={theme}>
+                    <Button size="small" className={classes.margin} variant="contained" onClick={handleSubmit} disabled={!name || !description || !permissions} color="primary">
+                        Done
+                  </Button>
+                </ThemeProvider>
             </DialogActions>
         </Dialog>
-
-
-
-
-
-
     )
 }
 
