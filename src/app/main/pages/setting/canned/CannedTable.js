@@ -16,8 +16,6 @@ import ContactsTablePaginationActions from './ContactsTablePaginationActions';
 import Icon from '@material-ui/core/Icon';
 import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
 import CannedDialog from './CannedDialog'
-
-
 const BodyStyle = createMuiTheme({
 	overrides: {
 	  MuiTableCell: {
@@ -25,31 +23,11 @@ const BodyStyle = createMuiTheme({
 		  paddingTop: 4,
 		  fontSize:'12px',
 		  paddingBottom: 4,
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
 		}
 	  }
 	}
   });
   
-// const PaginationStyle = createMuiTheme({
-// 	overrides: {
-// 		MuiTypography: {
-// 		root: {
-// 		  paddingTop: 4,
-// 		  fontSize:'1.1rem',
-// 		  paddingBottom: 4,
-// 		  height:'5%'
-// 		//   "&:last-child": {
-// 		// 	paddingRight: 5
-// 		//   }
-// 		}
-// 	  }
-// 	}
-//   });
-
-
 const HeaderStyle = createMuiTheme({
 	overrides: {
 	  MuiTableCell: {
@@ -67,7 +45,6 @@ const HeaderStyle = createMuiTheme({
 	}
   });
 
-
 const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
 	const defaultRef = React.useRef();
 	const resolvedRef = ref || defaultRef;
@@ -82,9 +59,7 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 		</>
 	);
 });
-
 const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
-	console.log(data, 'data in tabel')
 	const [open, setOpen] = React.useState(false);
 	function closeDialog(val){
 		setOpen(false);
@@ -95,9 +70,6 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 		setOpen(true);
 	}
 	const [dialogData, setDialogData] = React.useState()
-
-
-
 	const {
 		getTableProps,
 		headerGroups,
@@ -163,13 +135,9 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 		// }
 		console.log(row.original, 'rowrow')
 		setDialogData(row.original)
-		console.log(dialogData,'ContactGroupDialogContactGroupDialog')
 		setOpen(true);
-
 		handleClickOpen()
-		// console.log(dialogData,'dialogData')
 	}
-
 	// Render the UI for your table
 	return (<div>
 		<TableContainer className="min-h-full sm:border-1 sm:rounded-16" >

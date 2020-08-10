@@ -14,9 +14,6 @@ import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import CannedDialog from './CannedDialog'
-
-
-
 const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'fixed',
@@ -31,9 +28,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-
-
-
 function ContactsApp() {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
@@ -45,17 +39,9 @@ function ContactsApp() {
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [ok, setOK] = React.useState('')
 	const [val, setVal] = React.useState('')
-
-
-	// const handleChange = (event) => {
-	// 	setAge(event.target.value);
-	// };
-
-
 	const handleClickOpen = () => {
 		setOpen(true);
 	}
-
 	const [dialogData, setDialogData] = React.useState(
 		{
 			id: 0,
@@ -103,13 +89,10 @@ function ContactsApp() {
 
 
 	})
-
 	React.useEffect(() => {
 		getData()
 	}, []);
-
 	const valueReceived = (value) => {
-		console.log('i am called')
 		if (value == "update") {
 			setSnackBarMessage("Updated Successfully")
 			setOK("success")
@@ -120,7 +103,6 @@ function ContactsApp() {
 			setOK("success")
 			setSnackBarOpen(true)
 		}
-
 		else if (value == "error") {
 			setSnackBarMessage("Error!Please Try Again Later")
 			setOK("error")
@@ -133,29 +115,21 @@ function ContactsApp() {
 	}, 3000);
 
 	function search(val) {
-		// console.log('ceeleded', props.ValueForSearch, searchVal);
-
 		setVal(val)
 		setData2(data.filter(n => n.message_name.toLowerCase().includes(val.toLowerCase())))
-		console.log(data, 'filterssss');
-
-
 	}
 	function closeDialog(val) {
 		setOpen(false);
 		getData()
 		valueReceived(val)
-
 	};
 
 	return (
 		<>
 			<Snackbar
-
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 				open={snackbaropen}
 				autoHideDuration={3000}
-
 			>
 				<Alert variant="filled" severity={ok}>
 					{snackbarmessage}
@@ -170,9 +144,7 @@ function ContactsApp() {
 					wrapper: 'min-h-0'
 				}}
 				header={<CannedHeader pageLayout={pageLayout} SearchVal={search} />}
-
 				content={<CannedList isSearched={val} data={data2} onDialogClose={closeDialog} ValueForSearch={val} displaySnack={valueReceived} />}
-
 				leftSidebarContent={<CannedSideBar />}
 				sidebarInner
 				ref={pageLayout}
@@ -190,9 +162,7 @@ function ContactsApp() {
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-
 			{open ? <CannedDialog isSearched={val} type="Add Canned Message" isOpen={open} closeDialog={closeDialog} data={dialogData} /> : null}
-
 		</>
 	);
 }

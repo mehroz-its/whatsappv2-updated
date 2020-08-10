@@ -20,9 +20,6 @@ import { getUserData } from '../../chat/store/actions';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AppBar from '@material-ui/core/AppBar';
 import { green, purple } from '@material-ui/core/colors';
-
-
-
 const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'absolute',
@@ -36,7 +33,6 @@ const useStyles = makeStyles((theme) => ({
 
 	},
 	margin: {
-	  
 		color:'white',
 		paddingLeft:'14px',
 		fontWeight:'300',
@@ -48,51 +44,33 @@ const useStyles = makeStyles((theme) => ({
 	  },
 
 }));
-
-
-
 const theme = createMuiTheme({
 	palette: {
 	  primary: green,
 	},
 	});
 
-
 const CampaignDialog = (props) => {
+
 	const classes = useStyles(props);
-	// console.log(data,'in dialog')
-
 	const { isOpen, type, getUpdatedData, data } = props
-	console.log(props,'in dialog')
-
-	console.log(isOpen, 'isOpenisOpen in dialog	')
 	const [openDialog, setopenDialog] = React.useState(isOpen);
 	const [canned_type, setCannedType] = React.useState(data.message_type);
 	const [name, setName] = React.useState(data.message_name);
 	const [text, setText] = React.useState(data.message_text);
 	const [enabled, setEnabled] = React.useState(data.enabled);
 	const [open, setOpen] = React.useState(false);
-
-
 	const [description, setDescription] = React.useState('');
 	const [isLoading, setIsLoading] = React.useState(false);
 	const [uploadedFilePath, setUploadedFilePath] = React.useState(data.attachment_url);
 	const [attachment_name, setAttachment_name] = React.useState(data.file_name)
 	const [attachment_params, setAttachment_params] = React.useState('')
-console.log(data,'dataaaa');
-
-
-
-
 	const handleDialogClose = () => {
 		props.closeDialog()
 		setopenDialog(false);
 	};
 
 	const handleSubmit = () => {
-		// console.log(object)
-
-
 		let fileName 
 		if(uploadedFilePath !=''){
 			fileName = uploadedFilePath.split('https://upload.its.com.pk/')
@@ -108,13 +86,8 @@ console.log(data,'dataaaa');
 			message_type: canned_type,
 			enabled: enabled
 		};
-		console.log(params,'params')
-
 		if (type !== 'Update Canned Message') {
 			CoreHttpHandler.request('canned_messages', 'create_message', params, (response) => {
-				// props.getUpdatedData()
-				console.log(response)
-			  
 				props.closeDialog('create')
 				setopenDialog(false);
 			}, (error) => {
@@ -128,10 +101,7 @@ console.log(data,'dataaaa');
 				value: data.id,
 				params: params
 			}
-			console.log(update_params, 'update_params')
-			// return
 			CoreHttpHandler.request('canned_messages', 'update_message', update_params, (response) => {
-				// props.getUpdatedData()
 				console.log(response)
 				props.closeDialog("update")
 				setopenDialog(false);
@@ -143,11 +113,9 @@ console.log(data,'dataaaa');
 		}
 	};
 	const handleEnable = (event) => {
-
 		setEnabled(event.target.checked);
 		console.log(enabled, 'enable')
 	};
-
 	const onInputChange = e => {
 		switch (e.target.name) {
 			case "name":
@@ -167,26 +135,20 @@ console.log(data,'dataaaa');
 	const handleClose = () => {
 		setOpen(false);
 	};
-
 	const handleOpen = () => {
 		setOpen(true);
 	};
 	const onChangeHandler = event => {
 		setIsLoading(true);
-
 		if (event.target.files.length > 0) {
 			const _data = new FormData();
-
 			let _name = event.target.files[0].name;
-
 			_name = _name.replace(/\s/g, "");
-
 			_data.append(
 				"file",
 				event.target.files[0],
 				`${new Date().getTime()}_${_name}`
 			);
-
 			CoreHttpHandler.request(
 				"content",
 				"upload",
@@ -199,7 +161,6 @@ console.log(data,'dataaaa');
 					// let name = response.data.data.link
 					// setAttachment_name(name.split('/'))
 					// console.log(attachment_name,'name')
-
 					onInputChange({
 						target: {
 							name: 'msisdnUrl',
@@ -212,18 +173,12 @@ console.log(data,'dataaaa');
 			);
 		}
 	};
-
-	console.log(text,'texttt',uploadedFilePath,'uplaod file',attachment_params,'important valuessssss');
-
 	return (
-		// <div> {isOpen}</div>
-		<Dialog open={openDialog} aria-labelledby="form-dialog-title" classes={{
+		<Dialog open={openDialog} onClose={handleDialogClose} aria-labelledby="form-dialog-title" classes={{
 			paper: 'm-24'
 		}}
-
 			fullWidth
 			maxWidth="xs">
-			{/* <DialogTitle id="form-dialog-title">{props.type} </DialogTitle> */}
 			<AppBar position="static" elevation={1}>
 				
 				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
@@ -236,11 +191,9 @@ console.log(data,'dataaaa');
 					<div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
 						<Icon color="action">account_circle</Icon>
 					</div>
-
 					<TextField
 						className="mb-24"
 						label="Name"
-						// autoFocus
 						id="name"
 						name="name"
 						value={name}
@@ -251,27 +204,6 @@ console.log(data,'dataaaa');
 						size="small"
 					/>
 				</div>
-				{/* <div className="flex">
-					<div className="min-w-48 pt-20">
-						<Icon color="action">account_circle</Icon>
-					</div>
-
-					<TextField
-						className="mb-24"
-						label="Description"
-						autoFocus
-						id="description"
-						name="description"
-						variant="outlined"
-						required
-						fullWidth
-						value={description}
-						onChange={onInputChange}
-
-
-					/>
-				</div> */}
-
 				<div className="flex" style={{ marginBottom: 20 }}>
 					<div className="min-w-48 pt-20" >
 						<Icon color="action">account_circle</Icon>
@@ -341,7 +273,6 @@ console.log(data,'dataaaa');
 					/>}
 					label="Enabled"
 				/>
-
 			</DialogContent>
 			<DialogActions>
 				<Button variant="contained" onClick={handleDialogClose} color="primary" size="small">
