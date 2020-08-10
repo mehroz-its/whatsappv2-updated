@@ -168,12 +168,11 @@ const BlockDialog = (props) => {
 		<Dialog open={openDialog} aria-labelledby="form-dialog-title" classes={{
 			paper: 'm-24'
 		}}
-
+		onClose={() => { props.closeDialog() }}
 			fullWidth
 			maxWidth="xs">
 			{/* <DialogTitle id="form-dialog-title">{props.type} </DialogTitle> */}
 			<AppBar position="static" elevation={1}>
-				
 				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
         style={{paddingBottom:20,paddingTop:20}}>
 	      {props.type} 

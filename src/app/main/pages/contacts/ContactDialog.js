@@ -296,7 +296,7 @@ console.log(value,'vlsssssssssssssssssss');
 				paper: 'm-24'
 			}}
 			{...contactDialog.props}
-			onClose={closeComposeDialog}
+			onClose={()=>{props.closeDialog()}} 
 			fullWidth
 			maxWidth="xs"
 		>

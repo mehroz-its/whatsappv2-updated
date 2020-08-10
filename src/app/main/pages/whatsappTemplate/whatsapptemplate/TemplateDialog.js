@@ -85,7 +85,9 @@ const CampaignDialog = (props) => {
 
 	return (
 		// <div> {isOpen}</div>
-		<Dialog open={openDialog} aria-labelledby="form-dialog-title" classes={{
+		<Dialog open={openDialog}
+		onClose={handleClose}
+		aria-labelledby="form-dialog-title" classes={{
 			paper: 'm-24'
 		}}
 

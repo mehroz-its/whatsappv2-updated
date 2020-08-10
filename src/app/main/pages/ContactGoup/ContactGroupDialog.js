@@ -14,7 +14,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { green, purple } from '@material-ui/core/colors';
-import { makeStyles,ThemeProvider,createMuiTheme } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
@@ -36,16 +36,16 @@ const useStyles = makeStyles((theme) => ({
 
 	},
 	margin: {
-	  
-		color:'white',
-		paddingLeft:'14px',
-		fontWeight:'300',
-		paddingRight:'14px',
-		paddingTop:'5px',
-		paddingBottom:'5px',
-		fontSize:'13px',
-	   
-	  },
+
+		color: 'white',
+		paddingLeft: '14px',
+		fontWeight: '300',
+		paddingRight: '14px',
+		paddingTop: '5px',
+		paddingBottom: '5px',
+		fontSize: '13px',
+
+	},
 }));
 
 
@@ -53,9 +53,9 @@ const useStyles = makeStyles((theme) => ({
 
 const theme = createMuiTheme({
 	palette: {
-	  primary: green,
+		primary: green,
 	},
-	});
+});
 
 
 
@@ -94,7 +94,7 @@ const CampaignDialog = (props) => {
 		};
 		console.log(params, 'newSelected in dialog done')
 		if (type !== 'Contact Group Details') {
-			
+
 			CoreHttpHandler.request('contact_group', 'create', params, (response) => {
 				// props.getUpdatedData()
 				console.log(response)
@@ -159,16 +159,16 @@ const CampaignDialog = (props) => {
 		<Dialog open={openDialog} aria-labelledby="form-dialog-title" classes={{
 			paper: 'm-50'
 		}}
-
+			onClose={() => { props.closeDialog() }}
 			fullWidth
 			maxWidth="xs"
-			>
+		>
 			{/* <DialogTitle id="form-dialog-title">{props.type} </DialogTitle> */}
 			<AppBar position="static" elevation={1}>
-				
+
 				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
-        style={{paddingBottom:30,paddingTop:30}}>
-	      {type} 
+					style={{ paddingBottom: 30, paddingTop: 30 }}>
+					{type}
 				</div>
 			</AppBar>
 			<DialogContent classes={{ root: 'p-24' }}>
@@ -177,14 +177,14 @@ const CampaignDialog = (props) => {
 
 				</div>
 				<div className="flex">
-					<div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
+					<div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
 						<Icon color="action">account_circle</Icon>
 					</div>
 
 					<TextField
 						className="mb-24"
 						label="Title"
-						
+
 						autoFocus
 						id="title"
 						name="title"
@@ -197,7 +197,7 @@ const CampaignDialog = (props) => {
 					/>
 				</div>
 				<div className="flex">
-					<div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
+					<div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
 						<Icon color="action">account_circle</Icon>
 					</div>
 
@@ -218,18 +218,18 @@ const CampaignDialog = (props) => {
 
 
 				<div className="flex">
-					<div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
+					<div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
 						<Icon color="action">account_circle</Icon>
 					</div>
 
 					<FormControlLabel
-					control={	<Checkbox
-						
-						checked={enabled}
-						onChange={handleEnable}
-					/>}
-					label="Enabled"
-				/>
+						control={<Checkbox
+
+							checked={enabled}
+							onChange={handleEnable}
+						/>}
+						label="Enabled"
+					/>
 
 				</div>
 
@@ -238,16 +238,16 @@ const CampaignDialog = (props) => {
 				<Button onClick={handleDialogClose} color="primary" size="small" variant="contained">
 					Cancel
              </Button>
-			 <ThemeProvider theme={theme}>
-				<Button 
-				color="primary"
-				className={classes.margin}
-				onClick={handleSubmit} disabled={!title||!description||!number} 
-				size="small"
-				variant="contained">
-					Done
+				<ThemeProvider theme={theme}>
+					<Button
+						color="primary"
+						className={classes.margin}
+						onClick={handleSubmit} disabled={!title || !description || !number}
+						size="small"
+						variant="contained">
+						Done
          </Button>
-		 </ThemeProvider>
+				</ThemeProvider>
 			</DialogActions>
 		</Dialog>
 
