@@ -62,11 +62,7 @@ const theme = createMuiTheme({
 	},
 	});
 
-    
-
-
-const PermissionDialog = (props) => {
-  console.log(props.data.displayRules, 'in display dialog')
+  const PermissionDialog = (props) => {
   const { data } = props
   const { isOpen, type } = props
   const [openDialog, setopenDialog] = React.useState(isOpen);
@@ -79,19 +75,12 @@ const PermissionDialog = (props) => {
   const [currentRules, setCurrenconsumertRules] = React.useState(data.rule_set);
   const [enabled, setEnabled] = React.useState(data.enabled);
   const [consumer, setConsumer] = React.useState(data.consumer);
-  console.log(data.consumer,data.rule_set,data.method,data.title,'consumerrrr')
-
-
   const handleClose = () => {
     props.closeDialog()
     setopenDialog(false);
   };
-  console.log(method, 'mthod valeeasds');
-
   const classes = useStyles(props);
-
   const handleMethodChange = (e) => {
-    // setMethod(event.target.value);
     setConsumer(e.target.value)
     if (e.target.value !== 0) {
       if (e.target.value === 1) setMethod(rules.app);
@@ -104,23 +93,7 @@ const PermissionDialog = (props) => {
 
 
   };
-  console.log(rules)
-  // if (data.method !== null) {
-  //   if (data.method === "APP") setMethod(rules.app);
-  //   if (data.method === "FRONT") setMethod(rules.frontend);
-  //   if (data.method === "BACK") setMethod(rules.backend);
-  //   if (data.method === "CLIENT") setMethod([]);
-
-  //   setShowRuleSet(true);
-  // }
-
-  // if (type === "Update") {
-  //   if (method.length > 0) {
-  //     setShowRuleSet(true);
-
-  //   }
-  // }
-  console.log(method, 'i am method')
+ 
   const handleToggleChange = () => {
     setIsToggled(!isToggled)
   };
@@ -130,7 +103,6 @@ const PermissionDialog = (props) => {
   };
 
   const [state, setState] = React.useState({
-
     checkedApplication: false,
     checkedAudio: false,
     checkedCity: false,
@@ -146,57 +118,10 @@ const PermissionDialog = (props) => {
     loadRuleSets().then(response => {
       const set = response.data.data.rule_set;
       setRules(set)
-      console.log(set)
-
     });
   }, []);
-
-
-
   const result = Object.values(state)
-
-  // const checkToShow = () => {
-  //   if (method === "APP") {
-  //     console.log('first');
-
-  //     return (
-  //       <>
-  //         <FormControlLabel
-
-  //           control={<GreenCheckbox checked={state.checkedApplication} onChange={handleChange} name="checkedApplication" />}
-  //           label="Receive Calls"
-  //         />
-  //       </>
-  //     )
-  //   }
-  //   else if (method === "FRONT") {
-  //     console.log('second');
-
-  //     return (
-  //       <FormControlLabel
-
-  //         control={<GreenCheckbox checked={state.checkedAudio} onChange={handleChange} name="checkedAudio" />}
-  //         label="Send Audio"
-  //       />
-  //     )
-  //   }
-  //   else if (method === "BACK") {
-  //     console.log('third');
-
-  //     return (
-  //       <FormControlLabel
-
-  //         control={<GreenCheckbox checked={state.checkedCity} onChange={handleChange} name="checkedCity" />}
-  //         label="Edit City"
-  //       />
-  //     )
-  //   }
-
-  // }
   const handleSubmit = () => {
-
-
-    // let fileName = uploadedFilePath.split('https://upload.its.com.pk/')
     let params = {
       id: "0",
       description: description,
@@ -209,7 +134,6 @@ const PermissionDialog = (props) => {
     console.log(params, 'params')
     if (type !== 'Update') {
       CoreHttpHandler.request('permissions', 'create', params, (response) => {
-        // props.getUpdatedData()
         console.log(response)
         props.closeDialog('create')
         setopenDialog(false);
@@ -240,8 +164,6 @@ const PermissionDialog = (props) => {
         params: params
       }
       CoreHttpHandler.request('permissions', 'update', update_params, (response) => {
-        // props.getUpdatedData()
-        console.log(response)
         props.closeDialog("update")
         setopenDialog(false);
       }, (error) => {
@@ -253,7 +175,6 @@ const PermissionDialog = (props) => {
   }
 
   const handleEnable = (event) => {
-
     setEnabled(event.target.checked);
     console.log(enabled, 'enable')
   };
@@ -262,7 +183,6 @@ const PermissionDialog = (props) => {
     console.log(e.target.name)
     if (e.target.name === 'rule_set') {
       const ruleIndex = currentRules.indexOf(e.target.value);
-
       if (ruleIndex === -1) {
         currentRules.push(e.target.value);
         console.log('in if')
@@ -270,26 +190,14 @@ const PermissionDialog = (props) => {
       } else {
         currentRules.splice(ruleIndex, 1);
       }
-
       let rules = [...currentRules];
-
       setCurrenconsumertRules(rules);
-
-      // onDialogPropsChange({
-      //     event: 'input',
-      //     edit,
-      //     value: rules,
-      //     key: e.target.name,
-      //     dataKey: 'permission',
-      // });
-
     }
   }
   const disabled = type === "Update"?true:false
 
   return (
-    // <div> {isOpen}</div>
-    <Dialog open={openDialog} aria-labelledby="form-dialog-title" classes={{
+    <Dialog open={openDialog} onClose={handleClose} aria-labelledby="form-dialog-title" classes={{
       paper: 'm-24'
     }}
 

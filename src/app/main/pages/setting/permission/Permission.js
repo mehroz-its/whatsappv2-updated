@@ -76,21 +76,21 @@ function Permissions(props) {
 			console.log(tableData)
 			setData(tableData)
 			setData2(tableData)
-			
+
 			setTimeout(() => {
 				setSnackBarMessage('')
-			setSnackBarOpen(false)
+				setSnackBarOpen(false)
 			}, 3000);
-			
+
 		})
-		.catch((error)=>{
-			setTimeout(() => {
-				setSnackBarMessage('')
-			setSnackBarOpen(false)
-			}, 3000);
-			
-		})
-		});
+			.catch((error) => {
+				setTimeout(() => {
+					setSnackBarMessage('')
+					setSnackBarOpen(false)
+				}, 3000);
+
+			})
+	});
 
 	React.useEffect(() => {
 		getData()
@@ -98,30 +98,18 @@ function Permissions(props) {
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
-
-	// const updateText = (search) => {
-	// 	setVal(search)
-	// }
-
 	function search(val) {
-		console.log('ceeleded', val);
-
 		setVal(val)
 		setData2(data.filter(n => n.title.toLowerCase().includes(val.toLowerCase())))
-		console.log(data, 'filterssss');
-
-
 	}
 
 	function closeDialog(mes) {
-		console.log(mes, 'messssssssssss');
 		snackbar(mes)
 		getData()
 		setOpen(false);
 	}
 
 	const snackbar = (snackmsg) => {
-		console.log(snackmsg,'snackmsggggggggg');
 		if (snackmsg == "create") {
 			setSnackBarMessage("Created Successfully")
 			setOK("success")
@@ -138,26 +126,19 @@ function Permissions(props) {
 			setOK("error")
 			setSnackBarOpen(true)
 		}
-	
-
 	}
-
 
 	return (
 		<>
-
-<Snackbar
-
-anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-open={snackbaropen}
-autoHideDuration={1000}
-
->
-<Alert variant="filled" severity={ok}>
-	{snackbarmessage}
-</Alert>
-</Snackbar>
-
+			<Snackbar
+				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+				open={snackbaropen}
+				autoHideDuration={1000}
+			>
+				<Alert variant="filled" severity={ok}>
+					{snackbarmessage}
+				</Alert>
+			</Snackbar>
 			<FusePageCarded
 				classes={{
 					content: 'flex',
@@ -167,10 +148,9 @@ autoHideDuration={1000}
 				content={<PermissionTable snackbar={snackbar} ValueForSearch={val} dataa={data2} onClose={closeDialog} />}
 			// innerScroll
 			/>
-
 			<FuseAnimate animation="transition.expandIn" delay={300}>
 				<Fab
-				    size="medium"
+					size="medium"
 					color="primary"
 					aria-label="add"
 					className={classes.addButton}
@@ -180,11 +160,9 @@ autoHideDuration={1000}
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-			{open ? <PermissionDialog  snackbar={snackbar} isOpen={open} closeDialog={closeDialog} type="Add" data={dialogData} /> : null}
+			{open ? <PermissionDialog snackbar={snackbar} isOpen={open} closeDialog={closeDialog} type="Add" data={dialogData} /> : null}
 		</>
 	);
 }
-
-
 
 export default withReducer('eCommerceApp', reducer)(Permissions);
