@@ -201,7 +201,7 @@ const useStyles = makeStyles(theme => ({
 				'& .time': {
 					justifyContent: 'flex-end',
 					right: 0,
-					marginRight: 2,
+					margunLeft: 2,
 					marginBottom: '-11px',
 					marginTop: '5px',
 					paddingBottom:5

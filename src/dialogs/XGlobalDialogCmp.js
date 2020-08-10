@@ -108,7 +108,7 @@ autoHideDuration={6000}
 </Snackbar>
         <Dialog open={defaultState} {...options} fullWidth={true}>
             {/* <DialogTitle id="form-dialog-title">{dialogTitle}</DialogTitle> */}
-            <AppBar position="static" elevation={1}>
+            <AppBar position="static" elevation={1} style={{marginBottom:'8px'}}>
 				
 				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
         style={{paddingBottom:20,paddingTop:20}}>
