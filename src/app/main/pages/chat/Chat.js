@@ -11,7 +11,6 @@ import moment from 'moment/moment';
 import React, { useEffect, useRef, useState } from 'react';
 import Picker from 'emoji-picker-react';
 import Tooltip from '@material-ui/core/Tooltip';
-
 import { useDispatch, useSelector } from 'react-redux';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
@@ -22,6 +21,7 @@ import ContactMessageType from './messageType/ContactMessageType'
 import DocumentMessageType from './messageType/DocumentMessageType'
 import ImageMessageType from './messageType/ImageMessageType'
 import VideoMessageType from './messageType/VideoMessageType'
+import MessageStateResolver from './messageType/MessageStateResolver'
 import SendIcon from '@material-ui/icons/Send';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -191,6 +191,96 @@ const useStyles = makeStyles(theme => ({
 			'& .bubble': {
 				marginLeft: 'auto',
 				backgroundColor: theme.palette.grey[50],
+				color: theme.palette.getContrastText(theme.palette.grey[300]),
+				borderTopLeftRadius: 6,
+				borderBottomLeftRadius: 6,
+				borderTopRightRadius: 5,
+				borderBottomRightRadius: 5,
+				width: 'auto',
+    			maxWidth: '35vw',
+				'& .time': {
+					justifyContent: 'flex-end',
+					right: 0,
+					marginRight: 2,
+					marginBottom: '-11px',
+					marginTop: '5px',
+					paddingBottom:5
+
+				}
+			},
+			'&.first-of-group': {
+				'& .bubble': {
+					borderTopRightRadius: 6
+				}
+			},
+
+			'&.last-of-group': {
+				'& .bubble': {
+					borderBottomRightRadius: 6
+				}
+			}
+		},
+		'&.contact + .me, &.me + .contact': {
+			paddingTop: 6,
+			marginTop: 6,
+			paddingBottom: 6
+		},
+		'&.first-of-group': {
+			'& .bubble': {
+				borderTopLeftRadius: 6,
+				paddingTop: 6
+			}
+		},
+		'&.last-of-group': {
+			'& .bubble': {
+				borderBottomLeftRadius: 6,
+				paddingBottom: 6,
+				'& .time': {
+					display: 'flex'
+				}
+			}
+		}
+	},
+	messageRowWithOutBorder: {
+		'&.contact': {
+			'& .bubble': {
+				color: theme.palette.primary.contrastText,
+				borderTopLeftRadius: 5,
+				borderBottomLeftRadius: 5,
+				borderTopRightRadius: 6,
+				borderBottomRightRadius: 6,
+				width: 'auto',
+    			maxWidth: '35vw',
+				borderTopRightRadius: 6,
+				borderBottomRightRadius: 6,
+				marginBottom:70,
+				'& .time': {
+					marginLeft: '0px',
+					marginBottom: '-11px',
+					marginTop: '5px',
+					paddingBottom:5
+				}
+			},
+			'&.first-of-group': {
+				'& .bubble': {
+					borderTopLeftRadius: 6
+				}
+			},
+			'&.last-of-group': {
+				'& .bubble': {
+					borderBottomLeftRadius: 6
+				}
+			}
+		},
+		'&.me': {
+			paddingLeft: 40,
+
+			'& .avatar': {
+				order: 2,
+				margin: '0 0 0 16px'
+			},
+			'& .bubble': {
+				marginLeft: 'auto',
 				color: theme.palette.getContrastText(theme.palette.grey[300]),
 				borderTopLeftRadius: 6,
 				borderBottomLeftRadius: 6,
@@ -884,6 +974,7 @@ function Chat(props) {
 		<div className={clsx('flex flex-col relative', props.className)}>
 			<FuseScrollbars ref={chatRef} className="flex flex-1 flex-col overflow-y-auto">
 				{messages && messages.length > 0 ? (
+				
 					<div className="flex flex-col pt-16 px-16 pb-40">
 						{messages.map((item, index) => {
 							const contact = null;
@@ -903,7 +994,7 @@ function Chat(props) {
 												{ 'last-of-group': isLastMessageOfGroup(item, index) },
 												index + 1 === messages.length && 'pb-96'
 											) : clsx(
-												// classes.messageRow,
+												classes.messageRowWithOutBorder,
 												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative  pb-4',
 												{ me: item.type === "outbound" },
 												{ contact: item.type === "inbound" },
@@ -911,32 +1002,17 @@ function Chat(props) {
 												{ 'last-of-group': isLastMessageOfGroup(item, index) },
 												index + 1 === messages.length && 'pb-96'
 											)
-									}
-									
+									}	
 								>
-									{/* {shouldShowContactAvatar(item, index) && (
-									
-										<Avatar
-											className="avatar absolute ltr:left-0 rtl:right-0 m-0 -mx-32"
-											src={props.selectedRecipient.avatar}
-										/>
-									)} */}
 									<div className="bubble flex relative items-center justify-center p-8 max-w-full">
-										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px',textAlign:'justify'}}>
+										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px',textAlign:'justify',wordBreak: 'break-all'}}>
 											{item.message_body}
-											<Typography className="time hidden w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm a')}</Typography>
+											<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm a')} {item.type=== "outbound"? MessageStateResolver.resolve(item.status):null }</Typography>
 											</div> : null}
 										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "video" ? <VideoMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "document" ? <DocumentMessageType index={index} classes={classes} message={item} /> : null}
-
-										{/* <Typography
-											className="time hidden absolute w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-no-wrap"
-											color="textSecondary"
-										>
-											{moment(item.dt).format('MMMM Do YYYY, h:mm:ss a')}
-										</Typography> */}
 									</div>
 								</div>
 							);
