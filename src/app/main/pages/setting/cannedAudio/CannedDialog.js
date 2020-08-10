@@ -12,7 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { makeStyles,ThemeProvider,createMuiTheme } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
@@ -20,8 +20,6 @@ import { getUserData } from '../../chat/store/actions';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AppBar from '@material-ui/core/AppBar';
 import { green, purple } from '@material-ui/core/colors';
-
-
 
 const useStyles = makeStyles((theme) => ({
 	addButton: {
@@ -36,67 +34,50 @@ const useStyles = makeStyles((theme) => ({
 
 	},
 	margin: {
-	  
-		color:'white',
-		paddingLeft:'14px',
-		fontWeight:'bold',
-		paddingRight:'14px',
-		paddingTop:'5px',
-		paddingBottom:'5px',
-		fontSize:'12px',
-	   
-	  },
+
+		color: 'white',
+		paddingLeft: '14px',
+		fontWeight: 'bold',
+		paddingRight: '14px',
+		paddingTop: '5px',
+		paddingBottom: '5px',
+		fontSize: '12px',
+
+	},
 
 }));
 
-
-
 const theme = createMuiTheme({
 	palette: {
-	  primary: green,
+		primary: green,
 	},
-	});
+});
 
 
 const CampaignDialog = (props) => {
 	const classes = useStyles(props);
-	// console.log(data,'in dialog')
-
 	const { isOpen, type, getUpdatedData, data } = props
-	console.log(props,'in dialog')
-
-	console.log(isOpen, 'isOpenisOpen in dialog	')
 	const [openDialog, setopenDialog] = React.useState(isOpen);
 	const [canned_type, setCannedType] = React.useState(data.message_type);
 	const [name, setName] = React.useState(data.message_name);
 	const [text, setText] = React.useState(data.message_text);
 	const [enabled, setEnabled] = React.useState(data.enabled);
 	const [open, setOpen] = React.useState(false);
-
-
 	const [description, setDescription] = React.useState('');
 	const [isLoading, setIsLoading] = React.useState(false);
 	const [uploadedFilePath, setUploadedFilePath] = React.useState(data.attachment_url);
 	const [attachment_name, setAttachment_name] = React.useState(data.file_name)
 	const [attachment_params, setAttachment_params] = React.useState('')
-console.log(data,'dataaaa');
-
-
-
-
 	const handleDialogClose = () => {
 		props.closeDialog()
 		setopenDialog(false);
 	};
-
 	const handleSubmit = () => {
-
-
-		let fileName 
-		if(uploadedFilePath !=''){
+		let fileName
+		if (uploadedFilePath != '') {
 			fileName = uploadedFilePath.split('https://upload.its.com.pk/')
-		}else{
-			fileName=''
+		} else {
+			fileName = ''
 		}
 		let params = {
 			message_name: name,
@@ -107,18 +88,13 @@ console.log(data,'dataaaa');
 			message_type: canned_type,
 			enabled: enabled
 		};
-		console.log(params)
 		if (type !== 'Update Canned Message') {
 			CoreHttpHandler.request('canned_messages', 'create_message', params, (response) => {
-				// props.getUpdatedData()
-				console.log(response)
-			  
 				props.closeDialog('create')
 				setopenDialog(false);
 			}, (error) => {
 				props.closeDialog("error")
 				setopenDialog(false);
-
 			});
 		} else {
 			let update_params = {
@@ -126,22 +102,16 @@ console.log(data,'dataaaa');
 				value: data.id,
 				params: params
 			}
-			console.log(update_params, 'update_params')
-			// return
 			CoreHttpHandler.request('canned_messages', 'update_message', update_params, (response) => {
-				// props.getUpdatedData()
-				console.log(response)
 				props.closeDialog("update")
 				setopenDialog(false);
 			}, (error) => {
 				props.closeDialog("error")
 				setopenDialog(false);
-
 			});
 		}
 	};
 	const handleEnable = (event) => {
-
 		setEnabled(event.target.checked);
 		console.log(enabled, 'enable')
 	};
@@ -171,20 +141,15 @@ console.log(data,'dataaaa');
 	};
 	const onChangeHandler = event => {
 		setIsLoading(true);
-
 		if (event.target.files.length > 0) {
 			const _data = new FormData();
-
 			let _name = event.target.files[0].name;
-
 			_name = _name.replace(/\s/g, "");
-
 			_data.append(
 				"file",
 				event.target.files[0],
 				`${new Date().getTime()}_${_name}`
 			);
-
 			CoreHttpHandler.request(
 				"content",
 				"upload",
@@ -213,27 +178,22 @@ console.log(data,'dataaaa');
 
 
 	return (
-		// <div> {isOpen}</div>
-		<Dialog open={openDialog} aria-labelledby="form-dialog-title" classes={{
+		<Dialog open={openDialog} onClose={handleDialogClose} aria-labelledby="form-dialog-title" classes={{
 			paper: 'm-24'
 		}}
-
 			fullWidth
 			maxWidth="xs">
-			{/* <DialogTitle id="form-dialog-title">{props.type} </DialogTitle> */}
 			<AppBar position="static" elevation={1}>
-				
 				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
-        style={{paddingBottom:20,paddingTop:20}}>
-	      {props.type} 
+					style={{ paddingBottom: 20, paddingTop: 20 }}>
+					{props.type}
 				</div>
 			</AppBar>
 			<DialogContent classes={{ root: 'p-24' }}>
 				<div className="flex">
-					<div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
+					<div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
 						<Icon color="action">account_circle</Icon>
 					</div>
-
 					<TextField
 						className="mb-24"
 						label="Name"
@@ -248,27 +208,6 @@ console.log(data,'dataaaa');
 						size="small"
 					/>
 				</div>
-				{/* <div className="flex">
-					<div className="min-w-48 pt-20">
-						<Icon color="action">account_circle</Icon>
-					</div>
-
-					<TextField
-						className="mb-24"
-						label="Description"
-						autoFocus
-						id="description"
-						name="description"
-						variant="outlined"
-						required
-						fullWidth
-						value={description}
-						onChange={onInputChange}
-
-
-					/>
-				</div> */}
-
 				<div className="flex" style={{ marginBottom: 20 }}>
 					<div className="min-w-48 pt-20" >
 						<Icon color="action">account_circle</Icon>
@@ -294,7 +233,7 @@ console.log(data,'dataaaa');
 					</FormControl>
 				</div>
 				{canned_type === 'text' ? (<div className="flex">
-					<div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
+					<div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
 						<Icon color="action">account_circle</Icon>
 					</div>
 					<TextField
@@ -313,7 +252,7 @@ console.log(data,'dataaaa');
 				</div>) : canned_type !== 'text' ? (
 					<div container >
 						<div className="flex" >
-							<div className="min-w-48 pt-20" style={{marginTop:'10px'}}>
+							<div className="min-w-48 pt-20" style={{ marginTop: '10px' }}>
 								<Icon color="action">attach_file</Icon>
 							</div>
 							{isLoading === true ? <CircularProgress color="secondary" style={{ marginLeft: '40%' }} />
@@ -331,8 +270,8 @@ console.log(data,'dataaaa');
 					</div>
 				) : null}
 				<FormControlLabel
-					control={	<Checkbox
-						
+					control={<Checkbox
+
 						checked={enabled}
 						onChange={handleEnable}
 					/>}
@@ -344,20 +283,19 @@ console.log(data,'dataaaa');
 				<Button variant="contained" onClick={handleDialogClose} color="primary" size="small">
 					Cancel
              </Button>
-			 <ThemeProvider theme={theme}>
-			 {canned_type ==='text' ?
-		<Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} disabled={!name||!text||!canned_type} color="primary">
-					Done
-         </Button>
-   : 
-<Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} disabled={!name||!uploadedFilePath||!canned_type} color="primary">
-					Done
-					</Button> 
+				<ThemeProvider theme={theme}>
+					{canned_type === 'text' ?
+						<Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} disabled={!name || !text || !canned_type} color="primary">
+							Done
+       				  </Button>
+						:
+						<Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} disabled={!name || !uploadedFilePath || !canned_type} color="primary">
+							Done
+					</Button>
 					}
-		 </ThemeProvider>
+				</ThemeProvider>
 			</DialogActions>
 		</Dialog>
-
 	)
 }
 
