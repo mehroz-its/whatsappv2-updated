@@ -645,6 +645,22 @@ function Chat(props) {
 			setcannedMessagesList(data)
 			setdialogOpenCanned(true)
 
+			var cannedData = [];
+			// console.log("canned data", data);
+			var documents = data.filter(item => item.message_type == 'document');
+			var audios = data.filter(item => item.message_type == 'audio');
+			var videos = data.filter(item => item.message_type == 'video');
+			var texts = data.filter(item => item.message_type == 'text');
+			var images = data.filter(item => item.message_type == 'image');
+
+			cannedData.push({ dataType: 'document', list: documents });
+			cannedData.push({ dataType: 'audio', list: audios });
+			cannedData.push({ dataType: 'video', list: videos });
+			cannedData.push({ dataType: 'text', list: texts });
+			cannedData.push({ dataType: 'image', list: images });
+
+			console.log("canned documents", cannedData);
+
 		}, (error) => {
 			// this.setSnackBarMessage('Failed to load canned messages, please try again later', 'error');
 		});
