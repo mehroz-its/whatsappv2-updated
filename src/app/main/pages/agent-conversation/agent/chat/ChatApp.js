@@ -6,7 +6,7 @@ import Hidden from '@material-ui/core/Hidden';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
-import ChatSidebar from '../NewUiPages/ChatSidebar'
+import { makeStyles } from '@material-ui/core/styles';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -15,8 +15,6 @@ import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Chat from './Chat';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
 import ChatsSidebar from './ChatsSidebar';
 import ContactSidebar from './ContactSidebar';
 import StatusIcon from './StatusIcon';
@@ -34,27 +32,11 @@ import XGlobalDialogCmp from '../../../../../../dialogs/XGlobalDialogCmp';
 import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
 import { CSVLink, CSVDownload } from 'react-csv';
 import Fade from '@material-ui/core/Fade'
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 import copy from 'copy-to-clipboard';
-import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
 const drawerWidth = 320;
 const headerHeight = 200;
-
-const AvatarStyle = createMuiTheme({
-	overrides: {
-		MuiAvatar: {
-		root: {
-		  paddingTop: 4,
-		  fontSize:'15px',
-		  height:'35px',
-		  width:'35px',
-		  paddingBottom: 4,
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
-		}
-	  }
-	}
-  });
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -167,8 +149,8 @@ const chat = null
 
 function ChatApp(props) {
 	const dispatch = useDispatch();
-	const { numberr } = props
-	console.log(numberr, 'propssss',props)
+	const { numberr, selectedAgent } = props
+	console.log(numberr, 'propssss')
 
 	// const chat = useSelector(({ chatApp }) => chatApp.chat);
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
@@ -181,8 +163,7 @@ function ChatApp(props) {
 	const [latestMessageSender, setlatestMessageSender] = React.useState(null);
 	const [NewAgent, setNewAgent] = React.useState(selectedAgent);
 	const [numbers, setnumbers] = React.useState(numberr);
-	const [viewChat,setViewChat] = React.useState(null)
-	const [selectedAgent,setSelectedAgent]  = React.useState(null)
+
 	const [messages, setmessages] = React.useState([]);
 	const [NewMessages, setNewMessages] = React.useState([]);
 	const [showLatestMessage, setshowLatestMessage] = React.useState(false);
@@ -191,12 +172,13 @@ function ChatApp(props) {
 	const [int_MessageLists, setint_MessageLists] = React.useState(null);
 	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
 	const [anchorEl, setAnchorEl] = React.useState(null);
+	
 	console.log(NewAgent, 'iiiiii')
-	console.log(selectedAgent, 'iiiiii from props')
+
 
 	// const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
 
-
+		
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
 	const selectedRecipientt = (e) => {
@@ -384,15 +366,15 @@ function ChatApp(props) {
 	const [shiftAgentsList, setshiftAgentsList] = React.useState([]);
 	const [dialogOpenShift, setdialogOpenShift] = React.useState(false);
 	const [sendActionType, setsendActionType] = React.useState(null);
-	const [snackbaropen, setSnackBarOpen] = React.useState(false)
-	const [snackbarmessage, setSnackBarMessage] = React.useState('')
-	const [ok, setOK] = React.useState('')
 	const [sendDialogOpen, setsendDialogOpen] = React.useState(false);
 	const [sendDialogTitle, setsendDialogTitle] = React.useState(false);
 	const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
 	const [dialogOpenCanned, setdialogOpenCanned] = React.useState(false);
 	const [cannedMessagesList, setcannedMessagesList] = React.useState([]);
+
 	const [blockReason, setblockReason] = React.useState('');
+	const { open } = props
+	const [opened,setOpened] = React.useState(open)
 	const [customerProfileData, setcustomerProfileData] = React.useState({
 		id: 0,
 		number: null,
@@ -463,7 +445,6 @@ function ChatApp(props) {
 		'aria-describedby': "form-dialog-title"
 	};
 	useEffect(() => {
-	
 		setNewAgent(selectedAgent)
 		console.log("numbers :L ", numbers);
 		console.log("getNumbers use efffact = > ", selectedRecipient);
@@ -474,25 +455,8 @@ function ChatApp(props) {
 		return () => {
 			clearInterval(int_MessageLists);
 		}
-	}, [selectedAgent]);
+	}, [numberr, selectedRecipient]);
 
-	// const getAgentsCustomers = () => {
-	// 	console.log(selectedAgent,'agent inside getAgent ');
-	// 	let params = {
-	// 		agentId: selectedAgent
-	// 	}
-	// 	CoreHttpHandler.request('conversations', 'agents_customer_list', {
-	// 		params
-	// 	}, (_response) => {
-	// 		console.log("_response  ", _response);
-	// 		const numbers = _response.data.data.customers;
-	// 		console.log("numbers : ", numbers);
-	// 		setnumbers(numbers)
-	// 		// setViewChat(true)
-	// 	}, (error) => {
-	// 		console.log("error  ", error);
-	// 	});
-	// }
 
 	const clearData = () => {
 		setselectedRecipient(null)
@@ -762,36 +726,21 @@ function ChatApp(props) {
 
 		});
 	}
-
-
-	const Agent = (value) => {
-		setSelectedAgent(value)
-		props.Agent(value)
-		setViewChat(true)
-		console.log(viewChat, value,selectedAgent,'i am in main')
-	}
-
-	console.log(numberr,'numberrrrrrrrrrrrrrrrrr');
-// if(numberr.length==0)
-// {
-// 	setSnackBarMessage("No Contacts Found For The Selected Agent")
-// 	setSnackBarOpen(true)
-// 	setOK("error")
-// }
-
+	console.log(opened,'open from state');
+	console.log(props,'allllthepropsssssssss');
 	return (
-<>
-<Snackbar
-anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-open={snackbaropen}
-autoHideDuration={3000}
-onClose={()=>setSnackBarOpen(false)}
->
-<Alert variant="filled" severity={ok}>
-	{snackbarmessage}
-</Alert>
-</Snackbar>
+		<>
+		<Snackbar
 
+		anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+		open={props.open}
+		autoHideDuration={3000}
+
+	>
+		<Alert variant="filled" severity={props.ok}>
+			{props.message}
+		</Alert>
+	</Snackbar>
 		<div className={clsx(classes.root)}>
 			<div className={classes.topBg} />
 			<div className={clsx(classes.contentCardWrapper, 'container')}>
@@ -820,40 +769,20 @@ onClose={()=>setSnackBarOpen(false)}
 							<ChatsSidebar numbers={numberr} onContactClick={(e) => { selectedRecipientt(e) }} />
 						</Drawer>
 					</Hidden>
-
-					{/* Double Drawer */}
-
 					<Hidden smDown>
 						<Drawer
-						
+							className="h-full z-20"
 							variant="permanent"
 							open
 							classes={{
 								paper: classes.drawerPaper
 							}}
 						>
-							<ChatSidebar agents={props.agents}   Agent={Agent}/>
+							
+							<ChatsSidebar numbers={numberr} onContactClick={(e) => { selectedRecipientt(e) }} />
+					
 						</Drawer>
 					</Hidden>
-					{
-					
-					numberr.length!=0 ?
-					<Hidden smDown>
-			
-						<Drawer
-						
-							variant="permanent"
-							open
-							classes={{
-								paper: classes.drawerPaper
-							}}
-						>
-							<ChatsSidebar numbers={numberr} onContactClick={(e) => { selectedRecipientt(e) }} />
-						</Drawer>
-					</Hidden> :null
-}
-   
-					{/* Double Drawer */}
 					<Drawer
 						className="h-full absolute z-30"
 						variant="temporary"
@@ -880,18 +809,18 @@ onClose={()=>setSnackBarOpen(false)}
 					<main className={clsx(classes.contentWrapper, 'z-10')}>
 						{!selectedRecipient ? (
 							<div className="flex flex-col flex-1 items-center justify-center p-24">
-								<Paper className="rounded-full p-48">
-									<Icon className="block text-64" color="secondary">
+								<Paper className="rounded-full p-24">
+									<Icon className="block text-32" color="secondary">
 										chat
 									</Icon>
 								</Paper>
-								<Typography variant="h6" style={{ fontSize: '18px', paddingTop: '14px'}}>
-											Chat App
+								<Typography variant="h6" className="my-24">
+									Chat App
 								</Typography>
-										<Typography
-											className="hidden md:flex px-16 pb-24 mt-10 text-center"
-											color="textSecondary">
-											Select a contact to start a conversation!
+								<Typography
+									className="hidden md:flex px-16 pb-24 mt-24 text-center"
+									color="textSecondary">
+									Select a contact to start a conversation!..
 								</Typography>
 								<Button
 									variant="outlined"
@@ -918,46 +847,34 @@ onClose={()=>setSnackBarOpen(false)}
 												className="flex items-center cursor-pointer"
 										
 										
-												style={{ marginTop: '-4px' }}
+												style={{ marginTop: '-10px' }}
 											>
 												<div className="relative mx-8 " style={{marginTop:'3px'}}>
 													<div className="absolute right-0 bottom-0 -m-4 z-10">
 														<StatusIcon status={selectedRecipient.status} />
 													</div>
-												 	<MuiThemeProvider theme={AvatarStyle}>
-													<Avatar 
-													
-													src={selectedRecipient.avatar} alt={selectedRecipient.name}>
+
+													<Avatar src={selectedRecipient.avatar} alt={selectedRecipient.name}>
 														{!selectedRecipient.avatar || selectedRecipient.avatar === ''
 															? selectedRecipient.name[0]
 															: ''}
 													</Avatar>
-													</MuiThemeProvider>
-												
 												</div>
 												<div style={{marginTop:'3px'}}>
-												<Typography color="inherit" className="text-14 font-600 px-4">
+												<Typography color="inherit" className="text-12 font-600 px-4">
 													{selectedRecipient.name}
 												</Typography>
 												</div>
 											</div>
-											<div style={{ position: 'absolute', right:20,top:17 }}>
-												<Button
-												onClick={(e) => conversationActionsCallback('shift')}
-												fullWidth
-												variant="contained"
-												size="small"
-												>
-											 Take Over
-												</Button>
-												{/* <IconButton
+											<div style={{ position: 'absolute', right: 1,top:2 }}>
+												<IconButton
 													aria-owns={moreMenuEl ? 'chats-more-menu' : null}
 													aria-haspopup="true"
 													onClick={handleMoreMenuClick}
 													style={{ color: 'white' }}
 												>
 													<Icon>more_vert</Icon>
-												</IconButton> */}
+												</IconButton>
 												<Menu
 													id="chats-more-menu"
 													anchorEl={moreMenuEl}
@@ -1001,7 +918,7 @@ onClose={()=>setSnackBarOpen(false)}
 					</Drawer>
 				</div>
 			</div>
-			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Admin `} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
+			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
 
 		</div>
 		</>

@@ -4,8 +4,6 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
-import moment from 'moment/moment';
-
 
 const ImageMessageType = function (props) {
     const { message, index } = props;
@@ -33,7 +31,7 @@ const ImageMessageType = function (props) {
 
     return (
         <div>
-            <Card style={{ width: '350px', height: 'auto',borderBlockColor:'white' }} onClick={() => setIsOpen(true)} className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
+            <Card style={{ width: '350px', height: 'auto' }} onClick={() => setIsOpen(true)} className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
                 <LazyLoadImage
                     key={`message_list_item_type_image_${index}`}
                     alt={imageCaption}
@@ -42,8 +40,7 @@ const ImageMessageType = function (props) {
                     style={{ width: '100%', objectFit: 'cover' }}
                 />
                 {imageCaption !== '' ?   <p style={{ width: "100%", margin: '10px',fontWeight:'bold' }}>{imageCaption}</p> : null}
-                <p style={{ width: "100%", margin: '10px' ,fontSize:'10px'}}>{moment(message.dt).format('MMM Do YY, h:mm a')}</p>
-
+              
             </Card>
             {isOpen && (
                 <Lightbox mainSrc={imageSrc} onCloseRequest={() => setIsOpen(false)} />

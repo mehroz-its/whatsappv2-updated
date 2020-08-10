@@ -3,21 +3,25 @@ import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import FuseUtils from '@fuse/utils';
 import AppBar from '@material-ui/core/AppBar';
 import Avatar from '@material-ui/core/Avatar';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem';
 import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
+// import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import List from '@material-ui/core/List';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+// import ListItemIcon from '@material-ui/core/ListItemIcon';
+// import ListItemText from '@material-ui/core/ListItemText';
+// import Menu from '@material-ui/core/Menu';
+import InputLabel from '@material-ui/core/InputLabel';
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+// import Tabs from '@material-ui/core/Tabs';
+// import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
 import ContactListItem from './ContactListItem';
 import PropTypes from 'prop-types';
@@ -25,7 +29,34 @@ import PropTypes from 'prop-types';
 import StatusIcon from './StatusIcon';
 import * as Actions from './store/actions';
 
+const contacts = [
+	{
+		avatar: "assets/images/avatars/alice.jpg",
+		id: "5725a680b3249760ea21de52",
+		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+		name: "Alice Freeman",
+		status: "online",
+		unread: "2",
+	},
+	{
+		avatar: "assets/images/avatars/Arnold.jpg",
+		id: "5725a680606588342058356d",
+		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+		name: "Arnold",
+		status: "do-not-disturb",
+		unread: "3"
+	},
+	{
+		avatar: "assets/images/avatars/Barrera.jpg",
+		id: "5725a68009e20d0a9e9acf2a",
+		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
+		name: "Arnold",
+		status: "do-not-disturb",
+		unread: "3"
+	},
 
+
+]
 const user = {
 	avatar: "assets/images/avatars/profile.jpg",
 	chatList: [
@@ -46,9 +77,39 @@ const user = {
 	name: "John Doe",
 	status: "online"
 }
+const statusArr = [
+	{
+		title: 'Online',
+		value: 'online'
+	},
+	{
+		title: 'Away',
+		value: 'away'
+	},
+	{
+		title: 'Do not disturb',
+		value: 'do-not-disturb'
+	},
+	{
+		title: 'Offline',
+		value: 'offline'
+	}
+];
 
+const useStyles = makeStyles((theme) => ({
+	formControl: {
+	  margin: theme.spacing(1),
+	  minWidth: 120,
+	},
+	selectEmpty: {
+	  marginTop: theme.spacing(2),
+	},
+  }));
+
+  
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
+	
 
 	return (
 		<Typography
@@ -75,9 +136,10 @@ function a11yProps(index) {
 		'aria-controls': `simple-tabpanel-${index}`,
 	};
 }
-function ChatsSidebar(props) {
+function 	ChatsSidebar(props) {
 	const { numbers } = props
 	const dispatch = useDispatch();
+	const classes = useStyles();
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
 	// console.log("contacts : " , props.numbers);
 
@@ -128,12 +190,13 @@ function ChatsSidebar(props) {
 		setSearchText(event.target.value);
 	}
 	let filtered = props.numbers
+	
 	filtered = searchText.charAt(0) === '9' ? numbers.filter((number => number.number.includes(searchText))) : numbers.filter((number => number.name.toLowerCase().includes(searchText.toLowerCase())))
-			console.log('insideeeeeeeeee chatsideeeeeeeeeeeeee');
+	console.log(filtered,'filteddddddddd');
 	return (
 		<div className="flex flex-col flex-auto h-full">
-			<AppBar position="static" color="default" elevation={1} className="">
-				<Toolbar className="flex justify-between items-center px-4">
+			<AppBar position="static" color="default" elevation={1} className="pt-16">
+				{/* <Toolbar className="flex justify-between items-center px-4">
 					{user && (
 						<div
 
@@ -156,14 +219,14 @@ function ChatsSidebar(props) {
 						</div>
 					)}
 					<div>
-						{/* <IconButton
+						<IconButton
 							aria-owns={moreMenuEl ? 'chats-more-menu' : null}
 							aria-haspopup="true"
 							onClick={handleMoreMenuClick}
 						>
-						
-						</IconButton> */}
-						{/* <Menu
+							<Icon>more_vert</Icon>
+						</IconButton>
+						<Menu
 							id="chats-more-menu"
 							anchorEl={moreMenuEl}
 							open={Boolean(moreMenuEl)}
@@ -171,13 +234,32 @@ function ChatsSidebar(props) {
 						>
 							<MenuItem onClick={handleMoreMenuClose}>Profile</MenuItem>
 							<MenuItem onClick={handleMoreMenuClose}>Logout</MenuItem>
-						</Menu> */}
+						</Menu>
 					</div>
-				</Toolbar>
+				</Toolbar> */}
+				 {/* <Toolbar className="flex justify-between items-center px-4">
+				 <FormControl className={classes.formControl}>
+				 <InputLabel id="demo-simple-select-label">Age</InputLabel> 
+				 <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  defaultValue='Select Gender'
+				//   onChange={handleRadio}
+				  fullWidth
+				//   value={value}
+                >
+                  <MenuItem value={value}>Select Gender</MenuItem>
+                  <MenuItem value="male">Male</MenuItem>
+                  <MenuItem value="female">Female</MenuItem>
+                  <MenuItem value="others">Others</MenuItem>
+              
+                </Select>
+				</FormControl>
+				 </Toolbar> */}
 				{useMemo(
 					() => (
 						<Toolbar className="px-16">
-							<Paper className="flex p-4 items-center w-full px-8 py-4 rounded-8" elevation={1}>
+							<Paper className="flex p-4 items-center w-full px-8 py-4 rounded-8" elevation={0}>
 								<Icon color="action">search</Icon>
 
 								<Input
@@ -229,6 +311,7 @@ function ChatsSidebar(props) {
 												Chats
 											</Typography>
 										)}
+									
 										{filtered.map(contactt => (
 											<ContactListItem
 												key={contactt.id}
@@ -238,8 +321,8 @@ function ChatsSidebar(props) {
 											// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
 											/>
 										))}
+										
 									</FuseAnimateGroup>
-									
 								</>
 							);
 						}, [props.numbers,filtered])

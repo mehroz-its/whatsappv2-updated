@@ -9,6 +9,7 @@ import TableFooter from '@material-ui/core/TableFooter';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
 import clsx from 'clsx';
@@ -16,6 +17,55 @@ import ContactsTablePaginationActions from './ContactsTablePaginationActions';
 import Icon from '@material-ui/core/Icon';
 import CannedDialog from './CannedDialog'
 
+
+const BodyStyle = createMuiTheme({
+	overrides: {
+	  MuiTableCell: {
+		root: {
+		  paddingTop: 4,
+		  fontSize:'12px',
+		  paddingBottom: 4,
+		//   "&:last-child": {
+		// 	paddingRight: 5
+		//   }
+		}
+	  }
+	}
+  });
+  
+// const PaginationStyle = createMuiTheme({
+// 	overrides: {
+// 		MuiTypography: {
+// 		root: {
+// 		  paddingTop: 4,
+// 		  fontSize:'1.1rem',
+// 		  paddingBottom: 4,
+// 		  height:'5%'
+// 		//   "&:last-child": {
+// 		// 	paddingRight: 5
+// 		//   }
+// 		}
+// 	  }
+// 	}
+//   });
+
+
+const HeaderStyle = createMuiTheme({
+	overrides: {
+	  MuiTableCell: {
+		root: {
+	
+		  paddingLeft:40,
+
+		  fontSize:'12px',
+		  paddingBottom: 4,
+		  "&:first-child": {
+			paddingRight: 40
+		  }
+		}
+	  }
+	}
+  });
 
 const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
 	const defaultRef = React.useRef();
@@ -127,9 +177,12 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 					{headerGroups.map(headerGroup => (
 						<TableRow {...headerGroup.getHeaderGroupProps()}>
 							{headerGroup.headers.map(column => (
+									<MuiThemeProvider theme={HeaderStyle}>
 								<TableCell
 								    
-									className="p-0"
+								style={{fontSize:'11px'}}
+								align="center"
+								className="whitespace-no-wrap px-50 py-0" 
 									{...(!column.sortable
 										? column.getHeaderProps()
 										: column.getHeaderProps(column.getSortByToggleProps()))}
@@ -143,6 +196,7 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 										/>
 									) : null}
 								</TableCell>
+								</MuiThemeProvider>
 							))}
 						</TableRow>
 					))}
@@ -186,13 +240,17 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 										}
 									} else {
 										return (
+											<MuiThemeProvider theme={BodyStyle}>
 											<TableCell
-											style={{fontSize:'12px'}}
+											
+											align="center"
+									
 												{...cell.getCellProps()}
 												className={clsx('p-0')}
 											>
 												{cell.render('Cell')}
 											</TableCell>
+											</MuiThemeProvider>
 										);
 									}
 								})}

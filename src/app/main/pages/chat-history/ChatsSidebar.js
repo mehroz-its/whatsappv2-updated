@@ -175,46 +175,12 @@ function ChatsSidebar(props) {
 	filtered = searchText.charAt(0) === '9' ? numbers.filter((number => number.number.includes(searchText))) : numbers.filter((number => number.name.toLowerCase().includes(searchText.toLowerCase())))
 	return (
 		<div className="flex flex-col flex-auto h-full">
-			<AppBar position="static" color="default" elevation={1} className="">
-				<Toolbar className="flex justify-between items-center px-4">
-					{user && (
-						<div
-						style={{marginLeft:'4%'}}
-						>
-							<Avatar src={user.avatar} alt={user.name} className="w-40 h-40">
-								{!user.avatar || user.avatar === '' ? user.name[0] : ''}
-							</Avatar>
-							<div
-								className="absolute right-0 bottom-0 -m-4 z-10 cursor-pointer"
-								aria-owns={statusMenuEl ? 'switch-menu' : null}
-								aria-haspopup="true"
-								onClick={handleStatusMenuClick}
-								onKeyDown={handleStatusMenuClick}
-								role="button"
-								tabIndex={0}
-							>
-								
-							</div>
-						
-						</div>
-					)}
-					<div>
-						
-						{/* <Menu
-							id="chats-more-menu"
-							anchorEl={moreMenuEl}
-							open={Boolean(moreMenuEl)}
-							onClose={handleMoreMenuClose}
-						>
-							<MenuItem onClick={handleMoreMenuClose}>Profile</MenuItem>
-							<MenuItem onClick={handleMoreMenuClose}>Logout</MenuItem>
-						</Menu> */}
-					</div>
-				</Toolbar>
+			<AppBar position="static" color="default" elevation={1} className="pt-16">
+
 				{useMemo(
 					() => (
 						<Toolbar className="px-10" style={{marginTop:'-15px'}}>
-							<Paper className="flex p-4 items-center w-full px-10 py-6 rounded-0" elevation={1}>
+							<Paper className="flex p-4 items-center w-full px-10 py-6 rounded-0" elevation={0}>
 								<Icon color="action" fontSize="small">search</Icon>
 
 								<Input
