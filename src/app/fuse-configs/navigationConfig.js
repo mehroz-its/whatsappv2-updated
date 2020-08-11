@@ -32,6 +32,26 @@ const navigationConfig = [
 	{
 		id: 'applications',
 		title: 'Applications',
+		translate: 'Super Admin',
+		type: 'group',
+		icon: 'apps',
+		children: [
+			{
+				id: 'companyProfile',
+				title: 'Company Profile',
+				translate: 'IntellCompany Profileigence',
+				type: 'item',
+				icon: 'dashboard',
+				url: '/company-profile',
+				exact: true
+
+			},
+		]
+	},
+
+	{
+		id: 'applications',
+		title: 'Applications',
 		translate: 'Navigation',
 		type: 'group',
 		icon: 'apps',
@@ -234,13 +254,13 @@ let uzair = NewNav;
 console.log("uzair : ", uzair);
 uzair.map((uzairitem, uzairii) => {
 	if (uzairitem.children.length > 0) {
-	uzairitem.children.map((uzairitemCh, uzairitemChInc) => {
-		console.log("uzairitemCh : ", uzairitemCh);
-		if (uzairitemCh.children <= 0) {
-			uzairitem.children.splice(uzairitemChInc, 1);
-		}
-	})
-	
+		uzairitem.children.map((uzairitemCh, uzairitemChInc) => {
+			console.log("uzairitemCh : ", uzairitemCh);
+			if (uzairitemCh.children <= 0) {
+				uzairitem.children.splice(uzairitemChInc, 1);
+			}
+		})
+
 	}
 })
 console.log("NewNav :", NewNav);

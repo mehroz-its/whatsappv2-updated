@@ -8,6 +8,8 @@ import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
 import GetAppIcon from '@material-ui/icons/GetApp';
 import DescriptionIcon from '@material-ui/icons/Description';
 import moment from 'moment/moment';
+import MessageStateResolver from '../../chat/messageType/MessageStateResolver'
+
 
 
 const DocumentMessageType = function (props) {
@@ -75,7 +77,7 @@ const DocumentMessageType = function (props) {
                         </span>
                         </div>
                         <p style={{fontWeight:'bold',marginLeft:'1%',marginTop:'2%'}}>{caption}</p>
-                        <p style={{ width: "100%", margin: '10px',marginLeft:'1%',fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}</p>
+                        <p style={{ width: "100%", margin: '10px',marginLeft:'1%',fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status) : null}</p>
 
                       
                     </CardContent>

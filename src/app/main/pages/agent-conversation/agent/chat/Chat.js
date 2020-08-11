@@ -17,7 +17,7 @@ import ContactMessageType from './messageType/ContactMessageType'
 import DocumentMessageType from './messageType/DocumentMessageType'
 import ImageMessageType from './messageType/ImageMessageType'
 import VideoMessageType from './messageType/VideoMessageType'
-
+import LocationMessageType from './messageType/LocationMessageType'
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
@@ -837,7 +837,8 @@ function Chat(props) {
 										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "video" ? <VideoMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "document" ? <DocumentMessageType index={index} classes={classes} message={item} /> : null}
-
+										{item.message_type === "contacts" ? <ContactMessageType index={index} classes={classes} message={item} /> : null}
+										{item.message_type === "location" ? <LocationMessageType index={index} classes={classes} message={item} /> : null}
 										<Typography
 											className="time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-no-wrap"
 											color="textSecondary"

@@ -6,6 +6,12 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import MessageStateResolver from './MessageStateResolver'
+import moment from 'moment/moment';
+import Icon from '@material-ui/core/Icon';
+
+
+
 
 
 const useStyles = makeStyles({
@@ -36,24 +42,30 @@ const ContactMessageType = function (props) {
         name = val.name
         number.push(val.number)
     })
- 
+
     const classes = useStyles();
     const bull = <span className={classes.bullet}>•</span>;
     return (
         <Card className={classes.root} variant="outlined">
-            <CardContent style={{padding:5}}> 
-                <Typography className={classes.title}gutterBottom>
-                    {name}
-                </Typography>
+            <CardContent style={{ padding: 5 }}>
+                <div style={{ display: 'flex' }}>
+                    <Icon color="action" className='text-16' style={{marginRight:'5px',marginTop:'2px'}}>contact_phone</Icon>
+                    <Typography className={classes.title} gutterBottom>
+                        {name}
+                    </Typography>
+                </div>
+
                 {
                     number.map((val, index) => {
                         return (
-                            <Typography>
+                            <Typography style={{ fontSize: '13px' }}>
                                 {val}
                             </Typography>
                         )
                     })
-                }     
+                }
+                <p style={{ width: "100%", margin: '5px 0px', fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status) : null}</p>
+
             </CardContent>
         </Card>
     )

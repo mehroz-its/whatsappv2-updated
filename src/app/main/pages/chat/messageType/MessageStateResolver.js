@@ -14,11 +14,12 @@ class MessageStateResolver {
     }
 
     resolve(state) {
+        console.log(state,'statestate')
         if (!this.states[state]) return ('Unknown');
 
         const _state = this.states[state];
 
-        return (_state);
+        return (`-${_state}`);
     }
 }
 

@@ -1,7 +1,9 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
 import Iframe from 'react-iframe';
+import MessageStateResolver from '../../chat/messageType/MessageStateResolver'
 import moment from 'moment/moment';
+
 
 
 const LocationMessageType = function (props) {
@@ -45,7 +47,7 @@ const LocationMessageType = function (props) {
                 display="initial"
                 position="relative"
                 frameBorder="0"></iframe>
-            <p style={{ width: "100%", margin: '10px', fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}</p>
+            <p style={{ width: "100%", margin: '5px', marginLeft:'0px', fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status) : null}</p>
 
         </Card>
     )

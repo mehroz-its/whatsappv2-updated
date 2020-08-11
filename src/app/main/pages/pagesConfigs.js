@@ -35,8 +35,10 @@ import ResetPassword2PageConfig from './auth/reset-password-2/ResetPassword2Page
 import BlockAppConfig from './BlockedContacts/BlockAppConfig'
 import ProfileAppConfig from './profile/ProfileAppConfig'
 import ChatHistoryConfig from './chat-history/ChatHistoryConfig'
+import CompanyProfileConfig   from './company-profile/CompanyProfileConfig'
 
 const pagesConfigs = [
+	CompanyProfileConfig,
 	CannedDocumentConfig,
 	CannedImageConfig,
 	CannedAudioConfig,
