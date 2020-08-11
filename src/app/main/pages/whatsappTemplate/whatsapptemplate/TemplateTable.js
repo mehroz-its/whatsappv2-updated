@@ -11,14 +11,30 @@ import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
 import * as Actions from '../store/actions';
 import TemplateTableHead from './TemplateTableHead';
 import TableData from '../TemplateData'
 import TemplateDialog from './TemplateDialog'
+import ContactsTablePaginationActions from '../../setting/canned/ContactsTablePaginationActions';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 import Typography from '@material-ui/core/Typography';
 
+const PaginationStyle = createMuiTheme({
+	overrides: {
+		MuiTypography: {
+		body2: {
+			fontSize:'12px',
+			marginTop:'1px'
+
+		//   "&:last-child": {
+		// 	paddingRight: 5
+		//   }
+		}
+	  }
+	}
+  });
 
 function TemplateTable(props) {
 
@@ -228,22 +244,30 @@ function TemplateTable(props) {
 					</TableBody>
 				</Table>
 			</FuseScrollbars>
-
+			<MuiThemeProvider theme={PaginationStyle}>
 			<TablePagination
+							classes={{
+								root: 'overflow-hidden',
+								spacer: 'w-0 max-w-0',
+								actions:'text-64',
+								select:'text-12 mt-4',
+								 selectIcon:'mt-4',
+								// input:'text-64',
+								// menuItem:'text-64',
+								// toolbar:'text-64',
+								// selectRoot:'text-64'
+							}}			
 				className="overflow-hidden"
 				component="div"
+				style={{fontSize:'12px'}}
 				count={data.length}
 				rowsPerPage={rowsPerPage}
 				page={page}
-				backIconButtonProps={{
-					'aria-label': 'Previous Page'
-				}}
-				nextIconButtonProps={{
-					'aria-label': 'Next Page'
-				}}
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
+				ActionsComponent={ContactsTablePaginationActions}
 			/>
+			</MuiThemeProvider>
 			{open && <TemplateDialog type="Update Template" isOpen={open} closeDialog={handleClose} data={dialogData} />}
 		</div>
 	);
