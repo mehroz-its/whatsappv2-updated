@@ -24,7 +24,7 @@ import PermissionConfig from './setting/permission/PermissionConfig'
 import RolesConfig from './setting/roles/RolesConfig'
 import UserConfig from './setting/users/UserConfig'
 import TemplateConfig from './template-message/TemplateConfig'
-import ReportsAppConfig from './reports/ReportsAppConfig'
+import ReportsAppConfig from './Reports/ReportsAppConfig'
 // import ReportsAppConfig from './reports/ReportsAppConfig'
 import AdminDashboardAppConfig from './adminDashboard/AdminDashboardAppConfig'
 import AgentConfig from './agent-conversation/AgentConfig'
@@ -35,8 +35,10 @@ import ResetPassword2PageConfig from './auth/reset-password-2/ResetPassword2Page
 import BlockAppConfig from './BlockedContacts/BlockAppConfig'
 import ProfileAppConfig from './profile/ProfileAppConfig'
 import ChatHistoryConfig from './chat-history/ChatHistoryConfig'
+import CompanyProfileConfig   from './company-profile/CompanyProfileConfig'
 
 const pagesConfigs = [
+	CompanyProfileConfig,
 	CannedDocumentConfig,
 	CannedImageConfig,
 	CannedAudioConfig,

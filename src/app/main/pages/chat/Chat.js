@@ -18,6 +18,7 @@ import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import Button from '@material-ui/core/Button';
 import AudioMessageType from './messageType/AudioMessageType'
 import ContactMessageType from './messageType/ContactMessageType'
+import LocationMessageType from './messageType/LocationMessageType'
 import DocumentMessageType from './messageType/DocumentMessageType'
 import ImageMessageType from './messageType/ImageMessageType'
 import VideoMessageType from './messageType/VideoMessageType'
@@ -1037,6 +1038,9 @@ function Chat(props) {
 										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "video" ? <VideoMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "document" ? <DocumentMessageType index={index} classes={classes} message={item} /> : null}
+										{item.message_type === "contacts" ? <ContactMessageType index={index} classes={classes} message={item} /> : null}
+										{item.message_type === "location" ? <LocationMessageType index={index} classes={classes} message={item} /> : null}
+
 									</div>
 								</div>
 							);

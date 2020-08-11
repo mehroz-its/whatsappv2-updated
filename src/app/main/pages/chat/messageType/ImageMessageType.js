@@ -5,6 +5,8 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css';
 import moment from 'moment/moment';
+import MessageStateResolver from './MessageStateResolver'
+
 
 
 const ImageMessageType = function (props) {
@@ -42,7 +44,7 @@ const ImageMessageType = function (props) {
                     style={{ width: '100%', objectFit: 'cover' }}
                 />
                 {imageCaption !== '' ?   <p style={{ width: "100%", margin: '10px',fontWeight:'bold' }}>{imageCaption}</p> : null}
-                <p style={{ width: "100%", margin: '10px' ,fontSize:'10px'}}>{moment(message.dt).format('MMM Do YY, h:mm a')}</p>
+                <p style={{ width: "100%", margin: '10px' ,fontSize:'10px'}}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status) : null}</p>
 
             </Card>
             {isOpen && (

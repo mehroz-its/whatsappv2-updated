@@ -17,7 +17,6 @@ const useStyles = makeStyles((theme) => ({
         
           color:'white',
           paddingLeft:'14px',
-          fontWeight:'bold',
           paddingRight:'14px',
           paddingTop:'5px',
           paddingBottom:'5px',

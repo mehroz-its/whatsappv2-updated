@@ -5,6 +5,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import MessageStateResolver from '../chat/messageType/MessageStateResolver'
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import moment from 'moment/moment';
@@ -13,11 +14,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import Button from '@material-ui/core/Button';
 import AudioMessageType from './messageType/AudioMessageType'
-import ContactMessageType from './messageType/ContactMessageType'
 import DocumentMessageType from './messageType/DocumentMessageType'
 import ImageMessageType from './messageType/ImageMessageType'
 import VideoMessageType from './messageType/VideoMessageType'
-
+import ContactMessageType from './messageType/ContactMessageType'
+import LocationMessageType from './messageType/LocationMessageType'
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
@@ -853,18 +854,19 @@ function Chat(props) {
 									)} */}
 									<div className="bubble flex relative items-center justify-center p-12 max-w-full">
 										{item.message_type === "text" ?
-											<div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px' }}>
+											<div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px' ,wordBreak: 'break-all'}}>
 												{item.sender_name !== 'inbound' ?
-													<div style={{ marginTop: '-5px', paddingBottom: '10px', marginLeft: '-3px', fontWeight: '300', fontSize: '12px' }}> {`${item.sender_name.charAt(0).toUpperCase()}${item.sender_name.substring(1)}`}  </div> : null}
+													<div style={{ marginTop: '-5px', paddingBottom: '10px', marginLeft: '-3px', fontWeight: '300', fontSize: '12px' }}> {`${item.sender_name.charAt(0).toUpperCase()}${item.sender_name.substring(1)}:`}  </div> : null}
 												{item.message_body}
-												<Typography className="time hidden w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm a')}</Typography>
+												<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm a')}{item.type=== "outbound"? MessageStateResolver.resolve(item.status):null }</Typography>
 											</div>
 											: null}
 										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "video" ? <VideoMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "document" ? <DocumentMessageType index={index} classes={classes} message={item} /> : null}
-
+										{item.message_type === "contacts" ? <ContactMessageType index={index} classes={classes} message={item} /> : null}
+										{item.message_type === "location" ? <LocationMessageType index={index} classes={classes} message={item} /> : null}
 										{/* <Typography
 											className="time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-no-wrap"
 											color="textSecondary"
