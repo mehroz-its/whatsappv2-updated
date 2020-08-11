@@ -32,6 +32,8 @@ import XGlobalDialogCmp from '../../../../../../dialogs/XGlobalDialogCmp';
 import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
 import { CSVLink, CSVDownload } from 'react-csv';
 import Fade from '@material-ui/core/Fade'
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 import copy from 'copy-to-clipboard';
 const drawerWidth = 320;
 const headerHeight = 200;
@@ -170,12 +172,13 @@ function ChatApp(props) {
 	const [int_MessageLists, setint_MessageLists] = React.useState(null);
 	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
 	const [anchorEl, setAnchorEl] = React.useState(null);
+	
 	console.log(NewAgent, 'iiiiii')
-	console.log(selectedAgent, 'iiiiii from props')
+
 
 	// const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
 
-
+		
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
 	const selectedRecipientt = (e) => {
@@ -368,7 +371,10 @@ function ChatApp(props) {
 	const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
 	const [dialogOpenCanned, setdialogOpenCanned] = React.useState(false);
 	const [cannedMessagesList, setcannedMessagesList] = React.useState([]);
+
 	const [blockReason, setblockReason] = React.useState('');
+	const { open } = props
+	const [opened,setOpened] = React.useState(open)
 	const [customerProfileData, setcustomerProfileData] = React.useState({
 		id: 0,
 		number: null,
@@ -720,7 +726,21 @@ function ChatApp(props) {
 
 		});
 	}
+	console.log(opened,'open from state');
+	console.log(props,'allllthepropsssssssss');
 	return (
+		<>
+		<Snackbar
+
+		anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+		open={props.open}
+		autoHideDuration={3000}
+
+	>
+		<Alert variant="filled" severity={props.ok}>
+			{props.message}
+		</Alert>
+	</Snackbar>
 		<div className={clsx(classes.root)}>
 			<div className={classes.topBg} />
 			<div className={clsx(classes.contentCardWrapper, 'container')}>
@@ -758,7 +778,9 @@ function ChatApp(props) {
 								paper: classes.drawerPaper
 							}}
 						>
+							
 							<ChatsSidebar numbers={numberr} onContactClick={(e) => { selectedRecipientt(e) }} />
+					
 						</Drawer>
 					</Hidden>
 					<Drawer
@@ -899,6 +921,7 @@ function ChatApp(props) {
 			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
 
 		</div>
+		</>
 	);
 }
 

@@ -29,13 +29,18 @@ const ContactsTablePaginationActions = props => {
 
 	return (
 		<div className="flex-shrink-0 px-12 overflow-hidden">
-			<IconButton onClick={handleFirstPageButtonClick} disabled={page === 0} aria-label="first page">
+			<IconButton  className="text-4 mt-0 "
+			style={{fontSize:'200px'}}
+			size="small" onClick={handleFirstPageButtonClick} disabled={page === 0} aria-label="first page">
 				{theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
 			</IconButton>
-			<IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
+			<IconButton style={{fontSize:'200px'}} className="text-64 mt-0" size="small" onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
 				{theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
 			</IconButton>
 			<IconButton
+			className="text-64 mt-0" 
+			size="small"
+			style={{fontSize:'200px'}}
 				onClick={handleNextButtonClick}
 				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
 				aria-label="next page"
@@ -43,11 +48,17 @@ const ContactsTablePaginationActions = props => {
 				{theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
 			</IconButton>
 			<IconButton
+			className="text-64 mt-0" 
+			classes={{
+				sizeSmall:'text-xs'
+			}}
+			style={{fontSize:'200px'}}
+			size="small"
 				onClick={handleLastPageButtonClick}
 				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
 				aria-label="last page"
 			>
-				{theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+				{theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon  />}
 			</IconButton>
 		</div>
 	);

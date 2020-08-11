@@ -116,7 +116,9 @@ input:-webkit-autofill {
 .audioContainer canvas{
     display: none
 }
-
+.menu span{
+    display: none
+}
 @import 'print.css';
 
 @import 'tables.css';

@@ -18,15 +18,21 @@ import { makeStyles } from '@material-ui/core/styles';
 import * as Actions from '../store/actions';
 const useStyles = makeStyles((theme) => ({
 	formControl: {
-	  margin: theme.spacing(1),
-	  minWidth: 300,
-	  borderWidth:'2px',
-	  borderColor:'black'
+		margin: theme.spacing(1),
+		minWidth: 300,
+		borderWidth: '2px',
+		borderColor: 'black',
+		display: 'flex',
+
 	},
 	selectEmpty: {
-	  marginTop: theme.spacing(2),
+		marginTop: theme.spacing(2),
 	},
-  }));
+	menu: {
+		flexDirection: 'row',
+		display: 'flex',
+	}
+}));
 function AgentHeader(props) {
 	const classes = useStyles();
 
@@ -107,7 +113,7 @@ function AgentHeader(props) {
 		// getAgentsCustomers(event.target.value)
 
 	};
-	console.log(agents,'agentsssssssss')
+	console.log(agents, 'agentsssssssss')
 
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
@@ -126,9 +132,10 @@ function AgentHeader(props) {
 
 				<FuseAnimate animation="transition.slideDownIn" delay={300}>
 					<FormControl variant="outlined" className={classes.formControl}>
-						<InputLabel id="demo-simple-select-outlined-label" style={{color:'white'}}>Agent</InputLabel>
+						<InputLabel id="demo-simple-select-outlined-label" style={{ color: 'white', display: 'flex' }}>Agent</InputLabel>
 						<Select
 							fullWidth
+							style={{ display: 'flex', justifyContent: 'space-around' }}
 							label="Agent"
 							labelId="demo-simple-select-outlined-label"
 							id="demo-simple-select-outlined"
@@ -141,37 +148,38 @@ function AgentHeader(props) {
 							inputProps={{
 								name: 'Agent',
 								id: 'outlined-age-native-simple',
-								color:'white'
+								color: 'white'
 							}}
 						>
 							<MenuItem value="">
-								<em>All</em>
+								<div >All</div>
 							</MenuItem>
 							{agents.map(data => {
 								return (
-  
-									<MenuItem key={`template_list_item_${data.id}`} value={data.id} style={{display:'flex',flex:1,justifyContent:'space-around',flexDirection:'row'}}>
-										<div style={{flexDirection:'row',display:'flex',flex:1}}>
-										{ data.active===true ? <Icon 
-										
-										className="block text-16 mt-4 mr-8 text-green">
+
+									<MenuItem key={`template_list_item_${data.id}`} value={data.id} style={{ display: 'flex', flex: 1, justifyContent: 'space-around', flexDirection: 'row' }}>
+										<div style={{	flexDirection: 'row',
+		display: 'flex',flex:1}}>
+											{data.active === true ? <Icon
+
+												className="block text-16 mt-4 mr-8 text-green">
 												data_usage
 									</Icon> : <Icon className="block text-16 text-red mt-4 mr-8">
-									data_usage
+													data_usage
 									</Icon>
-									}
-										{data.username}
-									
+											}
+											{data.username}
+
 										</div>
 										<div>
-										{data.messages}
-									
+											{data.messages}
+
 										</div>
 										<div>
-								
-									
+
+
 										</div>
-										</MenuItem>
+									</MenuItem>
 								)
 							})}
 

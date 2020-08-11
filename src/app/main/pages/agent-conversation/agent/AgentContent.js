@@ -21,7 +21,7 @@ import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
 
 function AgentContent(props) {
 	const { displayChat, selectedAgent } = props
-	console.log(displayChat, 'props in agentsadasdas');
+	console.log(displayChat,selectedAgent, 'props in agentsadasdas');
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
@@ -243,10 +243,16 @@ function AgentContent(props) {
 
 	return (
 		<div className="w-full flex flex-col" style={{ }}>
-			{
-				displayChat === true &&
+
+			{numbers.length > 0 ?
+		
 				<Chat numberr={numbers} selectedAgent={selectedAgent} reloadNumber={(e) => getAgentsCustomersReload()} />
+			: 
+			selectedAgent == null ? 
+			<Chat numberr={numbers}  /> 
+			: 	<Chat numberr={numbers} ok="error" message = "Not Numbers Associated to the Agent " open ={false}/>
 			}
+					
 		</div>
 	);
 }
