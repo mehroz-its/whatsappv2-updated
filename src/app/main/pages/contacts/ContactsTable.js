@@ -12,7 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
 import clsx from 'clsx';
-import ContactsTablePaginationActions from './ContactsTablePaginationActions';
+import ContactsTablePaginationActions from '../setting/canned/ContactsTablePaginationActions';
 import ContactDialog from './ContactDialog'
 import BlockContactInDialog from './BlockContactInDialog'
 import BlockDialog from '../BlockedContacts/BlockListDialog'
@@ -34,14 +34,13 @@ const BodyStyle = createMuiTheme({
 	}
   });
   
-const PaginationStyle = createMuiTheme({
+  const PaginationStyle = createMuiTheme({
 	overrides: {
 		MuiTypography: {
-		root: {
-		  paddingTop: 4,
-		  fontSize:'1.1rem',
-		  paddingBottom: 4,
-		  height:'5%'
+		body2: {
+			fontSize:'12px',
+			marginTop:'1px'
+
 		//   "&:last-child": {
 		// 	paddingRight: 5
 		//   }
@@ -260,11 +259,22 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, props,
 				<TableFooter>
 				
 					<TableRow>
-				
+					<MuiThemeProvider theme={PaginationStyle}>
 						<TablePagination
-							
+							classes={{
+								root: 'overflow-hidden',
+								spacer: 'w-0 max-w-0',
+								actions:'text-64',
+								select:'text-12 mt-4',
+								 selectIcon:'mt-4',
+								// input:'text-64',
+								// menuItem:'text-64',
+								// toolbar:'text-64',
+								// selectRoot:'text-64'
+							}}							
 							rowsPerPageOptions={[5, 10, 25, { label: 'All', value: data.length + 1 }]}
 							colSpan={5}
+							style={{fontSize:'12px'}}
 							count={data.length}
 							rowsPerPage={pageSize}
 							page={pageIndex}
@@ -277,6 +287,7 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, props,
 							onChangeRowsPerPage={handleChangeRowsPerPage}
 							ActionsComponent={ContactsTablePaginationActions}
 						/>
+						</MuiThemeProvider>
 					
 					</TableRow>
 			

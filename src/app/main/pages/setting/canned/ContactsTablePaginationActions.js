@@ -30,35 +30,35 @@ const ContactsTablePaginationActions = props => {
 	return (
 		<div className="flex-shrink-0 px-12 overflow-hidden">
 			<IconButton  className="text-4 mt-0 "
-			style={{fontSize:'200px'}}
+			
 			size="small" onClick={handleFirstPageButtonClick} disabled={page === 0} aria-label="first page">
-				{theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+				{theme.direction === 'rtl' ? <LastPageIcon style={{fontSize:'20px'}} /> : <FirstPageIcon style={{fontSize:'20px'}} />}
 			</IconButton>
-			<IconButton style={{fontSize:'200px'}} className="text-64 mt-0" size="small" onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
-				{theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+			<IconButton  className="text-64 mt-0" size="small" onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
+				{theme.direction === 'rtl' ? <KeyboardArrowRight style={{fontSize:'20px'}} /> : <KeyboardArrowLeft style={{fontSize:'20px'}} />}
 			</IconButton>
 			<IconButton
 			className="text-64 mt-0" 
 			size="small"
-			style={{fontSize:'200px'}}
+		
 				onClick={handleNextButtonClick}
 				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
 				aria-label="next page"
 			>
-				{theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+				{theme.direction === 'rtl' ? <KeyboardArrowLeft style={{fontSize:'20px'}} /> : <KeyboardArrowRight style={{fontSize:'20px'}} />}
 			</IconButton>
 			<IconButton
 			className="text-64 mt-0" 
 			classes={{
 				sizeSmall:'text-xs'
 			}}
-			style={{fontSize:'200px'}}
+		
 			size="small"
 				onClick={handleLastPageButtonClick}
 				disabled={page >= Math.ceil(count / rowsPerPage) - 1}
 				aria-label="last page"
 			>
-				{theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon  />}
+				{theme.direction === 'rtl' ? <FirstPageIcon style={{fontSize:'20px'}} /> : <LastPageIcon  style={{fontSize:'20px'}} />}
 			</IconButton>
 		</div>
 	);

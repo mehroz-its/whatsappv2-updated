@@ -159,8 +159,8 @@ const navigationConfig = [
 				icon: 'settings',
 				children: [
 					{
-						id: 'Canned Messages',
-						title: 'Canned Messages',
+						id: 'Canned Replies',
+						title: 'Canned Replies',
 						type: 'item',
 						url: '/apps/canned-messages',
 						exact: true,

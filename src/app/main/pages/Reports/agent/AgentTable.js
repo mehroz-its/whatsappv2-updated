@@ -7,7 +7,9 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
 import clsx from 'clsx';
+import ContactsTablePaginationActions from '../../setting/canned/ContactsTablePaginationActions';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -16,6 +18,20 @@ import AgentTableHead from './AgentTableHead';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 
+const PaginationStyle = createMuiTheme({
+	overrides: {
+		MuiTypography: {
+		body2: {
+			fontSize:'12px',
+			marginTop:'1px'
+
+		//   "&:last-child": {
+		// 	paddingRight: 5
+		//   }
+		}
+	  }
+	}
+  });
 
 function AgentTable(props) {
 
@@ -300,23 +316,29 @@ function AgentTable(props) {
 					</TableBody>
 				</Table>
 			</FuseScrollbars>
-
+			<MuiThemeProvider theme={PaginationStyle}>
 			<TablePagination
 				className="overflow-hidden"
 				component="div"
+				classes={{
+					root: 'overflow-hidden',
+					spacer: 'w-0 max-w-0',
+					actions:'text-64',
+					select:'text-12 mt-4',
+					 selectIcon:'mt-4',
+					// input:'text-64',
+					// menuItem:'text-64',
+					// toolbar:'text-64',
+					// selectRoot:'text-64'
+				}}
 				count={data.length}
 				rowsPerPage={rowsPerPage}
 				page={page}
-				backIconButtonProps={{
-					'aria-label': 'Previous Page'
-				}}
-				nextIconButtonProps={{
-					'aria-label': 'Next Page'
-				}}
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
+				ActionsComponent={ContactsTablePaginationActions}
 			/>
-				
+				</MuiThemeProvider>
 		</div>
 	);
 }

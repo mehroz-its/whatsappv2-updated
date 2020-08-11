@@ -106,7 +106,7 @@ function AgentHeader(props) {
 		setagentDropDownOpen(true)
 	};
 	const handleChangeAgent = (event) => {
-		console.log('header')
+		console.log('header', event.target.value)
 		setselectedAgent(event.target.value)
 		props.Agent(event.target.value)
 
@@ -119,7 +119,7 @@ function AgentHeader(props) {
 		<div className="flex flex-1 w-full items-center justify-between">
 			<div className="flex items-center">
 				<FuseAnimate animation="transition.expandIn" delay={300}>
-					<Icon className="text-26">shopping_basket</Icon>
+					<Icon className="text-26">chat</Icon>
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 					<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
@@ -128,14 +128,14 @@ function AgentHeader(props) {
 				</FuseAnimate>
 			</div>
 
-			<div className="flex flex-1 items-center justify-center px-12">
+			<div className="flex flex-1 items-center justify-center px-12 ">
 
 				<FuseAnimate animation="transition.slideDownIn" delay={300}>
 					<FormControl variant="outlined" className={classes.formControl}>
 						<InputLabel id="demo-simple-select-outlined-label" style={{ color: 'white', display: 'flex' }}>Agent</InputLabel>
 						<Select
 							fullWidth
-							style={{ display: 'flex', justifyContent: 'space-around' }}
+							style={{ display: 'flex', justifyContent: 'space-around', flexDirection: 'row' }}
 							label="Agent"
 							labelId="demo-simple-select-outlined-label"
 							id="demo-simple-select-outlined"
@@ -158,23 +158,24 @@ function AgentHeader(props) {
 								return (
 
 									<MenuItem key={`template_list_item_${data.id}`} value={data.id} style={{ display: 'flex', flex: 1, justifyContent: 'space-around', flexDirection: 'row' }}>
-										<div style={{	flexDirection: 'row',
-		display: 'flex',flex:1}}>
+										<div style={{
+											flexDirection: 'row',
+											display: 'flex', flex: 1
+										}}>
 											{data.active === true ? <Icon
 
-												className="block text-16 mt-4 mr-8 text-green">
+												className="block text-16 mt-2 mr-8 text-green">
 												data_usage
-									</Icon> : <Icon className="block text-16 text-red mt-4 mr-8">
+									</Icon> : <Icon className="block text-16 text-red mt-2 mr-8">
 													data_usage
 									</Icon>
 											}
 											{data.username}
+											<span style={{justifyContent:'flex-end',flex:1,display:'flex'}}>{data.messages}
+											</span>
 
 										</div>
-										<div>
-											{data.messages}
 
-										</div>
 										<div>
 
 

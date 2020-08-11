@@ -195,7 +195,7 @@ function 	ChatsSidebar(props) {
 	console.log(filtered,'filteddddddddd');
 	return (
 		<div className="flex flex-col flex-auto h-full">
-			<AppBar position="static" color="default" elevation={1} className="pt-16">
+			<AppBar position="static" color="default" elevation={1} className="pt-0">
 				{/* <Toolbar className="flex justify-between items-center px-4">
 					{user && (
 						<div

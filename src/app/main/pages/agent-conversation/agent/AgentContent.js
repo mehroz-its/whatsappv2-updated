@@ -250,7 +250,7 @@ function AgentContent(props) {
 			: 
 			selectedAgent == null ? 
 			<Chat numberr={numbers}  /> 
-			: 	<Chat numberr={numbers} ok="error" message = "Not Numbers Associated to the Agent " open ={false}/>
+			: 	<Chat numberr={numbers} ok="error" message = "Not Numbers Associated to the Agent " open ={true}/>
 			}
 					
 		</div>

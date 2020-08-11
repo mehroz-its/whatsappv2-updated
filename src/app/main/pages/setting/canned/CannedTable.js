@@ -30,8 +30,10 @@ const BodyStyle = createMuiTheme({
   
 const PaginationStyle = createMuiTheme({
 	overrides: {
-		MuiTablePagination: {
-		actions: {
+		MuiTypography: {
+		body2: {
+			fontSize:'12px',
+			marginTop:'1px'
 
 		//   "&:last-child": {
 		// 	paddingRight: 5
@@ -246,14 +248,15 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 				> 
 					<TableRow 	classes={{root:'h-0'}}
 					>
-						
+						<MuiThemeProvider theme={PaginationStyle}>
 						<TablePagination
+								
 							classes={{
 								root: 'overflow-hidden',
 								spacer: 'w-0 max-w-0',
 								actions:'text-64',
 								select:'text-12 mt-4',
-								 selectIcon:'mt-1',
+								 selectIcon:'mt-4',
 								// input:'text-64',
 								// menuItem:'text-64',
 								// toolbar:'text-64',
@@ -267,12 +270,14 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 							page={pageIndex}
 							SelectProps={{
 								inputProps: { 'aria-label': 'rows per page' },
-								native: false
+								native: false,
+								fontSize:50
 							}}
 							onChangePage={handleChangePage}
 							onChangeRowsPerPage={handleChangeRowsPerPage}
-							 ActionsComponent={ContactsTablePaginationActions}
+							ActionsComponent={ContactsTablePaginationActions}
 						/>
+						</MuiThemeProvider>
 					
 					</TableRow>
 				</TableFooter>
