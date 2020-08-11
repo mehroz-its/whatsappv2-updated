@@ -557,6 +557,7 @@ function Chat(props) {
 		CoreHttpHandler.request('conversations', 'send_text', params, (response) => {
 			setMessageText('')
 			setMessageTextNew('')
+			setTextLength(800)
 			setEmo('')
 		}, (error) => {
 		});
@@ -565,6 +566,7 @@ function Chat(props) {
 	const sendMessageHandler = (event) => {
 		setChosenEmoji(false)
 		sendMessage();
+		
 
 	}
 	const sendDialogInputHandler = (e) => {
@@ -977,6 +979,7 @@ function Chat(props) {
 
 	const onEmojiClick = (event, emojiObject) => {
 		setEmo(emojiObject.emoji)
+		setTextLength(textLength - 2)
 	};
 	useEffect(() => {
 		setMessageTextNew(`${messageText + emo}`)
@@ -1110,7 +1113,7 @@ function Chat(props) {
 							<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem> */}
 
 						</Menu>
-						<Tooltip title="Canned Message">
+						<Tooltip title="Canned Replies">
 						<IconButton style={{ position: 'absolute', fontSize: 10,left: 10, bottom: 13, paddingTop: 2, paddingBottom: 2, paddingLeft: 10, paddingRight: 10, }} onClick={(e) => conversationContextMenuCallback("canned_messages")}>
 						<Icon >
 						collections_bookmark

@@ -28,15 +28,11 @@ function ToolbarLayout1(props) {
 	const config = useSelector(({ fuse }) => fuse.settings.current.layout.config);
 	const toolbarTheme = useSelector(({ fuse }) => fuse.settings.toolbarTheme);
 	const [online, setOnline] = React.useState(JSON.parse(localStorage.getItem('online')))
-
 	const classes = useStyles(props);
-
-
 	const setAgentOnline = (e) => {
 		console.log(e.target, 'eee')
 		const isOnline = e.target.checked;
 		console.log(isOnline, 'isss')
-
 		if (isOnline) {
 			EventEmitter.dispatch('Online',true)
 			localStorage.setItem('online', true)
@@ -46,33 +42,15 @@ function ToolbarLayout1(props) {
 			}, (response) => {
 
 			});
-			// this.getNumbers();
-			// clearInterval(this.int_CustomerList);
-			// clearInterval(this.int_MessageLists);
-
-
 		} else {
 			EventEmitter.dispatch('Online',false)
 			localStorage.setItem('online', false)
 				setOnline(false)
 			CoreHttpHandler.request('core', 'offline', {}, (response) => {
-				// clearInterval(this.int_CustomerList);
-				// clearInterval(this.int_MessageLists);
-				// this.setState({ })
-				
 			}, (response) => {
-
 			});
-			// this.setState({ numbers: [], messages: [], selectedRecipient: null, selectedConversation: null })
-
 		}
-
-		// this.setState({ online: isOnline }, () => {
-		//     localStorage.setItem('online', this.state.online);
-		// });
 	};
-
-
 	return (
 		<ThemeProvider theme={toolbarTheme}>
 			<AppBar

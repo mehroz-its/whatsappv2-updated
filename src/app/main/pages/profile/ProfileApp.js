@@ -73,9 +73,18 @@ function ProfileApp() {
     function handleChangeTabBack(event, value) {
         setTabValue(tabValue - 1);
     }
-    const updateHeaderData = (data, image) => {
-        setHeaderData(data)
-        setProfileImage(image)
+    const updateHeaderData = (data) => {
+        console.log("data :" ,  data);
+        let nameCapitalized = ''
+        let lastname = ''
+        if (data.firstName) {
+            nameCapitalized = data.firstName.charAt(0).toUpperCase() + data.firstName.slice(1);
+        }
+        if (data.lastName) {
+            lastname = data.lastName.charAt(0).toUpperCase() + data.lastName.slice(1);
+        }
+        setHeaderData(`${nameCapitalized} ${lastname}`)
+        setProfileImage(data.image)
     }
     const updatedProfileImage = (data) => {
         setProfileImage(data)

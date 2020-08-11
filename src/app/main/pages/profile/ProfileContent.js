@@ -12,6 +12,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import moment from 'moment';
+import { EventEmitter } from '../../../../events'
 
 
 
@@ -141,11 +142,17 @@ const Profile = function (props) {
         // return
         // urlImageHeader
         CoreHttpHandler.request('profile', 'update', data, response => {
-            // console.log("response ", response);
-            // console.log(response.data.data.user_data, 'responseresponse');
+            console.log("response :" ,  response);
+            const {user_data} = response.data.data;
+            if (user_data) {
+                localStorage.setItem('user_data', JSON.stringify(user_data));
+            } else localStorage.setItem('user_data', JSON.stringify({}));
+
+            EventEmitter.dispatch('ProfileUpdate',true)
             setSnackBarMessage("Updated Successfully")
             setOK("success")
             setSnackBarOpen(true)
+            props.onChange(user_data)
 
             // setSnackBarMessage("Profile updated successfully", "success");
         },
@@ -183,7 +190,9 @@ const Profile = function (props) {
             setProfileUsername(`${nameCapitalized}'s Profile`);
             setProfileId(user.id)
             setProfileData(profileData);
-            props.onChange(`${nameCapitalized} ${lastname}`)
+            props.onChange(user)
+            // props.onChange
+            // (`${nameCapitalized} ${lastname}`)
 
             let image = null
             profileData.map((val, id) => {
