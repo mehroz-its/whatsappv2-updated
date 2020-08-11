@@ -9,7 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import clsx from 'clsx';
 
 import Collapse from '@material-ui/core/Collapse';
@@ -20,8 +20,24 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Grid from '@material-ui/core/Grid';
+import { color } from '@amcharts/amcharts4/core';
 
-
+const bodyStyle = createMuiTheme({
+    overrides: {
+        MuiListItemText: {
+            primary: {
+                fontSize: 12,
+                fontWeight: 100,
+                color: '#6f6f6f'
+            },
+            secondary: {
+                fontSize: 10,
+                fontWeight: 100,
+                color: '#6f6f6f'
+            }
+        }
+    }
+})
 const CannedMessagesDialog = function (props) {
     const useStyles = makeStyles((theme) => ({
         root: {
@@ -48,7 +64,16 @@ const CannedMessagesDialog = function (props) {
         },
         ContinerExpand: {
             backgroundColor: '#F9F9F9', alignSelf: 'center', padding: '0px 20px', alignItems: 'center', border: '1px solid #F1F1F1'
-        }
+        },
+        listInner: {
+            p: {
+                fontSize: '10px',
+                color: 'red'
+            },
+            span: {
+                fontSize: 15,
+            }
+        },
     }));
     const audioHandleExpandClick = () => {
         setAudio(!audio);
@@ -78,9 +103,10 @@ const CannedMessagesDialog = function (props) {
         <DialogContent >
             <Grid container className={classes.ContinerExpand}>
                 <Grid item xs={10} onClick={audioHandleExpandClick} >
-                    <h4 style={{ fontWeight: 500, fontSize: 17, }}>Audio{data.length > 0 && data[1].list.length}</h4>
+                    <h4 style={{ fontWeight: 500, fontSize: 16, color: '#6F6F6F' }}>Audio</h4>
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={1} style={{ background: '#fc2254', alignContent: "center", alignItems: 'center', alignSelf: "center" }}><h5 style={{ fontSize: 11, textAlign: 'center', padding: '3px 0', color: 'white', }}>{data.length > 0 && data[1].list.length}</h5></Grid>
+                <Grid item xs={1}>
                     <IconButton
                         className={clsx(classes.expand, {
                             [classes.expandOpen]: audio,
@@ -96,15 +122,18 @@ const CannedMessagesDialog = function (props) {
             <Grid container style={{ margin: '0 0 20px 0', }}>
                 <Grid item xs={12}>
                     <Collapse in={audio} timeout="auto" unmountOnExit>
-                        <div style={{ width: '100%' }}>
+                        <div style={{ width: '100%', border: 0, }}>
                             <List>
-                                {data.length > 0 && data[1].list.map((item, i) => (
-                                    item.message_type === "audio" ?
+                                <MuiThemeProvider theme={bodyStyle}>
+                                    {data.length > 0 && data[1].list.map((item, i) => (
+                                        item.message_type === "audio" ?
 
-                                        <ListItem onClick={(e) => onDialogPropsChange(item)} button key={`item-${i}`}>
-                                            <ListItemText primary={`${item.message_name}`} secondary={`${item.message_text}`} />
-                                        </ListItem> : null
-                                ))}
+                                            <ListItem className={classes.listInner} onClick={(e) => onDialogPropsChange(item)} button key={`item-${i}`}>
+                                                <ListItemText primary={`${item.message_name}`} secondary={`${item.message_text}`} />
+                                            </ListItem>
+                                            : null
+                                    ))}
+                                </MuiThemeProvider>
                             </List>
                             <Divider />
                         </div>
@@ -114,9 +143,11 @@ const CannedMessagesDialog = function (props) {
 
             <Grid container className={classes.ContinerExpand}>
                 <Grid item xs={10} onClick={videoHandleExpandClick}>
-                    <h4 style={{ fontWeight: 500, fontSize: 17, }}>Video{data.length > 0 && data[2].list.length}</h4>
+                    <h4 style={{ fontWeight: 500, fontSize: 16, color: '#6F6F6F' }}>Video</h4>
                 </Grid>
-                <Grid item xs={2} >
+                <Grid item xs={1} style={{ background: '#fc2254', alignContent: "center", alignItems: 'center', alignSelf: "center" }}><h5 style={{ fontSize: 11, textAlign: 'center', padding: '3px 0', color: 'white', }}>{data.length > 0 && data[2].list.length}</h5></Grid>
+
+                <Grid item xs={1} >
                     <IconButton
                         className={clsx(classes.expand, {
                             [classes.expandOpen]: video,
@@ -135,6 +166,8 @@ const CannedMessagesDialog = function (props) {
                     <Collapse in={video} timeout="auto" unmountOnExit>
                         <div style={{ width: '100%' }}>
                             <List>
+                            <MuiThemeProvider theme={bodyStyle}>
+
                                 {data.length > 0 && data[2].list.map((item, i) => (
                                     item.message_type === "video" ?
 
@@ -142,6 +175,7 @@ const CannedMessagesDialog = function (props) {
                                             <ListItemText primary={`${item.message_name}`} secondary={`${item.message_text}`} />
                                         </ListItem> : null
                                 ))}
+                                </MuiThemeProvider>
                             </List>
                             <Divider />
                         </div>
@@ -151,9 +185,11 @@ const CannedMessagesDialog = function (props) {
 
             <Grid container className={classes.ContinerExpand}>
                 <Grid item xs={10} onClick={textHandleExpandClick}>
-                    <h4 style={{ fontWeight: 500, fontSize: 17, }}>Text{data.length > 0 && data[3].list.length}</h4>
+                    <h4 style={{ fontWeight: 500, fontSize: 16, color: '#6F6F6F' }}>Text</h4>
                 </Grid>
-                <Grid item xs={2}>  <IconButton
+                <Grid item xs={1} style={{ background: '#fc2254', alignContent: "center", alignItems: 'center', alignSelf: "center" }}><h5 style={{ fontSize: 11, textAlign: 'center', padding: '3px 0', color: 'white', }}>{data.length > 0 && data[3].list.length}</h5></Grid>
+
+                <Grid item xs={1}>  <IconButton
                     className={clsx(classes.expand, {
                         [classes.expandOpen]: text,
                     })}
@@ -172,6 +208,8 @@ const CannedMessagesDialog = function (props) {
                     <Collapse in={text} timeout="auto" unmountOnExit>
                         <div style={{ width: '100%' }}>
                             <List>
+                            <MuiThemeProvider theme={bodyStyle}>
+
                                 {data.length > 0 && data[3].list.map((item, i) => (
                                     item.message_type === "text" ?
 
@@ -179,6 +217,7 @@ const CannedMessagesDialog = function (props) {
                                             <ListItemText primary={`${item.message_name}`} secondary={`${item.message_text}`} />
                                         </ListItem> : null
                                 ))}
+                                </MuiThemeProvider>
                             </List>
                             <Divider />
                         </div>
@@ -188,9 +227,11 @@ const CannedMessagesDialog = function (props) {
 
             <Grid container className={classes.ContinerExpand}>
                 <Grid item xs={10} onClick={imageHandleExpandClick}>
-                    <h4 style={{ fontWeight: 500, fontSize: 17, }}>Image{data.length > 0 && data[4].list.length}</h4>
+                    <h4 style={{ fontWeight: 500, fontSize: 16, color: '#6F6F6F' }}>Image</h4>
                 </Grid>
-                <Grid item xs={2}>  <IconButton
+                <Grid item xs={1} style={{ background: '#fc2254', alignContent: "center", alignItems: 'center', alignSelf: "center" }}><h5 style={{ fontSize: 11, textAlign: 'center', padding: '3px 0', color: 'white', }}>{data.length > 0 && data[4].list.length}</h5></Grid>
+
+                <Grid item xs={1}>  <IconButton
                     className={clsx(classes.expand, {
                         [classes.expandOpen]: image,
                     })}
@@ -208,6 +249,8 @@ const CannedMessagesDialog = function (props) {
                     <Collapse in={image} timeout="auto" unmountOnExit>
                         <div style={{ width: '100%' }}>
                             <List>
+                            <MuiThemeProvider theme={bodyStyle}>
+
                                 {data.length > 0 && data[4].list.map((item, i) => (
                                     item.message_type === "image" ?
 
@@ -220,6 +263,7 @@ const CannedMessagesDialog = function (props) {
 
                                         </ListItem> : null
                                 ))}
+                                </MuiThemeProvider>
                             </List>
                             <Divider />
                         </div>
@@ -229,9 +273,11 @@ const CannedMessagesDialog = function (props) {
 
             <Grid container className={classes.ContinerExpand}>
                 <Grid item xs={10} onClick={documentHandleExpandClick}>
-                    <h4 style={{ fontWeight: 500, fontSize: 17, }}>Document{data.length > 0 && data[0].list.length}  </h4>
+                    <h4 style={{ fontWeight: 500, fontSize: 16, color: '#6F6F6F' }}>Document  </h4>
                 </Grid>
-                <Grid item xs={2}>  <IconButton
+                <Grid item xs={1} style={{ background: '#fc2254', alignContent: "center", alignItems: 'center', alignSelf: "center" }}><h5 style={{ fontSize: 11, textAlign: 'center', padding: '3px 0', color: 'white', }}>{data.length > 0 && data[0].list.length}</h5></Grid>
+
+                <Grid item xs={1}>  <IconButton
                     className={clsx(classes.expand, {
                         [classes.expandOpen]: document,
                     })}
@@ -245,22 +291,25 @@ const CannedMessagesDialog = function (props) {
             </Grid>
 
             <Grid container style={{ margin: '0 0 20px 0', }}>
-            <Grid item xs={12}>
-                <Collapse in={document} timeout="auto" unmountOnExit>
-                    <div style={{ width: '100%' }}>
-                        <List>
-                            {data.length > 0 && data[0].list.map((item, i) => (
-                                item.message_type === "document" ?
+                <Grid item xs={12}>
+                    <Collapse in={document} timeout="auto" unmountOnExit>
+                        <div style={{ width: '100%' }}>
+                            <List>
+                            <MuiThemeProvider theme={bodyStyle}>
 
-                                    <ListItem onClick={(e) => onDialogPropsChange(item)} button key={`item-${i}`}>
-                                        <ListItemText primary={`${item.message_name}`} secondary={`${item.message_text}`} />
-                                    </ListItem> : null
-                            ))}
-                        </List>
-                        <Divider />
-                    </div>
-                </Collapse>
-            </Grid>
+                                {data.length > 0 && data[0].list.map((item, i) => (
+                                    item.message_type === "document" ?
+
+                                        <ListItem onClick={(e) => onDialogPropsChange(item)} button key={`item-${i}`}>
+                                            <ListItemText primary={`${item.message_name}`} secondary={`${item.message_text}`} />
+                                        </ListItem> : null
+                                ))}
+                                </MuiThemeProvider>
+                            </List>
+                            <Divider />
+                        </div>
+                    </Collapse>
+                </Grid>
 
             </Grid>
         </DialogContent >
