@@ -518,18 +518,19 @@ function Chat(props) {
 		return i === chat.dialog.length - 1 || (chat.dialog[i + 1] && chat.dialog[i + 1].who !== item.who);
 	}
 
-	let _handleKeyDown = (e) => {
-		let inputLength = messageText.length + 1
-		if (e.key === 'Backspace') {
-			if (messageText.length !== 0) {
-				messageInputLimit = textLength + 1
-				setTextLength(messageInputLimit)
-			}
-		} else {
-			messageInputLimit = messageInputLimit - inputLength
-			setTextLength(messageInputLimit)
-		}
-	};
+	// let _handleKeyDown = (e) => {
+	// 	console.log("_handleKeyDown e" , e.target.value);
+	// 	let inputLength = messageText.length + 1
+	// 	if (e.key === 'Backspace') {
+	// 		if (messageText.length !== 0) {
+	// 			messageInputLimit = textLength + 1
+	// 			setTextLength(messageInputLimit)
+	// 		}
+	// 	} else {
+	// 		messageInputLimit = messageInputLimit - inputLength
+	// 		setTextLength(messageInputLimit)
+	// 	}
+	// };
 
 
 
@@ -966,7 +967,11 @@ function Chat(props) {
 	function onInputChange(ev) {
 		setEmo('')
 		if (prevCount !== ev.target.value) {
+			if (ev.target.value.length < 801) {
 			setMessageText(ev.target.value);
+			setTextLength( 800 - ev.target.value.length)
+			}
+			
 		}
 	}
 
@@ -1061,10 +1066,9 @@ function Chat(props) {
 							autoFocus={false}
 							id="message-input"
 							className="flex-1"
-							maxLength="2"
+							// maxLength="2"
 							inputProps={{
 								maxLength: 800,
-								minLength: 1
 							}}
 							InputProps={{
 								disableUnderline: true,
@@ -1081,7 +1085,7 @@ function Chat(props) {
 							onChange={onInputChange}
 							value={messageTextNew}
 							onKeyPress={handleKeyPress}
-							onKeyDown={_handleKeyDown}
+							// onKeyDown={_handleKeyDown}
 						/>
 
 
