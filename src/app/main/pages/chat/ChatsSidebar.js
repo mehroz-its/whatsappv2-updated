@@ -189,7 +189,7 @@ function ChatsSidebar(props) {
 								<Icon color="action" fontSize="small">search</Icon>
 
 								<Input
-									placeholder="Search or start new chat"
+									placeholder="Search"
 									className="flex flex-1 px-8"
 									disableUnderline
 									fullWidth

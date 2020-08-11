@@ -119,11 +119,11 @@ function AgentHeader(props) {
 		<div className="flex flex-1 w-full items-center justify-between">
 			<div className="flex items-center">
 				<FuseAnimate animation="transition.expandIn" delay={300}>
-					<Icon className="text-26">chat</Icon>
+					<Icon className="text-26">comment</Icon>
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 					<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-						<span style={{ fontSize: '15px' }}>Agent Chat History</span>
+						<span style={{ fontSize: '15px' }}>Ongoing Chats</span>
 					</Typography>
 				</FuseAnimate>
 			</div>

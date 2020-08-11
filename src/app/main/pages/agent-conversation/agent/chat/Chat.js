@@ -33,6 +33,7 @@ import AttachmentDialogV2 from './dialog/chat/AttachmentDialogV2';
 import CannedMessagesDialog from './dialog/chat/CannedMessagesDialog';
 import BlockConfirmDialog from './dialog/chat/BlockConfirmDialog';
 import CustomerProfileDialog from './dialog/chat/CustomerProfileDialog';
+import MessageStateResolver from '../../../chat/messageType/MessageStateResolver'
 
 import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
 
@@ -150,20 +151,28 @@ const useStyles = makeStyles(theme => ({
 				color: theme.palette.primary.contrastText,
 				borderTopLeftRadius: 5,
 				borderBottomLeftRadius: 5,
-				borderTopRightRadius: 20,
-				borderBottomRightRadius: 20,
+				borderTopRightRadius: 6,
+				borderBottomRightRadius: 6,
+				width: 'auto',
+				maxWidth: '35vw',
+				borderTopRightRadius: 6,
+				borderBottomRightRadius: 6,
+				marginBottom: 70,
 				'& .time': {
-					marginLeft: 12
+					marginLeft: '0px',
+					marginBottom: '-11px',
+					marginTop: '5px',
+					paddingBottom: 5
 				}
 			},
 			'&.first-of-group': {
 				'& .bubble': {
-					borderTopLeftRadius: 20
+					borderTopLeftRadius: 6
 				}
 			},
 			'&.last-of-group': {
 				'& .bubble': {
-					borderBottomLeftRadius: 20
+					borderBottomLeftRadius: 6
 				}
 			}
 		},
@@ -176,44 +185,141 @@ const useStyles = makeStyles(theme => ({
 			},
 			'& .bubble': {
 				marginLeft: 'auto',
-				backgroundColor: theme.palette.grey[300],
+				backgroundColor: theme.palette.grey[50],
 				color: theme.palette.getContrastText(theme.palette.grey[300]),
-				borderTopLeftRadius: 20,
-				borderBottomLeftRadius: 20,
+				borderTopLeftRadius: 6,
+				borderBottomLeftRadius: 6,
 				borderTopRightRadius: 5,
 				borderBottomRightRadius: 5,
+				width: 'auto',
+				maxWidth: '35vw',
 				'& .time': {
 					justifyContent: 'flex-end',
 					right: 0,
-					marginRight: 12
+					margunLeft: 2,
+					marginBottom: '-11px',
+					marginTop: '5px',
+					paddingBottom: 5
+
 				}
 			},
 			'&.first-of-group': {
 				'& .bubble': {
-					borderTopRightRadius: 20
+					borderTopRightRadius: 6
 				}
 			},
 
 			'&.last-of-group': {
 				'& .bubble': {
-					borderBottomRightRadius: 20
+					borderBottomRightRadius: 6
 				}
 			}
 		},
 		'&.contact + .me, &.me + .contact': {
-			paddingTop: 20,
-			marginTop: 20
+			paddingTop: 6,
+			marginTop: 6,
+			paddingBottom: 6
 		},
 		'&.first-of-group': {
 			'& .bubble': {
-				borderTopLeftRadius: 20,
-				paddingTop: 13
+				borderTopLeftRadius: 6,
+				paddingTop: 6
 			}
 		},
 		'&.last-of-group': {
 			'& .bubble': {
-				borderBottomLeftRadius: 20,
-				paddingBottom: 13,
+				borderBottomLeftRadius: 6,
+				paddingBottom: 6,
+				'& .time': {
+					display: 'flex'
+				}
+			}
+		}
+	},
+	messageRowWithOutBorder: {
+		'&.contact': {
+			'& .bubble': {
+				color: theme.palette.primary.contrastText,
+				borderTopLeftRadius: 5,
+				borderBottomLeftRadius: 5,
+				borderTopRightRadius: 6,
+				borderBottomRightRadius: 6,
+				width: 'auto',
+				maxWidth: '35vw',
+				borderTopRightRadius: 6,
+				borderBottomRightRadius: 6,
+				marginBottom: 70,
+				'& .time': {
+					marginLeft: '0px',
+					marginBottom: '-11px',
+					marginTop: '5px',
+					paddingBottom: 5
+				}
+			},
+			'&.first-of-group': {
+				'& .bubble': {
+					borderTopLeftRadius: 6
+				}
+			},
+			'&.last-of-group': {
+				'& .bubble': {
+					borderBottomLeftRadius: 6
+				}
+			}
+		},
+		'&.me': {
+			paddingLeft: 40,
+
+			'& .avatar': {
+				order: 2,
+				margin: '0 0 0 16px'
+			},
+			'& .bubble': {
+				marginLeft: 'auto',
+				color: theme.palette.getContrastText(theme.palette.grey[300]),
+				borderTopLeftRadius: 6,
+				borderBottomLeftRadius: 6,
+				borderTopRightRadius: 5,
+				borderBottomRightRadius: 5,
+				width: 'auto',
+				maxWidth: '35vw',
+				'& .time': {
+					justifyContent: 'flex-end',
+					right: 0,
+					marginRight: 2,
+					marginBottom: '-11px',
+					marginTop: '5px',
+					paddingBottom: 5
+
+				}
+			},
+			'&.first-of-group': {
+				'& .bubble': {
+					borderTopRightRadius: 6
+				}
+			},
+
+			'&.last-of-group': {
+				'& .bubble': {
+					borderBottomRightRadius: 6
+				}
+			}
+		},
+		'&.contact + .me, &.me + .contact': {
+			paddingTop: 6,
+			marginTop: 6,
+			paddingBottom: 6
+		},
+		'&.first-of-group': {
+			'& .bubble': {
+				borderTopLeftRadius: 6,
+				paddingTop: 6
+			}
+		},
+		'&.last-of-group': {
+			'& .bubble': {
+				borderBottomLeftRadius: 6,
+				paddingBottom: 6,
 				'& .time': {
 					display: 'flex'
 				}
@@ -269,7 +375,6 @@ const useStyles = makeStyles(theme => ({
 		margin: '0 5px'
 	}
 }));
-
 function Chat(props) {
 	const dispatch = useDispatch();
 	const { messages, selectedRecipient } = props;
@@ -507,7 +612,7 @@ function Chat(props) {
 			const data = response.data.data.agents.data;
 			setshiftAgentsList(data)
 			setdialogOpenShift(true)
-			
+
 		}, (response) => {
 
 		});
@@ -525,7 +630,7 @@ function Chat(props) {
 		}, (response) => {
 			setdialogOpenShift(false)
 			props.agentShift()
-			
+
 		}, (response) => {
 
 		});
@@ -622,7 +727,7 @@ function Chat(props) {
 	}
 	const conversationContextMenuCallback = (item) => {
 		if (item === 'customer_profile') {
-		    profileDialog();
+			profileDialog();
 
 		}
 
@@ -636,7 +741,7 @@ function Chat(props) {
 
 		}
 		if (item === 'copy') {
-		    copyContent();
+			copyContent();
 		}
 	}
 	const blockCustomerInputHandler = (props) => {
@@ -708,7 +813,7 @@ function Chat(props) {
 	const dialogOptionsCmp = {
 		onClose: function () {
 			setdialogOpenCmp(false)
-			
+
 		},
 		'aria-labelledby': "form-dialog-title",
 		'aria-describedby': "form-dialog-title"
@@ -730,40 +835,40 @@ function Chat(props) {
 		},
 	];
 	const profileUpdate = () => {
-        const data = { ...customerProfileData };
+		const data = { ...customerProfileData };
 
-        data['number'] = selectedRecipient.number;
+		data['number'] = selectedRecipient.number;
 
-        CoreHttpHandler.request('contact_book', 'update', {
-            key: ':id',
-            value: customerProfileData.id,
-            params: data
-        }, (response) => {
+		CoreHttpHandler.request('contact_book', 'update', {
+			key: ':id',
+			value: customerProfileData.id,
+			params: data
+		}, (response) => {
 			setdialogOpenCmp(false)
-         
 
-        }, (error) => {
-            // if (error.hasOwnProperty('response')) {
-            //     if (error.response.hasOwnProperty('data')) {
-            //         this.setSnackBarMessage(error.response.data.message, 'error');
-            //     }
-            // } else this.setSnackBarMessage('Failed to update profile, please try again later', 'error');
 
-        });
-    }
+		}, (error) => {
+			// if (error.hasOwnProperty('response')) {
+			//     if (error.response.hasOwnProperty('data')) {
+			//         this.setSnackBarMessage(error.response.data.message, 'error');
+			//     }
+			// } else this.setSnackBarMessage('Failed to update profile, please try again later', 'error');
+
+		});
+	}
 	const XGlobalDialogCmpClose = () => {
 		setdialogOpenCmp(false)
 	}
 	const profileDialog = () => {
-        CoreHttpHandler.request('contact_book', 'fetch', {
-            key: ':number',
-            value: selectedRecipient.number
-        }, (response) => {
+		CoreHttpHandler.request('contact_book', 'fetch', {
+			key: ':number',
+			value: selectedRecipient.number
+		}, (response) => {
 			const customer = response.data.data.customer;
-			
-            loadCountries().then((response) => {
+
+			loadCountries().then((response) => {
 				const countries = response.data.data.list.data;
-				
+
 				setcustomerProfileData({
 					id: customer.id,
 					number: selectedRecipient.number,
@@ -771,39 +876,39 @@ function Chat(props) {
 					assign_name: '',
 					countries,
 				})
-			console.log("customer : ",customer);
-			setAnchorEl(false)
+				console.log("customer : ", customer);
+				setAnchorEl(false)
 				setdialogOpenCmp(true)
-				
-            })
 
-        }, (error) => {
+			})
+
+		}, (error) => {
 			setAnchorEl(false)
 			setdialogOpenCmp(false)
-            // this.setSnackBarMessage('Failed to customer profile, please try again later', 'error');
-        });
+			// this.setSnackBarMessage('Failed to customer profile, please try again later', 'error');
+		});
 	}
 	const loadCountries = () => {
-        return CoreHttpHandler.request('locations', 'get_countries', {
-            columns: "id, name",
-            sortby: "ASC",
-            orderby: "id",
-            where: "enabled = $1",
-            values: true,
-            page: 0,
-            limit: 0
-        }, null, null, true);
+		return CoreHttpHandler.request('locations', 'get_countries', {
+			columns: "id, name",
+			sortby: "ASC",
+			orderby: "id",
+			where: "enabled = $1",
+			values: true,
+			page: 0,
+			limit: 0
+		}, null, null, true);
 	};
 	const copyContent = () => {
 
 		copy(selectedRecipient.number);
 		alert("copy")
-        // this.setSnackBarMessage('Copied', 'success', null);
+		// this.setSnackBarMessage('Copied', 'success', null);
 
-        // This is just personal preference.
-        // I prefer to not show the the whole text area selected.
+		// This is just personal preference.
+		// I prefer to not show the the whole text area selected.
 
-    }
+	}
 	return (
 		<div className={clsx('flex flex-col relative', props.className)}>
 			<FuseScrollbars ref={chatRef} className="flex flex-1 flex-col overflow-y-auto">
@@ -815,36 +920,48 @@ function Chat(props) {
 							return (
 								<div
 									key={item.time}
-									className={clsx(
-										classes.messageRow,
-										'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
-										{ me: item.type === "outbound" },
-										{ contact: item.type === "inbound" },
-										{ 'first-of-group': isFirstMessageOfGroup(item, index) },
-										{ 'last-of-group': isLastMessageOfGroup(item, index) },
-										index + 1 === messages.length && 'pb-96'
-									)}
+									className={
+										item.message_type === "text" ?
+											clsx(
+												classes.messageRow,
+												'text-message-w-control',
+												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative pb-4',
+												{ me: item.type === "outbound" },
+												{ contact: item.type === "inbound" },
+												{ 'first-of-group': isFirstMessageOfGroup(item, index) },
+												{ 'last-of-group': isLastMessageOfGroup(item, index) },
+												index + 1 === messages.length && 'pb-96'
+											) : clsx(
+												classes.messageRowWithOutBorder,
+												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative  pb-4',
+												{ me: item.type === "outbound" },
+												{ contact: item.type === "inbound" },
+												{ 'first-of-group': isFirstMessageOfGroup(item, index) },
+												{ 'last-of-group': isLastMessageOfGroup(item, index) },
+												index + 1 === messages.length && 'pb-96'
+											)
+									}	
 								>
-									{shouldShowContactAvatar(item, index) && (
+									{/* {shouldShowContactAvatar(item, index) && (
 										<Avatar
 											className="avatar absolute ltr:left-0 rtl:right-0 m-0 -mx-32"
 											src={props.selectedRecipient.avatar}
 										/>
-									)}
+									)} */}
 									<div className="bubble flex relative items-center justify-center p-12 max-w-full">
-										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{fontSize:'12px'}}>{item.message_body}</div> : null}
-										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
+									{item.message_type === "text" ?
+											<div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px' ,wordBreak: 'break-all'}}>
+												{item.sender_name !== 'inbound' ?
+													<div style={{ marginTop: '-5px', paddingBottom: '10px', marginLeft: '-3px', fontWeight: '300', fontSize: '12px' }}> {`${item.sender_name.charAt(0).toUpperCase()}${item.sender_name.substring(1)}:`}  </div> : null}
+												{item.message_body}
+												<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm a')}{item.type=== "outbound"? MessageStateResolver.resolve(item.status):null }</Typography>
+											</div>
+											: null}										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "video" ? <VideoMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "document" ? <DocumentMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "contacts" ? <ContactMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "location" ? <LocationMessageType index={index} classes={classes} message={item} /> : null}
-										<Typography
-											className="time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-no-wrap"
-											color="textSecondary"
-										>
-											{moment(item.dt).format('MMMM Do YYYY, h:mm:ss a')}
-										</Typography>
 									</div>
 								</div>
 							);
@@ -863,7 +980,7 @@ function Chat(props) {
 						</div>
 					)}
 			</FuseScrollbars>
-			
+
 			{/* <XGlobalDialogCmp onDialogPropsChange={sendDialogInputHandler} data={{ dialogType: sendActionType, attachment: sendDialogData }} dialogTitle={sendDialogTitle} options={dialogOptionsConfirmBlock} content={AttachmentDialogV2} defaultState={sendDialogOpen} actions={sendDialogActions} />
 			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
 			<XGlobalDialogCmp onDialogPropsChange={selectedCannedMessage} data={cannedMessagesList} dialogTitle={`Canned Messages`} options={dialogOptionsCanned} content={CannedMessagesDialog} defaultState={dialogOpenCanned} actions={dialogActionsCanned} />

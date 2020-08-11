@@ -13,8 +13,17 @@ const useStyles = makeStyles(theme => ({
 		borderBottom: `1px solid ${theme.palette.divider}`,
 		'&.active': {
 			backgroundColor: theme.palette.background.paper
-		}
+		},
+		
 	},
+	listItemText:{
+		fontSize:'12px',//Insert your required size
+		marginLeft:'4%'
+	  },
+	  listItemText2:{
+		fontSize:'11px',//Insert your required size
+		marginLeft:'4%'
+	  },
 	unreadBadge: {
 		backgroundColor: theme.palette.secondary.main,
 		color: theme.palette.secondary.contrastText
@@ -44,8 +53,8 @@ function ContactListItem(props) {
 
 			<ListItemText
 				classes={{
-					root: 'min-w-px px-16',
-					secondary: 'truncate'
+				primary:classes.listItemText,
+				secondary:classes.listItemText2
 				}}
 				primary={props.contact.name}
 				secondary={props.contact.number === props.contact.name ? null : props.contact.number}

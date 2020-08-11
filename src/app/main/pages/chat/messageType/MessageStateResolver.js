@@ -19,7 +19,7 @@ class MessageStateResolver {
 
         const _state = this.states[state];
 
-        return (`-${_state}`);
+        return (` - ${_state}`);
     }
 }
 

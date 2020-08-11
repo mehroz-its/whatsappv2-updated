@@ -11,27 +11,27 @@ import StatusIcon from './StatusIcon';
 
 
 
-const useStyles = makeStyles(theme => ({
-	contactListItem: {
-		borderBottom: `1px solid ${theme.palette.divider}`,
-		'&.active': {
-			backgroundColor: theme.palette.background.paper
+	const useStyles = makeStyles(theme => ({
+		contactListItem: {
+			borderBottom: `1px solid ${theme.palette.divider}`,
+			'&.active': {
+				backgroundColor: theme.palette.background.paper
+			},
+			
 		},
-		
-	},
-	listItemText:{
-		fontSize:'12px',//Insert your required size
-		marginLeft:'4%'
-	  },
-	  listItemText2:{
-		fontSize:'11px',//Insert your required size
-		marginLeft:'4%'
-	  },
-	unreadBadge: {
-		backgroundColor: theme.palette.secondary.main,
-		color: theme.palette.secondary.contrastText
-	}
-}));
+		listItemText:{
+			fontSize:'12px',//Insert your required size
+			marginLeft:'4%'
+		},
+		listItemText2:{
+			fontSize:'11px',//Insert your required size
+			marginLeft:'4%'
+		},
+		unreadBadge: {
+			backgroundColor: theme.palette.secondary.main,
+			color: theme.palette.secondary.contrastText
+		}
+	}));
 
 function ContactListItem(props) {
 	const classes = useStyles(props);

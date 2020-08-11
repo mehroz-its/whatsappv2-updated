@@ -1058,7 +1058,7 @@ function ChatApp(props) {
 				</div>
 				<XGlobalDialogCmp onDialogPropsChange={sendDialogInputHandler} data={{ dialogType: sendActionType, attachment: sendDialogData }} dialogTitle={sendDialogTitle} options={dialogOptionsConfirmBlock} content={AttachmentDialogV2} defaultState={sendDialogOpen} actions={sendDialogActions} />
 				<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
-				<XGlobalDialogCmp onDialogPropsChange={selectedCannedMessage} data={cannedMessagesList} dialogTitle={`Canned Messages`} options={dialogOptionsCanned} content={CannedMessagesDialog} defaultState={dialogOpenCanned} actions={dialogActionsCanned} />
+				<XGlobalDialogCmp onDialogPropsChange={selectedCannedMessage} data={cannedMessagesList} dialogTitle={`Canned Replies`} options={dialogOptionsCanned} content={CannedMessagesDialog} defaultState={dialogOpenCanned} actions={dialogActionsCanned} />
 				<XGlobalDialogCmp onDialogPropsChange={blockCustomerInputHandler} data={selectedRecipient} dialogTitle={`Confirm Block`} options={dialogOptionsConfirmBlock} content={BlockConfirmDialog} defaultState={dialogOpenConfirmBlock} actions={dialogActionsConfirmBlock} />
 				<XGlobalDialogCmp onDialogPropsChange={customerProfileInputHandler} data={customerProfileData} dialogTitle={`Customer Profile`} options={dialogOptionsCmp} content={CustomerProfileDialog} defaultState={dialogOpenCmp} actions={dialogActionsCmp} />
 			</div>
