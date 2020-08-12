@@ -268,7 +268,7 @@ function ChatApp(props) {
 		// if (selectedRecipient !== null) {
 		setint_MessageLists(setInterval(() => {
 			getConversation(e);
-		}, 3000));
+		}, 2000));
 		// }
 	}
 	const getNumbers = () => {

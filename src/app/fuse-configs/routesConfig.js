@@ -11,7 +11,7 @@ const routes = [
 	{
 		path: '/',
 		exact: true,
-		component: () => <Redirect to="/" />
+		component: () => <Redirect to="/dashboard" />
 	},
 	{
 		component: () => <Redirect to="/pages/errors/error-404" />
