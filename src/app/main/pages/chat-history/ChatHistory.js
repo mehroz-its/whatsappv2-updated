@@ -882,7 +882,7 @@ function ChatApp(props) {
 								</div>
 							) : (
 									<>
-										<AppBar className="w-full" position="static" elevation={1} style={{ height: '70px' }}>
+										<AppBar className="w-full" position="static" elevation={1} style={{ height: '66px' }}>
 											<Toolbar className="px-16">
 												<IconButton
 													color="inherit"

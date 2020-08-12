@@ -229,7 +229,7 @@ function ChatsSidebar(props) {
 								>
 									{props.numbers.length > 0 && (
 										<Typography className="font-300 text-20 px-20 py-8" color="secondary">
-											Chats
+											History
 										</Typography>
 									)}
 									{filtered.map(contactt => (

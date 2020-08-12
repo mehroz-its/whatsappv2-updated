@@ -119,6 +119,21 @@ input:-webkit-autofill {
 .menu span{
     display: none
 }
+
+.messageSent > #attachmentDate {
+    display: flex;
+    justify-content: flex-end;
+    width: fit-content;
+    
+  
+
+    /* margin: .5rem */
+}
+
+/* #attachmentDate{
+    display: flex;
+    justify-content: flex-end;
+} */
 @import 'print.css';
 
 @import 'tables.css';

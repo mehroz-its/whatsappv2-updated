@@ -158,7 +158,9 @@ const useStyles = makeStyles(theme => ({
 				'& .time': {
 					marginLeft: '0px',
 					marginBottom: '-11px',
-					marginTop: '5px'
+					marginTop: '5px',
+					paddingBottom:8
+
 				}
 			},
 			'&.first-of-group': {
@@ -192,6 +194,7 @@ const useStyles = makeStyles(theme => ({
 				'& .time': {
 					justifyContent: 'flex-end',
 					right: 0,
+					display:'flex',
 					marginRight: 2,
 					marginBottom: '-11px',
 					marginTop: '5px',
@@ -223,6 +226,97 @@ const useStyles = makeStyles(theme => ({
 			'& .bubble': {
 				borderBottomLeftRadius: 6,
 				paddingBottom: 13,
+				'& .time': {
+					display: 'flex'
+				}
+			}
+		}
+	},
+	messageRowWithOutBorder: {
+		'&.contact': {
+			'& .bubble': {
+				color: theme.palette.primary.contrastText,
+				borderTopLeftRadius: 5,
+				borderBottomLeftRadius: 5,
+				borderTopRightRadius: 6,
+				borderBottomRightRadius: 6,
+				width: 'auto',
+    			maxWidth: '35vw',
+				borderTopRightRadius: 6,
+				borderBottomRightRadius: 6,
+				marginBottom:70,
+				'& .time': {
+					marginLeft: '0px',
+					marginBottom: '-11px',
+					marginTop: '5px',
+					paddingBottom:8
+				}
+			},
+			'&.first-of-group': {
+				'& .bubble': {
+					borderTopLeftRadius: 6
+				}
+			},
+			'&.last-of-group': {
+				'& .bubble': {
+					borderBottomLeftRadius: 6
+				}
+			}
+		},
+		'&.me': {
+			paddingLeft: 40,
+
+			'& .avatar': {
+				order: 2,
+				margin: '0 0 0 16px'
+			},
+			'& .bubble': {
+				marginLeft: 'auto',
+				color: theme.palette.getContrastText(theme.palette.grey[300]),
+				borderTopLeftRadius: 6,
+				borderBottomLeftRadius: 6,
+				borderTopRightRadius: 5,
+				borderBottomRightRadius: 5,
+				width: 'auto',
+    			maxWidth: '35vw',
+				'& .time': {
+					display:'flex',
+					justifyContent: 'flex-end',
+					// right: 0,
+					marginRight: 2,
+					// marginBottom: '-11px',
+					marginTop: '5px',
+					paddingBottom:5
+
+				}
+			},
+			'&.first-of-group': {
+				'& .bubble': {
+					borderTopRightRadius: 6
+				}
+			},
+
+			'&.last-of-group': {
+				'& .bubble': {
+					borderBottomRightRadius: 6
+				}
+			}
+		},
+		'&.contact + .me, &.me + .contact': {
+			paddingTop: 6,
+			marginTop: 6,
+			paddingBottom: 6
+		},
+		'&.first-of-group': {
+			'& .bubble': {
+				borderTopLeftRadius: 6,
+				paddingTop: 6
+			}
+		},
+		'&.last-of-group': {
+			'& .bubble': {
+				borderBottomLeftRadius: 6,
+				paddingBottom: 6,
 				'& .time': {
 					display: 'flex'
 				}
@@ -815,7 +909,7 @@ function Chat(props) {
 		<div className={clsx('flex flex-col relative', props.className)}>
 			<FuseScrollbars ref={chatRef} className="flex flex-1 flex-col overflow-y-auto">
 				{messages && messages.length > 0 ? (
-					<div className="flex flex-col pt-16 px-16 ltr:pl-56 rtl:pr-56 pb-40">
+					<div className="flex flex-col ">
 						{messages.map((item, index) => {
 							const contact = null;
 							console.log(item, 'item in message')
@@ -835,8 +929,7 @@ function Chat(props) {
 												{ 'last-of-group': isLastMessageOfGroup(item, index) },
 												index + 1 === messages.length && 'pb-96'
 											) : clsx(
-												// classes.messageRow,
-												'text-message-w-control',
+												classes.messageRowWithOutBorder	,											'text-message-w-control',
 												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
 												{ me: item.type === "outbound" },
 												{ contact: item.type === "inbound" },

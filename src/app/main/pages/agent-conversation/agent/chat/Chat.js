@@ -142,6 +142,7 @@ const chat = {
 		}
 	]
 }
+
 const useStyles = makeStyles(theme => ({
 	// bootstrapFormLabel:{backgroundColor: 'red',},
 	messageRow: {
@@ -154,15 +155,15 @@ const useStyles = makeStyles(theme => ({
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
 				width: 'auto',
-				maxWidth: '35vw',
+    			maxWidth: '35vw',
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
-				marginBottom: 70,
+				marginBottom:70,
 				'& .time': {
 					marginLeft: '0px',
 					marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom: 5
+					paddingBottom:8
 				}
 			},
 			'&.first-of-group': {
@@ -185,21 +186,27 @@ const useStyles = makeStyles(theme => ({
 			},
 			'& .bubble': {
 				marginLeft: 'auto',
-				backgroundColor: theme.palette.grey[50],
+				backgroundColor: 'white',
 				color: theme.palette.getContrastText(theme.palette.grey[300]),
 				borderTopLeftRadius: 6,
 				borderBottomLeftRadius: 6,
 				borderTopRightRadius: 5,
 				borderBottomRightRadius: 5,
 				width: 'auto',
-				maxWidth: '35vw',
+    			maxWidth: '35vw',
 				'& .time': {
+					// justifyContent: 'flex-end',
+					display:'flex',
 					justifyContent: 'flex-end',
 					right: 0,
-					margunLeft: 2,
-					marginBottom: '-11px',
+					marginLeft: 2,
+					// marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom: 5
+					// paddingBottom:5,
+					opacity:'0.8',
+					paddingRight:4
+					
+
 
 				}
 			},
@@ -245,15 +252,15 @@ const useStyles = makeStyles(theme => ({
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
 				width: 'auto',
-				maxWidth: '35vw',
+    			maxWidth: '35vw',
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
-				marginBottom: 70,
+				marginBottom:70,
 				'& .time': {
 					marginLeft: '0px',
 					marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom: 5
+					paddingBottom:8
 				}
 			},
 			'&.first-of-group': {
@@ -282,14 +289,15 @@ const useStyles = makeStyles(theme => ({
 				borderTopRightRadius: 5,
 				borderBottomRightRadius: 5,
 				width: 'auto',
-				maxWidth: '35vw',
+    			maxWidth: '35vw',
 				'& .time': {
+					display:'flex',
 					justifyContent: 'flex-end',
-					right: 0,
+					// right: 0,
 					marginRight: 2,
-					marginBottom: '-11px',
+					// marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom: 5
+					paddingBottom:5
 
 				}
 			},
@@ -330,7 +338,7 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		width: '250px',
 		height: '70px',
-		backgroundColor: 'white'
+		backgroundColor: '#ffffff'
 	},
 	rootDocu: {
 		display: 'flex',
@@ -375,6 +383,7 @@ const useStyles = makeStyles(theme => ({
 		margin: '0 5px'
 	}
 }));
+
 function Chat(props) {
 	const dispatch = useDispatch();
 	const { messages, selectedRecipient } = props;
@@ -913,7 +922,7 @@ function Chat(props) {
 		<div className={clsx('flex flex-col relative', props.className)}>
 			<FuseScrollbars ref={chatRef} className="flex flex-1 flex-col overflow-y-auto">
 				{messages && messages.length > 0 ? (
-					<div className="flex flex-col pt-16 px-16 ltr:pl-56 rtl:pr-56 pb-40">
+					<div className="flex flex-col">
 						{messages.map((item, index) => {
 							const contact = null;
 							// 	item.type === "inbound" ? user : contacts.find(_contact => _contact.id === item.who);
@@ -925,7 +934,7 @@ function Chat(props) {
 											clsx(
 												classes.messageRow,
 												'text-message-w-control',
-												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative pb-4',
+												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
 												{ me: item.type === "outbound" },
 												{ contact: item.type === "inbound" },
 												{ 'first-of-group': isFirstMessageOfGroup(item, index) },
@@ -933,7 +942,7 @@ function Chat(props) {
 												index + 1 === messages.length && 'pb-96'
 											) : clsx(
 												classes.messageRowWithOutBorder,
-												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative  pb-4',
+												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
 												{ me: item.type === "outbound" },
 												{ contact: item.type === "inbound" },
 												{ 'first-of-group': isFirstMessageOfGroup(item, index) },
@@ -954,9 +963,9 @@ function Chat(props) {
 												{item.sender_name !== 'inbound' ?
 													<div style={{ marginTop: '-5px', paddingBottom: '10px', marginLeft: '-3px', fontWeight: '300', fontSize: '12px' }}> {`${item.sender_name.charAt(0).toUpperCase()}${item.sender_name.substring(1)}:`}  </div> : null}
 												{item.message_body}
-												<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm a')}{item.type=== "outbound"? MessageStateResolver.resolve(item.status):null }</Typography>
+												<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')}{item.type=== "outbound"? MessageStateResolver.resolve(item.status):null }</Typography>
 											</div>
-											: null}										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
+											: null}	{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "video" ? <VideoMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "document" ? <DocumentMessageType index={index} classes={classes} message={item} /> : null}

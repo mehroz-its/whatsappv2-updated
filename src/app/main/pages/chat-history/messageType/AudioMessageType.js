@@ -160,7 +160,7 @@ const VoiceMessageType = function (props) {
 
     return (
         <div className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
-            <Card className={classes.root} style={{paddingLeft:'5px',height:'70%'}}>
+            <Card className={classes.root} style={{paddingLeft:'5px',height:'70%',marginLeft:'-12px'}}>
               
                     <AudioPlayer
                         // width="100%"

@@ -34,12 +34,12 @@ const VideoMessageType = function (props) {
 
     return (
         <div>
-        {display && <Card style={{width: '350px', height: 'auto'}} className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
+        {display && <Card style={{width: '350px', height: 'auto',marginLeft:'-12px'}} className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
             <div style={{ position: "relative", display: 'inline-block' }}>
                 <ReactPlayer controls url={video} height="250px" width="350px" />
                 <p style={{ width: "100%", margin: '10px 5px 5px 7px' }}>{caption}</p>
             </div>
-            <p style={{ width: "100%", margin: '10px', fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status) : null}</p>
+            <p id="attachmentDate" style={{ width: "100%", margin: '10px', fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status) : null}</p>
 
         </Card>}
         </div>

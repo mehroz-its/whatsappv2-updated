@@ -46,7 +46,7 @@ const ContactMessageType = function (props) {
     const classes = useStyles();
     const bull = <span className={classes.bullet}>•</span>;
     return (
-        <Card className={classes.root} variant="outlined">
+        <Card className={classes.root}  style={{marginLeft:'-11px'}} variant="outlined">
             <CardContent style={{ padding: 5 }}>
                 <div style={{ display: 'flex' }}>
                     <Icon color="action" className='text-16' style={{marginRight:'5px',marginTop:'2px'}}>contact_phone</Icon>
