@@ -35,6 +35,7 @@ import Fade from '@material-ui/core/Fade'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import copy from 'copy-to-clipboard';
+import { EventEmitter } from '../../../../../../events'
 const drawerWidth = 320;
 const headerHeight = 200;
 
@@ -279,6 +280,7 @@ function ChatApp(props) {
 			const data = response.data.data.agents.data;
 			setshiftAgentsList(data)
 			setdialogOpenShift(true)
+
 			setMoreMenuEl(null);
 		}, (response) => {
 
@@ -522,6 +524,9 @@ function ChatApp(props) {
 				customer: selectedRecipient.number
 			}
 		}, (response) => {
+		EventEmitter.dispatch('GetAgentsAgain',true)
+			
+			// alert("selectedShiftAgent ")
 			setdialogOpenShift(false)
 			clearData()
 			props.reloadNumber()
@@ -548,7 +553,11 @@ function ChatApp(props) {
 
 	];
 	const XGlobalDialogShiftClose = () => {
+		// alert("setdialogOpenShift : " )
+		// EventEmitter.dispatch('GetAgentsAgain',true)
 		setdialogOpenShift(false)
+		
+
 	}
 	const selectedCannedMessage = (props) => {
 		const { message_text, message_type, attachment_url, attachment_name, attachment_type } = props;
