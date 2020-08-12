@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
 import { makeStyles } from '@material-ui/core/styles';
-
+import { EventEmitter } from '../../../../../events'
 import * as Actions from '../store/actions';
 const useStyles = makeStyles((theme) => ({
 	formControl: {
@@ -65,6 +65,7 @@ function AgentHeader(props) {
 	};
 
 	const getAgents = () => {
+
 		CoreHttpHandler.request('conversations', 'agents_list', {
 			columns: "USR.id, USR.username"
 		}, (_response) => {
@@ -74,10 +75,15 @@ function AgentHeader(props) {
 		});
 	}
 
+	setTimeout(() => {
+		// alert("TIme outttttttttt")
+		getAgents()
+	}, 5000);
 
 
 	useEffect(() => {
 		getAgents()
+		EventEmitter.subscribe('GetAgentsAgain', (event) => getAgents())
 		// if (selectedAgent === 'null') setint_CustomerList = setInterval(() => {
 		//    getAgentsCustomers();
 		// }, 10000);
@@ -155,6 +161,7 @@ function AgentHeader(props) {
 								<div >All</div>
 							</MenuItem>
 							{agents.map(data => {
+								console.log(data,'daaaaaaaaaaaaaaaaaaataaaaaaaaaaaaaaaaaaaataaaa');
 								return (
 
 									<MenuItem key={`template_list_item_${data.id}`} value={data.id} style={{ display: 'flex', flex: 1, justifyContent: 'space-around', flexDirection: 'row' }}>
