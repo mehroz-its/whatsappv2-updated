@@ -132,10 +132,10 @@ function AgentHeader(props) {
 
 				<FuseAnimate animation="transition.slideDownIn" delay={300}>
 					<FormControl variant="outlined" className={classes.formControl}>
-						<InputLabel id="demo-simple-select-outlined-label" style={{ color: 'white', display: 'flex' }}>Agent</InputLabel>
+						<InputLabel id="demo-simple-select-outlined-label" style={{ color: 'white', display: 'flex',paddingBottom:'5px' }}>Agent</InputLabel>
 						<Select
 							fullWidth
-							style={{ display: 'flex', justifyContent: 'space-around', flexDirection: 'row' }}
+							style={{ display: 'flex', justifyContent: 'space-around', flexDirection: 'row',border:'0.2px  white' }}
 							label="Agent"
 							labelId="demo-simple-select-outlined-label"
 							id="demo-simple-select-outlined"

@@ -55,7 +55,7 @@ const VoiceMessageType = function (props) {
 
     return (
         <div className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
-            <Card className={classes.root}>
+            <Card className={classes.root} style={{marginLeft:'-12px'}}>
                 <div>
                     <CardContent className={classes.content}>
                         <Typography variant="subtitle1" >

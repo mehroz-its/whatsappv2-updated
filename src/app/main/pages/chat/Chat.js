@@ -168,7 +168,7 @@ const useStyles = makeStyles(theme => ({
 					marginLeft: '0px',
 					marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom:5
+					paddingBottom:8
 				}
 			},
 			'&.first-of-group': {
@@ -191,7 +191,7 @@ const useStyles = makeStyles(theme => ({
 			},
 			'& .bubble': {
 				marginLeft: 'auto',
-				backgroundColor: theme.palette.grey[50],
+				backgroundColor: 'white',
 				color: theme.palette.getContrastText(theme.palette.grey[300]),
 				borderTopLeftRadius: 6,
 				borderBottomLeftRadius: 6,
@@ -200,12 +200,15 @@ const useStyles = makeStyles(theme => ({
 				width: 'auto',
     			maxWidth: '35vw',
 				'& .time': {
+					display:'flex',
 					justifyContent: 'flex-end',
 					right: 0,
-					margunLeft: 2,
+					marginLeft: 2,
 					marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom:5
+					paddingBottom:10,
+					opacity:'0.8',
+					paddingRight:4
 
 				}
 			},
@@ -259,7 +262,8 @@ const useStyles = makeStyles(theme => ({
 					marginLeft: '0px',
 					marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom:5
+					paddingBottom:8
+					
 				}
 			},
 			'&.first-of-group': {
@@ -290,6 +294,7 @@ const useStyles = makeStyles(theme => ({
 				width: 'auto',
     			maxWidth: '35vw',
 				'& .time': {
+					display:'flex',
 					justifyContent: 'flex-end',
 					right: 0,
 					marginRight: 2,
@@ -336,7 +341,7 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		width: '250px',
 		height: '70px',
-		backgroundColor: 'white'
+		backgroundColor: '#ffffff'
 	},
 	rootDocu: {
 		display: 'flex',
@@ -1032,7 +1037,7 @@ function Chat(props) {
 									<div className="bubble flex relative items-center justify-center p-8 max-w-full">
 										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px',textAlign:'justify',wordBreak: 'break-all'}}>
 											{item.message_body}
-											<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm a')} {item.type=== "outbound"? MessageStateResolver.resolve(item.status):null }</Typography>
+											<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} {item.type=== "outbound"? MessageStateResolver.resolve(item.status):null }</Typography>
 											</div> : null}
 										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}

@@ -40,7 +40,7 @@ const VideoMessageType = function (props) {
                 <div style={{marginLeft:'3%'}}>
                 <p style={{ width: "100%", margin: '10px 10px 5px 0px',fontWeight:'bold' }}>{caption}</p>
                 </div>
-                <p style={{ width: "100%", margin: '10px', fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status) : null}</p>
+                <p id="attachmentDate" style={{ width: "100%", margin: '10px', fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status) : null}</p>
 
             </div>
         </Card>}

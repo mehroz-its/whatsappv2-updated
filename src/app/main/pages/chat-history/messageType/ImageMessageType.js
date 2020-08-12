@@ -35,7 +35,7 @@ const ImageMessageType = function (props) {
 
     return (
         <div>
-            <Card style={{ width: '350px', height: 'auto' }} onClick={() => setIsOpen(true)} className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
+            <Card style={{ width: '350px', height: 'auto',marginLeft:'-12px' }} onClick={() => setIsOpen(true)} className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
                 <LazyLoadImage
                     key={`message_list_item_type_image_${index}`}
                     alt={imageCaption}
@@ -44,7 +44,7 @@ const ImageMessageType = function (props) {
                     style={{ width: '100%', objectFit: 'cover' }}
                 />
                 {imageCaption !== '' ?   <p style={{ width: "100%", margin: '10px' }}>{imageCaption}</p> : null}
-                <p style={{ width: "100%", margin: '10px' ,fontSize:'10px'}}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status) : null}</p>
+                <p id="attachmentDate" style={{width: "97%",paddingBottom:'10px',paddingLeft:'10px',fontSize:'10px'}}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status) : null}</p>
             </Card>
             {isOpen && (
                 <Lightbox mainSrc={imageSrc} onCloseRequest={() => setIsOpen(false)} />
