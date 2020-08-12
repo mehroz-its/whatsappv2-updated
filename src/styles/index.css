@@ -129,6 +129,14 @@ input:-webkit-autofill {
 
     /* margin: .5rem */
 }
+.messageSent {
+    margin-right:'-10px'
+    
+  
+
+    /* margin: .5rem */
+}
+
 
 /* #attachmentDate{
     display: flex;
