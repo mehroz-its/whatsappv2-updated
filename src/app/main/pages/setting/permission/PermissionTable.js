@@ -9,7 +9,7 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import PermissionDialog from './PermissionDialog'
 import React, { useEffect, useState } from 'react';
-import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import ContactsTablePaginationActions from '../../setting/canned/ContactsTablePaginationActions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,17 +24,17 @@ import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 const PaginationStyle = createMuiTheme({
 	overrides: {
 		MuiTypography: {
-		body2: {
-			fontSize:'12px',
-			marginTop:'1px'
+			body2: {
+				fontSize: '12px',
+				marginTop: '1px'
 
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
+				//   "&:last-child": {
+				// 	paddingRight: 5
+				//   }
+			}
 		}
-	  }
 	}
-  });
+});
 
 function PermissionTable(props) {
 
@@ -146,6 +146,11 @@ function PermissionTable(props) {
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
 	}
+	function handleDelete(event, n) {
+		console.log(n, 'nn')
+		event => event.stopPropagation()
+
+	}
 
 	return (
 		<div className="w-full flex flex-col">
@@ -197,21 +202,28 @@ function PermissionTable(props) {
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 											{n.id}
 										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 											{n.title}
 										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 											{n.method !== 'APP' ? `${n.method}END` : n.method}
 										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 											{n.enabled ? (
 												<Icon className="text-green text-16">check_circle</Icon>
 											) : (
 													<Icon className="text-red text-16">cancel</Icon>
 												)}
+										</TableCell>
+
+										<TableCell
+											className="w-64 text-center" padding="none">
+											<Icon
+												onClick={handleDelete}
+												className="text-red text-16">delete</Icon>
 										</TableCell>
 									</TableRow>
 								);
@@ -220,28 +232,28 @@ function PermissionTable(props) {
 				</Table>
 			</FuseScrollbars>
 			<MuiThemeProvider theme={PaginationStyle}>
-			<TablePagination
-			style={{fontSize:'12px'}}
-							classes={{
-								root: 'overflow-hidden',
-								spacer: 'w-0 max-w-0',
-								actions:'text-64',
-								select:'text-12 mt-4',
-								 selectIcon:'mt-4',
-								// input:'text-64',
-								// menuItem:'text-64',
-								// toolbar:'text-64',
-								// selectRoot:'text-64'
-							}}
-				className="overflow-hidden"
-				component="div"
-				count={data2.length}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				onChangePage={handleChangePage}
-				onChangeRowsPerPage={handleChangeRowsPerPage}
-				ActionsComponent={ContactsTablePaginationActions}
-			/>
+				<TablePagination
+					style={{ fontSize: '12px' }}
+					classes={{
+						root: 'overflow-hidden',
+						spacer: 'w-0 max-w-0',
+						actions: 'text-64',
+						select: 'text-12 mt-4',
+						selectIcon: 'mt-4',
+						// input:'text-64',
+						// menuItem:'text-64',
+						// toolbar:'text-64',
+						// selectRoot:'text-64'
+					}}
+					className="overflow-hidden"
+					component="div"
+					count={data2.length}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					onChangePage={handleChangePage}
+					onChangeRowsPerPage={handleChangeRowsPerPage}
+					ActionsComponent={ContactsTablePaginationActions}
+				/>
 			</MuiThemeProvider>
 			{open ? <PermissionDialog isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData} /> : null}
 		</div>
