@@ -120,9 +120,18 @@ function Permissions(props) {
 			setOK("success")
 			setSnackBarOpen(true)
 		}
-
+		else if (snackmsg == "delete") {
+			setSnackBarMessage("Deleted Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+		}
 		else if (snackmsg == "error") {
 			setSnackBarMessage("Error!Please Try Again Later")
+			setOK("error")
+			setSnackBarOpen(true)
+		}
+		else if (snackmsg !==( "update" || "delete"||"create"|| "error")) {
+			setSnackBarMessage(snackmsg)
 			setOK("error")
 			setSnackBarOpen(true)
 		}

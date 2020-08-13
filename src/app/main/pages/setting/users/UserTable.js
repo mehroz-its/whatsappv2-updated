@@ -126,6 +126,23 @@ function UserTable(props) {
 		setRowsPerPage(event.target.value);
 	}
 
+	const hadleDelete = (event, n) => {
+		event.stopPropagation()
+		console.log(n, 'eventtt')
+		CoreHttpHandler.requestCustomer('users', 'delete',
+			{
+				key: ':id',
+				value: n.id
+			}
+			, (response) => {
+				closeDialog("delete")
+				// setopenDialog(false);
+			}, (error) => {
+				// console.log(error.response.data.message,'errorerror')
+				closeDialog(error.response.data.message)
+			});
+	}
+
 	return (
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
@@ -194,6 +211,9 @@ function UserTable(props) {
 											) : (
 													<Icon className="text-red text-16">cancel</Icon>
 												)}
+										</TableCell>
+										<TableCell className="w-64 text-center" padding="none">
+											<Icon onClick={event => hadleDelete(event, n)} className="text-16">delete_outline</Icon>
 										</TableCell>
 									</TableRow>
 								);

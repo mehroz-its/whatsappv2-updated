@@ -22,6 +22,13 @@ class APIS {
                 method: 'post',
                 path: '/backend/users/create'
             },
+            delete: {
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'delete',
+                path: '/backend/users/delete/:id'
+            },
         }
     }
 }

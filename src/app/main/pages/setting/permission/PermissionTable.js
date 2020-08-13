@@ -146,11 +146,22 @@ function PermissionTable(props) {
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
 	}
-	function handleDelete(event, n) {
-		console.log(n, 'nn')
-		event => event.stopPropagation()
-
+	const hadleDelete = (event, n) => {
+		event.stopPropagation()
+		console.log(n, 'eventtt')
+		CoreHttpHandler.requestCustomer('permissions', 'delete',
+			{
+				key: ':id',
+				value: n.id
+			}
+			, (response) => {
+				closeDialog("delete")
+				// setopenDialog(false);
+			}, (error) => {
+				closeDialog(error.response.data.message)
+			});
 	}
+
 
 	return (
 		<div className="w-full flex flex-col">
@@ -218,12 +229,8 @@ function PermissionTable(props) {
 													<Icon className="text-red text-16">cancel</Icon>
 												)}
 										</TableCell>
-
-										<TableCell
-											className="w-64 text-center" padding="none">
-											<Icon
-												onClick={handleDelete}
-												className="text-red text-16">delete</Icon>
+										<TableCell className="w-64 text-center" padding="none">
+											<Icon onClick={event => hadleDelete(event, n)} className="text-16">delete_outline</Icon>
 										</TableCell>
 									</TableRow>
 								);
