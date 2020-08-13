@@ -46,6 +46,7 @@ function AgentHeader(props) {
 	const [dialogData, setDialogData] = React.useState(defaultDialogData)
 	const [textAreaNumbers, setTextAreaNumbers] = React.useState('');
 	const [agents, setagents] = React.useState([]);
+	const [int_CustomerList, setint_CustomerList] = React.useState(null);
 	const [selectedAgent, setselectedAgent] = React.useState('Please Select');
 	const [numbers, setnumbers] = React.useState([]);
 	const [dropdowntitile, setDropDownTitle] = useState('Agents');
@@ -65,28 +66,38 @@ function AgentHeader(props) {
 	};
 
 	const getAgents = () => {
-
 		CoreHttpHandler.request('conversations', 'agents_list', {
 			columns: "USR.id, USR.username"
 		}, (_response) => {
 			console.log("_response  ", _response);
 			setagents(_response.data.data.agents.data)
+			
+			// if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
+			// 	getAgents();
+			// }, 5000));
 		}, (error) => {
 		});
 	}
-
-	setTimeout(() => {
-		// alert("TIme outttttttttt")
-		getAgents()
-	}, 5000);
-
+	// alert(int_CustomerList)
+			if (int_CustomerList === null) {
+				setint_CustomerList(setInterval(() => {
+				getAgents();
+			}, 3000));
+}
+	// setTimeout(() => {
+	// 	// alert("TIme outttttttttt")
+	// 	getAgents()
+	// }, 5000);
 
 	useEffect(() => {
 		getAgents()
+		// clearInterval(int_CustomerList);
+		
 		EventEmitter.subscribe('GetAgentsAgain', (event) => getAgents())
-		// if (selectedAgent === 'null') setint_CustomerList = setInterval(() => {
-		//    getAgentsCustomers();
-		// }, 10000);
+		return () => {
+			clearInterval(int_CustomerList);
+			// clearInterval(int_CustomerList);
+		}
 	}, []);
 
 	const getAgentsCustomers = (event) => {
@@ -161,7 +172,7 @@ function AgentHeader(props) {
 								<div >All</div>
 							</MenuItem>
 							{agents.map(data => {
-								console.log(data,'daaaaaaaaaaaaaaaaaaataaaaaaaaaaaaaaaaaaaataaaa');
+								console.log(data, 'daaaaaaaaaaaaaaaaaaataaaaaaaaaaaaaaaaaaaataaaa');
 								return (
 
 									<MenuItem key={`template_list_item_${data.id}`} value={data.id} style={{ display: 'flex', flex: 1, justifyContent: 'space-around', flexDirection: 'row' }}>
@@ -178,7 +189,7 @@ function AgentHeader(props) {
 									</Icon>
 											}
 											{data.username}
-											<span style={{justifyContent:'flex-end',flex:1,display:'flex'}}>{data.messages}
+											<span style={{ justifyContent: 'flex-end', flex: 1, display: 'flex' }}>{data.messages}
 											</span>
 
 										</div>
