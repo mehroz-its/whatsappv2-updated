@@ -40,6 +40,11 @@ function CannedList(props) {
 				accessor: 'enabled',
 				sortable: true
 			},
+			{
+				Header: 'Delete',
+				accessor: 'delete',
+				sortable: true
+			},
 		],
 		[]
 	);

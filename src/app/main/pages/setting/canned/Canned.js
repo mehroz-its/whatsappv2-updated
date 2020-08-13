@@ -39,6 +39,7 @@ function ContactsApp() {
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [ok, setOK] = React.useState('')
 	const [val, setVal] = React.useState('')
+	const [cannedtype, setCannedType] = React.useState('all')
 	const handleClickOpen = () => {
 		setOpen(true);
 	}
@@ -59,7 +60,7 @@ function ContactsApp() {
 			return CoreHttpHandler.request('canned_messages', 'type_listing', {
 				limit: 100,
 				key:':type',
-				value:'all',
+				value:cannedtype,
 				page: 0,
 				columns: "*",
 				sortby: "DESC",
@@ -91,7 +92,7 @@ function ContactsApp() {
 	})
 	React.useEffect(() => {
 		getData()
-	}, []);
+	}, [cannedtype]);
 	const valueReceived = (value) => {
 		if (value == "update") {
 			setSnackBarMessage("Updated Successfully")
@@ -106,6 +107,16 @@ function ContactsApp() {
 		else if (value == "error") {
 			setSnackBarMessage("Error!Please Try Again Later")
 			setOK("error")
+			setSnackBarOpen(true)
+		}
+		else if (value !==( "update" || "delete"||"create"|| "error")) {
+			setSnackBarMessage(value)
+			setOK("error")
+			setSnackBarOpen(true)
+		}
+		else if (value == "delete") {
+			setSnackBarMessage("Deleted Successfully")
+			setOK("success")
 			setSnackBarOpen(true)
 		}
 	}
@@ -123,13 +134,16 @@ function ContactsApp() {
 		getData()
 		valueReceived(val)
 	};
+	const handleCannedMessageType = (val)=>{
+		setCannedType(val)
+	}
 
 	return (
 		<>
 			<Snackbar
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 				open={snackbaropen}
-				autoHideDuration={3000}
+				autoHideDuration={5000}
 			>
 				<Alert variant="filled" severity={ok}>
 					{snackbarmessage}
@@ -145,7 +159,7 @@ function ContactsApp() {
 				}}
 				header={<CannedHeader pageLayout={pageLayout} SearchVal={search} />}
 				content={<CannedList isSearched={val} data={data2} onDialogClose={closeDialog} ValueForSearch={val} displaySnack={valueReceived} />}
-				leftSidebarContent={<CannedSideBar />}
+				leftSidebarContent={<CannedSideBar cannedType={handleCannedMessageType} />}
 				sidebarInner
 				ref={pageLayout}
 			// innerScroll

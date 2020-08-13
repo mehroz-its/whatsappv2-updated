@@ -29,6 +29,13 @@ class APIS {
                 method: 'put',
                 path: '/backend/canned/messages/update/id'
             },
+            delete: {
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'delete',
+                path: '/backend/canned/messages/delete/:id'
+            },
         }
     }
 }
