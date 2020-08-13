@@ -44,6 +44,13 @@ const rows = [
 		label: 'Enabled',
 		sort: true
 	},
+	{
+		id: 'delete',
+		align: 'center',
+		disablePadding: false,
+		label: 'Delete',
+		sort: true
+	}
 ];
 
 const useStyles = makeStyles(theme => ({

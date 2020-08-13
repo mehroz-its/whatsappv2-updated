@@ -14,52 +14,54 @@ import { useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } fro
 import clsx from 'clsx';
 import ContactsTablePaginationActions from './ContactsTablePaginationActions';
 import Icon from '@material-ui/core/Icon';
-import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
 import CannedDialog from './CannedDialog'
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+
 const BodyStyle = createMuiTheme({
 	overrides: {
-	  MuiTableCell: {
-		root: {
-		  paddingTop: 4,
-		  fontSize:'12px',
-		  paddingBottom: 4,
+		MuiTableCell: {
+			root: {
+				paddingTop: 4,
+				fontSize: '12px',
+				paddingBottom: 4,
+			}
 		}
-	  }
 	}
-  });
-  
+});
+
 const PaginationStyle = createMuiTheme({
 	overrides: {
 		MuiTypography: {
-		body2: {
-			fontSize:'12px',
-			marginTop:'1px'
+			body2: {
+				fontSize: '12px',
+				marginTop: '1px'
 
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
+				//   "&:last-child": {
+				// 	paddingRight: 5
+				//   }
+			}
 		}
-	  }
 	}
-  });
+});
 
 
 const HeaderStyle = createMuiTheme({
 	overrides: {
-	  MuiTableCell: {
-		root: {
-	
-		  paddingLeft:40,
+		MuiTableCell: {
+			root: {
 
-		  fontSize:'12px',
-		  paddingBottom: 4,
-		  "&:first-child": {
-			paddingRight: 40
-		  }
+				paddingLeft: 40,
+
+				fontSize: '12px',
+				paddingBottom: 4,
+				"&:first-child": {
+					paddingRight: 40
+				}
+			}
 		}
-	  }
 	}
-  });
+});
 
 const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
 	const defaultRef = React.useRef();
@@ -75,9 +77,9 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 		</>
 	);
 });
-const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
+const EnhancedTable = ({ displaySnack, columns, data, onRowClick, onClose }) => {
 	const [open, setOpen] = React.useState(false);
-	function closeDialog(val){
+	function closeDialog(val) {
 		setOpen(false);
 		onClose()
 		displaySnack(val)
@@ -154,6 +156,24 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 		setOpen(true);
 		handleClickOpen()
 	}
+	const hadleDelete = (event, n) => {
+		event.stopPropagation()
+		console.log(n, 'eventtt')
+		CoreHttpHandler.requestCustomer('canned_messages', 'delete',
+			{
+				key: ':id',
+				value: n.id
+			}
+			, (response) => {
+				// console.log(response)
+				closeDialog("delete")
+				// setopenDialog(false);
+			}, (error) => {
+				closeDialog(error.response.data.message)
+				// setopenDialog(false);
+
+			});
+	}
 	// Render the UI for your table
 	return (<div>
 		<TableContainer className="min-h-full sm:border-1 sm:rounded-16" >
@@ -162,24 +182,24 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 					{headerGroups.map(headerGroup => (
 						<TableRow {...headerGroup.getHeaderGroupProps()}>
 							{headerGroup.headers.map(column => (
-									<MuiThemeProvider theme={HeaderStyle}>
-								<TableCell
-									style={{fontSize:'11px'}}
-								    align="center"
-									className="whitespace-no-wrap px-50 py-0" 	
-									{...(!column.sortable
-										? column.getHeaderProps()
-										: column.getHeaderProps(column.getSortByToggleProps()))}
-								>
-									{column.render('Header')}
-									{column.sortable ? (
-										<TableSortLabel
-											active={column.isSorted}
-											// react-table has a unsorted state which is not treated here
-											direction={column.isSortedDesc ? 'desc' : 'asc'}
-										/>
-									) : null}
-								</TableCell>
+								<MuiThemeProvider theme={HeaderStyle}>
+									<TableCell
+										style={{ fontSize: '11px' }}
+										align="center"
+										className="whitespace-no-wrap px-50 py-0"
+										{...(!column.sortable
+											? column.getHeaderProps()
+											: column.getHeaderProps(column.getSortByToggleProps()))}
+									>
+										{column.render('Header')}
+										{column.sortable ? (
+											<TableSortLabel
+												active={column.isSorted}
+												// react-table has a unsorted state which is not treated here
+												direction={column.isSortedDesc ? 'desc' : 'asc'}
+											/>
+										) : null}
+									</TableCell>
 								</MuiThemeProvider>
 							))}
 						</TableRow>
@@ -190,11 +210,11 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 						prepareRow(row);
 						return (
 							<TableRow
-								style={{fontSize:'11px'}}
+								style={{ fontSize: '11px' }}
 								{...row.getRowProps()}
 								onClick={ev => handleClick(ev, row)}
 								className="truncate cursor-pointer"
-						
+
 							>
 								{row.cells.map(cell => {
 									console.log(row.original, 'cell')
@@ -203,37 +223,50 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 											return (
 												<TableCell
 
-												style={{ height: 'auto !important' }}
-												component="th" scope="row" 
-												align="center"
-												className={clsx('p-0')}
+													style={{ height: 'auto !important' }}
+													component="th" scope="row"
+													align="center"
+													className={clsx('p-0')}
 												>
 													<Icon className="text-green text-20">check_circle</Icon>
 												</TableCell>
 											)
 										} else if (row.original.enabled === false) {
 											return (
-												<TableCell 
-												
-												className={clsx('p-0')}
-												style={{ height: 'auto !important' }}
-												component="th" scope="row" 
-												align="center">
-													<Icon className="text-red text-20">cancel</Icon>
+												<TableCell
+													style={{ height: 'auto !important' }}
+													component="th" scope="row"
+													align="center"
+													className={clsx('p-0')}
+												>
+													<Icon className="text-green text-20">check_circle</Icon>
 												</TableCell>
 											)
 										}
-									} else {
+									}
+									else if (cell.column.Header === 'Delete') {
 										return (
-											<MuiThemeProvider theme={BodyStyle}>
 											<TableCell
-										
-											align="center"
-												{...cell.getCellProps()}
+												style={{ height: 'auto !important' }}
+												component="th" scope="row"
+												align="center"
 												className={clsx('p-0')}
 											>
-												{cell.render('Cell')}
+												<Icon onClick={event => hadleDelete(event, row.original)} className="text-16">delete_outline</Icon>
 											</TableCell>
+										)
+									}
+									else {
+										return (
+											<MuiThemeProvider theme={BodyStyle}>
+												<TableCell
+
+													align="center"
+													{...cell.getCellProps()}
+													className={clsx('p-0')}
+												>
+													{cell.render('Cell')}
+												</TableCell>
 											</MuiThemeProvider>
 										);
 									}
@@ -243,47 +276,47 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 					})}
 				</TableBody>
 
-				<TableFooter 
-				classes={{root:'h-0'}}
-				> 
-					<TableRow 	classes={{root:'h-0'}}
+				<TableFooter
+					classes={{ root: 'h-0' }}
+				>
+					<TableRow classes={{ root: 'h-0' }}
 					>
 						<MuiThemeProvider theme={PaginationStyle}>
-						<TablePagination
-								
-							classes={{
-								root: 'overflow-hidden',
-								spacer: 'w-0 max-w-0',
-								actions:'text-64',
-								select:'text-12 mt-4',
-								 selectIcon:'mt-4',
-								// input:'text-64',
-								// menuItem:'text-64',
-								// toolbar:'text-64',
-								// selectRoot:'text-64'
-							}}
-							rowsPerPageOptions={[5, 10, 25, { label: 'All', value: data.length + 1 }]}
-							colSpan={5}
-							style={{fontSize:'12px'}}
-							count={data.length}
-							rowsPerPage={pageSize}
-							page={pageIndex}
-							SelectProps={{
-								inputProps: { 'aria-label': 'rows per page' },
-								native: false,
-								fontSize:50
-							}}
-							onChangePage={handleChangePage}
-							onChangeRowsPerPage={handleChangeRowsPerPage}
-							ActionsComponent={ContactsTablePaginationActions}
-						/>
+							<TablePagination
+
+								classes={{
+									root: 'overflow-hidden',
+									spacer: 'w-0 max-w-0',
+									actions: 'text-64',
+									select: 'text-12 mt-4',
+									selectIcon: 'mt-4',
+									// input:'text-64',
+									// menuItem:'text-64',
+									// toolbar:'text-64',
+									// selectRoot:'text-64'
+								}}
+								rowsPerPageOptions={[5, 10, 25, { label: 'All', value: data.length + 1 }]}
+								colSpan={5}
+								style={{ fontSize: '12px' }}
+								count={data.length}
+								rowsPerPage={pageSize}
+								page={pageIndex}
+								SelectProps={{
+									inputProps: { 'aria-label': 'rows per page' },
+									native: false,
+									fontSize: 50
+								}}
+								onChangePage={handleChangePage}
+								onChangeRowsPerPage={handleChangeRowsPerPage}
+								ActionsComponent={ContactsTablePaginationActions}
+							/>
 						</MuiThemeProvider>
-					
+
 					</TableRow>
 				</TableFooter>
 			</MaUTable>
 		</TableContainer>
-		{open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog}/>}
+		{open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
 
 	</div>
 	);

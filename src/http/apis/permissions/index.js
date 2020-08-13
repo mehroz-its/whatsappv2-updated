@@ -42,7 +42,14 @@ class APIS {
                 },
                 method: 'put',
                 path: '/backend/permissions/update/:id',
-            }
+            },
+            delete: {
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'delete',
+                path: '/backend/permissions/delete/:id'
+            },
         }
     }
 }

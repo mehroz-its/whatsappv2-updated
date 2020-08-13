@@ -22,6 +22,13 @@ class APIS {
                 method: 'put',
                 path: '/backend/roles/update/id'
             },
+            delete: {
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'delete',
+                path: '/backend/roles/delete/:id'
+            },
         }
     }
 }
