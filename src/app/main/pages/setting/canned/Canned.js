@@ -50,17 +50,19 @@ function ContactsApp() {
 			description: '',
 			enabled: true,
 			customers: [],
-			attachment_url:''
+			attachment_url: ''
 		}
 	)
 
 	const getData = ((loadData) => {
+		setData([])
+		setData2([])
 		console.log('called get data')
 		loadData = () => {
 			return CoreHttpHandler.request('canned_messages', 'type_listing', {
 				limit: 100,
-				key:':type',
-				value:cannedtype,
+				key: ':type',
+				value: cannedtype,
 				page: 0,
 				columns: "*",
 				sortby: "DESC",
@@ -109,7 +111,7 @@ function ContactsApp() {
 			setOK("error")
 			setSnackBarOpen(true)
 		}
-		else if (value !==( "update" || "delete"||"create"|| "error")) {
+		else if (value !== ("update" || "delete" || "create" || "error")) {
 			setSnackBarMessage(value)
 			setOK("error")
 			setSnackBarOpen(true)
@@ -134,7 +136,7 @@ function ContactsApp() {
 		getData()
 		valueReceived(val)
 	};
-	const handleCannedMessageType = (val)=>{
+	const handleCannedMessageType = (val) => {
 		setCannedType(val)
 	}
 
