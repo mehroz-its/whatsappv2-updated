@@ -234,11 +234,14 @@ const CampaignDialog = (props) => {
 				</div>
 
 			</DialogContent>
-			<DialogActions>
+			<DialogActions className="justify-between p-8">
+			<div className="px-16">
 				<Button onClick={handleDialogClose} color="primary" size="small" variant="contained">
 					Cancel
              </Button>
+			 </div>
 				<ThemeProvider theme={theme}>
+				<div className="mx-32 md:mx-24">
 					<Button
 						color="primary"
 						className={classes.margin}
@@ -247,6 +250,7 @@ const CampaignDialog = (props) => {
 						variant="contained">
 						Done
          </Button>
+		 </div>
 				</ThemeProvider>
 			</DialogActions>
 		</Dialog>

@@ -160,7 +160,14 @@ class APIS {
                 },
                 method: 'put',
                 path: '/backend/toggle/customer/unblock/:number'
-            }
+            },
+            allAgents: {
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'get',
+                path: '/fetch/customers-agents'
+            },
 
         }
     }

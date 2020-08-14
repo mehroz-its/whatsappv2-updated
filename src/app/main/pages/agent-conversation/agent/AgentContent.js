@@ -84,15 +84,19 @@ function AgentContent(props) {
 
 	const classes = useStyles();
 
-	// useEffect(() => {
-	// 	dispatch(Actions.getProducts());
-	// }, [dispatch]);
+	useEffect(() => {
+		dispatch(Actions.getProducts());
+	}, [dispatch]);
 
 	useEffect(() => {
 		
 		console.log("selectedAgent :", selectedAgent);
 		// alert(selectedAgent)
 		// getAgents()
+		if(selectedAgent ==="All") {
+			getAllAgents()
+		}
+
 		if (selectedAgent !== null) {
 			clearInterval(int_CustomerList)
 			getAgentsCustomers()		
@@ -105,6 +109,9 @@ function AgentContent(props) {
 		console.log('i am called')
 
 	}, [selectedAgent]);
+	// useEffect(()=>{
+	// 	getAllAgents()
+	// })
 	const getAgents = () => {
 		CoreHttpHandler.request('conversations', 'agents_list', {
 			columns: "USR.id, USR.username"
@@ -114,6 +121,26 @@ function AgentContent(props) {
 		}, (error) => {
 		});
 	}
+	const getAllAgents = () => {
+		CoreHttpHandler.request('conversations', 'allAgents', {
+			
+		}, (_response) => {
+			console.log("_response of getall agentsssssss", _response.data.data.list.data);
+			const numbers=_response.data.data.list.data
+			props.Total(numbers.length)
+			setnumbers(numbers)
+		}, (error) => {
+		});
+	}
+	// const getAllAgents = () => {
+	// 	CoreHttpHandler.request('conversations', 'allAgents', {
+			
+	// 	}, (_response) => {
+	// 		console.log("_response of getall agentsssssss  ", _response);
+	
+	// 	}, (error) => {
+	// 	});
+	// }
 	const getAgentsCustomers = () => {
 		let params = {
 			agentId: selectedAgent
@@ -140,6 +167,7 @@ function AgentContent(props) {
 		}, (_response) => {
 			// console.log("_response  ", _response);
 			const numbers = _response.data.data.customers;
+	
 			// console.log("numbers : ", numbers);
 
 			setnumbers(numbers)
@@ -244,15 +272,16 @@ function AgentContent(props) {
 	return (
 		<div className="w-full flex flex-col" style={{ }}>
 
-			{numbers.length > 0 ?
+			{/* {numbers.length > 0 ?
 		
 				<Chat numberr={numbers} selectedAgent={selectedAgent} reloadNumber={(e) => getAgentsCustomersReload()} />
 			: 
 			selectedAgent == null ? 
 			<Chat numberr={numbers}  /> 
 			: 	<Chat numberr={numbers} ok="error" message = "Not Numbers Associated to the Agent " open ={true}/>
-			}
-					
+			} */}
+			<Chat numberr={numbers} selectedAgent={selectedAgent} reloadNumber={(e) => getAgentsCustomersReload()} />		
+			
 		</div>
 	);
 }

@@ -193,6 +193,7 @@ function 	ChatsSidebar(props) {
 	
 	filtered = searchText.charAt(0) === '9' ? numbers.filter((number => number.number.includes(searchText))) : numbers.filter((number => number.name.toLowerCase().includes(searchText.toLowerCase())))
 	console.log(filtered,'filteddddddddd');
+	console.log(props.numbers,'propsssssssssssssssssssssssssssssss');
 	return (
 		<div className="flex flex-col flex-auto h-full">
 			<AppBar position="static" color="default" elevation={1} className="pt-0">
@@ -325,7 +326,7 @@ function 	ChatsSidebar(props) {
 									</FuseAnimateGroup>
 								</>
 							);
-						}, [props.numbers,filtered])
+						}, [props.numbers])
 					}
 				</List>
 

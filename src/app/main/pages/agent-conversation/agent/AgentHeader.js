@@ -36,6 +36,8 @@ const useStyles = makeStyles((theme) => ({
 function AgentHeader(props) {
 	const classes = useStyles();
 
+const {test} = props
+console.log("shinu chty : " ,  test);
 	const dispatch = useDispatch();
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
@@ -47,7 +49,7 @@ function AgentHeader(props) {
 	const [textAreaNumbers, setTextAreaNumbers] = React.useState('');
 	const [agents, setagents] = React.useState([]);
 	const [int_CustomerList, setint_CustomerList] = React.useState(null);
-	const [selectedAgent, setselectedAgent] = React.useState('Please Select');
+	const [selectedAgent, setselectedAgent] = React.useState('All');
 	const [numbers, setnumbers] = React.useState([]);
 	const [dropdowntitile, setDropDownTitle] = useState('Agents');
 	const defaultDialogData = {
@@ -78,6 +80,9 @@ function AgentHeader(props) {
 		}, (error) => {
 		});
 	}
+
+
+
 	// alert(int_CustomerList)
 			if (int_CustomerList === null) {
 				setint_CustomerList(setInterval(() => {
@@ -91,6 +96,7 @@ function AgentHeader(props) {
 
 	useEffect(() => {
 		getAgents()
+		// getAllAgents()
 		// clearInterval(int_CustomerList);
 		
 		EventEmitter.subscribe('GetAgentsAgain', (event) => getAgents())
@@ -99,6 +105,9 @@ function AgentHeader(props) {
 			// clearInterval(int_CustomerList);
 		}
 	}, []);
+
+
+
 
 	const getAgentsCustomers = (event) => {
 		let params = {
@@ -123,14 +132,14 @@ function AgentHeader(props) {
 		setagentDropDownOpen(true)
 	};
 	const handleChangeAgent = (event) => {
-		console.log('header', event.target.value)
+		console.log('headerrrrrrrrrrrrrrrr', event.target.value)
 		setselectedAgent(event.target.value)
 		props.Agent(event.target.value)
 
 		// getAgentsCustomers(event.target.value)
 
 	};
-	console.log(agents, 'agentsssssssss')
+	console.log(props.test, 'agentsssssssss')
 
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
@@ -157,7 +166,7 @@ function AgentHeader(props) {
 							labelId="demo-simple-select-outlined-label"
 							id="demo-simple-select-outlined"
 							open={agentDropDownOpen}
-							defaultValue="All"
+							// defaultValue="All"
 							onClose={handleCloseAgent}
 							onOpen={handleOpenAgent}
 							value={selectedAgent}
@@ -168,8 +177,19 @@ function AgentHeader(props) {
 								color: 'white'
 							}}
 						>
-							<MenuItem value="">
-								<div >All</div>
+							<MenuItem  key={`template_list_item_${123}`} value={"All"} style={{ display: 'flex', flex: 1, justifyContent: 'space-between', flexDirection: 'row' }}>
+							<div style={{
+											flexDirection: 'row',
+											display: 'flex', flex: 1,
+											justifyContent:'space-between',
+											marginLeft:'23px'
+										}}>
+								<div>All</div>
+								<span>{ test ? test : '' 
+									
+									}</span>
+									</div>
+
 							</MenuItem>
 							{agents.map(data => {
 								console.log(data, 'daaaaaaaaaaaaaaaaaaataaaaaaaaaaaaaaaaaaaataaaa');

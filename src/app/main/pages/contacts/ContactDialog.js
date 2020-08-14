@@ -334,7 +334,7 @@ console.log(value,'vlsssssssssssssssssss');
 						/>
 					</div> */}
 					<div className="flex">
-						<div className="min-w-48 pt-24" >
+						<div className="min-w-48 pt-10">
 							<Icon color="action">phone</Icon>
 						</div>
 						<TextField
@@ -353,7 +353,7 @@ console.log(value,'vlsssssssssssssssssss');
 					</div>
 
 					<div className="flex">
-						<div className="min-w-48 pt-20" style={{marginTop:'-10px'}}>
+						<div className="min-w-48 pt-10" >
 							<Icon color="action">account_circle</Icon>
 						</div>
 						<TextField
@@ -371,7 +371,7 @@ console.log(value,'vlsssssssssssssssssss');
 
 					<div className="flex">
 						{/* <div className="min-w-48 pt-20" /> */}
-						<div className="min-w-48 pt-20" style={{marginTop:'-10px'}}>
+						<div className="min-w-48 pt-10" >
 							<Icon color="action">account_circle</Icon>
 						</div>
 						<TextField
@@ -392,7 +392,7 @@ console.log(value,'vlsssssssssssssssssss');
 
 
 					<div className="flex">
-						<div className="min-w-48 pt-20" style={{marginTop:'-10px'}}>
+						<div className="min-w-48 pt-10" >
 							<Icon color="action">email</Icon>
 						</div>
 						<TextField
@@ -409,7 +409,7 @@ console.log(value,'vlsssssssssssssssssss');
 					</div>
 
 					<div className="flex">
-						<div className="min-w-48 pt-20" style={{marginTop:'-10px'}}>
+						<div className="min-w-48 pt-10" >
 							<Icon color="action">child_care</Icon>
 						</div>
 						<TextField
@@ -610,7 +610,7 @@ console.log(value,'vlsssssssssssssssssss');
 					</DialogActions>
 				) : (
 						<DialogActions className="justify-between p-8">
-							<div>
+							<div className="px-16">
 							<ThemeProvider theme={theme}>
 								<Button
 									variant="contained"
@@ -629,7 +629,7 @@ console.log(value,'vlsssssssssssssssssss');
 							{/* <IconButton onClick={handleRemove}>
 								<Icon>delete</Icon>
 							</IconButton> */}
-							<div>
+							<div className="mx-16">
 								<Button
 									variant="contained"
 									color="primary"
