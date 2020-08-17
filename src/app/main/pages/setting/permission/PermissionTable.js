@@ -20,6 +20,7 @@ import PermissionTableHead from './PermissionTableHead';
 import TableData from './PermissionData'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
+import DeleteDialog from '../DeletDialog'
 
 const PaginationStyle = createMuiTheme({
 	overrides: {
@@ -41,6 +42,7 @@ function PermissionTable(props) {
 
 	function closeDialog(val) {
 		setOpen(false)
+		setDeleteDialog(false)
 		props.onClose(val)
 	}
 
@@ -53,6 +55,8 @@ function PermissionTable(props) {
 	const [selected, setSelected] = useState([]);
 	const [userRules, setUserRules] = useState([])
 	const [page, setPage] = useState(0);
+	const [deleteDialogData, setDeleteDialogData] = React.useState({});
+	const [deleteDialog, setDeleteDialog] = React.useState(false);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
 		direction: 'asc',
@@ -147,19 +151,22 @@ function PermissionTable(props) {
 		setRowsPerPage(event.target.value);
 	}
 	const hadleDelete = (event, n) => {
+		setDeleteDialog(true)
 		event.stopPropagation()
 		console.log(n, 'eventtt')
-		CoreHttpHandler.requestCustomer('permissions', 'delete',
-			{
-				key: ':id',
-				value: n.id
-			}
-			, (response) => {
-				closeDialog("delete")
-				// setopenDialog(false);
-			}, (error) => {
-				closeDialog(error.response.data.message)
-			});
+		setDeleteDialogData(n)
+
+		// CoreHttpHandler.requestCustomer('permissions', 'delete',
+		// 	{
+		// 		key: ':id',
+		// 		value: n.id
+		// 	}
+		// 	, (response) => {
+		// 		closeDialog("delete")
+		// 		// setopenDialog(false);
+		// 	}, (error) => {
+		// 		closeDialog(error.response.data.message)
+		// 	});
 	}
 
 
@@ -262,7 +269,10 @@ function PermissionTable(props) {
 					ActionsComponent={ContactsTablePaginationActions}
 				/>
 			</MuiThemeProvider>
+	
 			{open ? <PermissionDialog isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData} /> : null}
+			{deleteDialog && <DeleteDialog path='permissions' method='delete' isOpen={deleteDialog} type="Delete" closeDialog={closeDialog}  data={deleteDialogData} />}
+
 		</div>
 	);
 }

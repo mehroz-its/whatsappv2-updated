@@ -21,6 +21,8 @@ import TableData from './RolesData'
 import RolesDialog from './RolesDialog'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
+import DeleteDialog from '../DeletDialog'
+
 
 const PaginationStyle = createMuiTheme({
 	overrides: {
@@ -40,6 +42,7 @@ const PaginationStyle = createMuiTheme({
 function RolesTable(props) {
 	function closeDialog(val) {
 		setOpen(false)
+		setDeleteDialog(false)
 		props.onClose(val)
 	}
 	const dispatch = useDispatch();
@@ -47,6 +50,8 @@ function RolesTable(props) {
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
+	const [deleteDialogData, setDeleteDialogData] = React.useState({});
+	const [deleteDialog, setDeleteDialog] = React.useState(false);
 	const [page, setPage] = useState(0);
 	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
 	const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -134,8 +139,11 @@ function RolesTable(props) {
 		setRowsPerPage(event.target.value);
 	}
 	const hadleDelete = (event, n) => {
+		setDeleteDialog(true)
 		event.stopPropagation()
 		console.log(n, 'eventtt')
+		setDeleteDialogData(n)
+		return;
 		CoreHttpHandler.requestCustomer('roles', 'delete',
 			{
 				key: ':id',
@@ -252,6 +260,8 @@ function RolesTable(props) {
 				/>
 			</MuiThemeProvider>
 			{open ? <RolesDialog isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData} /> : null}
+			{deleteDialog && <DeleteDialog path='roles' method='delete' isOpen={deleteDialog} type="Delete" closeDialog={closeDialog}  data={deleteDialogData} />}
+
 		</div>
 	);
 }

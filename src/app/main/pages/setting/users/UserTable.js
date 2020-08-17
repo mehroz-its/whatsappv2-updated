@@ -21,6 +21,7 @@ import TableData from './UsersData'
 import UserDialog from './UserDialog'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
+import DeleteDialog from '../DeletDialog'
 
 const PaginationStyle = createMuiTheme({
 	overrides: {
@@ -40,6 +41,7 @@ const PaginationStyle = createMuiTheme({
 function UserTable(props) {
 	function closeDialog(val){
 		setOpen(false)
+		setDeleteDialog(false)
 		props.onClose(val)
 	}
 	const dispatch = useDispatch();
@@ -48,6 +50,8 @@ function UserTable(props) {
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
 	const [page, setPage] = useState(0);
+	const [deleteDialogData, setDeleteDialogData] = React.useState({});
+	const [deleteDialog, setDeleteDialog] = React.useState(false);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
 		direction: 'asc',
@@ -128,7 +132,10 @@ function UserTable(props) {
 
 	const hadleDelete = (event, n) => {
 		event.stopPropagation()
+		setDeleteDialog(true)
+		setDeleteDialogData(n)
 		console.log(n, 'eventtt')
+		return;
 		CoreHttpHandler.requestCustomer('users', 'delete',
 			{
 				key: ':id',
@@ -246,6 +253,8 @@ function UserTable(props) {
 			/>
 			</MuiThemeProvider>
 			{open ? <UserDialog  isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData}/>:null}
+			{deleteDialog && <DeleteDialog path='users' method='delete' isOpen={deleteDialog} type="Delete" closeDialog={closeDialog}  data={deleteDialogData} />}
+
 		</div>
 	);
 }
