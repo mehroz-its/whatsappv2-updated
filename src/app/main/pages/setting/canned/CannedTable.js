@@ -17,6 +17,7 @@ import Icon from '@material-ui/core/Icon';
 import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
 import CannedDialog from './CannedDialog'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+import DeleteDialog from './DeletDialog'
 
 const BodyStyle = createMuiTheme({
 	overrides: {
@@ -79,6 +80,8 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 });
 const EnhancedTable = ({ displaySnack, columns, data, onRowClick, onClose }) => {
 	const [open, setOpen] = React.useState(false);
+	const [deleteDialog, setDeleteDialog] = React.useState(false);
+	const [deleteDialogData, setDeleteDialogData] = React.useState({});
 	function closeDialog(val) {
 		setOpen(false);
 		onClose()
@@ -157,22 +160,24 @@ const EnhancedTable = ({ displaySnack, columns, data, onRowClick, onClose }) => 
 		handleClickOpen()
 	}
 	const hadleDelete = (event, n) => {
+		setDeleteDialog(true)
 		event.stopPropagation()
 		console.log(n, 'eventtt')
-		CoreHttpHandler.requestCustomer('canned_messages', 'delete',
-			{
-				key: ':id',
-				value: n.id
-			}
-			, (response) => {
-				// console.log(response)
-				closeDialog("delete")
-				// setopenDialog(false);
-			}, (error) => {
-				closeDialog(error.response.data.message)
-				// setopenDialog(false);
+		setDeleteDialogData(n)
+		// CoreHttpHandler.requestCustomer('canned_messages', 'delete',
+		// 	{
+		// 		key: ':id',
+		// 		value: n.id
+		// 	}
+		// 	, (response) => {
+		// 		// console.log(response)
+		// 		closeDialog("delete")
+		// 		// setopenDialog(false);
+		// 	}, (error) => {
+		// 		closeDialog(error.response.data.message)
+		// 		// setopenDialog(false);
 
-			});
+		// 	});
 	}
 	// Render the UI for your table
 	return (<div>
@@ -239,7 +244,7 @@ const EnhancedTable = ({ displaySnack, columns, data, onRowClick, onClose }) => 
 													align="center"
 													className={clsx('p-0')}
 												>
-													<Icon className="text-green text-20">check_circle</Icon>
+													<Icon className="text-red text-20">cancel</Icon>
 												</TableCell>
 											)
 										}
@@ -317,7 +322,7 @@ const EnhancedTable = ({ displaySnack, columns, data, onRowClick, onClose }) => 
 			</MaUTable>
 		</TableContainer>
 		{open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
-
+		{deleteDialog && <DeleteDialog isOpen={deleteDialog} type="Delete" closeDialog={closeDialog}  data={deleteDialogData} />}
 	</div>
 	);
 };

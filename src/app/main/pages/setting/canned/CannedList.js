@@ -25,11 +25,11 @@ function CannedList(props) {
 				className: 'font-bold',
 				sortable: true
 			},
-			{
-				Header: 'Params',
-				accessor: 'message_params',
-				sortable: true
-			},
+			// {
+			// 	Header: 'Params',
+			// 	accessor: 'message_params',
+			// 	sortable: true
+			// },
 			{
 				Header: 'Type',
 				accessor: 'message_type',

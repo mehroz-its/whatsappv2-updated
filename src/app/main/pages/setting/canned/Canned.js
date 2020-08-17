@@ -96,6 +96,7 @@ function ContactsApp() {
 		getData()
 	}, [cannedtype]);
 	const valueReceived = (value) => {
+		// alert(value)
 		if (value == "update") {
 			setSnackBarMessage("Updated Successfully")
 			setOK("success")
@@ -111,21 +112,22 @@ function ContactsApp() {
 			setOK("error")
 			setSnackBarOpen(true)
 		}
-		else if (value !== ("update" || "delete" || "create" || "error")) {
-			setSnackBarMessage(value)
-			setOK("error")
-			setSnackBarOpen(true)
-		}
-		else if (value == "delete") {
+		else if (value === "delete") {
 			setSnackBarMessage("Deleted Successfully")
 			setOK("success")
 			setSnackBarOpen(true)
 		}
+		else if (value !== ("update" || "delete" || "create" )) {
+			setSnackBarMessage(value)
+			setOK("error")
+			setSnackBarOpen(true)
+		}
+	
 	}
 	setTimeout(() => {
 		setSnackBarMessage('')
 		setSnackBarOpen(false)
-	}, 3000);
+	}, 4000);
 
 	function search(val) {
 		setVal(val)

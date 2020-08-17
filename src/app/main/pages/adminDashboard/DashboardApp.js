@@ -454,12 +454,11 @@ function DashboardApp(props) {
 									<Grid item md={4} sm={12} xs={12} >
 										<Paper className="w-full rounded-8 shadow-none border-1 pt-10 pb-10">
 
-											<div id="chartdivv" style={{ width: "110%", height: "275px", padding: 25 }}></div>
+											<div id="chartdivv" style={{ width: "100%", height: "221px" }}></div>
 										</Paper>
 									</Grid>
 								</Grid>
 								<Grid container spacing={3} style={{ marginTop: 10 }}>
-
 									<Grid item md={12} sm={12} xs={12} >
 										<Paper className="w-full rounded-8 shadow-none border-1">
 
