@@ -62,14 +62,14 @@ const VoiceMessageType = function (props) {
                 width:20,
                 height:20
             },
-//             download:{
-//                 width:20,
-//                 height:20
-//             },
-//             downloadsIcon:{
-//                 width:20,
-//                 height:20
-//             },
+            download:{
+                width:20,
+                height:20
+            },
+            downloadsIcon:{
+                width:20,
+                height:20
+            },
 //             downloadsItemLink:{
 //                 width:20,
 //                 height:20
@@ -169,6 +169,8 @@ const VoiceMessageType = function (props) {
                         src={audioPath}
                         useStyles={useStyles}
                         spacing="2"
+                        download={true}
+
                         
                     />
                
