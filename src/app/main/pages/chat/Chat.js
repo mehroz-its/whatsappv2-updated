@@ -208,7 +208,10 @@ const useStyles = makeStyles(theme => ({
 					marginTop: '5px',
 					paddingBottom:10,
 					opacity:'0.8',
-					paddingRight:4
+					paddingRight:4,
+					paddingBottom:'8px'
+
+
 
 				}
 			},

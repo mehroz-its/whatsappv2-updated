@@ -198,6 +198,7 @@ const useStyles = makeStyles(theme => ({
 					marginRight: 2,
 					marginBottom: '-11px',
 					marginTop: '5px',
+					paddingBottom:'3px'
 				}
 			},
 			'&.first-of-group': {
