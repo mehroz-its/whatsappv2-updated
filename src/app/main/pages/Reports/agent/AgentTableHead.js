@@ -20,42 +20,49 @@ const rows = [
 		id: 'Agent_id',
 		align: 'center',
 		disablePadding: false,
-		label: 'Agent_id',
+		label: 'Agent Id',
 		sort: true
 	},
 	{
 		id: 'agent_name',
 		align: 'center',
 		disablePadding: false,
-		label: 'agent_name',
+		label: 'Agent Name',
 		sort: true
 	},
 	{
-		id: 'total_chat_count',
+		id: 'inbound_message',
 		align: 'center',
 		disablePadding: false,
-		label: 'Total_chat_count',
+		label: 'Inbound Message',
 		sort: true
 	},
 	{
-		id: 'total_engagement_count',
+		id: 'outbound_message',
 		align: 'center',
 		disablePadding: false,
-		label: 'Total_engagement_count',
+		label: 'Outbound Message',
 		sort: true
 	},
 	{
-		id: 'responsetime',
+		id: 'engagements',
 		align: 'center',
 		disablePadding: false,
-		label: 'responsetime',
+		label: 'Engagements',
 		sort: true
 	},
 	{
-		id: 'account_status',
+		id: 'respone',
 		align: 'center',
 		disablePadding: false,
-		label: 'Acount_status',
+		label: 'Response Time',
+		sort: true
+	},
+	{
+		id: 'active_status',
+		align: 'center',
+		disablePadding: false,
+		label: 'Active Status',
 		sort: true
 	}	
 ];

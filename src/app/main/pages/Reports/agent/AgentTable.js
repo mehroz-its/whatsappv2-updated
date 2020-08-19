@@ -270,6 +270,9 @@ function AgentTable(props) {
                                         <TableCell component="th" scope="row" align="center" style={{fontSize:'11px' ,padding:'10px'}}>
 											{n.account_status}
 										</TableCell>
+										<TableCell component="th" scope="row" align="center" style={{fontSize:'11px' ,padding:'10px'}}>
+											{n.account_status}
+										</TableCell>
 									
 										{/* <TableCell component="th" scope="row" align="right">
 											{n.progress ? (

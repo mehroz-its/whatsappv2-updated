@@ -34,12 +34,9 @@ function ChartHeader(props) {
 
 
 	return (
-		<div className="flex flex-1 items-center justify-between p-8 sm:p-24">
-			<div className="flex flex-shrink items-center sm:w-224">
-			
-
+		<div className="flex flex-1 items-center justify-between p-8 sm:p-12">
+			<div className="flex flex-shrink items-center sm:w-224">			
 				<div className="flex items-center">
-					
 					<FuseAnimate animation="transition.expandIn" delay={300}>
 						<Icon className="text-26">bar_chart</Icon>
 					</FuseAnimate>

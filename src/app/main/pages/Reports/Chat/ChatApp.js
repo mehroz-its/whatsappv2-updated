@@ -35,10 +35,10 @@ am4core.useTheme(am4themes_animated);
 const useStyles = makeStyles((theme) => ({
 	layoutRoot: {},
 	formControl: {
-	  margin: theme.spacing(1),
-	  minWidth: 120,
+		margin: theme.spacing(1),
+		minWidth: 120,
 	},
-  }));
+}));
 
 const incomingAndOutGoingCount = (data) => {
 	let chart = am4core.create("chartdivv", am4charts.XYChart);
@@ -148,7 +148,7 @@ function ChatApp() {
 	const [val, setVal] = React.useState('');
 	const [open, setOpen] = React.useState(false);
 	const [age, setAge] = React.useState('');
-  const [selectOPen, setSelectOPen] = React.useState(false);
+	const [selectOPen, setSelectOPen] = React.useState(false);
 
 
 	const [dateDisplay, setDateDisplay] = React.useState(false);
@@ -272,15 +272,15 @@ function ChatApp() {
 
 	const handleChange = (event) => {
 		setAge(event.target.value);
-	  };
-	
-	  const handleClose = () => {
+	};
+
+	const handleClose = () => {
 		setSelectOPen(false);
-	  };
-	
-	  const handleOpen = () => {
+	};
+
+	const handleOpen = () => {
 		setSelectOPen(true);
-	  };
+	};
 
 	return (
 		<FusePageSimple
@@ -297,8 +297,8 @@ function ChatApp() {
 						</FuseAnimate>
 					</div>
 					<div style={{ justifyContent: 'space-around' }}>
-					<FormControl className={classes.formControl}>
-							<InputLabel id="demo-controlled-open-select-label">Select Interval</InputLabel>
+						<FormControl className={classes.formControl}>
+							<InputLabel  	style={{ fontSize: '12px',marginTop:'-26px' }} id="demo-controlled-open-select-label">{age	 === '' ? "Select Interval":''}</InputLabel>
 							<Select
 								labelId="demo-controlled-open-select-label"
 								id="demo-controlled-open-select"
@@ -308,24 +308,26 @@ function ChatApp() {
 								value={age}
 								onChange={handleChange}
 								fullwidth
+								// defaultValue={"Select Interval"}
+								style={{ fontSize: '12px',marginTop:'-8px' }}
 							>
-								<MenuItem value="">
+								{/* <MenuItem value="">
 									<em>None</em>
-								</MenuItem>
-								<MenuItem value={10}>Day</MenuItem>
-								<MenuItem value={20}>Month</MenuItem>
-								<MenuItem value={30}>Year</MenuItem>
+								</MenuItem> */}
+								<MenuItem style={{ fontSize: '12px' }}
+									value={10}>Day</MenuItem>
+								<MenuItem style={{ fontSize: '12px' }}
+									value={20}>Month</MenuItem>
+								<MenuItem style={{ fontSize: '12px' }}
+									value={30}>Year</MenuItem>
 							</Select>
 						</FormControl>
-						<Button id="content-upload-button" style={{ marginLeft: '8px',marginTop:'25px' }} size='small' variant="contained" color="primary" component="span" onClick={() => setDateDisplay((dateDisplay) => { return (!dateDisplay) })}>
+						<Button id="content-upload-button" style={{ marginLeft: '8px', marginTop: '3px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span" onClick={() => setDateDisplay((dateDisplay) => { return (!dateDisplay) })}>
 							{dateDisplay ? "Load" : "Select Date Range"}
 						</Button>
-						<Button id="content-upload-button" style={{ marginLeft: '8px',marginTop:'25px' }} size='small' variant="contained" color="primary" component="span"                            >
+						<Button id="content-upload-button" style={{ marginLeft: '8px', marginTop: '3px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span"                            >
 							Export
  						</Button>
-					
-
-
 					</div>
 
 					{/* <button onClick={() => setDateDisplay(false)}>
@@ -337,7 +339,7 @@ function ChatApp() {
 				</ div>
 			}
 			content={
-				<div className="p-24">
+				<div className="p-12">
 					{dateDisplay && <DateRangePicker
 						ranges={[selectionRange]}
 						onChange={handleSelect}
@@ -376,23 +378,23 @@ function ChatApp() {
 						</Grid>
 						<div className="widget flex w-full sm:w-1/1 md:w-1/2 p-12">
 							<Paper className="w-full rounded-8 shadow-none border-1">
-								<Typography variant="h6" className="header-card text-center" >Conversation</Typography>
+								<Typography variant="h6" className="header-card text-center pt-8" >Conversation</Typography>
 								<div id="chartdivv" style={{ width: "100%", height: "300px" }}></div>
 							</Paper>
 						</div>
 						<div className="widget flex w-full sm:w-1/1 md:w-1/2 p-12">
 							<Paper className="w-full rounded-8 shadow-none border-1">
-								<Typography variant="h6" className="header-card text-center" >Engagements</Typography>
+								<Typography variant="h6" className="header-card text-center pt-8" >Engagements</Typography>
 								<div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>
 							</Paper>
 						</div>
 					</FuseAnimateGroup>
 					<FusePageSimple
 						classes={{
-							contentWrapper: 'p-0 sm:p-24 pb-80 sm:pb-80 h-full',
+							contentWrapper: 'p-0 sm:p-12 pb-80 sm:pb-80 h-full',
 							content: 'flex flex-col h-full',
 							leftSidebar: 'w-256 border-0',
-							header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
+							header: 'min-h-72 h-72 sm:h-100 sm:min-h-100',
 							wrapper: 'min-h-0'
 						}}
 						header={<ChartHeader SearchVal={searchContact} />}

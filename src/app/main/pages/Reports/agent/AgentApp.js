@@ -8,48 +8,59 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_material from "@amcharts/amcharts4/themes/material";
-
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 import MaterialTable from 'material-table';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import AgentHeader from './AgentHeader'
 import AgentTable from './AgentTable'
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
-const useStyles = makeStyles({
-	layoutRoot: {}
-});
+import Button from '@material-ui/core/Button';
+import { DateRangePicker } from 'react-date-range';
+
+const useStyles = makeStyles((theme) => ({
+	layoutRoot: {},
+	formControl: {
+		margin: theme.spacing(1),
+		minWidth: 120,
+	},
+}));
+
 am4core.useTheme(am4themes_material);
 am4core.useTheme(am4themes_animated);
 const incomingAndOutGoingCount = (data) => {
 	let chart = am4core.create("chartdivv", am4charts.XYChart);
 	chart.data = data;
 
-		// chart.data = [
-		// 	{
-		// 		category: 'Daily',
-		// 		first: 40,
-		// 		second: 55,
-				
-		// 	},
-		// 	{
-		// 		category: 'Weekly',
-		// 		first: 30,
-		// 		second: 78,
-				
-		// 	},
-		// 	{
-		// 		category: 'Monthly',
-		// 		first: 27,
-		// 		second: 40,
-				
-		// 	},
-		// 	{
-		// 		category: 'Yearly',
-		// 		first: 50,
-		// 		second: 33,
-				
-		// 	}
-		// ]
+	// chart.data = [
+	// 	{
+	// 		category: 'Daily',
+	// 		first: 40,
+	// 		second: 55,
+
+	// 	},
+	// 	{
+	// 		category: 'Weekly',
+	// 		first: 30,
+	// 		second: 78,
+
+	// 	},
+	// 	{
+	// 		category: 'Monthly',
+	// 		first: 27,
+	// 		second: 40,
+
+	// 	},
+	// 	{
+	// 		category: 'Yearly',
+	// 		first: 50,
+	// 		second: 33,
+
+	// 	}
+	// ]
 	chart.colors.step = 1;
 	chart.legend = new am4charts.Legend()
 	chart.legend.position = 'top'
@@ -194,11 +205,17 @@ const engagments = () => {
 	columnTemplate.strokeOpacity = 1;
 }
 
+
+
 function AgentApp() {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
-	const[data2,setData2]=React.useState([])
+	const [data2, setData2] = React.useState([])
 	const [val, setVal] = React.useState('');
+	const [age, setAge] = React.useState('');
+	const [dateDisplay, setDateDisplay] = React.useState(false);
+
+	const [selectOPen, setSelectOPen] = React.useState(false);
 	const [state, setState] = React.useState({
 		columns: [
 			{ title: 'Agent', field: 'agent_id' },
@@ -206,9 +223,34 @@ function AgentApp() {
 			{ title: 'Average response time', field: 'responsetime' },
 			{ title: 'Count of total conversations', field: 'total_chat_count' },
 			{ title: 'Count of total engagements', field: 'total_engagement_count' },
-			{ title: 'Account status (active or disable)', field: 'account_status'},
+			{ title: 'Account status (active or disable)', field: 'account_status' },
 		],
 	});
+	const selectionRange = {
+		startDate: new Date(),
+		endDate: new Date(),
+		key: 'selection',
+	}
+	const handleChange = (event) => {
+		setAge(event.target.value);
+	};
+	function handleSelect(ranges) {
+		console.log(ranges);
+		// {
+		//   selection: {
+		//     startDate: [native Date Object],
+		//     endDate: [native Date Object],
+		//   }
+		// }
+	}
+
+	const handleClose = () => {
+		setSelectOPen(false);
+	};
+
+	const handleOpen = () => {
+		setSelectOPen(true);
+	};
 	const [tableData, setTableData] = React.useState([]);
 	const getData = ((loadData) => {
 		console.log('called get data')
@@ -229,87 +271,126 @@ function AgentApp() {
 	React.useEffect(() => {
 		// incomingAndOutGoingCount()
 		CoreHttpHandler.request('reports', 'agentChart', {
-            role_id: 64
-        }, dataSourceSuccess, dataSourceFailure)
+			role_id: 64
+		}, dataSourceSuccess, dataSourceFailure)
 		// engagments()
 		getData()
-	},[])
+	}, [])
 	const dataSourceSuccess = (response) => {
-        let stats = [];
-        const list = response.data.data.list[0];
-        let daily = list.daily[0]
-        const Daily = {
-            category: "Daily",
-            conversation: parseInt(daily.conversation),
-            engagements: parseInt(daily.engagements),
-        };
+		let stats = [];
+		const list = response.data.data.list[0];
+		let daily = list.daily[0]
+		const Daily = {
+			category: "Daily",
+			conversation: parseInt(daily.conversation),
+			engagements: parseInt(daily.engagements),
+		};
 
 
-        let weekly = list.weekly[0]
-        const Weekly = {
-            category: "Weekly",
-            conversation: parseInt(weekly.conversation),
-            engagements: parseInt(weekly.engagements),
-        };
+		let weekly = list.weekly[0]
+		const Weekly = {
+			category: "Weekly",
+			conversation: parseInt(weekly.conversation),
+			engagements: parseInt(weekly.engagements),
+		};
 
-        let monthly = list.daily[0]
-        const Monthly = {
-            category: "Monthly",
-            conversation: parseInt(monthly.conversation),
-            engagements: parseInt(monthly.engagements),
-        };
+		let monthly = list.daily[0]
+		const Monthly = {
+			category: "Monthly",
+			conversation: parseInt(monthly.conversation),
+			engagements: parseInt(monthly.engagements),
+		};
 
-        let yearly = list.yearly[0]
-        const Yearly = {
-            category: "Yearly",
-            conversation: parseInt(yearly.conversation),
-            engagements: parseInt(yearly.engagements),
-        };
-        // setBox(list)
+		let yearly = list.yearly[0]
+		const Yearly = {
+			category: "Yearly",
+			conversation: parseInt(yearly.conversation),
+			engagements: parseInt(yearly.engagements),
+		};
+		// setBox(list)
 
 
-        stats = [
-            Daily,
-            Weekly,
-            Monthly,
-            Yearly
-        ]
-        incomingAndOutGoingCount(stats);
-    };
-
-    const dataSourceFailure = (response) => {
+		stats = [
+			Daily,
+			Weekly,
+			Monthly,
+			Yearly
+		]
+		incomingAndOutGoingCount(stats);
 	};
-	
-	const searchContact =(value)=> {
+
+	const dataSourceFailure = (response) => {
+	};
+
+	const searchContact = (value) => {
 		setVal(value)
-			// console.log('ceeleded', props.ValueForSearch, searchVal);
-	
-			// setSearchVal(props.ValueForSearch)
-			setData2(tableData.filter(n =>n.agent_name.toLowerCase().includes(value.toLowerCase())))
-			console.log(data2, 'filterssss');
-	
-	
-		}
+		// console.log('ceeleded', props.ValueForSearch, searchVal);
+
+		// setSearchVal(props.ValueForSearch)
+		setData2(tableData.filter(n => n.agent_name.toLowerCase().includes(value.toLowerCase())))
+		console.log(data2, 'filterssss');
+
+
+	}
 	return (
 		<FusePageSimple
-		
+
 			header={
 				<div className="flex flex-1 w-full items-center justify-between px-16">
-				<div className="flex items-center">
-					<FuseAnimate animation="transition.expandIn" delay={300}>
-						<Icon className="text-26">face</Icon>
-					</FuseAnimate>
-					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-						<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-						<span style={{fontSize:'15px'}}>Agent Report</span>
-				</Typography>
-					</FuseAnimate>
-				</div>
+					<div className="flex items-center">
+						<FuseAnimate animation="transition.expandIn" delay={300}>
+							<Icon className="text-26">face</Icon>
+						</FuseAnimate>
+						<FuseAnimate animation="transition.slideLeftIn" delay={300}>
+							<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
+								<span style={{ fontSize: '15px' }}>Agent Report</span>
+							</Typography>
+						</FuseAnimate>
+					</div>
+					<div style={{ justifyContent: 'space-around' }}>
+						<FormControl className={classes.formControl}>
+							<InputLabel  	style={{ fontSize: '12px',marginTop:'-26px' }} id="demo-controlled-open-select-label">{age	 === '' ? "Select Interval":''}</InputLabel>
+							<Select
+								labelId="demo-controlled-open-select-label"
+								id="demo-controlled-open-select"
+								open={selectOPen}
+								onClose={handleClose}
+								onOpen={handleOpen}
+								value={age}
+								onChange={handleChange}
+								fullwidth
+								// defaultValue={"Select Interval"}
+								style={{ fontSize: '12px',marginTop:'-8px' }}
+							>
+								{/* <MenuItem value="">
+									<em>None</em>
+								</MenuItem> */}
+								<MenuItem style={{ fontSize: '12px' }}
+									value={10}>Day</MenuItem>
+								<MenuItem style={{ fontSize: '12px' }}
+									value={20}>Month</MenuItem>
+								<MenuItem style={{ fontSize: '12px' }}
+									value={30}>Year</MenuItem>
+							</Select>
+						</FormControl>
+						<Button id="content-upload-button" style={{ marginLeft: '8px', marginTop: '3px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span" onClick={() => setDateDisplay((dateDisplay) => { return (!dateDisplay) })}>
+							{dateDisplay ? "Load" : "Select Date Range"}
+						</Button>
+						<Button id="content-upload-button" style={{ marginLeft: '8px', marginTop: '3px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span"                            >
+							Export
+ 						</Button>
+					</div>
 
-			</div>
+				</div>
 			}
 			content={
-				<div className="p-24">
+				<div className="p-12">
+					{dateDisplay && <DateRangePicker
+						ranges={[selectionRange]}
+						onChange={handleSelect}
+						editableDateInputs={true}
+						disabled={true}
+					/>}
 					<FuseAnimateGroup
 						className="flex flex-wrap"
 						enter={{
@@ -320,27 +401,23 @@ function AgentApp() {
 								<div id="chartdivv" style={{ width: "100%", height: "300px" }}></div>
 							</Paper>
 						</div>
-					
+
 					</FuseAnimateGroup>
 
-					
-					<FusePageSimple 
-		classes={{
-			content: 'flex',
-			header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
-			contentWrapper: 'p-0 sm:p-24 pb-80 sm:pb-80 h-full',
-			// content: 'flex flex-col h-full',
-			leftSidebar: 'w-256 border-0',
-			// header: 'min-h-72 h-full sm:h-136 sm:min-h-136',
-			wrapper: 'min-h-0'
-		}}
-						header={<AgentHeader   SearchVal={searchContact} />}
-						content={ <AgentTable data={ val==''? tableData : data2} />}
-						/>
-							
-					
 
-					
+					<FusePageSimple
+						classes={{
+							content: 'flex',
+							header: 'min-h-72 h-72 sm:h-100 sm:min-h-100',
+							contentWrapper: 'p-0 sm:p-12 pb-80 sm:pb-80',
+							// content: 'flex flex-col h-full',
+							leftSidebar: 'w-256 border-0',
+							// header: 'min-h-72 h-full sm:h-136 sm:min-h-136',
+							wrapper: 'min-h-0'
+						}}
+						header={<AgentHeader SearchVal={searchContact} />}
+						content={<AgentTable data={val == '' ? tableData : data2} />}
+					/>
 				</div>
 			}
 		/>
