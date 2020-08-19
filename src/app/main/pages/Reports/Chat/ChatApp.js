@@ -5,10 +5,22 @@ import Typography from '@material-ui/core/Typography';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import Paper from '@material-ui/core/Paper';
 import * as am4core from "@amcharts/amcharts4/core";
+import Button from '@material-ui/core/Button';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+
+// import { DateRangePicker } from 'rsuite';
+import DateRangePickerValue from './DatePicker'
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_material from "@amcharts/amcharts4/themes/material";
-
+import Widget2 from '../../adminDashboard/widgets/Widget2'
+import Grid from '@material-ui/core/Grid';
+import 'react-date-range/dist/styles.css'; // main css file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+import { DateRangePicker } from 'react-date-range';
 import MaterialTable from 'material-table';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
@@ -16,42 +28,21 @@ import ChartHeader from './ChartHeader'
 import ChartTable from './ChartTable'
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
+// import { DateRangePicker, DateRange } from "materialui-daterange-picker";
 
 am4core.useTheme(am4themes_material);
 am4core.useTheme(am4themes_animated);
-const useStyles = makeStyles({
-	layoutRoot: {}
-});
+const useStyles = makeStyles((theme) => ({
+	layoutRoot: {},
+	formControl: {
+	  margin: theme.spacing(1),
+	  minWidth: 120,
+	},
+  }));
 
 const incomingAndOutGoingCount = (data) => {
 	let chart = am4core.create("chartdivv", am4charts.XYChart);
 	chart.data = data;
-	// chart.data = [
-	// 	{
-	// 		category: 'Place #1',
-	// 		first: 40,
-	// 		second: 55,
-	// 		third: 60
-	// 	},
-	// 	{
-	// 		category: 'Place #2',
-	// 		first: 30,
-	// 		second: 78,
-	// 		third: 69
-	// 	},
-	// 	{
-	// 		category: 'Place #3',
-	// 		first: 27,
-	// 		second: 40,
-	// 		third: 45
-	// 	},
-	// 	{
-	// 		category: 'Place #4',
-	// 		first: 50,
-	// 		second: 33,
-	// 		third: 22
-	// 	}
-	// ]
 	chart.colors.step = 1;
 	chart.legend = new am4charts.Legend()
 	chart.legend.position = 'top'
@@ -64,16 +55,13 @@ const incomingAndOutGoingCount = (data) => {
 	xAxis.renderer.grid.template.location = 0;
 	let yAxis = chart.yAxes.push(new am4charts.ValueAxis());
 	yAxis.min = 0;
-	// createSeries('incoming', 'Incoming');
-	// createSeries('outgoing', 'Outgoing');
-	createSeries('incoming', 'Incoming');
-	createSeries('outgoing', 'Outgoing');
+	createSeries('incoming', 'Inbound');
+	createSeries('outgoing', 'Outbound');
 	function createSeries(value, name) {
 		let series = chart.series.push(new am4charts.ColumnSeries())
 		series.dataFields.valueY = value
 		series.dataFields.categoryX = 'category'
 		series.name = name
-
 		series.events.on("hidden", arrangeColumns);
 		series.events.on("shown", arrangeColumns);
 
@@ -125,51 +113,8 @@ const incomingAndOutGoingCount = (data) => {
 }
 
 const engagments = (data) => {
-
 	let chart = am4core.create("chartdiv", am4charts.XYChart);
 	chart.data = data;
-
-	// chart.data = [{
-	// 	"country": "USA",
-	// 	"visits": 2025
-	// }, {
-	// 	"country": "China",
-	// 	"visits": 1882
-	// }, {
-	// 	"country": "Japan",
-	// 	"visits": 1809
-	// }, {
-	// 	"country": "Germany",
-	// 	"visits": 1322
-	// }, {
-	// 	"country": "UK",
-	// 	"visits": 1122
-	// }, {
-	// 	"country": "France",
-	// 	"visits": 1114
-	// }, {
-	// 	"country": "India",
-	// 	"visits": 984
-	// }, {
-	// 	"country": "Spain",
-	// 	"visits": 711
-	// }, {
-	// 	"country": "Netherlands",
-	// 	"visits": 665
-	// }, {
-	// 	"country": "Russia",
-	// 	"visits": 580
-	// }, {
-	// 	"country": "South Korea",
-	// 	"visits": 443
-	// }, {
-	// 	"country": "Canada",
-	// 	"visits": 441
-	// }, {
-	// 	"country": "Brazil",
-	// 	"visits": 395
-	// }];	// Create axes
-
 	let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
 	categoryAxis.dataFields.category = "type";
 	categoryAxis.renderer.grid.template.location = 0;
@@ -201,7 +146,20 @@ function ChatApp() {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
 	const [val, setVal] = React.useState('');
+	const [open, setOpen] = React.useState(false);
+	const [age, setAge] = React.useState('');
+  const [selectOPen, setSelectOPen] = React.useState(false);
 
+
+	const [dateDisplay, setDateDisplay] = React.useState(false);
+	const [dateRange, setDateRange] = React.useState({});
+	const toggle = () => setOpen(!open);
+
+	const selectionRange = {
+		startDate: new Date(),
+		endDate: new Date(),
+		key: 'selection',
+	}
 	const [data2, setData2] = React.useState([])
 	const [chartdata, setchartdata] = React.useState(null);
 	const [state, setState] = React.useState({
@@ -254,15 +212,10 @@ function ChatApp() {
 			where: "id != $1 AND displayed = false",
 			values: 0,
 		},
-		// type: 'dashboard',
-		// apiType: 'listing',
 	};
 	React.useEffect(() => {
 		CoreHttpHandler.request('reports', 'chatChartInOutCC', { ...dataSourceOptions }, dataSourceSuccess, dataSourceFailure);
 		CoreHttpHandler.request('reports', 'chatChartEngagments', { ...dataSourceOptions }, dataSourceSuccessEngagments, dataSourceFailureEngagments);
-
-		// incomingAndOutGoingCount()
-		// engagments()
 		getData()
 	}, [])
 	const dataSourceSuccess = (response) => {
@@ -280,40 +233,57 @@ function ChatApp() {
 		incomingAndOutGoingCount(data);
 
 	};
-
 	const dataSourceFailure = (response) => {
 	};
-
 	const dataSourceSuccessEngagments = (response) => {
 		const list = response.data.data.report.boxes;
 		engagments(list)
 	};
-
-	console.log(chartdata, 'chartdataaa');
-
 	const dataSourceFailureEngagments = (response) => {
 	};
-	// if (tableData.length === 0) {
-	// 	return (
-	// 		<div className="flex flex-1 items-center justify-center h-full">
-	// 			<FuseLoading />
-	// 		</div>
-	// 	);
-	// }
-
 	const searchContact = (value) => {
 		setVal(value)
-		// console.log('ceeleded', props.ValueForSearch, searchVal);
-
-		// setSearchVal(props.ValueForSearch)
 		setData2(data.filter(n => n.number.toLowerCase().includes(value.toLowerCase())))
-		console.log(data2, 'filterssss');
-
-
 	}
+	function handleSelect(ranges) {
+		console.log(ranges);
+		// {
+		//   selection: {
+		//     startDate: [native Date Object],
+		//     endDate: [native Date Object],
+		//   }
+		// }
+	}
+	// const instance = <DateRangePicker
+	// 	ranges={[{
+	// 		label: 'Yesterday',
+	// 		value: [dateFns.addDays(new Date(), -1), dateFns.addDays(new Date(), -1)]
+	// 	}, {
+	// 		label: 'Today',
+	// 		value: [new Date(), new Date()]
+	// 	}, {
+	// 		label: 'Tomorrow',
+	// 		value: [dateFns.addDays(new Date(), 1), dateFns.addDays(new Date(), 1)]
+	// 	}, {
+	// 		label: 'Last 7 days',
+	// 		value: [dateFns.subDays(new Date(), 6), new Date()]
+	// 	}]}
+	// />;
+
+	const handleChange = (event) => {
+		setAge(event.target.value);
+	  };
+	
+	  const handleClose = () => {
+		setSelectOPen(false);
+	  };
+	
+	  const handleOpen = () => {
+		setSelectOPen(true);
+	  };
+
 	return (
 		<FusePageSimple
-		
 			header={
 				<div className="flex flex-1 w-full items-center justify-between px-16">
 					<div className="flex items-center">
@@ -322,38 +292,101 @@ function ChatApp() {
 						</FuseAnimate>
 						<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 							<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-							<span style={{fontSize:'15px'}}>Chat Report</span>
-					</Typography>
+								<span style={{ fontSize: '15px' }}>Chat Report</span>
+							</Typography>
 						</FuseAnimate>
 					</div>
+					<div style={{ justifyContent: 'space-around' }}>
+					<FormControl className={classes.formControl}>
+							<InputLabel id="demo-controlled-open-select-label">Select Interval</InputLabel>
+							<Select
+								labelId="demo-controlled-open-select-label"
+								id="demo-controlled-open-select"
+								open={selectOPen}
+								onClose={handleClose}
+								onOpen={handleOpen}
+								value={age}
+								onChange={handleChange}
+								fullwidth
+							>
+								<MenuItem value="">
+									<em>None</em>
+								</MenuItem>
+								<MenuItem value={10}>Day</MenuItem>
+								<MenuItem value={20}>Month</MenuItem>
+								<MenuItem value={30}>Year</MenuItem>
+							</Select>
+						</FormControl>
+						<Button id="content-upload-button" style={{ marginLeft: '8px',marginTop:'25px' }} size='small' variant="contained" color="primary" component="span" onClick={() => setDateDisplay((dateDisplay) => { return (!dateDisplay) })}>
+							{dateDisplay ? "Load" : "Select Date Range"}
+						</Button>
+						<Button id="content-upload-button" style={{ marginLeft: '8px',marginTop:'25px' }} size='small' variant="contained" color="primary" component="span"                            >
+							Export
+ 						</Button>
+					
 
-				</div>
 
+					</div>
+
+					{/* <button onClick={() => setDateDisplay(false)}>
+						SelectDate
+					</button> */}
+					{/* <FuseAnimate>
+						
+					</FuseAnimate> */}
+				</ div>
 			}
 			content={
 				<div className="p-24">
+					{dateDisplay && <DateRangePicker
+						ranges={[selectionRange]}
+						onChange={handleSelect}
+						editableDateInputs={true}
+						disabled={true}
+					/>}
+					{/* {instance} */}
+
 					<FuseAnimateGroup
 						className="flex flex-wrap"
 						enter={{
 							animation: 'transition.slideUpBigIn'
 						}}>
+						<Grid item md={12} sm={12} xs={12} className="widget flex w-full sm:w-1/1 md:w-1/2 p-12" >
+							<Grid container spacing={3}>
+								{/* {box.map((value, index) => {
+									return (
+										<Grid item md={4} sm={12} xs={12} >
+											<Widget2 title={value.title} count={value.value} bottom_title={value.subtitle} />
+										</Grid>
+									)
+								})} */}
+								<Grid item md={3} sm={12} xs={12} >
+									<Widget2 title='Dummy' count='5' bottom_title='ITS' />
+								</Grid>
+								<Grid item md={3} sm={12} xs={12} >
+									<Widget2 title='Dummy' count='5' bottom_title='ITS' />
+								</Grid>
+								<Grid item md={3} sm={12} xs={12} >
+									<Widget2 title='Dummy' count='5' bottom_title='ITS' />
+								</Grid>
+								<Grid item md={3} sm={12} xs={12} >
+									<Widget2 title='Dummy' count='5' bottom_title='ITS' />
+								</Grid>
+							</Grid>
+						</Grid>
 						<div className="widget flex w-full sm:w-1/1 md:w-1/2 p-12">
 							<Paper className="w-full rounded-8 shadow-none border-1">
-								<Typography variant="h6" className="header-card text-center" >Conversation Count</Typography>
-
+								<Typography variant="h6" className="header-card text-center" >Conversation</Typography>
 								<div id="chartdivv" style={{ width: "100%", height: "300px" }}></div>
 							</Paper>
 						</div>
 						<div className="widget flex w-full sm:w-1/1 md:w-1/2 p-12">
 							<Paper className="w-full rounded-8 shadow-none border-1">
 								<Typography variant="h6" className="header-card text-center" >Engagements</Typography>
-
 								<div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>
 							</Paper>
 						</div>
 					</FuseAnimateGroup>
-
-
 					<FusePageSimple
 						classes={{
 							contentWrapper: 'p-0 sm:p-24 pb-80 sm:pb-80 h-full',
@@ -364,15 +397,8 @@ function ChatApp() {
 						}}
 						header={<ChartHeader SearchVal={searchContact} />}
 						content={
-
 							<ChartTable data={val == '' ? data : data2} val={val} />}
-
 					/>
-
-
-
-
-
 				</div>
 			}
 		/>

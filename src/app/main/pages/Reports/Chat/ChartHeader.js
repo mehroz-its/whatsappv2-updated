@@ -9,8 +9,6 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
 
-
-
 const SearchStyle = createMuiTheme({
 	overrides: {
 		MuiInput: {
@@ -29,9 +27,11 @@ const SearchStyle = createMuiTheme({
 	  }
 	}
   });
+
 function ChartHeader(props) {
 	const dispatch = useDispatch();
 	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
+
 
 	return (
 		<div className="flex flex-1 items-center justify-between p-8 sm:p-24">

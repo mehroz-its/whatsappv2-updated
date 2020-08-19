@@ -17,38 +17,38 @@ import React, { useState } from 'react';
 
 const rows = [
 	{
-		id: 'incoming',
+		id: 'id',
 		align: 'center',
 		disablePadding: false,
-		label: 'Incoming',
+		label: 'Id',
 		sort: true
 	},
 	{
-		id: 'incoming_count',
+		id: 'date',
 		align: 'center',
 		disablePadding: false,
-		label: 'Incoming_count',
+		label: 'Date',
 		sort: true
 	},
 	{
-		id: 'number',
+		id: 'inbound',
 		align: 'center',
 		disablePadding: false,
-		label: 'Number',
+		label: 'Inbound',
 		sort: true
 	},
 	{
-		id: 'outgoing',
+		id: 'outbound',
 		align: 'center',
 		disablePadding: false,
-		label: 'Outgoing',
+		label: 'Outbound',
 		sort: true
 	},
 	{
-		id: 'outgoing_count',
+		id: 'engagements',
 		align: 'center',
 		disablePadding: false,
-		label: 'Outgoing_count',
+		label: 'Engagements',
 		sort: true
 	}
 ];
