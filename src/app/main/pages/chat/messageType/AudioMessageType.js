@@ -173,6 +173,7 @@ const VoiceMessageType = function (props) {
                         spacing="2"
                         download={true}
                         
+                        
                     />
                
             </Card>
