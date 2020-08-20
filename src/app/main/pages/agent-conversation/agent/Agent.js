@@ -23,6 +23,10 @@ function Campaign() {
 		console.log(value,testing,'i am in Totalaalllllllllllllll')
 	}
 
+	const load = (value) =>{
+		console.log(value,'val of loadddddddddddd')
+	}
+
 
 
 	
@@ -33,7 +37,7 @@ function Campaign() {
 				content: 'flex',
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
-			header={<AgentHeader  Agent={Agent} test={Total} />}
+			header={<AgentHeader  Agent={Agent} test={Total} load={load} />}
 			content={<AgentContent  selectedAgent={selectedAgent} displayChat={viewChat} Total={Totalsssss} />}
 			innerScroll
 		/>

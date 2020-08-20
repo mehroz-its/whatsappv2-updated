@@ -15,6 +15,8 @@ import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Chat from './Chat';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import ChatsSidebar from './ChatsSidebar';
 import ContactSidebar from './ContactSidebar';
 import StatusIcon from './StatusIcon';
@@ -164,7 +166,7 @@ function ChatApp(props) {
 	const [latestMessageSender, setlatestMessageSender] = React.useState(null);
 	const [NewAgent, setNewAgent] = React.useState(selectedAgent);
 	const [numbers, setnumbers] = React.useState(numberr);
-
+	const [LoaderValue,setLoaderValue] = React.useState('')
 	const [messages, setmessages] = React.useState([]);
 	const [NewMessages, setNewMessages] = React.useState([]);
 	const [showLatestMessage, setshowLatestMessage] = React.useState(false);
@@ -404,6 +406,8 @@ function ChatApp(props) {
 			label: "Send",
 		}
 	];
+
+
 	const sendDialogActionCb = () => {
 		const args = {};
 
@@ -438,15 +442,27 @@ function ChatApp(props) {
 		}, (response) => {
 		})
 	};
-	const dialogOptionsConfirmBlock = {
-		onClose: function () {
-			setdialogOpenConfirmBlock(false)
+	// const dialogOptionsConfirmBlock = {
+	// 	onClose: function () {
+	// 		setdialogOpenConfirmBlock(false)
 
-		},
-		'aria-labelledby': "form-dialog-title",
-		'aria-describedby': "form-dialog-title"
-	};
+	// 	},
+	// 	'aria-labelledby': "form-dialog-title",
+	// 	'aria-describedby': "form-dialog-title"
+	// };
+
+	const getLoadingVal = (e) =>{
+
+	setLoaderValue(e)
+
+	}
+
+	setTimeout(() => {
+		setLoaderValue(false)
+	}, 5000);
+
 	useEffect(() => {
+		EventEmitter.subscribe('ShowHideLoader', (e) =>	getLoadingVal(e))
 		setNewAgent(selectedAgent)
 		console.log("numbers :L ", numbers);
 		console.log("getNumbers use efffact = > ", selectedRecipient);
@@ -735,8 +751,9 @@ function ChatApp(props) {
 
 		});
 	}
-	console.log(opened,'open from state');
-	console.log(props,'allllthepropsssssssss');
+	// console.log(valueofEvent,'open from state');
+	// console.log(props,'allllthepropsssssssss');
+	console.log(props.Loading,LoaderValue,'lossssssssssss');
 	return (
 		<>
 		<Snackbar
@@ -787,8 +804,18 @@ function ChatApp(props) {
 								paper: classes.drawerPaper
 							}}
 						>
-							
-							<ChatsSidebar numbers={numberr} onContactClick={(e) => { selectedRecipientt(e) }} />
+					
+		{props.Loading === true||LoaderValue === true ?
+			<div style={{flex:1,display:'flex',justifyContent:'center',alignItems:'center'}}>
+			<CircularProgress color="secondary" />
+			</div>
+	
+		:
+		<ChatsSidebar numbers={numberr} onContactClick={(e) => { selectedRecipientt(e) }} Loading={props.Loading} />  
+	
+}
+
+						
 					
 						</Drawer>
 					</Hidden>
@@ -927,7 +954,7 @@ function ChatApp(props) {
 					</Drawer>
 				</div>
 			</div>
-			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
+			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
 
 		</div>
 		</>

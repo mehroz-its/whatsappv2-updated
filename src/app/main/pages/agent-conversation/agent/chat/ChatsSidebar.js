@@ -192,8 +192,8 @@ function 	ChatsSidebar(props) {
 	let filtered = props.numbers
 	
 	filtered = searchText.charAt(0) === '9' ? numbers.filter((number => number.number.includes(searchText))) : numbers.filter((number => number.name.toLowerCase().includes(searchText.toLowerCase())))
-	console.log(filtered,'filteddddddddd');
-	console.log(props.numbers,'propsssssssssssssssssssssssssssssss');
+	console.log(filtered,props.numbers,'filteddddddddd');
+	console.log(props.Loading,'propsssssssssssssssssssssssssssssss');
 	return (
 		<div className="flex flex-col flex-auto h-full">
 			<AppBar position="static" color="default" elevation={1} className="pt-0">
@@ -281,6 +281,7 @@ function 	ChatsSidebar(props) {
 				)}
 			</AppBar>
 			<FuseScrollbars className="overflow-y-auto flex-1">
+
 				<List className="w-full">
 					{
 						useMemo(() => {
@@ -299,8 +300,13 @@ function 	ChatsSidebar(props) {
 							// 		: [];
 							// const contactsArr = getFilteredArray([...contacts], searchText);
 							// const chatListArr = getFilteredArray([...chatListContacts], searchText);
+
+							
 							return (
 								<>
+									{props.numbers.length == 0 ?
+									<div style={{textAlign:'center',fontSize:'20px'}}>No Contact Associated To Agent </div>
+									: filtered.length > 0 ?
 									<FuseAnimateGroup
 										enter={{
 											animation: 'transition.expandIn'
@@ -312,9 +318,12 @@ function 	ChatsSidebar(props) {
 												Chats
 											</Typography>
 										)}
-									
-										{filtered.map(contactt => (
+										
+											
+										{filtered.map(contactt =>  (
+											
 											<ContactListItem
+												Loading={props.Loading}
 												key={contactt.id}
 												contact={contactt}
 												onContactClick={(e) => props.onContactClick(contactt)}
@@ -323,10 +332,14 @@ function 	ChatsSidebar(props) {
 											/>
 										))}
 										
-									</FuseAnimateGroup>
+									</FuseAnimateGroup> 
+									
+									: <div style={{textAlign:'center',fontSize:'20px'}}>Contact Not Found </div>
+									 
+						}
 								</>
 							);
-						}, [props.numbers])
+						}, [props.numbers,filtered])
 					}
 				</List>
 

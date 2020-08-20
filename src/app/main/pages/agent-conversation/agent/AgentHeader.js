@@ -36,8 +36,8 @@ const useStyles = makeStyles((theme) => ({
 function AgentHeader(props) {
 	const classes = useStyles();
 
-const {test} = props
-console.log("shinu chty : " ,  test);
+const {total} = props
+console.log("shinu  : " ,  total);
 	const dispatch = useDispatch();
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
@@ -68,9 +68,12 @@ console.log("shinu chty : " ,  test);
 	};
 
 	const getAgents = () => {
+
 		CoreHttpHandler.request('conversations', 'agents_list', {
 			columns: "USR.id, USR.username"
 		}, (_response) => {
+		
+			// alert('done with hit')
 			console.log("_response  ", _response);
 			setagents(_response.data.data.agents.data)
 			
@@ -132,6 +135,7 @@ console.log("shinu chty : " ,  test);
 		setagentDropDownOpen(true)
 	};
 	const handleChangeAgent = (event) => {
+		EventEmitter.dispatch('ShowHideLoader',true)
 		console.log('headerrrrrrrrrrrrrrrr', event.target.value)
 		setselectedAgent(event.target.value)
 		props.Agent(event.target.value)
@@ -185,7 +189,7 @@ console.log("shinu chty : " ,  test);
 											marginLeft:'23px'
 										}}>
 								<div>All</div>
-								<span>{ test ? test : '' 
+								<span>{ total ? total : '' 
 									
 									}</span>
 									</div>
