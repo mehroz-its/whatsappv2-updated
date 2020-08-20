@@ -129,12 +129,19 @@ input:-webkit-autofill {
 
     /* margin: .5rem */
 }
+
+.messageSent > #attachmentDate {
+    display: flex;
+    justify-content: flex-end;
+    width: fit-content;
+}
+.MuiSvgIcon-fontSizeLarge{
+    font-size: 2.5rem !important;
+    padding-bottom:'1px' !important;
+}
 .messageSent {
     margin-right:'-10px'
-    
-  
-
-    /* margin: .5rem */
+        /* margin: .5rem */
 }
 
 
