@@ -32,8 +32,10 @@ const useStyles = makeStyles(theme => ({
 
 function ContactListItem(props) {
 	const classes = useStyles(props);
-	
+	// console.log(props.contact,'propsinlistitem');
 	return (
+		
+		
 		<ListItem
 			button
 			className={clsx(classes.contactListItem, 'px-12 py-12 min-h-36', {
@@ -79,6 +81,13 @@ function ContactListItem(props) {
 					)}
 				</div>
 			)}
+			{props.contact.agent_name ? 
+			<div>
+				{props.contact.agent_name}
+			</div>
+			:null
+			}
+
 		</ListItem>
 	);
 }

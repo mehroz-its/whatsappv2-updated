@@ -51,6 +51,7 @@ function AgentContent(props) {
 	const [dropDownData, setDropdownData] = React.useState(defaultDropdownData);
 	const [dialogData, setDialogData] = React.useState(defaultDialogData)
 	const [textAreaNumbers, setTextAreaNumbers] = React.useState('');
+	const [loading, setLoading] = React.useState('');
 	const [agents, setagents] = React.useState([]);
 	const [int_CustomerList, setint_CustomerList] = React.useState();
 	const [numbers, setnumbers] = React.useState([]);
@@ -122,6 +123,7 @@ function AgentContent(props) {
 		});
 	}
 	const getAllAgents = () => {
+		setLoading(true)
 		CoreHttpHandler.request('conversations', 'allAgents', {
 			
 		}, (_response) => {
@@ -129,6 +131,7 @@ function AgentContent(props) {
 			const numbers=_response.data.data.list.data
 			props.Total(numbers.length)
 			setnumbers(numbers)
+			setLoading(false)	
 		}, (error) => {
 		});
 	}
@@ -280,7 +283,7 @@ function AgentContent(props) {
 			<Chat numberr={numbers}  /> 
 			: 	<Chat numberr={numbers} ok="error" message = "Not Numbers Associated to the Agent " open ={true}/>
 			} */}
-			<Chat numberr={numbers} selectedAgent={selectedAgent} reloadNumber={(e) => getAgentsCustomersReload()} />		
+			<Chat numberr={numbers} Loading = {loading}  selectedAgent={selectedAgent} reloadNumber={(e) => getAgentsCustomersReload()} />		
 			
 		</div>
 	);
