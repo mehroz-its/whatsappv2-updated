@@ -19,7 +19,7 @@ import Widget2 from '../../adminDashboard/widgets/Widget2'
 import Grid from '@material-ui/core/Grid';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
-import { DateRangePicker } from 'react-date-range';
+// import { DateRangePicker } from 'react-date-range';
 import MaterialTable from 'material-table';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
@@ -27,6 +27,7 @@ import ChartHeader from './ChartHeader'
 import ChartTable from './ChartTable'
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
+import { DateRangePicker, DateRange } from "materialui-daterange-picker";
 // import { DateRangePicker, DateRange } from "materialui-daterange-picker";
 
 am4core.useTheme(am4themes_material);
@@ -148,11 +149,12 @@ function ChatApp() {
 	const [open, setOpen] = React.useState(false);
 	const [age, setAge] = React.useState('');
 	const [selectOPen, setSelectOPen] = React.useState(false);
-
-
-	const [dateDisplay, setDateDisplay] = React.useState(false);
 	const [dateRange, setDateRange] = React.useState({});
+
 	const toggle = () => setOpen(!open);
+	const [dateDisplay, setDateDisplay] = React.useState(false);
+	// const [dateRange, setDateRange] = React.useState({});
+
 
 	const selectionRange = {
 		startDate: new Date(),
@@ -161,6 +163,9 @@ function ChatApp() {
 	}
 	const [data2, setData2] = React.useState([])
 	const [chartdata, setchartdata] = React.useState(null);
+
+
+	// const toggle = () => setOpen(!open);
 	const [state, setState] = React.useState({
 		columns: [
 			{ title: 'Number', field: 'number' },
@@ -280,7 +285,11 @@ function ChatApp() {
 	const handleOpen = () => {
 		setSelectOPen(true);
 	};
-
+console.log(dateRange,'rnageeeeeeee');
+const handleState =() =>{
+	setOpen(!open)
+	alert(open)
+}
 	return (
 		<FusePageSimple
 			header={
@@ -321,8 +330,9 @@ function ChatApp() {
 									value={30}>Year</MenuItem>
 							</Select>
 						</FormControl>
-						<Button id="content-upload-button" style={{ marginLeft: '8px', marginTop: '3px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span" onClick={() => setDateDisplay((dateDisplay) => { return (!dateDisplay) })}>
-							{dateDisplay ? "Load" : "Select Date Range"}
+						<Button  
+							id="content-upload-button" style={{ marginLeft: '8px', marginTop: '3px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span" onClick={handleState}>
+							{dateRange ? "Load" : "Select Date Range"}
 						</Button>
 						<Button id="content-upload-button" style={{ marginLeft: '8px', marginTop: '3px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span"                            >
 							Export
@@ -339,12 +349,19 @@ function ChatApp() {
 			}
 			content={
 				<div className="p-12">
-					{dateDisplay && <DateRangePicker
+					{/* {dateDisplay && <DateRangePicker
 						ranges={[selectionRange]}
 						onChange={handleSelect}
 						editableDateInputs={true}
 						disabled={true}
-					/>}
+					/>} */}
+	<DateRangePicker
+      open={open}
+      toggle={toggle}
+	  onChange={(range) => setDateRange(range)}
+	  
+	
+    />
 					{/* {instance} */}
 
 					<FuseAnimateGroup
@@ -362,16 +379,16 @@ function ChatApp() {
 									)
 								})} */}
 								<Grid item md={3} sm={12} xs={12} >
-									<Widget2 title='Dummy' count='5' bottom_title='ITS' />
+									<Widget2 title='Dummy' count='5' bottom_title='Inbound' />
 								</Grid>
 								<Grid item md={3} sm={12} xs={12} >
-									<Widget2 title='Dummy' count='5' bottom_title='ITS' />
+									<Widget2 title='Dummy' count='5' bottom_title='Outbound' />
 								</Grid>
 								<Grid item md={3} sm={12} xs={12} >
-									<Widget2 title='Dummy' count='5' bottom_title='ITS' />
+									<Widget2 title='Dummy' count='5' bottom_title='Engagements' />
 								</Grid>
 								<Grid item md={3} sm={12} xs={12} >
-									<Widget2 title='Dummy' count='5' bottom_title='ITS' />
+									<Widget2 title='Dummy' count='5' bottom_title='Conversation' />
 								</Grid>
 							</Grid>
 						</Grid>

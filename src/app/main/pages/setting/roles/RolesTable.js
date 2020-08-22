@@ -159,6 +159,7 @@ function RolesTable(props) {
 
 			});
 	}
+	console.log(data2,'dataaaaaaaaaaaaaaa22222222222222222');
 	return (
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">

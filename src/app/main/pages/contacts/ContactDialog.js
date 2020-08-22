@@ -341,6 +341,7 @@ console.log(value,'vlsssssssssssssssssss');
 							className="mb-24"
 							label="Phone"
 							size="small"
+							required
 							id="phone"
 							name="phone"
 							value={form.number}
@@ -365,6 +366,7 @@ console.log(value,'vlsssssssssssssssssss');
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth
+							required
 							size="small"
 						/>
 					</div>
@@ -384,6 +386,7 @@ console.log(value,'vlsssssssssssssssssss');
 							variant="outlined"
 							fullWidth
 							size="small"
+							required
 						/>
 					</div>
 
@@ -404,6 +407,7 @@ console.log(value,'vlsssssssssssssssssss');
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth
+							required
 							size="small"
 						/>
 					</div>
@@ -418,6 +422,7 @@ console.log(value,'vlsssssssssssssssssss');
 							id="age"
 							name="age"
 							value={form.age}
+							required
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth

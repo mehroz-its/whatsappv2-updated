@@ -46,7 +46,7 @@ const DocumentMessageType = function (props) {
     console.log(message, 'messagemessage')
     return (
         <div>
-            <Card >
+            <Card>
                 <div style={{ width: '100%' }}>
                     <CardContent style={{ padding: '10px 10px' }} >
                         <div style={{ display: 'flex', flexDirection: 'row', backgroundColor: 'whitesmoke', }}>

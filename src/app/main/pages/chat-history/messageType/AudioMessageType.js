@@ -5,6 +5,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import AudioPlayer from 'material-ui-audio-player';
 import { createMuiTheme, useTheme,ThemeProvider } from '@material-ui/core';
 import { height } from '@amcharts/amcharts4/.internal/core/utils/Utils';
+import moment from 'moment/moment';
+import MessageStateResolver from '../../chat/messageType/MessageStateResolver'
+
 
 const VoiceMessageType = function (props) {
 
@@ -163,17 +166,16 @@ const VoiceMessageType = function (props) {
             <Card className={classes.root} style={{paddingLeft:'5px',height:'70%',marginLeft:'-12px'}}>
               
                     <AudioPlayer
-                        // width="100%"
-                        // height
                         muteIcon
                         src={audioPath}
                         useStyles={useStyles}
                         spacing="2"
                         download={true}
+                        
 
                         
                     />
-               
+                           <p id="attachmentDate" style={{ width: "100%", margin: '10px', fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status) : null}</p>
             </Card>
 
         </div>
