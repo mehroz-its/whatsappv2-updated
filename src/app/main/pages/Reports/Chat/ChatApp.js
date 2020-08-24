@@ -38,6 +38,11 @@ const useStyles = makeStyles((theme) => ({
 		margin: theme.spacing(1),
 		minWidth: 120,
 	},
+	dateRange:{
+		position:'absolute',
+		zIndex:1,
+		width:'98%'
+	}
 }));
 
 const incomingAndOutGoingCount = (data) => {
@@ -359,7 +364,7 @@ const handleState =() =>{
       open={open}
       toggle={toggle}
 	  onChange={(range) => setDateRange(range)}
-	  
+	  wrapperClassName={classes.dateRange}  
 	
     />
 					{/* {instance} */}
