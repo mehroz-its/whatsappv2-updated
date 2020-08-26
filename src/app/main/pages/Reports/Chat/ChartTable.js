@@ -164,7 +164,7 @@ function ChartTable(props) {
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map(n => {
 								const isSelected = selected.indexOf(n.id) !== -1;
-								console.log(n, 'nnnnnnnnnnn');
+							
 
 								return (
 									<TableRow

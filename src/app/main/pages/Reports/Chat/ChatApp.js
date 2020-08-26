@@ -10,8 +10,6 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
-// import { DateRangePicker } from 'rsuite';
-// import DateRangePickerValue from './DatePicker.tcs'
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_material from "@amcharts/amcharts4/themes/material";
@@ -19,7 +17,6 @@ import Widget2 from '../../adminDashboard/widgets/Widget2'
 import Grid from '@material-ui/core/Grid';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
-// import { DateRangePicker } from 'react-date-range';
 import MaterialTable from 'material-table';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
@@ -27,8 +24,10 @@ import ChartHeader from './ChartHeader'
 import ChartTable from './ChartTable'
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
-import { DateRangePicker, DateRange } from "materialui-daterange-picker";
-// import { DateRangePicker, DateRange } from "materialui-daterange-picker";
+
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+import { DateRangePicker } from 'react-dates';
 
 am4core.useTheme(am4themes_material);
 am4core.useTheme(am4themes_animated);
@@ -154,10 +153,19 @@ function ChatApp() {
 	const [open, setOpen] = React.useState(false);
 	const [age, setAge] = React.useState('');
 	const [selectOPen, setSelectOPen] = React.useState(false);
-	const [dateRange, setDateRange] = React.useState({});
+	// const [dateRange, setDateRange] = React.useState({});
 
+
+	// const [focus,setFocus] = React.useState('')
 	const toggle = () => setOpen(!open);
 	const [dateDisplay, setDateDisplay] = React.useState(false);
+	const [dateRange, setdateRange] = React.useState({
+		startDate: null,
+		endDate: null
+	  });
+	  const [focus, setFocus] = React.useState(null);
+	
+	  const { startDate, endDate } = dateRange;
 	// const [dateRange, setDateRange] = React.useState({});
 
 
@@ -263,21 +271,6 @@ function ChatApp() {
 		//   }
 		// }
 	}
-	// const instance = <DateRangePicker
-	// 	ranges={[{
-	// 		label: 'Yesterday',
-	// 		value: [dateFns.addDays(new Date(), -1), dateFns.addDays(new Date(), -1)]
-	// 	}, {
-	// 		label: 'Today',
-	// 		value: [new Date(), new Date()]
-	// 	}, {
-	// 		label: 'Tomorrow',
-	// 		value: [dateFns.addDays(new Date(), 1), dateFns.addDays(new Date(), 1)]
-	// 	}, {
-	// 		label: 'Last 7 days',
-	// 		value: [dateFns.subDays(new Date(), 6), new Date()]
-	// 	}]}
-	// />;
 
 	const handleChange = (event) => {
 		setAge(event.target.value);
@@ -295,6 +288,11 @@ const handleState =() =>{
 	setOpen(!open)
 	alert(open)
 }
+const handleOnDateChange = (startDate, endDate) =>{
+setdateRange(startDate, endDate);
+console.log("START_AND_END",startDate,endDate);
+}
+
 	return (
 		<FusePageSimple
 			header={
@@ -311,7 +309,7 @@ const handleState =() =>{
 					</div>
 					<div style={{ justifyContent: 'space-around' }}>
 						<FormControl className={classes.formControl}>
-							<InputLabel  	style={{ fontSize: '12px',marginTop:'-26px' }} id="demo-controlled-open-select-label">{age	 === '' ? "Select Interval":''}</InputLabel>
+							<InputLabel  	style={{ fontSize: '12px',marginTop:'-14px' }} id="demo-controlled-open-select-label">{age	 === '' ? "Select Interval":''}</InputLabel>
 							<Select
 								labelId="demo-controlled-open-select-label"
 								id="demo-controlled-open-select"
@@ -322,7 +320,7 @@ const handleState =() =>{
 								onChange={handleChange}
 								fullwidth
 								// defaultValue={"Select Interval"}
-								style={{ fontSize: '12px',marginTop:'-8px' }}
+								style={{ fontSize: '12px',marginTop:'-2px' }}
 							>
 								{/* <MenuItem value="">
 									<em>None</em>
@@ -335,39 +333,36 @@ const handleState =() =>{
 									value={30}>Year</MenuItem>
 							</Select>
 						</FormControl>
-						<Button  
-							id="content-upload-button" style={{ marginLeft: '8px', marginTop: '3px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span" onClick={handleState}>
-							{dateRange ? "Load" : "Select Date Range"}
-						</Button>
-						<Button id="content-upload-button" style={{ marginLeft: '8px', marginTop: '3px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span"                            >
+		<DateRangePicker
+        startDatePlaceholderText="Start Date"
+        startDate={startDate}
+        onDatesChange={handleOnDateChange}
+        endDatePlaceholderText="End Date"
+        endDate={endDate}
+        numberOfMonths={2}
+        displayFormat="MMM D"
+        showClearDates={true}
+        focusedInput={focus}
+        onFocusChange={focus => setFocus(focus)}
+        startDateId="startDateMookh"
+        endDateId="endDateMookh"
+		minimumNights={0}
+		small
+	
+		
+      />
+
+						<Button id="content-upload-button" style={{ marginLeft: '8px', marginTop: '3px', fontSize: '10px' }} size='large' variant="contained" color="primary" component="span"                            >
 							Export
  						</Button>
 					</div>
 
-					{/* <button onClick={() => setDateDisplay(false)}>
-						SelectDate
-					</button> */}
-					{/* <FuseAnimate>
-						
-					</FuseAnimate> */}
+
 				</ div>
 			}
 			content={
 				<div className="p-12">
-					{/* {dateDisplay && <DateRangePicker
-						ranges={[selectionRange]}
-						onChange={handleSelect}
-						editableDateInputs={true}
-						disabled={true}
-					/>} */}
-	<DateRangePicker
-      open={open}
-      toggle={toggle}
-	  onChange={(range) => setDateRange(range)}
-	  wrapperClassName={classes.dateRange}  
-	
-    />
-					{/* {instance} */}
+
 
 					<FuseAnimateGroup
 						className="flex flex-wrap"
