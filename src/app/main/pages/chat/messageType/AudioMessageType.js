@@ -1,4 +1,4 @@
-    import React from 'react';
+import React from 'react';
     import Card from '@material-ui/core/Card';
     import moment from 'moment/moment';
     import MessageStateResolver from './MessageStateResolver'
@@ -22,7 +22,8 @@
             borderColor:'black',
             borderWidth:0,
             width: '100%',
-            height:'100%'
+            height:'100%',
+
                 },
                 loopIcon: {
                     color: '#3f51b5',
@@ -166,14 +167,14 @@
         }, []);
 
         return (
-            <div>
-            <div style={{ width: '250px', height: 'auto',marginLeft:'-12px'  }} 
+            <div style={{paddingBottom:'10px'}}>
+            <div id='audioAlign' style={{ width: '250px',marginLeft:'-12px',paddingBottom:'10px'}} 
                 className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
                 
                         <AudioPlayer
                             // width="100%"
                             // height
-                            
+                            style={{paddingBottom:'15px'}}
                             className={classes.roott}
                             muteIcon
                             src={audioPath}
@@ -181,13 +182,15 @@
                             spacing="2"
                             download={true}
                             />
-    <p id="attachmentDate" style={{width: "97%",paddingBottom:'10px',paddingLeft:'10px',fontSize:'10px'}}>
-        {moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status) : null}
-        </p>  
+                    {
+                    message.type === 'inbound' ?
+                        <p id="attachmentDate" style={{ width: "100%", paddingLeft:'12px',marginRight: '-19px',color:'black',margin: '-12px',marginTop:'-18px',fontSize: '10px', }}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status) : null}</p> :
+                        <p id="attachmentDate" style={{ paddingRight:'0px',color:'black',paddingBottom:'2px', margin: '-18px',display: 'flex', justifyContent: 'flex-end', width: "100%", fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status) : null}</p>
+                    } 
                     </div>
 
             </div>
         )
     };
 
-    export default VoiceMessageType;    
+    export default VoiceMessageType;

@@ -47,7 +47,7 @@ const DocumentMessageType = function (props) {
     return (
         <div>
             <Card>
-                <div style={{ width: '100%' }}>
+                <div style={{ width: '355px' }}>
                     <CardContent style={{ padding: '10px 10px' }} >
                         <div style={{ display: 'flex', flexDirection: 'row', backgroundColor: 'whitesmoke', }}>
 
@@ -62,7 +62,7 @@ const DocumentMessageType = function (props) {
                             </div> */}
                             <div style={{ width: '80%', marginLeft: '2%', padding: 0, alignSelf: 'center' }}>
                                 <Typography variant="subtitle1" style={{ padding: 0 }} >
-                                    {filename}
+                                    {filename.length > 14 ? `${filename.substring(0, 15)}...` : filename}
                                 </Typography>
                             </div>
                             {/* <CardMedia style={{ width: '20%', padding: '10px 0' }}>
@@ -74,7 +74,7 @@ const DocumentMessageType = function (props) {
                                 </a>
                             </span>
                         </div>
-                        <p style={{ fontWeight: 'bold', marginLeft: '1%', marginTop: '2%' }}>{caption}</p>                    
+                        <p style={{ fontWeight: 'bold', marginLeft: '1%', marginTop: '2%' }}>{caption.substring(0,30)}</p>
                         <p id="attachmentDate" style={{ width: "100%", margin: '10px', marginLeft: '1%', fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')} {message.type === "outbound" ? MessageStateResolver.resolve(message.status) : null}</p>
 
 
