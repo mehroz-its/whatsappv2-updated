@@ -1,31 +1,61 @@
 
-import { DateRangePicker } from 'rsuite';
-import React from 'react'
 
-class DateRangePickerValue extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: [new Date('2017-02-01'), new Date('2017-05-20')]
-        };
+import React from 'react'
+import 'react-dates/initialize';
+import 'react-dates/lib/css/_datepicker.css';
+import './react_dates_overrides.css'
+import Button from '@material-ui/core/Button';
+import { DateRangePicker } from 'react-dates';
+
+ function DateRangePickerVal(props){
+
+    const [dateRange, setdateRange] = React.useState({
+		startDate: null,
+		endDate: null
+    });
+    const { startDate, endDate } = dateRange;
+    const [focus, setFocus] = React.useState(null);    
+	const handleOnDateChange = (startDate, endDate) => {
+		setdateRange(startDate, endDate);
+		console.log("START_AND_END", startDate, endDate);
     }
-    render() {
+    
+ 
+
         return (
+            <>
+            
             <DateRangePicker
-            block
-            placeholder="Select Date Range"
-            style={{ width: 280 }}
-            value={this.state.value}
-            onChange={value => {
-                this.setState({ value });
-                console.log(value);
-            }}
-            open={true}
-            defaultOpen={true}
+            isOutsideRange={() => false}
+            startDatePlaceholderText="Start Date"
+            startDate={startDate}
+            onDatesChange={handleOnDateChange}
+            endDatePlaceholderText="End Date"
+            endDate={endDate}
+            numberOfMonths={2}
+            displayFormat="MMM D Y"
+            showClearDates={true}
+            focusedInput={focus}
+            onFocusChange={focus => setFocus(focus)}
+            startDateId="startDateMookh"
+            endDateId="endDateMookh"
+            minimumNights={0}
+            small
+
         />
+        						
+                <Button 
+                id="content-upload-button" 
+                style={{ marginLeft: '8px', marginTop: '6px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span" >
+                    Generate Report 
+                 </Button> 
+                <Button id="content-upload-button" style={{ marginLeft: '8px', marginTop: '6px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span"                            >
+                    Export
+                 </Button>
+        </>
         );
-    }
+    
 }
 
-//   ReactDOM.render(<DateRangePickerValue />);
-export default DateRangePickerValue
+
+export default DateRangePickerVal

@@ -19,7 +19,7 @@ import AgentTable from './AgentTable'
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
-import { DateRangePicker } from 'react-date-range';
+import DateRangePickerVal from '../Chat/DatePicker'
 
 const useStyles = makeStyles((theme) => ({
 	layoutRoot: {},
@@ -348,8 +348,8 @@ function AgentApp() {
 						</FuseAnimate>
 					</div>
 					<div style={{ justifyContent: 'space-around' }}>
-						<FormControl className={classes.formControl}>
-							<InputLabel  	style={{ fontSize: '12px',marginTop:'-26px' }} id="demo-controlled-open-select-label">{age	 === '' ? "Select Interval":''}</InputLabel>
+					<FormControl className={classes.formControl}>
+							<InputLabel style={{ fontSize: '12px', marginTop: '-18px' }} id="demo-controlled-open-select-label">{age === '' ? "Select Interval" : ''}</InputLabel>
 							<Select
 								labelId="demo-controlled-open-select-label"
 								id="demo-controlled-open-select"
@@ -360,7 +360,7 @@ function AgentApp() {
 								onChange={handleChange}
 								fullwidth
 								// defaultValue={"Select Interval"}
-								style={{ fontSize: '12px',marginTop:'-8px' }}
+								style={{ fontSize: '12px', marginTop: '-5px' }}
 							>
 								{/* <MenuItem value="">
 									<em>None</em>
@@ -373,24 +373,15 @@ function AgentApp() {
 									value={30}>Year</MenuItem>
 							</Select>
 						</FormControl>
-						<Button id="content-upload-button" style={{ marginLeft: '8px', marginTop: '3px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span" onClick={() => setDateDisplay((dateDisplay) => { return (!dateDisplay) })}>
-							{dateDisplay ? "Load" : "Select Date Range"}
-						</Button>
-						<Button id="content-upload-button" style={{ marginLeft: '8px', marginTop: '3px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span"                            >
-							Export
- 						</Button>
+						<DateRangePickerVal/>
+
 					</div>
 
 				</div>
 			}
 			content={
 				<div className="p-12">
-					{dateDisplay && <DateRangePicker
-						ranges={[selectionRange]}
-						onChange={handleSelect}
-						editableDateInputs={true}
-						disabled={true}
-					/>}
+
 					<FuseAnimateGroup
 						className="flex flex-wrap"
 						enter={{
