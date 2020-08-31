@@ -160,15 +160,15 @@ const useStyles = makeStyles(theme => ({
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
 				width: 'auto',
-    			maxWidth: '35vw',
+				maxWidth: '35vw',
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
-				marginBottom:70,
+				marginBottom: 70,
 				'& .time': {
 					marginLeft: '0px',
 					marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom:8
+					paddingBottom: 8
 				}
 			},
 			'&.first-of-group': {
@@ -198,21 +198,18 @@ const useStyles = makeStyles(theme => ({
 				borderTopRightRadius: 5,
 				borderBottomRightRadius: 5,
 				width: 'auto',
-    			maxWidth: '35vw',
+				maxWidth: '35vw',
 				'& .time': {
-					display:'flex',
+					display: 'flex',
 					justifyContent: 'flex-end',
 					right: 0,
 					marginLeft: 2,
 					marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom:10,
-					opacity:'0.8',
-					paddingRight:4,
-					paddingBottom:'8px'
-
-
-
+					paddingBottom: 10,
+					opacity: '0.8',
+					paddingRight: 4,
+					paddingBottom: '8px'
 				}
 			},
 			'&.first-of-group': {
@@ -257,16 +254,15 @@ const useStyles = makeStyles(theme => ({
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
 				width: 'auto',
-    			maxWidth: '35vw',
+				maxWidth: '35vw',
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
-				marginBottom:70,
+				marginBottom: 70,
 				'& .time': {
 					marginLeft: '0px',
 					marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom:8
-					
+					paddingBottom: 8
 				}
 			},
 			'&.first-of-group': {
@@ -295,15 +291,15 @@ const useStyles = makeStyles(theme => ({
 				borderTopRightRadius: 5,
 				borderBottomRightRadius: 5,
 				width: 'auto',
-    			maxWidth: '35vw',
+				maxWidth: '35vw',
 				'& .time': {
-					display:'flex',
+					display: 'flex',
 					justifyContent: 'flex-end',
 					right: 0,
 					marginRight: 2,
 					marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom:5
+					paddingBottom: 5
 
 				}
 			},
@@ -395,7 +391,7 @@ function Chat(props) {
 	const { messages, selectedRecipient } = props;
 	const [chosenEmoji, setChosenEmoji] = useState(false);
 	let emojis = []
-
+	var dateSegrigation = '';
 
 
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
@@ -575,7 +571,7 @@ function Chat(props) {
 	const sendMessageHandler = (event) => {
 		setChosenEmoji(false)
 		sendMessage();
-		
+
 
 	}
 	const sendDialogInputHandler = (e) => {
@@ -979,10 +975,10 @@ function Chat(props) {
 		setEmo('')
 		if (prevCount !== ev.target.value) {
 			if (ev.target.value.length < 801) {
-			setMessageText(ev.target.value);
-			setTextLength( 800 - ev.target.value.length)
+				setMessageText(ev.target.value);
+				setTextLength(800 - ev.target.value.length)
 			}
-			
+
 		}
 	}
 
@@ -1005,13 +1001,14 @@ function Chat(props) {
 
 	return (
 		<div className={clsx('flex flex-col relative', props.className)}>
+
 			<FuseScrollbars ref={chatRef} className="flex flex-1 flex-col overflow-y-auto">
 				{messages && messages.length > 0 ? (
-				
+
 					<div className="flex flex-col pt-16 px-16 pb-40">
 						{messages.map((item, index) => {
 							const contact = null;
-							// 	item.type === "inbound" ? user : contacts.find(_contact => _contact.id === item.who);
+
 							return (
 								<div
 									key={item.time}
@@ -1035,13 +1032,23 @@ function Chat(props) {
 												{ 'last-of-group': isLastMessageOfGroup(item, index) },
 												index + 1 === messages.length && 'pb-96'
 											)
-									}	
+									}
 								>
+
+									{moment(item.dt).format('MMM Do YY') != dateSegrigation ?
+										<div className="date-segregated-main">
+											<div className="date-segregated">
+												{dateSegrigation = moment(item.dt).format('MMM Do YYYY')}
+											</div>
+										</div>
+										: null
+									}
+
 									<div className="bubble flex relative items-center justify-center p-8 max-w-full">
-										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px',textAlign:'justify',wordBreak: 'break-all'}}>
+										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px', textAlign: 'justify', wordBreak: 'break-all' }}>
 											{item.message_body}
-											<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} {item.type=== "outbound"? MessageStateResolver.resolve(item.status):null }</Typography>
-											</div> : null}
+											<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} {item.type === "outbound" ? MessageStateResolver.resolve(item.status) : null}</Typography>
+										</div> : null}
 										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "video" ? <VideoMessageType index={index} classes={classes} message={item} /> : null}
@@ -1073,7 +1080,7 @@ function Chat(props) {
 						<Picker onEmojiClick={onEmojiClick} />
 					) : null}
 					<Paper className="flex items-center relative " elevation={1}>
-					{/* <div style={{ backgroundColor:'white'}}> */}
+						{/* <div style={{ backgroundColor:'white'}}> */}
 						<TextField
 							multiline={true}
 							rows="2"
@@ -1100,7 +1107,7 @@ function Chat(props) {
 							onChange={onInputChange}
 							value={messageTextNew}
 							onKeyPress={handleKeyPress}
-							// onKeyDown={_handleKeyDown}
+						// onKeyDown={_handleKeyDown}
 						/>
 
 
@@ -1126,16 +1133,16 @@ function Chat(props) {
 
 						</Menu>
 						<Tooltip title="Canned Replies">
-						<IconButton style={{ position: 'absolute', fontSize: 10,left: 10, bottom: 13, paddingTop: 2, paddingBottom: 2, paddingLeft: 10, paddingRight: 10, }} onClick={(e) => conversationContextMenuCallback("canned_messages")}>
-						<Icon >
-						collections_bookmark
+							<IconButton style={{ position: 'absolute', fontSize: 10, left: 10, bottom: 13, paddingTop: 2, paddingBottom: 2, paddingLeft: 10, paddingRight: 10, }} onClick={(e) => conversationContextMenuCallback("canned_messages")}>
+								<Icon >
+									collections_bookmark
 							</Icon>
-						</IconButton>
+							</IconButton>
 						</Tooltip>
 						<Tooltip title="Smiler">
-						<IconButton onClick={(e) => setChosenEmoji(!chosenEmoji)} style={{ fontSize: 10, position: 'absolute', left: 50, bottom: 13, paddingTop: 2, paddingBottom: 2, paddingLeft: 10, paddingRight: 10, }}>
-							<InsertEmoticonIcon />
-						</IconButton>
+							<IconButton onClick={(e) => setChosenEmoji(!chosenEmoji)} style={{ fontSize: 10, position: 'absolute', left: 50, bottom: 13, paddingTop: 2, paddingBottom: 2, paddingLeft: 10, paddingRight: 10, }}>
+								<InsertEmoticonIcon />
+							</IconButton>
 						</Tooltip>
 						<Tooltip title="Attachment">
 							<IconButton aria-controls="fade-menu" aria-haspopup="true" onClick={handleClick} style={{ position: 'absolute', left: 90, bottom: 3, fontSize: 10, }}>
@@ -1144,7 +1151,7 @@ function Chat(props) {
 						</Tooltip>
 						<p style={{ position: 'absolute', color: 'grey', fontSize: 10, left: 120, bottom: 13, paddingTop: 2, paddingBottom: 4, paddingLeft: 35, paddingRight: 10, }}>{textLength}</p>
 						<Tooltip title="Send Message">
-							<IconButton aria-controls="fade-menu" aria-haspopup="true" style={{ position: 'absolute',fontSize: 10, right: 15, bottom: 5, color: 'grey' }} onClick={sendMessageHandler}>
+							<IconButton aria-controls="fade-menu" aria-haspopup="true" style={{ position: 'absolute', fontSize: 10, right: 15, bottom: 5, color: 'grey' }} onClick={sendMessageHandler}>
 								<SendIcon />
 							</IconButton>
 						</Tooltip>

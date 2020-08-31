@@ -387,6 +387,7 @@ function Chat(props) {
 	const chatRef = useRef(null);
 	const [messageText, setMessageText] = useState('');
 	const [anchorEl, setAnchorEl] = React.useState(null);
+	var dateSegrigation = '';
 
 	const [sendDialogData, setsendDialogData] = React.useState({
 		url: '',
@@ -946,6 +947,16 @@ function Chat(props) {
 											src={props.selectedRecipient.avatar}
 										/>
 									)} */}
+
+									{ moment(item.dt).format('MMM Do YY') != dateSegrigation ?
+										<div className="date-segregated-main">
+											<div className="date-segregated">
+												{dateSegrigation = moment(item.dt).format('MMM Do YYYY')}
+											</div>
+										</div>
+										: null
+									}
+
 									<div className="bubble flex relative items-center justify-center p-12 max-w-full">
 										{item.message_type === "text" ?
 											<div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px' ,wordBreak: 'break-all'}}>

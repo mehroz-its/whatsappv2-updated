@@ -186,3 +186,41 @@ input:-webkit-autofill {
 
 /* chat window text overflow */
 .text-message-w-control { width: auto; }
+
+.date-segregated-main {
+    position: relative;
+    height: 50px;
+    width: 100%;
+}
+
+.date-segregated {
+    position: absolute;
+    top: -30px;
+    left: 40%;
+    background: #ffe2e2;
+    font-size: 12px;
+    padding: 5px 20px;
+    border-radius: 25px;
+    box-shadow: 0 0 10px #ccc;
+    margin: 40px 0;
+}
+
+.date-segregated::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: -100%;
+    width: 100px;
+    height: 1px;
+    background: #cccccc;
+}
+
+.date-segregated::after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    right: -100%;
+    width: 100px;
+    height: 1px;
+    background: #cccccc;
+}
