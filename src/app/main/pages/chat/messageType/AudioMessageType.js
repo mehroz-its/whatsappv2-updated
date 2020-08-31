@@ -11,7 +11,6 @@ import React from 'react';
 
         const useStyles = makeStyles((theme) => {
             return {
-            
                 root: {
                 
                     [theme.breakpoints.down('sm')]: {
@@ -168,7 +167,7 @@ import React from 'react';
 
         return (
             <div style={{paddingBottom:'10px'}}>
-            <div id='audioAlign' style={{ width: '250px',marginLeft:'-12px',paddingBottom:'10px'}} 
+            <div id='audioAlign' style={{ width: '350px',marginLeft:'-12px',paddingBottom:'10px'}} 
                 className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
                 
                         <AudioPlayer
