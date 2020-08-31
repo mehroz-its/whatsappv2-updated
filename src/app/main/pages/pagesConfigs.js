@@ -23,8 +23,8 @@ import CountryConfig from './setting/countries/CountryConfig'
 import PermissionConfig from './setting/permission/PermissionConfig'
 import RolesConfig from './setting/roles/RolesConfig'
 import UserConfig from './setting/users/UserConfig'
-import TemplateConfig from './template-message/TemplateConfig'
-import ReportsAppConfig from './reports/ReportsAppConfig'
+import TemplateAppConfig from './templae-messages/TemplateAppConfig'
+import ReportsAppConfig from './Reports/ReportsAppConfig'
 import AdminDashboardAppConfig from './adminDashboard/AdminDashboardAppConfig'
 import AgentConfig from './agent-conversation/AgentConfig'
 import BlockListConfig from './blocklist/BlockListConfig'
@@ -70,7 +70,7 @@ const pagesConfigs = [
 	PermissionConfig,
 	RolesConfig,
 	UserConfig,
-	TemplateConfig,
+	TemplateAppConfig,
 	AdminDashboardAppConfig,
 	AgentConfig,
 	TokenConfig,

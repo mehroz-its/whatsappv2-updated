@@ -11,7 +11,7 @@ const CampaignConfig = {
 		// 	component: React.lazy(() => import('./group-detail/GroupDetail'))
 		// },
 		{
-			path: '/apps/whatsapp-template',
+			path: '/apps/whatsapp-templates',
 			component: React.lazy(() => import('./whatsapptemplate/Template'))
 		}
 		// {

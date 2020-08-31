@@ -167,7 +167,7 @@ import React from 'react';
 
         return (
             <div style={{paddingBottom:'10px'}}>
-            <div id='audioAlign' style={{ width: '350px',marginLeft:'5px',paddingBottom:'10px'}} 
+            <div id='audioAlign' style={{ width: '350px',marginLeft:'-12px',paddingBottom:'10px',marginRight:'-6px'}} 
                 className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
                 
                         <AudioPlayer
