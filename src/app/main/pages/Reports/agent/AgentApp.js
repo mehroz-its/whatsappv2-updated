@@ -19,7 +19,7 @@ import AgentTable from './AgentTable'
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
-import DateRangePickerVal from '../Chat/DatePicker'
+import DateRangePickerVal from '../chat/DatePicker'
 
 const useStyles = makeStyles((theme) => ({
 	layoutRoot: {},
@@ -336,7 +336,7 @@ function AgentApp() {
 		<FusePageSimple
 
 			header={
-				<div className="flex flex-1 w-full items-center justify-between px-16">
+				<div className="flex flex-1 w-full items-center  px-20">
 					<div className="flex items-center">
 						<FuseAnimate animation="transition.expandIn" delay={300}>
 							<Icon className="text-26">face</Icon>
@@ -347,7 +347,7 @@ function AgentApp() {
 							</Typography>
 						</FuseAnimate>
 					</div>
-					<div style={{ justifyContent: 'space-around' }}>
+					<div style={{ justifyContent: 'space-around',marginLeft:'20%' }}>
 					<FormControl className={classes.formControl}>
 							<InputLabel style={{ fontSize: '12px', marginTop: '-18px' }} id="demo-controlled-open-select-label">{age === '' ? "Select Interval" : ''}</InputLabel>
 							<Select

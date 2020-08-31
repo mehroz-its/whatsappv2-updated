@@ -285,7 +285,7 @@ function ChatApp() {
 	return (
 		<FusePageSimple
 			header={
-				<div className="flex flex-1 w-full items-center justify-between px-16">
+				<div className="flex flex-1 w-full items-center  px-20" >
 					<div className="flex items-center">
 						<FuseAnimate animation="transition.expandIn" delay={300}>
 							<Icon className="text-26">chat</Icon>
@@ -296,8 +296,8 @@ function ChatApp() {
 							</Typography>
 						</FuseAnimate>
 					</div>
-					<div style={{ justifyContent: 'space-around' }}>
-						<FormControl className={classes.formControl} style={{marginRight:'6px'}}>
+					<div style={{ justifyContent: 'space-around',marginLeft:'20%' }}>
+						<FormControl className={classes.formControl}>
 							<InputLabel style={{ fontSize: '12px', marginTop: '-18px' }} id="demo-controlled-open-select-label">{age === '' ? "Select Interval" : ''}</InputLabel>
 							<Select
 								labelId="demo-controlled-open-select-label"

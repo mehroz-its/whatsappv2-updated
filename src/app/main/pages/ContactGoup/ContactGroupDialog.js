@@ -171,8 +171,8 @@ const CampaignDialog = (props) => {
 					{type}
 				</div>
 			</AppBar>
-			<DialogContent classes={{ root: 'p-24' }}>
-				<div className="flex pb-20" >
+			<DialogContent classes={{ root: 'p-24' }} style={{marginTop:'2%'}}>
+				<div className="flex pb-20">
 					<ContactGroupInDialog sendSelectedNumbers={getSelectedNumbers} rowData={data} />
 
 				</div>
@@ -184,7 +184,6 @@ const CampaignDialog = (props) => {
 					<TextField
 						className="mb-24"
 						label="Title"
-
 						autoFocus
 						id="title"
 						name="title"
@@ -235,13 +234,13 @@ const CampaignDialog = (props) => {
 
 			</DialogContent>
 			<DialogActions className="justify-between p-8">
-			<div className="px-16">
+			<div className="px-16 my-10">
 				<Button onClick={handleDialogClose} color="primary" size="small" variant="contained">
 					Cancel
              </Button>
 			 </div>
 				<ThemeProvider theme={theme}>
-				<div className="mx-32 md:mx-24">
+				<div className="mx-32 md:mx-24 my-10">
 					<Button
 						color="primary"
 						className={classes.margin}
