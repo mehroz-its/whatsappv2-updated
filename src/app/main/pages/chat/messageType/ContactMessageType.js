@@ -33,8 +33,6 @@ const useStyles = makeStyles({
 
 const ContactMessageType = function (props) {
     const { message, index } = props;
-    console.log(message, 'message in contact resolver')
-
     var name
     var number = []
     message.attachments.map((val, i) => {

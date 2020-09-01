@@ -163,7 +163,8 @@ const useStyles = makeStyles(theme => ({
     			maxWidth: '35vw',
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
-				marginBottom:70,
+				marginLeft:8,
+				// marginBottom:70,
 				'& .time': {
 					marginLeft: '0px',
 					marginBottom: '-11px',
@@ -198,7 +199,8 @@ const useStyles = makeStyles(theme => ({
 				borderTopRightRadius: 5,
 				borderBottomRightRadius: 5,
 				width: 'auto',
-    			maxWidth: '35vw',
+				maxWidth: '35vw',
+				marginRight:10,
 				'& .time': {
 					display:'flex',
 					justifyContent: 'flex-end',
@@ -230,7 +232,8 @@ const useStyles = makeStyles(theme => ({
 		'&.contact + .me, &.me + .contact': {
 			paddingTop: 6,
 			marginTop: 6,
-			paddingBottom: 6
+			paddingBottom: 6,
+			// marginLeft:8
 		},
 		'&.first-of-group': {
 			'& .bubble': {
@@ -260,7 +263,7 @@ const useStyles = makeStyles(theme => ({
     			maxWidth: '35vw',
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
-				marginBottom:70,
+				// marginBottom:70,
 				'& .time': {
 					marginLeft: '0px',
 					marginBottom: '-11px',
