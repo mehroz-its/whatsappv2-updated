@@ -181,6 +181,7 @@ const CampaignDialog = (props) => {
 		<Dialog open={openDialog} onClose={handleDialogClose} aria-labelledby="form-dialog-title" classes={{
 			paper: 'm-24'
 		}}
+		style={{marginTop:'2%'}}
 			fullWidth
 			maxWidth="xs">
 			<AppBar position="static" elevation={1}>
@@ -280,18 +281,24 @@ const CampaignDialog = (props) => {
 
 			</DialogContent>
 			<DialogActions>
+			<div className="px-16 my-10">
 				<Button variant="contained" onClick={handleDialogClose} color="primary" size="small">
 					Cancel
              </Button>
+			 </div>	
 				<ThemeProvider theme={theme}>
 					{canned_type === 'text' ?
-						<Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} disabled={!name || !text || !canned_type} color="primary">
+		 <div className="mx-32 md:mx-24 my-10">	
+		 		<Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} disabled={!name || !text || !canned_type} color="primary">
 							Done
        				  </Button>
+						 </div>	
 						:
+						<div className="mx-32 md:mx-24 my-10">
 						<Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} disabled={!name || !uploadedFilePath || !canned_type} color="primary">
 							Done
 					</Button>
+					</div>
 					}
 				</ThemeProvider>
 			</DialogActions>

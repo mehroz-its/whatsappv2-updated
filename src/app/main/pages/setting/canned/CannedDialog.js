@@ -186,7 +186,7 @@ const CampaignDialog = (props) => {
 	      {props.type} 
 				</div>
 			</AppBar>
-			<DialogContent classes={{ root: 'p-24' }}>
+			<DialogContent classes={{ root: 'p-24' }} style={{marginTop:'2%'}} >
 				<div className="flex">
 					<div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
 						<Icon color="action">account_circle</Icon>
@@ -258,7 +258,9 @@ const CampaignDialog = (props) => {
 						<div item xs={12} >
 							<input accept={canned_type !== 'document' ? `${canned_type}/*` : "application/pdf, application/vnd.ms-excel"} style={{ paddingTop: '10px' }} id="contained-button-file" type="file" name="url" filename={uploadedFilePath} style={{ display: "none" }} onChange={onChangeHandler} />
 							<label htmlFor="contained-button-file">
-								<Button size="small" variant="contained" id="content-upload-button" variant="contained" color="primary" component="span"                            >
+								<Button 
+								style={{marginLeft:'12%'}}
+								size="small" variant="contained" id="content-upload-button" variant="contained" color="primary" component="span"                            >
 									Upload
  							</Button>
 							</label>
@@ -266,8 +268,9 @@ const CampaignDialog = (props) => {
 					</div>
 				) : null}
 				<FormControlLabel
-					control={	<Checkbox
-						
+					control={	
+					<Checkbox
+						style={{marginLeft:'6%'}}
 						checked={enabled}
 						onChange={handleEnable}
 					/>}
@@ -275,13 +278,15 @@ const CampaignDialog = (props) => {
 				/>
 			</DialogContent>
 			<DialogActions className="justify-between p-8">
+			<div className="px-16 my-10">	
 				<Button variant="contained" onClick={handleDialogClose} color="primary" size="small">
 					Cancel
              </Button>
+			 </div>
 			 <ThemeProvider theme={theme}>
 				
 		{canned_type ==='text' ?
-		<div className="px-16 my-10">	
+		 <div className="mx-32 md:mx-24 my-10">	
 			<Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} disabled={!name||!text||!canned_type} color="primary">
 					Done
          </Button>
