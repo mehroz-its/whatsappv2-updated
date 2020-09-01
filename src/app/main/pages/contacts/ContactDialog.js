@@ -314,25 +314,8 @@ console.log(value,'vlsssssssssssssssssss');
 				</div>
 			</AppBar>
 			<form noValidate onSubmit={handleSubmit} className="flex flex-col md:overflow-hidden">
-				<DialogContent classes={{ root: 'p-24' }}>
-					{/* <div className="flex">
-						<div className="min-w-48 pt-20">
-							<Icon color="action">account_circle</Icon>
-						</div>
+				<DialogContent classes={{ root: 'p-24' }} style={{marginTop:'2%'}}>
 
-						<TextField
-							className="mb-24"
-							label="Name"
-							autoFocus
-							id="name"
-							name="name"
-							value={form.name}
-							onChange={handleChange}
-							variant="outlined"
-							required
-							fullWidth
-						/>
-					</div> */}
 					<div className="flex">
 						<div className="min-w-48 pt-10">
 							<Icon color="action">phone</Icon>
@@ -431,16 +414,7 @@ console.log(value,'vlsssssssssssssssssss');
 						/>
 					</div>
 
-					{/* <div className="flex">
-						<FormLabel component="legend">Gender</FormLabel>
 
-					</div>
-					<div className="flex">
-						<RadioGroup aria-label="gender" name="gender1" value={value} onChange={handleRadio}>
-							<FormControlLabel value="female" control={<Radio />} label="Female" />
-							<FormControlLabel value="male" control={<Radio />} label="Male" />
-						</RadioGroup>
-					</div> */}
 
 					
 <div className="flex mb-20">
@@ -466,137 +440,6 @@ console.log(value,'vlsssssssssssssssssss');
                 </Select>
 					</div>
 
-
-
-					{/* <div className="flex mb-20">
-					
-
-						<Select
-							labelId="demo-controlled-open-select-label"
-							id="demo-controlled-open-select"
-							open={countryopen}
-							onClose={handleCountryClose}
-							onOpen={handleCountryOpen}
-							value={defaultValueCountry}
-							onChange={handleCountryChange}
-							fullWidth
-
-						>
-							
-							<MenuItem key={`country_list_item_0`} value={defaultValueCountry}>Select Country</MenuItem>
-							{countries.length > 1 ? countries.map((country, i) => {
-								let item = null;
-
-								if (byName) {
-									item = <MenuItem key={`country_list_item_${i}`} value={country.name}>{country.name}</MenuItem>;
-								} else item = <MenuItem key={`country_list_item_${i}`} value={country.id}>{country.name}</MenuItem>;
-
-								return item;
-							}) : null}
-						</Select>
-					</div> */}
-
-
-					{/* <div className="flex">
-						<CitiesDropDown country={country} selectedCity={getSelectedCity} /> */}
-						{/* <div className="min-w-48 pt-20">
-							<Icon color="action">work</Icon>
-						</div> */}
-						{/* <Select
-							labelId="demo-controlled-open-select-label"
-							id="demo-controlled-open-select"
-							open={cityopen}
-							onClose={handleCityClose}
-							onOpen={handleCityOpen}
-							value={city}
-							onChange={handleCityChange}
-							fullWidth
-						>
-							<MenuItem key={`city_list_item_0`} value={defaultValueCity}>Select City</MenuItem>
-							{cities.map((city, i) => {
-								let item = null;
-
-								if (byName) {
-									item = <MenuItem key={`city_list_item_${i}`} value={city.name}>{city.name}</MenuItem>;
-								} else item = <MenuItem key={`city_list_item_${i}`} value={city.id}>{city.name}</MenuItem>;
-
-								return item;
-							})}
-							<MenuItem value={30}>Thirty</MenuItem>
-						</Select> */}
-					{/* </div> */}
-
-
-
-
-					{/* <div className="flex">
-						<div className="min-w-48 pt-20">
-							<Icon color="action">work</Icon>
-						</div>
-						<TextField
-							className="mb-24"
-							label="Job title"
-							id="jobTitle"
-							name="jobTitle"
-							value={form.jobTitle}
-							onChange={handleChange}
-							variant="outlined"
-							fullWidth
-						/>
-					</div>
-
-					<div className="flex">
-						<div className="min-w-48 pt-20">
-							<Icon color="action">cake</Icon>
-						</div>
-						<TextField
-							className="mb-24"
-							id="birthday"
-							label="Birthday"
-							type="date"
-							value={form.birthday}
-							onChange={handleChange}
-							InputLabelProps={{
-								shrink: true
-							}}
-							variant="outlined"
-							fullWidth
-						/>
-					</div>
-
-					<div className="flex">
-						<div className="min-w-48 pt-20">
-							<Icon color="action">home</Icon>
-						</div>
-						<TextField
-							className="mb-24"
-							label="Address"
-							id="address"
-							name="address"
-							value={form.address}
-							onChange={handleChange}
-							variant="outlined"
-							fullWidth
-						/>
-					</div>
-
-					<div className="flex"> */}
-					{/* <div className="min-w-48 pt-20">
-							<Icon color="action">note</Icon>
-						</div>
-						<TextField
-							className="mb-24"
-							label="Notes"
-							id="notes"
-							name="notes"
-							value={form.notes}
-							onChange={handleChange}
-							variant="outlined"
-							multiline
-							rows={5}
-							fullWidth
-						/>
-					</div> */}
 				</DialogContent>
 
 				{contactDialog.type === 'new' ? (
@@ -615,7 +458,7 @@ console.log(value,'vlsssssssssssssssssss');
 					</DialogActions>
 				) : (
 						<DialogActions className="justify-between p-8">
-							<div className="px-16">
+							<div className="px-16 my-10">
 							<ThemeProvider theme={theme}>
 								<Button
 									variant="contained"
@@ -634,7 +477,7 @@ console.log(value,'vlsssssssssssssssssss');
 							{/* <IconButton onClick={handleRemove}>
 								<Icon>delete</Icon>
 							</IconButton> */}
-							<div className="mx-16">
+							<div className="mx-16 my-10">
 								<Button
 									variant="contained"
 									color="primary"

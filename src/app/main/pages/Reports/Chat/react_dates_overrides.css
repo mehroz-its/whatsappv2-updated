@@ -4,8 +4,8 @@
   }
 
   .DateRangePickerInput__showClearDates{
-    padding-right: 3px
-
+    padding-right: 32px;
+    
   }
   .DateInput_input__small{
       padding: 6px 19px 2px 4px;
@@ -25,7 +25,7 @@
       fill: white;
   }
   .DateRangePickerInput__showClearDates {
-    padding-right: 2px;
+    
     color: white;
     
   }
