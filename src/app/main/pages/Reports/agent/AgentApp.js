@@ -19,7 +19,7 @@ import AgentTable from './AgentTable'
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
-import DateRangePickerVal from '../chat/DatePicker'
+import DateRangePickerVal from '../Chat/DatePicker'
 
 const useStyles = makeStyles((theme) => ({
 	layoutRoot: {},

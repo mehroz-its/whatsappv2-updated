@@ -170,7 +170,13 @@ input:-webkit-autofill {
     margin-right:'-10px'
         /* margin: .5rem */
 }
+.messageRecieve{
+    margin-left: '-2px'
+}
 
+.messageRecieve >#audioAlign{
+    margin-left: '5px'
+}
 
 /* #attachmentDate{
     display: flex;
@@ -185,4 +191,4 @@ input:-webkit-autofill {
 @import 'tailwind.css';
 
 /* chat window text overflow */
-.text-message-w-control { width: auto; }
+.text-message-w-control { width: auto; margin-left: '2px'; }

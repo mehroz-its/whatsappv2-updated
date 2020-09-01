@@ -1,138 +1,24 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
-
-import { makeStyles } from '@material-ui/core/styles';
-import AudioPlayer from 'material-ui-audio-player';
-import { createMuiTheme, useTheme,ThemeProvider } from '@material-ui/core';
-import { height } from '@amcharts/amcharts4/.internal/core/utils/Utils';
-import moment from 'moment/moment';
-import MessageStateResolver from '../../chat/messageType/MessageStateResolver'
-
+import CardContent from '@material-ui/core/CardContent';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import PauseIcon from '@material-ui/icons/Pause';
+import GetAppIcon from '@material-ui/icons/GetApp';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import MicIcon from '@material-ui/icons/Mic'
 
 const VoiceMessageType = function (props) {
-
-    const useStyles = makeStyles((theme) => {
-        return {
-            root: {
-                [theme.breakpoints.down('sm')]: {
-                    width: '100%',
-                    height:'70%'
-                },
-          border:0,borderColor:'black'
-            },
-            loopIcon: {
-                color: '#3f51b5',
-                width:20,
-                height:20,
-                
-                '&.selected': {
-                    color: '#0921a9',
-                    width:20,
-                    height:20
-                },
-                
-                '&:hover': {
-                    color: '#f50057',
-                    width:20,
-                    height:20
-                },
-                [theme.breakpoints.down('sm')]: {
-                    display: 'none',
-                    width:20,
-                    height:20
-                },
-            },
-            playIcon: {
-                color: '#f50057',
-                marginTop:'-5%',
-                '&:hover': {
-                    color: '#ff4081',
-                    marginTop:'-5%',
-                    width:20,
-                    height:20
-                },
-                width:20,
-                height:20
-            },
-            replayIcon: {
-                color: '#f50057',
-                width:20,
-                    height:20
-            },
-            pauseIcon: {
-                color: '#f50057',
-                marginTop:'-5%',
-                width:20,
-                height:20
-            },
-            download:{
-                width:20,
-                height:20
-            },
-            downloadsIcon:{
-                width:20,
-                height:20
-            },
-//             downloadsItemLink:{
-//                 width:20,
-//                 height:20
-//             },
-// downloadsItemText:{  width:20,
-//     height:20},
-// downloadsContainer:{  width:20,
-//     height:20},
-            volumeIcon: {
-                display: 'none',
-                marginTop:'-5%'
-            },
-            volumeSlider: {
-                display: 'none'
-            },
-            progressTime: {
-                color: 'rgba(0, 0, 0, 0.54)',
-
-
-                fontSize: 15,
-                marginTop:'9px',
-                fontWeight: 'bold'
-            },
-            mainSlider: {
-                color: '#3f51b5',
-                marginTop:'9px',
-                '& .MuiSlider-rail': {
-                    color: '#7986cb',
-                  
-                },
-                '& .MuiSlider-track': {
-                    color: '#3f51b5',
-                  
-                },
-                '& .MuiSlider-thumb': {
-                    color: '#303f9f',
-                
-
-                },
-            },
-        };
-    });
-    // console.log(props, 'prpps');
-
-    const { classes, message } = props;
-
+    const { classes, message, index } = props;
     const { attachments } = message;
-
     const [audioPath, setAudioPath] = React.useState('');
     const [filename, setFilename] = React.useState('');
     const [fileType, setFileType] = React.useState('');
     const [audio, setAudio] = React.useState('');
-    const muiTheme = {
-        height:500,
-        width:500
-    }
     const [play, setAudioState] = React.useState(false);
 
     const audioPlayHandler = () => {
-        // console.log(audio)
         if (play) {
             setAudioState(false);
             audio.pause();
@@ -163,21 +49,31 @@ const VoiceMessageType = function (props) {
 
     return (
         <div className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
-            <Card className={classes.root} style={{paddingLeft:'5px',height:'70%',marginLeft:'-12px'}}>
-              
-                    <AudioPlayer
-                        muteIcon
-                        src={audioPath}
-                        useStyles={useStyles}
-                        spacing="2"
-                        download={true}
-                        
-
-                        
-                    />
-                           <p id="attachmentDate" style={{ width: "100%", margin: '10px', fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status) : null}</p>
+            <Card className={classes.root}>
+                <div>
+                    <CardContent className={classes.content}>
+                        <Typography variant="subtitle1" >
+                            {/* {filename} */}
+                        </Typography>
+                        <Typography variant="subtitle1" color="textSecondary">
+                            {/* {fileType} */}
+                        </Typography>
+                    </CardContent>
+                  
+                    <MicIcon style={{position:'absolute',color:'#72bcd4',top:45,width:20,marginTop:'7px',right:230}} />
+                    <div>
+                        <AccountCircleIcon style={{width:40,height:40,marginTop:'8px'}}/>
+                       
+                        <IconButton onClick={audioPlayHandler} aria-label="play/pause" style={{marginTop:'-30px'}}>
+                            {!play && <PlayArrowIcon />}
+                            {play && <PauseIcon  />}
+                        </IconButton>
+                    </div>
+                </div>
+                <div style={{display:'flex',justifyContent:'flex-end',flex:1}}>
+                <a href={audioPath} target={'_blank'}><GetAppIcon style={{ width: 22, fontSize: 40, color: 'grey',marginTop:'20px' }} /></a>
+                </div>
             </Card>
-
         </div>
     )
 };
