@@ -19,7 +19,7 @@ import AgentTable from './AgentTable'
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
-import DateRangePickerVal from '../chat/DatePicker'
+import DateRangePickerVal from '../Chat/DatePicker'
 
 const useStyles = makeStyles((theme) => ({
 	layoutRoot: {},
@@ -34,33 +34,6 @@ am4core.useTheme(am4themes_animated);
 const incomingAndOutGoingCount = (data) => {
 	let chart = am4core.create("chartdivv", am4charts.XYChart);
 	chart.data = data;
-
-	// chart.data = [
-	// 	{
-	// 		category: 'Daily',
-	// 		first: 40,
-	// 		second: 55,
-
-	// 	},
-	// 	{
-	// 		category: 'Weekly',
-	// 		first: 30,
-	// 		second: 78,
-
-	// 	},
-	// 	{
-	// 		category: 'Monthly',
-	// 		first: 27,
-	// 		second: 40,
-
-	// 	},
-	// 	{
-	// 		category: 'Yearly',
-	// 		first: 50,
-	// 		second: 33,
-
-	// 	}
-	// ]
 	chart.colors.step = 1;
 	chart.legend = new am4charts.Legend()
 	chart.legend.position = 'top'
@@ -73,11 +46,8 @@ const incomingAndOutGoingCount = (data) => {
 	xAxis.renderer.grid.template.location = 0;
 	let yAxis = chart.yAxes.push(new am4charts.ValueAxis());
 	yAxis.min = 0;
-	// createSeries('incoming', 'Incoming');
-	// createSeries('outgoing', 'Outgoing');
-	createSeries('conversation', 'conversation');
-	createSeries('engagements', 'engagements');
-	// createSeries('third', 'The Third');
+	createSeries('conversation', 'Conversation');
+	createSeries('engagements', 'Engagements');
 	function createSeries(value, name) {
 		let series = chart.series.push(new am4charts.ColumnSeries())
 		series.dataFields.valueY = value
@@ -86,12 +56,13 @@ const incomingAndOutGoingCount = (data) => {
 
 		series.events.on("hidden", arrangeColumns);
 		series.events.on("shown", arrangeColumns);
+		series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
 
-		let bullet = series.bullets.push(new am4charts.LabelBullet())
-		bullet.interactionsEnabled = false
-		bullet.dy = 30;
-		bullet.label.text = '{valueY}'
-		bullet.label.fill = am4core.color('#ffffff')
+			// let bullet = series.bullets.push(new am4charts.LabelBullet())
+			// bullet.interactionsEnabled = false
+			// bullet.dy = 30;
+			// bullet.label.text = '{valueY}'
+			// bullet.label.fill = am4core.color('#ffffff')
 
 		return series;
 	}
@@ -134,103 +105,12 @@ const incomingAndOutGoingCount = (data) => {
 	}
 }
 
-const engagments = () => {
-
-	let chart = am4core.create("chartdiv", am4charts.XYChart);
-	chart.data = [{
-		"country": "USA",
-		"visits": 2025
-	}, {
-		"country": "China",
-		"visits": 1882
-	}, {
-		"country": "Japan",
-		"visits": 1809
-	}, {
-		"country": "Germany",
-		"visits": 1322
-	}, {
-		"country": "UK",
-		"visits": 1122
-	}, {
-		"country": "France",
-		"visits": 1114
-	}, {
-		"country": "India",
-		"visits": 984
-	}, {
-		"country": "Spain",
-		"visits": 711
-	}, {
-		"country": "Netherlands",
-		"visits": 665
-	}, {
-		"country": "Russia",
-		"visits": 580
-	}, {
-		"country": "South Korea",
-		"visits": 443
-	}, {
-		"country": "Canada",
-		"visits": 441
-	}, {
-		"country": "Brazil",
-		"visits": 395
-	}];	// Create axes
-
-	let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-	categoryAxis.dataFields.category = "country";
-	categoryAxis.renderer.grid.template.location = 0;
-	categoryAxis.renderer.minGridDistance = 30;
-
-	categoryAxis.renderer.labels.template.adapter.add("dy", function (dy, target) {
-		if (target.dataItem && target.dataItem.index & 2 == 2) {
-			return dy + 25;
-		}
-		return dy;
-	});
-
-	let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-
-	// Create series
-	let series = chart.series.push(new am4charts.ColumnSeries());
-	series.dataFields.valueY = "visits";
-	series.dataFields.categoryX = "country";
-	series.name = "visits";
-	series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
-	series.columns.template.fillOpacity = .8;
-
-	let columnTemplate = series.columns.template;
-	columnTemplate.strokeWidth = 2;
-	columnTemplate.strokeOpacity = 1;
-}
-
-
 
 function AgentApp() {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
 	const [data2, setData2] = React.useState([])
 	const [val, setVal] = React.useState('');
-	const [age, setAge] = React.useState('');
-	const [dateDisplay, setDateDisplay] = React.useState(false);
-
-	const [state, setState] = React.useState({
-		columns: [
-			{ title: 'Agent', field: 'agent_id' },
-			{ title: 'Name', field: 'agent_name' },
-			{ title: 'Average response time', field: 'responsetime' },
-			{ title: 'Count of total conversations', field: 'total_chat_count' },
-			{ title: 'Count of total engagements', field: 'total_engagement_count' },
-			{ title: 'Account status (active or disable)', field: 'account_status' },
-		],
-	});
-	const selectionRange = {
-		startDate: new Date(),
-		endDate: new Date(),
-		key: 'selection',
-	}
-
 	const [tableData, setTableData] = React.useState([]);
 	const getData = ((loadData) => {
 		console.log('called get data')
@@ -243,18 +123,7 @@ function AgentApp() {
 		};
 		loadData().then((response) => {
 			let tableData = response.data.data.list.data
-			console.log('tableData=====>', tableData)
 			setTableData(tableData)
-			let chart_data = {}
-			// tableData.map((val, ind) => {
-			// 	// chart_data.push(val.agent_name)
-			// 	// Object.assign(chart_data, {val.agent_name:val});
-
-			// 	console.log('val====>',val.agent_name)
-
-			// })
-			// console.log(chart_data,'chart_datachart_data')
-
 		});
 	})
 
@@ -349,6 +218,7 @@ function AgentApp() {
 						header={<AgentHeader SearchVal={searchContact} />}
 						content={<AgentTable data={val == '' ? tableData : data2} />}
 					/>
+					<div style={{height:'128px'}}></div>
 				</div>
 			}
 		/>

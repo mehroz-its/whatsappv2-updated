@@ -64,12 +64,13 @@ const incomingAndOutGoingCount = (data) => {
 		series.name = name
 		series.events.on("hidden", arrangeColumns);
 		series.events.on("shown", arrangeColumns);
+		series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
 
-		let bullet = series.bullets.push(new am4charts.LabelBullet())
-		bullet.interactionsEnabled = false
-		bullet.dy = 30;
-		bullet.label.text = '{valueY}'
-		bullet.label.fill = am4core.color('#ffffff')
+		// let bullet = series.bullets.push(new am4charts.LabelBullet())
+		// bullet.interactionsEnabled = false
+		// bullet.dy = 30;
+		// bullet.label.text = '{valueY}'
+		// bullet.label.fill = am4core.color('#ffffff')
 
 		return series;
 	}
@@ -147,7 +148,7 @@ function ChatApp() {
 	const pageLayout = useRef(null);
 	const [val, setVal] = React.useState('');
 	const [open, setOpen] = React.useState(false);
-	const [age, setAge] = React.useState('');
+	const [age, setAge] = React.useState(10);
 	const [selectOPen, setSelectOPen] = React.useState(false);
 
 	const toggle = () => setOpen(!open);
@@ -245,16 +246,7 @@ function ChatApp() {
 		setVal(value)
 		setData2(data.filter(n => n.number.toLowerCase().includes(value.toLowerCase())))
 	}
-	function handleSelect(ranges) {
-		console.log(ranges);
-		// {
-		//   selection: {
-		//     startDate: [native Date Object],
-		//     endDate: [native Date Object],
-		//   }
-		// }
-	}
-
+	
 	const handleChange = (event) => {
 		setAge(event.target.value);
 	};
@@ -266,21 +258,23 @@ function ChatApp() {
 	const handleOpen = () => {
 		setSelectOPen(true);
 	};
-	console.log(dateRange, 'rnageeeeeeee');
 	const handleState = () => {
 		setOpen(!open)
 		alert(open)
 	}
 	const handleOnDateChange = (startDate, endDate) => {
 		setdateRange(startDate, endDate);
-		console.log("START_AND_END", startDate, endDate);
 	}
-	console.log(dateRange,dateRange.startDate,dateRange.endDate,'Ranging_Date');
 
 	const onGenerateReport = () =>{
 		alert(' I am called')
 
 		
+	}
+
+	const SelectedDates = (start,end) =>
+	{
+		console.log(start,end,'received successfully');
 	}
 	return (
 		<FusePageSimple
@@ -298,7 +292,6 @@ function ChatApp() {
 					</div>
 					<div style={{ justifyContent: 'space-around',marginLeft:'20%' }}>
 						<FormControl className={classes.formControl}>
-							<InputLabel style={{ fontSize: '12px', marginTop: '-18px' }} id="demo-controlled-open-select-label">{age === '' ? "Select Interval" : ''}</InputLabel>
 							<Select
 								labelId="demo-controlled-open-select-label"
 								id="demo-controlled-open-select"
@@ -308,12 +301,9 @@ function ChatApp() {
 								value={age}
 								onChange={handleChange}
 								fullwidth
-								// defaultValue={"Select Interval"}
+								defaultValue={"DAY"}
 								style={{ fontSize: '12px', marginTop: '-5px' }}
 							>
-								{/* <MenuItem value="">
-									<em>None</em>
-								</MenuItem> */}
 								<MenuItem style={{ fontSize: '12px' }}
 									value={10}>Day</MenuItem>
 								<MenuItem style={{ fontSize: '12px' }}
@@ -322,18 +312,12 @@ function ChatApp() {
 									value={30}>Year</MenuItem>
 							</Select>
 						</FormControl>
-
-	<DateRangePickerVal/>
-
+						<DateRangePickerVal  SelectedDates ={SelectedDates}/>
 					</div>
-
-
 				</ div>
 			}
 			content={
 				<div className="p-12">
-
-
 					<FuseAnimateGroup
 						className="flex flex-wrap"
 						enter={{
@@ -341,13 +325,6 @@ function ChatApp() {
 						}}>
 						<Grid item md={12} sm={12} xs={12} className="widget flex w-full sm:w-1/1 md:w-1/2 p-12" >
 							<Grid container spacing={3}>
-								{/* {box.map((value, index) => {
-									return (
-										<Grid item md={4} sm={12} xs={12} >
-											<Widget2 title={value.title} count={value.value} bottom_title={value.subtitle} />
-										</Grid>
-									)
-								})} */}
 								<Grid item md={3} sm={12} xs={12} >
 									<Widget2 title='Dummy' count='5' bottom_title='Inbound' />
 								</Grid>
