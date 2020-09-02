@@ -40,13 +40,9 @@ function AgentTable(props) {
 		setOpen(false)
 	}
 
-	console.log(props)
-	// const dispatch = useDispatch();
-	// const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
-	// const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
+
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
-	// const [data, setData] = useState([]);
 	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
 	const [data2, setData2] = useState(data);
 	const [page, setPage] = useState(0);

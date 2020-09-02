@@ -263,8 +263,18 @@ function AgentApp() {
 		};
 		loadData().then((response) => {
 			let tableData = response.data.data.list.data
-			console.log(tableData)
+			console.log('tableData=====>', tableData)
 			setTableData(tableData)
+			let chart_data = {}
+			// tableData.map((val, ind) => {
+			// 	// chart_data.push(val.agent_name)
+			// 	// Object.assign(chart_data, {val.agent_name:val});
+
+			// 	console.log('val====>',val.agent_name)
+
+			// })
+			// console.log(chart_data,'chart_datachart_data')
+
 		});
 	})
 
@@ -276,47 +286,28 @@ function AgentApp() {
 		// engagments()
 		getData()
 	}, [])
-	const dataSourceSuccess = (response) => {
+
+	if (tableData.length > 0) {
+
+		let chart_display_objects = tableData.map((val, i) => {
+			console.log(val, 'vall')
+			return {
+				category: val.agent_name,
+				conversation: parseInt('22'),
+				engagements: parseInt(val.total_engagement_count),
+			};
+		})
 		let stats = [];
-		const list = response.data.data.list[0];
-		let daily = list.daily[0]
-		const Daily = {
-			category: "Daily",
-			conversation: parseInt(daily.conversation),
-			engagements: parseInt(daily.engagements),
-		};
-
-
-		let weekly = list.weekly[0]
-		const Weekly = {
-			category: "Weekly",
-			conversation: parseInt(weekly.conversation),
-			engagements: parseInt(weekly.engagements),
-		};
-
-		let monthly = list.daily[0]
-		const Monthly = {
-			category: "Monthly",
-			conversation: parseInt(monthly.conversation),
-			engagements: parseInt(monthly.engagements),
-		};
-
-		let yearly = list.yearly[0]
-		const Yearly = {
-			category: "Yearly",
-			conversation: parseInt(yearly.conversation),
-			engagements: parseInt(yearly.engagements),
-		};
-		// setBox(list)
-
-
-		stats = [
-			Daily,
-			Weekly,
-			Monthly,
-			Yearly
-		]
+		chart_display_objects.forEach((element, i) => {
+			console.log('element', i)
+			stats.push(chart_display_objects[i])
+			return [
+				chart_display_objects[i],
+			]
+		});
 		incomingAndOutGoingCount(stats);
+	}
+	const dataSourceSuccess = (response) => {
 	};
 
 	const dataSourceFailure = (response) => {
@@ -324,13 +315,7 @@ function AgentApp() {
 
 	const searchContact = (value) => {
 		setVal(value)
-		// console.log('ceeleded', props.ValueForSearch, searchVal);
-
-		// setSearchVal(props.ValueForSearch)
 		setData2(tableData.filter(n => n.agent_name.toLowerCase().includes(value.toLowerCase())))
-		console.log(data2, 'filterssss');
-
-
 	}
 	return (
 		<FusePageSimple
@@ -347,41 +332,14 @@ function AgentApp() {
 							</Typography>
 						</FuseAnimate>
 					</div>
-					<div style={{ justifyContent: 'space-around',marginLeft:'20%' }}>
-					<FormControl className={classes.formControl}>
-							<InputLabel style={{ fontSize: '12px', marginTop: '-18px' }} id="demo-controlled-open-select-label">{age === '' ? "Select Interval" : ''}</InputLabel>
-							<Select
-								labelId="demo-controlled-open-select-label"
-								id="demo-controlled-open-select"
-								open={selectOPen}
-								onClose={handleClose}
-								onOpen={handleOpen}
-								value={age}
-								onChange={handleChange}
-								fullwidth
-								// defaultValue={"Select Interval"}
-								style={{ fontSize: '12px', marginTop: '-5px' }}
-							>
-								{/* <MenuItem value="">
-									<em>None</em>
-								</MenuItem> */}
-								<MenuItem style={{ fontSize: '12px' }}
-									value={10}>Day</MenuItem>
-								<MenuItem style={{ fontSize: '12px' }}
-									value={20}>Month</MenuItem>
-								<MenuItem style={{ fontSize: '12px' }}
-									value={30}>Year</MenuItem>
-							</Select>
-						</FormControl>
-						<DateRangePickerVal/>
-
+					<div style={{ justifyContent: 'space-around', marginLeft: '20%' }}>
+						<DateRangePickerVal />
 					</div>
 
 				</div>
 			}
 			content={
 				<div className="p-12">
-
 					<FuseAnimateGroup
 						className="flex flex-wrap"
 						enter={{
@@ -392,10 +350,7 @@ function AgentApp() {
 								<div id="chartdivv" style={{ width: "100%", height: "300px" }}></div>
 							</Paper>
 						</div>
-
 					</FuseAnimateGroup>
-
-
 					<FusePageSimple
 						classes={{
 							content: 'flex',
