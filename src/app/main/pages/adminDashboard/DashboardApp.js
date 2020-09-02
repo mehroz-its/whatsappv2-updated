@@ -482,7 +482,7 @@ function DashboardApp(props) {
 						)}
 
 					</div>
-					<div style={{ height: 250 }}></div>
+					<div style={{ height: '255px' }}></div>
 				</>
 			}
 			rightSidebarContent={
