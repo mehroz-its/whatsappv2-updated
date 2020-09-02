@@ -19,7 +19,7 @@ import AgentTable from './AgentTable'
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
-import DateRangePickerVal from '../Chat/DatePicker'
+import DateRangePickerVal from '../chat/DatePicker'
 
 const useStyles = makeStyles((theme) => ({
 	layoutRoot: {},
@@ -215,7 +215,6 @@ function AgentApp() {
 	const [age, setAge] = React.useState('');
 	const [dateDisplay, setDateDisplay] = React.useState(false);
 
-	const [selectOPen, setSelectOPen] = React.useState(false);
 	const [state, setState] = React.useState({
 		columns: [
 			{ title: 'Agent', field: 'agent_id' },
@@ -231,26 +230,7 @@ function AgentApp() {
 		endDate: new Date(),
 		key: 'selection',
 	}
-	const handleChange = (event) => {
-		setAge(event.target.value);
-	};
-	function handleSelect(ranges) {
-		console.log(ranges);
-		// {
-		//   selection: {
-		//     startDate: [native Date Object],
-		//     endDate: [native Date Object],
-		//   }
-		// }
-	}
 
-	const handleClose = () => {
-		setSelectOPen(false);
-	};
-
-	const handleOpen = () => {
-		setSelectOPen(true);
-	};
 	const [tableData, setTableData] = React.useState([]);
 	const getData = ((loadData) => {
 		console.log('called get data')
@@ -293,7 +273,7 @@ function AgentApp() {
 			console.log(val, 'vall')
 			return {
 				category: val.agent_name,
-				conversation: parseInt('22'),
+				conversation: parseInt(val.total_chat_count),
 				engagements: parseInt(val.total_engagement_count),
 			};
 		})
@@ -317,6 +297,11 @@ function AgentApp() {
 		setVal(value)
 		setData2(tableData.filter(n => n.agent_name.toLowerCase().includes(value.toLowerCase())))
 	}
+
+	const SelectedDates = (start,end) =>
+	{
+		console.log(start,end,'received successfully');
+	}
 	return (
 		<FusePageSimple
 
@@ -333,7 +318,7 @@ function AgentApp() {
 						</FuseAnimate>
 					</div>
 					<div style={{ justifyContent: 'space-around', marginLeft: '20%' }}>
-						<DateRangePickerVal />
+						<DateRangePickerVal  SelectedDates ={SelectedDates}/>
 					</div>
 
 				</div>
