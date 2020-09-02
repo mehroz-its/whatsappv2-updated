@@ -33,8 +33,6 @@ const useStyles = makeStyles({
 
 const ContactMessageType = function (props) {
     const { message, index } = props;
-    console.log(message, 'message in contact resolver')
-
     var name
     var number = []
     message.attachments.map((val, i) => {
@@ -46,7 +44,7 @@ const ContactMessageType = function (props) {
     const classes = useStyles();
     const bull = <span className={classes.bullet}>•</span>;
     return (
-        <Card className={classes.root} variant="outlined" style={{marginLeft:'-11px'}}>
+        <Card className={classes.root} variant="outlined">
             <CardContent style={{ padding: 5 }}>
                 <div style={{ display: 'flex' }}>
                     <Icon color="action" className='text-16' style={{marginRight:'5px',marginTop:'2px'}}>contact_phone</Icon>

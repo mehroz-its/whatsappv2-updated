@@ -170,7 +170,13 @@ input:-webkit-autofill {
     margin-right:'-10px'
         /* margin: .5rem */
 }
+.messageRecieve{
+    margin-left: '-2px'
+}
 
+.messageRecieve >#audioAlign{
+    margin-left: '5px'
+}
 
 /* #attachmentDate{
     display: flex;
@@ -224,3 +230,4 @@ input:-webkit-autofill {
     height: 1px;
     background: #cccccc;
 }
+.text-message-w-control { width: auto; margin-left: '2px'; }

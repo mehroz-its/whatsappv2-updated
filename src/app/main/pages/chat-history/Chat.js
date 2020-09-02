@@ -13,7 +13,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import Button from '@material-ui/core/Button';
-import AudioMessageType from './messageType/AudioMessageType'
+import AudioMessageType from '../chat//messageType/AudioMessageType'
 import DocumentMessageType from './messageType/DocumentMessageType'
 import ImageMessageType from './messageType/ImageMessageType'
 import VideoMessageType from './messageType/VideoMessageType'
@@ -151,16 +151,19 @@ const useStyles = makeStyles(theme => ({
 				color: theme.palette.primary.contrastText,
 				borderTopLeftRadius: 5,
 				borderBottomLeftRadius: 5,
-				width: 'auto',
-				maxWidth: '35vw',
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
+				width: 'auto',
+    			maxWidth: '35vw',
+				borderTopRightRadius: 6,
+				borderBottomRightRadius: 6,
+				marginLeft:8,
+				// marginBottom:70,
 				'& .time': {
 					marginLeft: '0px',
 					marginBottom: '-11px',
 					marginTop: '5px',
 					paddingBottom:8
-
 				}
 			},
 			'&.first-of-group': {
@@ -183,22 +186,29 @@ const useStyles = makeStyles(theme => ({
 			},
 			'& .bubble': {
 				marginLeft: 'auto',
-				backgroundColor: theme.palette.grey[50],
+				backgroundColor: 'white',
 				color: theme.palette.getContrastText(theme.palette.grey[300]),
 				borderTopLeftRadius: 6,
 				borderBottomLeftRadius: 6,
-				width: 'auto',
-				maxWidth: '35vw',
 				borderTopRightRadius: 5,
 				borderBottomRightRadius: 5,
+				width: 'auto',
+				maxWidth: '35vw',
+				marginRight:10,
 				'& .time': {
+					display:'flex',
 					justifyContent: 'flex-end',
 					right: 0,
-					display:'flex',
-					marginRight: 2,
+					marginLeft: 2,
 					marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom:'3px'
+					paddingBottom:10,
+					opacity:'0.8',
+					paddingRight:4,
+					paddingBottom:'8px'
+
+
+
 				}
 			},
 			'&.first-of-group': {
@@ -214,19 +224,21 @@ const useStyles = makeStyles(theme => ({
 			}
 		},
 		'&.contact + .me, &.me + .contact': {
-			paddingTop: 20,
-			marginTop: 20
+			paddingTop: 6,
+			marginTop: 6,
+			paddingBottom: 6,
+			// marginLeft:8
 		},
 		'&.first-of-group': {
 			'& .bubble': {
 				borderTopLeftRadius: 6,
-				paddingTop: 13
+				paddingTop: 6
 			}
 		},
 		'&.last-of-group': {
 			'& .bubble': {
 				borderBottomLeftRadius: 6,
-				paddingBottom: 13,
+				paddingBottom: 6,
 				'& .time': {
 					display: 'flex'
 				}
@@ -245,12 +257,13 @@ const useStyles = makeStyles(theme => ({
     			maxWidth: '35vw',
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
-				marginBottom:70,
+				// marginBottom:70,
 				'& .time': {
 					marginLeft: '0px',
 					marginBottom: '-11px',
 					marginTop: '5px',
 					paddingBottom:8
+					
 				}
 			},
 			'&.first-of-group': {
@@ -283,9 +296,9 @@ const useStyles = makeStyles(theme => ({
 				'& .time': {
 					display:'flex',
 					justifyContent: 'flex-end',
-					// right: 0,
+					right: 0,
 					marginRight: 2,
-					// marginBottom: '-11px',
+					marginBottom: '-11px',
 					marginTop: '5px',
 					paddingBottom:5
 
@@ -328,7 +341,7 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		width: '250px',
 		height: '70px',
-		backgroundColor: 'white'
+		backgroundColor: '#ffffff'
 	},
 	rootDocu: {
 		display: 'flex',
@@ -373,6 +386,7 @@ const useStyles = makeStyles(theme => ({
 		margin: '0 5px'
 	}
 }));
+
 
 function Chat(props) {
 	const dispatch = useDispatch();
