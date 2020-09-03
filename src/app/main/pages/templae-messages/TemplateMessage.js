@@ -167,7 +167,7 @@ function ContactsApp() {
 				ref={pageLayout}
 			// innerScroll
 			/>
-			<FuseAnimate animation="transition.expandIn" delay={300}>
+			{/* <FuseAnimate animation="transition.expandIn" delay={300}>
 				<Fab
 					size="medium"
 					color="primary"
@@ -178,8 +178,8 @@ function ContactsApp() {
 				>
 					<Icon>person_add</Icon>
 				</Fab>
-			</FuseAnimate>
-			{open ? <TemplateDialog isSearched={val} type="Add Canned Message" isOpen={open} closeDialog={closeDialog} data={dialogData} /> : null}
+			</FuseAnimate> */}
+			{/* {open ? <TemplateDialog isSearched={val} type="Add Canned Message" isOpen={open} closeDialog={closeDialog} data={dialogData} /> : null} */}
 		</>
 	);
 }

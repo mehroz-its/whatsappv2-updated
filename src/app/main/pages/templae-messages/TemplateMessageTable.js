@@ -164,6 +164,7 @@ const EnhancedTable = ({ displaySnack, columns, data, onRowClick, onClose }) => 
 		console.log(n, 'eventtt')
 		setDeleteDialogData(n)
 	}
+	console.log('dialogData====>',dialogData)
 	// Render the UI for your table
 	return (<div>
 		<TableContainer className="min-h-full sm:border-1 sm:rounded-16" >
@@ -250,7 +251,8 @@ const EnhancedTable = ({ displaySnack, columns, data, onRowClick, onClose }) => 
 										return (
 											<MuiThemeProvider theme={BodyStyle}>
 												<TableCell
-												style={{ height: 'auto !important' ,padding:'5px'}}
+												// style={{ height: 'auto !important' ,padding:'5px',maxWidth:'150px',width:'150px',overflowX:auto}}
+												style={{ height: 'auto !important' ,padding:'5px',whiteSpace:'break-spaces'}}
 													align="center"
 													{...cell.getCellProps()}
 													className={clsx('p-0')}

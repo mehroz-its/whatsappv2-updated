@@ -89,7 +89,7 @@ function CannedSideBar(props) {
 							exact
 							button
 							component={NavLinkAdapter}
-							to="/apps/canned-messages/text"
+							to="/apps/request"
 							activeClassName="active"
 							className={classes.listItem}
 							onClick={() => { handleClick("text") }}
