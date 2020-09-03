@@ -306,7 +306,7 @@ const EnhancedTable = ({ displaySnack, columns, data, onRowClick, onClose }) => 
 				</TableFooter>
 			</MaUTable>
 		</TableContainer>
-		{open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
+		{open && <CannedDialog type="Update Template Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
 		{deleteDialog && <DeleteDialog isOpen={deleteDialog} type="Delete" closeDialog={closeDialog}  data={deleteDialogData} />}
 	</div>
 	);

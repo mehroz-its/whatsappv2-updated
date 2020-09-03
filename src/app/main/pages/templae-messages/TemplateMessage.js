@@ -59,10 +59,9 @@ function ContactsApp() {
 		setData2([])
 		console.log('called get data')
 		loadData = () => {
-			return CoreHttpHandler.request('canned_messages', 'type_listing', {
-				limit: 100,
-				key: ':type',
-				value: cannedtype,
+			return CoreHttpHandler.request('template', 'listing', {
+
+				limit: 10,
 				page: 0,
 				columns: "*",
 				sortby: "DESC",
@@ -73,7 +72,7 @@ function ContactsApp() {
 		};
 		loadData().then((response) => {
 			const tableData = response.data.data.list.data
-			console.log(tableData)
+			console.log('tableData====>',tableData)
 			setData(tableData)
 			setData2(tableData)
 			setTimeout(() => {

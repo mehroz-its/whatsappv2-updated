@@ -86,7 +86,7 @@ const CampaignDialog = (props) => {
 			message_type: canned_type,
 			enabled: enabled
 		};
-		if (type !== 'Update Canned Message') {
+		if (type !== 'Update Template Message') {
 			CoreHttpHandler.request('canned_messages', 'create_message', params, (response) => {
 				props.closeDialog('create')
 				setopenDialog(false);

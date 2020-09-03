@@ -15,24 +15,24 @@ function CannedList(props) {
 			},
 			{
 				Header: 'Name',
-				accessor: 'message_name',
+				accessor: 'template_name',
 				className: 'font-bold',
 				sortable: true
 			},
 			{
 				Header: 'Text',
-				accessor: 'message_text',
+				accessor: 'template_text',
 				className: 'font-bold',
 				sortable: true
 			},
 			{
 				Header: 'Params',
-				accessor: 'message_params',
+				accessor: 'template_params',
 				sortable: true
 			},
 			{
 				Header: 'Type',
-				accessor: 'message_type',
+				accessor: 'template_type',
 				sortable: true
 			},
 			{
