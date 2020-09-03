@@ -272,9 +272,11 @@ function ChatApp() {
 		
 	}
 
-	const SelectedDates = (start,end) =>
 	{
-		console.log(start,end,'received successfully');
+		console.log(start.toISOString(),end.toISOString(),'received successfully');
+		var Start = start.toISOString()
+		var End = end.toISOString()
+		console.log(Start,End,'Coverted_Datesss');
 	}
 	return (
 		<FusePageSimple

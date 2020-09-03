@@ -19,7 +19,7 @@ import AgentTable from './AgentTable'
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
-import DateRangePickerVal from '../Chat/DatePicker'
+import DateRangePickerVal from '../chat/DatePicker'
 
 const useStyles = makeStyles((theme) => ({
 	layoutRoot: {},
@@ -169,7 +169,10 @@ function AgentApp() {
 
 	const SelectedDates = (start,end) =>
 	{
-		console.log(start,end,'received successfully');
+		console.log(start.toISOString(),end.toISOString(),'received successfully');
+		var Start = start.toISOString()
+		var End = end.toISOString()
+		console.log(Start,End,'Coverted_Datesss');
 	}
 	return (
 		<FusePageSimple
