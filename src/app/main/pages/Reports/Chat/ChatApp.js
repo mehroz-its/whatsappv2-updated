@@ -266,12 +266,8 @@ function ChatApp() {
 		setdateRange(startDate, endDate);
 	}
 
-	const onGenerateReport = () =>{
-		alert(' I am called')
 
-		
-	}
-
+	const SelectedDates = (start,end) =>
 	{
 		console.log(start.toISOString(),end.toISOString(),'received successfully');
 		var Start = start.toISOString()
