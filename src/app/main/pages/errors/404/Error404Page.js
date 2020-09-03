@@ -10,19 +10,19 @@ function Error404Page() {
 	return (
 		<div className="flex flex-col flex-1 items-center justify-center p-16">
 			<div className="max-w-512 text-center">
-				<FuseAnimate animation="transition.expandIn" delay={100}>
-					<Typography variant="h1" color="inherit" className="font-medium mb-16">
-						404
+				{/* <FuseAnimate animation="transition.expandIn" delay={100}>
+					<Typography variant="h" color="inherit" className="font-medium mb-16">
+					Temporarily Unavialabe
 					</Typography>
-				</FuseAnimate>
+				</FuseAnimate> */}
 
 				<FuseAnimate delay={500}>
 					<Typography variant="h5" color="textSecondary" className="mb-16">
-						Sorry but we could not find the page you are looking for
+					No Data Found
 					</Typography>
 				</FuseAnimate>
 
-				<Paper className="flex items-center w-full h-56 p-16 mt-48 mb-16" elevation={1}>
+				{/* <Paper className="flex items-center w-full h-56 p-16 mt-48 mb-16" elevation={1}>
 					<Icon color="action">search</Icon>
 					<Input
 						placeholder="Search for anything"
@@ -33,9 +33,9 @@ function Error404Page() {
 							'aria-label': 'Search'
 						}}
 					/>
-				</Paper>
+				</Paper> */}
 
-				<Link className="font-medium" to="/apps/dashboards/project">
+				<Link className="font-medium" to="/dashboard">
 					Go back to dashboard
 				</Link>
 			</div>
