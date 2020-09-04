@@ -7,7 +7,7 @@ import { withRouter } from 'react-router-dom';
 
 class FuseAuthorization extends Component {
 
-	
+
 
 	constructor(props, context) {
 		super(props);
@@ -15,7 +15,7 @@ class FuseAuthorization extends Component {
 		this.state = {
 			accessGranted: true,
 			routes,
-			user_routes:null
+			user_routes: null
 		};
 	}
 
@@ -29,7 +29,7 @@ class FuseAuthorization extends Component {
 			this.redirectRoute();
 		} else {
 			this.setState({ user_routes: this.props.hasPermission })
-			console.log(this.state.user_routes,"state.user_routes")
+			console.log(this.state.user_routes, "state.user_routes")
 		}
 
 
@@ -48,7 +48,7 @@ class FuseAuthorization extends Component {
 	static getDerivedStateFromProps(props, state) {
 		const { location, userRole } = props;
 		const { pathname } = location;
-
+		console.log('propsprops', pathname)
 		const matched = matchRoutes(state.routes, pathname)[0];
 
 		return {
@@ -65,14 +65,11 @@ class FuseAuthorization extends Component {
         Redirect to Login Page
         */
 		if (!userRole || userRole.length === 0) {
-			console.log('hyhyifff')
 			history.push({
-				pathname: redirectUrl,
+				pathname: redirectUrl === '/' ? '/login' : redirectUrl,
 				state: { redirectUrl: pathname }
 			});
 		} else {
-			console.log('hyhyelseee')
-
 			/*
         User is member
         User must be on unAuthorized page or just logged in
