@@ -394,7 +394,6 @@ function Chat(props) {
 	const { messages, selectedRecipient } = props;
 	const [chosenEmoji, setChosenEmoji] = useState(false);
 	let emojis = []
-	var dateSegrigation = '';
 
 
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
@@ -1037,15 +1036,6 @@ function Chat(props) {
 											)
 									}
 								>
-
-									{moment(item.dt).format('MMM Do YY') != dateSegrigation ?
-										<div className="date-segregated-main">
-											<div className="date-segregated">
-												{dateSegrigation = moment(item.dt).format('MMM Do YYYY')}
-											</div>
-										</div>
-										: null
-									}
 
 									<div className="bubble flex relative items-center justify-center p-8 max-w-full">
 										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px', textAlign: 'justify', wordBreak: 'break-all' }}>
