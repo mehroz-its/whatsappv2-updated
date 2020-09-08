@@ -174,8 +174,18 @@ input:-webkit-autofill {
     margin-left: '-2px'
 }
 
-.messageRecieve >#audioAlign{
+/* .messageRecieve > .audioAlign > div{
     margin-left: '5px'
+} */
+.messageRecieveaudioAlign{
+    margin-left: '5px' !important
+}
+.read-more-button{
+    font-weight: 700 !important
+}
+.displayed-text{
+    font-size: 12px;
+    /* color: #121212 */
 }
 
 /* #attachmentDate{

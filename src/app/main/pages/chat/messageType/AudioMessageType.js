@@ -15,7 +15,8 @@ import React from 'react';
                 
                     [theme.breakpoints.down('sm')]: {
                         width: '100%',
-                        height:'100%'
+                        height:'100%',
+                       
                     },
             border:0,
             borderColor:'black',
@@ -166,15 +167,15 @@ import React from 'react';
         }, []);
 
         return (
-            <div style={{paddingBottom:'10px'}}>
-            <div id='audioAlign' style={{ width: '350px',marginLeft:'-12px',paddingBottom:'10px',marginRight:'-6px'}} 
-                className={message.type == 'inbound' ? 'messageRecieve' : 'messageSent'}>
+            <div  style={{paddingBottom:'10px'}}>
+            <div   style= {message.type == 'inbound' ?{ width: '350px',marginLeft:'5px',paddingBottom:'10px',marginRight:'-6px'}:{ width: '350px',marginLeft:'-12px',paddingBottom:'10px',marginRight:'-6px'}}
+                className={message.type == 'inbound' ? 'messageRecieveaudioAlign' : 'messageSent'}>
                 
                         <AudioPlayer
                             // width="100%"
                             // height
                             style={{paddingBottom:'15px'}}
-                            className={classes.roott}
+                            className={classes.root}
                             muteIcon
                             src={audioPath}
                             useStyles={useStyles}

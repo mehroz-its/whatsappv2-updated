@@ -14,7 +14,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import { useDispatch, useSelector } from 'react-redux';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
-
+import ReadMoreReact from 'read-more-react';
 import Button from '@material-ui/core/Button';
 import AudioMessageType from './messageType/AudioMessageType'
 import ContactMessageType from './messageType/ContactMessageType'
@@ -163,7 +163,7 @@ const useStyles = makeStyles(theme => ({
 				maxWidth: '35vw',
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
-				marginLeft:8,
+				marginLeft: 8,
 				// marginBottom:70,
 				'& .time': {
 					marginLeft: '0px',
@@ -200,7 +200,7 @@ const useStyles = makeStyles(theme => ({
 				borderBottomRightRadius: 5,
 				width: 'auto',
 				maxWidth: '35vw',
-				marginRight:10,
+				marginRight: 10,
 				'& .time': {
 					display: 'flex',
 					justifyContent: 'flex-end',
@@ -393,6 +393,7 @@ function Chat(props) {
 	const dispatch = useDispatch();
 	const { messages, selectedRecipient } = props;
 	const [chosenEmoji, setChosenEmoji] = useState(false);
+	const [messagesLength, setmessagesLength] = useState('hy');
 	let emojis = []
 
 
@@ -1010,6 +1011,7 @@ function Chat(props) {
 					<div className="flex flex-col pt-16 px-16 pb-40">
 						{messages.map((item, index) => {
 							const contact = null;
+							// let message = 	item.message_body.substring(0, 200)
 
 							return (
 								<div
@@ -1036,12 +1038,25 @@ function Chat(props) {
 											)
 									}
 								>
-
 									<div className="bubble flex relative items-center justify-center p-8 max-w-full">
-										{item.message_type === "text" ? <div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px', textAlign: 'justify', wordBreak: 'break-all' }}>
-											{item.message_body}
-											<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} {item.type === "outbound" ? MessageStateResolver.resolve(item.status) : null}</Typography>
-										</div> : null}
+										{item.message_type === "text" ?
+											item.message_body.length > '400' ?
+												<div className="leading-tight whitespace-pre-wrap" >
+													<ReadMoreReact text={item.message_body}
+														min={200}
+														ideal={400}
+														max={1000}
+														readMoreText="Click Here to Read More" />
+													<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} {item.type === "outbound" ? MessageStateResolver.resolve(item.status) : null}</Typography>
+												</div>
+												:
+												<div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px', textAlign: 'justify', wordBreak: 'break-all' }}>
+													{item.message_body}
+													<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} {item.type === "outbound" ? MessageStateResolver.resolve(item.status) : null}</Typography>
+												</div>
+											:
+											null
+										}
 										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "video" ? <VideoMessageType index={index} classes={classes} message={item} /> : null}
