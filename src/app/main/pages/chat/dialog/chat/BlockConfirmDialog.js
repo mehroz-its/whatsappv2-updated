@@ -18,7 +18,6 @@ const BlockConfirmDialog = function (props) {
             key: 'block_reason',
         });
     };
-    console.log(data.number,'datanumber');
 
     return (
         <DialogContent >

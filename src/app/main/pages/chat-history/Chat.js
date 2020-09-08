@@ -785,7 +785,7 @@ function Chat(props) {
 		setdialogOpenConfirmBlock(false)
 	}
 	const blockNumber = () => {
-		console.log('blockNumber');
+		console.log(selectedRecipient.number,'datanumber');
 
 		CoreHttpHandler.request('conversations', 'block', {
 			key: ':number', value: selectedRecipient.number, params: {
