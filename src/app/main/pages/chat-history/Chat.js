@@ -34,7 +34,7 @@ import AttachmentDialogV2 from './dialog/chat/AttachmentDialogV2';
 import CannedMessagesDialog from './dialog/chat/CannedMessagesDialog';
 import BlockConfirmDialog from './dialog/chat/BlockConfirmDialog';
 import CustomerProfileDialog from './dialog/chat/CustomerProfileDialog';
-
+import ReadMoreReact from 'read-more-react';
 import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
 
 import Menu from '@material-ui/core/Menu';
@@ -963,11 +963,19 @@ function Chat(props) {
 
 									<div className="bubble flex relative items-center justify-center p-12 max-w-full">
 										{item.message_type === "text" ?
-											<div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px' ,wordBreak: 'break-all'}}>
-												{item.sender_name !== 'inbound' ?
-													<div style={{ marginTop: '-5px', paddingBottom: '10px', marginLeft: '-3px', fontWeight: '300', fontSize: '12px' }}> {`${item.sender_name.charAt(0).toUpperCase()}${item.sender_name.substring(1)}:`}  </div> : null}
+											item.message_body.length > '400' ?
+											<div className="leading-tight whitespace-pre-wrap" >
+												<ReadMoreReact text={item.message_body}
+													min={200}
+													ideal={400}
+													max={1000}
+													readMoreText="Click Here to Read More" />
+												<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} {item.type === "outbound" ? MessageStateResolver.resolve(item.status) : null}</Typography>
+											</div>
+											:
+											<div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px', textAlign: 'justify', wordBreak: 'break-all' }}>
 												{item.message_body}
-												<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm a')}{item.type=== "outbound"? MessageStateResolver.resolve(item.status):null }</Typography>
+												<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} {item.type === "outbound" ? MessageStateResolver.resolve(item.status) : null}</Typography>
 											</div>
 											: null}
 										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
