@@ -123,8 +123,6 @@ function ChatsSidebar(props) {
 	const {numbers} = props
 	const dispatch = useDispatch();
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
-	console.log("contacts :" , props);
-
 	// const user = useSelector(({ chatApp }) => chatApp.user);
 	
 
