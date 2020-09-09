@@ -35,6 +35,7 @@ import BlockAppConfig from './BlockedContacts/BlockAppConfig'
 import ProfileAppConfig from './profile/ProfileAppConfig'
 import ChatHistoryConfig from './chat-history/ChatHistoryConfig'
 import CompanyProfileConfig   from './company-profile/CompanyProfileConfig'
+import CustomerAccountConfig from './customerAccounts/customerAcoountsConfig'
 
 const pagesConfigs = [
 	CompanyProfileConfig,
@@ -74,7 +75,9 @@ const pagesConfigs = [
 	AdminDashboardAppConfig,
 	AgentConfig,
 	TokenConfig,
-	ResetPassword2PageConfig
+	ResetPassword2PageConfig,
+	CustomerAccountConfig
+
 
 
 	
