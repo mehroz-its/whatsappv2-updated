@@ -81,7 +81,7 @@ function ComapnyProfile() {
 		// resetForm();
 		setStep(2)
 	}
-	let pic = require('../../../../images/logo-head.png')
+	let pic = require('../../../../../images/logo-head.png')
 	console.log(form, 'formform')
 	return (
 		<div className={clsx(classes.root, 'flex flex-col flex-auto flex-shrink-0 items-center justify-center p-0')}>

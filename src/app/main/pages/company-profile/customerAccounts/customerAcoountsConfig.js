@@ -9,7 +9,7 @@ const CustomerAccountConfig = {
 	},
 	routes: [
 		{
-			path: '/customer-account',
+			path: '/apps/company-profile',
 			component: React.lazy(() => import('./customerAccounts.js'))
 		},
 		
