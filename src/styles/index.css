@@ -16,9 +16,19 @@ html {
     background-color: #121212;
 }
 
+.MuiCircularProgress-colorPrimary {
+    color: white !important;
+}
+
 body {
     font-size: 10px;
     line-height: 1.4;
+}
+.dashboard-tabs > div{
+    background-color: #333 !important;
+}
+.dashboard-tabs > div:nth-child(2) > div{
+    background-color: #ddd !important;
 }
 
 html, body, #root {

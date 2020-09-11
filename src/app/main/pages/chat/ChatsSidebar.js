@@ -7,9 +7,6 @@ import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import List from '@material-ui/core/List';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -18,41 +15,27 @@ import React, { useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import Box from '@material-ui/core/Box';
 import ContactListItem from './ContactListItem';
 import PropTypes from 'prop-types';
-
+import InputLabel from '@material-ui/core/InputLabel';
+import { makeStyles } from '@material-ui/core/styles';
 import StatusIcon from './StatusIcon';
 import * as Actions from './store/actions';
+import ChatTabPannel from './ChatTabPannel'
 
-// const contacts = [
-// 	{
-// 		avatar: "assets/images/avatars/alice.jpg",
-// 		id: "5725a680b3249760ea21de52",
-// 		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-// 		name: "Alice Freeman",
-// 		status: "online",
-// 		unread: "2",
-// 	},
-// 	{
-// 		avatar: "assets/images/avatars/Arnold.jpg",
-// 		id: "5725a680606588342058356d",
-// 		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-// 		name: "Arnold",
-// 		status: "do-not-disturb",
-// 		unread: "3"
-// 	},
-// 	{
-// 		avatar: "assets/images/avatars/Barrera.jpg",
-// 		id: "5725a68009e20d0a9e9acf2a",
-// 		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-// 		name: "Arnold",
-// 		status: "do-not-disturb",
-// 		unread: "3"
-// 	},
+const useStyles = makeStyles((theme) => ({
+	formControl: {
+		margin: theme.spacing(1),
+		minWidth: 220,
+	},
+	selectEmpty: {
+		marginTop: theme.spacing(2),
+	},
+}));
 
-
-// ]
 const user = {
 	avatar: "assets/images/avatars/profile.jpg",
 	chatList: [
@@ -163,12 +146,15 @@ function ChatsSidebar(props) {
 		);
 		setStatusMenuEl(null);
 	}
+	const classes = useStyles();
+	const [selectValue, setselectValue] = React.useState('');
+	const [SelectedChannel, setSelectedChannel] = React.useState('');
+	
 
-	function handleStatusClose(event) {
-		event.preventDefault();
-		event.stopPropagation();
-		setStatusMenuEl(null);
-	}
+	const handleChange2 = (event) => {
+		// setSelectedChannel(event.target.value);
+	};
+
 
 	function handleSearchText(event) {
 		console.log(event.target.value, 'event.target.value')
@@ -177,6 +163,10 @@ function ChatsSidebar(props) {
 	let filtered = props.numbers
 	filtered = searchText.charAt(0) === '9' ? numbers.filter((number => number.number.includes(searchText))) : numbers.filter((number => number.name.toLowerCase().includes(searchText.toLowerCase())))
 
+	const SelectedValue = (value)=>{
+		
+		setselectValue(value)
+	}
 
 	return (
 		<div className="flex flex-col flex-auto h-full">
@@ -210,39 +200,28 @@ function ChatsSidebar(props) {
 				<List className="w-full">
 					{
 						useMemo(() => {
-							// function getFilteredArray(arr, _searchText) {
-							// 	if (_searchText.length === 0) {
-							// 		return arr;
-							// 	}
-							// 	return FuseUtils.filterArrayByString(arr, _searchText);
-							// }
-							// const chatListContacts =
-							// 	contacts.length > 0 && user && user.chatList
-							// 		? user.chatList.map(_chat => ({
-							// 			..._chat,
-							// 			...contacts.find(_contact => _contact.id === _chat.contactId)
-							// 		}))
-							// 		: [];
-							// const contactsArr = getFilteredArray([...contacts], searchText);
-							// const chatListArr = getFilteredArray([...chatListContacts], searchText);
+
 							return (
 								<>
 									<FuseAnimateGroup
 										enter={{
 											animation: 'transition.expandIn'
 										}}
-										className="flex flex-col flex-shrink-0"
+
+
 									>
 										{props.numbers.length > 0 && (
-											<Typography className="font-300 text-20 px-20 py-8" color="secondary">
-												Chats
-											</Typography>
-										)}
+										<Typography className="font-300 text-20 px-20 py-8" color="secondary">
+											Chats
+										</Typography>
+									)}
+										<ChatTabPannel  SelectedValue ={SelectedValue} />
 										{filtered.map(contactt => (
-											<ContactListItem
-												key={contactt.id}
-												contact={contactt}
-												onContactClick={(e) => props.onContactClick(contactt)}
+										<ContactListItem
+										Channel={selectValue}
+										key={contactt.id}
+										contact={contactt}
+										onContactClick={(e) => props.onContactClick(contactt)}
 											// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
 											// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
 											/>
@@ -250,7 +229,7 @@ function ChatsSidebar(props) {
 									</FuseAnimateGroup>
 								</>
 							);
-						}, [props.numbers,filtered])
+						}, [props.numbers, filtered])
 					}
 				</List>
 

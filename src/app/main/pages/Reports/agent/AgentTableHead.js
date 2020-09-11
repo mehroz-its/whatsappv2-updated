@@ -52,7 +52,14 @@ const rows = [
 		sort: true
 	},
 	{
-		id: 'respone',
+		id: 'Total',
+		align: 'center',
+		disablePadding: false,
+		label: 'Total Chats',
+		sort: true
+	},
+	{
+		id: 'response',
 		align: 'center',
 		disablePadding: false,
 		label: 'Response Time',

@@ -142,15 +142,18 @@ const engagments = (data) => {
 	columnTemplate.strokeWidth = 2;
 	columnTemplate.strokeOpacity = 1;
 }
+var Start="";
+var End="";
+
 
 function ChatApp() {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
 	const [val, setVal] = React.useState('');
 	const [open, setOpen] = React.useState(false);
-	const [age, setAge] = React.useState(10);
+	const [age, setAge] = React.useState('day');
 	const [selectOPen, setSelectOPen] = React.useState(false);
-
+	const [isLoading,setisLoading] = React.useState(false)
 	const toggle = () => setOpen(!open);
 	const [dateDisplay, setDateDisplay] = React.useState(false);
 	const [dateRange, setdateRange] = React.useState({
@@ -189,34 +192,41 @@ function ChatApp() {
 	const getData = ((loadData) => {
 		console.log('called get data')
 		loadData = () => {
-			return CoreHttpHandler.request('reports', 'chatReport', {
+			return CoreHttpHandler.request('reports', 'chatChartInOutCC', {
 
 				limit: 100,
 				page: 0,
+				start_date:Start,
+				end_date:End,
+				filter:age,
 				columns: "*",
 				sortby: "ASC",
 				orderby: "id",
 			}, null, null, true);
-		};
+		}
 		loadData().then((response) => {
-			let tableData = response.data.data.list.data
-			console.log(tableData)
-			setTableData(tableData)
-			setData2(tableData)
+			let data = response.data
+			let dataagain = Object.values(data)
+			let finaldata = dataagain[1].report.finalbox[0].conversations
+			let finaldata2 = dataagain[1].report.finalbox[0].engagements
+			console.log("COnversation",finaldata)
+			console.log("Engagements",finaldata2)
+
+	
 		});
 	})
-	const dataSourceOptions = {
-		params: {
-			columns: "*",
-			sortby: "ASC",
-			orderby: "id",
-			where: "id != $1 AND displayed = false",
-			values: 0,
-		},
-	};
+	// const dataSourceOptions = {
+	// 	params: {
+	// 		columns: "*",
+	// 		sortby: "ASC",
+	// 		orderby: "id",
+	// 		where: "id != $1 AND displayed = false",
+	// 		values: 0,
+	// 	},
+	// };
 	React.useEffect(() => {
-		CoreHttpHandler.request('reports', 'chatChartInOutCC', { ...dataSourceOptions }, dataSourceSuccess, dataSourceFailure);
-		CoreHttpHandler.request('reports', 'chatChartEngagments', { ...dataSourceOptions }, dataSourceSuccessEngagments, dataSourceFailureEngagments);
+		// CoreHttpHandler.request('reports', 'chatChartInOutCC', { ...dataSourceOptions }, dataSourceSuccess, dataSourceFailure);
+		// CoreHttpHandler.request('reports', 'chatChartEngagments', { ...dataSourceOptions }, dataSourceSuccessEngagments, dataSourceFailureEngagments);
 		getData()
 	}, [])
 	const dataSourceSuccess = (response) => {
@@ -274,6 +284,11 @@ function ChatApp() {
 		var End = end.toISOString()
 		console.log(Start,End,'Coverted_Datesss');
 	}
+	const getDataAgain = () =>
+	{	setisLoading(true)
+		getData('',Start,End);
+	}
+	console.log(age,"AGEEEE");
 	return (
 		<FusePageSimple
 			header={
@@ -303,14 +318,23 @@ function ChatApp() {
 								style={{ fontSize: '12px', marginTop: '-5px' }}
 							>
 								<MenuItem style={{ fontSize: '12px' }}
-									value={10}>Day</MenuItem>
+									value="day">Day</MenuItem>
 								<MenuItem style={{ fontSize: '12px' }}
-									value={20}>Month</MenuItem>
+									value="month">Month</MenuItem>
 								<MenuItem style={{ fontSize: '12px' }}
-									value={30}>Year</MenuItem>
+									value="year">Year</MenuItem>
 							</Select>
 						</FormControl>
 						<DateRangePickerVal  SelectedDates ={SelectedDates}/>
+				<Button 
+				onClick={getDataAgain}
+                id="content-upload-button" 
+                style={{ marginLeft: '8px', marginTop: '6px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span" >
+                    Generate Report 
+                </Button> 
+                <Button id="content-upload-button" style={{ marginLeft: '8px', marginTop: '6px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span"                            >
+                    Export
+                </Button>
 					</div>
 				</ div>
 			}
