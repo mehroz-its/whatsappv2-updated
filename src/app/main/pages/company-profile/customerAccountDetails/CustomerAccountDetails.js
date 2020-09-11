@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
+import Profile from './SideNavigationPages/Profile/Index'
 // import CannedDialog from './CannedDialog'
 const useStyles = makeStyles((theme) => ({
     addButton: {
@@ -165,9 +166,9 @@ function CustomerDetails(props) {
                     wrapper: 'min-h-0'
                 }}
                 header={<CustomerDetailsHeader pageLayout={pageLayout} SearchVal={search}  data={companyDetails}/>}
-                // 	content={
-                //     // <CannedList isSearched={val} data={data2} onDialogClose={closeDialog} ValueForSearch={val} displaySnack={valueReceived} />
-                // }
+                	content={
+                        <Profile />
+                }
                 leftSidebarContent={<CustomerDetailSideBar cannedType={handleCannedMessageType} />}
                 sidebarInner
                 ref={pageLayout}

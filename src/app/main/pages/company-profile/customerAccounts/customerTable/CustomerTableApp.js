@@ -2,8 +2,8 @@ import FusePageCarded from '@fuse/core/FusePageCarded';
 import withReducer from 'app/store/withReducer';
 import React, { useState } from 'react';
 import reducer from '../store/reducers';
-import CampaignHeader from './CustomerTableHeader';
-import CampaignTable from './CustomerTable';
+import CustomerTableHeader from './CustomerTableHeader';
+import CustomerTable from './CustomerTable';
 import Fab from '@material-ui/core/Fab';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
@@ -87,8 +87,8 @@ autoHideDuration={3000}
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
 					root: classes.layoutRoot,
 				}}
-				header={<CampaignHeader SearchVal={updateText} />}
-				content={<CampaignTable ValueForSearch={val} />}
+				header={<CustomerTableHeader SearchVal={updateText} />}
+				content={<CustomerTable ValueForSearch={val} />}
 			// innerScroll
 			/>
 		

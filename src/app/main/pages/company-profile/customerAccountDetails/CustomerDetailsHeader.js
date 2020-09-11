@@ -28,7 +28,7 @@ const SearchStyle = createMuiTheme({
 function CustomerDetailsHeader(props) {
 	const dispatch = useDispatch();
 	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
-	const { data } = props
+	// const { data } = props
 
 	return (
 		<div className="flex flex-1 items-center justify-between p-8 sm:p-24">
@@ -49,7 +49,7 @@ function CustomerDetailsHeader(props) {
 					</FuseAnimate>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 						<Typography variant="h6" className="mx-12 hidden sm:flex">
-							<span style={{ fontSize: '15px' }}>{data.name}</span>
+							{/* <span style={{ fontSize: '15px' }}>{data.name}</span> */}
 						</Typography>
 					</FuseAnimate>
 				</div>
