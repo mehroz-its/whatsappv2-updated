@@ -19,9 +19,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-import ContactListItem from './ContactListItem';
+import ContactListItem from '../chat/ContactListItem';
 import PropTypes from 'prop-types';
-
+import ChatTabPannel from '../chat/ChatTabPannel'
 import StatusIcon from './StatusIcon';
 import * as Actions from './store/actions';
 
@@ -132,7 +132,7 @@ function ChatsSidebar(props) {
 	const [statusMenuEl, setStatusMenuEl] = useState(null);
 	const [moreMenuEl, setMoreMenuEl] = useState(null);
 	const [value, setValue] = React.useState(0);
-
+	const [selectValue, setselectValue] = React.useState('');
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
@@ -171,6 +171,11 @@ function ChatsSidebar(props) {
 	function handleSearchText(event) {
 		setSearchText(event.target.value);
 	}
+
+	const SelectedValue = (value)=>{
+	 	setselectValue(value)
+	}
+
 	let filtered = props.numbers
 	filtered = searchText.charAt(0) === '9' ? numbers.filter((number => number.number.includes(searchText))) : numbers.filter((number => number.name.toLowerCase().includes(searchText.toLowerCase())))
 	return (
@@ -227,13 +232,16 @@ function ChatsSidebar(props) {
 									}}
 									className="flex flex-col flex-shrink-0"
 								>
+									<ChatTabPannel  SelectedValue ={SelectedValue} />
 									{props.numbers.length > 0 && (
 										<Typography className="font-300 text-20 px-20 py-8" color="secondary">
 											History
 										</Typography>
 									)}
+										
 									{filtered.map(contactt => (
 										<ContactListItem
+											Channel={selectValue}
 											key={contactt.id}
 											contact={contactt}
 											onContactClick={(e)=>props.onContactClick(contactt)}

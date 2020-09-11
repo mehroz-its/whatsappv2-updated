@@ -255,16 +255,19 @@ function AgentTable(props) {
 											{n.agent_name}
 										</TableCell>
 										<TableCell component="th" scope="row"  align="center" style={{fontSize:'11px',padding:'10px'}}>
-											{n.total_chat_count}
+											{n.inbound}
 										</TableCell>
 										<TableCell component="th" scope="row" align="center" style={{fontSize:'11px' ,padding:'10px'}}>
+											{n.outbound}
+										</TableCell>
+                                        <TableCell component="th" scope="row" align="center" style={{fontSize:'11px' ,padding:'10px'}}>
 											{n.total_engagement_count}
 										</TableCell>
                                         <TableCell component="th" scope="row" align="center" style={{fontSize:'11px' ,padding:'10px'}}>
-											{n.responsetime}
+											{n.total_chat_count}
 										</TableCell>
                                         <TableCell component="th" scope="row" align="center" style={{fontSize:'11px' ,padding:'10px'}}>
-											{n.account_status}
+											{n.responsetime}
 										</TableCell>
 										<TableCell component="th" scope="row" align="center" style={{fontSize:'11px' ,padding:'10px'}}>
 											{n.account_status}

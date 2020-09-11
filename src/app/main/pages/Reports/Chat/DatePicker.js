@@ -52,14 +52,7 @@ import { DateRangePicker } from 'react-dates';
 
         />
         						
-                <Button 
-                id="content-upload-button" 
-                style={{ marginLeft: '8px', marginTop: '6px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span" >
-                    Generate Report 
-                 </Button> 
-                <Button id="content-upload-button" style={{ marginLeft: '8px', marginTop: '6px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span"                            >
-                    Export
-                 </Button>
+
         </>
         );
     
