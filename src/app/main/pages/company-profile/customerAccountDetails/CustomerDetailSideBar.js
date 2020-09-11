@@ -90,7 +90,7 @@ function CustomerDetailSideBar(props) {
 							<Icon className="list-item-icon text-16" color="action">
 								rate_review
 							</Icon>
-							<ListItemText className="truncate" primary="All Messages" disableTypography />
+							<ListItemText className="truncate" primary="Profile" disableTypography />
 						</ListItem>
 						<ListItem
 							exact
@@ -106,7 +106,7 @@ function CustomerDetailSideBar(props) {
 								textsms
 							</Icon>
 							<ListItemText
-								primary="Text" disableTypography />
+								primary="Contacts" disableTypography />
 						</ListItem>
 						<ListItem
 							exact
@@ -122,7 +122,7 @@ function CustomerDetailSideBar(props) {
 								audiotrack
 							</Icon>
 							<ListItemText
-								primary="Audio" disableTypography />
+								primary="Notes" disableTypography />
 						</ListItem>
 						<ListItem
 							exact
@@ -138,7 +138,7 @@ function CustomerDetailSideBar(props) {
 								image
 						</Icon>
 							<ListItemText
-								primary="Image" disableTypography />
+								primary="Statement" disableTypography />
 						</ListItem>
 						<ListItem
 							exact
@@ -154,7 +154,7 @@ function CustomerDetailSideBar(props) {
 								switch_video
 						</Icon>
 							<ListItemText
-								primary="Video" disableTypography />
+								primary="Invoices" disableTypography />
 						</ListItem>
 						<ListItem
 							exact
@@ -170,7 +170,7 @@ function CustomerDetailSideBar(props) {
 								picture_as_pdf
 						</Icon>
 							<ListItemText
-								primary="Document" disableTypography />
+								primary="Payments" disableTypography />
 						</ListItem>
 					</List>
 				</Paper>
