@@ -54,31 +54,6 @@ function CustomerDetailsHeader(props) {
 					</FuseAnimate>
 				</div>
 			</div>
-			{/* <div className="flex flex-1 items-center justify-center px-8 sm:px-12">
-				<ThemeProvider theme={mainTheme}>
-					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-						<Paper className="flex items-center w-full max-w-sm px-8 py-4 " elevation={1}>
-							<Icon color="action" fontSize="small">search</Icon>
-							<MuiThemeProvider theme={SearchStyle}>
-								<Input
-									style={{ border: 'none' }}
-									rows={1}
-
-									placeholder="Search"
-									className="flex flex-1 mx-8"
-									disableUnderline
-									onChange={e => {
-
-										props.SearchVal(e.target.value)
-
-									}}
-									placeholder="Search"
-								/>
-							</MuiThemeProvider>
-						</Paper>
-					</FuseAnimate>
-				</ThemeProvider>
-			</div> */}
 		</div>
 	);
 }
