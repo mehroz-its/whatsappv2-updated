@@ -129,17 +129,17 @@ function CustomerDetailSideBar(props) {
 							exact
 							button
 							component={NavLinkAdapter}
-							to="/apps/company-details/Statement"
+							to="/apps/company-details/TemplateMessage"
 							activeClassName="active"
 							className={classes.listItem}
-							onClick={() => { onTabChange("Statement") }}
+							onClick={() => { onTabChange("TemplateMessage") }}
 
 						>
 							<Icon className="list-item-icon text-16" color="action">
 								image
 						</Icon>
 							<ListItemText
-								primary="Statement" disableTypography />
+								primary="TemplateMessage" disableTypography />
 						</ListItem>
 						<ListItem
 							exact
