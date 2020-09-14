@@ -49,7 +49,7 @@ function CustomerDetailsHeader(props) {
 					</FuseAnimate>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 						<Typography variant="h6" className="mx-12 hidden sm:flex">
-							<span style={{ fontSize: '15px' }}>{data.name}</span>
+							{/* <span style={{ fontSize: '15px' }}>{data.name}</span> */}
 						</Typography>
 					</FuseAnimate>
 				</div>
