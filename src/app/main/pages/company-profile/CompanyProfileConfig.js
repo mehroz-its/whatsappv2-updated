@@ -23,6 +23,11 @@ const CompanyProfileConfig = {
     	{
 			path: '/apps/company-detailsProfile',
 			component: React.lazy(() => import('./customerAccountDetails/SideNavigationPages/Profile/Index.js'))
+		}
+		,
+		{
+			path: '/apps/company-contactdetails',
+			component: React.lazy(() => import('./customerAccountDetails/SideNavigationPages/contact/Contact'))
 		},
         
     ]
