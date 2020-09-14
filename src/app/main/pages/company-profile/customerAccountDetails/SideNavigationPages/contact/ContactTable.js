@@ -8,6 +8,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import clsx from 'clsx';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
+import Button from '@material-ui/core/Button';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -17,13 +22,43 @@ import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider
 // import CampaignDialog from './CampaignDialog'
 import CoreHttpHandler from '../../../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../../../@fuse/core/FuseLoading/FuseLoading'
-import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import CardContent from '@material-ui/core/CardContent';
+import Card from '@material-ui/core/Card';
+import Typography from '@material-ui/core/Typography';
 
-
+const useStyles = makeStyles((theme)=>({
+    root: {
+        maxWidth: '100%',
+        padding: '0px'
+	},
+	root2: {
+		'& > *': {
+		  margin: theme.spacing(1),
+		},
+	  },
+	  formControl: {
+		  margin: theme.spacing(1),
+		  minWidth: 100,
+		  maxWidth:150,
+		  marginTop:'-4',
+		  minHeight:10,
+		  maxHeight:100,
+		},
+		selectEmpty: {
+		  marginTop: theme.spacing(2),
+		},
+		largeIcon: {
+		  // width: 10,
+		  // marginLeft:'-2px',
+		  height: 22.5,
+		  
+		},
+ 
+}))
 
 const PaginationStyle = createMuiTheme({
 	overrides: {
@@ -43,6 +78,7 @@ const PaginationStyle = createMuiTheme({
 
 function ContactTable(props) {
 	console.log(props)
+	const classes = useStyles();
 	// const dispatch = useDispatch();
 	// const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	// const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
@@ -77,6 +113,11 @@ function ContactTable(props) {
 		activated: false,
 	});
 
+	const [number,SetNumber] = useState(10) 
+    const handleChange = (event) => {
+		SetNumber(event.target.value);
+	};
+	
 	const getData = ((loadData) => {
 		loadData = () => {
 			return CoreHttpHandler.request('campaigns', 'listing', {
@@ -215,7 +256,10 @@ function ContactTable(props) {
 	  };
 	return (
 		<>
+ <Card className={classes.root}>
 
+<CardContent style={{ width: '100%' }}>
+	<Typography variant='h2' className='companyDetailHeader'>Contact</Typography>
 			<Snackbar
 
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -227,6 +271,55 @@ function ContactTable(props) {
 					{snackbarmessage}
 				</Alert>
 			</Snackbar>
+			<div className={classes.root2}>
+            <Button
+            size='small' 
+            variant="contained" 
+            color="primary" 
+            
+            >
+            New Contact    
+            </Button>
+        </div>
+        <div style={{flexDirection:'row',flex:1,display:'flex'}}>
+        <FormControl className={classes.formControl}>
+        <Select
+          value={number}
+          onChange={handleChange}
+          displayEmpty
+          className={classes.selectEmpty}
+          inputProps={{ 'aria-label': 'Without label' }}
+        >
+          <MenuItem value={10}>10</MenuItem>
+          <MenuItem value={25}>25</MenuItem>
+          <MenuItem value={50}>50</MenuItem>
+        </Select>
+    </FormControl>
+    <div style={{marginTop:'20px'}}>
+    <Button
+            size='small' 
+            variant="contained" 
+            color="primary" 
+            style={{borderRadius:0}}
+            >
+            Export    
+            </Button>
+            <Button
+            style={{marginLeft:'-4px',paddingTop:'10px'}}
+            size='small' 
+            variant="contained" 
+            color="primary" 
+            style={{borderRadius:0}}
+            >
+            <Icon
+            fontSize="small"
+            className={classes.largeIcon}
+            
+            >send</Icon> 
+            </Button>
+    </div>
+    </div>
+
 			<div className="w-full flex flex-col">
 				<FuseScrollbars className="flex-grow overflow-x-auto">
 					<Table className="min-w-xl" aria-labelledby="tableTitle">
@@ -379,6 +472,8 @@ function ContactTable(props) {
 
 				{/* {open && <CampaignDialog isOpen={open} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} />} */}
 			</div>
+			</CardContent>
+			</Card>
 		</>
 	);
 }
