@@ -46,6 +46,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function CustomerDetailSideBar(props) {
+	const {onTabChange} = props
 	const user = null;
 	let data = null
 	data = JSON.parse(localStorage.getItem('user_data'))
@@ -82,10 +83,10 @@ function CustomerDetailSideBar(props) {
 							exact
 							button
 							component={NavLinkAdapter}
-							to="/apps/canned-messages"
+							to="/apps/company-details"
 							activeClassName="active"
 							className={classes.listItem}
-							onClick={() => { handleClick("all") }}
+							onClick={() => { onTabChange('Profile') }}
 						>
 							<Icon className="list-item-icon text-16" color="action">
 								rate_review
@@ -96,10 +97,10 @@ function CustomerDetailSideBar(props) {
 							exact
 							button
 							component={NavLinkAdapter}
-							to="/apps/canned-messages/text"
+							to="/apps/company-details/Contact"
 							activeClassName="active"
 							className={classes.listItem}
-							onClick={() => { handleClick("text") }}
+							onClick={() => { onTabChange('Contact') }}
 
 						>
 							<Icon className="list-item-icon text-16" color="action">
@@ -112,10 +113,10 @@ function CustomerDetailSideBar(props) {
 							exact
 							button
 							component={NavLinkAdapter}
-							to="/apps/canned-messages/audio"
+							to="/apps/company-details/Notes"
 							activeClassName="active"
 							className={classes.listItem}
-							onClick={() => { handleClick("audio") }}
+							onClick={() => { onTabChange("Notes") }}
 
 						>
 							<Icon className="list-item-icon text-16" color="action">
@@ -128,10 +129,10 @@ function CustomerDetailSideBar(props) {
 							exact
 							button
 							component={NavLinkAdapter}
-							to="/apps/canned-messages/images"
+							to="/apps/company-details/Statement"
 							activeClassName="active"
 							className={classes.listItem}
-							onClick={() => { handleClick("image") }}
+							onClick={() => { onTabChange("Statement") }}
 
 						>
 							<Icon className="list-item-icon text-16" color="action">
@@ -144,10 +145,10 @@ function CustomerDetailSideBar(props) {
 							exact
 							button
 							component={NavLinkAdapter}
-							to="/apps/canned-messages/videos"
+							to="/apps/company-details/Invoices"
 							activeClassName="active"
 							className={classes.listItem}
-							onClick={() => { handleClick("video") }}
+							onClick={() => { onTabChange("Invoices") }}
 
 						>
 							<Icon className="list-item-icon text-16" color="action">
@@ -160,10 +161,10 @@ function CustomerDetailSideBar(props) {
 							exact
 							button
 							component={NavLinkAdapter}
-							to="/apps/canned-messages/docs"
+							to="/apps/company-details/Payments"
 							activeClassName="active"
 							className={classes.listItem}
-							onClick={() => { handleClick("document") }}
+							onClick={() => { onTabChange("Payments") }}
 
 						>
 							<Icon className="list-item-icon text-16" color="action">

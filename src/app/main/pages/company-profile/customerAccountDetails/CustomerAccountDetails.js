@@ -14,6 +14,7 @@ import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import Profile from './SideNavigationPages/Profile/Index'
+// import Contact from  './SideNavigationPages/contact/ContactTable'
 import ContactTable from './SideNavigationPages/contact/ContactTable'
 // import CannedDialog from './CannedDialog'
 const useStyles = makeStyles((theme) => ({
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 function CustomerDetails(props) {
     // console.log('propsprops',props.location.data)
-    const {location} = props
+    const { location } = props
     const companyDetails = location.data
     const classes = useStyles();
     const pageLayout = useRef(null);
@@ -45,7 +46,7 @@ function CustomerDetails(props) {
     const [ok, setOK] = React.useState('')
     const [val, setVal] = React.useState('')
     const [cannedtype, setCannedType] = React.useState('all')
-    const [tab,setTab]=React.useState(1)
+    const [tab, setTab] = React.useState('Profile')
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -148,6 +149,9 @@ function CustomerDetails(props) {
     const handleCannedMessageType = (val) => {
         setCannedType(val)
     }
+    const handleTabChange = (val) => {
+        setTab(val)
+    }
 
     return (
         <>
@@ -168,29 +172,17 @@ function CustomerDetails(props) {
                     header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
                     wrapper: 'min-h-0'
                 }}
-                header={<CustomerDetailsHeader pageLayout={pageLayout} SearchVal={search}  data={companyDetails}/>}
-                	content={
-                        <ContactTable />
+                header={<CustomerDetailsHeader pageLayout={pageLayout} SearchVal={search} data={companyDetails} />}
+                content={
+                    tab === 'Profile' ? <Profile />
+                    : tab === 'Contact' ? <ContactTable /> : null
                 }
-                leftSidebarContent={<CustomerDetailSideBar cannedType={handleCannedMessageType} />}
+                leftSidebarContent={<CustomerDetailSideBar onTabChange={handleTabChange}cannedType={handleCannedMessageType} />}
                 sidebarInner
                 ref={pageLayout}
             // innerScroll
             />
-            <FuseAnimate animation="transition.expandIn" delay={300}>
-                <Fab
-                    size="medium"
-                    color="primary"
-                    aria-label="add"
-                    className={classes.addButton}
-                    onClick={handleClickOpen}
-                // onClick={ev => dispatch(Actions.openNewContactDialog())}
-                >
-                    <Icon>person_add</Icon>
-                </Fab>
-            </FuseAnimate>
-            {/* {open ? <CannedDialog isSearched={val} type="Add Canned Message" isOpen={open} closeDialog={closeDialog} data={dialogData} /> : null} */}
-        </>
+           </>
     );
 }
 
