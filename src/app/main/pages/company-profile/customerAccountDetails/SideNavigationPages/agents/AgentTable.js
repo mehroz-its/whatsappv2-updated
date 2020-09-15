@@ -16,7 +16,7 @@ import Button from '@material-ui/core/Button';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import ContactTableHeader from './ContactTableHeader';
+import AgentTableHeader from './AgentTableHeader';
 import ContactsTablePaginationActions from '../../../../setting/canned/ContactsTablePaginationActions';
 import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
 // import CampaignDialog from './CampaignDialog'
@@ -76,7 +76,7 @@ const PaginationStyle = createMuiTheme({
 });
 
 
-function ContactTable(props) {
+function AgentTable(props) {
 	console.log(props)
 	const classes = useStyles();
 	// const dispatch = useDispatch();
@@ -259,7 +259,7 @@ function ContactTable(props) {
  <Card className={classes.root}>
 
 <CardContent style={{ width: '100%' }}>
-	<Typography variant='h2' className='companyDetailHeader'>Contact</Typography>
+	<Typography variant='h2' className='companyDetailHeader'>Agents</Typography>
 			<Snackbar
 
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -272,49 +272,11 @@ function ContactTable(props) {
 				</Alert>
 			</Snackbar>
 
-        <div style={{flexDirection:'row',flex:1,display:'flex'}}>
-        <FormControl className={classes.formControl}>
-        <Select
-          value={number}
-          onChange={handleChange}
-          displayEmpty
-          className={classes.selectEmpty}
-          inputProps={{ 'aria-label': 'Without label' }}
-        >
-          <MenuItem value={10}>10</MenuItem>
-          <MenuItem value={25}>25</MenuItem>
-          <MenuItem value={50}>50</MenuItem>
-        </Select>
-    </FormControl>
-    <div style={{marginTop:'20px'}}>
-    <Button
-            size='small' 
-            variant="contained" 
-            // color="primary" 
-            style={{borderRadius:0}}
-            >
-            Export    
-            </Button>
-            <Button
-            style={{marginLeft:'-4px',paddingTop:'10px'}}
-            size='small' 
-            variant="contained" 
-            // color="primary" 
-            style={{borderRadius:0}}
-            >
-            <Icon
-            fontSize="small"
-            className={classes.largeIcon}
-            
-            >send</Icon> 
-            </Button>
-    </div>
-    </div>
 
 			<div className="w-full flex flex-col">
 				<FuseScrollbars className="flex-grow overflow-x-auto">
 					<Table className="min-w-xl" aria-labelledby="tableTitle">
-						<ContactTableHeader
+						<AgentTableHeader
 							numSelected={selected.length}
 							order={order}
 							onSelectAllClick={handleSelectAllClick}
@@ -403,7 +365,9 @@ function ContactTable(props) {
 														<Icon className="text-red text-16">cancel</Icon>
 													)}
 											</TableCell>
-
+                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+												{n.description}
+											</TableCell>          
 
 											{/* <TableCell component="th" scope="row" align="center" style={{fontSize:'11px',padding:'10px'}}>
 											{n.dtu}
@@ -469,4 +433,4 @@ function ContactTable(props) {
 	);
 }
 
-export default withRouter(ContactTable);
+export default withRouter(AgentTable);

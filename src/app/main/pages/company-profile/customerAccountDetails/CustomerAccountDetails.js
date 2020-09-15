@@ -16,6 +16,7 @@ import Alert from '@material-ui/lab/Alert';
 import Profile from './SideNavigationPages/Profile/Index'
 // import Contact from  './SideNavigationPages/contact/ContactTable'
 import ContactTable from './SideNavigationPages/contact/ContactTable'
+import AgentTable from './SideNavigationPages/agents/AgentTable'
 // import CannedDialog from './CannedDialog'
 const useStyles = makeStyles((theme) => ({
     addButton: {
@@ -175,14 +176,15 @@ function CustomerDetails(props) {
                 header={<CustomerDetailsHeader pageLayout={pageLayout} SearchVal={search} data={companyDetails} />}
                 content={
                     tab === 'Profile' ? <Profile />
-                    : tab === 'Contact' ? <ContactTable /> : null
+                        : tab === 'Contact' ? <ContactTable />
+                            : tab === 'Agents' ? <AgentTable /> : null
                 }
-                leftSidebarContent={<CustomerDetailSideBar onTabChange={handleTabChange}cannedType={handleCannedMessageType} />}
+                leftSidebarContent={<CustomerDetailSideBar onTabChange={handleTabChange} cannedType={handleCannedMessageType} />}
                 sidebarInner
                 ref={pageLayout}
             // innerScroll
             />
-           </>
+        </>
     );
 }
 

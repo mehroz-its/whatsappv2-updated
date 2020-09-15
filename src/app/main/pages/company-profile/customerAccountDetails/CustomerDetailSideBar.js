@@ -113,17 +113,17 @@ function CustomerDetailSideBar(props) {
 							exact
 							button
 							component={NavLinkAdapter}
-							to="/apps/company-details/Notes"
+							to="/apps/company-details/Agents"
 							activeClassName="active"
 							className={classes.listItem}
-							onClick={() => { onTabChange("Notes") }}
+							onClick={() => { onTabChange("Agents") }}
 
 						>
 							<Icon className="list-item-icon text-16" color="action">
 								audiotrack
 							</Icon>
 							<ListItemText
-								primary="Notes" disableTypography />
+								primary="Agents" disableTypography />
 						</ListItem>
 						<ListItem
 							exact
