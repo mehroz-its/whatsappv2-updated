@@ -24,6 +24,7 @@ import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
 import moment from "moment";
 import DateRangePickerVal from './DatePicker'
+import { object } from 'prop-types';
 
 am4core.useTheme(am4themes_material);
 am4core.useTheme(am4themes_animated);
@@ -41,107 +42,163 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const incomingAndOutGoingCount = (data) => {
-	let chart = am4core.create("chartdivv", am4charts.XYChart);
-	chart.data = data;
-	chart.colors.step = 1;
-	chart.legend = new am4charts.Legend()
-	chart.legend.position = 'top'
-	chart.legend.paddingBottom = 20
-	chart.legend.labels.template.maxWidth = 95
-	let xAxis = chart.xAxes.push(new am4charts.CategoryAxis())
-	xAxis.dataFields.category = 'category'
-	xAxis.renderer.cellStartLocation = 0.1
-	xAxis.renderer.cellEndLocation = 0.9
-	xAxis.renderer.grid.template.location = 0;
-	let yAxis = chart.yAxes.push(new am4charts.ValueAxis());
-	yAxis.min = 0;
-	createSeries('incoming', 'Inbound');
-	createSeries('outgoing', 'Outbound');
-	function createSeries(value, name) {
-		let series = chart.series.push(new am4charts.ColumnSeries())
-		series.dataFields.valueY = value
-		series.dataFields.categoryX = 'category'
-		series.name = name
-		series.events.on("hidden", arrangeColumns);
-		series.events.on("shown", arrangeColumns);
-		series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
 
-		// let bullet = series.bullets.push(new am4charts.LabelBullet())
-		// bullet.interactionsEnabled = false
-		// bullet.dy = 30;
-		// bullet.label.text = '{valueY}'
-		// bullet.label.fill = am4core.color('#ffffff')
+console.log("dataa : " ,  data);
 
-		return series;
+// Create chart instance
+let chart = am4core.create("chartdivv", am4charts.XYChart);
+
+// Add data
+chart.data = generateChartData();
+
+// Create axes
+let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+dateAxis.renderer.minGridDistance = 50;
+
+let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+// Create series
+let series = chart.series.push(new am4charts.ColumnSeries());
+series.dataFields.valueY = "visits";
+series.dataFields.dateX = "date";
+series.strokeWidth = 2;
+series.minBulletDistance = 10;
+series.tooltipText = "{valueY}";
+series.tooltip.pointerOrientation = "vertical";
+series.tooltip.background.cornerRadius = 20;
+series.tooltip.background.fillOpacity = 0.5;
+series.tooltip.label.padding(12,12,12,12)
+
+
+
+// Add cursor
+chart.cursor = new am4charts.XYCursor();
+chart.cursor.xAxis = dateAxis;
+chart.cursor.snapToSeries = series;
+// Add scrollbar
+chart.scrollbarX = new am4charts.XYChartScrollbar();
+chart.scrollbarX.series.push(series);
+chart.scrollbarX.parent = chart.bottomAxesContainer;
+
+function generateChartData() {
+    let chartData = [];
+      for (var i = 0; i < data.length; i++) {
+              chartData.push({
+            date: data[i][2].date,
+			visits: data[i][0].count,
+		});
+	
 	}
-	function arrangeColumns() {
-
-		let series = chart.series.getIndex(0);
-
-		let w = 1 - xAxis.renderer.cellStartLocation - (1 - xAxis.renderer.cellEndLocation);
-		if (series.dataItems.length > 1) {
-			let x0 = xAxis.getX(series.dataItems.getIndex(0), "categoryX");
-			let x1 = xAxis.getX(series.dataItems.getIndex(1), "categoryX");
-			let delta = ((x1 - x0) / chart.series.length) * w;
-			if (am4core.isNumber(delta)) {
-				let middle = chart.series.length / 2;
-
-				let newIndex = 0;
-				chart.series.each(function (series) {
-					if (!series.isHidden && !series.isHiding) {
-						series.dummyData = newIndex;
-						newIndex++;
-					}
-					else {
-						series.dummyData = chart.series.indexOf(series);
-					}
-				})
-				let visibleCount = newIndex;
-				let newMiddle = visibleCount / 2;
-
-				chart.series.each(function (series) {
-					let trueIndex = chart.series.indexOf(series);
-					let newIndex = series.dummyData;
-
-					let dx = (newIndex - trueIndex + middle - newMiddle) * delta
-
-					series.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
-					series.bulletsContainer.animate({ property: "dx", to: dx }, series.interpolationDuration, series.interpolationEasing);
-				})
-			}
-		}
-	}
+	console.log("chartData",chartData);
+    return chartData;
 }
+}
+
 
 const engagments = (data) => {
-	let chart = am4core.create("chartdiv", am4charts.XYChart);
-	chart.data = data;
-	let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-	categoryAxis.dataFields.category = "type";
-	categoryAxis.renderer.grid.template.location = 0;
-	categoryAxis.renderer.minGridDistance = 30;
+	
+console.log("dataa : " ,  data);
 
-	categoryAxis.renderer.labels.template.adapter.add("dy", function (dy, target) {
-		if (target.dataItem && target.dataItem.index & 2 == 2) {
-			return dy + 25;
-		}
-		return dy;
-	});
+// Create chart instance
+let chart = am4core.create("chartdiv", am4charts.XYChart);
 
+// Add data
+chart.data = generateChartData();
+
+// Create axes
+let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+dateAxis.renderer.minGridDistance = 50;
+
+let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+
+// Create series
+let series = chart.series.push(new am4charts.ColumnSeries());
+series.dataFields.valueY = "visits";
+series.dataFields.dateX = "date";
+series.strokeWidth = 2;
+series.minBulletDistance = 10;
+series.tooltipText = "{valueY}";
+series.tooltip.pointerOrientation = "vertical";
+series.tooltip.background.cornerRadius = 20;
+series.tooltip.background.fillOpacity = 0.5;
+series.tooltip.label.padding(12,12,12,12)
+
+
+
+// Add cursor
+chart.cursor = new am4charts.XYCursor();
+chart.cursor.xAxis = dateAxis;
+chart.cursor.snapToSeries = series;
+// Add scrollbar
+chart.scrollbarX = new am4charts.XYChartScrollbar();
+chart.scrollbarX.series.push(series);
+chart.scrollbarX.parent = chart.bottomAxesContainer;
+
+function generateChartData() {
+    let chartData = [];
+      for (var i = 0; i < data.length; i++) {
+              chartData.push({
+            date: data[i][2].date,
+			visits: data[i][1].count,
+		});
+	
+	}
+	console.log("chartData",chartData);
+    return chartData;
+}
+}
+const engagmentss = (data) => {
+	
+	console.log("dataa : " ,  data);
+	
+	// Create chart instance
+	let chart = am4core.create("chartdivvv", am4charts.XYChart);
+	
+	// Add data
+	chart.data = generateChartData();
+	
+	// Create axes
+	let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+	dateAxis.renderer.minGridDistance = 50;
+	
 	let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-
+	
 	// Create series
 	let series = chart.series.push(new am4charts.ColumnSeries());
-	series.dataFields.valueY = "value";
-	series.dataFields.categoryX = "type";
-	series.name = "value";
-	series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
-	series.columns.template.fillOpacity = .8;
-
-	let columnTemplate = series.columns.template;
-	columnTemplate.strokeWidth = 2;
-	columnTemplate.strokeOpacity = 1;
-}
+	series.dataFields.valueY = "visits";
+	series.dataFields.dateX = "date";
+	series.strokeWidth = 2;
+	series.minBulletDistance = 10;
+	series.tooltipText = "{valueY}";
+	series.tooltip.pointerOrientation = "vertical";
+	series.tooltip.background.cornerRadius = 20;
+	series.tooltip.background.fillOpacity = 0.5;
+	series.tooltip.label.padding(12,12,12,12)
+	
+	
+	
+	// Add cursor
+	chart.cursor = new am4charts.XYCursor();
+	chart.cursor.xAxis = dateAxis;
+	chart.cursor.snapToSeries = series;
+	// Add scrollbar
+	chart.scrollbarX = new am4charts.XYChartScrollbar();
+	chart.scrollbarX.series.push(series);
+	chart.scrollbarX.parent = chart.bottomAxesContainer;
+	
+	function generateChartData() {
+		let chartData = [];
+		  for (var i = 0; i < data.length; i++) {
+				  chartData.push({
+				date: data[i][1].date,
+				visits: data[i][0].count,
+			});
+		
+		}
+		console.log("chartData",chartData);
+		return chartData;
+	}
+	}
 var Start="";
 var End="";
 
@@ -211,6 +268,9 @@ function ChatApp() {
 			let finaldata2 = dataagain[1].report.finalbox[0].engagements
 			console.log("COnversation",finaldata)
 			console.log("Engagements",finaldata2)
+			incomingAndOutGoingCount(finaldata);
+			engagments(finaldata)
+			engagmentss(finaldata2)
 
 	
 		});
@@ -242,6 +302,7 @@ function ChatApp() {
 		});
 		setchartdata(data)
 		incomingAndOutGoingCount(data);
+	
 
 	};
 	const dataSourceFailure = (response) => {
@@ -361,20 +422,26 @@ function ChatApp() {
 								</Grid>
 							</Grid>
 						</Grid>
-						<div className="widget flex w-full sm:w-1/1 md:w-1/2 p-12">
+						<div className="widget flex w-full sm:w-1/1 md:w-1 p-12">
 							<Paper className="w-full rounded-8 shadow-none border-1">
-								<Typography variant="h6" className="header-card text-center pt-8" >Conversation</Typography>
+								<Typography variant="h6" className="header-card text-center pt-8" >Conversation outgoing</Typography>
 								<div id="chartdivv" style={{ width: "100%", height: "300px" }}></div>
 							</Paper>
 						</div>
-						<div className="widget flex w-full sm:w-1/1 md:w-1/2 p-12">
+						<div className="widget flex w-full sm:w-1/1 md:w-1 p-12">
 							<Paper className="w-full rounded-8 shadow-none border-1">
-								<Typography variant="h6" className="header-card text-center pt-8" >Engagements</Typography>
+								<Typography variant="h6" className="header-card text-center pt-8" >Conversation incoming</Typography>
 								<div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>
 							</Paper>
 						</div>
+						<div className="widget flex w-full sm:w-1/1 md:w-1 p-12">
+							<Paper className="w-full rounded-8 shadow-none border-1">
+								<Typography variant="h6" className="header-card text-center pt-8" >Engagements</Typography>
+								<div id="chartdivvv" style={{ width: "100%", height: "300px" }}></div>
+							</Paper>
+						</div>
 					</FuseAnimateGroup>
-					<FusePageSimple
+					{/* <FusePageSimple
 						classes={{
 							contentWrapper: 'p-0 sm:p-12 pb-80 sm:pb-80 h-full',
 							content: 'flex flex-col h-full',
@@ -385,7 +452,7 @@ function ChatApp() {
 						header={<ChartHeader SearchVal={searchContact} />}
 						content={
 							<ChartTable data={val == '' ? data : data2} val={val} />}
-					/>
+					/> */}
 				</div>
 			}
 		/>
