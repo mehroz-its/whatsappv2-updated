@@ -248,13 +248,14 @@ function ChatApp() {
 	})
 	const getData = ((loadData) => {
 		console.log('called get data')
+		console.log(age,Start,End,"CREDENTIALS");
 		loadData = () => {
 			return CoreHttpHandler.request('reports', 'chatChartInOutCC', {
 
 				limit: 100,
 				page: 0,
-				start_date:Start,
-				end_date:End,
+				startingDate:Start,
+				endingDate:End,
 				filter:age,
 				columns: "*",
 				sortby: "ASC",
@@ -341,8 +342,8 @@ function ChatApp() {
 	const SelectedDates = (start,end) =>
 	{
 		console.log(start.toISOString(),end.toISOString(),'received successfully');
-		var Start = start.toISOString()
-		var End = end.toISOString()
+		 Start = start.toISOString()
+		 End = end.toISOString()
 		console.log(Start,End,'Coverted_Datesss');
 	}
 	const getDataAgain = () =>
@@ -379,7 +380,7 @@ function ChatApp() {
 								style={{ fontSize: '12px', marginTop: '-5px' }}
 							>
 								<MenuItem style={{ fontSize: '12px' }}
-									value="day">Day</MenuItem>
+									value="days">Day</MenuItem>
 								<MenuItem style={{ fontSize: '12px' }}
 									value="month">Month</MenuItem>
 								<MenuItem style={{ fontSize: '12px' }}
