@@ -18,6 +18,7 @@ import Profile from './SideNavigationPages/Profile/Index'
 import ContactTable from './SideNavigationPages/contact/ContactTable'
 import TemplateMessage from './SideNavigationPages/TemplateMessage/Index'
 import AgentTable from './SideNavigationPages/agents/AgentTable'
+import CannedReplies from './SideNavigationPages/CannedReplies/Index'
 // import CannedDialog from './CannedDialog'
 const useStyles = makeStyles((theme) => ({
     addButton: {
@@ -179,7 +180,9 @@ function CustomerDetails(props) {
                     tab === 'Profile' ? <Profile />
                     : tab === 'Contact' ? <ContactTable />
                     : tab === 'TemplateMessage' ? <TemplateMessage />
-                    : tab === 'Agents' ? <AgentTable /> : null
+                    : tab === 'Agents' ? <AgentTable />
+                    : tab === 'CannedReplies' ?  <CannedReplies/>
+                    : null
                 }
                 leftSidebarContent={<CustomerDetailSideBar onTabChange={handleTabChange} cannedType={handleCannedMessageType} />}
                 sidebarInner

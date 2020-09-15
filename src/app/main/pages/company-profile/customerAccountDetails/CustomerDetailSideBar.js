@@ -71,13 +71,13 @@ function CustomerDetailSideBar(props) {
 		<div className="p-0 lg:p-24 lg:ltr:pr-4 lg:rtl:pl-4">
 			<FuseAnimate animation="transition.slideLeftIn" delay={200}>
 				<Paper className="rounded-0 shadow-none lg:rounded-8 lg:shadow-1">
-					<div className="p-24 flex items-center">
+					{/* <div className="p-24 flex items-center">
 						<Avatar alt={value.charAt(0)} src="../../../"
 							className={classes.avatar}
 						/>
 						<Typography className="mx-12" style={{ fontSize: '12px', marginTop: '1px' }}>{value}</Typography>
 					</div>
-					<Divider />
+					<Divider /> */}
 					<List>
 						<ListItem
 							exact
@@ -145,17 +145,17 @@ function CustomerDetailSideBar(props) {
 							exact
 							button
 							component={NavLinkAdapter}
-							to="/apps/company-details/Invoices"
+							to="/apps/company-details/CannedReplies"
 							activeClassName="active"
 							className={classes.listItem}
-							onClick={() => { onTabChange("Invoices") }}
+							onClick={() => { onTabChange("CannedReplies") }}
 
 						>
 							<Icon className="list-item-icon text-16" color="action">
 								switch_video
 						</Icon>
 							<ListItemText
-								primary="Invoices" disableTypography />
+								primary="Canned Replies" disableTypography />
 						</ListItem>
 						<ListItem
 							exact
