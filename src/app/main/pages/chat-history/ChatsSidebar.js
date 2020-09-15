@@ -230,7 +230,7 @@ function ChatsSidebar(props) {
 									}}
 									className="flex flex-col flex-shrink-0"
 								>
-									<ChatTabPannel  SelectedValue ={SelectedValue} />
+									{/* <ChatTabPannel  SelectedValue ={SelectedValue} /> */}
 									{props.numbers.length > 0 && (
 										<Typography className="font-300 text-20 px-20 py-8" color="secondary">
 											History

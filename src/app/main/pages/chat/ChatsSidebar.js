@@ -215,7 +215,7 @@ function ChatsSidebar(props) {
 											Chats
 										</Typography>
 									)}
-										<ChatTabPannel  SelectedValue ={SelectedValue} />
+										{/* <ChatTabPannel  SelectedValue ={SelectedValue} /> */}
 										{filtered.map(contactt => (
 										<ContactListItem
 										Channel={selectValue}
