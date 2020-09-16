@@ -35,7 +35,7 @@ import FuseAnimate from '@fuse/core/FuseAnimate'
 
 function ContactListItem(props) {
 	const classes = useStyles(props);
-
+	console.log(props,"DATAAAA");
 	const showAvatar = () =>{
 		console.log("SelectedChannel",props.Channel);
 		if(props.Channel === "")
@@ -99,7 +99,7 @@ function ContactListItem(props) {
 				<div className="flex flex-col justify-center items-end">
 					{props.contact.last_closed && (
 						<Typography className="whitespace-no-wrap mb-1" style={{fontSize:'10px'}}>
-							{moment(props.contact.last_closed).format('ll')}
+							{moment(props.contact.tdu).format('ll')}
 						</Typography>
 					)}
 					{props.contact.message_count > 0 && (

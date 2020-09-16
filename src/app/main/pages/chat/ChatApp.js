@@ -243,6 +243,7 @@ function ChatApp(props) {
 	const [lastMessageTimestamp, setlastMessageTimestamp] = React.useState(null);
 	const [latestMessageSender, setlatestMessageSender] = React.useState(null);
 	const [numbers, setnumbers] = React.useState([]);
+	const [lastmessage, setlastmessage] = React.useState([]);
 	const [messages, setmessages] = React.useState([]);
 	const [NewMessages, setNewMessages] = React.useState([]);
 	const [showLatestMessage, setshowLatestMessage] = React.useState(false);
@@ -275,6 +276,7 @@ function ChatApp(props) {
 		CoreHttpHandler.request('conversations', 'numbers', {}, (response) => {
 			const numbers = response.data.data.customers;
 			const lastMessage = response.data.data.lastMessage;
+			console.log("lastMessage,",lastMessage);
 			if (lastMessage) {
 				const lastMessageDtu = new Date(lastMessage.dtu);
 				if (lastMessageTimestamp === null)
@@ -288,6 +290,7 @@ function ChatApp(props) {
 				}
 			}
 			setnumbers(numbers)
+			setlastmessage(lastMessage)
 		}, (response) => {
 		});
 	}
@@ -844,8 +847,8 @@ function ChatApp(props) {
 		});
 	}
 	let userOnline = JSON.parse(localStorage.getItem('online'))
-
-
+	console.log(lastmessage,"lastmessagelastmessagelastmessage");
+	console.log(numbers,"numbers");
 	return (
 		<>
 			<Snackbar
@@ -912,7 +915,7 @@ function ChatApp(props) {
 											paper: classes.drawerPaper
 										}}
 									>
-										<ChatsSidebar numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
+										<ChatsSidebar lastMessage={lastmessage} numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
 									</Drawer>
 								</Hidden> : null
 						}
@@ -938,7 +941,7 @@ function ChatApp(props) {
 										}
 									}}
 								>
-									<ChatsSidebar numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
+									<ChatsSidebar lastMessage={lastmessage} numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
 								</Drawer>
 							</Hidden> : null
 						}

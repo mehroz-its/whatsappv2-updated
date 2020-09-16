@@ -103,7 +103,8 @@ function a11yProps(index) {
 	};
 }
 function ChatsSidebar(props) {
-	const { numbers } = props
+	const { numbers, lastMessage } = props
+	console.log("NUMBERS = >", numbers, lastMessage);
 
 	const dispatch = useDispatch();
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
@@ -149,12 +150,6 @@ function ChatsSidebar(props) {
 	const classes = useStyles();
 	const [selectValue, setselectValue] = React.useState('');
 	const [SelectedChannel, setSelectedChannel] = React.useState('');
-	
-
-	const handleChange2 = (event) => {
-		// setSelectedChannel(event.target.value);
-	};
-
 
 	function handleSearchText(event) {
 		console.log(event.target.value, 'event.target.value')
@@ -162,9 +157,10 @@ function ChatsSidebar(props) {
 	}
 	let filtered = props.numbers
 	filtered = searchText.charAt(0) === '9' ? numbers.filter((number => number.number.includes(searchText))) : numbers.filter((number => number.name.toLowerCase().includes(searchText.toLowerCase())))
+	console.log("filtered_data", filtered);
+	
+	const SelectedValue = (value) => {
 
-	const SelectedValue = (value)=>{
-		
 		setselectValue(value)
 	}
 
@@ -211,21 +207,25 @@ function ChatsSidebar(props) {
 
 									>
 										{props.numbers.length > 0 && (
-										<Typography className="font-300 text-20 px-20 py-8" color="secondary">
-											Chats
-										</Typography>
-									)}
+											<Typography className="font-300 text-20 px-20 py-8" color="secondary">
+												Chats
+											</Typography>
+										)}
 										{/* <ChatTabPannel  SelectedValue ={SelectedValue} /> */}
+										
 										{filtered.map(contactt => (
-										<ContactListItem
-										Channel={selectValue}
-										key={contactt.id}
-										contact={contactt}
-										onContactClick={(e) => props.onContactClick(contactt)}
+											<ContactListItem
+												// lastmessage ={message}
+												Channel={selectValue}
+												key={contactt.id}
+												contact={contactt}
+												onContactClick={(e) => props.onContactClick(contactt)}
 											// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
 											// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
 											/>
 										))}
+			
+					
 									</FuseAnimateGroup>
 								</>
 							);
