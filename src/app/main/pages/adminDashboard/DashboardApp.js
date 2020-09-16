@@ -394,8 +394,10 @@ function DashboardApp(props) {
 				// toolbar: 'min-h-48 h-48',
 				// rightSidebar: 'w-288',
 				content: classes.content
+				
 
 			}}
+			
 			header={
 				<div className="flex flex-col justify-between flex-1 px-20 pt-20 ">
 					<div className="flex items-center pt-30">
@@ -458,14 +460,14 @@ function DashboardApp(props) {
 										</Paper>
 									</Grid>
 								</Grid>
-								<Grid container spacing={3} style={{ marginTop: 10 }}>
+								{/* <Grid container spacing={3} style={{ marginTop: 10 }}>
 									<Grid item md={12} sm={12} xs={12} >
 										<Paper className="w-full rounded-8 shadow-none border-1">
 
 											<div id="chartdivcampaign" style={{ width: "100%", height: "280px" }}></div>
 										</Paper>
 									</Grid>
-								</Grid>
+								</Grid> */}
 							</FuseAnimateGroup>
 						)}
 

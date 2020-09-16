@@ -94,38 +94,38 @@ const navigationConfig = [
                     },
                 ]
             },
-            {
-                id: 'Template',
-                title: 'Template',
-                translate: 'Template',
-                type: 'collapse',
-                icon: 'chrome_reader_mode',
-                // url: '/apps/groups/group',
-                children: [
-                    {
-                        id: 'Campaigns',
-                        title: 'Campaigns',
-                        translate: 'Campaigns',
-                        type: 'item',
-                        url: '/apps/campaign',
-                        exact: true
-                        // badge: {
-                        //  title: 25,
-                        //  bg: '#F44336',
-                        //  fg: '#FFFFFF'
-                        // }
-                    },
-                    {
-                        id: 'Template List',
-                        title: 'Template List',
-                        type: 'item',
-                        translate: 'Template List',
-                        url: '/apps/whatsapp-template',
-                        exact: true
-                    },
+            // {
+            //     id: 'Template',
+            //     title: 'Template',
+            //     translate: 'Template',
+            //     type: 'collapse',
+            //     icon: 'chrome_reader_mode',
+            //     // url: '/apps/groups/group',
+            //     children: [
+            //         {
+            //             id: 'Campaigns',
+            //             title: 'Campaigns',
+            //             translate: 'Campaigns',
+            //             type: 'item',
+            //             url: '/apps/campaign',
+            //             exact: true
+            //             // badge: {
+            //             //  title: 25,
+            //             //  bg: '#F44336',
+            //             //  fg: '#FFFFFF'
+            //             // }
+            //         },
+            //         {
+            //             id: 'Template List',
+            //             title: 'Template List',
+            //             type: 'item',
+            //             translate: 'Template List',
+            //             url: '/apps/whatsapp-template',
+            //             exact: true
+            //         },
 
-                ]
-            },
+            //     ]
+            // },
             {
                 id: 'Contact Book',
                 title: 'Contact Book',

@@ -248,6 +248,13 @@ const useStyles = makeStyles(theme => ({
 			}
 		}
 	},
+
+	veryImp : {
+			'&:last-child' : {
+					
+			}
+	},
+
 	messageRowWithOutBorder: {
 		'&.contact': {
 			'& .bubble': {
@@ -333,6 +340,7 @@ const useStyles = makeStyles(theme => ({
 			'& .bubble': {
 				borderBottomLeftRadius: 6,
 				paddingBottom: 6,
+
 				'& .time': {
 					display: 'flex'
 				}
@@ -1017,11 +1025,15 @@ function Chat(props) {
 								<div
 									key={item.time}
 									className={
+										
 										item.message_type === "text" ?
 											clsx(
 												classes.messageRow,
+												
+												"mainclass",
 												'text-message-w-control',
 												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative pb-4',
+												 
 												{ me: item.type === "outbound" },
 												{ contact: item.type === "inbound" },
 												{ 'first-of-group': isFirstMessageOfGroup(item, index) },
@@ -1029,7 +1041,7 @@ function Chat(props) {
 												index + 1 === messages.length && 'pb-96'
 											) : clsx(
 												classes.messageRowWithOutBorder,
-												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative  pb-4',
+												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative  pb-4',"mainclass",
 												{ me: item.type === "outbound" },
 												{ contact: item.type === "inbound" },
 												{ 'first-of-group': isFirstMessageOfGroup(item, index) },

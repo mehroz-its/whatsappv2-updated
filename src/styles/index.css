@@ -16,6 +16,10 @@ html {
     background-color: #121212;
 }
 
+.mainclass:last-child{
+    padding-bottom: 80px !important;
+}
+
 .MuiCircularProgress-colorPrimary {
     color: white !important;
 }

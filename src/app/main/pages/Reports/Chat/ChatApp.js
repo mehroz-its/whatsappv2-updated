@@ -442,7 +442,7 @@ function ChatApp() {
 							</Paper>
 						</div>
 					</FuseAnimateGroup>
-					{/* <FusePageSimple
+					<FusePageSimple
 						classes={{
 							contentWrapper: 'p-0 sm:p-12 pb-80 sm:pb-80 h-full',
 							content: 'flex flex-col h-full',
@@ -453,7 +453,7 @@ function ChatApp() {
 						header={<ChartHeader SearchVal={searchContact} />}
 						content={
 							<ChartTable data={val == '' ? data : data2} val={val} />}
-					/> */}
+					/>
 				</div>
 			}
 		/>
