@@ -298,9 +298,6 @@ function TemplateMessage(props) {
                         <Tab
                             style={{ marginTop: '0.2%' }}
                             className="text-12 font-600 normal-case" label="Requested" />
-                        <Tab
-                            style={{ marginTop: '0.2%' }}
-                            className="text-12 font-600 normal-case" label="Approved" />
                     </Tabs>
                     </div>
                     {/* contentToolbar={ */}

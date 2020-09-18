@@ -79,11 +79,25 @@ function CustomerDetailSideBar(props) {
 					</div>
 					<Divider /> */}
 					<List>
-						<ListItem
+					<ListItem
 							exact
 							button
 							component={NavLinkAdapter}
 							to="/apps/company-details"
+							activeClassName="active"
+							className={classes.listItem}
+							onClick={() => { onTabChange('Intelligence') }}
+						>
+							<Icon className="list-item-icon text-16" color="action">
+								rate_review
+							</Icon>
+							<ListItemText className="truncate" primary="Intelligence" disableTypography />
+						</ListItem>
+						<ListItem
+							exact
+							button
+							component={NavLinkAdapter}
+							to="/apps/company-details/Profile"
 							activeClassName="active"
 							className={classes.listItem}
 							onClick={() => { onTabChange('Profile') }}
