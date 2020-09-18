@@ -21,8 +21,8 @@ const BlockConfirmDialog = function (props) {
     console.log(data.number,'datanumber');
     return (
         <DialogContent >
-            <div style={{ width: '100%', marginBottom: 20 }}>
-                {data ? `Are you sure you want to block this number [${data[0]}] ?` : `Are you sure you want to block this number ?`}
+            <div style={{ width: '100%', marginBottom: 20 ,fontSize:'12px'}}>
+                {data ? `Are you sure you want to block this number [${data.number }] ?` : `Are you sure you want to block this number ?`}
             </div>
             <div style={{ marginBottom: 20 }}>
                 <TextField value={blockReason} name={'block_reason'} label="Reason" variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />

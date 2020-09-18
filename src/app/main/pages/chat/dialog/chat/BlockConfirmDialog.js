@@ -21,7 +21,7 @@ const BlockConfirmDialog = function (props) {
 
     return (
         <DialogContent >
-            <div style={{ width: '100%', marginBottom: 20 }}>
+            <div style={{ width: '100%', marginBottom: 20,fontSize:'12px' }}>
                 {data ? `Are you sure you want to block this number [${data.number}] ?` : `Are you sure you want to block this number ?`}
             </div>
             <div style={{ marginBottom: 20 }}>
