@@ -50,6 +50,7 @@ const navigationConfig = [
 
         ]
     },
+    
     {
         id: 'applications',
         title: 'Applications',
@@ -247,7 +248,7 @@ if (userAcl !== null) {
 
     NewNav.map((item) => {
         if (item.children) {
-            console.log("ITEM  =>", item);
+            console.log("ITEM  =>", item.children);
             var i;
             for (i = 0; i < item.children.length; i++) {
                 console.log("item.children : ", item.children[i]);
@@ -289,7 +290,9 @@ CustomNavigation.map((CustomNavigationitem, CustomNavigationii) => {
         })
 
     }
+    else {
+        CustomNavigation.splice(CustomNavigationitem, 1);
+    }
 })
-console.log("NewNav :", NewNav);
 
 export default CustomNavigation;

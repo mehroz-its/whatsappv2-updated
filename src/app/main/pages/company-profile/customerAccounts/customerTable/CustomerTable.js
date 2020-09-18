@@ -22,6 +22,9 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import TableContainer from '@material-ui/core/TableContainer';
+import Paper from '@material-ui/core/Paper';
+
 
 
 
@@ -160,7 +163,7 @@ function CampaignTable(props) {
 	}
 
 	function handleClick(n) {
-		props.history.push({pathname:'/apps/company-details',data:n});
+		props.history.push({ pathname: '/apps/company-details', data: n });
 	}
 
 	if (data2.length === 0) {
@@ -212,7 +215,7 @@ function CampaignTable(props) {
 
 	const toggleChecked = () => {
 		setChecked((prev) => !prev);
-	  };
+	};
 	return (
 		<>
 
@@ -229,117 +232,119 @@ function CampaignTable(props) {
 			</Snackbar>
 			<div className="w-full flex flex-col">
 				<FuseScrollbars className="flex-grow overflow-x-auto">
-					<Table className="min-w-xl" aria-labelledby="tableTitle">
-						<CampaignTableHead
-							numSelected={selected.length}
-							order={order}
-							onSelectAllClick={handleSelectAllClick}
-							onRequestSort={handleRequestSort}
-							rowCount={data.length}
-						/>
+					<TableContainer component={Paper}>
 
-						<TableBody>
-							{_.orderBy(
-								data2,
-								[
-									o => {
-										switch (order.id) {
-											case 'categories': {
-												return o.categories[0];
-											}
-											default: {
-												return o[order.id];
+						<Table className="min-w-xl" aria-labelledby="tableTitle">
+							<CampaignTableHead
+								numSelected={selected.length}
+								order={order}
+								onSelectAllClick={handleSelectAllClick}
+								onRequestSort={handleRequestSort}
+								rowCount={data.length}
+							/>
+
+							<TableBody>
+								{_.orderBy(
+									data2,
+									[
+										o => {
+											switch (order.id) {
+												case 'categories': {
+													return o.categories[0];
+												}
+												default: {
+													return o[order.id];
+												}
 											}
 										}
-									}
-								],
-								[order.direction]
-							)
-								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-								.map(n => {
-									const isSelected = selected.indexOf(n.id) !== -1;
-									console.log(n, 'i am in table')
-									return (
-										<TableRow
+									],
+									[order.direction]
+								)
+									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+									.map(n => {
+										const isSelected = selected.indexOf(n.id) !== -1;
+										console.log(n, 'i am in table')
+										return (
+											<TableRow
 
-											className="h-10 cursor-pointer"
-											hover
-											role="checkbox"
-											aria-checked={isSelected}
-											tabIndex={-1}
-											key={n.id}
-											selected={isSelected}
-											onClick={event => handleClick(n)}
-										>
+												className="h-10 cursor-pointer"
+												hover
+												role="checkbox"
+												aria-checked={isSelected}
+												tabIndex={-1}
+												key={n.id}
+												selected={isSelected}
+												onClick={event => handleClick(n)}
+											>
 
-											{/* <TableCell className="w-64 text-center" padding="none">
+												{/* <TableCell className="w-64 text-center" padding="none">
 											<Checkbox
 												checked={isSelected}
 												onClick={event => event.stopPropagation()}
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-											<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{n.id}
-											</TableCell>
-											<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{n.name}
-											</TableCell>
-											<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{n.description}
-											</TableCell>
-											{<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{n.begin_dt === null ? 'N/A' : n.begin_dt}
-											</TableCell>}
-											<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{n.activated ? (
-													<Icon className="text-green text-16">check_circle</Icon>
-												) : (
-														<Icon className="text-red text-16">cancel</Icon>
-													)}
-											</TableCell>
-											<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{/* {n.progress ? ( 
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.id}
+												</TableCell>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.name}
+												</TableCell>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.description}
+												</TableCell>
+												{<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.begin_dt === null ? 'N/A' : n.begin_dt}
+												</TableCell>}
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.activated ? (
+														<Icon className="text-green text-16">check_circle</Icon>
+													) : (
+															<Icon className="text-red text-16">cancel</Icon>
+														)}
+												</TableCell>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{/* {n.progress ? ( 
 												<Icon className="text-green text-16">check_circle</Icon>
 											) : (
 													<Icon className="text-red text-16">cancel</Icon>
 												)} */}
-												<FormControlLabel
-												style={{marginLeft:'2px'}}
-													control={
-														<Switch
-															checked={checked}
-															onChange={toggleChecked}
-															name="checkedB"
-															color="primary"
-															size="small"
-															
-														/>
-													}
+													<FormControlLabel
+														style={{ marginLeft: '2px' }}
+														control={
+															<Switch
+																checked={checked}
+																onChange={toggleChecked}
+																name="checkedB"
+																color="primary"
+																size="small"
+
+															/>
+														}
 													// label="Primary"
-												/>
-											</TableCell>
-											<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{n.consumers}
-											</TableCell>
-											<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{n.success}
-											</TableCell >
-											<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{n.failures}
-											</TableCell>
-											{/* <TableCell component="th" scope="row" align="center" style={{fontSize:'11px',padding:'10px'}}>
+													/>
+												</TableCell>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.consumers}
+												</TableCell>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.success}
+												</TableCell >
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.failures}
+												</TableCell>
+												{/* <TableCell component="th" scope="row" align="center" style={{fontSize:'11px',padding:'10px'}}>
 											{n.dtu}
 									
 										</TableCell> */}
-											<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{n.completed ? (
-													<Icon className="text-green text-16">check_circle</Icon>
-												) : (
-														<Icon className="text-red text-16">cancel</Icon>
-													)}
-											</TableCell>
-											{/* 
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.completed ? (
+														<Icon className="text-green text-16">check_circle</Icon>
+													) : (
+															<Icon className="text-red text-16">cancel</Icon>
+														)}
+												</TableCell>
+												{/* 
 										<TableCell component="th" scope="row" align="center">
 											{n.quantity}
 											<i
@@ -352,18 +357,19 @@ function CampaignTable(props) {
 											/>
 										</TableCell> */}
 
-											{/* <TableCell component="th" scope="row" align="center">
+												{/* <TableCell component="th" scope="row" align="center">
 											{n.active ? (
 												<Icon className="text-green text-20">check_circle</Icon>
 											) : (
 													<Icon className="text-red text-20">remove_circle</Icon>
 												)}
 										</TableCell> */}
-										</TableRow>
-									);
-								})}
-						</TableBody>
-					</Table>
+											</TableRow>
+										);
+									})}
+							</TableBody>
+						</Table>
+					</TableContainer>
 				</FuseScrollbars>
 				<MuiThemeProvider theme={PaginationStyle}>
 					<TablePagination

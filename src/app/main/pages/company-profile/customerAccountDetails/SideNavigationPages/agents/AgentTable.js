@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme)=>({
         maxWidth: '100%',
         padding: '0px'
 	},
+	content: {
+        padding: '0px'
+    },
 	root2: {
 		'& > *': {
 		  margin: theme.spacing(1),
@@ -201,11 +204,11 @@ function AgentTable(props) {
 	}
 
 	function handleClick(n) {
-		props.history.push({pathname:'/apps/company-details',data:n});
+		// props.history.push({pathname:'/apps/company-details',data:n});
 	}
 
 	if (data2.length === 0) {
-		if (props.ValueForSearch !== '') {
+		if (props.ValueForSearch === '') {
 			return (
 				<div className="flex flex-1 items-center justify-center h-full">
 					<Typography color="textSecondary" variant="h5">
@@ -258,7 +261,7 @@ function AgentTable(props) {
 		<>
  <Card className={classes.root}>
 
-<CardContent style={{ width: '100%' }}>
+<CardContent  className={classes.content}  style={{ width: '100%' }}>
 	<Typography variant='h2' className='companyDetailHeader'>Agents</Typography>
 			<Snackbar
 

@@ -443,14 +443,14 @@ function CustomerAccounts(props) {
                             <Grid container spacing={4}>
 
                                 <Grid item md={12} sm={12} xs={12} >
-                                    <Grid container spacing={4} style={{ marginBottom: '22px', marginTop: '-1px', marginLeft: 4 }}>
-                                        <Button variant="contained" color="primary" onClick={(e) => { props.history.push({ pathname: '/apps/company-forms' }) }}>
+                                    <Grid container spacing={4} style={{ marginBottom: '22px', marginTop: '-1px', marginLeft: 4}}>
+                                        <Button  style={{ fontSize:'11px' }} variant="contained" color="primary" onClick={(e) => { props.history.push({ pathname: '/apps/company-forms' }) }}>
                                             New Account
                                         </Button>
-                                        <Button style={{ marginLeft: 4 }} variant="contained" color="primary" onClick={(e) => { props.history.push({ pathname: '/apps/company-forms' }) }}>
+                                        <Button size='small' style={{ marginLeft: 4,fontSize:'11px' }} variant="contained" color="primary" onClick={(e) => { props.history.push({ pathname: '/apps/company-forms' }) }}>
                                             Import Customers
                                         </Button>
-                                        <Button style={{ marginLeft: 4 }} variant="contained" color="primary" onClick={(e) => { props.history.push({ pathname: '/apps/company-forms' }) }}>
+                                        <Button  size='small' style={{ marginLeft: 4,fontSize:'11px' }} variant="contained" color="primary" onClick={(e) => { props.history.push({ pathname: '/apps/company-forms' }) }}>
                                             Contacts
                                         </Button>
                                     </Grid>

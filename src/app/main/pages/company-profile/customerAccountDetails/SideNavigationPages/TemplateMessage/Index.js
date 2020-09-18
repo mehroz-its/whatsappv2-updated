@@ -36,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: '100%',
         padding: '0px'
     },
+    content: {
+        padding: '0px'
+    },
     root2: {
         '& > *': {
             margin: theme.spacing(1),
@@ -99,6 +102,7 @@ function TemplateMessage(props) {
     });
     const [checked, setChecked] = React.useState(false);
     const [tabValue, setTabValue] = useState(0);
+    const [mainTab, setMainTab] = useState(0);
 
 
 
@@ -187,6 +191,11 @@ function TemplateMessage(props) {
 
     }
 
+    function handleChangeTabMain(event, value) {
+        setMainTab(value);
+
+    }
+
     function search() {
         console.log('ceeleded', props.ValueForSearch, searchVal);
 
@@ -210,11 +219,11 @@ function TemplateMessage(props) {
     }
 
     function handleClick(n) {
-        props.history.push({ pathname: '/apps/company-details', data: n });
+        // props.history.push({ pathname: '/apps/company-details', data: n });
     }
 
     if (data2.length === 0) {
-        if (props.ValueForSearch !== '') {
+        if (props.ValueForSearch === '') {
             return (
                 <div className="flex flex-1 items-center justify-center h-full">
                     <Typography color="textSecondary" variant="h5">
@@ -267,9 +276,33 @@ function TemplateMessage(props) {
         <>
             <Card className={classes.root}>
 
-                <CardContent style={{ width: '100%' }}>
-                    <Typography variant='h2' className='companyDetailHeader'>Template Messages</Typography>
+                <CardContent className={classes.content} style={{ width: '100%' }}>
+                    {/* <Typography variant='h2' className='companyDetailHeader'>Template Messages</Typography> */}
+                  <div className='companyDetailHeaderTabs'>
 
+             
+                    <Tabs
+                        // className='companyDetailHeader'
+                        value={mainTab}
+                        onChange={handleChangeTabMain}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        variant="scrollable"
+                        scrollButtons="off"
+                        className="w-full border-b-1 px-100 text-center h-48 "
+                        style={{ marginBottom: '8px'}}
+                    >
+                        <Tab
+                            style={{ marginTop: '0.2%' }}
+                            className="text-12 font-600 normal-case" label="Template Message" />
+                        <Tab
+                            style={{ marginTop: '0.2%' }}
+                            className="text-12 font-600 normal-case" label="Requested" />
+                        <Tab
+                            style={{ marginTop: '0.2%' }}
+                            className="text-12 font-600 normal-case" label="Approved" />
+                    </Tabs>
+                    </div>
                     {/* contentToolbar={ */}
                     <Tabs
                         value={tabValue}
@@ -298,7 +331,7 @@ function TemplateMessage(props) {
                             className="text-12 font-600 normal-case" label="Documents" />
 
                     </Tabs>
-                  
+
                     <Snackbar
 
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}

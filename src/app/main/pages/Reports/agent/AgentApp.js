@@ -10,12 +10,13 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_material from "@amcharts/amcharts4/themes/material";
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import AgentHeader from './AgentHeader'
+import { CSVLink, CSVDownload } from 'react-csv';
 import AgentTable from './AgentTable'
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
-import DateRangePickerVal from '../chat/DatePicker'
+import DateRangePickerVal from '../Chat/DatePicker'
 
 const useStyles = makeStyles((theme) => ({
 	layoutRoot: {},
@@ -207,6 +208,16 @@ function AgentApp() {
 	}
 	console.log(tableData.length, 'TABLEDATA');
 
+	const DownloadData = () => {
+		console.log(tableData, "tableDatatableData")
+		return (
+			<CSVLink
+				data={tableData}
+				filename={"my-file.csv"}
+				target="_blank"
+			/>
+		)
+	}
 	// { HitValue ? getData('',Start,End) : null }
 
 	return (
@@ -234,10 +245,13 @@ function AgentApp() {
 						style={{ marginLeft: '8px', marginTop: '6px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span" >
 						Generate Report
                 </Button>
-					<Button id="content-upload-button" style={{ marginLeft: '8px', marginTop: '6px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span"                            >
+				<Button
+						onClick={DownloadData}
+						id="content-upload-button" style={{ marginLeft: '8px', marginTop: '6px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span"                            >
 						Export
                 </Button>
-					{isLoading ? <CircularProgress color="secondary" style={{marginLeft:'4%',color:'white'}} /> :
+
+					{isLoading ? <CircularProgress color="secondary" style={{ marginLeft: '4%', color: 'white' }} /> :
 						null}
 
 				</div>

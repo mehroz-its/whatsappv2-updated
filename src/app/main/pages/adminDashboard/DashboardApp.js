@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
-
+import './widgets/Dashboard.css'
 import Paper from '@material-ui/core/Paper';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
@@ -27,7 +27,11 @@ import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading'
 am4core.useTheme(am4themes_material);
 am4core.useTheme(am4themes_animated);
 const useStyles = makeStyles({
-	layoutRoot: {},
+	layoutRoot: {
+		
+	},
+
+
 	// root: {
 	// 	display: 'flex',
 	// 	flexDirection: 'row',
@@ -50,7 +54,6 @@ const rader_chart = (list) => {
 	am4core.useTheme(am4themes_material);
 	am4core.useTheme(am4themes_animated);
 	let myEle = document.getElementById("chartdivv");
-
 	if (myEle) {
 		let chart = am4core.create("chartdivv", am4charts.RadarChart);
 		chart.data = list;
@@ -374,11 +377,11 @@ function DashboardApp(props) {
 		console.log(data)
 		// firstName = titleCase(data.firstName);
 		// lastName = titleCase(data.firstName);
-		if(data.firstName){
+		if (data.firstName) {
 			firstName = titleCase(data.firstName);
 
 		}
-		if(data.lastName){
+		if (data.lastName) {
 			lastName = titleCase(data.lastName);
 
 		}
@@ -388,16 +391,15 @@ function DashboardApp(props) {
 	return (
 
 		<FusePageSimple
+			
 			classes={{
 				// content: classes.content,
 				header: 'min-h-150 h-150 sm:h-150 sm:min-h-150',
 				// toolbar: 'min-h-48 h-48',
 				// rightSidebar: 'w-288',
 				content: classes.content
-				
-
 			}}
-			
+
 			header={
 				<div className="flex flex-col justify-between flex-1 px-20 pt-20 ">
 					<div className="flex items-center pt-30">
@@ -428,7 +430,7 @@ function DashboardApp(props) {
 					<Tab
 						style={{ marginTop: '0.2%' }}
 						className="text-12 font-600 normal-case" label="Statics" />
-			
+
 				</Tabs>
 			}
 			content={

@@ -11,7 +11,8 @@ import clsx from 'clsx';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,6 +36,9 @@ const useStyles = makeStyles((theme)=>({
         maxWidth: '100%',
         padding: '0px'
 	},
+	content: {
+        padding: '0px'
+    },
 	root2: {
 		'& > *': {
 		  margin: theme.spacing(1),
@@ -84,6 +88,8 @@ function ContactTable(props) {
 	// const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [open, setOpen] = React.useState(false)
 	const [selected, setSelected] = useState([]);
+	const [mainTab, setMainTab] = useState(0);
+
 	const [data, setData] = useState([]);
 	const [data2, setData2] = useState(data);
 	const [page, setPage] = useState(0);
@@ -177,6 +183,10 @@ function ContactTable(props) {
 			id
 		});
 	}
+	  function handleChangeTabMain(event, value) {
+        setMainTab(value);
+
+	  }
 
 	function search() {
 		console.log('ceeleded', props.ValueForSearch, searchVal);
@@ -201,11 +211,11 @@ function ContactTable(props) {
 	}
 
 	function handleClick(n) {
-		props.history.push({pathname:'/apps/company-details',data:n});
+		// props.history.push({pathname:'/apps/company-details',data:n});
 	}
 
 	if (data2.length === 0) {
-		if (props.ValueForSearch !== '') {
+		if (props.ValueForSearch === '') {
 			return (
 				<div className="flex flex-1 items-center justify-center h-full">
 					<Typography color="textSecondary" variant="h5">
@@ -258,8 +268,33 @@ function ContactTable(props) {
 		<>
  <Card className={classes.root}>
 
-<CardContent style={{ width: '100%' }}>
-	<Typography variant='h2' className='companyDetailHeader'>Contact</Typography>
+<CardContent  className={classes.content} style={{ width: '100%' }}>
+	{/* <Typography variant='h2' className='companyDetailHeader'>Contact</Typography> */}
+	<div className='companyDetailHeaderTabs'>
+
+             
+<Tabs
+	// className='companyDetailHeader'
+	value={mainTab}
+	onChange={handleChangeTabMain}
+	indicatorColor="primary"
+	textColor="primary"
+	variant="scrollable"
+	scrollButtons="off"
+	className="w-full border-b-1 px-100 text-center h-48 "
+	style={{ marginBottom: '8px'}}
+>
+	<Tab
+		style={{ marginTop: '0.2%' }}
+		className="text-12 font-600 normal-case" label="Contacts" />
+	<Tab
+		style={{ marginTop: '0.2%' }}
+		className="text-12 font-600 normal-case" label="Contact Group" />
+	<Tab
+		style={{ marginTop: '0.2%' }}
+		className="text-12 font-600 normal-case" label="Blocked Contacts" />
+</Tabs>
+</div>
 			<Snackbar
 
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -272,7 +307,7 @@ function ContactTable(props) {
 				</Alert>
 			</Snackbar>
 
-        <div style={{flexDirection:'row',flex:1,display:'flex'}}>
+        <div style={{flexDirection:'row',flex:1,display:'flex',paddingLeft:'14px'}}>
         <FormControl className={classes.formControl}>
         <Select
           value={number}
