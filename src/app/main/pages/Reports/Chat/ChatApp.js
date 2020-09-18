@@ -25,7 +25,10 @@ import Icon from '@material-ui/core/Icon';
 import moment from "moment";
 import DateRangePickerVal from './DatePicker'
 import { object } from 'prop-types';
-
+import { CSVLink, CSVDownload } from 'react-csv';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert'
+import { Star } from '@material-ui/icons';
 am4core.useTheme(am4themes_material);
 am4core.useTheme(am4themes_animated);
 const useStyles = makeStyles((theme) => ({
@@ -208,6 +211,13 @@ function ChatApp() {
 	const pageLayout = useRef(null);
 	const [val, setVal] = React.useState('');
 	const [open, setOpen] = React.useState(false);
+	const [snackbarmessage, setSnackBarMessage] = React.useState('')
+	const [ok, setOK] = React.useState('')
+	const [snackbaropen, setSnackBarOpen] = React.useState(false)
+
+	const [totalIngoingMessages, setTotalIngoingMessages] = React.useState(0);
+	const [totalOutgoingMessages, setTotalOutgoingMessages] = React.useState(0);
+	const [totalEngagement, setTotalEngagement] = React.useState(0);
 	const [age, setAge] = React.useState('day');
 	const [selectOPen, setSelectOPen] = React.useState(false);
 	const [isLoading,setisLoading] = React.useState(false)
@@ -254,8 +264,8 @@ function ChatApp() {
 
 				limit: 100,
 				page: 0,
-				startingDate:Start,
-				endingDate:End,
+				startingDate:Start.substr(0, Start.indexOf('T')),
+				endingDate:End.substr(0, End.indexOf('T')),
 				filter:age,
 				columns: "*",
 				sortby: "ASC",
@@ -272,10 +282,12 @@ function ChatApp() {
 			incomingAndOutGoingCount(finaldata);
 			engagments(finaldata)
 			engagmentss(finaldata2)
-
-	
+			totalCountConversation(finaldata)
+			totalEngagements(finaldata2)
+			tableRender(finaldata,finaldata2)
 		});
 	})
+
 	// const dataSourceOptions = {
 	// 	params: {
 	// 		columns: "*",
@@ -290,30 +302,58 @@ function ChatApp() {
 		// CoreHttpHandler.request('reports', 'chatChartEngagments', { ...dataSourceOptions }, dataSourceSuccessEngagments, dataSourceFailureEngagments);
 		getData()
 	}, [])
-	const dataSourceSuccess = (response) => {
-		const list = response.data.data.report.boxes;
-		const data = list.map((item, i) => {
-			const chartObj = {
-				category: item.type
-			};
-			for (let i = 0; i < item.value.length; i++) {
-				chartObj[item.value[i].direction] = item.value[i].count;
-			}
-			return chartObj;
-		});
-		setchartdata(data)
-		incomingAndOutGoingCount(data);
+	const tableRender = (conversation,engagements) =>{
+		let chartData = [];
+		  for (var i = 0; i < conversation.length; i++) {
+				chartData.push({
+				id:i+1,
+				date: conversation[i][2].date,
+				inbound: conversation[i][1].count,
+				outbound:conversation[i][0].count,
+				engagements:engagements[i][0].count,
+			});
+		
+		}
+		console.log("tableRender",chartData);
+		setData2(chartData)
+		
+		// return chartData;
+	}
+	const exportData  = () =>{
+		let name ;
+		if (Start === '') {
+			alert("if")
+			name = new Date().toISOString()
+		}
+		else{
+			name =  Start + "-" +End
+		}
+		const csvLink = (<CSVLink filename={`chat_${name}.csv`} data={data2}><span style={{ color: 'white' }}>Your exported chat is ready for download</span></CSVLink>);
+		setSnackBarMessage(csvLink)
+		setOK("success")
+		setSnackBarOpen(true)
+	}
+	const totalCountConversation = (response) => {
+		const data = response;
+		let totalIngoing = 0;
+		let totalOutgoing = 0 ;
+		for (var i = 0; i < data.length; i++) {
+			totalIngoing  = totalIngoing + parseInt(data[i][1].count)
+			totalOutgoing  = totalOutgoing + parseInt(data[i][0].count) 
+	  }
 	
-
+	  setTotalIngoingMessages(totalIngoing)
+	  setTotalOutgoingMessages(totalOutgoing)
 	};
-	const dataSourceFailure = (response) => {
+	const totalEngagements = (response) => {
+		const data = response;
+		let totalEngagement = 0;
+		for (var i = 0; i < data.length; i++) {
+			totalEngagement  = totalEngagement + parseInt(data[i][0].count)
+	  }
+	  setTotalEngagement(totalEngagement)
 	};
-	const dataSourceSuccessEngagments = (response) => {
-		const list = response.data.data.report.boxes;
-		engagments(list)
-	};
-	const dataSourceFailureEngagments = (response) => {
-	};
+	
 	const searchContact = (value) => {
 		setVal(value)
 		setData2(data.filter(n => n.number.toLowerCase().includes(value.toLowerCase())))
@@ -350,6 +390,7 @@ function ChatApp() {
 	{	setisLoading(true)
 		getData('',Start,End);
 	}
+
 	console.log(age,"AGEEEE");
 	return (
 		<FusePageSimple
@@ -394,7 +435,7 @@ function ChatApp() {
                 style={{ marginLeft: '8px', marginTop: '6px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span" >
                     Generate Report 
                 </Button> 
-                <Button id="content-upload-button" style={{ marginLeft: '8px', marginTop: '6px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span"                            >
+                <Button onClick={exportData} id="content-upload-button" style={{ marginLeft: '8px', marginTop: '6px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span"                            >
                     Export
                 </Button>
 					</div>
@@ -409,18 +450,16 @@ function ChatApp() {
 						}}>
 						<Grid item md={12} sm={12} xs={12} className="widget flex w-full sm:w-1/1 md:w-1/2 p-12" >
 							<Grid container spacing={3}>
-								<Grid item md={3} sm={12} xs={12} >
-									<Widget2 title='Dummy' count='5' bottom_title='Inbound' />
+								<Grid item md={4} sm={12} xs={12} >
+									<Widget2 title='Dummy' count={totalIngoingMessages} bottom_title='Inbound' />
 								</Grid>
-								<Grid item md={3} sm={12} xs={12} >
-									<Widget2 title='Dummy' count='5' bottom_title='Outbound' />
+								<Grid item md={4} sm={12} xs={12} >
+									<Widget2 title='Dummy' count={totalOutgoingMessages} bottom_title='Outbound' />
 								</Grid>
-								<Grid item md={3} sm={12} xs={12} >
-									<Widget2 title='Dummy' count='5' bottom_title='Engagements' />
+								<Grid item md={4} sm={12} xs={12} >
+									<Widget2 title='Dummy' count={totalEngagement} bottom_title='Engagements' />
 								</Grid>
-								<Grid item md={3} sm={12} xs={12} >
-									<Widget2 title='Dummy' count='5' bottom_title='Conversation' />
-								</Grid>
+								
 							</Grid>
 						</Grid>
 						<div className="widget flex w-full sm:w-1/1 md:w-1 p-12">
@@ -441,6 +480,17 @@ function ChatApp() {
 								<div id="chartdivvv" style={{ width: "100%", height: "300px" }}></div>
 							</Paper>
 						</div>
+						<Snackbar
+
+				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+				open={snackbaropen}
+				autoHideDuration={4000}
+				onClose={() => setSnackBarOpen(false)}
+			>
+				<Alert variant="filled" severity={ok}>
+					{snackbarmessage}
+				</Alert>
+			</Snackbar>
 					</FuseAnimateGroup>
 					<FusePageSimple
 						classes={{
@@ -452,7 +502,7 @@ function ChatApp() {
 						}}
 						header={<ChartHeader SearchVal={searchContact} />}
 						content={
-							<ChartTable data={val == '' ? data : data2} val={val} />}
+							<ChartTable data={data2} val={val} />}
 					/>
 				</div>
 			}

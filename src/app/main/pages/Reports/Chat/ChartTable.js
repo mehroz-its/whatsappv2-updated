@@ -33,7 +33,7 @@ function ChartTable(props) {
 	function closeDialog() {
 		setOpen(false)
 	}
-	let data2 = props.dataa
+	let data2 = props.data
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
 	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
@@ -131,6 +131,7 @@ function ChartTable(props) {
 			);
 		}
 	}
+	console.log(data2,'datadata')
 
 	return (
 		<div className="w-full flex flex-col">
@@ -178,19 +179,19 @@ function ChartTable(props) {
 										onClick={event => handleClick(n)}
 									>
 										<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-											{n.incoming}
+											{n.id}
 										</TableCell>
 										<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-											{n.incoming_count}
+											{n.date}
 										</TableCell>
 										<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-											{n.number}
+											{n.inbound}
 										</TableCell>
 										<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-											{n.outgoing}
+											{n.outbound}
 										</TableCell>
 										<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-											{n.outgoing_count}
+											{n.engagements}
 										</TableCell>
 									</TableRow>
 								);
