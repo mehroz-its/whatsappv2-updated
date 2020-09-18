@@ -78,8 +78,6 @@ const BlockDialog = (props) => {
     };
 
     const handleSubmit = () => {
-        console.log(data,'i am in dialog')
-
         CoreHttpHandler.request('conversations', 'block', {
             key: ':number', value: data.number, params: {
                 reason: description,
@@ -124,7 +122,7 @@ const BlockDialog = (props) => {
 				</div>
 			</AppBar>
             <DialogContent classes={{ root: 'p-24' }}>
-                <div className="flex mt-10">
+                <div className="flex mt-10" style={{fontSize:'12px'}}>
                     <div className="min-w-48 mb-20">
                         <Icon color="action">block</Icon>
                     </div>

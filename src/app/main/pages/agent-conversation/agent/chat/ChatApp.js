@@ -37,6 +37,7 @@ import Fade from '@material-ui/core/Fade'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import copy from 'copy-to-clipboard';
+
 import { EventEmitter } from '../../../../../../events'
 const drawerWidth = 320;
 const headerHeight = 200;
@@ -161,7 +162,7 @@ function ChatApp(props) {
 	const mobileChatsSidebarOpen = false;
 	const userSidebarOpen = false;
 	const contactSidebarOpen = false;
-	
+	let NewMessagess = []
 	const [lastMessageTimestamp, setlastMessageTimestamp] = React.useState(null);
 	const [latestMessageSender, setlatestMessageSender] = React.useState(null);
 	const [NewAgent, setNewAgent] = React.useState(selectedAgent);
@@ -228,21 +229,22 @@ function ChatApp(props) {
 	
 		console.log("params : ", params);
 		CoreHttpHandler.request('conversations', 'agents_customer_conversations', params, (response) => {
-			// console.log("response :", response);
-			if (response.data.data.conversation.length > NewMessages.length) {
-				//   console.log("if");
+			console.log("response :", response);
+			if (response.data.data.conversation.length > NewMessagess.length) {
+				  console.log("response if");
 				const messagess = response.data.data.conversation;
 				console.log("messages : ", messages);
-
-				setNewMessages(response.data.data.conversation)
+				NewMessagess = response.data.data.conversation
+				// setNewMessages(response.data.data.conversation)
 				setmessages(messagess)
 				setshowLatestMessage(true)
 				// setselectedRecipient(e)
 			}
 			else {
+				console.log('response else ');
 				const messages = response.data.data.conversation;
-				setmessages(messages)
-				setshowLatestMessage(false)
+				// setmessages(messages)
+				// setshowLatestMessage(false)
 			}
 			// if (int_MessageLists === null) setint_MessageLists(setInterval(() => {
 			// 	getConversation(e);

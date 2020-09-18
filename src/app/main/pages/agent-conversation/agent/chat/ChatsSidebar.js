@@ -305,7 +305,7 @@ function 	ChatsSidebar(props) {
 							return (
 								<>
 									{props.numbers.length == 0 ?
-									<div style={{textAlign:'center',fontSize:'20px'}}>No Contact Associated To Agent </div>
+									<div style={{textAlign:'center',fontSize:'14px',marginTop:'44%',fontWeight:'300'}}>No Contact Associated To Agent </div>
 									: filtered.length > 0 ?
 									<FuseAnimateGroup
 										enter={{
