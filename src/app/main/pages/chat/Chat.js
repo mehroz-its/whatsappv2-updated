@@ -1,5 +1,4 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
@@ -15,7 +14,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon';
 import ReadMoreReact from 'read-more-react';
-import Button from '@material-ui/core/Button';
 import AudioMessageType from './messageType/AudioMessageType'
 import ContactMessageType from './messageType/ContactMessageType'
 import LocationMessageType from './messageType/LocationMessageType'
@@ -24,25 +22,14 @@ import ImageMessageType from './messageType/ImageMessageType'
 import VideoMessageType from './messageType/VideoMessageType'
 import MessageStateResolver from './messageType/MessageStateResolver'
 import SendIcon from '@material-ui/icons/Send';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import MicIcon from '@material-ui/icons/Mic'
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler';
 import XGlobalDialogCmp from '../../../../dialogs/XGlobalDialogCmp';
-import XGlobalDialog from '../../../../dialogs/XGlobalDialog';
 import { CSVLink, CSVDownload } from 'react-csv';
 import AttachmentDialogV2 from './dialog/chat/AttachmentDialogV2';
 import CannedMessagesDialog from './dialog/chat/CannedMessagesDialog';
 import BlockConfirmDialog from './dialog/chat/BlockConfirmDialog';
 import CustomerProfileDialog from './dialog/chat/CustomerProfileDialog';
-import { EventRegister } from 'react-event-listeners'
-import NoteIcon from '@material-ui/icons/Note';
 import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
-
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Fade from '@material-ui/core/Fade'
@@ -149,7 +136,6 @@ const chat = {
 	]
 }
 const useStyles = makeStyles(theme => ({
-	// bootstrapFormLabel:{backgroundColor: 'red',},
 	messageRow: {
 		'&.contact': {
 			'& .bubble': {
@@ -164,7 +150,6 @@ const useStyles = makeStyles(theme => ({
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
 				marginLeft: 8,
-				// marginBottom:70,
 				'& .time': {
 					marginLeft: '0px',
 					marginBottom: '-11px',
@@ -249,10 +234,10 @@ const useStyles = makeStyles(theme => ({
 		}
 	},
 
-	veryImp : {
-			'&:last-child' : {
-					
-			}
+	veryImp: {
+		'&:last-child': {
+
+		}
 	},
 
 	messageRowWithOutBorder: {
@@ -401,23 +386,12 @@ function Chat(props) {
 	const dispatch = useDispatch();
 	const { messages, selectedRecipient } = props;
 	const [chosenEmoji, setChosenEmoji] = useState(false);
-	const [messagesLength, setmessagesLength] = useState('hy');
-	let emojis = []
-
-
-	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
-	// const selectedContactId = useSelector(({ chatApp }) => chatApp.contacts.selectedContactId);
-	// const chat = useSelector(({ chatApp }) => chatApp.chat);
-	// const user = useSelector(({ chatApp }) => chatApp.user);
-
 	const classes = useStyles(props);
 	const chatRef = useRef(null);
 	const [messageText, setMessageText] = useState('');
 	const [messageTextNew, setMessageTextNew] = useState('');
 	const [emo, setEmo] = useState('');
 	const [anchorEl, setAnchorEl] = React.useState(null);
-
-
 	const [sendDialogData, setsendDialogData] = React.useState({
 		url: '',
 		caption: '',
@@ -442,8 +416,6 @@ function Chat(props) {
 	});
 	const [textLength, setTextLength] = useState(800)
 	const [dialogOpenCmp, setdialogOpenCmp] = React.useState(false);
-	// const [messageInputLimit, setMessageInputLimit] = React.useState(2000);
-	let messageInputLimit = 800
 	const sendDialogActions = [
 		{
 			handler: (event, index) => {
@@ -512,50 +484,23 @@ function Chat(props) {
 		setAnchorEl(null);
 	};
 
-
-
-	function scrollToBottom() {
-		chatRef.current.scrollTop = chatRef.current.scrollHeight - 100;
-	}
-
 	function shouldShowContactAvatar(item, i) {
-
 		return (
 			item.type === "inbound" &&
 			((messages[i + 1] && messages[i + 1].type !== props.selectedRecipient.id) || !messages[i + 1])
 		);
 	}
-
 	function isFirstMessageOfGroup(item, i) {
 		return i === 0 || (chat.dialog[i - 1] && chat.dialog[i - 1].who !== item.who);
 	}
-
 	function isLastMessageOfGroup(item, i) {
 		return i === chat.dialog.length - 1 || (chat.dialog[i + 1] && chat.dialog[i + 1].who !== item.who);
 	}
-
-	// let _handleKeyDown = (e) => {
-	// 	console.log("_handleKeyDown e" , e.target.value);
-	// 	let inputLength = messageText.length + 1
-	// 	if (e.key === 'Backspace') {
-	// 		if (messageText.length !== 0) {
-	// 			messageInputLimit = textLength + 1
-	// 			setTextLength(messageInputLimit)
-	// 		}
-	// 	} else {
-	// 		messageInputLimit = messageInputLimit - inputLength
-	// 		setTextLength(messageInputLimit)
-	// 	}
-	// };
-
-
-
 	function onMessageSubmit(ev) {
 		ev.preventDefault();
 		if (messageText === '') {
 			return;
 		}
-
 		dispatch(Actions.sendMessage(messageText, chat.id, user.id)).then(() => {
 			setMessageText('');
 		});
@@ -578,7 +523,6 @@ function Chat(props) {
 		}, (error) => {
 		});
 	}
-	// send message
 	const sendMessageHandler = (event) => {
 		setChosenEmoji(false)
 		sendMessage();
@@ -587,15 +531,12 @@ function Chat(props) {
 	}
 	const sendDialogInputHandler = (e) => {
 		const data = { ...sendDialogData };
-
 		if (e.caption) {
 			data['caption'] = e.caption;
 		}
-
 		if (e.url) {
 			data['url'] = e.url;
 		}
-
 		if (e.attributes) {
 			data['attributes'] = e.attributes;
 		}
@@ -605,13 +546,11 @@ function Chat(props) {
 		setAnchorEl(null);
 		if (action === 'export') conversationExport();
 		if (action === 'shift') conversationShift();
-
 		if (action === 'audio') {
 			setsendActionType('audio')
 			setsendDialogTitle('Send An Audio File')
 			setsendDialogOpen(true)
 		}
-
 		if (action === 'video') {
 			setsendActionType('video')
 			setsendDialogTitle('Send A Video File')
@@ -636,24 +575,20 @@ function Chat(props) {
 	const conversationEmail = () => {
 		setdialogOpen(true)
 	}
-
 	const conversationExport = () => {
 		let params = {
 			key: ':number',
 			value: selectedRecipient.number,
 			key2: ':last_closed',
 			value2: selectedRecipient.last_closed
-
 		};
 		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
 			const messages = response.data.data.chat;
 			const csvLink = (<CSVLink filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`} data={messages}>Your exported chat is ready for download</CSVLink>);
 			alert(csvLink)
 		}, (response) => {
-
 		});
 	}
-
 	const conversationShift = () => {
 		CoreHttpHandler.request('conversations', 'agent_list', { role: 64, columns: 'id, username, email, number' }, (response) => {
 			const data = response.data.data.agents.data;
@@ -664,9 +599,6 @@ function Chat(props) {
 		});
 	}
 	const selectedShiftAgent = (agent) => {
-		// console.log("selectedShiftAgent agent ", agent)
-		// console.log("selectedShiftAgent selectedRecipient ", selectedRecipient)
-
 		CoreHttpHandler.request('conversations', 'transfer', {
 			key: ':id',
 			value: agent.id,
@@ -702,7 +634,6 @@ function Chat(props) {
 	}
 	const selectedCannedMessage = (props) => {
 		const { message_text, message_type, attachment_url, attachment_name, attachment_type } = props;
-
 		if (message_type !== 'text') {
 			let params = {
 				type: message_type,
@@ -717,7 +648,6 @@ function Chat(props) {
 					caption: (message_text) ? message_text : `You Shared A ${message_type.charAt(0).toUpperCase()}${message_type.slice(1)}`,
 				}
 			}
-
 			CoreHttpHandler.request('conversations', 'send', {
 				key: ':type',
 				value: message_type,
@@ -751,17 +681,13 @@ function Chat(props) {
 			limit: 0,
 		}, (response) => {
 			const data = response.data.data.list.data;
-			// setcannedMessagesList(data)
 			setdialogOpenCanned(true)
-
 			var cannedData = [];
-			// console.log("canned data", data);
 			var documents = data.filter(item => item.message_type == 'document');
 			var audios = data.filter(item => item.message_type == 'audio');
 			var videos = data.filter(item => item.message_type == 'video');
 			var texts = data.filter(item => item.message_type == 'text');
 			var images = data.filter(item => item.message_type == 'image');
-
 			cannedData.push({ dataType: 'document', list: documents });
 			cannedData.push({ dataType: 'audio', list: audios });
 			cannedData.push({ dataType: 'video', list: videos });
@@ -789,17 +715,12 @@ function Chat(props) {
 	const conversationContextMenuCallback = (item) => {
 		if (item === 'customer_profile') {
 			profileDialog();
-
 		}
-
 		if (item === 'canned_messages') {
-
 			cannedMessagesDialog()
 		}
-
 		if (item === 'block') {
 			setdialogOpenConfirmBlock(true)
-
 		}
 		if (item === 'copy') {
 			copyContent();
@@ -814,7 +735,6 @@ function Chat(props) {
 		} = props;
 		setblockReason(value)
 	}
-
 	const dialogActionsConfirmBlock = [
 		{
 			handler: (event, index) => {
@@ -835,8 +755,6 @@ function Chat(props) {
 		setdialogOpenConfirmBlock(false)
 	}
 	const blockNumber = () => {
-		// console.log('blockNumber');
-
 		CoreHttpHandler.request('conversations', 'block', {
 			key: ':number', value: selectedRecipient.number, params: {
 				reason: blockReason,
@@ -846,12 +764,8 @@ function Chat(props) {
 			setblockReason('')
 			setAnchorEl(false)
 			props.agentShift()
-			// setselectedRecipient(null)
-			// setmessages([])
-			// clearInterval(this.int_MessageLists);
 		}, (error) => {
 			setAnchorEl(false)
-
 			setdialogOpenConfirmBlock(false)
 		});
 	}
@@ -862,19 +776,14 @@ function Chat(props) {
 			event,
 			dataKey,
 		} = props;
-
 		const data = { ...customerProfileData };
-
 		data[key] = value.attrs;
 		data['assign_name'] = value.assigned_name;
 		setcustomerProfileData(data)
-
 	}
-
 	const dialogOptionsCmp = {
 		onClose: function () {
 			setdialogOpenCmp(false)
-
 		},
 		'aria-labelledby': "form-dialog-title",
 		'aria-describedby': "form-dialog-title"
@@ -897,24 +806,14 @@ function Chat(props) {
 	];
 	const profileUpdate = () => {
 		const data = { ...customerProfileData };
-
 		data['number'] = selectedRecipient.number;
-
 		CoreHttpHandler.request('contact_book', 'update', {
 			key: ':id',
 			value: customerProfileData.id,
 			params: data
 		}, (response) => {
 			setdialogOpenCmp(false)
-
-
 		}, (error) => {
-			// if (error.hasOwnProperty('response')) {
-			//     if (error.response.hasOwnProperty('data')) {
-			//         this.setSnackBarMessage(error.response.data.message, 'error');
-			//     }
-			// } else this.setSnackBarMessage('Failed to update profile, please try again later', 'error');
-
 		});
 	}
 	const XGlobalDialogCmpClose = () => {
@@ -926,10 +825,8 @@ function Chat(props) {
 			value: selectedRecipient.number
 		}, (response) => {
 			const customer = response.data.data.customer;
-
 			loadCountries().then((response) => {
 				const countries = response.data.data.list.data;
-
 				setcustomerProfileData({
 					id: customer.id,
 					number: selectedRecipient.number,
@@ -937,16 +834,13 @@ function Chat(props) {
 					assign_name: '',
 					countries,
 				})
-				// console.log("customer : ",customer);
 				setAnchorEl(false)
 				setdialogOpenCmp(true)
-
 			})
 
 		}, (error) => {
 			setAnchorEl(false)
 			setdialogOpenCmp(false)
-			// this.setSnackBarMessage('Failed to customer profile, please try again later', 'error');
 		});
 	}
 	const loadCountries = () => {
@@ -961,14 +855,8 @@ function Chat(props) {
 		}, null, null, true);
 	};
 	const copyContent = () => {
-
 		copy(selectedRecipient.number);
-		alert("copy")
-		// this.setSnackBarMessage('Copied', 'success', null);
-
-		// This is just personal preference.
-		// I prefer to not show the the whole text area selected.
-
+		this.setSnackBarMessage('Copied', 'success', null);
 	}
 	const handleKeyPress = (event) => {
 		if (event.key === '#') {
@@ -978,9 +866,6 @@ function Chat(props) {
 			sendMessageHandler()
 		}
 	}
-	const prevCountRef = useRef();
-	prevCountRef.current = messageText;
-	const prevCount = prevCountRef.current;
 
 	function onInputChange(ev) {
 		setEmo('')
@@ -989,51 +874,45 @@ function Chat(props) {
 				setMessageText(ev.target.value);
 				setTextLength(800 - ev.target.value.length)
 			}
-
 		}
 	}
-
 	const onEmojiClick = (event, emojiObject) => {
 		setEmo(emojiObject.emoji)
 		setTextLength(textLength - 2)
 	};
+	const scrollToBottom = () => {
+		chatRef.current.scrollTop =  chatRef.current.scrollHeight;
+		setTimeout(() => {
+			chatRef.current.scrollTop =  chatRef.current.scrollHeight;
+		  }, 1500);
+	}
+	const prevCountRef = useRef();
+	prevCountRef.current = messageText;
+	const prevCount = prevCountRef.current;
 	useEffect(() => {
 		setMessageTextNew(`${messageText + emo}`)
 		setChosenEmoji(false)
-		console.log("messageTextNew : ", messageText);
-		console.log("messageTextNew : ", emo);
-
-
 		if (messages) {
 			scrollToBottom();
 		}
-
-	}, [messages, emo, messageText]);
-
+	}, [messages, emo, messageText,chatRef]);
 	return (
 		<div className={clsx('flex flex-col relative', props.className)}>
-
-			<FuseScrollbars ref={chatRef} className="flex flex-1 flex-col overflow-y-auto">
+			<FuseScrollbars ref={chatRef}  className="flex flex-1 flex-col overflow-y-auto">
 				{messages && messages.length > 0 ? (
-
 					<div className="flex flex-col pt-16 px-16 pb-40">
 						{messages.map((item, index) => {
 							const contact = null;
-							// let message = 	item.message_body.substring(0, 200)
-
 							return (
 								<div
 									key={item.time}
 									className={
-										
 										item.message_type === "text" ?
 											clsx(
 												classes.messageRow,
-												
 												"mainclass",
 												'text-message-w-control',
 												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative pb-4',
-												 
 												{ me: item.type === "outbound" },
 												{ contact: item.type === "inbound" },
 												{ 'first-of-group': isFirstMessageOfGroup(item, index) },
@@ -1041,7 +920,7 @@ function Chat(props) {
 												index + 1 === messages.length && 'pb-96'
 											) : clsx(
 												classes.messageRowWithOutBorder,
-												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative  pb-4',"mainclass",
+												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative  pb-4', "mainclass",
 												{ me: item.type === "outbound" },
 												{ contact: item.type === "inbound" },
 												{ 'first-of-group': isFirstMessageOfGroup(item, index) },
@@ -1075,7 +954,6 @@ function Chat(props) {
 										{item.message_type === "document" ? <DocumentMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "contacts" ? <ContactMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "location" ? <LocationMessageType index={index} classes={classes} message={item} /> : null}
-
 									</div>
 								</div>
 							);
@@ -1100,7 +978,6 @@ function Chat(props) {
 						<Picker onEmojiClick={onEmojiClick} />
 					) : null}
 					<Paper className="flex items-center relative " elevation={1}>
-						{/* <div style={{ backgroundColor:'white'}}> */}
 						<TextField
 							multiline={true}
 							rows="2"
@@ -1108,7 +985,6 @@ function Chat(props) {
 							autoFocus={false}
 							id="message-input"
 							className="flex-1"
-							// maxLength="2"
 							inputProps={{
 								maxLength: 800,
 							}}
@@ -1127,10 +1003,7 @@ function Chat(props) {
 							onChange={onInputChange}
 							value={messageTextNew}
 							onKeyPress={handleKeyPress}
-						// onKeyDown={_handleKeyDown}
 						/>
-
-
 						<Menu
 							id="fade-menu"
 							anchorEl={anchorEl}
@@ -1144,13 +1017,6 @@ function Chat(props) {
 							<MenuItem onClick={(e) => conversationActionsCallback('video')}>Video</MenuItem>
 							<MenuItem onClick={(e) => conversationActionsCallback('audio')}>Audio</MenuItem>
 							<MenuItem onClick={(e) => conversationActionsCallback('document')}>Document</MenuItem>
-							{/* <MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
-							<MenuItem onClick={(e) => conversationActionsCallback('shift')}>shift</MenuItem>
-
-							<MenuItem onClick={(e) => conversationContextMenuCallback('block')}>Block </MenuItem>
-							<MenuItem onClick={(e) => conversationContextMenuCallback('customer_profile')}>Customer Profile </MenuItem>
-							<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem> */}
-
 						</Menu>
 						<Tooltip title="Canned Replies">
 							<IconButton style={{ position: 'absolute', fontSize: 10, left: 10, bottom: 13, paddingTop: 2, paddingBottom: 2, paddingLeft: 10, paddingRight: 10, }} onClick={(e) => conversationContextMenuCallback("canned_messages")}>
@@ -1175,9 +1041,7 @@ function Chat(props) {
 								<SendIcon />
 							</IconButton>
 						</Tooltip>
-						{/* </div> */}
 					</Paper>
-
 				</form>
 			)}
 			<XGlobalDialogCmp onDialogPropsChange={sendDialogInputHandler} data={{ dialogType: sendActionType, attachment: sendDialogData }} dialogTitle={sendDialogTitle} options={dialogOptionsConfirmBlock} content={AttachmentDialogV2} defaultState={sendDialogOpen} actions={sendDialogActions} />
