@@ -30,6 +30,9 @@ import Switch from '@material-ui/core/Switch';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
+import ContactDialog from './ContactDialog'
+import FuseAnimate from '@fuse/core/FuseAnimate';
+import Fab from '@material-ui/core/Fab';
 
 const useStyles = makeStyles((theme)=>({
     root: {
@@ -60,6 +63,12 @@ const useStyles = makeStyles((theme)=>({
 		  // marginLeft:'-2px',
 		  height: 22.5,
 		  
+		},
+		addButton: {
+			position: 'fixed',
+			bottom: 80,
+			right: 50,
+			zIndex: 99
 		},
  
 }))
@@ -212,6 +221,8 @@ function ContactTable(props) {
 
 	function handleClick(n) {
 		// props.history.push({pathname:'/apps/company-details',data:n});
+		setOpen(true)
+		setDialogData(n)
 	}
 
 	if (data2.length === 0) {
@@ -256,7 +267,6 @@ function ContactTable(props) {
 		setOpen(false)
 	}
 
-
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
 	}
@@ -264,6 +274,13 @@ function ContactTable(props) {
 	const toggleChecked = () => {
 		setChecked((prev) => !prev);
 	  };
+
+	  const handleClickOpen = () => {
+		setDialogData('')
+	  setOpen(true);
+
+  }
+  
 	return (
 		<>
  <Card className={classes.root}>
@@ -496,7 +513,20 @@ function ContactTable(props) {
 					/>
 				</MuiThemeProvider>
 
-				{/* {open && <CampaignDialog isOpen={open} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} />} */}
+				<FuseAnimate animation="transition.expandIn" delay={300}>
+				<Fab
+					color="primary"
+					aria-label="add"
+					size="medium"
+					className={classes.addButton}
+					onClick={handleClickOpen}
+				// onClick={ev => dispatch(Actions.openNewContactDialog())}
+				>
+					<Icon>person_add</Icon>
+				</Fab>
+			</FuseAnimate>
+
+				{open && <ContactDialog isOpen={open} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} />}
 			</div>
 			</CardContent>
 			</Card>
