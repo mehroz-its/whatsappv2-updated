@@ -10,14 +10,15 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_material from "@amcharts/amcharts4/themes/material";
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import AgentHeader from './AgentHeader'
-import { CSVLink, CSVDownload } from 'react-csv';
 import AgentTable from './AgentTable'
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import DateRangePickerVal from '../chat/DatePicker'
-
+import { CSVLink, CSVDownload } from 'react-csv';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert'
 const useStyles = makeStyles((theme) => ({
 	layoutRoot: {},
 	formControl: {
@@ -46,6 +47,9 @@ function AgentApp() {
 	const [StartingDate, setStartingDate] = React.useState('')
 	const [EndingDate, setEndingDate] = React.useState('')
 	const [isLoading, setisLoading] = React.useState(false)
+	const [snackbarmessage, setSnackBarMessage] = React.useState('')
+	const [ok, setOK] = React.useState('')
+	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 	// const [HitValue,setHitValue] = React.useState(false)
 	const getData = ((loadData) => {
 		console.log('called_get_data', Start, End)
@@ -157,6 +161,7 @@ function AgentApp() {
 	}, [])
 
 	if (tableData.length > 0) {
+		console.log("tableData : ", tableData);
 
 		let chart_display_objects = tableData.map((val, i) => {
 			console.log(val, 'vall')
@@ -209,14 +214,17 @@ function AgentApp() {
 	console.log(tableData.length, 'TABLEDATA');
 
 	const DownloadData = () => {
-		console.log(tableData, "tableDatatableData")
-		return (
-			<CSVLink
-				data={tableData}
-				filename={"my-file.csv"}
-				target="_blank"
-			/>
-		)
+		let name;
+		if (Start === '') {
+			name = new Date().toISOString()
+		}
+		else {
+			name = Start + "-" + End
+		}
+		const csvLink = (<CSVLink filename={`chat_${name}.csv`} data={tableData}><span style={{ color: 'white' }}>Your exported chat is ready for download</span></CSVLink>);
+		setSnackBarMessage(csvLink)
+		setOK("success")
+		setSnackBarOpen(true)
 	}
 	// { HitValue ? getData('',Start,End) : null }
 
@@ -245,7 +253,7 @@ function AgentApp() {
 						style={{ marginLeft: '8px', marginTop: '6px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span" >
 						Generate Report
                 </Button>
-				<Button
+					<Button
 						onClick={DownloadData}
 						id="content-upload-button" style={{ marginLeft: '8px', marginTop: '6px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span"                            >
 						Export
@@ -270,7 +278,17 @@ function AgentApp() {
 							</Paper>
 						</div>
 
+						<Snackbar
 
+							anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+							open={snackbaropen}
+							autoHideDuration={4000}
+							onClose={() => setSnackBarOpen(false)}
+						>
+							<Alert variant="filled" severity={ok}>
+								{snackbarmessage}
+							</Alert>
+						</Snackbar>
 
 					</FuseAnimateGroup>
 					<FusePageSimple
@@ -284,7 +302,7 @@ function AgentApp() {
 							wrapper: 'min-h-0'
 						}}
 						header={<AgentHeader SearchVal={searchContact} />}
-						content={<AgentTable data={val == '' ? tableData : data2} />}
+						content={<AgentTable data={tableData} />}
 					/>
 					<div style={{ height: '128px' }}></div>
 				</div>

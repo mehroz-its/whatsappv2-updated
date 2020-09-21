@@ -496,7 +496,9 @@ function Chat(props) {
 	}, [messages,]);
 
 	function scrollToBottom() {
-		chatRef.current.scrollTop = chatRef.current.scrollHeight;
+		setTimeout(() => {
+			chatRef.current.scrollTop =  chatRef.current.scrollHeight+200;
+		  }, 1000);
 	}
 
 	function shouldShowContactAvatar(item, i) {

@@ -48,8 +48,10 @@ const useStyles = makeStyles(theme => ({
 		left: 0,
 		right: 0,
 		top: 0,
-		height: headerHeight+900,
-		pointerEvents: 'none'
+		height: headerHeight+100,
+		pointerEvents: 'none',
+		// backgroundColor: 'green',
+		// height:800
 	},
 	/* contentCardWrapper            : {
          display : 'flex ',
@@ -77,7 +79,9 @@ const useStyles = makeStyles(theme => ({
 		flex: '1 1 auto',
 		overflow: 'auto',
 		'-webkit-overflow-scrolling': 'touch',
-		zIndex: 9999
+		zIndex: 9999,
+		
+		// height: 10*window.innerHeight*0.01
 	},
 	toolbar: {
 		height: toolbarHeight,
@@ -86,7 +90,7 @@ const useStyles = makeStyles(theme => ({
 		alignItems: 'center'
 	},
 	content: {
-		flex: '1 0 auto'
+		flex: '1 0 auto',
 	},
 	sidebarWrapper: {
 		overflow: 'hidden',
@@ -146,7 +150,6 @@ const FusePageSimple = React.forwardRef((props, ref) => {
 	const rightSidebarRef = useRef(null);
 	const rootRef = useRef(null);
 	const classes = useStyles(props);
-
 	React.useImperativeHandle(ref, () => ({
 		rootRef,
 		toggleLeftSidebar: () => {

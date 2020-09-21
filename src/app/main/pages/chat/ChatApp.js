@@ -15,9 +15,6 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Chat from './Chat';
 import ChatsSidebar from './ChatsSidebar';
-import ContactSidebar from './ContactSidebar';
-import StatusIcon from './StatusIcon';
-import * as Actions from './store/actions';
 import reducer from './store/reducers';
 import UserSidebar from './UserSidebar';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler';
@@ -33,14 +30,12 @@ import { CSVLink, CSVDownload } from 'react-csv';
 import Fade from '@material-ui/core/Fade'
 import Tooltip from '@material-ui/core/Tooltip';
 import { EventEmitter } from '../../../../events'
-import copy from 'copy-to-clipboard';
 import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-
+import copy from 'copy-to-clipboard';
 const drawerWidth = 320;
 const headerHeight = 100;
-
 const AvatarStyle = createMuiTheme({
 	overrides: {
 		MuiAvatar: {
@@ -49,15 +44,10 @@ const AvatarStyle = createMuiTheme({
 				height: '35px',
 				width: '35px',
 				paddingBottom: 4,
-				//   "&:last-child": {
-				// 	paddingRight: 5
-				//   }
 			}
 		}
 	}
 });
-
-
 const useStyles = makeStyles(theme => ({
 	root: {
 		display: 'flex',
@@ -86,7 +76,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	contentCardWrapper: {
 		position: 'relative',
-		// padding: 10,
 		maxWidth: '100%',
 		display: 'flex',
 		flexDirection: 'column',
@@ -190,52 +179,9 @@ const user = {
 }
 const selectedContactId = "5725a680b3249760ea21de52";
 const chat = null
-// const chat = {
-// 	id: "1725a680b3249760ea21de52",
-// 	dialog: [
-// 		{
-// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
-// 			time: "2017-03-22T08:54:28.299Z",
-// 			who: "5725a680b3249760ea21de52",
-// 		},
-// 		{
-// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
-// 			time: "2017-03-22T08:54:28.299Z",
-// 			who: "5725a680b3249760ea21de52",
-// 		},
-
-// 		{
-// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
-// 			time: "2017-03-22T08:54:28.299Z",
-// 			who: "5725a680b3249760ea21de52",
-// 		},
-// 		{
-// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
-// 			time: "2017-03-22T08:54:28.299Z",
-// 			who: "5725a680b3249760ea21de52",
-// 		},
-// 		{
-// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
-// 			time: "2017-03-22T08:54:28.299Z",
-// 			who: "5725a680b3249760ea21de52",
-// 		},
-// 		{
-// 			message: "I’m having breakfast right now, can’t you wait for 10 minutes?",
-// 			time: "2017-03-22T08:55:28.299Z",
-// 			who: "5725a6802d10e277a0f35724"
-// 		}, {
-// 			message: "We are losing money! Quick!",
-// 			time: "2017-03-22T09:00:28.299Z",
-// 			who: "5725a680b3249760ea21de52"
-// 		}
-// 	]
-// }
 
 function ChatApp(props) {
 	const dispatch = useDispatch();
-	// const chat = useSelector(({ chatApp }) => chatApp.chat);
-	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
-	// const selectedContactId = useSelector(({ chatApp }) => chatApp.contacts.selectedContactId);
 	const userSidebarOpen = false;
 	const contactSidebarOpen = false;
 	var abc = []
@@ -253,11 +199,6 @@ function ChatApp(props) {
 	const [int_MessageLists, setint_MessageLists] = React.useState(null);
 	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
 	const [anchorEl, setAnchorEl] = React.useState(null);
-
-
-	// const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
-
-
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
 	const selectedRecipientt = (e) => {
@@ -266,25 +207,20 @@ function ChatApp(props) {
 		setselectedRecipient(e)
 		setmobileChatsSidebarOpen(false)
 		getConversation(e);
-		// if (selectedRecipient !== null) {
 		setint_MessageLists(setInterval(() => {
 			getConversation(e);
 		}, 2000));
-		// }
 	}
 	const getNumbers = () => {
 		CoreHttpHandler.request('conversations', 'numbers', {}, (response) => {
 			const numbers = response.data.data.customers;
 			const lastMessage = response.data.data.lastMessage;
-			console.log("lastMessage,",lastMessage);
+			console.log("lastMessage,", lastMessage);
 			if (lastMessage) {
 				const lastMessageDtu = new Date(lastMessage.dtu);
 				if (lastMessageTimestamp === null)
 					setlastMessageTimestamp(new Date(lastMessage.dtu))
 				if (lastMessageTimestamp < lastMessageDtu) {
-					// if (lastMessage.name !== null) {
-					//     this.setSnackBarMessage(`New Message From [${lastMessage.name}]`, 'success', 'new_message');
-					// } else this.setSnackBarMessage(`New Message From [${lastMessage.number}]`, 'success', 'new_message');
 					setlastMessageTimestamp(lastMessageDtu);
 					setlatestMessageSender(lastMessage.number);
 				}
@@ -302,7 +238,6 @@ function ChatApp(props) {
 			value2: e.last_closed
 
 		};
-		console.log("params : ", params);
 		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
 			console.log("messages :", abc);
 			if (response.data.data.chat.length > abc.length) {
@@ -311,50 +246,22 @@ function ChatApp(props) {
 				setshowLatestMessage(true)
 			}
 			CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: e.number }, (response) => {
-
 			}, (response) => {
-
 			})
-
 		}, (response) => {
-
 		});
 	}
 
 	const conversationActionsCallback = (action) => {
-		// setAnchorEl(null);
 		if (action === 'export') conversationExport();
 		if (action === 'shift') conversationShift();
-
-
 	}
-
-	// const onSnackBarClose() {
-	//     this.setState({ snackBarMessage: "", snackBarOpen: false }, () => {
-	//         if (this.state.showLatestMessage) this.setState({ showLatestMessage: false });
-	//     })
-	// }
-
-	// const setSnackBarMessage = (message, severity, type = null) => {
-	// 	console.log('caleddddddddddddddd');
-	//     this.setState({
-	//         snackBarAlertSeverity: severity,
-	//         snackBarMessage: message,
-	//         snackBarOpen: true,
-	//     }, () => {
-	//         if (type === 'new_message') {
-	//             if (!this.state.showLatestMessage) this.setState({ showLatestMessage: true });
-	//         }
-	//     })
-	// }
-
 	const conversationExport = () => {
 		let params = {
 			key: ':number',
 			value: selectedRecipient.number,
 			key2: ':last_closed',
 			value2: selectedRecipient.last_closed
-
 		};
 		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
 			const messages = response.data.data.chat;
@@ -362,8 +269,6 @@ function ChatApp(props) {
 			setSnackBarMessage(csvLink)
 			setOK("success")
 			setSnackBarOpen(true)
-
-
 			setMoreMenuEl(null);
 		}, (response) => {
 
@@ -375,36 +280,25 @@ function ChatApp(props) {
 			setshiftAgentsList(data)
 			setdialogOpenShift(true)
 			setMoreMenuEl(null);
-
 		}, (response) => {
-
 		});
 	}
 	const conversationContextMenuCallback = (item) => {
 		if (item === 'customer_profile') {
 			profileDialog();
 			setMoreMenuEl(null);
-
-
 		}
-
 		if (item === 'canned_messages') {
-
 			cannedMessagesDialog()
 			setMoreMenuEl(null);
-
 		}
-
 		if (item === 'block') {
 			setdialogOpenConfirmBlock(true)
 			setMoreMenuEl(null);
-
-
 		}
 		if (item === 'copy') {
 			copyContent();
 			setMoreMenuEl(null);
-
 		}
 	}
 	const profileDialog = () => {
@@ -413,10 +307,8 @@ function ChatApp(props) {
 			value: selectedRecipient.number
 		}, (response) => {
 			const customer = response.data.data.customer;
-
 			loadCountries().then((response) => {
 				const countries = response.data.data.list.data;
-
 				setcustomerProfileData({
 					id: customer.id,
 					number: selectedRecipient.number,
@@ -424,10 +316,8 @@ function ChatApp(props) {
 					assign_name: '',
 					countries,
 				})
-				console.log("customer : ", customer);
 				setAnchorEl(false)
 				setdialogOpenCmp(true)
-
 			})
 
 		}, (error) => {
@@ -437,7 +327,6 @@ function ChatApp(props) {
 		});
 	}
 	const loadCountries = () => {
-		console.log('insdie hit of load count');
 		return CoreHttpHandler.request('locations', 'get_countries', {
 			columns: "id, name",
 			sortby: "ASC",
@@ -453,14 +342,7 @@ function ChatApp(props) {
 		setSnackBarMessage("Copied Successfully")
 		setOK("success")
 		setSnackBarOpen(true)
-
-
-
-		// this.setSnackBarMessage('Copied', 'success', null);
 	}
-
-
-
 	const [sendDialogData, setsendDialogData] = React.useState({
 		url: '',
 		caption: '',
@@ -487,7 +369,6 @@ function ChatApp(props) {
 		countries: [],
 	});
 	const [dialogOpenCmp, setdialogOpenCmp] = React.useState(false);
-
 	const sendDialogActions = [
 		{
 			handler: (event, index) => {
@@ -508,25 +389,17 @@ function ChatApp(props) {
 	];
 	const sendDialogActionCb = () => {
 		const args = {};
-
 		args[sendActionType] = {};
-
 		args[sendActionType]['type'] = sendActionType;
-
 		args[sendActionType][sendActionType] = {};
-
 		args[sendActionType][sendActionType]['message'] = sendDialogData;
-
 		args[sendActionType][sendActionType]['to'] = [selectedRecipient.number];
-
 		if (sendDialogData.attributes) {
 			Object.keys(sendDialogData.attributes).forEach(attr => {
 				args[sendActionType][sendActionType].message[attr] = sendDialogData.attributes[attr];
 			});
 		}
-
 		delete args[sendActionType][sendActionType].message.attributes;
-
 		CoreHttpHandler.request('conversations', 'send', { key: ':type', value: sendActionType, params: args[sendActionType] }, (response) => {
 			setsendActionType(null)
 			setsendDialogTitle('')
@@ -536,28 +409,23 @@ function ChatApp(props) {
 				caption: '',
 				attributes: null,
 			})
-
 		}, (response) => {
 		})
 	};
 	const dialogOptionsConfirmBlock = {
 		onClose: function () {
 			setdialogOpenConfirmBlock(false)
-
 		},
 		'aria-labelledby': "form-dialog-title",
 		'aria-describedby': "form-dialog-title"
 	};
 	useEffect(() => {
 		EventEmitter.subscribe('Online', (event) => checkOnline(event))
-		console.log("getNumbers use efffact = > ", selectedRecipient);
 		getNumbers()
 		return () => {
-			// clearInterval(int_CustomerList);
 			clearInterval(int_MessageLists);
 		}
 	}, [selectedRecipient]);
-
 	const checkOnline = (online) => {
 		if (online === false) {
 			setselectedRecipient(null)
@@ -573,13 +441,12 @@ function ChatApp(props) {
 	if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
 		getNumbers();
 	}, 2000));
+
 	const clearData = () => {
 		setselectedRecipient(null)
 		setmessages([])
 		clearInterval(this.int_MessageLists);
-
 	}
-
 	function handleMoreMenuClick(event) {
 		setMoreMenuEl(event.currentTarget);
 	}
@@ -600,32 +467,23 @@ function ChatApp(props) {
 			setcannedMessagesList(data)
 			setdialogOpenCanned(true)
 			setMoreMenuEl(null);
-
-
 		}, (error) => {
-			// this.setSnackBarMessage('Failed to load canned messages, please try again later', 'error');
 		});
 	}
 	const sendDialogInputHandler = (e) => {
 		const data = { ...sendDialogData };
-
 		if (e.caption) {
 			data['caption'] = e.caption;
 		}
-
 		if (e.url) {
 			data['url'] = e.url;
 		}
-
 		if (e.attributes) {
 			data['attributes'] = e.attributes;
 		}
 		setsendDialogData(data)
 	};
 	const selectedShiftAgent = (agent) => {
-		console.log("selectedShiftAgent agent ", agent)
-		console.log("selectedShiftAgent selectedRecipient ", selectedRecipient)
-
 		CoreHttpHandler.request('conversations', 'transfer', {
 			key: ':id',
 			value: agent.id,
@@ -636,7 +494,6 @@ function ChatApp(props) {
 			setdialogOpenShift(false)
 			clearData()
 		}, (response) => {
-
 		});
 	}
 	const dialogOptionsShift = {
@@ -654,19 +511,16 @@ function ChatApp(props) {
 			options: {},
 			label: "Cancel",
 		},
-
 	];
 	const XGlobalDialogShiftClose = () => {
 		setdialogOpenShift(false)
 	}
 	const selectedCannedMessage = (props) => {
 		const { message_text, message_type, attachment_url, attachment_name, attachment_type } = props;
-
 		if (message_type !== 'text') {
 			let params = {
 				type: message_type,
 			};
-
 			params[message_type] = {
 				to: [selectedRecipient.number],
 				message: {
@@ -676,19 +530,15 @@ function ChatApp(props) {
 					caption: (message_text) ? message_text : `You Shared A ${message_type.charAt(0).toUpperCase()}${message_type.slice(1)}`,
 				}
 			}
-
 			CoreHttpHandler.request('conversations', 'send', {
 				key: ':type',
 				value: message_type,
 				params,
 			}, (response) => {
-				// setMessageText("")
 				setdialogOpenCanned(false)
-
 			}, (error) => {
 			});
 		} else {
-			// setMessageText(message_text)
 			setdialogOpenCanned(false)
 		}
 	}
@@ -734,8 +584,6 @@ function ChatApp(props) {
 		}
 	];
 	const blockNumber = () => {
-		console.log('blockNumber');
-
 		CoreHttpHandler.request('conversations', 'block', {
 			key: ':number', value: selectedRecipient.number, params: {
 				reason: blockReason,
@@ -745,13 +593,8 @@ function ChatApp(props) {
 			setblockReason('')
 			setAnchorEl(false)
 			clearData()
-			// props.agentShift()
-			// setselectedRecipient(null)
-			// setmessages([])
-			// clearInterval(this.int_MessageLists);
 		}, (error) => {
 			setAnchorEl(false)
-
 			setdialogOpenConfirmBlock(false)
 		});
 	}
@@ -762,18 +605,14 @@ function ChatApp(props) {
 			event,
 			dataKey,
 		} = props;
-
 		const data = { ...customerProfileData };
-
 		data[key] = value.attrs;
 		data['assign_name'] = value.assigned_name;
 		setcustomerProfileData(data)
-
 	}
 	const dialogOptionsCmp = {
 		onClose: function () {
 			setdialogOpenCmp(false)
-
 		},
 		'aria-labelledby': "form-dialog-title",
 		'aria-describedby': "form-dialog-title"
@@ -805,34 +644,15 @@ function ChatApp(props) {
 	}
 	const profileUpdate = () => {
 		const data = { ...customerProfileData };
-
 		data['number'] = selectedRecipient.number;
-
 		CoreHttpHandler.request('contact_book', 'update', {
 			key: ':id',
 			value: customerProfileData.id,
 			params: data
 		}, (response) => {
 			setselectedRecipient(selectedRecipient)
-			// const clearData2 = () => {
 			setdialogOpenCmp(false)
-			// clearInterval(this.int_MessageLists);
-			// clearInterval(this.int_CustomerList);
-			// 	getNumbers();
-			// setint_CustomerList = setInterval(() => {
-			// 	getNumbers();
-			// }, 1000);
-			// }
-
-
-
 		}, (error) => {
-			// if (error.hasOwnProperty('response')) {
-			//     if (error.response.hasOwnProperty('data')) {
-			//         this.setSnackBarMessage(error.response.data.message, 'error');
-			//     }
-			// } else this.setSnackBarMessage('Failed to update profile, please try again later', 'error');
-
 		});
 	}
 	const endConversation = () => {
@@ -841,18 +661,12 @@ function ChatApp(props) {
 			setmessages([])
 			clearInterval(this.int_MessageLists);
 		}, (error) => {
-			console.log("error : , error", error);
-
-
 		});
 	}
 	let userOnline = JSON.parse(localStorage.getItem('online'))
-	console.log(lastmessage,"lastmessagelastmessagelastmessage");
-	console.log(numbers,"numbers");
 	return (
 		<>
 			<Snackbar
-
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 				open={snackbaropen}
 				autoHideDuration={4000}
@@ -862,48 +676,10 @@ function ChatApp(props) {
 					{snackbarmessage}
 				</Alert>
 			</Snackbar>
-
 			<div className={clsx(classes.root)}>
 				<div className={classes.topBg} />
 				<div className={clsx(classes.contentCardWrapper, 'container')}>
 					<div className={classes.contentCard}>
-						{/* <Hidden mdUp>
-							<Drawer
-								className="h-full absolute z-20"
-								variant="temporary"
-								anchor="left"
-								open={mobileChatsSidebarOpen}
-								onClose={() => setmobileChatsSidebarOpen(false)}
-								classes={{
-									paper: clsx(classes.drawerPaper, 'absolute ltr:left-0 rtl:right-0')
-								}}
-								style={{ position: 'absolute' }}
-								ModalProps={{
-									keepMounted: true,
-									disablePortal: true,
-									BackdropProps: {
-										classes: {
-											root: 'absolute'
-										}
-									}
-								}}
-							>
-								<ChatsSidebar numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
-							</Drawer>
-						</Hidden>
-						<Hidden smDown>
-							<Drawer
-								className="h-full z-15"
-								variant="permanent"
-								open
-								classes={{
-									paper: classes.drawerPaper
-								}}
-							>
-								<ChatsSidebar numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
-							</Drawer>
-						</Hidden> */}
-
 						{
 							userOnline ?
 								<Hidden smDown>
@@ -945,9 +721,6 @@ function ChatApp(props) {
 								</Drawer>
 							</Hidden> : null
 						}
-
-
-
 						{userOnline ?
 							<main className={clsx(classes.contentWrapper, 'z-10')}>
 								{!selectedRecipient ? (
@@ -989,20 +762,10 @@ function ChatApp(props) {
 													</IconButton>
 													<div
 														className="flex items-center cursor-pointer"
-													// onClick={() => setuserDrawer(true)}
-													// onKeyDown={() => setuserDrawer(false)}
-													// role="button"
-													// tabIndex={0}
 													>
 														<div className="relative mx-6 w-32 h-32" style={{ marginTop: '30px', marginLeft: '10px' }}>
-															{/* <div className="absolute right-0 bottom-0  -m-1 z-2">
-													
-														<StatusIcon status={selectedRecipient.status} />
-														
-													</div> */}
 															<MuiThemeProvider theme={AvatarStyle}>
 																<Avatar
-
 																	src={selectedRecipient.avatar} alt={selectedRecipient.name} className={classes.avatar}>
 																	{!selectedRecipient.avatar || selectedRecipient.avatar === ''
 																		? selectedRecipient.name[0]
@@ -1050,7 +813,6 @@ function ChatApp(props) {
 													</div>
 												</Toolbar>
 											</AppBar>
-
 											<div className={classes.content}>
 												<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} clearBlock={clearData} endConversation={endConversation} />
 											</div>
