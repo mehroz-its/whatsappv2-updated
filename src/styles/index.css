@@ -126,7 +126,7 @@ a[role=button] {
 }
 .MuiTabs-flexContainer{
     display: flex;
-    justify-content: space-around !important;
+    /* justify-content: space-around !important; */
 }
 
 form label {
