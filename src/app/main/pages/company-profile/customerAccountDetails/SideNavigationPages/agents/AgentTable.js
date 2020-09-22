@@ -7,17 +7,18 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import FuseAnimate from '@fuse/core/FuseAnimate';
+import Fab from '@material-ui/core/Fab';
 import clsx from 'clsx';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-
 import Button from '@material-ui/core/Button';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import AgentTableHeader from './AgentTableHeader';
-import ContactsTablePaginationActions from '../../../../setting/canned/ContactsTablePaginationActions';
+// import ContactsTablePaginationActions from '../../../../setting/canned/ContactsTablePaginationActions';
 import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
 // import CampaignDialog from './CampaignDialog'
 import CoreHttpHandler from '../../../../../../../http/services/CoreHttpHandler'
@@ -29,6 +30,7 @@ import Switch from '@material-ui/core/Switch';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
+import AgentDialog from './AgentDialog'
 
 const useStyles = makeStyles((theme)=>({
     root: {
@@ -60,8 +62,15 @@ const useStyles = makeStyles((theme)=>({
 		  height: 22.5,
 		  
 		},
+		addButton: {
+			position: 'fixed',
+			bottom: 80,
+			right: 50,
+			zIndex: 99
+		},
  
 }))
+
 
 const PaginationStyle = createMuiTheme({
 	overrides: {
@@ -205,6 +214,9 @@ function AgentTable(props) {
 
 	function handleClick(n) {
 		// props.history.push({pathname:'/apps/company-details',data:n});
+		setOpen(true)
+		setDialogData(n)
+
 	}
 
 	if (data2.length === 0) {
@@ -250,6 +262,7 @@ function AgentTable(props) {
 	}
 
 
+
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
 	}
@@ -257,6 +270,12 @@ function AgentTable(props) {
 	const toggleChecked = () => {
 		setChecked((prev) => !prev);
 	  };
+
+	  const handleClickOpen = () => {
+		  setDialogData('')
+		setOpen(true);
+
+	}
 	return (
 		<>
  <Card className={classes.root}>
@@ -361,16 +380,8 @@ function AgentTable(props) {
 													// label="Primary"
 												/>
 											</TableCell>
-											<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{n.activated ? (
-													<Icon className="text-green text-16">check_circle</Icon>
-												) : (
-														<Icon className="text-red text-16">cancel</Icon>
-													)}
-											</TableCell>
-                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{n.description}
-											</TableCell>          
+
+     
 
 											{/* <TableCell component="th" scope="row" align="center" style={{fontSize:'11px',padding:'10px'}}>
 											{n.dtu}
@@ -424,11 +435,24 @@ function AgentTable(props) {
 						page={page}
 						onChangePage={handleChangePage}
 						onChangeRowsPerPage={handleChangeRowsPerPage}
-						ActionsComponent={ContactsTablePaginationActions}
+						// ActionsComponent={ContactsTablePaginationActions}
 					/>
 				</MuiThemeProvider>
 
-				{/* {open && <CampaignDialog isOpen={open} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} />} */}
+				<FuseAnimate animation="transition.expandIn" delay={300}>
+				<Fab
+					color="primary"
+					aria-label="add"
+					size="medium"
+					className={classes.addButton}
+					onClick={handleClickOpen}
+				// onClick={ev => dispatch(Actions.openNewContactDialog())}
+				>
+					<Icon>person_add</Icon>
+				</Fab>
+			</FuseAnimate>
+
+				{open && <AgentDialog isOpen={open} type='Update Agent' data={dialogData} closeDialog={handleDialogClose} />}
 			</div>
 			</CardContent>
 			</Card>

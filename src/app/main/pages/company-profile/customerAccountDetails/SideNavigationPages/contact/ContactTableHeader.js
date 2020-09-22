@@ -17,45 +17,52 @@ import React, { useState } from 'react';
 
 const rows = [
 	{
-		id: 'fullname',
+		id: 'id',
 		align: 'center',
 		disablePadding: false,
-		label: 'Full Name',
+		label: 'ID',
 		sort: true
 	},
 	{
-		id: 'email',
+		id: 'firstname',
+		align: 'center',
+		disablePadding: false,
+		label: 'First Name',
+		sort: true
+	},
+	{
+		id: 'lastname',
+		align: 'center',
+		disablePadding: false,
+		label: 'Last Name',
+		sort: true
+	},
+	{
+		id: 'age',
+		align: 'center',
+		disablePadding: false,
+		label: 'Age',
+		sort: true
+	},
+	{
+		id: 'gender',
+		align: 'center',
+		disablePadding: false,
+		label: 'Gender',
+		sort: true
+	},
+	{
+		id: 'number',
+		align: 'center',
+		disablePadding: false,
+		label: 'Number',
+		sort: true
+	},
+	{
+		id: 'emal',
 		align: 'center',
 		disablePadding: false,
 		label: 'Email',
-		sort: true
-	},
-	{
-		id: 'position',
-		align: 'center',
-		disablePadding: false,
-		label: 'Position',
-		sort: true
-	},
-	{
-		id: 'phone',
-		align: 'center',
-		disablePadding: false,
-		label: 'Phone',
-		sort: true
-	},
-	{
-		id: 'active',
-		align: 'center',
-		disablePadding: false,
-		label: 'Active',
-		sort: true
-	},
-	{
-		id: 'Last_login',
-		align: 'center',
-		disablePadding: false,
-		label: 'Last Login',
 		sort: true
 	},
 

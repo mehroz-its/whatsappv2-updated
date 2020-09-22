@@ -45,26 +45,14 @@ const rows = [
 		sort: true
 	},
 	{
-		id: 'position',
+		id: 'status',
 		align: 'center',
 		disablePadding: false,
-		label: 'Position',
+		label: 'Status',
 		sort: true
 	},
-	{
-		id: 'credentials',
-		align: 'center',
-		disablePadding: false,
-		label: 'Credentials',
-		sort: true
-	},
-	{
-		id: 'profile_image',
-		align: 'center',
-		disablePadding: false,
-		label: 'Profile Image',
-		sort: true
-	},
+
+
 
 
 	// {
