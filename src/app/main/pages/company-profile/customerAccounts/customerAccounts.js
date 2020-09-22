@@ -199,7 +199,6 @@ function CustomerAccounts(props) {
         },
     };
     React.useEffect(() => {
-
         CoreHttpHandler.request('dashboard', 'listing', { ...dataSourceOptions.params }, dataSourceSuccess, dataSourceFailure);
         CoreHttpHandler.request('dashboard', 'messagestate', { ...dataSourceOptions.params }, messagestateSuccess, messagestateFailure);
         CoreHttpHandler.request('reports', 'campaignChart', { ...dataSourceOptionss.params }, dataSourceSuccesss, dataSourceFailuree);
@@ -222,8 +221,7 @@ function CustomerAccounts(props) {
                     value: parseInt(value[0]),
                     title: key[0]
                 }]
-                //    chartObj.pie{"value"} = Object.values(item.statistic[i])
-                //    chartObj.pie['title'] = Object.keys(item.statistic[i])
+         
             }
             return chartObj;
         });
@@ -319,12 +317,7 @@ function CustomerAccounts(props) {
             }
             return verticalCenter
         })
-
-        // chart.cursor = new am4charts.XYCursor();
-        // chart.cursor.xAxis = dateAxis;
         chart.scrollbarX = new am4core.Scrollbar();
-
-
     }
     const dataSourceSuccess = (response) => {
         const list = response.data.data.dashboardBoxInfo.boxes;
@@ -374,16 +367,11 @@ function CustomerAccounts(props) {
             }
             return str.join(' ');
         }
-        console.log(data)
-        // firstName = titleCase(data.firstName);
-        // lastName = titleCase(data.firstName);
         if (data.firstName) {
             firstName = titleCase(data.firstName);
-
         }
         if (data.lastName) {
             lastName = titleCase(data.lastName);
-
         }
 
 
@@ -413,26 +401,10 @@ function CustomerAccounts(props) {
                     </div>
                 </div>
             }
-            // contentToolbar={
-            // 	<Tabs
-            // 		value={tabValue}
-            // 		onChange={handleChangeTab}
-            // 		indicatorColor="primary"
-            // 		textColor="primary"
-            // 		variant="scrollable"
-            // 		scrollButtons="off"
-            // 		className="w-full border-b-1 px-100 text-center h-48 "
-            // 	>
-            // 		<Tab
-            // 			style={{ marginTop: '0.2%' }}
-            // 			className="text-12 font-600 normal-case" label="Statics" />
-
-            // 	</Tabs>
-            // }
             content={
 
                 <>
-                    <div className="p-24">
+                    <div className="p-24" style={{scrollX :false}}>
                         {/* {tabValue === 0 && ( */}
                         <FuseAnimateGroup
                             className="flex flex-wrap"
@@ -447,12 +419,12 @@ function CustomerAccounts(props) {
                                         <Button  style={{ fontSize:'11px' }} variant="contained" color="primary" onClick={(e) => { props.history.push({ pathname: '/apps/company-forms' }) }}>
                                             New Account
                                         </Button>
-                                        <Button size='small' style={{ marginLeft: 4,fontSize:'11px' }} variant="contained" color="primary" onClick={(e) => { props.history.push({ pathname: '/apps/company-forms' }) }}>
+                                        {/* <Button size='small' style={{ marginLeft: 4,fontSize:'11px' }} variant="contained" color="primary" onClick={(e) => { props.history.push({ pathname: '/apps/company-forms' }) }}>
                                             Import Customers
                                         </Button>
                                         <Button  size='small' style={{ marginLeft: 4,fontSize:'11px' }} variant="contained" color="primary" onClick={(e) => { props.history.push({ pathname: '/apps/company-forms' }) }}>
                                             Contacts
-                                        </Button>
+                                        </Button> */}
                                     </Grid>
 
                                     <Grid container spacing={3}>
@@ -509,24 +481,9 @@ function CustomerAccounts(props) {
 						)} */}
 
                     </div>
-                    <div style={{ height: '255px' }}></div>
                 </>
             }
-            rightSidebarContent={
-                <FuseAnimateGroup
-                    className="w-full"
-                    enter={{
-                        animation: 'transition.slideUpBigIn'
-                    }}
-                >
-                    <div className="widget w-full p-12">
-                        <WidgetNow />
-                    </div>
-                    <div className="widget w-full p-12">
-                        <WidgetWeather />
-                    </div>
-                </FuseAnimateGroup>
-            }
+     
         // innerScroll
         />
 

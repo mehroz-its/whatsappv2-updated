@@ -20,7 +20,7 @@ import { withRouter } from 'react-router-dom';
 import TableHeader from './TableHeader';
 import ContactsTablePaginationActions from '../../../../setting/canned/ContactsTablePaginationActions';
 import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
-// import CampaignDialog from './CampaignDialog'
+import CannedDialog from './CannedDialog'
 import CoreHttpHandler from '../../../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../../../@fuse/core/FuseLoading/FuseLoading'
 import Snackbar from '@material-ui/core/Snackbar';
@@ -30,8 +30,16 @@ import Switch from '@material-ui/core/Switch';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
+import FuseAnimate from '@fuse/core/FuseAnimate';
+import Fab from '@material-ui/core/Fab';
 
 const useStyles = makeStyles((theme) => ({
+    addButton: {
+        position: 'fixed',
+        bottom: 80,
+        right: 50,
+        zIndex: 99
+    },
     root: {
         maxWidth: '100%',
         padding: '0px'
@@ -209,6 +217,7 @@ function CannedReplies(props) {
     }
 
     function handleClick(n) {
+        setOpen(true)
         // props.history.push({ pathname: '/apps/company-details', data: n });
     }
 
@@ -262,6 +271,13 @@ function CannedReplies(props) {
     const toggleChecked = () => {
         setChecked((prev) => !prev);
     };
+    const closeDialog = () => {
+        setOpen(false);
+    };
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
     return (
         <>
             <Card className={classes.root} >
@@ -396,13 +412,13 @@ function CannedReplies(props) {
                                                         // label="Primary"
                                                         />
                                                     </TableCell>
-                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                    {/* <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
                                                         {n.activated ? (
                                                             <Icon className="text-green text-16">check_circle</Icon>
                                                         ) : (
                                                                 <Icon className="text-red text-16">cancel</Icon>
                                                             )}
-                                                    </TableCell>
+                                                    </TableCell> */}
 
 
                                                     {/* <TableCell component="th" scope="row" align="center" style={{fontSize:'11px',padding:'10px'}}>
@@ -460,8 +476,19 @@ function CannedReplies(props) {
                                 ActionsComponent={ContactsTablePaginationActions}
                             />
                         </MuiThemeProvider>
-
-                        {/* {open && <CampaignDialog isOpen={open} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} />} */}
+                        <FuseAnimate animation="transition.expandIn" delay={300}>
+				<Fab
+					color="primary"
+					aria-label="add"
+					size="medium"
+					className={classes.addButton}
+					onClick={handleClickOpen}
+				// onClick={ev => dispatch(Actions.openNewContactDialog())}
+				>
+					<Icon>person_add</Icon>
+				</Fab>
+			</FuseAnimate>
+                        {open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
                     </div>
                 </CardContent>
             </Card>

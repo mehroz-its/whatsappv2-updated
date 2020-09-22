@@ -39,7 +39,7 @@ const navigationConfig = [
             {
                 id: 'companyProfile',
                 title: 'Company Profile',
-                translate: 'Company Profile',
+                translate: 'Customers',
                 type: 'item',
                 icon: 'dashboard',
                 url: '/apps/company-profile',

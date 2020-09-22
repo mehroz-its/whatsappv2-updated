@@ -45,10 +45,7 @@ const PaginationStyle = createMuiTheme({
 
 
 function CampaignTable(props) {
-	console.log(props)
-	// const dispatch = useDispatch();
-	// const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
-	// const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
+
 	const [open, setOpen] = React.useState(false)
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState([]);
@@ -111,21 +108,6 @@ function CampaignTable(props) {
 	React.useEffect(() => {
 		getData()
 	}, []);
-
-	// useEffect(() => {
-	// 	dispatch(Actions.getProducts());
-	// }, [dispatch]);
-
-	// useEffect(() => {
-	// 	if (searchText.length !== 0) {
-	// 		setData(_.filter(products, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
-	// 		setPage(0);
-	// 	} else {
-	// 		setData(products);
-	// 		console.log(products,'here in prdoducts table')
-	// 	}
-	// }, [products, searchText]);
-
 	function handleRequestSort(event, property) {
 		const id = property;
 		let direction = 'desc';
@@ -141,18 +123,12 @@ function CampaignTable(props) {
 	}
 
 	function search() {
-		console.log('ceeleded', props.ValueForSearch, searchVal);
-
 		setSearchVal(props.ValueForSearch)
 		setData2(data.filter(n => n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-		console.log(data, 'filterssss');
-
-
 	}
 	if (searchVal !== props.ValueForSearch) {
 		{ search() }
 	}
-
 
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
@@ -204,7 +180,6 @@ function CampaignTable(props) {
 		setPage(value);
 	}
 	function handleDialogClose() {
-		console.log("hhe");
 		setOpen(false)
 	}
 
@@ -232,7 +207,6 @@ function CampaignTable(props) {
 				</Alert>
 			</Snackbar>
 			<div className="w-full flex flex-col">
-				<FuseScrollbars className="flex-grow overflow-x-auto">
 					<TableContainer component={Paper}>
 
 						<Table className="min-w-xl" aria-labelledby="tableTitle">
@@ -373,7 +347,7 @@ function CampaignTable(props) {
 							</TableBody>
 						</Table>
 					</TableContainer>
-				</FuseScrollbars>
+		
 				<MuiThemeProvider theme={PaginationStyle}>
 					<TablePagination
 						classes={{

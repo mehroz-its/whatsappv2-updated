@@ -14,7 +14,6 @@ import am4themes_material from "@amcharts/amcharts4/themes/material";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import MaterialTable from 'material-table';
 import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import CoreHttpHandler from '../.././../../../../../http/services/CoreHttpHandler'
@@ -23,12 +22,16 @@ import WidgetNow from './widgets/WidgetNow';
 import WidgetWeather from './widgets/WidgetWeather';
 import Widget5 from './widgets/Widget5'
 import FuseLoading from '../.././../../../../../@fuse/core/FuseLoading/FuseLoading'
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import DatePicker from './DatePicker'
+
 
 am4core.useTheme(am4themes_material);
 am4core.useTheme(am4themes_animated);
 const useStyles = makeStyles({
 	layoutRoot: {
-		
+
 	},
 
 
@@ -45,7 +48,16 @@ const useStyles = makeStyles({
 		'& canvas': {
 			maxHeight: '80%'
 		}
-	}
+	},
+	root: {
+		maxWidth: '100%',
+		padding: '0px'
+	},
+	contentCard: {
+		padding: '0px'
+	},
+
+
 
 });
 
@@ -147,6 +159,8 @@ const newMessageList = [
 	{ category: "My-Photos", value: "0", full: "100" },
 	{ category: "My-MYDocuments", value: "0", full: "100" }
 ]
+var Start = "";
+var End = "";
 function DashboardApp(props) {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
@@ -388,10 +402,16 @@ function DashboardApp(props) {
 
 
 	}
+	const SelectedDates = (start, end) => {
+		console.log(start.toISOString(), end.toISOString(), 'received successfully');
+		Start = start.toISOString()
+		End = end.toISOString()
+		console.log(Start, End, 'Coverted_Datesss');
+	}
 	return (
 
 		<FusePageSimple
-			
+
 			classes={{
 				// content: classes.content,
 				header: 'min-h-150 h-150 sm:h-150 sm:min-h-150',
@@ -400,52 +420,42 @@ function DashboardApp(props) {
 				content: classes.content
 			}}
 
-			contentToolbar={
-				<Tabs
-					value={tabValue}
-					onChange={handleChangeTab}
-					indicatorColor="primary"
-					textColor="primary"
-					variant="scrollable"
-					scrollButtons="off"
-					className="w-full border-b-1 px-100 text-center h-48 "
-				>
-					<Tab
-						style={{ marginTop: '0.2%' }}
-						className="text-12 font-600 normal-case" label="Statics" />
-
-				</Tabs>
-			}
 			content={
+				<Card className={classes.root}>
+					<CardContent className={classes.contentCard} style={{ width: '100%' }}>
+						<Typography variant='h2' className='companyDetailHeader' >Intelligence
+						</Typography>
+						<div className="p-24">
 
-				<>
-					<div className="p-24">
-						{tabValue === 0 && (
-							<FuseAnimateGroup
-								className="flex flex-wrap"
-								enter={{
-									animation: 'transition.slideUpBigIn'
-								}}>
-								<Grid container spacing={4}>
-									<Grid item md={8} sm={12} xs={12} >
-										<Grid container spacing={3}>
-											{box.map((value, index) => {
-												return (
-													<Grid item md={4} sm={12} xs={12} >
-														<Widget2 title={value.title} count={value.value} bottom_title={value.subtitle} />
-													</Grid>
-												)
-											})}
+							{tabValue === 0 && (
+								<FuseAnimateGroup
+									className="flex flex-wrap"
+									enter={{
+										animation: 'transition.slideUpBigIn'
+									}}>
+									<Grid container spacing={4}>
+										<Grid style={{display:'flex',justifyContent:'flex-end'}} item md={12} sm={12} xs={12}>
+											<DatePicker SelectedDates={SelectedDates} />
+										</Grid>
+										<Grid  item md={8} sm={12} xs={12}>
+											<Grid container spacing={3}>
+												{box.map((value, index) => {
+													return (
+														<Grid item md={4} sm={12} xs={12} >
+															<Widget2 title={value.title} count={value.value} bottom_title={value.subtitle} />
+														</Grid>
+													)
+												})}
+											</Grid>
+										</Grid>
+										<Grid item md={4} sm={12} xs={12} >
+											<Paper className="w-full rounded-8 shadow-none border-1 pt-10 pb-10">
+
+												<div id="chartdivv" style={{ width: "100%", height: "221px" }}></div>
+											</Paper>
 										</Grid>
 									</Grid>
-									<Grid item md={4} sm={12} xs={12} >
-										<Paper className="w-full rounded-8 shadow-none border-1 pt-10 pb-10">
-
-											<div id="chartdivv" style={{ width: "100%", height: "221px" }}></div>
-										</Paper>
-									</Grid>
-								</Grid>
-								{/* <Grid container spacing={3} style={{ marginTop: 10 }}>
+									{/* <Grid container spacing={3} style={{ marginTop: 10 }}>
 									<Grid item md={12} sm={12} xs={12} >
 										<Paper className="w-full rounded-8 shadow-none border-1">
 
@@ -453,40 +463,29 @@ function DashboardApp(props) {
 										</Paper>
 									</Grid>
 								</Grid> */}
-							</FuseAnimateGroup>
-						)}
+								</FuseAnimateGroup>
 
-						{tabValue === 1 && (
-							<FuseAnimateGroup
-								className="flex flex-wrap"
-								enter={{
-									animation: 'transition.slideUpBigIn'
-								}}>
-								<Widget5 />
-							</FuseAnimateGroup>
+							)}
+						</div>
+					</CardContent>
+				</Card>
 
-
-						)}
-
-					</div>
-					<div style={{ height: '255px' }}></div>
-				</>
 			}
-			rightSidebarContent={
-				<FuseAnimateGroup
-					className="w-full"
-					enter={{
-						animation: 'transition.slideUpBigIn'
-					}}
-				>
-					<div className="widget w-full p-12">
-						<WidgetNow />
-					</div>
-					<div className="widget w-full p-12">
-						<WidgetWeather />
-					</div>
-				</FuseAnimateGroup>
-			}
+		// rightSidebarContent={
+		// 	<FuseAnimateGroup
+		// 		className="w-full"
+		// 		enter={{
+		// 			animation: 'transition.slideUpBigIn'
+		// 		}}
+		// 	>
+		// 		<div className="widget w-full p-12">
+		// 			<WidgetNow />
+		// 		</div>
+		// 		<div className="widget w-full p-12">
+		// 			<WidgetWeather />
+		// 		</div>
+		// 	</FuseAnimateGroup>
+		// }
 		// innerScroll
 		/>
 

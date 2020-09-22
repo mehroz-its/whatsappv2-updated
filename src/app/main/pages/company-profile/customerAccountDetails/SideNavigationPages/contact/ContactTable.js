@@ -513,18 +513,7 @@ function ContactTable(props) {
 					/>
 				</MuiThemeProvider>
 
-				<FuseAnimate animation="transition.expandIn" delay={300}>
-				<Fab
-					color="primary"
-					aria-label="add"
-					size="medium"
-					className={classes.addButton}
-					onClick={handleClickOpen}
-				// onClick={ev => dispatch(Actions.openNewContactDialog())}
-				>
-					<Icon>person_add</Icon>
-				</Fab>
-			</FuseAnimate>
+	
 
 				{open && <ContactDialog isOpen={open} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} />}
 			</div>

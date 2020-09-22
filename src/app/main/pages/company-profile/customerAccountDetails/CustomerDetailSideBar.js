@@ -146,7 +146,7 @@ function CustomerDetailSideBar(props) {
 							to="/apps/company-details/TemplateMessage"
 							activeClassName="active"
 							className={classes.listItem}
-							onClick={() => { onTabChange("TemplateMessage") }}
+							onClick={() => { onTabChange("Template Message") }}
 
 						>
 							<Icon className="list-item-icon text-16" color="action">
@@ -170,22 +170,6 @@ function CustomerDetailSideBar(props) {
 						</Icon>
 							<ListItemText
 								primary="Canned Replies" disableTypography />
-						</ListItem>
-						<ListItem
-							exact
-							button
-							component={NavLinkAdapter}
-							to="/apps/company-details/Payments"
-							activeClassName="active"
-							className={classes.listItem}
-							onClick={() => { onTabChange("Payments") }}
-
-						>
-							<Icon className="list-item-icon text-16" color="action">
-								picture_as_pdf
-						</Icon>
-							<ListItemText
-								primary="Payments" disableTypography />
 						</ListItem>
 					</List>
 				</Paper>

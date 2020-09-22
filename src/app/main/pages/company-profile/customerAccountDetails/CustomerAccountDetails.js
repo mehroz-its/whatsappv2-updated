@@ -50,7 +50,7 @@ function CustomerDetails(props) {
     const [ok, setOK] = React.useState('')
     const [val, setVal] = React.useState('')
     const [cannedtype, setCannedType] = React.useState('all')
-    const [tab, setTab] = React.useState('Profile')
+    const [tab, setTab] = React.useState('Intelligence')
 
     const handleClickOpen = () => {
         setOpen(true);

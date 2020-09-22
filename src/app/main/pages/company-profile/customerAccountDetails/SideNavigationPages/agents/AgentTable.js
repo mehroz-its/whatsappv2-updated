@@ -414,14 +414,14 @@ function AgentTable(props) {
 						</TableBody>
 					</Table>
 				</FuseScrollbars>
-				<MuiThemeProvider theme={PaginationStyle}>
+				{/* <MuiThemeProvider theme={PaginationStyle}> */}
 					<TablePagination
 						classes={{
 							root: 'overflow-hidden',
 							spacer: 'w-0 max-w-0',
 							actions: 'text-64',
-							select: 'text-12 mt-4',
-							selectIcon: 'mt-4',
+							select: 'text-12',
+							// selectIcon: 'mt-4',
 							// input:'text-64',
 							// menuItem:'text-64',
 							// toolbar:'text-64',
@@ -437,9 +437,9 @@ function AgentTable(props) {
 						onChangeRowsPerPage={handleChangeRowsPerPage}
 						// ActionsComponent={ContactsTablePaginationActions}
 					/>
-				</MuiThemeProvider>
+				{/* </MuiThemeProvider> */}
 
-				<FuseAnimate animation="transition.expandIn" delay={300}>
+				{/* <FuseAnimate animation="transition.expandIn" delay={300}>
 				<Fab
 					color="primary"
 					aria-label="add"
@@ -450,7 +450,7 @@ function AgentTable(props) {
 				>
 					<Icon>person_add</Icon>
 				</Fab>
-			</FuseAnimate>
+			</FuseAnimate> */}
 
 				{open && <AgentDialog isOpen={open} type='Update Agent' data={dialogData} closeDialog={handleDialogClose} />}
 			</div>

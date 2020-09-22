@@ -20,7 +20,7 @@ import { withRouter } from 'react-router-dom';
 import TableHeader from './TableHeader';
 import ContactsTablePaginationActions from '../../../../setting/canned/ContactsTablePaginationActions';
 import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
-// import CampaignDialog from './CampaignDialog'
+import TemplateDialog from './TemplateDialog'
 import CoreHttpHandler from '../../../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../../../@fuse/core/FuseLoading/FuseLoading'
 import Snackbar from '@material-ui/core/Snackbar';
@@ -30,8 +30,16 @@ import Switch from '@material-ui/core/Switch';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
+import FuseAnimate from '@fuse/core/FuseAnimate';
+import Fab from '@material-ui/core/Fab';
 
 const useStyles = makeStyles((theme) => ({
+    addButton: {
+        position: 'fixed',
+        bottom: 80,
+        right: 50,
+        zIndex: 99
+    },
     root: {
         maxWidth: '100%',
         padding: '0px'
@@ -220,6 +228,7 @@ function TemplateMessage(props) {
 
     function handleClick(n) {
         // props.history.push({ pathname: '/apps/company-details', data: n });
+        setOpen(true)
     }
 
     if (data2.length === 0) {
@@ -272,6 +281,14 @@ function TemplateMessage(props) {
     const toggleChecked = () => {
         setChecked((prev) => !prev);
     };
+    const closeDialog = () => {
+        setOpen(false);
+    };
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+  
     return (
         <>
             <Card className={classes.root}>
@@ -320,6 +337,9 @@ function TemplateMessage(props) {
                         <Tab
                             style={{ marginTop: '0.2%' }}
                             className="text-12 font-600 normal-case" label="Image" />
+                        <Tab
+                            style={{ marginTop: '0.2%' }}
+                            className="text-12 font-600 normal-case" label="Audio" />
                         <Tab
                             style={{ marginTop: '0.2%' }}
                             className="text-12 font-600 normal-case" label="Video" />
@@ -491,8 +511,20 @@ function TemplateMessage(props) {
                                 ActionsComponent={ContactsTablePaginationActions}
                             />
                         </MuiThemeProvider>
+                        <FuseAnimate animation="transition.expandIn" delay={300}>
+				<Fab
+					color="primary"
+					aria-label="add"
+					size="medium"
+					className={classes.addButton}
+					onClick={handleClickOpen}
+				// onClick={ev => dispatch(Actions.openNewContactDialog())}
+				>
+					<Icon>person_add</Icon>
+				</Fab>
+			</FuseAnimate>
 
-                        {/* {open && <CampaignDialog isOpen={open} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} />} */}
+                        {open && <TemplateDialog type="Update Template Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
                     </div>
                 </CardContent>
             </Card>

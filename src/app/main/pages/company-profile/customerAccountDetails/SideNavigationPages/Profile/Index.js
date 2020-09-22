@@ -34,7 +34,6 @@ function Profile() {
 
     return (
         <Card className={classes.root}>
-
             <CardContent className={classes.content} style={{ width: '100%' }}>
                 <Typography variant='h2' className='companyDetailHeader' >Profile</Typography>
                 <Grid container  style={{marginTop:"5px",paddingRight:'15px',paddingLeft:'15px'}} spacing={3}>

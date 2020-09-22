@@ -1,0 +1,105 @@
+.SingleDatePickerInput__withBorder {
+    border-radius: 10px;
+    border: 1px solid #000000
+  }
+
+  .DateRangePickerInput__showClearDates{
+    padding-right: 32px;
+    
+  }
+  .DateInput_input__small{
+      padding: 6px 19px 2px 4px;
+      background: transparent;
+  }
+  .DateInput_input{
+    background: transparent;
+
+  } 
+  .DateInput_input_1{
+    background: transparent;
+
+
+  }
+  .DateRangePickerInput_clearDates_svg{
+      color: black;
+      fill: black;
+  }
+  .DateRangePickerInput__showClearDates {
+    
+    color: black;
+    
+  }
+  .DateRangePickerInput_arrow {
+    display: inline-block;
+    vertical-align: middle;
+    color: black;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .DateInput_input__small {
+    background: transparent;
+    border-bottom: 1px solid;
+    color:white
+
+  }
+  .DateInput_input__small_2{
+    background: transparent;
+    border-bottom: 1px solid;
+    color:black;
+    font-size: 12px;
+    margin-bottom: -3px
+} 
+  .DateInput_input__focused {
+    background: transparent;
+
+
+  }
+  .DateInput_input__focused_3{
+    background: transparent;
+  }
+  .DateRangePickerInput__showClearDates{
+      background: transparent;
+  }
+  .DateInput{
+      background: transparent;
+  }
+  .DateRangePickerInput__withBorder{
+      border: none;
+  }
+  .DateRangePickerInput_clearDates_svg{
+      fill:'white'
+  }
+  .placeholder{
+      color: black;
+  }
+
+  .DateInput_input::placeholder { color:black   ; }
+
+  
+.DateRangePickerInput_clearDates {
+    background: 0 0;
+    border: 0;
+    color: black;
+    font: inherit;
+    line-height: normal;
+    overflow: visible;
+    cursor: pointer;
+    padding: 10px;
+    margin: 0 10px 0 5px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%)
+  }
+  .DateRangePickerInput_clearDates__small {
+    padding: 6px;
+    color: black;
+  }
+  .DateRangePickerInput_clearDates_default:focus,
+  .DateRangePickerInput_clearDates_default:hover {
+    background: none;
+    border-radius: 50%
+  }
