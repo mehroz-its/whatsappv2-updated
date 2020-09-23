@@ -3,8 +3,6 @@ import Dialog from '@material-ui/core/Dialog';
 import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -16,13 +14,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
-import { getUserData } from '../../chat/store/actions';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AppBar from '@material-ui/core/AppBar';
-
-
-
-
 const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'absolute',
@@ -33,42 +26,27 @@ const useStyles = makeStyles((theme) => ({
 	formControl: {
 		margin: theme.spacing(1),
 		minWidth: 330,
-
 	},
 }));
-
-
-
-
 const CampaignDialog = (props) => {
 	const classes = useStyles(props);
-
 	const { isOpen, type, getUpdatedData, data } = props
-	console.log(isOpen, 'isOpenisOpen in dialog	')
 	const [openDialog, setopenDialog] = React.useState(isOpen);
 	const [canned_type, setCannedType] = React.useState(data.type);
 	const [name, setName] = React.useState(data.name);
 	const [text, setText] = React.useState(data.text);
 	const [enabled, setEnabled] = React.useState(data.enable);
 	const [open, setOpen] = React.useState(false);
-
-
 	const [description, setDescription] = React.useState('');
 	const [isLoading, setIsLoading] = React.useState(false);
 	const [uploadedFilePath, setUploadedFilePath] = React.useState(data.url);
 	const [attachment_name, setAttachment_name] = React.useState(data.file_name)
 	const [attachment_params, setAttachment_params] = React.useState('')
-
-
-
-
 	const handleDialogClose = () => {
 		props.closeDialog()
 		setopenDialog(false);
 	};
-
 	const handleSubmit = () => {
-
 		let fileName = uploadedFilePath.split('https://upload.its.com.pk/')
 		let params = {
 			message_name: name,
@@ -79,18 +57,13 @@ const CampaignDialog = (props) => {
 			message_type: canned_type,
 			enabled: enabled
 		};
-		console.log(params)
 		if (type !== 'Update Canned Message') {
 			CoreHttpHandler.request('canned_messages', 'create_message', params, (response) => {
-				// props.getUpdatedData()
-				console.log(response)
-			  
 				props.closeDialog('create')
 				setopenDialog(false);
 			}, (error) => {
 				props.closeDialog("error")
 				setopenDialog(false);
-
 			});
 		} else {
 			let update_params = {
@@ -98,26 +71,18 @@ const CampaignDialog = (props) => {
 				value: data.id,
 				params: params
 			}
-			console.log(update_params, 'update_params')
-			// return
 			CoreHttpHandler.request('canned_messages', 'update_message', update_params, (response) => {
-				// props.getUpdatedData()
-				console.log(response)
 				props.closeDialog("update")
 				setopenDialog(false);
 			}, (error) => {
 				props.closeDialog("error")
 				setopenDialog(false);
-
 			});
 		}
 	};
 	const handleEnable = (event) => {
-
 		setEnabled(event.target.checked);
-		console.log(enabled, 'enable')
 	};
-
 	const onInputChange = e => {
 		switch (e.target.name) {
 			case "name":
@@ -143,20 +108,15 @@ const CampaignDialog = (props) => {
 	};
 	const onChangeHandler = event => {
 		setIsLoading(true);
-
 		if (event.target.files.length > 0) {
 			const _data = new FormData();
-
 			let _name = event.target.files[0].name;
-
 			_name = _name.replace(/\s/g, "");
-
 			_data.append(
 				"file",
 				event.target.files[0],
 				`${new Date().getTime()}_${_name}`
 			);
-
 			CoreHttpHandler.request(
 				"content",
 				"upload",
@@ -166,10 +126,6 @@ const CampaignDialog = (props) => {
 				response => {
 					setIsLoading(false);
 					setUploadedFilePath(response.data.data.link)
-					// let name = response.data.data.link
-					// setAttachment_name(name.split('/'))
-					// console.log(attachment_name,'name')
-
 					onInputChange({
 						target: {
 							name: 'msisdnUrl',
@@ -185,28 +141,24 @@ const CampaignDialog = (props) => {
 
 
 	return (
-		// <div> {isOpen}</div>
 		<Dialog open={openDialog} aria-labelledby="form-dialog-title" classes={{
 			paper: 'm-24'
 		}}
 
 			fullWidth
 			maxWidth="xs">
-			{/* <DialogTitle id="form-dialog-title">{props.type} </DialogTitle> */}
 			<AppBar position="static" elevation={1}>
-				
 				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
-        style={{paddingBottom:30,paddingTop:30}}>
-	      {props.type} 
+					style={{ paddingBottom: 30, paddingTop: 30 }}>
+					{props.type}
 				</div>
 			</AppBar>
-			
+
 			<DialogContent classes={{ root: 'p-24' }}>
 				<div className="flex">
-					<div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
+					<div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
 						<Icon color="action">account_circle</Icon>
 					</div>
-
 					<TextField
 						className="mb-24"
 						label="Name"
@@ -221,29 +173,8 @@ const CampaignDialog = (props) => {
 						size="small"
 					/>
 				</div>
-				{/* <div className="flex">
-					<div className="min-w-48 pt-20">
-						<Icon color="action">account_circle</Icon>
-					</div>
-
-					<TextField
-						className="mb-24"
-						label="Description"
-						autoFocus
-						id="description"
-						name="description"
-						variant="outlined"
-						required
-						fullWidth
-						value={description}
-						onChange={onInputChange}
-
-
-					/>
-				</div> */}
-
 				<div className="flex" style={{ marginBottom: 20 }}>
-					<div className="min-w-48 pt-20" style={{marginTop:'5px'}}>
+					<div className="min-w-48 pt-20" style={{ marginTop: '5px' }}>
 						<Icon color="action">account_circle</Icon>
 					</div>
 					<FormControl className={classes.formControl}>
@@ -267,7 +198,7 @@ const CampaignDialog = (props) => {
 					</FormControl>
 				</div>
 				{canned_type === 'text' ? (<div className="flex">
-					<div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
+					<div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
 						<Icon color="action">account_circle</Icon>
 					</div>
 					<TextField
@@ -286,11 +217,11 @@ const CampaignDialog = (props) => {
 				</div>) : canned_type !== 'text' ? (
 					<div container >
 						<div className="flex" >
-							<div className="min-w-48 mt-24" style={{marginTop:'25px'}}>
+							<div className="min-w-48 mt-24" style={{ marginTop: '25px' }}>
 								<Icon color="action">attach_file</Icon>
 							</div>
 							{isLoading === true ? <CircularProgress color="secondary" style={{ marginLeft: '40%' }} />
-								: <TextField size="small"className="mt-20 mb-20" id="outlined-basic-email" name={"url"} label="Url" variant="outlined" fullWidth disabled={true} onChange={onInputChange} value={uploadedFilePath} />
+								: <TextField size="small" className="mt-20 mb-20" id="outlined-basic-email" name={"url"} label="Url" variant="outlined" fullWidth disabled={true} onChange={onInputChange} value={uploadedFilePath} />
 							}
 						</div>
 						<div item xs={12} >
@@ -304,20 +235,19 @@ const CampaignDialog = (props) => {
 					</div>
 				) : null}
 				<FormControlLabel
-					control={	<Checkbox
-						
-						checked={enabled}
-						onChange={handleEnable}
-					/>}
+					control={
+						<Checkbox
+							checked={enabled}
+							onChange={handleEnable}
+						/>}
 					label="Enabled"
 				/>
-
 			</DialogContent>
 			<DialogActions>
-				<Button  	variant="contained" onClick={handleDialogClose} color="primary" size="small">
+				<Button variant="contained" onClick={handleDialogClose} color="primary" size="small">
 					Cancel
              </Button>
-				<Button size="small" 	variant="contained" onClick={handleSubmit} disabled={!name||!text||!canned_type} color="primary">
+				<Button size="small" variant="contained" onClick={handleSubmit} disabled={!name || !text || !canned_type} color="primary">
 					Done
          </Button>
 			</DialogActions>
@@ -325,5 +255,4 @@ const CampaignDialog = (props) => {
 
 	)
 }
-
 export default CampaignDialog

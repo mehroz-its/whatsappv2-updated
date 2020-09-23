@@ -154,7 +154,6 @@ const EnhancedTable = ({ displaySnack, columns, data, onRowClick, onClose }) => 
 		// if (row) {
 		// 	dispatch(Actions.openEditContactDialog(row.original));
 		// }
-		console.log(row.original, 'rowrow')
 		setDialogData(row.original)
 		setOpen(true);
 		handleClickOpen()
@@ -162,7 +161,6 @@ const EnhancedTable = ({ displaySnack, columns, data, onRowClick, onClose }) => 
 	const hadleDelete = (event, n) => {
 		setDeleteDialog(true)
 		event.stopPropagation()
-		console.log(n, 'eventtt')
 		setDeleteDialogData(n)
 		// CoreHttpHandler.requestCustomer('canned_messages', 'delete',
 		// 	{

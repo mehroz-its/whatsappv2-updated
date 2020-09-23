@@ -19,26 +19,6 @@ import Avatar from '@material-ui/core/Avatar';
 import picture from './profileImage.png';
 import Icon from '@material-ui/core/Icon';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler';
-
-// import Widget2 from './widgets/Widget2';
-// import WidgetNow from './widgets/WidgetNow';
-// import WidgetWeather from './widgets/WidgetWeather';
-// import Widget5 from './/widgets/Widget5'
-// import BusinessDetails from './forms/BusinessDetails'
-// import CreateProfile from './forms/CreateProfile'
-// import WhatsAppAcount from './forms/WhatsAppAcount'
-
-
-
-
-// const useStyles = makeStyles({
-//     layoutRoot: {},
-//     large: {
-//         width: theme.spacing(12),
-//         height: theme.spacing(12),
-//     }
-// });
-
 const useStyles = makeStyles((theme) => ({
     layoutRoot: {},
     paper: {
@@ -61,9 +41,6 @@ function ProfileApp() {
     const [headerData, setHeaderData] = useState('Your Profile');
     const [profileImage, setProfileImage] = React.useState(picture)
 
-    console.log(headerData,'imagesss');
-
-
     React.useEffect(() => {
         // rader_chart();
     })
@@ -74,7 +51,6 @@ function ProfileApp() {
         setTabValue(tabValue - 1);
     }
     const updateHeaderData = (data) => {
-        console.log("data :" ,  data);
         let nameCapitalized = ''
         let lastname = ''
         if (data.firstName) {
@@ -88,7 +64,6 @@ function ProfileApp() {
     }
     const updatedProfileImage = (data) => {
         setProfileImage(data)
-        console.log('i am called',data)
     }
 
     const onChangeHandler = event => {
@@ -109,16 +84,9 @@ function ProfileApp() {
                 response => {
                     let url = response.data.data.link
                     setProfileImage(url)
-                    // profileData.map((val, id) => {
-                    //     if (val.image) {
-                    //         val.image = url
-                    //         return profileData
-                    //     }
-                    // })
-                    // setProfileData(profileData)
+                  
                 },
                 error => {
-                    // console.log("error :  ", error);
                 });
         }
     };

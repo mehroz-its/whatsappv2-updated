@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
-
 const SearchStyle = createMuiTheme({
 	overrides: {
 		MuiInput: {
@@ -28,8 +27,6 @@ const SearchStyle = createMuiTheme({
 function CustomerDetailsHeader(props) {
 	const dispatch = useDispatch();
 	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
-	// const { data } = props
-
 	return (
 		<div className="flex flex-1 items-center justify-between p-8 sm:p-24">
 			<div className="flex flex-shrink items-center sm:w-224">

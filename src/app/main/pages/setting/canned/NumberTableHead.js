@@ -16,13 +16,6 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 
 const rows = [
-    // {
-    //     id: 'id',
-    //     align: 'left',
-    //     disablePadding: true,
-    //     label: 'ID',
-    //     sort: true
-    // },
     {
         id: 'name',
         align: 'left',
@@ -37,27 +30,7 @@ const rows = [
         label: 'Number',
         sort: true
     },
-    // {
-    //     id: 'params',
-    //     align: 'right',
-    //     disablePadding: false,
-    //     label: 'Params',
-    //     sort: true
-    // },
-    // {
-    //     id: 'type',
-    //     align: 'right',
-    //     disablePadding: false,
-    //     label: 'Type',
-    //     sort: true
-    // },
-    // {
-    //     id: 'enable',
-    //     align: 'right',
-    //     disablePadding: false,
-    //     label: 'Enable',
-    //     sort: true
-    // },
+  
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -85,55 +58,8 @@ function NumberTableHead(props) {
     return (
         <TableHead>
             <TableRow className="h-63" style={{ height: '33px' }} >
-                {/* <TableCell padding="none" className="relative w-64 text-center">
-					<Checkbox
-						indeterminate={props.numSelected > 0 && props.numSelected < props.rowCount}
-						checked={props.numSelected === props.rowCount}
-						onChange={props.onSelectAllClick}
-					/>
-					{props.numSelected > 0 && (
-						<div
-							className={clsx(
-								'flex items-center justify-center absolute w-64 top-0 ltr:left-0 rtl:right-0 mx-56 h-64 z-10',
-								classes.actionsButtonWrapper
-							)}
-						>
-							<IconButton
-								aria-owns={selectedProductsMenu ? 'selectedProductsMenu' : null}
-								aria-haspopup="true"
-								onClick={openSelectedProductsMenu}
-							>
-								<Icon>more_horiz</Icon>
-							</IconButton>
-							<Menu
-								id="selectedProductsMenu"
-								anchorEl={selectedProductsMenu}
-								open={Boolean(selectedProductsMenu)}
-								onClose={closeSelectedProductsMenu}
-							>
-								<MenuList>
-									<MenuItem
-										onClick={() => {
-											closeSelectedProductsMenu();
-										}}
-									>
-										<ListItemIcon className="min-w-40">
-											<Icon>delete</Icon>
-										</ListItemIcon>
-										<ListItemText primary="Remove" />
-									</MenuItem>
-								</MenuList>
-							</Menu>
-						</div>
-					)}
-				</TableCell> */}
+               
                 <TableCell
-                // key={row.id}
-                // align={row.align}
-                // padding={row.disablePadding ? 'none' : 'default'}
-                // sortDirection={props.order.id === row.id ? props.order.direction : false}
-
-
                 >
                     <Checkbox
                         indeterminate={props.numSelected > 0 && props.numSelected < props.rowCount}

@@ -12,7 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
 import clsx from 'clsx';
-import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme,MuiThemeProvider } from '@material-ui/core/styles';
 import ContactsTablePaginationActions from '../canned/ContactsTablePaginationActions';
 import Icon from '@material-ui/core/Icon';
 import CannedDialog from './CannedDialog'
@@ -25,9 +25,7 @@ const BodyStyle = createMuiTheme({
 		  paddingTop: 4,
 		  fontSize:'12px',
 		  paddingBottom: 4,
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
+		
 		}
 	  }
 	}
@@ -40,9 +38,6 @@ const BodyStyle = createMuiTheme({
 			fontSize:'12px',
 			marginTop:'1px'
 
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
 		}
 	  }
 	}
@@ -82,7 +77,6 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 });
 
 const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
-	console.log(data, 'data in tabel')
 	const [open, setOpen] = React.useState(false);
 	function closeDialog(val){
 		setOpen(false);
@@ -156,19 +150,12 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 	};
 
 	const handleClick = (ev, row) => {
-		// if (row) {
-		// 	dispatch(Actions.openEditContactDialog(row.original));
-		// }
-		console.log(row.original, 'rowrow')
-		setDialogData(row.original)
-		console.log(dialogData,'ContactGroupDialogContactGroupDialog')
-		setOpen(true);
 
+		setDialogData(row.original)
+		setOpen(true);
 		handleClickOpen()
-		// console.log(dialogData,'dialogData')
 	}
 
-	// Render the UI for your table
 	return (<div>
 		<TableContainer className="min-h-full sm:border-1 sm:rounded-16" >
 			<MaUTable {...getTableProps()}>
@@ -189,7 +176,6 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 									{column.sortable ? (
 										<TableSortLabel
 											active={column.isSorted}
-											// react-table has a unsorted state which is not treated here
 											direction={column.isSortedDesc ? 'desc' : 'asc'}
 										/>
 									) : null}

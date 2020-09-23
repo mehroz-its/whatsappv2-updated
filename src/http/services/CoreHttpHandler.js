@@ -53,7 +53,7 @@ class CoreHttpHandler {
             apiCall.headers['xt-user-token'] = localStorage.getItem(
                 'user_token'
             );
-            console.log(" apiCall.headers : ", apiCall.headers);
+            // console.log(" apiCall.headers : ", apiCall.headers);
             if (apiCall.headers['xt-user-token'] === null)
                 throw new Error(
                     `Cannot call remote service without user authentication token`
@@ -104,19 +104,15 @@ class CoreHttpHandler {
                     success(result);
                 })
                 .catch((error) => {
-                    console.log('====================================');
-                    console.log("error", error);
-                    console.log('====================================');
-                    // console.log("errorrrr :" , error.code);
-                    let ah = JSON.stringify(error)
-                    let ff = JSON.parse(ah)
-                    if (ff.message === "Request failed with status code 401") {
-                        alert("Your session has expired please try to login in again")
-                        localStorage.clear()
-                        window.location.reload(false);
-                        return
-                    }
-                    failure(error);
+                    // let ah = JSON.stringify(error)
+                    // let ff = JSON.parse(ah)
+                    // if (ff.message === "Request failed with status code 401") {
+                    //     alert("Your session has expired please try to login in again")
+                    //     localStorage.clear()
+                    //     window.location.reload(false);
+                    //     return
+                    // }
+                    // failure(error);
                 });
         }
     }
@@ -148,7 +144,7 @@ class CoreHttpHandler {
             apiCall.headers['xt-user-token'] = localStorage.getItem(
                 'user_token'
             );
-            console.log(" apiCall.headers : ", apiCall.headers);
+            // console.log(" apiCall.headers : ", apiCall.headers);
             if (apiCall.headers['xt-user-token'] === null)
                 throw new Error(
                     `Cannot call remote service without user authentication token`

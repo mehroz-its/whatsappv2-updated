@@ -6,27 +6,21 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { useTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-
 const ContactsTablePaginationActions = props => {
 	const theme = useTheme();
 	const { count, page, rowsPerPage, onChangePage } = props;
-
 	const handleFirstPageButtonClick = event => {
 		onChangePage(event, 0);
 	};
-
 	const handleBackButtonClick = event => {
 		onChangePage(event, page - 1);
 	};
-
 	const handleNextButtonClick = event => {
 		onChangePage(event, page + 1);
 	};
-
 	const handleLastPageButtonClick = event => {
 		onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
 	};
-
 	return (
 		<div className="flex-shrink-0 px-12 overflow-hidden">
 			<IconButton  className="text-4 mt-0 "

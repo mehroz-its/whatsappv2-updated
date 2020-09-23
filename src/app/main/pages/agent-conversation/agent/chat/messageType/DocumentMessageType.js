@@ -43,7 +43,7 @@ const DocumentMessageType = function (props) {
             });
         }
     }, []);
-    console.log(message, 'messagemessage')
+    // console.log(message, 'messagemessage')
     return (
         <div>
             <Card >

@@ -63,7 +63,6 @@ function CannedSideBar(props) {
 	const classes = useStyles(props);
 
 	const handleClick = (val) => {
-		console.log('i am clicked', val)
 		props.cannedType(val)
 	}
 	return (
@@ -101,70 +100,6 @@ function CannedSideBar(props) {
 							<ListItemText
 								primary="Request" disableTypography />
 						</ListItem>
-						{/* <ListItem
-							exact
-							button
-							component={NavLinkAdapter}
-							to="/apps/canned-messages/audio"
-							activeClassName="active"
-							className={classes.listItem}
-							onClick={() => { handleClick("audio") }}
-
-						>
-							<Icon className="list-item-icon text-16" color="action">
-								audiotrack
-							</Icon>
-							<ListItemText
-								primary="Audio" disableTypography />
-						</ListItem>
-						<ListItem
-							exact
-							button
-							component={NavLinkAdapter}
-							to="/apps/canned-messages/images"
-							activeClassName="active"
-							className={classes.listItem}
-							onClick={() => { handleClick("image") }}
-
-						>
-							<Icon className="list-item-icon text-16" color="action">
-								image
-						</Icon>
-							<ListItemText
-								primary="Image" disableTypography />
-						</ListItem>
-						<ListItem
-							exact
-							button
-							component={NavLinkAdapter}
-							to="/apps/canned-messages/videos"
-							activeClassName="active"
-							className={classes.listItem}
-							onClick={() => { handleClick("video") }}
-
-						>
-							<Icon className="list-item-icon text-16" color="action">
-								switch_video
-						</Icon>
-							<ListItemText
-								primary="Video" disableTypography />
-						</ListItem>
-						<ListItem
-							exact
-							button
-							component={NavLinkAdapter}
-							to="/apps/canned-messages/docs"
-							activeClassName="active"
-							className={classes.listItem}
-							onClick={() => { handleClick("document") }}
-
-						>
-							<Icon className="list-item-icon text-16" color="action">
-								picture_as_pdf
-						</Icon>
-							<ListItemText
-								primary="Document" disableTypography />
-						</ListItem> */}
 					</List>
 				</Paper>
 			</FuseAnimate>

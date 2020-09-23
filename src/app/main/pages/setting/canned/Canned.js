@@ -1,4 +1,3 @@
-import DemoContent from '@fuse/core/DemoContent';
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useRef } from 'react';
@@ -57,7 +56,6 @@ function ContactsApp() {
 	const getData = ((loadData) => {
 		setData([])
 		setData2([])
-		console.log('called get data')
 		loadData = () => {
 			return CoreHttpHandler.request('canned_messages', 'type_listing', {
 				limit: 100,

@@ -5,24 +5,16 @@ import reducer from './store/reducers';
 import RolesHeader from './RolesHeader';
 import Rolestable from './RolesTable';
 import Icon from '@material-ui/core/Icon';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { green } from '@material-ui/core/colors';
 import FuseAnimate from '@fuse/core/FuseAnimate';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import TextField from '@material-ui/core/TextField';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
+
 import Fab from '@material-ui/core/Fab';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import RolesDialog from './RolesDialog';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-
-
 const GreenCheckbox = withStyles({
 	root: {
 		color: green[400],
@@ -70,13 +62,6 @@ function Roles(props) {
 		setOpen(false);
 
 	}
-	const handleClose = () => {
-		setOpen(false);
-	};
-	const handleChange = (event) => {
-		setState({ ...state, [event.target.name]: event.target.checked });
-	};
-
 	const getData = ((loadData) => {
 		loadData = () => {
 			return CoreHttpHandler.request('roles', 'listing', {
@@ -169,7 +154,6 @@ function Roles(props) {
 					aria-label="add"
 					className={classes.addButton}
 					onClick={handleClickOpen}
-				// onClick={ev => dispatch(Actions.openNewContactDialog())}
 				>
 					<Icon>person_add</Icon>
 				</Fab>

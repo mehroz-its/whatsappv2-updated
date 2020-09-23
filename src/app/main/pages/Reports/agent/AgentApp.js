@@ -52,7 +52,6 @@ function AgentApp() {
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 	// const [HitValue,setHitValue] = React.useState(false)
 	const getData = ((loadData) => {
-		console.log('called_get_data', Start, End)
 		loadData = () => {
 			return CoreHttpHandler.request('reports', 'agentReport', {
 				role_id: 64,
@@ -64,7 +63,6 @@ function AgentApp() {
 			}, null, null, true);
 		};
 		loadData().then((response) => {
-			console.log(response);
 			let tableData = response.data.data.list.data
 			setTableData(tableData)
 			setisLoading(false)
@@ -158,13 +156,14 @@ function AgentApp() {
 		// engagments()
 
 		getData()
+		return()=>{
+			am4core.disposeAllCharts();
+		}
 	}, [])
 
 	if (tableData.length > 0) {
-		console.log("tableData : ", tableData);
 
 		let chart_display_objects = tableData.map((val, i) => {
-			console.log(val, 'vall')
 			return {
 				category: val.agent_name,
 				conversation: parseInt(val.total_chat_count),
@@ -175,7 +174,6 @@ function AgentApp() {
 		})
 		let stats = [];
 		chart_display_objects.forEach((element, i) => {
-			console.log('element', i)
 			stats.push(chart_display_objects[i])
 			return [
 				chart_display_objects[i],
@@ -184,8 +182,6 @@ function AgentApp() {
 		incomingAndOutGoingCount(stats);
 	}
 
-
-	console.log(tableData, ":tableData=>tableData");
 	const dataSourceSuccess = (response) => {
 	};
 
@@ -202,17 +198,12 @@ function AgentApp() {
 		Start = start.toISOString()
 		End = end.toISOString()
 
-		console.log(Start, End, "REveiced");
-
-		console.log("AFTER_SETTING_STATE", StartingDate, EndingDate);
 	}
 
 	const getDataAgain = () => {
 		setisLoading(true)
 		getData('', Start, End);
 	}
-	console.log(tableData.length, 'TABLEDATA');
-
 	const DownloadData = () => {
 		let name;
 		if (Start === '') {

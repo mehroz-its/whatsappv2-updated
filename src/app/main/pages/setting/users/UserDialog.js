@@ -62,8 +62,6 @@ const theme = createMuiTheme({
 
 const UserDialog = (props) => {
     const classes = useStyles();
-
-    console.log(props, 'in dialogasdasdasd')
     const { data } = props
     const { isOpen, type } = props
     const [openDialog, setopenDialog] = React.useState(isOpen);

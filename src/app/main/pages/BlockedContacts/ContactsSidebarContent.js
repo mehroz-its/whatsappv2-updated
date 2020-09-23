@@ -10,9 +10,6 @@ import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import { useSelector } from 'react-redux';
-
-
 const useStyles = makeStyles(theme => ({
 	listItem: {
 		color: 'inherit!important',
@@ -36,23 +33,18 @@ const useStyles = makeStyles(theme => ({
 		}
 	},
 	avatar: {
-	
 		padding:0,
 		width:30,
 		height:30
 	  },
 	  listItemText:{
-		fontSize:'100px',//Insert your required size
-	
+		fontSize:'100px',
 	  }
 }));
 
 function ContactsSidebarContent(props) {
-	const user = null;
 	let data = null
 	data = JSON.parse(localStorage.getItem('user_data'))
-	console.log(data)
-
 	let value = null
 	if (data !== null) {
 		function titleCase(str) {
@@ -62,23 +54,16 @@ function ContactsSidebarContent(props) {
 			}
 			return str.join(' ');
 		}
-		console.log(data)
 		 value = titleCase(data.username);
-
 	}
-	console.log(value, 'titleCasetitleCasetitleCase')
-
-
 	const classes = useStyles(props);
-
 	return (
 		<div className="p-0 lg:p-24 lg:ltr:pr-4 lg:rtl:pl-4">
 			<FuseAnimate animation="transition.slideLeftIn" delay={200}>
 				<Paper className="rounded-0 shadow-none lg:rounded-8 lg:shadow-1">
 					<div className="p-24 flex items-center">
 						<Avatar alt={value.charAt(0)} src="../../../"  
-						className={classes.avatar}
-						/>
+						className={classes.avatar}/>
 						<Typography className="mx-12" style={{fontSize:'12px',marginTop:'1px'}}>{value}</Typography>
 					</div>
 					<Divider />
@@ -88,62 +73,40 @@ function ContactsSidebarContent(props) {
 							component={NavLinkAdapter}
 							to="/apps/contacts/all"
 							activeClassName="active"
-							className={classes.listItem}
-						>
+							className={classes.listItem}>
 							<Icon className="list-item-icon text-16" color="action">
 								people
 							</Icon>
 							<ListItemText className="truncate" primary="All contacts" disableTypography />
 						</ListItem>
 						<ListItem
-						
-							 
 							button
 							component={NavLinkAdapter}
 							to="/apps/blocklist"
 							activeClassName="active"
-							className={classes.listItem}
-						>
+							className={classes.listItem}>
 							<Icon className="list-item-icon text-16" color="action">
 								block
 							</Icon>
 							<ListItemText 
-						
 							primary="Blocked Contacts" disableTypography />
 						</ListItem>
 						<ListItem
-						
-							 
 							button
 							component={NavLinkAdapter}
 							to="/apps/contact-groups"
 							activeClassName="active"
-							className={classes.listItem}
-						>
+							className={classes.listItem}>
 							<Icon className="list-item-icon text-16" color="action">
 							people
 							</Icon>
 							<ListItemText 
-						
 							primary="Contact Groups" disableTypography />
 						</ListItem>
-						{/* <ListItem
-							button
-							component={NavLinkAdapter}
-							to="/apps/contacts/starred"
-							activeClassName="active"
-							className={classes.listItem}
-						>
-							<Icon className="list-item-icon text-16" color="action">
-								star
-							</Icon>
-							<ListItemText className="truncate" primary="Starred contacts" disableTypography />
-						</ListItem> */}
 					</List>
 				</Paper>
 			</FuseAnimate>
 		</div>
 	);
 }
-
 export default ContactsSidebarContent;

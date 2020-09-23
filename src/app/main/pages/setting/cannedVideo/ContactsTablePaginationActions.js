@@ -6,7 +6,6 @@ import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import { useTheme } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-
 const ContactsTablePaginationActions = props => {
 	const theme = useTheme();
 	const { count, page, rowsPerPage, onChangePage } = props;

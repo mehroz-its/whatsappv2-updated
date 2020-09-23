@@ -4,14 +4,10 @@ import React, { useState } from 'react';
 import reducer from '../store/reducers';
 import CustomerTableHeader from './CustomerTableHeader';
 import CustomerTable from './CustomerTable';
-import Fab from '@material-ui/core/Fab';
-import FuseAnimate from '@fuse/core/FuseAnimate';
-import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core/styles';
 import CampaignDialog from './CampaignDialog'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-
 const useStyles = makeStyles({
 	addButton: {
 		position: 'absolute',
@@ -23,16 +19,12 @@ const useStyles = makeStyles({
 		width: '100%'
 	}
 });
-
-
-
 function Campaign(props) {
 	const [open, setOpen] = React.useState(false);
 	const [val, setVal] = React.useState('')
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [ok, setOK] = React.useState('')
-
 	const [dialogData, setDialogData] = React.useState({
 		id: 0,
 		name: "",
@@ -45,19 +37,14 @@ function Campaign(props) {
 		type: null,
 		activated: false,
 	})
-
 	const classes = useStyles(props);
-
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
 	const handleDialogClose = (val) => {
-		console.log(val,'valuee');
+		console.log(val, 'valuee');
 		setOpen(false)
 	};
-
-
-
 	const handleClose = () => {
 		setOpen(false);
 	};
@@ -65,22 +52,17 @@ function Campaign(props) {
 		setVal(search)
 		console.log(val)
 	}
-	
-
 	return (
 		<>
-
-<Snackbar
-
-anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-open={snackbaropen}
-autoHideDuration={3000}
-
->
-<Alert variant="filled" severity={ok}>
-	{snackbarmessage}
-</Alert>
-</Snackbar>
+			<Snackbar
+				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+				open={snackbaropen}
+				autoHideDuration={3000}
+			>
+				<Alert variant="filled" severity={ok}>
+					{snackbarmessage}
+				</Alert>
+			</Snackbar>
 			<FusePageCarded
 				classes={{
 					content: 'flex',
@@ -89,12 +71,8 @@ autoHideDuration={3000}
 				}}
 				header={<CustomerTableHeader SearchVal={updateText} />}
 				content={<CustomerTable ValueForSearch={val} />}
-			// innerScroll
 			/>
-		
-			{open && <CampaignDialog  	isOpen={open} type='Add Campaign' data={dialogData} closeDialog={handleDialogClose} />}
-
-
+			{open && <CampaignDialog isOpen={open} type='Add Campaign' data={dialogData} closeDialog={handleDialogClose} />}
 		</>
 	);
 }

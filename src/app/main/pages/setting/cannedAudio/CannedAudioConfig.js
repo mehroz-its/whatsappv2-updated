@@ -9,10 +9,7 @@ const CannedAudioConfig
 		}
 	},
 	routes: [
-		// {
-		// 	path: '/apps/contacts/:id',
-		// 	component: React.lazy(() => import('./BlockContactApp'))
-		// },
+		
 		{
 			path: '/apps/canned-audio',
 			component: React.lazy(() => import('./Canned'))

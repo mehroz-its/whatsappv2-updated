@@ -8,10 +8,7 @@ const CannedImageConfig = {
 		}
 	},
 	routes: [
-		// {
-		// 	path: '/apps/contacts/:id',
-		// 	component: React.lazy(() => import('./BlockContactApp'))
-		// },
+	
 		{
 			path: '/apps/canned-images',
 			component: React.lazy(() => import('./Canned'))

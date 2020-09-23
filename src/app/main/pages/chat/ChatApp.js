@@ -12,11 +12,10 @@ import Typography from '@material-ui/core/Typography';
 import withReducer from 'app/store/withReducer';
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Chat from './Chat';
 import ChatsSidebar from './ChatsSidebar';
 import reducer from './store/reducers';
-import UserSidebar from './UserSidebar';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -26,11 +25,11 @@ import BlockConfirmDialog from './dialog/chat/BlockConfirmDialog';
 import CustomerProfileDialog from './dialog/chat/CustomerProfileDialog';
 import XGlobalDialogCmp from '../../../../dialogs/XGlobalDialogCmp';
 import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
-import { CSVLink, CSVDownload } from 'react-csv';
+import { CSVLink } from 'react-csv';
 import Fade from '@material-ui/core/Fade'
 import Tooltip from '@material-ui/core/Tooltip';
 import { EventEmitter } from '../../../../events'
-import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
+import { makeStyles,  createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import copy from 'copy-to-clipboard';
@@ -202,20 +201,15 @@ function ChatApp(props) {
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
 	const selectedRecipientt = (e) => {
-		console.log("selectedRecipientt");
 		clearInterval(int_MessageLists);
 		setselectedRecipient(e)
 		setmobileChatsSidebarOpen(false)
 		getConversation(e);
-		setint_MessageLists(setInterval(() => {
-			getConversation(e);
-		}, 2000));
 	}
 	const getNumbers = () => {
 		CoreHttpHandler.request('conversations', 'numbers', {}, (response) => {
 			const numbers = response.data.data.customers;
 			const lastMessage = response.data.data.lastMessage;
-			console.log("lastMessage,", lastMessage);
 			if (lastMessage) {
 				const lastMessageDtu = new Date(lastMessage.dtu);
 				if (lastMessageTimestamp === null)
@@ -239,7 +233,6 @@ function ChatApp(props) {
 
 		};
 		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
-			console.log("messages :", abc);
 			if (response.data.data.chat.length > abc.length) {
 				setmessages(response.data.data.chat)
 				abc = response.data.data.chat
@@ -438,10 +431,6 @@ function ChatApp(props) {
 		}
 
 	}
-	if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
-		getNumbers();
-	}, 2000));
-
 	const clearData = () => {
 		setselectedRecipient(null)
 		setmessages([])

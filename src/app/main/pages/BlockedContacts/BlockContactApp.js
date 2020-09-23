@@ -1,73 +1,25 @@
-import DemoContent from '@fuse/core/DemoContent';
 import FusePageSimple from '@fuse/core/FusePageSimple';
-import { makeStyles } from '@material-ui/core/styles';
 import React, { useRef } from 'react';
 import ContactsHeader from './BlockHeader';
 import ContactsList from './BlockList';
 import ContactsSidebarContent from './ContactsSidebarContent';
-import FuseAnimate from '@fuse/core/FuseAnimate';
-import Fab from '@material-ui/core/Fab';
-import Icon from '@material-ui/core/Icon';
-import * as Actions from './store/actions';
-import { useDispatch } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-
-
-
-
-
-
-
-const useStyles = makeStyles({
-	layoutRoot: {}
-});
-
 function ContactsApp() {
-	const classes = useStyles();
 	const pageLayout = useRef(null);
-	const [open, setOpen] = React.useState(false);
-	const dispatch = useDispatch();
 	const [val, setVal] = React.useState('')
-
-
-
-	// const handleChange = (event) => {
-	// 	setAge(event.target.value);
-	// };
-
-	const handleClose = () => {
-		setOpen(false);
-	};
-	const handleClickOpen = () => {
-		setOpen(true);
-	}
-
-	const [dialogData, setDialogData] = React.useState(
-		{
-			id: 0,
-			title: '',
-			description: '',
-			enabled: true,
-			customers: [],
-		}
-	)
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [ok, setOK] = React.useState('')
-
-
 	const updateText = (search) => {
 		setVal(search)
 	}
-
 	const valueReceived = (value) => {
 		if (value == "update") {
 			setSnackBarMessage("Updated Successfully")
 			setOK("success")
 			setSnackBarOpen(true)
 		}
-
 		else if (value == "error") {
 			setSnackBarMessage("Error!Please Try Again Later")
 			setOK("error")
@@ -81,12 +33,9 @@ function ContactsApp() {
 	return (
 		<>
 			<Snackbar
-
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 				open={snackbaropen}
-				autoHideDuration={3000}
-
-			>
+				autoHideDuration={3000}>
 				<Alert variant="filled" severity={ok}>
 					{snackbarmessage}
 				</Alert>
@@ -100,17 +49,12 @@ function ContactsApp() {
 					wrapper: 'min-h-0'
 				}}
 				header={<ContactsHeader pageLayout={pageLayout} SearchVal={updateText} />}
-
-				content={<ContactsList  GiveVal={valueReceived} ValueForSearch={val} />}
-
+				content={<ContactsList GiveVal={valueReceived} ValueForSearch={val} />}
 				leftSidebarContent={<ContactsSidebarContent />}
 				sidebarInner
 				ref={pageLayout}
-			// innerScroll
 			/>
-
 		</>
 	);
 }
-
 export default ContactsApp;

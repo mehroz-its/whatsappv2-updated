@@ -18,7 +18,6 @@ const BlockConfirmDialog = function (props) {
         });
     };
 
-    console.log(data.number,'datanumber');
     return (
         <DialogContent >
             <div style={{ width: '100%', marginBottom: 20 ,fontSize:'12px'}}>

@@ -1,11 +1,8 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Typography from '@material-ui/core/Typography';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import CannedTable from './CannedTable';
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
-
-
-
 function CannedList(props) {
 	const {data,onDialogClose,isSearched,displaySnack }  = props
 	const columns = React.useMemo(
@@ -70,8 +67,6 @@ function CannedList(props) {
 				columns={columns}
 				data={data}
 				onRowClick={(ev, row) => {
-					
-					console.log(row, 'rowrow')
 				}}
 				onClose={onDialogClose}
 				displaySnack={displaySnack}

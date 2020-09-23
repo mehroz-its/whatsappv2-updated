@@ -9,9 +9,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Icon from '@material-ui/core/Icon';
-import InputLabel from '@material-ui/core/InputLabel';
 import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import { green, purple } from '@material-ui/core/colors';
+import { green, } from '@material-ui/core/colors';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -19,10 +18,6 @@ import Typography from '@material-ui/core/Typography';
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import CoreHttpHandler from '../../../../../../../http/services/CoreHttpHandler'
 const defaultFormState = {
 	id: '',
@@ -38,30 +33,22 @@ const defaultFormState = {
 	birthday: '',
 	notes: ''
 };
-
-
-
-
 const useStyles = makeStyles((theme) => ({
-margin: {
-  
-  color:'white',
-  paddingLeft:'14px',
-  fontWeight:'bold',
-  paddingRight:'14px',
-  paddingTop:'5px',
-  paddingBottom:'5px',
-  fontSize:'12px',
- 
-},
+	margin: {
+		color: 'white',
+		paddingLeft: '14px',
+		fontWeight: 'bold',
+		paddingRight: '14px',
+		paddingTop: '5px',
+		paddingBottom: '5px',
+		fontSize: '12px',
+	},
 }));
-
 const theme = createMuiTheme({
-palette: {
-  primary: green,
-},
+	palette: {
+		primary: green,
+	},
 });
-
 function ContactDialog(props) {
 	const classes = useStyles();
 	const { data, isOpen, type } = props
@@ -70,24 +57,18 @@ function ContactDialog(props) {
 	const [value, setValue] = React.useState(data.gender);
 	const [selectedcountry, setSelectedCountry] = React.useState('Country');
 	const [country, setCountry] = React.useState(data.country);
-    const [valid,SetValid]=React.useState('')
+	const [valid, SetValid] = React.useState('')
 	const [city, setCity] = React.useState('Country');
 	const [countries, setCountries] = React.useState([]);
 	const [cities, setCities] = React.useState([]);
-    const [initialSelect,setinitialSelect]= ("Select Gender")
+	const [initialSelect, setinitialSelect] = ("Select Gender")
 	const [countryopen, setSelectCountryOpen] = React.useState(false);
 	const [cityopen, setSelectCityOpen] = React.useState(false);
 	const [selectedCity, setSelectedCity] = React.useState('')
-
-
 	const { form, handleChange, setForm } = useForm(defaultFormState);
-	console.log(form, 'form')
-
 	const getData = ((loadData) => {
-		console.log('called get data')
 		loadData = () => {
 			return CoreHttpHandler.request('locations', 'get_countries', {
-
 				columns: "id, name",
 				sortby: "ASC",
 				orderby: "id",
@@ -100,39 +81,18 @@ function ContactDialog(props) {
 		loadData().then((response) => {
 			const data = response.data.data.list.data
 			setCountries(data)
-
-
 		});
 	})
 	const getSelectedCity = (val) => {
 		setSelectedCity(val)
 	}
-	const byName = true
-	const defaultValueCountry = country === 'N/A' ? 'Select Country' : country
-	// const selected = selectedCountry === 'N/A' ? defaultValue : selectedCountry;
-
-	// const defaultValueCity = (byName) ? 'Select City' : 0;
-
-
-
-	  
-
-
 	React.useEffect(() => {
 		getData()
 	}, []);
-
 	const initDialog = useCallback(() => {
-		/**
-		 * Dialog type: 'edit'
-		 */
 		if (contactDialog.type === 'edit' && contactDialog.data) {
 			setForm({ ...contactDialog.data });
 		}
-
-		/**
-		 * Dialog type: 'new'
-		 */
 		if (contactDialog.type === 'new') {
 			setForm({
 				...defaultFormState,
@@ -141,39 +101,22 @@ function ContactDialog(props) {
 			});
 		}
 	}, [contactDialog.data, contactDialog.type, setForm]);
-
 	useEffect(() => {
-		/**
-		 * After Dialog Open
-		 */
 		if (contactDialog.props.open) {
 			initDialog();
 		}
 	}, [contactDialog.props.open, initDialog]);
-
 	function closeComposeDialog() {
-		// return contactDialog.type === 'edit'
-		// 	? dispatch(Actions.closeEditContactDialog())
-		// 	: dispatch(Actions.closeNewContactDialog());
 	}
-
 	function canBeSubmitted() {
 		return form.name.length > 0;
 	}
 	const handleRadio = (event) => {
 		setValue(event.target.value);
-		console.log(value,'this is valueeeeeee');
 	};
 	const handleCountryChange = (event) => {
 		setCountry(event.target.value);
-		console.log(country, 'i am country')
 	}
-	const handleCityChange = (event) => {
-		setCity(event.target.value);
-		console.log(city)
-
-	}
-
 	const handleCountryClose = () => {
 		setSelectCountryOpen(false);
 	};
@@ -191,8 +134,6 @@ function ContactDialog(props) {
 
 	function handleSubmit(event) {
 		event.preventDefault();
-		console.log(data)
-		
 		let params = {
 			id: data.id,
 			number: data.number,
@@ -207,113 +148,66 @@ function ContactDialog(props) {
 				{ attribute_id: data.attribute_idcity, city: selectedCity }
 			]
 		}
-		console.log(params,'params')
 		CoreHttpHandler.request('contact_book', 'update', {
 			key: ':id',
 			value: data.id,
 			params: params
 		}, (response) => {
-			console.log(response)
 			props.closeDialog("update")
 
 		}, (error) => {
-			console.log(error)
 			props.closeDialog("error")
 		});
-
-		console.log(params, 'i am on submit')
-		// if (contactDialog.type === 'new') {
-		// 	dispatch(Actions.addContact(form));
-		// } else {
-		// 	dispatch(Actions.updateContact(form));
-		// }
 		closeComposeDialog();
 	}
 
 	function handleRemove() {
-		// dispatch(Actions.removeContact(form.id));
 		closeComposeDialog();
 	}
-
-	// if (country !== null) { 
-	// 		CoreHttpHandler.request('locations', 'get_cities', {
-	// 			columns: "id, name",
-	// 			sortby: "ASC",
-	// 			orderby: "id",
-	// 			where: (byName) ? "country_id = (SELECT id FROM countries WHERE name = $1)" : "country_id = $1",
-	// 			values: country.trim(),
-	// 			page: 0,
-	// 			limit: 0,
-	// 		}, (response) => {
-	// 			const _cities = response.data.data.list.data;
-	// 			console.log(_cities)
-	// 			setCities(_cities);
-	// 			// setDisplay(true);
-	// 		}, (error) => {
-	// 			// setCurrentCities([]);
-	// 			// setDisplay(false);
-	// 		});
-	//  }
-	console.log(country,'country',defaultValueCountry,'default');
-
-	if(form.lastname=="N/A")
-	{
-		form.lastname=''
+	if (form.lastname == "N/A") {
+		form.lastname = ''
 	}
-	if(form.firstname=="N/A")
-	{
-		form.firstname=''
+	if (form.firstname == "N/A") {
+		form.firstname = ''
 	}
-	if(form.email=="N/A")
-	{
-		form.email=''
+	if (form.email == "N/A") {
+		form.email = ''
 	}
-	if(form.age=="N/A")
-	{
-		form.age=''
+	if (form.age == "N/A") {
+		form.age = ''
 	}
-
-	if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-	.test(form.email))
-	{
-	var abc=false
+	if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+		.test(form.email)) {
+		var abc = false
 	}
 	else {
-var abc=true
+		var abc = true
 	}
 	const handleMethodChange = (e) => {
-	
-		}
-	
-
-console.log(value,'vlsssssssssssssssssss');
- 
+	}
 	return (
 		<Dialog
 			classes={{
 				paper: 'm-24'
 			}}
 			{...contactDialog.props}
-			onClose={()=>{props.closeDialog()}} 
+			onClose={() => { props.closeDialog() }}
 			fullWidth
 			maxWidth="xs"
 		>
 			<AppBar position="static" elevation={1}>
-			
 				<div className="flex flex-col items-center justify-center pb-10 pt-16">
-				
 					<Avatar className="w-56 h-56" alt="contact avatar" src={form.avatar} />
 					{contactDialog.type === 'edit' && (
 						<Typography variant="h6" color="inherit" className="pt-0">
-					  {form.name =="N/AN/A" ?
-					  form.name='':form.name }
+							{form.name == "N/AN/A" ?
+								form.name = '' : form.name}
 						</Typography>
 					)}
 				</div>
 			</AppBar>
 			<form noValidate onSubmit={handleSubmit} className="flex flex-col md:overflow-hidden">
-				<DialogContent classes={{ root: 'p-24' }} style={{marginTop:'2%'}}>
-
+				<DialogContent classes={{ root: 'p-24' }} style={{ marginTop: '2%' }}>
 					<div className="flex">
 						<div className="min-w-48 pt-10">
 							<Icon color="action">phone</Icon>
@@ -333,7 +227,6 @@ console.log(value,'vlsssssssssssssssssss');
 							type="number"
 						/>
 					</div>
-
 					<div className="flex">
 						<div className="min-w-48 pt-10" >
 							<Icon color="action">account_circle</Icon>
@@ -351,9 +244,7 @@ console.log(value,'vlsssssssssssssssssss');
 							size="small"
 						/>
 					</div>
-
 					<div className="flex">
-						{/* <div className="min-w-48 pt-20" /> */}
 						<div className="min-w-48 pt-10" >
 							<Icon color="action">account_circle</Icon>
 						</div>
@@ -370,11 +261,6 @@ console.log(value,'vlsssssssssssssssssss');
 							required
 						/>
 					</div>
-
-
-
-
-
 					<div className="flex">
 						<div className="min-w-48 pt-10" >
 							<Icon color="action">email</Icon>
@@ -392,7 +278,6 @@ console.log(value,'vlsssssssssssssssssss');
 							size="small"
 						/>
 					</div>
-
 					<div className="flex">
 						<div className="min-w-48 pt-10" >
 							<Icon color="action">child_care</Icon>
@@ -411,35 +296,22 @@ console.log(value,'vlsssssssssssssssssss');
 							size="small"
 						/>
 					</div>
-
-
-
-					
-<div className="flex mb-20">
-						{/* <div className="min-w-48 pt-20">
-						
-						</div> */}
-						{/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
-
-					
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  defaultValue='Select Gender'
-				  onChange={handleRadio}
-				  fullWidth
-				  value={value}
-                >
-                  <MenuItem value={value}>Select Gender</MenuItem>
-                  <MenuItem value="male">Male</MenuItem>
-                  <MenuItem value="female">Female</MenuItem>
-                  <MenuItem value="others">Others</MenuItem>
-              
-                </Select>
+					<div className="flex mb-20">
+						<Select
+							labelId="demo-simple-select-label"
+							id="demo-simple-select"
+							defaultValue='Select Gender'
+							onChange={handleRadio}
+							fullWidth
+							value={value}
+						>
+							<MenuItem value={value}>Select Gender</MenuItem>
+							<MenuItem value="male">Male</MenuItem>
+							<MenuItem value="female">Female</MenuItem>
+							<MenuItem value="others">Others</MenuItem>
+						</Select>
 					</div>
-
 				</DialogContent>
-
 				{contactDialog.type === 'new' ? (
 					<DialogActions className="justify-between p-8">
 						<div className="px-16">
@@ -457,30 +329,27 @@ console.log(value,'vlsssssssssssssssssss');
 				) : (
 						<DialogActions className="justify-between p-8">
 							<div className="px-16 my-10">
-							<ThemeProvider theme={theme}>
-								<Button
-									variant="contained"
-									color="primary"
-									className={classes.margin}
-									type="submit"
-									onClick={handleSubmit}
-									disabled={!form.firstname||!form.lastname||!form.email||!form.age||form.email=="N/A"
-								||value=="N/A"||value=="select" ||abc != true}
-									size="small"
-								>
-									Save
+								<ThemeProvider theme={theme}>
+									<Button
+										variant="contained"
+										color="primary"
+										className={classes.margin}
+										type="submit"
+										onClick={handleSubmit}
+										disabled={!form.firstname || !form.lastname || !form.email || !form.age || form.email == "N/A"
+											|| value == "N/A" || value == "select" || abc != true}
+										size="small"
+									>
+										Save
 							</Button>
-							</ThemeProvider>
+								</ThemeProvider>
 							</div>
-							{/* <IconButton onClick={handleRemove}>
-								<Icon>delete</Icon>
-							</IconButton> */}
 							<div className="mx-16 my-10">
 								<Button
 									variant="contained"
 									color="primary"
 									type="submit"
-									onClick={()=>{props.closeDialog()}}
+									onClick={() => { props.closeDialog() }}
 									size="small"
 								>
 									Cancel

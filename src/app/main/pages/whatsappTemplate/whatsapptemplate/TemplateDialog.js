@@ -14,9 +14,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-
-
-
 const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'absolute',
@@ -27,26 +24,16 @@ const useStyles = makeStyles((theme) => ({
 	formControl: {
 		margin: theme.spacing(1),
 		minWidth: 330,
-
 	},
 }));
-
-
-
-
 const CampaignDialog = (props) => {
 	const classes = useStyles(props);
-
 	const { isOpen, data } = props
 	const [openDialog, setopenDialog] = React.useState(isOpen);
 	const [age, setAge] = React.useState('');
 	const [params, setParams] = React.useState(data.params);
 	const [name, setName] = React.useState(data.name);
-
 	const [filteredParams, setfilteredParams] = React.useState(null);
-
-	console.log(props, 'from this.props.')
-
 	const handleClose = () => {
 		props.closeDialog()
 		setopenDialog(false);
@@ -84,7 +71,6 @@ const CampaignDialog = (props) => {
 
 
 	return (
-		// <div> {isOpen}</div>
 		<Dialog open={openDialog}
 		onClose={handleClose}
 		aria-labelledby="form-dialog-title" classes={{
@@ -93,7 +79,6 @@ const CampaignDialog = (props) => {
 
 			fullWidth
 			maxWidth="xs">
-			{/* <DialogTitle id="form-dialog-title">{props.type} </DialogTitle> */}
 			<AppBar position="static" elevation={1}>
 
 				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
@@ -138,69 +123,6 @@ const CampaignDialog = (props) => {
 						onChange={handleParams}
 					/>
 				</div>
-
-
-
-
-
-				{/* <div className="flex" style={{ marginBottom: 20 }}>
-					<div className="min-w-48 pt-20">
-						<Icon color="action">account_circle</Icon>
-					</div>
-					<FormControl className={classes.formControl}>
-
-						<InputLabel id="demo-simple-select-label" style={{ marginLeft: 10 }}>Type</InputLabel>
-						<Select
-							labelId="demo-simple-select-label"
-							id="demo-simple-select"
-							value={age}
-							onChange={handleChange}
-						>
-							<MenuItem value={10}>Text</MenuItem>
-							<MenuItem value={20}>Audio</MenuItem>
-							<MenuItem value={30}>Video</MenuItem>
-						</Select>
-					</FormControl>
-				</div>
-				<div className="flex">
-					<div className="min-w-48 pt-20">
-						<Icon color="action">account_circle</Icon>
-					</div>
-
-					<TextField
-						className="mb-24"
-						label="Text"
-						autoFocus
-						id="name"
-						name="name"
-
-
-						variant="outlined"
-						required
-						fullWidth
-					/>
-				</div>
-				<div className="flex">
-					<div className="min-w-48 pt-20">
-						<Icon color="action">account_circle</Icon>
-					</div>
-
-					<TextField
-						className="mb-24"
-						label="Params"
-						autoFocus
-						id="name"
-						name="name"
-
-
-						variant="outlined"
-						required
-						fullWidth
-					/>
-				</div> */}
-
-
-
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={handleClose} color="primary" size="small"
@@ -213,7 +135,6 @@ const CampaignDialog = (props) => {
          </Button>
 			</DialogActions>
 		</Dialog>
-
 	)
 }
 

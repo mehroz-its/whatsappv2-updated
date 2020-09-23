@@ -20,8 +20,6 @@ import { getUserData } from '../../chat/store/actions';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AppBar from '@material-ui/core/AppBar';
 import { green, purple } from '@material-ui/core/colors';
-
-
 const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'absolute',
@@ -115,7 +113,6 @@ const CampaignDialog = (props) => {
 	const handleEnable = (event) => {
 
 		setEnabled(event.target.checked);
-		console.log(enabled, 'enable')
 	};
 
 	const onInputChange = e => {

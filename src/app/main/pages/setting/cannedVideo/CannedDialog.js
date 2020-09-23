@@ -159,9 +159,6 @@ const CampaignDialog = (props) => {
 				response => {
 					setIsLoading(false);
 					setUploadedFilePath(response.data.data.link)
-					// let name = response.data.data.link
-					// setAttachment_name(name.split('/'))
-					// console.log(attachment_name,'name')
 					onInputChange({
 						target: {
 							name: 'msisdnUrl',

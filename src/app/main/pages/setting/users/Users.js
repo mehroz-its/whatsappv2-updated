@@ -22,7 +22,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-
 const GreenCheckbox = withStyles({
 	root: {
 		color: green[400],

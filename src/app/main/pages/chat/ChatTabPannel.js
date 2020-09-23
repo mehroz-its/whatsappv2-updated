@@ -9,10 +9,6 @@ import Box from '@material-ui/core/Box';
 import WhatsApp from '@material-ui/icons/WhatsApp';
 import Facebook from '@material-ui/icons/Facebook';
 import Instagram from '@material-ui/icons/Instagram';
-
-
-
-  
   const AntTab = withStyles((theme) => ({
     root: {
       textTransform: 'none',
@@ -128,11 +124,8 @@ import Instagram from '@material-ui/icons/Instagram';
     },
     selected: {},
   }))((props) => <Tab disableRipple {...props} />);
-  
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
   return (
     <div
       role="tabpanel"
@@ -149,13 +142,11 @@ function TabPanel(props) {
     </div>
   );
 }
-
 TabPanel.propTypes = {
   children: PropTypes.node,
   index: PropTypes.any.isRequired,
   value: PropTypes.any.isRequired,
 };
-
 function a11yProps(index) {
   return {
     id: `scrollable-auto-tab-${index}`,
@@ -179,9 +170,6 @@ const useStyles = makeStyles((theme) => ({
         background:'black'
     }
   }));
-
-
-
 export default function ScrollableTabsButtonAuto(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
@@ -199,12 +187,7 @@ export default function ScrollableTabsButtonAuto(props) {
         setBackground('brown')
     }
     props.SelectedValue(newValue)
-
-
   };
-
-
-
   return (
     <div style={{marginLeft:'10px'}}>
       <AppBar position="static" color="default">

@@ -154,7 +154,7 @@ const chat = null
 function ChatApp(props) {
 	const dispatch = useDispatch();
 	const { numberr, selectedAgent } = props
-	console.log(numberr, 'propssss')
+	// console.log(numberr, 'propssss')
 
 	// const chat = useSelector(({ chatApp }) => chatApp.chat);
 	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
@@ -177,7 +177,7 @@ function ChatApp(props) {
 	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	
-	console.log(NewAgent, 'iiiiii')
+	// console.log(NewAgent, 'iiiiii')
 
 
 	// const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
@@ -186,7 +186,7 @@ function ChatApp(props) {
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
 	const selectedRecipientt = (e) => {
-		console.log("selectedRecipientt");
+		// console.log("selectedRecipientt");
 		clearInterval(int_MessageLists);
 		setselectedRecipient(e)
 		getConversation(e);
@@ -227,13 +227,13 @@ function ChatApp(props) {
 
 		};
 	
-		console.log("params : ", params);
+		// console.log("params : ", params);
 		CoreHttpHandler.request('conversations', 'agents_customer_conversations', params, (response) => {
-			console.log("response :", response);
+			// console.log("response :", response);
 			if (response.data.data.conversation.length > NewMessagess.length) {
-				  console.log("response if");
+				//   console.log("response if");
 				const messagess = response.data.data.conversation;
-				console.log("messages : ", messages);
+				// console.log("messages : ", messages);
 				NewMessagess = response.data.data.conversation
 				// setNewMessages(response.data.data.conversation)
 				setmessages(messagess)
@@ -241,7 +241,7 @@ function ChatApp(props) {
 				// setselectedRecipient(e)
 			}
 			else {
-				console.log('response else ');
+				// console.log('response else ');
 				const messages = response.data.data.conversation;
 				// setmessages(messages)
 				// setshowLatestMessage(false)
@@ -334,7 +334,7 @@ function ChatApp(props) {
 					assign_name: '',
 					countries,
 				})
-				console.log("customer : ", customer);
+				// console.log("customer : ", customer);
 				setAnchorEl(false)
 				setdialogOpenCmp(true)
 
@@ -466,8 +466,8 @@ function ChatApp(props) {
 	useEffect(() => {
 		EventEmitter.subscribe('ShowHideLoader', (e) =>	getLoadingVal(e))
 		setNewAgent(selectedAgent)
-		console.log("numbers :L ", numbers);
-		console.log("getNumbers use efffact = > ", selectedRecipient);
+		// console.log("numbers :L ", numbers);
+		// console.log("getNumbers use efffact = > ", selectedRecipient);
 		if (NewAgent != selectedAgent) {
 		
               setselectedRecipient(null)
@@ -532,8 +532,8 @@ function ChatApp(props) {
 		setsendDialogData(data)
 	};
 	const selectedShiftAgent = (agent) => {
-		console.log("selectedShiftAgent agent ", agent)
-		console.log("selectedShiftAgent selectedRecipient ", selectedRecipient)
+		// console.log("selectedShiftAgent agent ", agent)
+		// console.log("selectedShiftAgent selectedRecipient ", selectedRecipient)
 
 		CoreHttpHandler.request('conversations', 'transfer', {
 			key: ':id',
@@ -652,7 +652,7 @@ function ChatApp(props) {
 		}
 	];
 	const blockNumber = () => {
-		console.log('blockNumber');
+		// console.log('blockNumber');
 
 		CoreHttpHandler.request('conversations', 'block', {
 			key: ':number', value: selectedRecipient.number, params: {

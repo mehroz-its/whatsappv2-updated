@@ -85,48 +85,6 @@ function CampaingsTableHead(props) {
 	return (
 		<TableHead>
 			<TableRow className="h-64">
-				{/* <TableCell padding="none" className="relative w-64 text-center">
-					<Checkbox
-						indeterminate={props.numSelected > 0 && props.numSelected < props.rowCount}
-						checked={props.numSelected === props.rowCount}
-						onChange={props.onSelectAllClick}
-					/>
-					{props.numSelected > 0 && (
-						<div
-							className={clsx(
-								'flex items-center justify-center absolute w-64 top-0 ltr:center-0 rtl:center-0 mx-56 h-64 z-10',
-								classes.actionsButtonWrapper
-							)}
-						>
-							<IconButton
-								aria-owns={selectedProductsMenu ? 'selectedProductsMenu' : null}
-								aria-haspopup="true"
-								onClick={openSelectedProductsMenu}
-							>
-								<Icon>more_horiz</Icon>
-							</IconButton>
-							<Menu
-								id="selectedProductsMenu"
-								anchorEl={selectedProductsMenu}
-								open={Boolean(selectedProductsMenu)}
-								onClose={closeSelectedProductsMenu}
-							>
-								<MenuList>
-									<MenuItem
-										onClick={() => {
-											closeSelectedProductsMenu();
-										}}
-									>
-										<ListItemIcon className="min-w-40">
-											<Icon>delete</Icon>
-										</ListItemIcon>
-										<ListItemText primary="Remove" />
-									</MenuItem>
-								</MenuList>
-							</Menu>
-						</div>
-					)}
-				</TableCell> */}
 				{rows.map(row => {
 					return (
 						<TableCell

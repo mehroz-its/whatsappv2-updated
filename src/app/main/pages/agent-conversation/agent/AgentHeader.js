@@ -1,21 +1,14 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
-import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import Input from '@material-ui/core/Input';
-import Paper from '@material-ui/core/Paper';
-import { ThemeProvider } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
 import { makeStyles } from '@material-ui/core/styles';
 import { EventEmitter } from '../../../../../events'
-import * as Actions from '../store/actions';
 const useStyles = makeStyles((theme) => ({
 	formControl: {
 		margin: theme.spacing(1),
@@ -35,116 +28,51 @@ const useStyles = makeStyles((theme) => ({
 }));
 function AgentHeader(props) {
 	const classes = useStyles();
-
-const {total} = props
-console.log("shinu  : " ,  total);
-	const dispatch = useDispatch();
-	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
-	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
+	const { total } = props
 	const [agentDropDownOpen, setagentDropDownOpen] = React.useState(false);
 	const [viewChat, setViewChat] = useState(null);
-
-	const [dropDownData, setDropdownData] = React.useState(defaultDropdownData);
-	const [dialogData, setDialogData] = React.useState(defaultDialogData)
-	const [textAreaNumbers, setTextAreaNumbers] = React.useState('');
 	const [agents, setagents] = React.useState([]);
 	const [int_CustomerList, setint_CustomerList] = React.useState(null);
 	const [selectedAgent, setselectedAgent] = React.useState('All');
 	const [numbers, setnumbers] = React.useState([]);
-	const [dropdowntitile, setDropDownTitle] = useState('Agents');
 	const defaultDialogData = {
 		selectedContactGroups: [],
 		selectedContacts: [],
 		state: false,
 		type: null,
 	};
-	const defaultDropdownData = {
-		list: ['agent1', 'agent2'],
-		selected: 0,
-	};
-
 	const handleCloseAgent = () => {
 		setagentDropDownOpen(false)
 	};
 
 	const getAgents = () => {
-
 		CoreHttpHandler.request('conversations', 'agents_list', {
 			columns: "USR.id, USR.username"
 		}, (_response) => {
-		
-			// alert('done with hit')
-			console.log("_response  ", _response);
 			setagents(_response.data.data.agents.data)
-			
-			// if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
-			// 	getAgents();
-			// }, 5000));
 		}, (error) => {
 		});
 	}
-
-
-
-	// alert(int_CustomerList)
-			if (int_CustomerList === null) {
-				setint_CustomerList(setInterval(() => {
-				getAgents();
-			}, 3000));
-}
-	// setTimeout(() => {
-	// 	// alert("TIme outttttttttt")
-	// 	getAgents()
-	// }, 5000);
-
+	if (int_CustomerList === null) {
+		setint_CustomerList(setInterval(() => {
+			getAgents();
+		}, 3000));
+	}
 	useEffect(() => {
 		getAgents()
-		// getAllAgents()
-		// clearInterval(int_CustomerList);
-		
 		EventEmitter.subscribe('GetAgentsAgain', (event) => getAgents())
 		return () => {
 			clearInterval(int_CustomerList);
-			// clearInterval(int_CustomerList);
 		}
 	}, []);
-
-
-
-
-	const getAgentsCustomers = (event) => {
-		let params = {
-			agentId: event
-		}
-		CoreHttpHandler.request('conversations', 'agents_customer_list', {
-			params
-		}, (_response) => {
-			console.log("_response  ", _response);
-			const numbers = _response.data.data.customers;
-			console.log("numbers : ", numbers);
-
-			setnumbers(numbers)
-			setViewChat(true)
-		}, (error) => {
-			console.log("error  ", error);
-		});
-	}
-
-
 	const handleOpenAgent = () => {
 		setagentDropDownOpen(true)
 	};
 	const handleChangeAgent = (event) => {
-		EventEmitter.dispatch('ShowHideLoader',true)
-		console.log('headerrrrrrrrrrrrrrrr', event.target.value)
+		EventEmitter.dispatch('ShowHideLoader', true)
 		setselectedAgent(event.target.value)
 		props.Agent(event.target.value)
-
-		// getAgentsCustomers(event.target.value)
-
 	};
-	console.log(props.test, 'agentsssssssss')
-
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
 			<div className="flex items-center">
@@ -157,20 +85,17 @@ console.log("shinu  : " ,  total);
 					</Typography>
 				</FuseAnimate>
 			</div>
-
 			<div className="flex flex-1 items-center justify-center px-12 ">
-
 				<FuseAnimate animation="transition.slideDownIn" delay={300}>
 					<FormControl variant="outlined" className={classes.formControl}>
-						<InputLabel id="demo-simple-select-outlined-label" style={{ color: 'white', display: 'flex',paddingBottom:'5px' }}>Agent</InputLabel>
+						<InputLabel id="demo-simple-select-outlined-label" style={{ color: 'white', display: 'flex', paddingBottom: '5px' }}>Agent</InputLabel>
 						<Select
 							fullWidth
-							style={{ display: 'flex', justifyContent: 'space-around', flexDirection: 'row',border:'0.2px  white' }}
+							style={{ display: 'flex', justifyContent: 'space-around', flexDirection: 'row', border: '0.2px  white' }}
 							label="Agent"
 							labelId="demo-simple-select-outlined-label"
 							id="demo-simple-select-outlined"
 							open={agentDropDownOpen}
-							// defaultValue="All"
 							onClose={handleCloseAgent}
 							onOpen={handleOpenAgent}
 							value={selectedAgent}
@@ -181,24 +106,21 @@ console.log("shinu  : " ,  total);
 								color: 'white'
 							}}
 						>
-							<MenuItem  key={`template_list_item_${123}`} value={"All"} style={{ display: 'flex', flex: 1, justifyContent: 'space-between', flexDirection: 'row' }}>
-							<div style={{
-											flexDirection: 'row',
-											display: 'flex', flex: 1,
-											justifyContent:'space-between',
-											marginLeft:'23px'
-										}}>
-								<div>All</div>
-								<span>{ total ? total : '' 
-									
-									}</span>
-									</div>
+							<MenuItem key={`template_list_item_${123}`} value={"All"} style={{ display: 'flex', flex: 1, justifyContent: 'space-between', flexDirection: 'row' }}>
+								<div style={{
+									flexDirection: 'row',
+									display: 'flex', flex: 1,
+									justifyContent: 'space-between',
+									marginLeft: '23px'
+								}}>
+									<div>All</div>
+									<span>{total ? total : ''
 
+									}</span>
+								</div>
 							</MenuItem>
 							{agents.map(data => {
-								console.log(data, 'daaaaaaaaaaaaaaaaaaataaaaaaaaaaaaaaaaaaaataaaa');
 								return (
-
 									<MenuItem key={`template_list_item_${data.id}`} value={data.id} style={{ display: 'flex', flex: 1, justifyContent: 'space-around', flexDirection: 'row' }}>
 										<div style={{
 											flexDirection: 'row',
@@ -217,41 +139,15 @@ console.log("shinu  : " ,  total);
 											</span>
 
 										</div>
-
 										<div>
-
-
 										</div>
 									</MenuItem>
 								)
 							})}
-
 						</Select>
 					</FormControl>
-					{/* <Paper className="flex items-center w-full max-w-512 px-8 py-4 rounded-8" elevation={1}>
-						<Icon color="action" fontSize="small">search</Icon>
-						<input
-							style={{border:'none'}}
-							rows={1}
-							placeholder="Search"
-							className="flex flex-1 mx-8 "
-							disableUnderline
-							onChange={e=>{
-							
-								props.SearchVal(e.target.value)
-								
-							}}
-							
-						   
-							placeholder="Search"
-							/>
-						</Paper> */}
-
 				</FuseAnimate>
-
-
 			</div>
-
 		</div>
 	);
 }

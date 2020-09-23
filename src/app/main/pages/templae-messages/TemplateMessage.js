@@ -1,19 +1,14 @@
-import DemoContent from '@fuse/core/DemoContent';
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useRef } from 'react';
 import CannedHeader from './TemplateHeader';
 import CannedList from './TemplateList';
 import CannedSideBar from './TemplateMessageSideBar';
-import FuseAnimate from '@fuse/core/FuseAnimate';
-import Fab from '@material-ui/core/Fab';
-import Icon from '@material-ui/core/Icon';
-import * as Actions from './store/actions';
+
 import { useDispatch } from 'react-redux';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-import TemplateDialog from './TemplateDialog'
 const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'fixed',
@@ -57,7 +52,6 @@ function ContactsApp() {
 	const getData = ((loadData) => {
 		setData([])
 		setData2([])
-		console.log('called get data')
 		loadData = () => {
 			return CoreHttpHandler.request('template', 'listing', {
 
@@ -72,7 +66,6 @@ function ContactsApp() {
 		};
 		loadData().then((response) => {
 			const tableData = response.data.data.list.data
-			console.log('tableData====>',tableData)
 			setData(tableData)
 			setData2(tableData)
 			setTimeout(() => {
@@ -95,7 +88,6 @@ function ContactsApp() {
 		getData()
 	}, [cannedtype]);
 	const valueReceived = (value) => {
-		// alert(value)
 		if (value == "update") {
 			setSnackBarMessage("Updated Successfully")
 			setOK("success")
@@ -165,22 +157,8 @@ function ContactsApp() {
 				leftSidebarContent={<CannedSideBar cannedType={handleCannedMessageType} />}
 				sidebarInner
 				ref={pageLayout}
-			// innerScroll
 			/>
-			{/* <FuseAnimate animation="transition.expandIn" delay={300}>
-				<Fab
-					size="medium"
-					color="primary"
-					aria-label="add"
-					className={classes.addButton}
-					onClick={handleClickOpen}
-				// onClick={ev => dispatch(Actions.openNewContactDialog())}
-				>
-					<Icon>person_add</Icon>
-				</Fab>
-			</FuseAnimate> */}
-			{/* {open ? <TemplateDialog isSearched={val} type="Add Canned Message" isOpen={open} closeDialog={closeDialog} data={dialogData} /> : null} */}
-		</>
+			</>
 	);
 }
 

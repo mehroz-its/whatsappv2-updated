@@ -7,13 +7,9 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import clsx from 'clsx';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Button from '@material-ui/core/Button';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -32,7 +28,6 @@ import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Fab from '@material-ui/core/Fab';
-
 const useStyles = makeStyles((theme) => ({
     addButton: {
         position: 'fixed',
@@ -64,8 +59,6 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2),
     },
     largeIcon: {
-        // width: 10,
-        // marginLeft:'-2px',
         height: 22.5,
 
     },
@@ -78,10 +71,6 @@ const PaginationStyle = createMuiTheme({
             body2: {
                 fontSize: '12px',
                 marginTop: '1px'
-
-                //   "&:last-child": {
-                // 	paddingRight: 5
-                //   }
             }
         }
     }
@@ -89,11 +78,7 @@ const PaginationStyle = createMuiTheme({
 
 
 function TemplateMessage(props) {
-    console.log(props)
     const classes = useStyles();
-    // const dispatch = useDispatch();
-    // const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
-    // const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
     const [open, setOpen] = React.useState(false)
     const [selected, setSelected] = useState([]);
     const [data, setData] = useState([]);
@@ -111,10 +96,6 @@ function TemplateMessage(props) {
     const [checked, setChecked] = React.useState(false);
     const [tabValue, setTabValue] = useState(0);
     const [mainTab, setMainTab] = useState(0);
-
-
-
-
     const [dialogData, setDialogData] = React.useState({
         id: 0,
         name: "",
@@ -127,12 +108,10 @@ function TemplateMessage(props) {
         type: null,
         activated: false,
     });
-
     const [number, SetNumber] = useState(10)
     const handleChange = (event) => {
         SetNumber(event.target.value);
     };
-
     const getData = ((loadData) => {
         loadData = () => {
             return CoreHttpHandler.request('campaigns', 'listing', {
@@ -147,77 +126,41 @@ function TemplateMessage(props) {
         };
         loadData().then((response) => {
             const tableData = response.data.data.list.data
-            console.log(tableData, 'tableData')
             setData(tableData)
             setData2(tableData)
-
         });
     })
-
-
     setTimeout(() => {
         setSnackBarOpen(false)
         setSnackBarMessage("")
     }, 3000);
-
-
     React.useEffect(() => {
         getData()
     }, []);
-
-    // useEffect(() => {
-    // 	dispatch(Actions.getProducts());
-    // }, [dispatch]);
-
-    // useEffect(() => {
-    // 	if (searchText.length !== 0) {
-    // 		setData(_.filter(products, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
-    // 		setPage(0);
-    // 	} else {
-    // 		setData(products);
-    // 		console.log(products,'here in prdoducts table')
-    // 	}
-    // }, [products, searchText]);
-
     function handleRequestSort(event, property) {
         const id = property;
         let direction = 'desc';
-
         if (order.id === property && order.direction === 'desc') {
             direction = 'asc';
         }
-
         setOrder({
             direction,
             id
         });
     }
-
-
     function handleChangeTab(event, value) {
         setTabValue(value);
-
     }
-
     function handleChangeTabMain(event, value) {
         setMainTab(value);
-
     }
-
     function search() {
-        console.log('ceeleded', props.ValueForSearch, searchVal);
-
         setSearchVal(props.ValueForSearch)
         setData2(data.filter(n => n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-        console.log(data, 'filterssss');
-
-
     }
     if (searchVal !== props.ValueForSearch) {
         { search() }
     }
-
-
     function handleSelectAllClick(event) {
         if (event.target.checked) {
             setSelected(data.map(n => n.id));
@@ -227,7 +170,6 @@ function TemplateMessage(props) {
     }
 
     function handleClick(n) {
-        // props.history.push({ pathname: '/apps/company-details', data: n });
         setOpen(true)
     }
 
@@ -248,28 +190,11 @@ function TemplateMessage(props) {
             );
         }
     }
-    function handleCheck(event, id) {
-        const selectedIndex = selected.indexOf(id);
-        let newSelected = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, id);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-        }
-
-        setSelected(newSelected);
-    }
 
     function handleChangePage(event, value) {
         setPage(value);
     }
     function handleDialogClose() {
-        console.log("hhe");
         setOpen(false)
     }
 
@@ -288,36 +213,31 @@ function TemplateMessage(props) {
         setOpen(true);
     };
 
-  
+
     return (
         <>
             <Card className={classes.root}>
 
                 <CardContent className={classes.content} style={{ width: '100%' }}>
-                    {/* <Typography variant='h2' className='companyDetailHeader'>Template Messages</Typography> */}
-                  <div className='companyDetailHeaderTabs'>
-
-             
-                    <Tabs
-                        // className='companyDetailHeader'
-                        value={mainTab}
-                        onChange={handleChangeTabMain}
-                        indicatorColor="primary"
-                        textColor="primary"
-                        variant="scrollable"
-                        scrollButtons="off"
-                        className="w-full border-b-1 px-100 text-center h-48 "
-                        style={{ marginBottom: '8px'}}
-                    >
-                        <Tab
-                            style={{ marginTop: '0.2%' }}
-                            className="text-12 font-600 normal-case" label="Template Message" />
-                        <Tab
-                            style={{ marginTop: '0.2%' }}
-                            className="text-12 font-600 normal-case" label="Requested" />
-                    </Tabs>
+                    <div className='companyDetailHeaderTabs'>
+                        <Tabs
+                            value={mainTab}
+                            onChange={handleChangeTabMain}
+                            indicatorColor="primary"
+                            textColor="primary"
+                            variant="scrollable"
+                            scrollButtons="off"
+                            className="w-full border-b-1 px-100 text-center h-48 "
+                            style={{ marginBottom: '8px' }}
+                        >
+                            <Tab
+                                style={{ marginTop: '0.2%' }}
+                                className="text-12 font-600 normal-case" label="Template Message" />
+                            <Tab
+                                style={{ marginTop: '0.2%' }}
+                                className="text-12 font-600 normal-case" label="Requested" />
+                        </Tabs>
                     </div>
-                    {/* contentToolbar={ */}
                     <Tabs
                         value={tabValue}
                         onChange={handleChangeTab}
@@ -346,22 +266,16 @@ function TemplateMessage(props) {
                         <Tab
                             style={{ marginTop: '0.2%' }}
                             className="text-12 font-600 normal-case" label="Documents" />
-
                     </Tabs>
-
                     <Snackbar
-
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
                         open={snackbaropen}
                         autoHideDuration={3000}
-
                     >
                         <Alert variant="filled" severity={ok}>
                             {snackbarmessage}
                         </Alert>
                     </Snackbar>
-
-
                     <div className="w-full flex flex-col">
                         <FuseScrollbars className="flex-grow overflow-x-auto">
                             <Table className="min-w-xl" aria-labelledby="tableTitle">
@@ -372,7 +286,6 @@ function TemplateMessage(props) {
                                     onRequestSort={handleRequestSort}
                                     rowCount={data.length}
                                 />
-
                                 <TableBody>
                                     {_.orderBy(
                                         data2,
@@ -396,7 +309,6 @@ function TemplateMessage(props) {
                                             console.log(n, 'i am in table')
                                             return (
                                                 <TableRow
-
                                                     className="h-10 cursor-pointer"
                                                     hover
                                                     role="checkbox"
@@ -406,14 +318,6 @@ function TemplateMessage(props) {
                                                     selected={isSelected}
                                                     onClick={event => handleClick(n)}
                                                 >
-
-                                                    {/* <TableCell className="w-64 text-center" padding="none">
-											<Checkbox
-												checked={isSelected}
-												onClick={event => event.stopPropagation()}
-												onChange={event => handleCheck(event, n.id)}
-											/>
-										</TableCell> */}
                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
                                                         {n.id}
                                                     </TableCell>
@@ -427,11 +331,6 @@ function TemplateMessage(props) {
                                                         {n.begin_dt === null ? 'N/A' : n.begin_dt}
                                                     </TableCell>}
                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                        {/* {n.progress ? ( 
-												<Icon className="text-green text-16">check_circle</Icon>
-											) : (
-													<Icon className="text-red text-16">cancel</Icon>
-												)} */}
                                                         <FormControlLabel
                                                             style={{ marginLeft: '2px' }}
                                                             control={
@@ -444,7 +343,6 @@ function TemplateMessage(props) {
 
                                                                 />
                                                             }
-                                                        // label="Primary"
                                                         />
                                                     </TableCell>
                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
@@ -454,33 +352,6 @@ function TemplateMessage(props) {
                                                                 <Icon className="text-red text-16">cancel</Icon>
                                                             )}
                                                     </TableCell>
-
-
-                                                    {/* <TableCell component="th" scope="row" align="center" style={{fontSize:'11px',padding:'10px'}}>
-											{n.dtu}
-									
-										</TableCell> */}
-
-                                                    {/* 
-										<TableCell component="th" scope="row" align="center">
-											{n.quantity}
-											<i
-												className={clsx(
-													'inline-block w-8 h-8 rounded mx-8',
-													n.quantity <= 5 && 'bg-red',
-													n.quantity > 5 && n.quantity <= 25 && 'bg-orange',
-													n.quantity > 25 && 'bg-green'
-												)}
-											/>
-										</TableCell> */}
-
-                                                    {/* <TableCell component="th" scope="row" align="center">
-											{n.active ? (
-												<Icon className="text-green text-20">check_circle</Icon>
-											) : (
-													<Icon className="text-red text-20">remove_circle</Icon>
-												)}
-										</TableCell> */}
                                                 </TableRow>
                                             );
                                         })}
@@ -495,10 +366,6 @@ function TemplateMessage(props) {
                                     actions: 'text-64',
                                     select: 'text-12 mt-4',
                                     selectIcon: 'mt-4',
-                                    // input:'text-64',
-                                    // menuItem:'text-64',
-                                    // toolbar:'text-64',
-                                    // selectRoot:'text-64'
                                 }}
                                 className="overflow-hidden"
                                 component="div"
@@ -512,18 +379,16 @@ function TemplateMessage(props) {
                             />
                         </MuiThemeProvider>
                         <FuseAnimate animation="transition.expandIn" delay={300}>
-				<Fab
-					color="primary"
-					aria-label="add"
-					size="medium"
-					className={classes.addButton}
-					onClick={handleClickOpen}
-				// onClick={ev => dispatch(Actions.openNewContactDialog())}
-				>
-					<Icon>person_add</Icon>
-				</Fab>
-			</FuseAnimate>
-
+                            <Fab
+                                color="primary"
+                                aria-label="add"
+                                size="medium"
+                                className={classes.addButton}
+                                onClick={handleClickOpen}
+                            >
+                                <Icon>person_add</Icon>
+                            </Fab>
+                        </FuseAnimate>
                         {open && <TemplateDialog type="Update Template Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
                     </div>
                 </CardContent>

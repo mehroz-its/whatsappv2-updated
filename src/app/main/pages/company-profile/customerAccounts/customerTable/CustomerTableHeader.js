@@ -43,30 +43,14 @@ function CampaignHeader(props) {
 							className="flex flex-1 mx-8 "
 							disableUnderline
 							onChange={e=>{
-							
 								props.SearchVal(e.target.value)
-								
 							}}
-							
-						   
 							placeholder="Search"
 							/>
 						</Paper>
 					</FuseAnimate>
 				</ThemeProvider>
 			</div>
-			{/* <FuseAnimate animation="transition.slideRightIn" delay={300}>
-				<Button
-					component={Link}
-					to="/apps/e-commerce/products/new"
-					className="whitespace-no-wrap normal-case"
-					variant="contained"
-					color="secondary"
-				>
-					<span className="hidden sm:flex">Add New Campaign</span>
-					<span className="flex sm:hidden">New</span>
-				</Button>
-			</FuseAnimate> */}
 		</div>
 	);
 }

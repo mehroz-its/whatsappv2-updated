@@ -8,10 +8,7 @@ const CannedDocumentConfig = {
 		}
 	},
 	routes: [
-		// {
-		// 	path: '/apps/contacts/:id',
-		// 	component: React.lazy(() => import('./BlockContactApp'))
-		// },
+		
 		{
 			path: '/apps/canned-docs',
 			component: React.lazy(() => import('./Canned'))

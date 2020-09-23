@@ -51,8 +51,6 @@ function CannedSideBar(props) {
 	const user = null;
 	let data = null
 	data = JSON.parse(localStorage.getItem('user_data'))
-	console.log(data)
-
 	let value = null
 	if (data !== null) {
 		function titleCase(str) {
@@ -62,15 +60,9 @@ function CannedSideBar(props) {
 			}
 			return str.join(' ');
 		}
-		console.log(data)
 		 value = titleCase(data.username);
-
 	}
-	console.log(value, 'titleCasetitleCasetitleCase')
-
-
 	const classes = useStyles(props);
-
 	return (
 		<div className="p-0 lg:p-24 lg:ltr:pr-4 lg:rtl:pl-4">
 			<FuseAnimate animation="transition.slideLeftIn" delay={200}>
@@ -175,18 +167,7 @@ function CannedSideBar(props) {
 					
 						primary="Document" disableTypography />
 					</ListItem>
-						{/* <ListItem
-							button
-							component={NavLinkAdapter}
-							to="/apps/contacts/starred"
-							activeClassName="active"
-							className={classes.listItem}
-						>
-							<Icon className="list-item-icon text-16" color="action">
-								star
-							</Icon>
-							<ListItemText className="truncate" primary="Starred contacts" disableTypography />
-						</ListItem> */}
+					
 					</List>
 				</Paper>
 			</FuseAnimate>

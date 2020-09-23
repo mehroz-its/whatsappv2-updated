@@ -16,7 +16,6 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import StatusIcon from './StatusIcon';
 import * as Actions from './store/actions';
-
 const statusArr = [
 	{
 		title: 'Online',
@@ -35,25 +34,19 @@ const statusArr = [
 		value: 'offline'
 	}
 ];
-
 function UserSidebar(props) {
 	const dispatch = useDispatch();
 	const user = useSelector(({ chatApp }) => chatApp.user);
-
 	const { form, handleChange } = useForm(user ? { ...user } : false);
-
 	const updateUserData = useDebounce(_form => {
 		dispatch(Actions.updateUserData(_form));
 	}, 500);
-
 	useUpdateEffect(() => {
 		updateUserData(form);
 	}, [form, updateUserData]);
-
 	if (!form) {
 		return null;
 	}
-
 	return (
 		<div className="flex flex-col flex-auto h-full">
 			<AppBar position="static" color="primary" elevation={1}>
@@ -116,5 +109,4 @@ function UserSidebar(props) {
 		</div>
 	);
 }
-
 export default UserSidebar;

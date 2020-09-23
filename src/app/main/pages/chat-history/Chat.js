@@ -1,18 +1,11 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import MessageStateResolver from '../chat/messageType/MessageStateResolver'
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import moment from 'moment/moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import AttachFileIcon from '@material-ui/icons/AttachFile';
-import Button from '@material-ui/core/Button';
 import AudioMessageType from '../chat//messageType/AudioMessageType'
 import DocumentMessageType from './messageType/DocumentMessageType'
 import ImageMessageType from './messageType/ImageMessageType'
@@ -21,11 +14,6 @@ import ContactMessageType from './messageType/ContactMessageType'
 import LocationMessageType from './messageType/LocationMessageType'
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import MicIcon from '@material-ui/icons/Mic'
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler';
 import XGlobalDialogCmp from '../../../../dialogs/XGlobalDialogCmp';
 import XGlobalDialog from '../../../../dialogs/XGlobalDialog';
@@ -36,12 +24,11 @@ import BlockConfirmDialog from './dialog/chat/BlockConfirmDialog';
 import CustomerProfileDialog from './dialog/chat/CustomerProfileDialog';
 import ReadMoreReact from 'read-more-react';
 import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
-
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Fade from '@material-ui/core/Fade'
+import { makeStyles } from '@material-ui/core/styles';
 import copy from 'copy-to-clipboard';
-
 import * as Actions from './store/actions';
 const contacts = [
 	{
@@ -143,7 +130,6 @@ const chat = {
 	]
 }
 const useStyles = makeStyles(theme => ({
-	// bootstrapFormLabel:{backgroundColor: 'red',},
 	messageRow: {
 		'&.contact': {
 			'& .bubble': {
@@ -154,16 +140,16 @@ const useStyles = makeStyles(theme => ({
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
 				width: 'auto',
-    			maxWidth: '35vw',
+				maxWidth: '35vw',
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
-				marginLeft:8,
+				marginLeft: 8,
 				// marginBottom:70,
 				'& .time': {
 					marginLeft: '0px',
 					marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom:8
+					paddingBottom: 8
 				}
 			},
 			'&.first-of-group': {
@@ -194,18 +180,18 @@ const useStyles = makeStyles(theme => ({
 				borderBottomRightRadius: 5,
 				width: 'auto',
 				maxWidth: '35vw',
-				marginRight:10,
+				marginRight: 10,
 				'& .time': {
-					display:'flex',
+					display: 'flex',
 					justifyContent: 'flex-end',
 					right: 0,
 					marginLeft: 2,
 					marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom:10,
-					opacity:'0.8',
-					paddingRight:4,
-					paddingBottom:'8px'
+					paddingBottom: 10,
+					opacity: '0.8',
+					paddingRight: 4,
+					paddingBottom: '8px'
 
 
 
@@ -254,7 +240,7 @@ const useStyles = makeStyles(theme => ({
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
 				width: 'auto',
-    			maxWidth: '35vw',
+				maxWidth: '35vw',
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
 				// marginBottom:70,
@@ -262,8 +248,8 @@ const useStyles = makeStyles(theme => ({
 					marginLeft: '0px',
 					marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom:8
-					
+					paddingBottom: 8
+
 				}
 			},
 			'&.first-of-group': {
@@ -292,15 +278,15 @@ const useStyles = makeStyles(theme => ({
 				borderTopRightRadius: 5,
 				borderBottomRightRadius: 5,
 				width: 'auto',
-    			maxWidth: '35vw',
+				maxWidth: '35vw',
 				'& .time': {
-					display:'flex',
+					display: 'flex',
 					justifyContent: 'flex-end',
 					right: 0,
 					marginRight: 2,
 					marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom:5
+					paddingBottom: 5
 
 				}
 			},
@@ -386,22 +372,13 @@ const useStyles = makeStyles(theme => ({
 		margin: '0 5px'
 	}
 }));
-
-
 function Chat(props) {
 	const dispatch = useDispatch();
 	const { messages, selectedRecipient } = props;
-
-	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
-	// const selectedContactId = useSelector(({ chatApp }) => chatApp.contacts.selectedContactId);
-	// const chat = useSelector(({ chatApp }) => chatApp.chat);
-	// const user = useSelector(({ chatApp }) => chatApp.user);
-
 	const classes = useStyles(props);
 	const chatRef = useRef(null);
 	const [messageText, setMessageText] = useState('');
 	const [anchorEl, setAnchorEl] = React.useState(null);
-
 	const [sendDialogData, setsendDialogData] = React.useState({
 		url: '',
 		caption: '',
@@ -425,7 +402,6 @@ function Chat(props) {
 		countries: [],
 	});
 	const [dialogOpenCmp, setdialogOpenCmp] = React.useState(false);
-
 	const sendDialogActions = [
 		{
 			handler: (event, index) => {
@@ -446,7 +422,6 @@ function Chat(props) {
 	];
 	const sendDialogActionCb = () => {
 		const args = {};
-
 		args[sendActionType] = {};
 
 		args[sendActionType]['type'] = sendActionType;
@@ -462,9 +437,7 @@ function Chat(props) {
 				args[sendActionType][sendActionType].message[attr] = sendDialogData.attributes[attr];
 			});
 		}
-
 		delete args[sendActionType][sendActionType].message.attributes;
-
 		CoreHttpHandler.request('conversations', 'send', { key: ':type', value: sendActionType, params: args[sendActionType] }, (response) => {
 			setsendActionType(null)
 			setsendDialogTitle('')
@@ -474,7 +447,6 @@ function Chat(props) {
 				caption: '',
 				attributes: null,
 			})
-
 		}, (response) => {
 		})
 	};
@@ -500,12 +472,10 @@ function Chat(props) {
 	}, [messages,]);
 
 	function scrollToBottom() {
-		// chatRef.current.scrollTop = chatRef.current.scrollHeight - 200;
 		setTimeout(() => {
-			chatRef.current.scrollTop =  chatRef.current.scrollHeight;
-		  }, 1000);
+			chatRef.current.scrollTop = chatRef.current.scrollHeight;
+		}, 1000);
 	}
-
 	function shouldShowContactAvatar(item, i) {
 		return (
 			item.type === "inbound" &&
@@ -612,7 +582,6 @@ function Chat(props) {
 			value: selectedRecipient.number,
 			key2: ':last_closed',
 			value2: selectedRecipient.last_closed
-
 		};
 		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
 			const messages = response.data.data.chat;
@@ -622,20 +591,15 @@ function Chat(props) {
 
 		});
 	}
-
 	const conversationShift = () => {
 		CoreHttpHandler.request('conversations', 'agent_list', { role: 64, columns: 'id, username, email, number' }, (response) => {
 			const data = response.data.data.agents.data;
 			setshiftAgentsList(data)
 			setdialogOpenShift(true)
 		}, (response) => {
-
 		});
 	}
 	const selectedShiftAgent = (agent) => {
-		console.log("selectedShiftAgent agent ", agent)
-		console.log("selectedShiftAgent selectedRecipient ", selectedRecipient)
-
 		CoreHttpHandler.request('conversations', 'transfer', {
 			key: ':id',
 			value: agent.id,
@@ -646,7 +610,6 @@ function Chat(props) {
 			setdialogOpenShift(false)
 			props.agentShift()
 		}, (response) => {
-
 		});
 	}
 	const dialogOptionsShift = {
@@ -671,7 +634,6 @@ function Chat(props) {
 	}
 	const selectedCannedMessage = (props) => {
 		const { message_text, message_type, attachment_url, attachment_name, attachment_type } = props;
-
 		if (message_type !== 'text') {
 			let params = {
 				type: message_type,
@@ -722,9 +684,7 @@ function Chat(props) {
 			const data = response.data.data.list.data;
 			setcannedMessagesList(data)
 			setdialogOpenCanned(true)
-
 		}, (error) => {
-			// this.setSnackBarMessage('Failed to load canned messages, please try again later', 'error');
 		});
 	}
 	const dialogActionsCanned = [
@@ -742,17 +702,13 @@ function Chat(props) {
 	const conversationContextMenuCallback = (item) => {
 		if (item === 'customer_profile') {
 			profileDialog();
-
 		}
-
 		if (item === 'canned_messages') {
-
 			cannedMessagesDialog()
 		}
 
 		if (item === 'block') {
 			setdialogOpenConfirmBlock(true)
-
 		}
 		if (item === 'copy') {
 			copyContent();
@@ -788,8 +744,6 @@ function Chat(props) {
 		setdialogOpenConfirmBlock(false)
 	}
 	const blockNumber = () => {
-		console.log(selectedRecipient.number,'datanumber');
-
 		CoreHttpHandler.request('conversations', 'block', {
 			key: ':number', value: selectedRecipient.number, params: {
 				reason: blockReason,
@@ -799,12 +753,8 @@ function Chat(props) {
 			setblockReason('')
 			setAnchorEl(false)
 			props.agentShift()
-			// setselectedRecipient(null)
-			// setmessages([])
-			// clearInterval(this.int_MessageLists);
 		}, (error) => {
 			setAnchorEl(false)
-
 			setdialogOpenConfirmBlock(false)
 		});
 	}
@@ -850,24 +800,14 @@ function Chat(props) {
 	];
 	const profileUpdate = () => {
 		const data = { ...customerProfileData };
-
 		data['number'] = selectedRecipient.number;
-
 		CoreHttpHandler.request('contact_book', 'update', {
 			key: ':id',
 			value: customerProfileData.id,
 			params: data
 		}, (response) => {
 			setdialogOpenCmp(false)
-
-
 		}, (error) => {
-			// if (error.hasOwnProperty('response')) {
-			//     if (error.response.hasOwnProperty('data')) {
-			//         this.setSnackBarMessage(error.response.data.message, 'error');
-			//     }
-			// } else this.setSnackBarMessage('Failed to update profile, please try again later', 'error');
-
 		});
 	}
 	const XGlobalDialogCmpClose = () => {
@@ -879,10 +819,8 @@ function Chat(props) {
 			value: selectedRecipient.number
 		}, (response) => {
 			const customer = response.data.data.customer;
-
 			loadCountries().then((response) => {
 				const countries = response.data.data.list.data;
-
 				setcustomerProfileData({
 					id: customer.id,
 					number: selectedRecipient.number,
@@ -890,16 +828,13 @@ function Chat(props) {
 					assign_name: '',
 					countries,
 				})
-				console.log("customer : ", customer);
 				setAnchorEl(false)
 				setdialogOpenCmp(true)
-
 			})
 
 		}, (error) => {
 			setAnchorEl(false)
 			setdialogOpenCmp(false)
-			// this.setSnackBarMessage('Failed to customer profile, please try again later', 'error');
 		});
 	}
 	const loadCountries = () => {
@@ -914,14 +849,8 @@ function Chat(props) {
 		}, null, null, true);
 	};
 	const copyContent = () => {
-
 		copy(selectedRecipient.number);
-		alert("copy")
-		// this.setSnackBarMessage('Copied', 'success', null);
-
-		// This is just personal preference.
-		// I prefer to not show the the whole text area selected.
-
+		this.setSnackBarMessage('Copied', 'success', null);
 	}
 	return (
 		<div className={clsx('flex flex-col relative', props.className)}>
@@ -930,7 +859,6 @@ function Chat(props) {
 					<div className="flex flex-col ">
 						{messages.map((item, index) => {
 							const contact = null;
-							console.log(item, 'item in message')
 							// 	item.type === "inbound" ? user : contacts.find(_contact => _contact.id === item.who);
 							return (
 								<div
@@ -947,7 +875,7 @@ function Chat(props) {
 												{ 'last-of-group': isLastMessageOfGroup(item, index) },
 												index + 1 === messages.length && 'pb-96'
 											) : clsx(
-												classes.messageRowWithOutBorder	,											'text-message-w-control',
+												classes.messageRowWithOutBorder, 'text-message-w-control',
 												'flex flex-col flex-grow-0 flex-shrink-0 items-start justify-end relative px-16 pb-4',
 												{ me: item.type === "outbound" },
 												{ contact: item.type === "inbound" },
@@ -957,29 +885,22 @@ function Chat(props) {
 											)
 									}
 								>
-									{/* {shouldShowContactAvatar(item, index) && (
-										<Avatar
-											className="avatar absolute ltr:left-0 rtl:right-0 m-0 -mx-32"
-											src={props.selectedRecipient.avatar}
-										/>
-									)} */}
-
 									<div className="bubble flex relative items-center justify-center p-12 max-w-full">
 										{item.message_type === "text" ?
 											item.message_body.length > '400' ?
-											<div className="leading-tight whitespace-pre-wrap" >
-												<ReadMoreReact text={item.message_body}
-													min={200}
-													ideal={400}
-													max={1000}
-													readMoreText="Click Here to Read More" />
-												<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} {item.type === "outbound" ? MessageStateResolver.resolve(item.status) : null}</Typography>
-											</div>
-											:
-											<div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px', textAlign: 'justify', wordBreak: 'break-all' }}>
-												{item.message_body}
-												<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} {item.type === "outbound" ? MessageStateResolver.resolve(item.status) : null}</Typography>
-											</div>
+												<div className="leading-tight whitespace-pre-wrap" >
+													<ReadMoreReact text={item.message_body}
+														min={200}
+														ideal={400}
+														max={1000}
+														readMoreText="Click Here to Read More" />
+													<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} {item.type === "outbound" ? MessageStateResolver.resolve(item.status) : null}</Typography>
+												</div>
+												:
+												<div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px', textAlign: 'justify', wordBreak: 'break-all' }}>
+													{item.message_body}
+													<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} {item.type === "outbound" ? MessageStateResolver.resolve(item.status) : null}</Typography>
+												</div>
 											: null}
 										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
@@ -987,12 +908,6 @@ function Chat(props) {
 										{item.message_type === "document" ? <DocumentMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "contacts" ? <ContactMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "location" ? <LocationMessageType index={index} classes={classes} message={item} /> : null}
-										{/* <Typography
-											className="time absolute hidden w-full text-11 mt-8 -mb-24 ltr:left-0 rtl:right-0 bottom-0 whitespace-no-wrap"
-											color="textSecondary"
-										>
-											{moment(item.dt).format('MMMM Do YYYY, h:mm:ss a')}
-										</Typography> */}
 									</div>
 								</div>
 							);
@@ -1017,10 +932,6 @@ function Chat(props) {
 			<XGlobalDialogCmp onDialogPropsChange={selectedCannedMessage} data={cannedMessagesList} dialogTitle={`Canned Messages`} options={dialogOptionsCanned} content={CannedMessagesDialog} defaultState={dialogOpenCanned} actions={dialogActionsCanned} />
 			<XGlobalDialogCmp onDialogPropsChange={blockCustomerInputHandler} data={selectedRecipient} dialogTitle={`Confirm Block`} options={dialogOptionsConfirmBlock} content={BlockConfirmDialog} defaultState={dialogOpenConfirmBlock} actions={dialogActionsConfirmBlock} />
 			<XGlobalDialogCmp onDialogPropsChange={customerProfileInputHandler} data={customerProfileData} dialogTitle={`Customer Profile`} options={dialogOptionsCmp} content={CustomerProfileDialog} defaultState={dialogOpenCmp} actions={dialogActionsCmp} />
-
-			{/* <XGlobalDialog onchange={(e) => {
-                    this.onchange(e);
-                }} dialogTitle={`Email [${this.state.selectedRecipient}]'s Conversation`} options={this.dialogOptions} content={ConversationsEmailDialog} defaultState={this.state.dialogOpen} actions={this.dialogActions} /> */}
 		</div>
 	);
 }

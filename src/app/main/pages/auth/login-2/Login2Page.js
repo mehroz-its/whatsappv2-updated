@@ -167,7 +167,7 @@ const Login2Page = (props) => {
     };
 
     let authFailure = (error) => {
-        console.log("CLIENT AUTH ERROR > ", error);
+        // console.log("CLIENT AUTH ERROR > ", error);
     };
 
     let settingsSuccess = (response) => {
@@ -180,7 +180,7 @@ const Login2Page = (props) => {
     };
 
     let settingsFailure = (error) => {
-        console.log("CLIENT SETTINGS ERROR >", error);
+        // console.log("CLIENT SETTINGS ERROR >", error);
     };
 
     let clientAuthentication = () => {
@@ -282,13 +282,13 @@ const Login2Page = (props) => {
 
         // this.setState({ error_message: '' })
         setErrorMessage('')
-        console.log(username, passsword, 'sdssssd',);
+        // console.log(username, passsword, 'sdssssd',);
         const data = {
             username: username,
             password: passsword,
         };
         if (username == '' || passsword == '' || passsword == undefined || username == undefined) {
-            console.log(username, passsword, 'sdsd');
+            // console.log(username, passsword, 'sdsd');
             setIsLoading(false)
             // this.setState({ snackbaropen: true, snackbarmsg: 'Please Fill Every Detail', ok: 'error' })
             setSnackBarOpen(true)
@@ -307,7 +307,7 @@ const Login2Page = (props) => {
     };
 
     let _handleKeyDown = (e) => {
-        console.log('in handleee');
+        // console.log('in handleee');
 
 
         if (e.key === 'Enter') {

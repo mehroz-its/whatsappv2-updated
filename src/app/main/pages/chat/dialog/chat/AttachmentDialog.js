@@ -83,13 +83,11 @@ const AttachmentDialog = function (props) {
             navigator.mediaDevices.getUserMedia({ audio: true })
                 .then(function (stream) {
                     setPermissionState(true)
-                    console.log('You let me use your mic!')
-                    console.log(permissionState)
+                  
                 })
                 .catch(function (err) {
                     setPermissionState(false)
-                    console.log('No mic for you!')
-                    console.log(permissionState)
+                   
 
                 });
         } else alert('Unable to load audio plugins!, Please check your connection');

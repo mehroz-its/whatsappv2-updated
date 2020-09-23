@@ -14,9 +14,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-
-
-
 const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'absolute',
@@ -27,35 +24,23 @@ const useStyles = makeStyles((theme) => ({
 	formControl: {
 		margin: theme.spacing(1),
 		minWidth: 330,
-
 	},
 }));
-
-
-
-
 const TemplateDialog = (props) => {
 	const classes = useStyles(props);
-
 	const { isOpen, data } = props
 	const [openDialog, setopenDialog] = React.useState(isOpen);
 	const [age, setAge] = React.useState('');
 	const [params, setParams] = React.useState(data.template_params);
 	const [name, setName] = React.useState(data.template_name);
-
 	const [filteredParams, setfilteredParams] = React.useState(null);
-
-	console.log(data, 'from this.props.')
-
 	const handleClose = () => {
 		props.closeDialog()
 		setopenDialog(false);
 	};
-
 	const handleChange = (event) => {
 		setAge(event.target.value);
 	};
-
 	const handleParams = e => {
 		setParams(e.target.value)
 		let pattern = /[^{}]*(?=\})/g;
@@ -69,33 +54,25 @@ const TemplateDialog = (props) => {
 				val.push(found[i])
 			}
 			setfilteredParams(val)
-			console.log(filteredParams, 'here')
 		}
 	}
-
 	const onInputChange = e => {
-
 		switch (e.target.name) {
 			case "name":
 				setName(e.target.value)
 				break;
 		}
 	}
-
-
 	return (
-		// <div> {isOpen}</div>
 		<Dialog open={openDialog}
-		onClose={handleClose}
-		aria-labelledby="form-dialog-title" classes={{
-			paper: 'm-24'
-		}}
+			onClose={handleClose}
+			aria-labelledby="form-dialog-title" classes={{
+				paper: 'm-24'
+			}}
 
 			fullWidth
 			maxWidth="xs">
-			{/* <DialogTitle id="form-dialog-title">{props.type} </DialogTitle> */}
 			<AppBar position="static" elevation={1}>
-
 				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
 					style={{ paddingBottom: 20, paddingTop: 20 }}>
 					{props.type}
@@ -106,7 +83,6 @@ const TemplateDialog = (props) => {
 					<div className="min-w-48 pt-10">
 						<Icon color="action">account_circle</Icon>
 					</div>
-
 					<TextField
 						className="mb-24"
 						label="Name"
@@ -138,82 +114,14 @@ const TemplateDialog = (props) => {
 						onChange={handleParams}
 					/>
 				</div>
-
-
-
-
-
-				{/* <div className="flex" style={{ marginBottom: 20 }}>
-					<div className="min-w-48 pt-20">
-						<Icon color="action">account_circle</Icon>
-					</div>
-					<FormControl className={classes.formControl}>
-
-						<InputLabel id="demo-simple-select-label" style={{ marginLeft: 10 }}>Type</InputLabel>
-						<Select
-							labelId="demo-simple-select-label"
-							id="demo-simple-select"
-							value={age}
-							onChange={handleChange}
-						>
-							<MenuItem value={10}>Text</MenuItem>
-							<MenuItem value={20}>Audio</MenuItem>
-							<MenuItem value={30}>Video</MenuItem>
-						</Select>
-					</FormControl>
-				</div>
-				<div className="flex">
-					<div className="min-w-48 pt-20">
-						<Icon color="action">account_circle</Icon>
-					</div>
-
-					<TextField
-						className="mb-24"
-						label="Text"
-						autoFocus
-						id="name"
-						name="name"
-
-
-						variant="outlined"
-						required
-						fullWidth
-					/>
-				</div>
-				<div className="flex">
-					<div className="min-w-48 pt-20">
-						<Icon color="action">account_circle</Icon>
-					</div>
-
-					<TextField
-						className="mb-24"
-						label="Params"
-						autoFocus
-						id="name"
-						name="name"
-
-
-						variant="outlined"
-						required
-						fullWidth
-					/>
-				</div> */}
-
-
-
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={handleClose} color="primary" size="small"  className="mx-16"
+				<Button onClick={handleClose} color="primary" size="small" className="mx-16"
 					variant="contained">
 					Cancel
              </Button>
-				{/* <Button onClick={handleClose} disabled={true} color="primary" size="small"
-					variant="contained" >
-					Done
-         </Button> */}
 			</DialogActions>
 		</Dialog>
-
 	)
 }
 

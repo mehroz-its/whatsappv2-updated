@@ -30,9 +30,9 @@ function ToolbarLayout1(props) {
 	const [online, setOnline] = React.useState(JSON.parse(localStorage.getItem('online')))
 	const classes = useStyles(props);
 	const setAgentOnline = (e) => {
-		console.log(e.target, 'eee')
+		// console.log(e.target, 'eee')
 		const isOnline = e.target.checked;
-		console.log(isOnline, 'isss')
+		// console.log(isOnline, 'isss')
 		if (isOnline) {
 			EventEmitter.dispatch('Online',true)
 			localStorage.setItem('online', true)

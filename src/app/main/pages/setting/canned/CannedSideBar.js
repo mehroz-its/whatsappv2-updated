@@ -63,7 +63,6 @@ function CannedSideBar(props) {
 	const classes = useStyles(props);
 
 	const handleClick = (val) => {
-		console.log('i am clicked', val)
 		props.cannedType(val)
 	}
 	return (

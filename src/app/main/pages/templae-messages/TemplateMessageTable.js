@@ -37,10 +37,6 @@ const PaginationStyle = createMuiTheme({
 			body2: {
 				fontSize: '12px',
 				marginTop: '1px'
-
-				//   "&:last-child": {
-				// 	paddingRight: 5
-				//   }
 			}
 		}
 	}
@@ -51,9 +47,7 @@ const HeaderStyle = createMuiTheme({
 	overrides: {
 		MuiTableCell: {
 			root: {
-
 				paddingLeft: 40,
-
 				fontSize: '12px',
 				paddingBottom: 4,
 				"&:first-child": {
@@ -111,32 +105,6 @@ const EnhancedTable = ({ displaySnack, columns, data, onRowClick, onClose }) => 
 		useRowSelect,
 		hooks => {
 			hooks.allColumns.push(_columns => [
-				// Let's make a column for selection
-				// {
-				// 	id: 'selection',
-				// 	sortable: false,
-				// 	// The header can use the table's getToggleAllRowsSelectedProps method
-				// 	// to render a checkbox.  Pagination is a problem since this will select all
-				// 	// rows even though not all rows are on the current page.  The solution should
-				// 	// be server side pagination.  For one, the clients should not download all
-				// 	// rows in most cases.  The client should only download data for the current page.
-				// 	// In that case, getToggleAllRowsSelectedProps works fine.
-				// 	Header: ({ getToggleAllRowsSelectedProps }) => (
-				// 		<div>
-				// 			<IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-				// 		</div>
-				// 	),
-				// 	// The cell can use the individual row's getToggleRowSelectedProps method
-				// 	// to the render a checkbox
-				// 	Cell: ({ row }) => (
-				// 		<div>
-				// 			<IndeterminateCheckbox
-				// 				{...row.getToggleRowSelectedProps()}
-				// 				onClick={ev => ev.stopPropagation()}
-				// 			/>
-				// 		</div>
-				// 	)
-				// },
 				..._columns
 			]);
 		}
@@ -151,9 +119,6 @@ const EnhancedTable = ({ displaySnack, columns, data, onRowClick, onClose }) => 
 	};
 
 	const handleClick = (ev, row) => {
-		// if (row) {
-		// 	dispatch(Actions.openEditContactDialog(row.original));
-		// }
 		setDialogData(row.original)
 		setOpen(true);
 		handleClickOpen()
@@ -161,11 +126,8 @@ const EnhancedTable = ({ displaySnack, columns, data, onRowClick, onClose }) => 
 	const hadleDelete = (event, n) => {
 		setDeleteDialog(true)
 		event.stopPropagation()
-		console.log(n, 'eventtt')
 		setDeleteDialogData(n)
 	}
-	console.log('dialogData====>',dialogData)
-	// Render the UI for your table
 	return (<div>
 		<TableContainer className="min-h-full sm:border-1 sm:rounded-16" >
 			<MaUTable {...getTableProps()}>
@@ -282,10 +244,6 @@ const EnhancedTable = ({ displaySnack, columns, data, onRowClick, onClose }) => 
 									actions: 'text-64',
 									select: 'text-12 mt-4',
 									selectIcon: 'mt-4',
-									// input:'text-64',
-									// menuItem:'text-64',
-									// toolbar:'text-64',
-									// selectRoot:'text-64'
 								}}
 								rowsPerPageOptions={[5, 10, 25, { label: 'All', value: data.length + 1 }]}
 								colSpan={5}

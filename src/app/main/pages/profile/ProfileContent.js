@@ -56,11 +56,9 @@ const Profile = function (props) {
         let changedDate = dob
         const id = e.target.id.split('-');
         const name = e.target.name;
-        console.log(profileData, 'name name')
         const attrs = profileData.map((attr, i) => {
             // console.log(attr,'i am atrr')
             if (attr.dob) {
-                console.log(attr, i, 'i nattr aifff')
                 attr[name] = e.target.value;
                 return attr;
 
@@ -142,7 +140,6 @@ const Profile = function (props) {
         // return
         // urlImageHeader
         CoreHttpHandler.request('profile', 'update', data, response => {
-            console.log("response :" ,  response);
             const {user_data} = response.data.data;
             if (user_data) {
                 localStorage.setItem('user_data', JSON.stringify(user_data));
@@ -175,7 +172,6 @@ const Profile = function (props) {
 
     React.useEffect(() => {
         loadProfile().then((response) => {
-            console.log('inside hittttttttttt');
             const profileData = response.data.data.attribute;
             const user = JSON.parse(localStorage.getItem('user_data'));
             let nameCapitalized = ''

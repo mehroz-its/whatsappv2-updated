@@ -13,10 +13,8 @@ function Widget5(props) {
 	const theme = useTheme();
 
 	// const widget = _.merge({}, props.widget);
-console.log('widget :' , widget)
 
 	function handleChangeRange(range) {
-		console.log("range : " ,  range);
 		
 		setCurrentRange(range);
 	}
@@ -64,7 +62,6 @@ console.log('widget :' , widget)
 				</div>
 				<div className="flex w-full md:w-1/2 p-8 ">
 					{Object.entries(widget[0].supporting).map(([key, item]) => {
-						console.log("item  :" , item);
 						
 						return (
 							<div key={key} className="w-full sm:w-1/2 p-12">

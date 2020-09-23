@@ -76,7 +76,6 @@ function ChartTable(props) {
 	}
 	function handleClick(n) {
 		setOpen(true)
-		console.log(dialogData, n, 'asdsd');
 		setDialogData({
 			enabled: n.enabled,
 			id: n.id,
@@ -131,8 +130,6 @@ function ChartTable(props) {
 			);
 		}
 	}
-	console.log(data2,'datadata')
-
 	return (
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">

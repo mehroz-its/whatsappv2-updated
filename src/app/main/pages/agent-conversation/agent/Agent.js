@@ -9,28 +9,16 @@ function Campaign() {
 	const [viewChat,setViewChat] = React.useState(null)
 	const [selectedAgent,setSelectedAgent]  = React.useState('All')
 	const [Total,setTotal]  = React.useState(null)
-	var testing = null;
-
-
 	const Agent = (value) => {
 		setSelectedAgent(value)
 		setViewChat(true)
-		console.log(viewChat, value,'i am in main')
 	}
 	const Totalsssss = (value) => {
 		setTotal(value)
-
-		console.log(value,testing,'i am in Totalaalllllllllllllll')
 	}
 
 	const load = (value) =>{
-		console.log(value,'val of loadddddddddddd')
 	}
-
-
-
-	
-
 	return (
 		<FusePageCarded
 			classes={{

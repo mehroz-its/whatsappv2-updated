@@ -8,10 +8,6 @@ const CannedAppConfig = {
 		}
 	},
 	routes: [
-		// {
-		// 	path: '/apps/contacts/:id',
-		// 	component: React.lazy(() => import('./BlockContactApp'))
-		// },
 		{
 			path: '/apps/canned-messages',
 			component: React.lazy(() => import('./Canned'))

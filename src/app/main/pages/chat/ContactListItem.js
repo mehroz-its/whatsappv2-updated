@@ -8,9 +8,6 @@ import moment from 'moment';
 import React from 'react';
 import StatusIcon from './StatusIcon';
 import FuseAnimate from '@fuse/core/FuseAnimate'
-
-
-
 const useStyles = makeStyles(theme => ({
 	contactListItem: {
 		borderBottom: `1px solid ${theme.palette.divider}`,
@@ -35,9 +32,7 @@ const useStyles = makeStyles(theme => ({
 
 function ContactListItem(props) {
 	const classes = useStyles(props);
-	console.log(props, "DATAAAA");
 	const showAvatar = () => {
-		console.log("SelectedChannel", props.Channel);
 		if (props.Channel === "") {
 			return (
 				<Avatar src={props.contact.avatar} alt={props.contact.name}>
@@ -78,14 +73,11 @@ function ContactListItem(props) {
 				<div className="absolute right-0 bottom-0 -m-2 z-6">
 					<StatusIcon status={props.contact.name} />
 				</div>
-
-
 				{showAvatar()}
 			</div>
 			<FuseAnimate animation="transition.slideDownIn" delay={300}>
 				<ListItemText
 					classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
-
 					primary={props.contact.name}
 					secondary={props.contact.number === props.contact.name ? null : props.contact.number}
 				/>
@@ -114,5 +106,4 @@ function ContactListItem(props) {
 		</ListItem>
 	);
 }
-
 export default ContactListItem;

@@ -11,9 +11,6 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import CardHeader from '@material-ui/core/CardHeader';
 import TextField from '@material-ui/core/TextField';
-
-
-
 const useStyles = makeStyles({
     root: {
         maxWidth: '100%',
@@ -22,26 +19,19 @@ const useStyles = makeStyles({
     content: {
         padding: '0px'
     },
- 
 })
-
-
 function Profile() {
     const classes = useStyles();
-
     const { handleSubmit, register, errors } = useForm();
     const onSubmit = values => console.log(values);
-
     return (
         <Card className={classes.root}>
             <CardContent className={classes.content} style={{ width: '100%' }}>
                 <Typography variant='h2' className='companyDetailHeader' >Profile</Typography>
-                <Grid container  style={{marginTop:"5px",paddingRight:'15px',paddingLeft:'15px'}} spacing={3}>
+                <Grid container style={{ marginTop: "5px", paddingRight: '15px', paddingLeft: '15px' }} spacing={3}>
                     <Grid item md={6} sm={12} xs={12}  >
                         <TextField required
-                            // id={`id-${id}`}
                             size="small"
-                            // key={`user_attribute_data_${i}`}
                             value='Company Name'
                             name='Company Name'
                             autoFocus
@@ -54,9 +44,7 @@ function Profile() {
                     </Grid>
                     <Grid item md={6} sm={12} xs={12} >
                         <TextField required
-                            // id={`id-${id}`}
                             size="small"
-                            // key={`user_attribute_data_${i}`}
                             value='Address'
                             name='Address'
                             autoFocus
@@ -69,9 +57,7 @@ function Profile() {
                     </Grid>
                     <Grid item md={6} sm={12} xs={12} >
                         <TextField required
-                            // id={`id-${id}`}
                             size="small"
-                            // key={`user_attribute_data_${i}`}
                             value='VAT Number'
                             name='VAT Number'
                             autoFocus
@@ -84,9 +70,7 @@ function Profile() {
                     </Grid>
                     <Grid item md={6} sm={12} xs={12} >
                         <TextField required
-                            // id={`id-${id}`}
                             size="small"
-                            // key={`user_attribute_data_${i}`}
                             value='City'
                             name='City'
                             autoFocus
@@ -99,9 +83,7 @@ function Profile() {
                     </Grid>
                     <Grid item md={6} sm={12} xs={12} >
                         <TextField required
-                            // id={`id-${id}`}
                             size="small"
-                            // key={`user_attribute_data_${i}`}
                             value='Phone'
                             name='Phone'
                             autoFocus
@@ -114,9 +96,7 @@ function Profile() {
                     </Grid>
                     <Grid item md={6} sm={12} xs={12} >
                         <TextField required
-                            // id={`id-${id}`}
                             size="small"
-                            // key={`user_attribute_data_${i}`}
                             value='State'
                             name='State'
                             autoFocus
@@ -129,9 +109,7 @@ function Profile() {
                     </Grid>
                     <Grid item md={6} sm={12} xs={12} >
                         <TextField required
-                            // id={`id-${id}`}
                             size="small"
-                            // key={`user_attribute_data_${i}`}
                             value='Website'
                             name='Website'
                             autoFocus
@@ -144,9 +122,7 @@ function Profile() {
                     </Grid>
                     <Grid item md={6} sm={12} xs={12} >
                         <TextField required
-                            // id={`id-${id}`}
                             size="small"
-                            // key={`user_attribute_data_${i}`}
                             value='Zip Code'
                             name='Zip Code'
                             autoFocus
@@ -159,9 +135,7 @@ function Profile() {
                     </Grid>
                     <Grid item md={6} sm={12} xs={12} >
                         <TextField required
-                            // id={`id-${id}`}
                             size="small"
-                            // key={`user_attribute_data_${i}`}
                             value='Groups'
                             name='Groups'
                             autoFocus
@@ -174,9 +148,7 @@ function Profile() {
                     </Grid>
                     <Grid item md={6} sm={12} xs={12} >
                         <TextField required
-                            // id={`id-${id}`}
                             size="small"
-                            // key={`user_attribute_data_${i}`}
                             value='Country'
                             name='Country'
                             autoFocus
@@ -189,9 +161,7 @@ function Profile() {
                     </Grid>
                     <Grid item md={6} sm={12} xs={12} >
                         <TextField required
-                            // id={`id-${id}`}
                             size="small"
-                            // key={`user_attribute_data_${i}`}
                             value='Currency'
                             name='Currency'
                             autoFocus
@@ -204,9 +174,7 @@ function Profile() {
                     </Grid>
                     <Grid item md={6} sm={12} xs={12} >
                         <TextField required
-                            // id={`id-${id}`}
                             size="small"
-                            // key={`user_attribute_data_${i}`}
                             value='Default Language'
                             name='Default Language'
                             autoFocus
@@ -218,7 +186,6 @@ function Profile() {
                             onChange={(e) => { console.log(e) }} />
                     </Grid>
                 </Grid>
-
             </CardContent>
         </Card>
     )

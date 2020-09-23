@@ -7,7 +7,6 @@ import clsx from 'clsx';
 import moment from 'moment';
 import React from 'react';
 import StatusIcon from './StatusIcon';
-
 const useStyles = makeStyles(theme => ({
 	contactListItem: {
 		borderBottom: `1px solid ${theme.palette.divider}`,
@@ -31,7 +30,6 @@ const useStyles = makeStyles(theme => ({
 
 function ContactListItem(props) {
 	const classes = useStyles(props);
-	
 	return (
 		<ListItem
 			button

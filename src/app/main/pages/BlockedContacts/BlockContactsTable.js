@@ -11,11 +11,10 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import { useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
-import clsx from 'clsx';
 import ContactsTablePaginationActions from '../setting/canned/ContactsTablePaginationActions';
 import BlockListDialog from './BlockListDialog'
 import Icon from '@material-ui/core/Icon';
-import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
 	addButton: {
@@ -27,67 +26,54 @@ const useStyles = makeStyles((theme) => ({
 	formControl: {
 		margin: theme.spacing(1),
 		minWidth: 330,
-
 	},
 	margin: {
-	  
-		  fontSize:'50px'
-	   
-	  },
+		fontSize: '50px'
+	},
 }));
 
 const BodyStyle = createMuiTheme({
 	overrides: {
-	  MuiTableCell: {
-		root: {
-		  paddingTop: 4,
-		  fontSize:'12px',
-		  paddingBottom: 4,
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
+		MuiTableCell: {
+			root: {
+				paddingTop: 4,
+				fontSize: '12px',
+				paddingBottom: 4,
+			}
 		}
-	  }
 	}
-  });
-  
-  const PaginationStyle = createMuiTheme({
+});
+
+const PaginationStyle = createMuiTheme({
 	overrides: {
 		MuiTypography: {
-		body2: {
-			fontSize:'12px',
-			marginTop:'1px'
-
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
+			body2: {
+				fontSize: '12px',
+				marginTop: '1px'
+			}
 		}
-	  }
 	}
-  });
+});
 
 const HeaderStyle = createMuiTheme({
 	overrides: {
-	  MuiTableCell: {
-		root: {
-	
-		  paddingLeft:40,
-
-		  fontSize:'12px',
-		  paddingBottom: 4,
-		  "&:first-child": {
-			paddingRight: 40
-		  }
+		MuiTableCell: {
+			root: {
+				paddingLeft: 40,
+				fontSize: '12px',
+				paddingBottom: 4,
+				"&:first-child": {
+					paddingRight: 40
+				}
+			}
 		}
-	  }
 	}
-  });
+});
 
 
 const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
 	const defaultRef = React.useRef();
 	const resolvedRef = ref || defaultRef;
-
 	React.useEffect(() => {
 		resolvedRef.current.indeterminate = indeterminate;
 	}, [resolvedRef, indeterminate]);
@@ -99,7 +85,7 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 	);
 });
 
-const EnhancedTable = ({ columns, data, onRowClick,getData,props }) => {
+const EnhancedTable = ({ columns, data, onRowClick, getData, props }) => {
 	const classes = useStyles(props);
 	const [open, setOpen] = React.useState(false);
 	const handleClose = () => {
@@ -110,9 +96,6 @@ const EnhancedTable = ({ columns, data, onRowClick,getData,props }) => {
 		setOpen(true);
 	}
 	const [dialogData, setDialogData] = React.useState()
-
-
-
 	const {
 		getTableProps,
 		headerGroups,
@@ -133,23 +116,14 @@ const EnhancedTable = ({ columns, data, onRowClick,getData,props }) => {
 		useRowSelect,
 		hooks => {
 			hooks.allColumns.push(_columns => [
-				// Let's make a column for selection
 				{
 					id: 'selection',
 					sortable: false,
-					// The header can use the table's getToggleAllRowsSelectedProps method
-					// to render a checkbox.  Pagination is a problem since this will select all
-					// rows even though not all rows are on the current page.  The solution should
-					// be server side pagination.  For one, the clients should not download all
-					// rows in most cases.  The client should only download data for the current page.
-					// In that case, getToggleAllRowsSelectedProps works fine.
 					Header: ({ getToggleAllRowsSelectedProps }) => (
 						<div>
 							<IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
 						</div>
 					),
-					// The cell can use the individual row's getToggleRowSelectedProps method
-					// to the render a checkbox
 					Cell: ({ row }) => (
 						<div>
 							<IndeterminateCheckbox
@@ -173,16 +147,9 @@ const EnhancedTable = ({ columns, data, onRowClick,getData,props }) => {
 	};
 
 	const handleClick = (ev, row) => {
-		// if (row) {
-		// 	dispatch(Actions.openEditContactDialog(row.original));
-		// }
-		console.log(row.original, 'rowrow')
 		setDialogData(row.original)
 		handleClickOpen()
-		// console.log(dialogData,'dialogData')
 	}
-
-	// Render the UI for your table
 	return (<div>
 		<TableContainer className="min-h-full sm:border-1 sm:rounded-16" >
 			<MaUTable {...getTableProps()}>
@@ -191,25 +158,24 @@ const EnhancedTable = ({ columns, data, onRowClick,getData,props }) => {
 						<TableRow {...headerGroup.getHeaderGroupProps()}>
 							{headerGroup.headers.map(column => (
 								<MuiThemeProvider theme={HeaderStyle}>
-								<TableCell
-								classes={classes.margin}
-								size="medium"
-								className="whitespace-no-wrap px-50 py-0"
-								align="center"
-							
-									{...(!column.sortable
-										? column.getHeaderProps()
-										: column.getHeaderProps(column.getSortByToggleProps()))}
-								>
-									{column.render('Header')}
-									{column.sortable ? (
-										<TableSortLabel
-											active={column.isSorted}
-											// react-table has a unsorted state which is not treated here
-											direction={column.isSortedDesc ? 'desc' : 'asc'}
-										/>
-									) : null}
-								</TableCell>
+									<TableCell
+										classes={classes.margin}
+										size="medium"
+										className="whitespace-no-wrap px-50 py-0"
+										align="center"
+
+										{...(!column.sortable
+											? column.getHeaderProps()
+											: column.getHeaderProps(column.getSortByToggleProps()))}
+									>
+										{column.render('Header')}
+										{column.sortable ? (
+											<TableSortLabel
+												active={column.isSorted}
+												direction={column.isSortedDesc ? 'desc' : 'asc'}
+											/>
+										) : null}
+									</TableCell>
 								</MuiThemeProvider>
 							))}
 						</TableRow>
@@ -220,7 +186,6 @@ const EnhancedTable = ({ columns, data, onRowClick,getData,props }) => {
 						prepareRow(row);
 						return (
 							<TableRow
-						
 								{...row.getRowProps()}
 								onClick={ev => handleClick(ev, row)}
 								className="truncate cursor-pointer"
@@ -229,27 +194,27 @@ const EnhancedTable = ({ columns, data, onRowClick,getData,props }) => {
 									if (cell.column.Header === 'Blocked') {
 										return (
 											<MuiThemeProvider theme={BodyStyle}>
-											<TableCell 
-											classes={classes.margin}
-											size="medium"
-											className="whitespace-no-wrap px-50 py-0"
-											bod
-											component="th" scope="row" align="center">
-												<Icon className="text-green text-20">check_circle</Icon>
-											</TableCell>
+												<TableCell
+													classes={classes.margin}
+													size="medium"
+													className="whitespace-no-wrap px-50 py-0"
+													bod
+													component="th" scope="row" align="center">
+													<Icon className="text-green text-20">check_circle</Icon>
+												</TableCell>
 											</MuiThemeProvider>
 										)
 									} else {
 										return (
 											<MuiThemeProvider theme={BodyStyle}>
-											<TableCell
-											classes={classes.margin}
-											size="medium"
-											className="whitespace-no-wrap px-50 py-0 text-50"
-											align="center"
-											>
-												{cell.render('Cell')}
-											</TableCell>
+												<TableCell
+													classes={classes.margin}
+													size="medium"
+													className="whitespace-no-wrap px-50 py-0 text-50"
+													align="center"
+												>
+													{cell.render('Cell')}
+												</TableCell>
 											</MuiThemeProvider>
 										);
 									}
@@ -261,51 +226,41 @@ const EnhancedTable = ({ columns, data, onRowClick,getData,props }) => {
 
 				<TableFooter>
 					<TableRow>
-					<MuiThemeProvider theme={PaginationStyle}>
-						<TablePagination
-							classes={{
-								root: 'overflow-hidden',
-								spacer: 'w-0 max-w-0',
-								actions:'text-64',
-								select:'text-12 mt-4',
-								 selectIcon:'mt-4',
-								// input:'text-64',
-								// menuItem:'text-64',
-								// toolbar:'text-64',
-								// selectRoot:'text-64'
-							}}
-							rowsPerPageOptions={[5, 10, 25, { label: 'All', value: data.length + 1 }]}
-							colSpan={5}
-							style={{fontSize:'12px'}}
-							count={data.length}
-							rowsPerPage={pageSize}
-							page={pageIndex}
-							SelectProps={{
-								inputProps: { 'aria-label': 'rows per page' },
-								native: false
-							}}
-							onChangePage={handleChangePage}
-							onChangeRowsPerPage={handleChangeRowsPerPage}
-							ActionsComponent={ContactsTablePaginationActions}
-						/>
+						<MuiThemeProvider theme={PaginationStyle}>
+							<TablePagination
+								classes={{
+									root: 'overflow-hidden',
+									spacer: 'w-0 max-w-0',
+									actions: 'text-64',
+									select: 'text-12 mt-4',
+									selectIcon: 'mt-4',
+								}}
+								rowsPerPageOptions={[5, 10, 25, { label: 'All', value: data.length + 1 }]}
+								colSpan={5}
+								style={{ fontSize: '12px' }}
+								count={data.length}
+								rowsPerPage={pageSize}
+								page={pageIndex}
+								SelectProps={{
+									inputProps: { 'aria-label': 'rows per page' },
+									native: false
+								}}
+								onChangePage={handleChangePage}
+								onChangeRowsPerPage={handleChangeRowsPerPage}
+								ActionsComponent={ContactsTablePaginationActions}
+							/>
 						</MuiThemeProvider>
 					</TableRow>
 				</TableFooter>
 			</MaUTable>
 		</TableContainer>
 		{open && <BlockListDialog type="Unblock Number" data={dialogData} isOpen={open} closeDialog={handleClose} />}
-
 	</div>
 	);
 };
-
-
-
-
 EnhancedTable.propTypes = {
 	columns: PropTypes.array.isRequired,
 	data: PropTypes.array.isRequired,
 	onRowClick: PropTypes.func
 };
-
 export default EnhancedTable;

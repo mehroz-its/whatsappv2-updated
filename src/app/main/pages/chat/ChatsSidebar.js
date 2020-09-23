@@ -1,13 +1,9 @@
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import FuseUtils from '@fuse/utils';
 import AppBar from '@material-ui/core/AppBar';
-import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import List from '@material-ui/core/List';
-import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -20,12 +16,10 @@ import Select from '@material-ui/core/Select';
 import Box from '@material-ui/core/Box';
 import ContactListItem from './ContactListItem';
 import PropTypes from 'prop-types';
-import InputLabel from '@material-ui/core/InputLabel';
 import { makeStyles } from '@material-ui/core/styles';
 import StatusIcon from './StatusIcon';
 import * as Actions from './store/actions';
 import ChatTabPannel from './ChatTabPannel'
-
 const useStyles = makeStyles((theme) => ({
 	formControl: {
 		margin: theme.spacing(1),
@@ -104,38 +98,26 @@ function a11yProps(index) {
 }
 function ChatsSidebar(props) {
 	const { numbers, lastMessage } = props
-	console.log("NUMBERS = >", numbers, lastMessage);
-
 	const dispatch = useDispatch();
-	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
-	// console.log("contacts : " , props.numbers);
-
-	// const user = useSelector(({ chatApp }) => chatApp.user);
-
-
 	const [searchText, setSearchText] = useState('');
 	const [statusMenuEl, setStatusMenuEl] = useState(false);
 	const [moreMenuEl, setMoreMenuEl] = useState(null);
 	const [value, setValue] = React.useState(0);
 	const [openuserStatusBar, setopenuserStatusBar] = React.useState(false);
-
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
 	};
 	function handleMoreMenuClick(event) {
 		setMoreMenuEl(event.currentTarget);
 	}
-
 	function handleMoreMenuClose(event) {
 		setMoreMenuEl(null);
 	}
-
 	function handleStatusMenuClick(event) {
 		event.preventDefault();
 		event.stopPropagation();
 		setStatusMenuEl(event.currentTarget);
 	}
-
 	function handleStatusSelect(event, status) {
 		event.preventDefault();
 		event.stopPropagation();
@@ -150,30 +132,22 @@ function ChatsSidebar(props) {
 	const classes = useStyles();
 	const [selectValue, setselectValue] = React.useState('');
 	const [SelectedChannel, setSelectedChannel] = React.useState('');
-
 	function handleSearchText(event) {
-		console.log(event.target.value, 'event.target.value')
 		setSearchText(event.target.value);
 	}
 	let filtered = props.numbers
 	filtered = searchText.charAt(0) === '9' ? numbers.filter((number => number.number.includes(searchText))) : numbers.filter((number => number.name.toLowerCase().includes(searchText.toLowerCase())))
-	console.log("filtered_data", filtered);
-	
 	const SelectedValue = (value) => {
-
 		setselectValue(value)
 	}
-
 	return (
 		<div className="flex flex-col flex-auto h-full">
 			<AppBar position="static" color="default" elevation={1} className="pt-16">
-
 				{useMemo(
 					() => (
 						<Toolbar className="px-10" style={{ marginTop: '-15px' }}>
 							<Paper className="flex p-4 items-center w-full px-10 py-6 rounded-0" elevation={0}>
 								<Icon color="action" fontSize="small">search</Icon>
-
 								<Input
 									placeholder="Search"
 									className="flex flex-1 px-8"
@@ -191,54 +165,38 @@ function ChatsSidebar(props) {
 					[searchText]
 				)}
 			</AppBar>
-
 			<FuseScrollbars className="overflow-y-auto flex-1">
 				<List className="w-full">
 					{
 						useMemo(() => {
-
 							return (
 								<>
 									<FuseAnimateGroup
 										enter={{
 											animation: 'transition.expandIn'
 										}}
-
-
 									>
 										{props.numbers.length > 0 && (
 											<Typography className="font-300 text-20 px-20 py-8" color="secondary">
 												Chats
 											</Typography>
 										)}
-										{/* <ChatTabPannel  SelectedValue ={SelectedValue} /> */}
-										
 										{filtered.map(contactt => (
 											<ContactListItem
-												// lastmessage ={message}
 												Channel={selectValue}
 												key={contactt.id}
 												contact={contactt}
 												onContactClick={(e) => props.onContactClick(contactt)}
-											// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
-											// onContactClick={contactId => dispatch(Actions.getChat(contactId))}
 											/>
 										))}
-			
-					
 									</FuseAnimateGroup>
 								</>
 							);
 						}, [props.numbers, filtered])
 					}
 				</List>
-
 			</FuseScrollbars>
-
-
 		</div>
-
 	);
 }
-
 export default ChatsSidebar;

@@ -29,9 +29,6 @@ const PaginationStyle = createMuiTheme({
 				fontSize: '12px',
 				marginTop: '1px'
 
-				//   "&:last-child": {
-				// 	paddingRight: 5
-				//   }
 			}
 		}
 	}
@@ -112,7 +109,6 @@ function PermissionTable(props) {
 		}
 	}
 	function handleClick(n) {
-		console.log(n, 'mmmmm');
 		setDialogData({
 			enabled: n.enabled,
 			id: n.id,
@@ -122,7 +118,6 @@ function PermissionTable(props) {
 			rule_set: n.rule_set,
 			consumer: n.consumer,
 			displayRules: n.method === "FRONT" ? userRules.frontend : n.method === "APP" ? userRules.app : n.method === "BACK" ? userRules.backend : []
-
 		})
 		setOpen(true)
 	}
@@ -153,23 +148,8 @@ function PermissionTable(props) {
 	const hadleDelete = (event, n) => {
 		setDeleteDialog(true)
 		event.stopPropagation()
-		console.log(n, 'eventtt')
 		setDeleteDialogData(n)
-
-		// CoreHttpHandler.requestCustomer('permissions', 'delete',
-		// 	{
-		// 		key: ':id',
-		// 		value: n.id
-		// 	}
-		// 	, (response) => {
-		// 		closeDialog("delete")
-		// 		// setopenDialog(false);
-		// 	}, (error) => {
-		// 		closeDialog(error.response.data.message)
-		// 	});
 	}
-
-
 	return (
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
@@ -177,7 +157,6 @@ function PermissionTable(props) {
 					<PermissionTableHead
 						numSelected={selected.length}
 						order={order}
-						// onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
 						rowCount={data2.length}
 					/>
@@ -213,13 +192,6 @@ function PermissionTable(props) {
 										selected={isSelected}
 										onClick={event => handleClick(n)}
 									>
-										{/* <TableCell className="w-64 text-center" padding="none">
-											<Checkbox
-												checked={isSelected}
-												onClick={event => event.stopPropagation()}
-												onChange={event => handleCheck(event, n.id)}
-											/>
-										</TableCell> */}
 										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 											{n.id}
 										</TableCell>
@@ -254,10 +226,7 @@ function PermissionTable(props) {
 						actions: 'text-64',
 						select: 'text-12 mt-4',
 						selectIcon: 'mt-4',
-						// input:'text-64',
-						// menuItem:'text-64',
-						// toolbar:'text-64',
-						// selectRoot:'text-64'
+					
 					}}
 					className="overflow-hidden"
 					component="div"

@@ -102,7 +102,6 @@ const CampaignDialog = (props) => {
 				params: params
 			}
 			CoreHttpHandler.request('canned_messages', 'update_message', update_params, (response) => {
-				console.log(response)
 				props.closeDialog("update")
 				setopenDialog(false);
 			}, (error) => {
@@ -114,7 +113,6 @@ const CampaignDialog = (props) => {
 	};
 	const handleEnable = (event) => {
 		setEnabled(event.target.checked);
-		console.log(enabled, 'enable')
 	};
 	const onInputChange = e => {
 		switch (e.target.name) {
@@ -158,9 +156,6 @@ const CampaignDialog = (props) => {
 				response => {
 					setIsLoading(false);
 					setUploadedFilePath(response.data.data.link)
-					// let name = response.data.data.link
-					// setAttachment_name(name.split('/'))
-					// console.log(attachment_name,'name')
 					onInputChange({
 						target: {
 							name: 'msisdnUrl',

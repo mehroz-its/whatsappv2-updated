@@ -15,7 +15,7 @@ const PortableCityDropdown = function (props) {
     const defaultValue = (byName) ? 'Select City' : 0;
 
     const selected = (selectedCity.includes('N/A')) ? defaultValue : selectedCity;
-console.log(selectedCountry,'selectedCountry -----')
+// console.log(selectedCountry,'selectedCountry -----')
 
     React.useEffect(() => {
         CoreHttpHandler.request('locations', 'get_cities', {
@@ -28,7 +28,7 @@ console.log(selectedCountry,'selectedCountry -----')
             limit: 0,
         }, (response) => {
             const _cities = response.data.data.list.data;
-            console.log(response)
+            // console.log(response)
             setCurrentCities(_cities);
             setDisplay(true);
         }, (error) => {

@@ -4,18 +4,13 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
-
-
 const RuleListInDialog = function (props) {
     const { rules, checkedRules, classes, onInputChange } = props;
-    console.log(rules, 'rulesrules')
     return (
         <List dense className={classes.root}>
             {rules.map(value => {
-                console.log(value)
                 const labelId = `checkbox-list-secondary-label-${value}`;
                 let lbl = value;
-
                 if (value.indexOf('_') !== -1) lbl = value.split('_').join(' ');
 
                 return (

@@ -42,14 +42,8 @@ const BlockDialog = (props) => {
 	const classes = useStyles(props);
 
 	const { isOpen, type, getUpdatedData, data } = props
-	console.log(props)
 	const [openDialog, setopenDialog] = React.useState(isOpen);
 	const [open, setOpen] = React.useState(false);
-
-
-
-
-
 
 	const handleDialogClose = () => {
 		props.closeDialog()
@@ -73,28 +67,7 @@ const BlockDialog = (props) => {
 			});
 
 	};
-	// const handleEnable = (event) => {
-
-	// 	setEnabled(event.target.checked);
-	// 	console.log(enabled, 'enable')
-	// };
-
-	// const onInputChange = e => {
-	// 	switch (e.target.name) {
-	// 		case "name":
-	// 			setName(e.target.value)
-	// 			break;
-	// 		case "description":
-	// 			setDescription(e.target.value)
-	// 			break;
-	// 		case "canned_type":
-	// 			setCannedType(e.target.value)
-	// 			break;
-	// 		case "text":
-	// 			setText(e.target.value)
-	// 			break;
-	// 	}
-	// }
+	
 	const handleClose = () => {
 		setOpen(false);
 	};
@@ -102,51 +75,9 @@ const BlockDialog = (props) => {
 	const handleOpen = () => {
 		setOpen(true);
 	};
-	// const onChangeHandler = event => {
-	// 	setIsLoading(true);
-
-	// 	if (event.target.files.length > 0) {
-	// 		const _data = new FormData();
-
-	// 		let _name = event.target.files[0].name;
-
-	// 		_name = _name.replace(/\s/g, "");
-
-	// 		_data.append(
-	// 			"file",
-	// 			event.target.files[0],
-	// 			`${new Date().getTime()}_${_name}`
-	// 		);
-
-	// 		CoreHttpHandler.request(
-	// 			"content",
-	// 			"upload",
-	// 			{
-	// 				params: _data
-	// 			},
-	// 			response => {
-	// 				setIsLoading(false);
-	// 				setUploadedFilePath(response.data.data.link)
-	// 				// let name = response.data.data.link
-	// 				// setAttachment_name(name.split('/'))
-	// 				// console.log(attachment_name,'name')
-
-	// 				onInputChange({
-	// 					target: {
-	// 						name: 'msisdnUrl',
-	// 						value: response.data.data.link
-	// 					}
-	// 				})
-	// 			},
-	// 			error => {
-	// 			}
-	// 		);
-	// 	}
-	// };
-
+	
 
 	return (
-		// <div> {isOpen}</div>
 		<Dialog open={openDialog} onClose={handleDialogClose} aria-labelledby="form-dialog-title" classes={{
 			paper: 'm-24'
 		}}

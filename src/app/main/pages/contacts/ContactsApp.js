@@ -13,13 +13,6 @@ import * as Actions from './store/actions';
 import { useDispatch } from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-
-
-
-
-
-
-
 const useStyles = makeStyles({
 	layoutRoot: {}
 });

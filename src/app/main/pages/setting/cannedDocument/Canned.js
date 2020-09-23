@@ -14,9 +14,6 @@ import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import CannedDialog from './CannedDialog'
-
-
-
 const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'fixed',
@@ -31,9 +28,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-
-
-
 function ContactsApp() {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
@@ -45,17 +39,9 @@ function ContactsApp() {
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [ok, setOK] = React.useState('')
 	const [val, setVal] = React.useState('')
-
-
-	// const handleChange = (event) => {
-	// 	setAge(event.target.value);
-	// };
-
-
 	const handleClickOpen = () => {
 		setOpen(true);
 	}
-
 	const [dialogData, setDialogData] = React.useState(
 		{
 			id: 0,
@@ -69,7 +55,6 @@ function ContactsApp() {
 	)
 
 	const getData = ((loadData) => {
-		console.log('called get data')
 		loadData = () => {
 			return CoreHttpHandler.request('canned_messages', 'type_listing', {
 				limit: 100,
@@ -85,7 +70,6 @@ function ContactsApp() {
 		};
 		loadData().then((response) => {
 			const tableData = response.data.data.list.data
-			console.log(tableData)
 			setData(tableData)
 			setData2(tableData)
 			setTimeout(() => {
@@ -110,7 +94,6 @@ function ContactsApp() {
 	}, []);
 
 	const valueReceived = (value) => {
-		console.log('i am called')
 		if (value == "update") {
 			setSnackBarMessage("Updated Successfully")
 			setOK("success")
@@ -138,8 +121,6 @@ function ContactsApp() {
 
 		setVal(val)
 		setData2(data.filter(n => n.message_name.toLowerCase().includes(val.toLowerCase())))
-		console.log(data, 'filterssss');
-
 
 	}
 	function closeDialog(val) {
@@ -186,7 +167,6 @@ function ContactsApp() {
 					aria-label="add"
 					className={classes.addButton}
 					onClick={handleClickOpen}
-				// onClick={ev => dispatch(Actions.openNewContactDialog())}
 				>
 					<Icon>person_add</Icon>
 				</Fab>

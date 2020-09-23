@@ -51,7 +51,7 @@ function UserNavbarHeader(props) {
 		// alert("update")
 		let data = null
 		data = JSON.parse(localStorage.getItem('user_data'))
-		console.log("user_data user",data)
+		// console.log("user_data user",data)
 		let username = null
 		let lastname = null
 		if (data !== null) {
@@ -62,7 +62,7 @@ function UserNavbarHeader(props) {
 				}
 				return str.join(' ');
 			}
-			console.log(data, 'from local storage')
+			// console.log(data, 'from local storage')
 			if(data.firstName){
 				username = titleCase(data.firstName);
 				setFirstNameData(username)

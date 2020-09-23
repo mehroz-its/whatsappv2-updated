@@ -3,25 +3,14 @@ import Dialog from '@material-ui/core/Dialog';
 import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 import ContactGroupInDialog from './ContactGroupInDialog'
-// import ContactApp from '../contactslist/ContactsApp'
-
-
-
-
 const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'absolute',
@@ -36,52 +25,34 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-
-
-
 const CampaignDialog = (props) => {
 	const classes = useStyles(props);
-
 	const { isOpen, type, getUpdatedData, data } = props
-	console.log(data, 'in grp dialog')
 	const [openDialog, setopenDialog] = React.useState(isOpen);
 	const [title, setTitle] = React.useState(data.title);
 	const [enabled, setEnabled] = React.useState(data.enabled);
 	const [description, setDescription] = React.useState(data.description);
 	const [open, setOpen] = React.useState(false);
 	const [number, setNumbers] = React.useState(data.customers)
-
-
-
-
-
-
 	const handleDialogClose = () => {
 		props.closeDialog()
 		setopenDialog(false);
 	};
 
 	const handleSubmit = () => {
-
-		// let fileName = uploadedFilePath.split('https://upload.its.com.pk/')
 		let params = {
 			title: title,
 			description: description,
 			customers: number,
 			enabled: enabled
 		};
-		console.log(params, 'newSelected in dialog done')
 		if (type !== 'Contact Group Details') {
-			
 			CoreHttpHandler.request('contact_group', 'create', params, (response) => {
-				// props.getUpdatedData()
-				console.log(response)
 				props.closeDialog("create")
 				setopenDialog(false);
 			}, (error) => {
 				props.closeDialog("error")
 				setopenDialog(false);
-
 			});
 		} else {
 			let update_params = {
@@ -89,25 +60,17 @@ const CampaignDialog = (props) => {
 				value: data.id,
 				params: params
 			}
-			console.log(update_params, 'update_params')
-			// return
 			CoreHttpHandler.request('contact_group', 'update', update_params, (response) => {
-				// props.getUpdatedData()
-				console.log(response)
-
 				props.closeDialog('update')
 				setopenDialog(false);
 			}, (error) => {
 				props.closeDialog('error')
 				setopenDialog(false);
-
 			});
 		}
 	};
 	const handleEnable = (event) => {
-
 		setEnabled(event.target.checked);
-		console.log(enabled, 'enable')
 	};
 
 	const onInputChange = e => {
@@ -133,7 +96,6 @@ const CampaignDialog = (props) => {
 
 
 	return (
-		// <div> {isOpen}</div>
 		<Dialog open={openDialog} aria-labelledby="form-dialog-title" classes={{
 			paper: 'm-50'
 		}}

@@ -27,55 +27,27 @@ const PaginationStyle = createMuiTheme({
 		body2: {
 			fontSize:'12px',
 			marginTop:'1px'
-
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
 		}
 	  }
 	}
   });
 
 function TemplateTable(props) {
-
 	let data2 = props.dataa
-
-	console.log(props)
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
-
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState([]);
 	const [page, setPage] = useState(0);
 	const [open, setOpen] = React.useState(false)
 	const [dialogData, setDialogData] = React.useState({ name: '', params: '' })
 	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
-	// const [data2, setData2] = useState(data);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
 		direction: 'asc',
 		id: null
 	});
-
-	// let data2 =[]
-	//  data2 = props.dataa
-
-
-	// useEffect(() => {
-	// 	dispatch(Actions.getProducts());
-	// }, [dispatch]);
-
-	// useEffect(() => {
-	// 	if (searchText.length !== 0) {
-	// 		setData(_.filter(products, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
-	// 		setPage(0);
-	// 	} else {
-	// 		setData(products);
-	// 		console.log(products,'here in prdoducts table')
-	// 	}
-	// }, [products, searchText]);
-
 	function handleRequestSort(event, property) {
 		const id = property;
 		let direction = 'desc';
@@ -83,7 +55,6 @@ function TemplateTable(props) {
 		if (order.id === property && order.direction === 'desc') {
 			direction = 'asc';
 		}
-
 		setOrder({
 			direction,
 			id
@@ -118,28 +89,16 @@ function TemplateTable(props) {
 	}
 
 	function handleRowClick(n) {
-		console.log(n,'hi i am n')
 		setOpen(true)
 		setDialogData({ name: n.template_name, params: n.template_text })
-
-
-
-
 	}
-
-	// if (searchVal !== props.ValueForSearch) {
-	// 	{ search() }
-	// }
 	function handleClose() {
 		setOpen(false)
-
-		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
 	}
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
-
 		if (selectedIndex === -1) {
 			newSelected = newSelected.concat(selected, id);
 		} else if (selectedIndex === 0) {
@@ -149,14 +108,11 @@ function TemplateTable(props) {
 		} else if (selectedIndex > 0) {
 			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
 		}
-
 		setSelected(newSelected);
 	}
-
 	function handleChangePage(event, value) {
 		setPage(value);
 	}
-
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
 	}
@@ -252,10 +208,6 @@ function TemplateTable(props) {
 								actions:'text-64',
 								select:'text-12 mt-4',
 								 selectIcon:'mt-4',
-								// input:'text-64',
-								// menuItem:'text-64',
-								// toolbar:'text-64',
-								// selectRoot:'text-64'
 							}}			
 				className="overflow-hidden"
 				component="div"

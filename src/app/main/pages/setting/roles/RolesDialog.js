@@ -93,7 +93,6 @@ const RolesDialog = (props) => {
         };
         loadPermissions().then((response) => {
             const tableData = response.data.data.list.data
-            console.log(tableData, 'in ')
             setPermissions(tableData)
         });
     })
@@ -122,7 +121,6 @@ const RolesDialog = (props) => {
                 displayed: true,
             };
             CoreHttpHandler.request('roles', 'create_role', params, (response) => {
-                console.log(response)
                 props.closeDialog("create")
                 setopenDialog(false);
             }, (error) => {
@@ -145,7 +143,6 @@ const RolesDialog = (props) => {
                 params: params
             }
             CoreHttpHandler.request('roles', 'update_role', update_params, (response) => {
-                console.log(response)
                 props.closeDialog("update")
                 setopenDialog(false);
             }, (error) => {
@@ -157,7 +154,6 @@ const RolesDialog = (props) => {
     }
 
     const onInputChange = (e) => {
-        console.log(e.target.name, e.target.value)
         let value = null;
         if (e.target.name === 'permissions') {
             const roleIndex = currentPermissions.indexOf(e.target.value);

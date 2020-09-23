@@ -1,4 +1,3 @@
-import DemoContent from '@fuse/core/DemoContent';
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useRef, useState } from 'react';
@@ -7,23 +6,15 @@ import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_material from "@amcharts/amcharts4/themes/material";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import MaterialTable from 'material-table';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import Widget2 from './widgets/Widget2';
-import WidgetNow from './widgets/WidgetNow';
-import WidgetWeather from './widgets/WidgetWeather';
-import Widget5 from './/widgets/Widget5'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
-import Link from '@material-ui/core/Link';
 import CustomerTable from './customerTable/CustomerTable'
 
 
@@ -31,23 +22,12 @@ am4core.useTheme(am4themes_material);
 am4core.useTheme(am4themes_animated);
 const useStyles = makeStyles({
     layoutRoot: {},
-    // root: {
-    // 	display: 'flex',
-    // 	flexDirection: 'row',
-    // 	minHeight: '100%',
-    // 	position: 'relative',
-    // 	flex: '1 1 auto',
-    // 	height: 'auto',
-    // 	backgroundColor: 'theme.palette.background.default'
-    // },
     content: {
         '& canvas': {
             maxHeight: '80%'
         }
     }
-
 });
-
 
 const rader_chart = (list) => {
     am4core.useTheme(am4themes_material);
@@ -57,33 +37,6 @@ const rader_chart = (list) => {
     if (myEle) {
         let chart = am4core.create("chartdivv", am4charts.RadarChart);
         chart.data = list;
-        // chart.data = [{
-        // 	"category": "Document",
-        // 	"value": 80,
-        // 	"full": 100
-        // }, {
-        // 	"category": "Photos",
-        // 	"value": 35,
-        // 	"full": 100
-        // }, {
-        // 	"category": "Audio",
-        // 	"value": 92,
-        // 	"full": 100
-        // }, {
-        // 	"category": "Text",
-        // 	"value": 68,
-        // 	"full": 100
-        // }, {
-        // 	"category": "Contacts",
-        // 	"value": 68,
-        // 	"full": 100
-        // }, {
-        // 	"category": "Locations",
-        // 	"value": 68,
-        // 	"full": 100
-        // }];
-
-        // Make chart not full circle
         chart.startAngle = -90;
         chart.endAngle = 180;
         chart.innerRadius = am4core.percent(20);
@@ -153,12 +106,7 @@ function CustomerAccounts(props) {
     const [rader, setrader] = React.useState(newMessageList);
     const [box, setBox] = React.useState([]);
     const [radarList, setRadarList] = React.useState([]);
-
-
     const [tabValue, setTabValue] = useState(0);
-    console.log(props)
-
-
     const [state, setState] = React.useState({
         columns: [
             { title: 'Name', field: 'name' },
@@ -206,7 +154,6 @@ function CustomerAccounts(props) {
     }, [])
     const dataSourceSuccesss = (response) => {
         const list = response.data.data.report;
-        // setBox(list)
         const data = list.map((item, i) => {
             const chartObj = {
                 country: item.name,
@@ -221,27 +168,20 @@ function CustomerAccounts(props) {
                     value: parseInt(value[0]),
                     title: key[0]
                 }]
-         
+
             }
             return chartObj;
         });
         campaign_report_chart(data);
-        // setLoading(false)
-        // rader_chart()
     };
 
     const dataSourceFailuree = (response) => {
     };
     const campaign_report_chart = (dataa) => {
         let data = dataa
-        // Create chart instance
         let chart = am4core.create("chartdivcampaign", am4charts.XYChart);
         chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
-
-        // Add data
         chart.data = data;
-
-        // Create axes
         let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
         categoryAxis.dataFields.category = "country";
         categoryAxis.renderer.grid.template.disabled = true;
@@ -321,20 +261,16 @@ function CustomerAccounts(props) {
     }
     const dataSourceSuccess = (response) => {
         const list = response.data.data.dashboardBoxInfo.boxes;
-        console.log("list :", list);
         setBox(list)
     };
 
     const dataSourceFailure = (response) => {
-
     };
     const messagestateSuccess = (response) => {
         const list = response.data.data.chartData;
-        console.log("list : ", list);
         setRadarList(list)
         rader_chart(list)
     };
-
     const messagestateFailure = (response) => {
     };
     function handleChangeTab(event, value) {
@@ -355,8 +291,6 @@ function CustomerAccounts(props) {
 
     let data = null
     data = JSON.parse(localStorage.getItem('user_data'))
-    console.log(data)
-
     let firstName = ''
     let lastName = ''
     if (data !== null) {
@@ -373,19 +307,13 @@ function CustomerAccounts(props) {
         if (data.lastName) {
             lastName = titleCase(data.lastName);
         }
-
-
     }
     return (
 
         <FusePageSimple
             classes={{
-                // content: classes.content,
                 header: 'min-h-150 h-150 sm:h-150 sm:min-h-150',
-                // toolbar: 'min-h-48 h-48',
-                // rightSidebar: 'w-288',
                 content: classes.content
-
             }}
             header={
                 <div className="flex flex-col justify-between flex-1 px-20 pt-20 ">
@@ -404,37 +332,21 @@ function CustomerAccounts(props) {
             content={
 
                 <>
-                    <div className="p-24" style={{scrollX :false}}>
-                        {/* {tabValue === 0 && ( */}
+                    <div className="p-24" style={{ scrollX: false }}>
                         <FuseAnimateGroup
                             className="flex flex-wrap"
                             enter={{
                                 animation: 'transition.slideUpBigIn'
                             }}>
-
                             <Grid container spacing={4}>
-
                                 <Grid item md={12} sm={12} xs={12} >
-                                    <Grid container spacing={4} style={{ marginBottom: '22px', marginTop: '-1px', marginLeft: 4}}>
-                                        <Button  style={{ fontSize:'11px' }} variant="contained" color="primary" onClick={(e) => { props.history.push({ pathname: '/apps/company-forms' }) }}>
+                                    <Grid container spacing={4} style={{ marginBottom: '22px', marginTop: '-1px', marginLeft: 4 }}>
+                                        <Button style={{ fontSize: '11px' }} variant="contained" color="primary" onClick={(e) => { props.history.push({ pathname: '/apps/company-forms' }) }}>
                                             New Account
                                         </Button>
-                                        {/* <Button size='small' style={{ marginLeft: 4,fontSize:'11px' }} variant="contained" color="primary" onClick={(e) => { props.history.push({ pathname: '/apps/company-forms' }) }}>
-                                            Import Customers
-                                        </Button>
-                                        <Button  size='small' style={{ marginLeft: 4,fontSize:'11px' }} variant="contained" color="primary" onClick={(e) => { props.history.push({ pathname: '/apps/company-forms' }) }}>
-                                            Contacts
-                                        </Button> */}
                                     </Grid>
 
                                     <Grid container spacing={3}>
-                                        {/* {box.map((value, index) => {
-												return (
-													<Grid item md={3} sm={12} xs={12} >
-														<Widget2 title={value.title} count={value.value} bottom_title={value.subtitle} />
-													</Grid>
-												)
-											})} */}
                                         <Grid item md={3} sm={12} xs={12} >
                                             <Widget2 title='Dummy Title' count='5' bottom_title='title' />
                                         </Grid>
@@ -449,42 +361,16 @@ function CustomerAccounts(props) {
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                                {/* <Grid item md={4} sm={12} xs={12} >
-										<Paper className="w-full rounded-8 shadow-none border-1 pt-10 pb-10">
-
-											<div id="chartdivv" style={{ width: "100%", height: "221px" }}></div>
-										</Paper>
-									</Grid> */}
                             </Grid>
                             <Grid container spacing={3} style={{ marginTop: 10 }}>
                                 <Grid item md={12} sm={12} xs={12} >
-                                    {/* <Paper className="w-full rounded-8 shadow-none border-1">
-
-                                        <div id="chartdivcampaign" style={{ width: "100%", height: "280px" }}></div>
-                                    </Paper> */}
                                     <CustomerTable />
                                 </Grid>
                             </Grid>
                         </FuseAnimateGroup>
-                        {/* )} */}
-
-                        {/* {tabValue === 1 && (
-							<FuseAnimateGroup
-								className="flex flex-wrap"
-								enter={{
-									animation: 'transition.slideUpBigIn'
-								}}>
-								<Widget5 />
-							</FuseAnimateGroup>
-
-
-						)} */}
-
                     </div>
                 </>
             }
-     
-        // innerScroll
         />
 
     );

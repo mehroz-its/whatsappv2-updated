@@ -6,22 +6,14 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-
 function ContactsMultiSelectMenu(props) {
-	const dispatch = useDispatch();
-	const { selectedContactIds } = props;
-
 	const [anchorEl, setAnchorEl] = useState(null);
-
 	function openSelectedContactMenu(event) {
 		setAnchorEl(event.currentTarget);
 	}
-
 	function closeSelectedContactsMenu() {
 		setAnchorEl(null);
 	}
-
 	return (
 		<>
 			<IconButton
@@ -74,5 +66,4 @@ function ContactsMultiSelectMenu(props) {
 		</>
 	);
 }
-
 export default ContactsMultiSelectMenu;

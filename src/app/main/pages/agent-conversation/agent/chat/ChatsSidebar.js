@@ -192,8 +192,8 @@ function 	ChatsSidebar(props) {
 	let filtered = props.numbers
 	
 	filtered = searchText.charAt(0) === '9' ? numbers.filter((number => number.number.includes(searchText))) : numbers.filter((number => number.name.toLowerCase().includes(searchText.toLowerCase())))
-	console.log(filtered,props.numbers,'filteddddddddd');
-	console.log(props.Loading,'propsssssssssssssssssssssssssssssss');
+	// console.log(filtered,props.numbers,'filteddddddddd');
+	// console.log(props.Loading,'propsssssssssssssssssssssssssssssss');
 	return (
 		<div className="flex flex-col flex-auto h-full">
 			<AppBar position="static" color="default" elevation={1} className="pt-0">

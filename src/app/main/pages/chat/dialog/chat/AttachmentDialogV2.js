@@ -12,7 +12,6 @@ import AudioAnalyser from "react-audio-analyser"
 
 const AttachmentDialogV2 = function (props) {
     const { onDialogPropsChange, data } = props;
-    console.log(props,'AttachmentDialogV2AttachmentDialogV2')
 
     const { dialogType, attachment } = data;
 

@@ -60,18 +60,9 @@ const BlockDialog = (props) => {
     const classes = useStyles(props);
 
     const { isOpen, type, getUpdatedData, data } = props
-    console.log(props)
     const [openDialog, setopenDialog] = React.useState(isOpen);
     const [open, setOpen] = React.useState(false);
     const [description, setDescription] = React.useState('');
-
-
-
-
-
-
-
-
     const handleDialogClose = () => {
         props.closeDialog()
         setopenDialog(false);
@@ -84,13 +75,11 @@ const BlockDialog = (props) => {
             }
         },
             (response) => {
-                console.log(response)
                 props.closeDialog()
 
 
             },
             (error) => {
-                console.log(error)
                 props.closeDialog()
 
             }
@@ -106,14 +95,12 @@ const BlockDialog = (props) => {
     };
 
     return (
-        // <div> {isOpen}</div>
         <Dialog open={openDialog} aria-labelledby="form-dialog-title" classes={{
             paper: 'm-24'
         }}
 
             fullWidth
             maxWidth="xs">
-            {/* <DialogTitle id="form-dialog-title">{props.type} </DialogTitle> */}
             <AppBar position="static" elevation={1}>
 				
 				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "

@@ -83,10 +83,7 @@ function ContactDialog(props) {
 
 
 	const { form, handleChange, setForm } = useForm(defaultFormState);
-	console.log(form, 'form')
-
 	const getData = ((loadData) => {
-		console.log('called get data')
 		loadData = () => {
 			return CoreHttpHandler.request('locations', 'get_countries', {
 
@@ -111,14 +108,6 @@ function ContactDialog(props) {
 	}
 	const byName = true
 	const defaultValueCountry = country === 'N/A' ? 'Select Country' : country
-	// const selected = selectedCountry === 'N/A' ? defaultValue : selectedCountry;
-
-	// const defaultValueCity = (byName) ? 'Select City' : 0;
-
-
-
-	  
-
 
 	React.useEffect(() => {
 		getData()
@@ -164,15 +153,12 @@ function ContactDialog(props) {
 	}
 	const handleRadio = (event) => {
 		setValue(event.target.value);
-		console.log(value,'this is valueeeeeee');
 	};
 	const handleCountryChange = (event) => {
 		setCountry(event.target.value);
-		console.log(country, 'i am country')
 	}
 	const handleCityChange = (event) => {
 		setCity(event.target.value);
-		console.log(city)
 
 	}
 
@@ -209,26 +195,17 @@ function ContactDialog(props) {
 				{ attribute_id: data.attribute_idcity, city: selectedCity }
 			]
 		}
-		console.log(params,'params')
 		CoreHttpHandler.request('contact_book', 'update', {
 			key: ':id',
 			value: data.id,
 			params: params
 		}, (response) => {
-			console.log(response)
 			props.closeDialog("update")
 
 		}, (error) => {
-			console.log(error)
 			props.closeDialog("error")
 		});
 
-		console.log(params, 'i am on submit')
-		// if (contactDialog.type === 'new') {
-		// 	dispatch(Actions.addContact(form));
-		// } else {
-		// 	dispatch(Actions.updateContact(form));
-		// }
 		closeComposeDialog();
 	}
 
@@ -236,27 +213,6 @@ function ContactDialog(props) {
 		dispatch(Actions.removeContact(form.id));
 		closeComposeDialog();
 	}
-
-	// if (country !== null) { 
-	// 		CoreHttpHandler.request('locations', 'get_cities', {
-	// 			columns: "id, name",
-	// 			sortby: "ASC",
-	// 			orderby: "id",
-	// 			where: (byName) ? "country_id = (SELECT id FROM countries WHERE name = $1)" : "country_id = $1",
-	// 			values: country.trim(),
-	// 			page: 0,
-	// 			limit: 0,
-	// 		}, (response) => {
-	// 			const _cities = response.data.data.list.data;
-	// 			console.log(_cities)
-	// 			setCities(_cities);
-	// 			// setDisplay(true);
-	// 		}, (error) => {
-	// 			// setCurrentCities([]);
-	// 			// setDisplay(false);
-	// 		});
-	//  }
-	console.log(country,'country',defaultValueCountry,'default');
 
 	if(form.lastname=="N/A")
 	{
@@ -418,11 +374,6 @@ console.log(value,'vlsssssssssssssssssss');
 
 					
 <div className="flex mb-20">
-						{/* <div className="min-w-48 pt-20">
-						
-						</div> */}
-						{/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
-
 					
                 <Select
                   labelId="demo-simple-select-label"
@@ -474,9 +425,7 @@ console.log(value,'vlsssssssssssssssssss');
 							</Button>
 							</ThemeProvider>
 							</div>
-							{/* <IconButton onClick={handleRemove}>
-								<Icon>delete</Icon>
-							</IconButton> */}
+							
 							<div className="mx-16 my-10">
 								<Button
 									variant="contained"

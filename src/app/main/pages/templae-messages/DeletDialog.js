@@ -16,8 +16,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
-
-
 const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'absolute',
@@ -31,23 +29,11 @@ const useStyles = makeStyles((theme) => ({
 
 	},
 }));
-
-
-
-
 const BlockDialog = (props) => {
 	const classes = useStyles(props);
-
 	const { isOpen, type, getUpdatedData, data } = props
-	console.log(props)
 	const [openDialog, setopenDialog] = React.useState(isOpen);
 	const [open, setOpen] = React.useState(false);
-
-
-
-
-
-
 	const handleDialogClose = () => {
 		props.closeDialog()
 		setopenDialog(false);
@@ -60,13 +46,9 @@ const BlockDialog = (props) => {
 				value: data.id
 			}
 			, (response) => {
-				// console.log(response)
 				props.closeDialog("delete")
-				// setopenDialog(false);
 			}, (error) => {
 				props.closeDialog(error.response.data.message)
-				// setopenDialog(false);
-
 			});
 
 	};

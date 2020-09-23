@@ -25,7 +25,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function ResetPasswordPage2(props) {
-	console.log(props)
 	const classes = useStyles();
 
 	const { form, handleChange, resetForm } = useForm({
@@ -51,7 +50,6 @@ function ResetPasswordPage2(props) {
 			password: form.password,
 			cpassword: form.passwordConfirm
 		}
-		console.log(data, 'datadata')
 
 		CoreHttpHandler.request(
 			'forgetpassword',

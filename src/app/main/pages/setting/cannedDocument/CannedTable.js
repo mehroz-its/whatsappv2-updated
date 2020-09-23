@@ -25,9 +25,6 @@ const BodyStyle = createMuiTheme({
 		  paddingTop: 4,
 		  fontSize:'12px',
 		  paddingBottom: 4,
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
 		}
 	  }
 	}
@@ -39,10 +36,6 @@ const BodyStyle = createMuiTheme({
 		body2: {
 			fontSize:'12px',
 			marginTop:'1px'
-
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
 		}
 	  }
 	}
@@ -52,9 +45,7 @@ const HeaderStyle = createMuiTheme({
 	overrides: {
 	  MuiTableCell: {
 		root: {
-	
 		  paddingLeft:40,
-
 		  fontSize:'12px',
 		  paddingBottom: 4,
 		  "&:first-child": {
@@ -81,7 +72,6 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 });
 
 const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
-	console.log(data, 'data in tabel')
 	const [open, setOpen] = React.useState(false);
 	function closeDialog(val){
 		setOpen(false);
@@ -92,9 +82,6 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 		setOpen(true);
 	}
 	const [dialogData, setDialogData] = React.useState()
-
-
-
 	const {
 		getTableProps,
 		headerGroups,
@@ -155,16 +142,9 @@ const EnhancedTable = ({displaySnack, columns, data, onRowClick,onClose }) => {
 	};
 
 	const handleClick = (ev, row) => {
-		// if (row) {
-		// 	dispatch(Actions.openEditContactDialog(row.original));
-		// }
-		console.log(row.original, 'rowrow')
 		setDialogData(row.original)
-		console.log(dialogData,'ContactGroupDialogContactGroupDialog')
 		setOpen(true);
-
 		handleClickOpen()
-		// console.log(dialogData,'dialogData')
 	}
 
 	// Render the UI for your table

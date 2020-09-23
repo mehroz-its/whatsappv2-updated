@@ -1,7 +1,5 @@
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import _ from '@lodash';
-import Checkbox from '@material-ui/core/Checkbox';
 import Icon from '@material-ui/core/Icon';
+import _ from '@lodash';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -24,28 +22,18 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
-
-
-
-
 const PaginationStyle = createMuiTheme({
 	overrides: {
 		MuiTypography: {
 			body2: {
 				fontSize: '12px',
 				marginTop: '1px'
-
-				//   "&:last-child": {
-				// 	paddingRight: 5
-				//   }
 			}
 		}
 	}
 });
 
-
 function CampaignTable(props) {
-
 	const [open, setOpen] = React.useState(false)
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState([]);
@@ -61,9 +49,6 @@ function CampaignTable(props) {
 		id: null
 	});
 	const [checked, setChecked] = React.useState(false);
-
-
-
 	const [dialogData, setDialogData] = React.useState({
 		id: 0,
 		name: "",
@@ -76,7 +61,6 @@ function CampaignTable(props) {
 		type: null,
 		activated: false,
 	});
-
 	const getData = ((loadData) => {
 		loadData = () => {
 			return CoreHttpHandler.request('campaigns', 'listing', {
@@ -91,31 +75,23 @@ function CampaignTable(props) {
 		};
 		loadData().then((response) => {
 			const tableData = response.data.data.list.data
-			console.log(tableData)
 			setData(tableData)
 			setData2(tableData)
-
 		});
 	})
-
-
 	setTimeout(() => {
 		setSnackBarOpen(false)
 		setSnackBarMessage("")
 	}, 3000);
-
-
 	React.useEffect(() => {
 		getData()
 	}, []);
 	function handleRequestSort(event, property) {
 		const id = property;
 		let direction = 'desc';
-
 		if (order.id === property && order.direction === 'desc') {
 			direction = 'asc';
 		}
-
 		setOrder({
 			direction,
 			id
@@ -162,7 +138,6 @@ function CampaignTable(props) {
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
-
 		if (selectedIndex === -1) {
 			newSelected = newSelected.concat(selected, id);
 		} else if (selectedIndex === 0) {
@@ -172,35 +147,27 @@ function CampaignTable(props) {
 		} else if (selectedIndex > 0) {
 			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
 		}
-
 		setSelected(newSelected);
 	}
-
 	function handleChangePage(event, value) {
 		setPage(value);
 	}
 	function handleDialogClose() {
 		setOpen(false)
 	}
-
-
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
 	}
-
 	const toggleChecked = (event) => {
 		event.stopPropagation()
 		setChecked((prev) => !prev);
 	};
 	return (
 		<>
-
 			<Snackbar
-
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
 				open={snackbaropen}
 				autoHideDuration={3000}
-
 			>
 				<Alert variant="filled" severity={ok}>
 					{snackbarmessage}
@@ -208,7 +175,6 @@ function CampaignTable(props) {
 			</Snackbar>
 			<div className="w-full flex flex-col">
 					<TableContainer component={Paper}>
-
 						<Table className="min-w-xl" aria-labelledby="tableTitle">
 							<CampaignTableHead
 								numSelected={selected.length}
@@ -217,7 +183,6 @@ function CampaignTable(props) {
 								onRequestSort={handleRequestSort}
 								rowCount={data.length}
 							/>
-
 							<TableBody>
 								{_.orderBy(
 									data2,
@@ -241,7 +206,6 @@ function CampaignTable(props) {
 										console.log(n, 'i am in table')
 										return (
 											<TableRow
-
 												className="h-10 cursor-pointer"
 												hover
 												role="checkbox"
@@ -249,16 +213,7 @@ function CampaignTable(props) {
 												tabIndex={-1}
 												key={n.id}
 												selected={isSelected}
-											// onClick={event => handleClick(n)}
 											>
-
-												{/* <TableCell className="w-64 text-center" padding="none">
-											<Checkbox
-												checked={isSelected}
-												onClick={event => event.stopPropagation()}
-												onChange={event => handleCheck(event, n.id)}
-											/>
-										</TableCell> */}
 												<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
 													{n.id}
 												</TableCell>
@@ -279,26 +234,17 @@ function CampaignTable(props) {
 														)}
 												</TableCell>
 												<TableCell  component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-													{/* {n.progress ? ( 
-												<Icon className="text-green text-16">check_circle</Icon>
-											) : (
-													<Icon className="text-red text-16">cancel</Icon>
-												)} */}
 													<FormControlLabel
 														style={{ marginLeft: '2px' }}
 														control={
 															<Switch
 																checked={checked}
 																onChange={toggleChecked}
-																// onChange={event => event.stopPropagation()}
-
 																name="checkedB"
 																color="primary"
 																size="small"
-
 															/>
 														}
-													// label="Primary"
 													/>
 												</TableCell>
 												<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
@@ -310,10 +256,6 @@ function CampaignTable(props) {
 												<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
 													{n.failures}
 												</TableCell>
-												{/* <TableCell component="th" scope="row" align="center" style={{fontSize:'11px',padding:'10px'}}>
-											{n.dtu}
-									
-										</TableCell> */}
 												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
 													{n.completed ? (
 														<Icon className="text-green text-16">check_circle</Icon>
@@ -321,26 +263,6 @@ function CampaignTable(props) {
 															<Icon className="text-red text-16">cancel</Icon>
 														)}
 												</TableCell>
-												{/* 
-										<TableCell component="th" scope="row" align="center">
-											{n.quantity}
-											<i
-												className={clsx(
-													'inline-block w-8 h-8 rounded mx-8',
-													n.quantity <= 5 && 'bg-red',
-													n.quantity > 5 && n.quantity <= 25 && 'bg-orange',
-													n.quantity > 25 && 'bg-green'
-												)}
-											/>
-										</TableCell> */}
-
-												{/* <TableCell component="th" scope="row" align="center">
-											{n.active ? (
-												<Icon className="text-green text-20">check_circle</Icon>
-											) : (
-													<Icon className="text-red text-20">remove_circle</Icon>
-												)}
-										</TableCell> */}
 											</TableRow>
 										);
 									})}
@@ -356,10 +278,6 @@ function CampaignTable(props) {
 							actions: 'text-64',
 							select: 'text-12 mt-4',
 							selectIcon: 'mt-4',
-							// input:'text-64',
-							// menuItem:'text-64',
-							// toolbar:'text-64',
-							// selectRoot:'text-64'
 						}}
 						className="overflow-hidden"
 						component="div"
@@ -372,11 +290,9 @@ function CampaignTable(props) {
 						ActionsComponent={ContactsTablePaginationActions}
 					/>
 				</MuiThemeProvider>
-
 				{open && <CampaignDialog isOpen={open} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} />}
 			</div>
 		</>
 	);
 }
-
 export default withRouter(CampaignTable);

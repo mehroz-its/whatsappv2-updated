@@ -6,9 +6,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 const PortableCountryDropdown = function (props) {
   
     const { onInputChange, controlId,countries, selectedCountry, byName } = props;
-    console.log("selectedCountry : " ,  props);
-    
-
     const defaultValue = (byName) ? 'Select Country' : 0;
 
     const selected = selectedCountry === 'N/A' ? defaultValue : selectedCountry;

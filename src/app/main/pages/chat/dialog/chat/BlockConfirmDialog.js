@@ -5,7 +5,6 @@ import TextField from '@material-ui/core/TextField';
 
 const BlockConfirmDialog = function (props) {
     const { data, onDialogPropsChange } = props;
-    console.log(data,'im block')
 
     const [blockReason, setBlockReason] = React.useState('');
 

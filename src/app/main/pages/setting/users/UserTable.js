@@ -15,24 +15,18 @@ import { withRouter } from 'react-router-dom';
 import * as Actions from './store/actions';
 import UserTableHead from './UserTableHead';
 import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
-
 import ContactsTablePaginationActions from '../../setting/canned/ContactsTablePaginationActions';
 import TableData from './UsersData'
 import UserDialog from './UserDialog'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 import DeleteDialog from '../DeletDialog'
-
 const PaginationStyle = createMuiTheme({
 	overrides: {
 		MuiTypography: {
 		body2: {
 			fontSize:'12px',
 			marginTop:'1px'
-
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
 		}
 	  }
 	}
@@ -106,7 +100,6 @@ function UserTable(props) {
 			);
 		}
 	}
-
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
@@ -134,7 +127,6 @@ function UserTable(props) {
 		event.stopPropagation()
 		setDeleteDialog(true)
 		setDeleteDialogData(n)
-		console.log(n, 'eventtt')
 		return;
 		CoreHttpHandler.requestCustomer('users', 'delete',
 			{
@@ -143,9 +135,7 @@ function UserTable(props) {
 			}
 			, (response) => {
 				closeDialog("delete")
-				// setopenDialog(false);
 			}, (error) => {
-				// console.log(error.response.data.message,'errorerror')
 				closeDialog(error.response.data.message)
 			});
 	}
@@ -193,13 +183,6 @@ function UserTable(props) {
 										selected={isSelected}
 										onClick={event => handleClick(n)}
 									>
-										{/* <TableCell className="w-64 text-center" padding="none">
-											<Checkbox
-												checked={isSelected}
-												onClick={event => event.stopPropagation()}
-												onChange={event => handleCheck(event, n.id)}
-											/>
-										</TableCell> */}
 										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 											{n.id}
 										</TableCell>
@@ -237,10 +220,6 @@ function UserTable(props) {
 							actions:'text-64',
 							select:'text-12 mt-4',
 							 selectIcon:'mt-4',
-							// input:'text-64',
-							// menuItem:'text-64',
-							// toolbar:'text-64',
-							// selectRoot:'text-64'
 						}}
 				className="overflow-hidden"
 				component="div"

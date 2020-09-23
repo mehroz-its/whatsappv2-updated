@@ -22,18 +22,12 @@ import RolesDialog from './RolesDialog'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 import DeleteDialog from '../DeletDialog'
-
-
 const PaginationStyle = createMuiTheme({
 	overrides: {
 		MuiTypography: {
 			body2: {
 				fontSize: '12px',
 				marginTop: '1px'
-
-				//   "&:last-child": {
-				// 	paddingRight: 5
-				//   }
 			}
 		}
 	}
@@ -141,7 +135,6 @@ function RolesTable(props) {
 	const hadleDelete = (event, n) => {
 		setDeleteDialog(true)
 		event.stopPropagation()
-		console.log(n, 'eventtt')
 		setDeleteDialogData(n)
 		return;
 		CoreHttpHandler.requestCustomer('roles', 'delete',
@@ -150,16 +143,12 @@ function RolesTable(props) {
 				value: n.id
 			}
 			, (response) => {
-				// console.log(response)
 				closeDialog("delete")
-				// setopenDialog(false);
 			}, (error) => {
 				closeDialog(error.response.data.message)
-				// setopenDialog(false);
 
 			});
 	}
-	console.log(data2,'dataaaaaaaaaaaaaaa22222222222222222');
 	return (
 		<div className="w-full flex flex-col">
 			<FuseScrollbars className="flex-grow overflow-x-auto">
@@ -167,7 +156,6 @@ function RolesTable(props) {
 					<RolesTableHead
 						numSelected={selected.length}
 						order={order}
-						// onSelectAllClick={handleSelectAllClick}
 						onRequestSort={handleRequestSort}
 						rowCount={data2.length}
 					/>
@@ -203,13 +191,6 @@ function RolesTable(props) {
 										selected={isSelected}
 										onClick={event => handleClick(n)}
 									>
-										{/* <TableCell className="w-64 text-center" padding="none">
-											<Checkbox
-												checked={isSelected}
-												onClick={event => event.stopPropagation()}
-												onChange={event => handleCheck(event, n.id)}
-											/>
-										</TableCell> */}
 										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 											{n.id}
 										</TableCell>
@@ -246,10 +227,6 @@ function RolesTable(props) {
 						actions: 'text-64',
 						select: 'text-12 mt-4',
 						selectIcon: 'mt-4',
-						// input:'text-64',
-						// menuItem:'text-64',
-						// toolbar:'text-64',
-						// selectRoot:'text-64'
 					}}
 					count={data2.length}
 					style={{ fontSize: '12px' }}

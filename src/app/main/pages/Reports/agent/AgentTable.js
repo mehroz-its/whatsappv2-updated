@@ -61,22 +61,6 @@ function AgentTable(props) {
 	})
 
     let data=props.data
-    console.log(data,'data');
-    
-	// useEffect(() => {
-	// 	dispatch(Actions.getProducts());
-	// }, [dispatch]);
-
-	// useEffect(() => {
-	// 	if (searchText.length !== 0) {
-	// 		setData(_.filter(products, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
-	// 		setPage(0);
-	// 	} else {
-	// 		setData(products);
-	// 		console.log(products,'here in prdoducts table')
-	// 	}
-	// }, [products, searchText]);
-
 	function handleRequestSort(event, property) {
 		const id = property;
 		let direction = 'desc';
@@ -108,10 +92,8 @@ function AgentTable(props) {
 	// }
 
 	function handleClick(n) {
-		console.log(n,'nnnnnnnn');
 		
 		setOpen(true)
-		console.log(dialogData,n,'asdsd');
 		setDialogData({
 			enabled:n.enabled,
 			id:n.id,
@@ -122,32 +104,6 @@ function AgentTable(props) {
 		
 		
 }
-// if(searchVal!==props.ValueForSearch)
-// {
-// 	{search()}
-// }
-
-// // if(searchVal.length===0)
-// // {
-// // 	{getData()}
-// // }
-
-
-
-
-// //    if(props.PressedVal==8){
-// // 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-// // }
-
-// function search(){
-// 	console.log('ceeleded',props.ValueForSearch,searchVal);
-	
-// 	setSearchVal(props.ValueForSearch)
-// 	setData2(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-// 	console.log(data,'filterssss');
-	
-	
-// }
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
@@ -227,7 +183,6 @@ function AgentTable(props) {
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map(n => {
                                 const isSelected = selected.indexOf(n.id) !== -1;
-                                console.log(n,'nnnnnnnnnnn');
                                 
 								return (
 									<TableRow

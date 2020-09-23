@@ -3,21 +3,15 @@ import Dialog from '@material-ui/core/Dialog';
 import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import Select from "@material-ui/core/Select";
 import CoreHttpHandler from '../../../../../../http/services/CoreHttpHandler'
 import CircularProgress from '@material-ui/core/CircularProgress';
-
-
-
-
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const CampaignDialog = (props) => {
-    // console.log(props, 'in dialog')
-    const { isOpen ,data} = props
+    const { isOpen, data } = props
     const [openDialog, setopenDialog] = React.useState(isOpen);
     const [name, setName] = React.useState(data.name);
     const [description, setDescription] = React.useState(data.description);
@@ -27,11 +21,6 @@ const CampaignDialog = (props) => {
     const [templateList, setTemplateList] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
     const [uploadedFilePath, setUploadedFilePath] = React.useState('');
-
-
-
-
-
     const handleSubmit = () => {
         let params = {
             type: "template",
@@ -47,25 +36,19 @@ const CampaignDialog = (props) => {
             "create_message",
             params,
             response => {
-                console.log('created succesfully')
                 props.closeDialog()
                 setopenDialog(false);
             },
             error => {
-                console.log(error)
                 props.closeDialog()
                 setopenDialog(false);
             }
         );
     };
-
-
     const handleClose = () => {
         props.closeDialog()
         setopenDialog(false);
     };
-
-    
     const getData = ((loadData) => {
         loadData = () => {
             return CoreHttpHandler.request(
@@ -86,28 +69,20 @@ const CampaignDialog = (props) => {
             setTemplateList(list);
         });
     })
-
     React.useEffect(() => {
         getData()
     }, []);
-
-
     const onChangeHandler = event => {
         setIsLoading(true);
-
         if (event.target.files.length > 0) {
             const _data = new FormData();
-
             let _name = event.target.files[0].name;
-
             _name = _name.replace(/\s/g, "");
-
             _data.append(
                 "file",
                 event.target.files[0],
                 `${new Date().getTime()}_${_name}`
             );
-
             CoreHttpHandler.request(
                 "content",
                 "upload",
@@ -117,7 +92,6 @@ const CampaignDialog = (props) => {
                 response => {
                     setIsLoading(false);
                     setUploadedFilePath(response.data.data.link)
-
                     onInputChange({
                         target: {
                             name: 'msisdnUrl',
@@ -130,38 +104,20 @@ const CampaignDialog = (props) => {
             );
         }
     };
-
-
-
-
     const onInputChange = e => {
-
         switch (e.target.name) {
-
             case "name":
                 setName(e.target.value)
                 break;
-            // case "message":
-            //     _func = setMessage;
-            //     break;
             case "description":
                 setDescription(e.target.value);
                 console.log(description)
                 break;
-            // case "template_type":
-            //     _func = setTemplate_type;
-            //     break;
-            // case "params":
-            //     _func = setParams;
-            //     break;
             case "begin_dt":
                 setBegin_dt(e.target.value);
             case "template_id":
                 setTemplateId(e.target.value);
                 break;
-            // case "msisdnUrl":
-            //     _func = setUploadedFilePath;
-            //     break;
             case "activated":
                 setActivated(e.target.vale);
                 break;
@@ -170,11 +126,9 @@ const CampaignDialog = (props) => {
 
 
     return (
-        // <div> {isOpen}</div>
         <Dialog open={openDialog} aria-labelledby="form-dialog-title" classes={{
             paper: 'm-24'
         }}
-
             fullWidth
             maxWidth="xs">
             <DialogTitle id="form-dialog-title">{props.type}</DialogTitle>
@@ -183,7 +137,6 @@ const CampaignDialog = (props) => {
                     <div className="min-w-48 pt-20">
                         <Icon color="action">account_circle</Icon>
                     </div>
-
                     <TextField
                         className="mb-24"
                         label="Name"
@@ -194,16 +147,12 @@ const CampaignDialog = (props) => {
                         required
                         fullWidth
                         onChange={onInputChange}
-                    // onChange={(e)=>{console.log(e.target.value)}}
-
                     />
                 </div>
-
                 <div className="flex">
                     <div className="min-w-48 pt-20">
                         <Icon color="action">account_circle</Icon>
                     </div>
-
                     <TextField
                         className="mb-24"
                         label="Description"
@@ -211,8 +160,6 @@ const CampaignDialog = (props) => {
                         id="description"
                         name="description"
                         onChange={onInputChange}
-
-                        // onChange={(e)=>{console.log(e.target.value)}}
                         variant="outlined"
                         required
                         fullWidth
@@ -248,9 +195,6 @@ const CampaignDialog = (props) => {
                             {isLoading === true ? <CircularProgress color="secondary" style={{ marginLeft: '40%' }} />
                                 : <TextField className="mt-20 mb-20" id="outlined-basic-email" name={"url"} label="Url" variant="outlined" fullWidth disabled={true} onChange={onInputChange} value={uploadedFilePath} />
                             }
-                            {/* <div item  style={{ marginTop: 10, marginBottom: 10 }}>
-                             
-                            </div> */}
                         </div>
                         <div item xs={12} >
                             <input accept=".csv" style={{ paddingTop: '10px' }} id="contained-button-file" type="file" name="url" filename={uploadedFilePath} style={{ display: "none" }} onChange={onChangeHandler} />
@@ -262,29 +206,9 @@ const CampaignDialog = (props) => {
                         </div>
                     </div>
                     ) : null}
-
-                {/* <div className="flex">
-                    <div className="min-w-48 pt-20">
-                        <Icon color="action">cake</Icon>
-                    </div>
-                    <TextField
-                        className="mb-24"
-                        id="begin_dt"
-                        name="begin_dt"
-                        label="Begin Date"
-                        type="date"
-                        onChange={onInputChange}
-                        InputLabelProps={{
-                            shrink: true
-                        }}
-                        variant="outlined"
-                        fullWidth
-                    />
-                </div> */}
-
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose}   color="primary">
+                <Button onClick={handleClose} color="primary">
                     Cancel
              </Button>
                 <Button onClick={handleSubmit} color="primary">
@@ -292,7 +216,6 @@ const CampaignDialog = (props) => {
          </Button>
             </DialogActions>
         </Dialog>
-
     )
 }
 

@@ -73,7 +73,6 @@ function Permissions(props) {
 		};
 		loadData().then((response) => {
 			const tableData = response.data.data.list.data
-			console.log(tableData)
 			setData(tableData)
 			setData2(tableData)
 
@@ -164,7 +163,6 @@ function Permissions(props) {
 					aria-label="add"
 					className={classes.addButton}
 					onClick={handleClickOpen}
-				// onClick={ev => dispatch(Actions.openNewContactDialog())}
 				>
 					<Icon>person_add</Icon>
 				</Fab>

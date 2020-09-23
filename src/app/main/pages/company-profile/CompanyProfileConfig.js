@@ -1,6 +1,5 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-
 const CompanyProfileConfig = {
     settings: {
         layout: {
@@ -20,16 +19,6 @@ const CompanyProfileConfig = {
 			path: '/apps/company-details',
 			component: React.lazy(() => import('./customerAccountDetails/CustomerAccountDetails.js'))
 		},
-    	// {
-		// 	path: '/apps/company-detailsProfile',
-		// 	component: React.lazy(() => import('./customerAccountDetails/SideNavigationPages/Profile/Index.js'))
-		// }
-		// ,
-		// {
-		// 	path: '/apps/company-contactdetails',
-		// 	component: React.lazy(() => import('./customerAccountDetails/SideNavigationPages/contact/Contact'))
-		// },
-        
     ]
 };
 

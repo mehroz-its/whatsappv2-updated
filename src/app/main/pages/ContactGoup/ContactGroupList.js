@@ -1,6 +1,6 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Typography from '@material-ui/core/Typography';
-import React, { useEffect, useState } from 'react';
+import React  from 'react';
 import BlockContactsTable from './ContactGroupTable';
 import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading'
 

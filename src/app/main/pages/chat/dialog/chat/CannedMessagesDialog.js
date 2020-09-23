@@ -91,7 +91,6 @@ const CannedMessagesDialog = function (props) {
         setDocument(!document);
     };
     const { onDialogPropsChange, data } = props;
-    console.log(data, 'datada5a')
 
     const classes = useStyles();
     const [audio, setAudio] = React.useState(false);

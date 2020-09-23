@@ -49,8 +49,6 @@ function ContactsList(props) {
 
 	})
 
-	console.log(data2, searchVal, props.ValueForSearch, 'datadatadatadatadatadatadata')
-
 	let ContactsData = {
 		entities: data,
 		searchText: "",
@@ -78,11 +76,8 @@ function ContactsList(props) {
 	// const searchText = useSelector(({ contactsApp }) => console.log(contactsApp) );
 	// const user = useSelector(({ contactsApp }) => contactsApp.user);
 	const user = ContactsData.user
-	// const searchText = Data.searchText
-	console.log(ContactsData.entities, 'ContactsData.entities')
 
 	const getData = ((loadData) => {
-		console.log('called get data')
 		loadData = () => {
 			return CoreHttpHandler.request('contact_book', 'listing', {
 
@@ -97,7 +92,6 @@ function ContactsList(props) {
 		};
 		loadData().then((response) => {
 			const tableData = response.data.data.list.data
-			console.log(tableData)
 			setData(tableData)
 
 		});
@@ -112,32 +106,12 @@ function ContactsList(props) {
 	}
 
 	const handleClose = () => {
-		// getData()
-
 		setOpenBlockDialog(false);
 		setUnBlockDialog(false)
 	};
-
-	// if(searchVal.length===0)
-	// {
-	// 	{getData()}
-	// }
-
-
-	console.log(data2, props.ValueForSearch, 'asdasdasdasdasdasd');
-
-
-	//    if(props.PressedVal==8){
-	// 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-	// }
-
 	function search() {
-		console.log('ceeleded', props.ValueForSearch, searchVal);
-
 		setSearchVal(props.ValueForSearch)
 		setData2(filtered.filter(n => n.firstname.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-		console.log(data, 'filterssss');
-
 
 	}
 
@@ -149,28 +123,11 @@ function ContactsList(props) {
 	const handleUnblockClick = (row) => {
 		// ev.stopPropagation();
 		setROWvalue(row.original)
-		console.log(row.original, 'clg icon')
 	}
 	const [filteredData, setFilteredData] = useState(null);
 
 	const columns = React.useMemo(
 		() => [
-			// {
-			// 	Header: ({ selectedFlatRows }) => {
-			// 		const selectedRowIds = selectedFlatRows.map(row => row.original.id);
-
-			// 		return (
-			// 			selectedFlatRows.length > 0 && <ContactsMultiSelectMenu selectedContactIds={selectedRowIds} />
-			// 		);
-			// 	},
-			// 	accessor: 'avatar',
-			// 	Cell: ({ row }) => {
-			// 		return <Avatar className="mx-8" alt={row.original.name} src={row.original.avatar} />;
-			// 	},
-			// 	className: 'justify-center',
-			// 	width: 64,
-			// 	sortable: false
-			// },
 			{
 				Header: 'ID',
 				accessor: 'id',
@@ -209,22 +166,6 @@ function ContactsList(props) {
 				accessor: 'email',
 				sortable: true
 			},
-			// {
-			// 	Header: 'Country',
-			// 	accessor: 'country',
-			// 	sortable: true
-			// },
-			// {
-			// 	Header: 'City',
-			// 	accessor: 'city',
-			// 	sortable: true
-			// },
-			// {
-			// 	Header: 'Blocked',
-			// 	accessor: 'Blocked',
-			// 	sortable: true
-			// },
-
 			{
 				id: 'action',
 			    
@@ -232,18 +173,6 @@ function ContactsList(props) {
 				sortable: false,
 				Cell: ({ row }) => (
 					<div className="flex items-center">
-						{/* <IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(Actions.toggleStarredContact(row.original.id));
-							}}
-						>
-							{user.starred && user.starred.includes(row.original.id) ? (
-								<Icon>star</Icon>
-							) : (
-									<Icon>star_border</Icon>
-								)}
-						</IconButton> */}
 						{row.original.blocked === false ?
 							(
 								<IconButton
@@ -302,26 +231,6 @@ function ContactsList(props) {
 	function handleClick(n) {
 		setROWvalue(n.original)
 		setOpenBlockDialog(true)
-		// CoreHttpHandler.request('conversations', 'block', {
-		// 	key: ':number', value: n.original.id, params: {
-		// 		reason: this.state.blockReason,
-		// 	}
-		// },
-		// 	(response) => {
-		// 		console.log(response)
-		// 	},
-		// 	(error) => {
-		// 		console.log(error)
-		// 	}
-		// );
-
-		// console.log(n.original, 'nnnn')
-		// setDialogData(n)
-
-		// console.log(dialogData,'ContactGroupDialogContactGroupDialog')
-		// setOpen(true);
-
-		// props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
 	}
 	return (
 		<FuseAnimate animation="transition.slideUpIn" delay={300}>
@@ -335,15 +244,8 @@ function ContactsList(props) {
 				columns={columns}
 				data={filtered}
 				onRowClick={(ev, row) => {
-					// if (row) {
-					// 	dispatch(Actions.openEditContactDialog(row.original));
-					// }
-					console.log(row, 'rowrow')
 				}}
-			// onRowClick={console.log('i am clicked')}
 			/>
-			{/* {openBlockDialog && <BlockContactInDialog isOpen={openBlockDialog} type="Block Number" data={rowvalue} />} */}
-
 		</FuseAnimate>
 	);
 }

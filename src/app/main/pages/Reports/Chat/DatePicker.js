@@ -17,11 +17,9 @@ import { DateRangePicker } from 'react-dates';
     const [focus, setFocus] = React.useState(null);    
 	const handleOnDateChange = (startDate, endDate) => {
     setdateRange(startDate)
-    console.log(startDate,'Datessss');    
     let Starting_Date =   startDate.startDate != null ?  Starting_Date = Object.values(startDate.startDate) : null
     let Ending_Date=  startDate.endDate != null ?  Ending_Date = Object.values(startDate.endDate): null
     let startingDate = new Date(Starting_Date);
-    console.log("iso date ", Starting_Date);
     if(startDate.startDate && startDate.endDate)
     {
       props.SelectedDates(Starting_Date[4],Ending_Date[4])

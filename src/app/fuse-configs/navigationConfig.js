@@ -19,10 +19,7 @@ if (user_token !== null) {
         user_routes.push(val[1])
     })
 
-    console.log("user_routes", user_routes)
 } else {
-    console.log("user_token null")
-
 }
 let userAcl = localStorage.getItem('user_acl');
 
@@ -243,15 +240,15 @@ const navigationConfig = [
     // },   
 ];
 let NewNav = navigationConfig
-console.log("NAV =>", NewNav);
+// console.log("NAV =>", NewNav);
 if (userAcl !== null) {
 
     NewNav.map((item) => {
         if (item.children) {
-            console.log("ITEM  =>", item.children);
+            // console.log("ITEM  =>", item.children);
             var i;
             for (i = 0; i < item.children.length; i++) {
-                console.log("item.children : ", item.children[i]);
+                // console.log("item.children : ", item.children[i]);
                 if (item.children[i].url) {
                     if (!userAcl.hasOwnProperty([`FRONT:${item.children[i].url}`])) {
                         item.children.splice(i, item.children.length);
@@ -259,7 +256,7 @@ if (userAcl !== null) {
                 }
                 else {
                     if (item.children[i].children.length > 0) {
-                        console.log("item.children[i].children :", item.children[i].children);
+                        // console.log("item.children[i].children :", item.children[i].children);
                         if (item.children[i].children.length > 0) {
                             item.children[i].children.map((child, childIndex) => {
                                 if (child.url) {
@@ -279,11 +276,11 @@ if (userAcl !== null) {
     })
 }
 let CustomNavigation = NewNav;
-console.log("CustomNavigation : ", CustomNavigation);
+// console.log("CustomNavigation : ", CustomNavigation);
 CustomNavigation.map((CustomNavigationitem, CustomNavigationii) => {
     if (CustomNavigationitem.children.length > 0) {
         CustomNavigationitem.children.map((CustomNavigationitemCh, CustomNavigationitemChInc) => {
-            console.log("CustomNavigationitemCh : ", CustomNavigationitemCh);
+            // console.log("CustomNavigationitemCh : ", CustomNavigationitemCh);
             if (CustomNavigationitemCh.children <= 0) {
                 CustomNavigationitem.children.splice(CustomNavigationitemChInc, 1);
             }

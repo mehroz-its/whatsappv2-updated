@@ -3,24 +3,12 @@ import Dialog from '@material-ui/core/Dialog';
 import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import { makeStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../../../../http/services/CoreHttpHandler'
-// import { getUserData } from '../../chat/store/actions';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AppBar from '@material-ui/core/AppBar';
-import { green, purple } from '@material-ui/core/colors';
-
-
+import { green } from '@material-ui/core/colors';
 const useStyles = makeStyles((theme) => ({
     addButton: {
         position: 'absolute',
@@ -40,17 +28,14 @@ const useStyles = makeStyles((theme) => ({
         paddingTop: '5px',
         paddingBottom: '5px',
         fontSize: '12px',
-
     },
 
 }));
-
 const theme = createMuiTheme({
     palette: {
         primary: green,
     },
 });
-
 const AgentDialog = (props) => {
     const classes = useStyles(props);
     const { isOpen, type, getUpdatedData, data } = props
@@ -70,7 +55,6 @@ const AgentDialog = (props) => {
         props.closeDialog()
         setopenDialog(false);
     };
-    console.log(data, "DATA RECEIVED FROM AGENT");
     const handleSubmit = () => {
         let fileName
         if (uploadedFilePath != '') {
@@ -112,9 +96,7 @@ const AgentDialog = (props) => {
         }
     };
     const handleEnable = (event) => {
-
         setEnabled(event.target.checked);
-        console.log(enabled, 'enable')
     };
 
     const onInputChange = e => {
@@ -142,20 +124,15 @@ const AgentDialog = (props) => {
     };
     const onChangeHandler = event => {
         setIsLoading(true);
-
         if (event.target.files.length > 0) {
             const _data = new FormData();
-
             let _name = event.target.files[0].name;
-
             _name = _name.replace(/\s/g, "");
-
             _data.append(
                 "file",
                 event.target.files[0],
                 `${new Date().getTime()}_${_name}`
             );
-
             CoreHttpHandler.request(
                 "content",
                 "upload",
@@ -165,10 +142,6 @@ const AgentDialog = (props) => {
                 response => {
                     setIsLoading(false);
                     setUploadedFilePath(response.data.data.link)
-                    // let name = response.data.data.link
-                    // setAttachment_name(name.split('/'))
-                    // console.log(attachment_name,'name')
-
                     onInputChange({
                         target: {
                             name: 'msisdnUrl',
@@ -311,11 +284,6 @@ const AgentDialog = (props) => {
                         size="small"
                     />
                 </div>
-
-
-
-
-
             </DialogContent>
             <DialogActions>
                 <div className="px-16 my-10">
@@ -340,8 +308,6 @@ const AgentDialog = (props) => {
                 </ThemeProvider>
             </DialogActions>
         </Dialog>
-
     )
 }
-
 export default AgentDialog

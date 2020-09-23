@@ -1,6 +1,4 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
-
 const ReportsAppConfig = {
 	settings: {
 		layout: {
@@ -12,8 +10,6 @@ const ReportsAppConfig = {
 			path: '/dashboard',
 			component: React.lazy(() => import('./DashboardApp'))
 		},
-		
 	]
 };
-
 export default ReportsAppConfig;

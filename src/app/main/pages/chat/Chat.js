@@ -34,7 +34,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Fade from '@material-ui/core/Fade'
 import copy from 'copy-to-clipboard';
-
 import * as Actions from './store/actions';
 const contacts = [
 	{
@@ -697,7 +696,6 @@ function Chat(props) {
 
 
 		}, (error) => {
-			// this.setSnackBarMessage('Failed to load canned messages, please try again later', 'error');
 		});
 	}
 	const dialogActionsCanned = [

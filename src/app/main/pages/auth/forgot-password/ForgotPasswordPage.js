@@ -79,7 +79,7 @@ function ForgotPasswordPage(props) {
 				'gettoken',
 				data,
 				(response) => {
-					console.log("response : ", response);
+					// console.log("response : ", response);
 					props.history.push({
 						pathname: '/pages/auth/token',
 

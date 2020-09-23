@@ -1,19 +1,14 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
-import Checkbox from '@material-ui/core/Checkbox';
 import Icon from '@material-ui/core/Icon';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import clsx from 'clsx';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Button from '@material-ui/core/Button';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -32,7 +27,6 @@ import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Fab from '@material-ui/core/Fab';
-
 const useStyles = makeStyles((theme) => ({
     addButton: {
         position: 'fixed',
@@ -64,12 +58,8 @@ const useStyles = makeStyles((theme) => ({
         marginTop: theme.spacing(2),
     },
     largeIcon: {
-        // width: 10,
-        // marginLeft:'-2px',
         height: 22.5,
-
     },
-
 }))
 
 const PaginationStyle = createMuiTheme({
@@ -78,10 +68,6 @@ const PaginationStyle = createMuiTheme({
             body2: {
                 fontSize: '12px',
                 marginTop: '1px'
-
-                //   "&:last-child": {
-                // 	paddingRight: 5
-                //   }
             }
         }
     }
@@ -106,10 +92,6 @@ function CannedReplies(props) {
     });
     const [checked, setChecked] = React.useState(false);
     const [tabValue, setTabValue] = useState(0);
-
-
-
-
     const [dialogData, setDialogData] = React.useState({
         id: 0,
         name: "",
@@ -122,12 +104,10 @@ function CannedReplies(props) {
         type: null,
         activated: false,
     });
-
     const [number, SetNumber] = useState(10)
     const handleChange = (event) => {
         SetNumber(event.target.value);
     };
-
     const getData = ((loadData) => {
         loadData = () => {
             return CoreHttpHandler.request('campaigns', 'listing', {
@@ -142,65 +122,35 @@ function CannedReplies(props) {
         };
         loadData().then((response) => {
             const tableData = response.data.data.list.data
-            console.log(tableData, 'tableData')
             setData(tableData)
             setData2(tableData)
-
         });
     })
-
-
     setTimeout(() => {
         setSnackBarOpen(false)
         setSnackBarMessage("")
     }, 3000);
-
-
     React.useEffect(() => {
         getData()
     }, []);
-
-    // useEffect(() => {
-    // 	dispatch(Actions.getProducts());
-    // }, [dispatch]);
-
-    // useEffect(() => {
-    // 	if (searchText.length !== 0) {
-    // 		setData(_.filter(products, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
-    // 		setPage(0);
-    // 	} else {
-    // 		setData(products);
-    // 		console.log(products,'here in prdoducts table')
-    // 	}
-    // }, [products, searchText]);
-
     function handleRequestSort(event, property) {
         const id = property;
         let direction = 'desc';
-
         if (order.id === property && order.direction === 'desc') {
             direction = 'asc';
         }
-
         setOrder({
             direction,
             id
         });
     }
-
-
     function handleChangeTab(event, value) {
         setTabValue(value);
 
     }
-
     function search() {
-        console.log('ceeleded', props.ValueForSearch, searchVal);
-
         setSearchVal(props.ValueForSearch)
         setData2(data.filter(n => n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-        console.log(data, 'filterssss');
-
 
     }
     if (searchVal !== props.ValueForSearch) {
@@ -218,7 +168,6 @@ function CannedReplies(props) {
 
     function handleClick(n) {
         setOpen(true)
-        // props.history.push({ pathname: '/apps/company-details', data: n });
     }
 
     if (data2.length === 0) {
@@ -259,7 +208,6 @@ function CannedReplies(props) {
         setPage(value);
     }
     function handleDialogClose() {
-        console.log("hhe");
         setOpen(false)
     }
 
@@ -284,8 +232,6 @@ function CannedReplies(props) {
 
                 <CardContent className={classes.content} style={{ width: '100%' }}>
                     <Typography variant='h2' className='companyDetailHeader'>Canned Replies</Typography>
-
-                    {/* contentToolbar={ */}
                     <Tabs
                         value={tabValue}
                         onChange={handleChangeTab}
@@ -311,22 +257,16 @@ function CannedReplies(props) {
                         <Tab
                             style={{ marginTop: '0.2%' }}
                             className="text-12 font-600 normal-case" label="Documents" />
-
                     </Tabs>
-                  
                     <Snackbar
-
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
                         open={snackbaropen}
                         autoHideDuration={3000}
-
                     >
                         <Alert variant="filled" severity={ok}>
                             {snackbarmessage}
                         </Alert>
                     </Snackbar>
-
-
                     <div className="w-full flex flex-col">
                         <FuseScrollbars className="flex-grow overflow-x-auto">
                             <Table className="min-w-xl" aria-labelledby="tableTitle">
@@ -337,7 +277,6 @@ function CannedReplies(props) {
                                     onRequestSort={handleRequestSort}
                                     rowCount={data.length}
                                 />
-
                                 <TableBody>
                                     {_.orderBy(
                                         data2,
@@ -358,7 +297,6 @@ function CannedReplies(props) {
                                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                         .map(n => {
                                             const isSelected = selected.indexOf(n.id) !== -1;
-                                            console.log(n, 'i am in table')
                                             return (
                                                 <TableRow
 
@@ -371,14 +309,6 @@ function CannedReplies(props) {
                                                     selected={isSelected}
                                                     onClick={event => handleClick(n)}
                                                 >
-
-                                                    {/* <TableCell className="w-64 text-center" padding="none">
-											<Checkbox
-												checked={isSelected}
-												onClick={event => event.stopPropagation()}
-												onChange={event => handleCheck(event, n.id)}
-											/>
-										</TableCell> */}
                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
                                                         {n.id}
                                                     </TableCell>
@@ -392,11 +322,6 @@ function CannedReplies(props) {
                                                         {n.begin_dt === null ? 'N/A' : n.begin_dt}
                                                     </TableCell>}
                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                        {/* {n.progress ? ( 
-												<Icon className="text-green text-16">check_circle</Icon>
-											) : (
-													<Icon className="text-red text-16">cancel</Icon>
-												)} */}
                                                         <FormControlLabel
                                                             style={{ marginLeft: '2px' }}
                                                             control={
@@ -409,43 +334,8 @@ function CannedReplies(props) {
 
                                                                 />
                                                             }
-                                                        // label="Primary"
                                                         />
                                                     </TableCell>
-                                                    {/* <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                        {n.activated ? (
-                                                            <Icon className="text-green text-16">check_circle</Icon>
-                                                        ) : (
-                                                                <Icon className="text-red text-16">cancel</Icon>
-                                                            )}
-                                                    </TableCell> */}
-
-
-                                                    {/* <TableCell component="th" scope="row" align="center" style={{fontSize:'11px',padding:'10px'}}>
-											{n.dtu}
-									
-										</TableCell> */}
-
-                                                    {/* 
-										<TableCell component="th" scope="row" align="center">
-											{n.quantity}
-											<i
-												className={clsx(
-													'inline-block w-8 h-8 rounded mx-8',
-													n.quantity <= 5 && 'bg-red',
-													n.quantity > 5 && n.quantity <= 25 && 'bg-orange',
-													n.quantity > 25 && 'bg-green'
-												)}
-											/>
-										</TableCell> */}
-
-                                                    {/* <TableCell component="th" scope="row" align="center">
-											{n.active ? (
-												<Icon className="text-green text-20">check_circle</Icon>
-											) : (
-													<Icon className="text-red text-20">remove_circle</Icon>
-												)}
-										</TableCell> */}
                                                 </TableRow>
                                             );
                                         })}
@@ -460,10 +350,6 @@ function CannedReplies(props) {
                                     actions: 'text-64',
                                     select: 'text-12 mt-4',
                                     selectIcon: 'mt-4',
-                                    // input:'text-64',
-                                    // menuItem:'text-64',
-                                    // toolbar:'text-64',
-                                    // selectRoot:'text-64'
                                 }}
                                 className="overflow-hidden"
                                 component="div"
@@ -477,17 +363,16 @@ function CannedReplies(props) {
                             />
                         </MuiThemeProvider>
                         <FuseAnimate animation="transition.expandIn" delay={300}>
-				<Fab
-					color="primary"
-					aria-label="add"
-					size="medium"
-					className={classes.addButton}
-					onClick={handleClickOpen}
-				// onClick={ev => dispatch(Actions.openNewContactDialog())}
-				>
-					<Icon>person_add</Icon>
-				</Fab>
-			</FuseAnimate>
+                            <Fab
+                                color="primary"
+                                aria-label="add"
+                                size="medium"
+                                className={classes.addButton}
+                                onClick={handleClickOpen}
+                            >
+                                <Icon>person_add</Icon>
+                            </Fab>
+                        </FuseAnimate>
                         {open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
                     </div>
                 </CardContent>
@@ -495,5 +380,4 @@ function CannedReplies(props) {
         </>
     );
 }
-
 export default withRouter(CannedReplies);

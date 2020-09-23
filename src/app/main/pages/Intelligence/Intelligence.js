@@ -29,11 +29,7 @@ function Intelligence(props) {
 	}
 
 	function handleSubmit(ev) {
-		console.log("ev", ev);
 		props.history.push("/");
-		// this.props.history.push('/')
-		// ev.preventDefault();
-		// resetForm();
 	}
 
 	return (

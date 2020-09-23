@@ -134,7 +134,6 @@ const theme = createMuiTheme({
     console.log(params, 'params')
     if (type !== 'Update') {
       CoreHttpHandler.request('permissions', 'create', params, (response) => {
-        console.log(response)
         props.closeDialog('create')
         setopenDialog(false);
       }, (error) => {
@@ -143,8 +142,6 @@ const theme = createMuiTheme({
 
       });
     } else {
-
-      
       let params = {
         id: data.id,
         method: data.method,
@@ -169,24 +166,19 @@ const theme = createMuiTheme({
       }, (error) => {
         props.closeDialog("error")
         setopenDialog(false);
-
       });
     }
   }
 
   const handleEnable = (event) => {
     setEnabled(event.target.checked);
-    console.log(enabled, 'enable')
   };
 
   const onInputChange = (e) => {
-    console.log(e.target.name)
     if (e.target.name === 'rule_set') {
       const ruleIndex = currentRules.indexOf(e.target.value);
       if (ruleIndex === -1) {
         currentRules.push(e.target.value);
-        console.log('in if')
-        console.log(e.target.value)
       } else {
         currentRules.splice(ruleIndex, 1);
       }
@@ -210,7 +202,6 @@ const theme = createMuiTheme({
 	      {type} Permissions
 				</div>
 			</AppBar>
-      {/* <DialogTitle id="form-dialog-title">{type} Permissions</DialogTitle> */}
       <DialogContent classes={{ root: 'p-24' }}>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <div>
@@ -283,12 +274,6 @@ const theme = createMuiTheme({
               />
             </div>
           </div>
-          {/* <div style={{ flexDirection: 'column', flex: 1, display: 'flex', alignItems: 'flex-end', marginLeft: 10 }}>
-            {
-              checkToShow()
-            }
-
-          </div> */}
           <div style={{ flexDirection: 'column', flex: 1, display: 'flex', marginLeft: 10 }}>
 
             {showRuleSet &&
@@ -303,14 +288,6 @@ const theme = createMuiTheme({
             }
           </div>
         </div>
-        {/* <div style={{ flexDirection: 'column', flex: 1, display: 'flex', marginLeft: 10 }}>
-
-        {showRuleSet &&
-                    
-                        <RuleListInDialog edit roles={method} onInputChange={onInputChange} checkedRoles={currentRules} classes={classes} />
-                   
-                }
-                </div> */}
       </DialogContent>
       <DialogActions>
         <Button size="small" variant="contained" onClick={handleClose}  color="primary">
@@ -323,12 +300,6 @@ const theme = createMuiTheme({
          </ThemeProvider>
       </DialogActions>
     </Dialog>
-
-
-
-
-
-
   )
 }
 

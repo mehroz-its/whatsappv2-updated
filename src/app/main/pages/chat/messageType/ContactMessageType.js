@@ -36,7 +36,6 @@ const ContactMessageType = function (props) {
     var name
     var number = []
     message.attachments.map((val, i) => {
-        console.log(val, 'i mmma')
         name = val.name
         number.push(val.number)
     })

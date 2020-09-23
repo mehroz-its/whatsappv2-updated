@@ -6,24 +6,16 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Slide from '@material-ui/core/Slide';
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
-
 function CampaignAdd(props) {
-    const [open, setOpen] = React.useState(false);
-
+  const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
   return (<div>
-    <Button variant="outlined" color="primary" onClick={handleClickOpen} style={{position:'absolute',bottom:50}}>
+    <Button variant="outlined" color="primary" onClick={handleClickOpen} style={{ position: 'absolute', bottom: 50 }}>
       Open form dialog
     </Button>
     <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">

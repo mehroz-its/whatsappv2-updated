@@ -26,9 +26,6 @@ const BodyStyle = createMuiTheme({
 		  paddingTop: 4,
 		  fontSize:'12px',
 		  paddingBottom: 4,
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
 		}
 	  }
 	}
@@ -40,10 +37,6 @@ const BodyStyle = createMuiTheme({
 		body2: {
 			fontSize:'12px',
 			marginTop:'1px'
-
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
 		}
 	  }
 	}
@@ -112,7 +105,6 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, props,
 	const [open, setOpen] = React.useState(false);
 	const classes = useStyles(props);
 	const handleClose = (val) => {
-		console.log(val,'valuesssdsdsdsdsd');
 		giveVal(val)
 		setOpen(false);
 		onBlockDialogClose()
@@ -185,16 +177,10 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, props,
 	};
 
 	const handleClick = (ev, row) => {
-		// if (row) {
-		// 	dispatch(Actions.openEditContactDialog(row.original));
-		// }
-		console.log(row.original, 'rowrow')
 		setDialogData(row.original)
 		handleClickOpen()
-		// console.log(dialogData,'dialogData')
 	}
 
-	// Render the UI for your table
 	return (<div>
 		<TableContainer className="min-h-full sm:border-1 sm:rounded-16" >
 			<MaUTable {...getTableProps()}>
@@ -267,10 +253,6 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, props,
 								actions:'text-64',
 								select:'text-12 mt-4',
 								 selectIcon:'mt-4',
-								// input:'text-64',
-								// menuItem:'text-64',
-								// toolbar:'text-64',
-								// selectRoot:'text-64'
 							}}							
 							rowsPerPageOptions={[5, 10, 25, { label: 'All', value: data.length + 1 }]}
 							colSpan={5}

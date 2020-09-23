@@ -301,6 +301,9 @@ function ChatApp() {
 		// CoreHttpHandler.request('reports', 'chatChartInOutCC', { ...dataSourceOptions }, dataSourceSuccess, dataSourceFailure);
 		// CoreHttpHandler.request('reports', 'chatChartEngagments', { ...dataSourceOptions }, dataSourceSuccessEngagments, dataSourceFailureEngagments);
 		getData()
+		return()=>{
+			am4core.disposeAllCharts();
+		}
 	}, [])
 	const tableRender = (conversation,engagements) =>{
 		let chartData = [];

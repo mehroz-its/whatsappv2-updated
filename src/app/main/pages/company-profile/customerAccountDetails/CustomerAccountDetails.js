@@ -1,26 +1,18 @@
-import DemoContent from '@fuse/core/DemoContent';
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useRef } from 'react';
 import CustomerDetailsHeader from './CustomerDetailsHeader';
-// import CannedList from './CannedList';
 import CustomerDetailSideBar from './CustomerDetailSideBar';
-import FuseAnimate from '@fuse/core/FuseAnimate';
-import Fab from '@material-ui/core/Fab';
-import Icon from '@material-ui/core/Icon';
-// import * as Actions from './store/actions';
 import { useDispatch } from 'react-redux';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import Profile from './SideNavigationPages/Profile/Index'
-// import Contact from  './SideNavigationPages/contact/ContactTable'
 import ContactTable from './SideNavigationPages/contact/ContactTable'
 import TemplateMessage from './SideNavigationPages/TemplateMessage/Index'
 import AgentTable from './SideNavigationPages/agents/AgentTable'
 import CannedReplies from './SideNavigationPages/CannedReplies/Index'
 import Dashboard from './SideNavigationPages/Intelligence/DashboardApp'
-// import CannedDialog from './CannedDialog'
 const useStyles = makeStyles((theme) => ({
     addButton: {
         position: 'fixed',
@@ -36,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function CustomerDetails(props) {
-    // console.log('propsprops',props.location.data)
     const { location } = props
     const companyDetails = location.data
     const classes = useStyles();
@@ -69,7 +60,6 @@ function CustomerDetails(props) {
     const getData = ((loadData) => {
         setData([])
         setData2([])
-        console.log('called get data')
         loadData = () => {
             return CoreHttpHandler.request('canned_messages', 'type_listing', {
                 limit: 100,
@@ -85,7 +75,6 @@ function CustomerDetails(props) {
         };
         loadData().then((response) => {
             const tableData = response.data.data.list.data
-            console.log(tableData)
             setData(tableData)
             setData2(tableData)
             setTimeout(() => {
@@ -179,17 +168,16 @@ function CustomerDetails(props) {
                 header={<CustomerDetailsHeader pageLayout={pageLayout} SearchVal={search} data={companyDetails} />}
                 content={
                     tab === 'Intelligence' ? <Dashboard />
-                     :tab === 'Profile' ? <Profile />
-                    : tab === 'Contact' ? <ContactTable />
-                    : tab === 'TemplateMessage' ? <TemplateMessage />
-                    : tab === 'Agents' ? <AgentTable />
-                    : tab === 'CannedReplies' ?  <CannedReplies/>
-                    : null
+                        : tab === 'Profile' ? <Profile />
+                            : tab === 'Contact' ? <ContactTable />
+                                : tab === 'TemplateMessage' ? <TemplateMessage />
+                                    : tab === 'Agents' ? <AgentTable />
+                                        : tab === 'CannedReplies' ? <CannedReplies />
+                                            : null
                 }
                 leftSidebarContent={<CustomerDetailSideBar onTabChange={handleTabChange} cannedType={handleCannedMessageType} />}
                 sidebarInner
                 ref={pageLayout}
-            // innerScroll
             />
         </>
     );

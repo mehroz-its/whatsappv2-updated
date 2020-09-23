@@ -33,12 +33,10 @@ import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
 import { CSVLink, CSVDownload } from 'react-csv';
 import Fade from '@material-ui/core/Fade'
 import copy from 'copy-to-clipboard';
-import { setSearchText } from '../contacts/store/actions';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 const drawerWidth = 320;
 const headerHeight = 200;
-
 const useStyles = makeStyles(theme => ({
 	root: {
 		display: 'flex',
@@ -62,7 +60,6 @@ const useStyles = makeStyles(theme => ({
 	},
 	contentCardWrapper: {
 		position: 'relative',
-		// padding: 10,
 		maxWidth: '100%',
 		display: 'flex',
 		flexDirection: 'column',
@@ -71,7 +68,6 @@ const useStyles = makeStyles(theme => ({
 		minWidth: '0',
 		maxHeight: '100%',
 		margin: '0 auto',
-
 		[theme.breakpoints.down('sm')]: {
 			padding: 16
 		},
@@ -166,62 +162,16 @@ const user = {
 }
 const selectedContactId = "5725a680b3249760ea21de52";
 const chat = null
-// const chat = {
-// 	id: "1725a680b3249760ea21de52",
-// 	dialog: [
-// 		{
-// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
-// 			time: "2017-03-22T08:54:28.299Z",
-// 			who: "5725a680b3249760ea21de52",
-// 		},
-// 		{
-// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
-// 			time: "2017-03-22T08:54:28.299Z",
-// 			who: "5725a680b3249760ea21de52",
-// 		},
-
-// 		{
-// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
-// 			time: "2017-03-22T08:54:28.299Z",
-// 			who: "5725a680b3249760ea21de52",
-// 		},
-// 		{
-// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
-// 			time: "2017-03-22T08:54:28.299Z",
-// 			who: "5725a680b3249760ea21de52",
-// 		},
-// 		{
-// 			message: "Quickly come to the meeting room 1B, we have a big server issue",
-// 			time: "2017-03-22T08:54:28.299Z",
-// 			who: "5725a680b3249760ea21de52",
-// 		},
-// 		{
-// 			message: "I’m having breakfast right now, can’t you wait for 10 minutes?",
-// 			time: "2017-03-22T08:55:28.299Z",
-// 			who: "5725a6802d10e277a0f35724"
-// 		}, {
-// 			message: "We are losing money! Quick!",
-// 			time: "2017-03-22T09:00:28.299Z",
-// 			who: "5725a680b3249760ea21de52"
-// 		}
-// 	]
-// }
-
 function ChatApp(props) {
 	const dispatch = useDispatch();
-	// const chat = useSelector(({ chatApp }) => chatApp.chat);
-	// const contacts = useSelector(({ chatApp }) => chatApp.contacts.entities);
-	// const selectedContactId = useSelector(({ chatApp }) => chatApp.contacts.selectedContactId);
 	const mobileChatsSidebarOpen = false;
 	const userSidebarOpen = false;
 	const contactSidebarOpen = false;
 	var abc = []
-
 	const [lastMessageTimestamp, setlastMessageTimestamp] = React.useState(null);
 	const [latestMessageSender, setlatestMessageSender] = React.useState(null);
 	const [numbers, setnumbers] = React.useState([]);
 	const [searchedContact, setSearchedContact] = React.useState('');
-
 	const [messages, setmessages] = React.useState([]);
 	const [NewMessages, setNewMessages] = React.useState([]);
 	const [showLatestMessage, setshowLatestMessage] = React.useState(false);
@@ -233,22 +183,15 @@ function ChatApp(props) {
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [ok, setOK] = React.useState('')
-
-	// const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
-
-
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
 	const selectedRecipientt = (e) => {
-		console.log("selectedRecipientt");
 		clearInterval(int_MessageLists);
 		setselectedRecipient(e)
 		getConversation(e);
-		// if (selectedRecipient !== null) {
 		setint_MessageLists(setInterval(() => {
 			getConversation(e);
 		}, 3000));
-		// }
 	}
 	const getNumbers = () => {
 		CoreHttpHandler.request('conversations', 'historyNumbers', {}, (response) => {
@@ -259,9 +202,6 @@ function ChatApp(props) {
 				if (lastMessageTimestamp === null)
 					setlastMessageTimestamp(new Date(lastMessage.dtu))
 				if (lastMessageTimestamp < lastMessageDtu) {
-					// if (lastMessage.name !== null) {
-					//     this.setSnackBarMessage(`New Message From [${lastMessage.name}]`, 'success', 'new_message');
-					// } else this.setSnackBarMessage(`New Message From [${lastMessage.number}]`, 'success', 'new_message');
 					setlastMessageTimestamp(lastMessageDtu);
 					setlatestMessageSender(lastMessage.number);
 				}
@@ -271,39 +211,27 @@ function ChatApp(props) {
 		});
 	}
 	const getConversation = (e) => {
-		// console.log("getConversation selectedRecipient :", e);
 		let params = {
 			key: ':number',
 			value: e.number,
 			key2: ':last_closed',
 			value2: e.last_closed
-
 		};
-		console.log("params : ", params);
 		CoreHttpHandler.request('conversations', 'historyConversations', params, (response) => {
-			console.log("messages :", abc);
 			if (response.data.data.chat.length > abc.length) {
 				setmessages(response.data.data.chat)
 				abc = response.data.data.chat
 				setshowLatestMessage(true)
 			}
 			CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: e.number }, (response) => {
-
 			}, (response) => {
-
 			})
-
 		}, (response) => {
-
 		});
 	}
-
 	const conversationActionsCallback = (action) => {
-		// setAnchorEl(null);
 		if (action === 'export') conversationExport();
 		if (action === 'shift') conversationShift();
-
-
 	}
 	const conversationExport = () => {
 		let params = {
@@ -311,18 +239,15 @@ function ChatApp(props) {
 			value: selectedRecipient.number,
 			key2: ':last_closed',
 			value2: selectedRecipient.last_closed
-
 		};
 		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
 			const messages = response.data.data.chat;
 			const csvLink = (<CSVLink filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`} data={messages}><span style={{ color: 'white' }}>Your exported chat is ready for download</span></CSVLink>);
-			// alert(csvLink)
 			setSnackBarMessage(csvLink)
 			setOK("success")
 			setSnackBarOpen(true)
 			setMoreMenuEl(null);
 		}, (response) => {
-
 		});
 	}
 	const conversationShift = () => {
@@ -339,27 +264,18 @@ function ChatApp(props) {
 		if (item === 'customer_profile') {
 			profileDialog();
 			setMoreMenuEl(null);
-
-
 		}
-
 		if (item === 'canned_messages') {
-
 			cannedMessagesDialog()
 			setMoreMenuEl(null);
-
 		}
-
 		if (item === 'block') {
 			setdialogOpenConfirmBlock(true)
 			setMoreMenuEl(null);
-
-
 		}
 		if (item === 'copy') {
 			copyContent();
 			setMoreMenuEl(null);
-
 		}
 	}
 	const profileDialog = () => {
@@ -368,10 +284,8 @@ function ChatApp(props) {
 			value: selectedRecipient.number
 		}, (response) => {
 			const customer = response.data.data.customer;
-
 			loadCountries().then((response) => {
 				const countries = response.data.data.list.data;
-
 				setcustomerProfileData({
 					id: customer.id,
 					number: selectedRecipient.number,
@@ -379,16 +293,13 @@ function ChatApp(props) {
 					assign_name: '',
 					countries,
 				})
-				console.log("customer : ", customer);
 				setAnchorEl(false)
 				setdialogOpenCmp(true)
-
 			})
 
 		}, (error) => {
 			setAnchorEl(false)
 			setdialogOpenCmp(false)
-			// this.setSnackBarMessage('Failed to customer profile, please try again later', 'error');
 		});
 	}
 	const loadCountries = () => {
@@ -407,7 +318,6 @@ function ChatApp(props) {
 		setSnackBarMessage("Copied Successfully")
 		setOK("success")
 		setSnackBarOpen(true)
-		// this.setSnackBarMessage('Copied', 'success', null);
 	}
 
 	const [sendDialogData, setsendDialogData] = React.useState({
@@ -495,14 +405,11 @@ function ChatApp(props) {
 		'aria-describedby': "form-dialog-title"
 	};
 	useEffect(() => {
-		console.log("getNumbers use efffact = > ", selectedRecipient);
 		getNumbers()
 		return () => {
-			// clearInterval(int_CustomerList);
 			clearInterval(int_MessageLists);
 		}
 	}, [selectedRecipient]);
-
 	if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
 		getNumbers();
 	}, 2000));
@@ -510,13 +417,7 @@ function ChatApp(props) {
 		setselectedRecipient(null)
 		setmessages([])
 		clearInterval(this.int_MessageLists);
-		// clearInterval(this.int_CustomerList);
-		// 	getNumbers();
-		// setint_CustomerList = setInterval(() => {
-		// 	getNumbers();
-		// }, 1000);
 	}
-
 	function handleMoreMenuClick(event) {
 		setMoreMenuEl(event.currentTarget);
 	}
@@ -537,32 +438,23 @@ function ChatApp(props) {
 			setcannedMessagesList(data)
 			setdialogOpenCanned(true)
 			setMoreMenuEl(null);
-
-
 		}, (error) => {
-			// this.setSnackBarMessage('Failed to load canned messages, please try again later', 'error');
 		});
 	}
 	const sendDialogInputHandler = (e) => {
 		const data = { ...sendDialogData };
-
 		if (e.caption) {
 			data['caption'] = e.caption;
 		}
-
 		if (e.url) {
 			data['url'] = e.url;
 		}
-
 		if (e.attributes) {
 			data['attributes'] = e.attributes;
 		}
 		setsendDialogData(data)
 	};
 	const selectedShiftAgent = (agent) => {
-		console.log("selectedShiftAgent agent ", agent)
-		console.log("selectedShiftAgent selectedRecipient ", selectedRecipient)
-
 		CoreHttpHandler.request('conversations', 'transfer', {
 			key: ':id',
 			value: agent.id,
@@ -573,7 +465,6 @@ function ChatApp(props) {
 			setdialogOpenShift(false)
 			clearData()
 		}, (response) => {
-
 		});
 	}
 	const dialogOptionsShift = {
@@ -591,19 +482,16 @@ function ChatApp(props) {
 			options: {},
 			label: "Cancel",
 		},
-
 	];
 	const XGlobalDialogShiftClose = () => {
 		setdialogOpenShift(false)
 	}
 	const selectedCannedMessage = (props) => {
 		const { message_text, message_type, attachment_url, attachment_name, attachment_type } = props;
-
 		if (message_type !== 'text') {
 			let params = {
 				type: message_type,
 			};
-
 			params[message_type] = {
 				to: [selectedRecipient.number],
 				message: {
@@ -613,19 +501,15 @@ function ChatApp(props) {
 					caption: (message_text) ? message_text : `You Shared A ${message_type.charAt(0).toUpperCase()}${message_type.slice(1)}`,
 				}
 			}
-
 			CoreHttpHandler.request('conversations', 'send', {
 				key: ':type',
 				value: message_type,
 				params,
 			}, (response) => {
-				// setMessageText("")
 				setdialogOpenCanned(false)
-
 			}, (error) => {
 			});
 		} else {
-			// setMessageText(message_text)
 			setdialogOpenCanned(false)
 		}
 	}
@@ -671,8 +555,6 @@ function ChatApp(props) {
 		}
 	];
 	const blockNumber = () => {
-		console.log('blockNumber');
-
 		CoreHttpHandler.request('conversations', 'block', {
 			key: ':number', value: selectedRecipient.number, params: {
 				reason: blockReason,
@@ -682,13 +564,8 @@ function ChatApp(props) {
 			setblockReason('')
 			setAnchorEl(false)
 			clearData()
-			// props.agentShift()
-			// setselectedRecipient(null)
-			// setmessages([])
-			// clearInterval(this.int_MessageLists);
 		}, (error) => {
 			setAnchorEl(false)
-
 			setdialogOpenConfirmBlock(false)
 		});
 	}
@@ -699,18 +576,14 @@ function ChatApp(props) {
 			event,
 			dataKey,
 		} = props;
-
 		const data = { ...customerProfileData };
-
 		data[key] = value.attrs;
 		data['assign_name'] = value.assigned_name;
 		setcustomerProfileData(data)
-
 	}
 	const dialogOptionsCmp = {
 		onClose: function () {
 			setdialogOpenCmp(false)
-
 		},
 		'aria-labelledby': "form-dialog-title",
 		'aria-describedby': "form-dialog-title"
@@ -751,37 +624,17 @@ function ChatApp(props) {
 			params: data
 		}, (response) => {
 			setselectedRecipient(selectedRecipient)
-			// const clearData2 = () => {
 			setdialogOpenCmp(false)
-			// clearInterval(this.int_MessageLists);
-			// clearInterval(this.int_CustomerList);
-			// 	getNumbers();
-			// setint_CustomerList = setInterval(() => {
-			// 	getNumbers();
-			// }, 1000);
-			// }
-
-
-
 		}, (error) => {
-			// if (error.hasOwnProperty('response')) {
-			//     if (error.response.hasOwnProperty('data')) {
-			//         this.setSnackBarMessage(error.response.data.message, 'error');
-			//     }
-			// } else this.setSnackBarMessage('Failed to update profile, please try again later', 'error');
-
 		});
 	}
 	const onSearchInput = (val) => {
 		setSearchedContact(val)
-		console.log(searchedContact, 'i amsearched')
 	}
-	// const {numbers,searchedContact}=this.state
 	const filtered = searchedContact.charAt(0) === '9' ? numbers.filter((number => number.number.includes(searchedContact))) : numbers.filter((number => number.name.toLowerCase().includes(searchedContact.toLowerCase())))
 	return (
 		<>
 			<Snackbar
-
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 				open={snackbaropen}
 				autoHideDuration={4000}
@@ -791,7 +644,6 @@ function ChatApp(props) {
 					{snackbarmessage}
 				</Alert>
 			</Snackbar>
-
 			<div className={clsx(classes.root)}>
 				<div className={classes.topBg} />
 				<div className={clsx(classes.contentCardWrapper, 'container')}>
@@ -895,10 +747,6 @@ function ChatApp(props) {
 												</IconButton>
 												<div
 													className="flex items-center cursor-pointer"
-												// onClick={() => dispatch(Actions.openContactSidebar())}
-												// onKeyDown={() => dispatch(Actions.openContactSidebar())}
-												// role="button"
-												// tabIndex={0}
 												>
 													<div className="relative mx-8">
 														<div className="absolute right-0 bottom-0 -m-4 z-10">
@@ -931,7 +779,6 @@ function ChatApp(props) {
 														onClose={handleMoreMenuClose}
 													>
 														<MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
-														{/* <MenuItem onClick={(e) => conversationActionsCallback('shift')}>shift</MenuItem> */}
 														<MenuItem onClick={(e) => conversationContextMenuCallback('block')}>Block </MenuItem>
 														<MenuItem onClick={(e) => conversationContextMenuCallback('customer_profile')}>Customer Profile </MenuItem>
 														<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem>
@@ -939,14 +786,12 @@ function ChatApp(props) {
 												</div>
 											</Toolbar>
 										</AppBar>
-
 										<div className={classes.content}>
 											<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} clearBlock={clearData} />
 										</div>
 									</>
 								)}
 						</main>
-
 						<Drawer
 							className="h-full absolute z-30"
 							variant="temporary"

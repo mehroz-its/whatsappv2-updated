@@ -98,7 +98,7 @@ const UserMenu = (props) => {
     };
 	let data = null
 	data = JSON.parse(localStorage.getItem('user_data'))
-	console.log(data)
+	// console.log(data)
 
 	let username = ''
 	if (data !== null) {
@@ -109,7 +109,7 @@ const UserMenu = (props) => {
 			}
 			return str.join(' ');
 		}
-		console.log(data)
+		// console.log(data)
 		username = titleCase(data.username);
 
 	}
@@ -129,11 +129,11 @@ const UserMenu = (props) => {
 		let onlineStatus = JSON.parse(localStorage.getItem('online'));
 		onlineStatus = onlineStatus === null ? false : onlineStatus;
 		if (onlineStatus === true) {
-			console.log("onlineStatus", onlineStatus);
+			// console.log("onlineStatus", onlineStatus);
 			handleClick()
 
 		} else {
-			console.log('i am logout')
+			// console.log('i am logout')
 			CoreHttpHandler.request(
 				'core',
 				'userLogout',
@@ -158,7 +158,7 @@ const UserMenu = (props) => {
 
 
 	}
-	console.log(props)
+	// console.log(props)
 	return (
 		<>
 

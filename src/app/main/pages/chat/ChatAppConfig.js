@@ -1,5 +1,4 @@
 import React from 'react';
-
 const ChatAppConfig = {
 	settings: {
 		layout: {
@@ -13,5 +12,4 @@ const ChatAppConfig = {
 		}
 	]
 };
-
 export default ChatAppConfig;

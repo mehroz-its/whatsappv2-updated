@@ -117,7 +117,9 @@ function DashboardApp(props) {
 		CoreHttpHandler.request('dashboard', 'listing', { ...dataSourceOptions.params }, dataSourceSuccess, dataSourceFailure);
 		CoreHttpHandler.request('dashboard', 'messagestate', { ...dataSourceOptions.params }, messagestateSuccess, messagestateFailure);
 		CoreHttpHandler.request('reports', 'campaignChart', { ...dataSourceOptionss.params }, dataSourceSuccesss, dataSourceFailuree);
-
+		return()=>{
+			am4core.disposeAllCharts();
+		}
 	}, [])
 	const dataSourceSuccesss = (response) => {
 		const list = response.data.data.report;

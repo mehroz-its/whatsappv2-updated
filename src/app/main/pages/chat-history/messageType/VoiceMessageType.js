@@ -12,7 +12,6 @@ import moment from 'moment/moment';
 
 
 const VoiceMessageType = function (props) {
-    console.log(props,'prpps');
     
     const { classes, message, index } = props;
 

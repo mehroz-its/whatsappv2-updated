@@ -58,15 +58,6 @@ function ComapnyProfile() {
 		acceptTermsConditions: false
 	});
 
-	// function isFormValid() {
-	//     return (
-	//         form.email.length > 0 &&
-	//         form.password.length > 0 &&
-	//         form.password.length > 3 &&
-	//         form.password === form.passwordConfirm &&
-	//         form.acceptTermsConditions
-	//     );
-	// }
 	const handleCityChange = (event) => {
 		setCity(event.target.value);
 	};
@@ -78,11 +69,9 @@ function ComapnyProfile() {
 
 	function handleSubmit(ev) {
 		ev.preventDefault();
-		// resetForm();
 		setStep(2)
 	}
 	let pic = require('../../../../../images/logo-head.png')
-	console.log(form, 'formform')
 	return (
 		<div className={clsx(classes.root, 'flex flex-col flex-auto flex-shrink-0 items-center justify-center p-0')}>
 			<div className="flex flex-col items-center justify-center w-450">
@@ -192,12 +181,6 @@ function ComapnyProfile() {
 									</Button>
 							</form>
 
-							{/* <div className="flex flex-col items-center justify-center pt-32 pb-24">
-									<span className="font-medium">Already have an account?</span>
-									<Link className="font-medium" to="/pages/auth/login">
-										Login
-									</Link>
-								</div> */}
 						</CardContent>
 					</Card> :
 						<Card className="w-full max-w-400">
@@ -267,20 +250,6 @@ function ComapnyProfile() {
 								</Button>
 								</form>
 
-								{/* <div className="flex flex-col items-center justify-center pt-32 pb-24">
-								<span className="font-medium">Already have an account?</span>
-								<Link className="font-medium" to="/pages/auth/login">
-									Login
-								</Link>
-							</div> */}
-
-
-								{/* <div className="flex flex-col items-center justify-center pt-32 pb-24">
-								<span className="font-medium">Already have an account?</span>
-								<Link className="font-medium" to="/pages/auth/login">
-									Login
-								</Link>
-							</div> */}
 							</CardContent>
 						</Card>
 					}

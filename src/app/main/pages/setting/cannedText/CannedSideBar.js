@@ -11,14 +11,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { useSelector } from 'react-redux';
-
-
 const useStyles = makeStyles(theme => ({
 	listItem: {
 		color: 'inherit!important',
 		textDecoration: 'none!important',
 		height: 40,
-		fontSize:'12px',
+		fontSize: '12px',
 		width: 'calc(100% - 16px)',
 		borderRadius: '0 20px 20px 0',
 		paddingLeft: 24,
@@ -36,23 +34,21 @@ const useStyles = makeStyles(theme => ({
 		}
 	},
 	avatar: {
-	
-		padding:0,
-		width:30,
-		height:30
-	  },
-	  listItemText:{
-		fontSize:'100px',//Insert your required size
-	
-	  }
+
+		padding: 0,
+		width: 30,
+		height: 30
+	},
+	listItemText: {
+		fontSize: '100px',//Insert your required size
+
+	}
 }));
 
 function CannedSideBar(props) {
 	const user = null;
 	let data = null
 	data = JSON.parse(localStorage.getItem('user_data'))
-	console.log(data)
-
 	let value = null
 	if (data !== null) {
 		function titleCase(str) {
@@ -62,24 +58,18 @@ function CannedSideBar(props) {
 			}
 			return str.join(' ');
 		}
-		console.log(data)
-		 value = titleCase(data.username);
-
+		value = titleCase(data.username);
 	}
-	console.log(value, 'titleCasetitleCasetitleCase')
-
-
 	const classes = useStyles(props);
-
 	return (
 		<div className="p-0 lg:p-24 lg:ltr:pr-4 lg:rtl:pl-4">
 			<FuseAnimate animation="transition.slideLeftIn" delay={200}>
 				<Paper className="rounded-0 shadow-none lg:rounded-8 lg:shadow-1">
 					<div className="p-24 flex items-center">
-						<Avatar alt={value.charAt(0)} src="../../../"  
-						className={classes.avatar}
+						<Avatar alt={value.charAt(0)} src="../../../"
+							className={classes.avatar}
 						/>
-						<Typography className="mx-12" style={{fontSize:'12px',marginTop:'1px'}}>{value}</Typography>
+						<Typography className="mx-12" style={{ fontSize: '12px', marginTop: '1px' }}>{value}</Typography>
 					</div>
 					<Divider />
 					<List>
@@ -91,13 +81,13 @@ function CannedSideBar(props) {
 							className={classes.listItem}
 						>
 							<Icon className="list-item-icon text-16" color="action">
-							rate_review
+								rate_review
 							</Icon>
 							<ListItemText className="truncate" primary="All Messages" disableTypography />
 						</ListItem>
 						<ListItem
-						
-							 
+
+
 							button
 							component={NavLinkAdapter}
 							to="/apps/canned-text"
@@ -105,15 +95,15 @@ function CannedSideBar(props) {
 							className={classes.listItem}
 						>
 							<Icon className="list-item-icon text-16" color="action">
-							textsms
+								textsms
 							</Icon>
-							<ListItemText 
-						
-							primary="Text" disableTypography />
+							<ListItemText
+
+								primary="Text" disableTypography />
 						</ListItem>
 						<ListItem
-						
-							 
+
+
 							button
 							component={NavLinkAdapter}
 							to="/apps/canned-audio"
@@ -121,72 +111,60 @@ function CannedSideBar(props) {
 							className={classes.listItem}
 						>
 							<Icon className="list-item-icon text-16" color="action">
-							audiotrack
+								audiotrack
 							</Icon>
-							<ListItemText 
-						
-							primary="Audio" disableTypography />
+							<ListItemText
+
+								primary="Audio" disableTypography />
 						</ListItem>
 						<ListItem
-						
-							 
-						button
-						component={NavLinkAdapter}
-						to="/apps/canned-images"
-						activeClassName="active"
-						className={classes.listItem}
-					>
-						<Icon className="list-item-icon text-16" color="action">
-						image
-						</Icon>
-						<ListItemText 
-					
-						primary="Image" disableTypography />
-					</ListItem>
-					<ListItem
-						
-							 
-						button
-						component={NavLinkAdapter}
-						to="/apps/canned-videos"
-						activeClassName="active"
-						className={classes.listItem}
-					>
-						<Icon className="list-item-icon text-16" color="action">
-						switch_video
-						</Icon>
-						<ListItemText 
-					
-						primary="Video" disableTypography />
-					</ListItem>
-					<ListItem
-						
-							 
-						button
-						component={NavLinkAdapter}
-						to="/apps/canned-docs"
-						activeClassName="active"
-						className={classes.listItem}
-					>
-						<Icon className="list-item-icon text-16" color="action">
-						picture_as_pdf
-						</Icon>
-						<ListItemText 
-					
-						primary="Document" disableTypography />
-					</ListItem>
-						{/* <ListItem
+
+
 							button
 							component={NavLinkAdapter}
-							to="/apps/contacts/starred"
+							to="/apps/canned-images"
 							activeClassName="active"
 							className={classes.listItem}
 						>
 							<Icon className="list-item-icon text-16" color="action">
-								star
-							</Icon>
-							<ListItemText className="truncate" primary="Starred contacts" disableTypography />
-						</ListItem> */}
+								image
+						</Icon>
+							<ListItemText
+
+								primary="Image" disableTypography />
+						</ListItem>
+						<ListItem
+
+
+							button
+							component={NavLinkAdapter}
+							to="/apps/canned-videos"
+							activeClassName="active"
+							className={classes.listItem}
+						>
+							<Icon className="list-item-icon text-16" color="action">
+								switch_video
+						</Icon>
+							<ListItemText
+
+								primary="Video" disableTypography />
+						</ListItem>
+						<ListItem
+
+
+							button
+							component={NavLinkAdapter}
+							to="/apps/canned-docs"
+							activeClassName="active"
+							className={classes.listItem}
+						>
+							<Icon className="list-item-icon text-16" color="action">
+								picture_as_pdf
+						</Icon>
+							<ListItemText
+
+								primary="Document" disableTypography />
+						</ListItem>
 					</List>
 				</Paper>
 			</FuseAnimate>

@@ -24,13 +24,8 @@ function CampaingsTable(props) {
 		setOpen(false)
 	}
 
-	console.log(props)
-	// const dispatch = useDispatch();
-	// const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
-	// const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
-	// const [data, setData] = useState([]);
 	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
 	const [data2, setData2] = useState(data);
 	const [page, setPage] = useState(0);
@@ -49,20 +44,6 @@ function CampaingsTable(props) {
 	})
 
     let data=props.data
-	// useEffect(() => {
-	// 	dispatch(Actions.getProducts());
-	// }, [dispatch]);
-
-	// useEffect(() => {
-	// 	if (searchText.length !== 0) {
-	// 		setData(_.filter(products, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
-	// 		setPage(0);
-	// 	} else {
-	// 		setData(products);
-	// 		console.log(products,'here in prdoducts table')
-	// 	}
-	// }, [products, searchText]);
-
 	function handleRequestSort(event, property) {
 		const id = property;
 		let direction = 'desc';
@@ -85,19 +66,8 @@ function CampaingsTable(props) {
 		setSelected([]);
 	}
 
-	// if (data2.length === 0) {
-	// 	return (
-	// 		<div className="flex flex-1 items-center justify-center h-full">
-	// 			<FuseLoading />
-	// 		</div>
-	// 	);
-	// }
-
 	function handleClick(n) {
-		console.log(n,'nnnnnnnn');
-		
 		setOpen(true)
-		console.log(dialogData,n,'asdsd');
 		setDialogData({
 			enabled:n.enabled,
 			id:n.id,
@@ -108,33 +78,6 @@ function CampaingsTable(props) {
 		
 		
 }
-// if(searchVal!==props.ValueForSearch)
-// {
-// 	{search()}
-// }
-
-// // if(searchVal.length===0)
-// // {
-// // 	{getData()}
-// // }
-
-
-
-
-// //    if(props.PressedVal==8){
-// // 	setData(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-// // }
-
-// function search(){
-// 	console.log('ceeleded',props.ValueForSearch,searchVal);
-	
-// 	setSearchVal(props.ValueForSearch)
-// 	setData2(data.filter(n=>n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
-// 	console.log(data,'filterssss');
-	
-	
-// }
-
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
@@ -192,7 +135,6 @@ function CampaingsTable(props) {
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map(n => {
                                 const isSelected = selected.indexOf(n.id) !== -1;
-                                console.log(n,'nnnnnnnnnnn');
                                 
 								return (
 									<TableRow
@@ -205,14 +147,6 @@ function CampaingsTable(props) {
 										selected={isSelected}
 										onClick={event => handleClick(n)}
 									>
-
-										{/* <TableCell className="w-64 text-center" padding="none">
-											<Checkbox
-												checked={isSelected}
-												onClick={event => event.stopPropagation()}
-												onChange={event => handleCheck(event, n.id)}
-											/>
-										</TableCell> */}
 										<TableCell component="th" scope="row" >
 											{n.incoming}
 										</TableCell>
@@ -229,45 +163,6 @@ function CampaingsTable(props) {
 											{n.outgoing_count}
 										</TableCell>
 									
-										{/* <TableCell component="th" scope="row" align="center">
-											{n.progress ? (
-												<Icon className="text-red text-20">check_circle</Icon>
-												) : (
-													<Icon className="text-green text-20">remove_circle</Icon>
-												)}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center">
-											{n.consumers}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center">
-											{n.success}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center">
-											{n.failure}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center">
-											{n.lastUpdated}
-										</TableCell> */}
-										{/* 
-										<TableCell component="th" scope="row" align="center">
-											{n.quantity}
-											<i
-												className={clsx(
-													'inline-block w-8 h-8 rounded mx-8',
-													n.quantity <= 5 && 'bg-red',
-													n.quantity > 5 && n.quantity <= 25 && 'bg-orange',
-													n.quantity > 25 && 'bg-green'
-												)}
-											/>
-										</TableCell> */}
-
-										{/* <TableCell component="th" scope="row" align="center">
-											{n.active ? (
-												<Icon className="text-green text-20">check_circle</Icon>
-											) : (
-													<Icon className="text-red text-20">remove_circle</Icon>
-												)}
-										</TableCell> */}
 									</TableRow>
 								);
 							})}
