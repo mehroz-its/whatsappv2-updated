@@ -33,6 +33,7 @@ import { makeStyles,  createMuiTheme, MuiThemeProvider } from '@material-ui/core
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import copy from 'copy-to-clipboard';
+
 const drawerWidth = 320;
 const headerHeight = 100;
 const AvatarStyle = createMuiTheme({
@@ -205,7 +206,11 @@ function ChatApp(props) {
 		setselectedRecipient(e)
 		setmobileChatsSidebarOpen(false)
 		getConversation(e);
+		setint_MessageLists(setInterval(() => {
+				getConversation(e);
+			}, 2000));
 	}
+	
 	const getNumbers = () => {
 		CoreHttpHandler.request('conversations', 'numbers', {}, (response) => {
 			const numbers = response.data.data.customers;
@@ -652,6 +657,9 @@ function ChatApp(props) {
 		}, (error) => {
 		});
 	}
+	if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
+		getNumbers();
+	}, 2000));
 	let userOnline = JSON.parse(localStorage.getItem('online'))
 	return (
 		<>

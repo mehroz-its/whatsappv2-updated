@@ -13,12 +13,14 @@ import AgentHeader from './AgentHeader'
 import AgentTable from './AgentTable'
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 import Button from '@material-ui/core/Button';
 import DateRangePickerVal from '../chat/DatePicker'
 import { CSVLink, CSVDownload } from 'react-csv';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert'
+import moment from "moment";
+
 const useStyles = makeStyles((theme) => ({
 	layoutRoot: {},
 	formControl: {
@@ -41,6 +43,7 @@ function AgentApp() {
 
 	const classes = useStyles();
 	const pageLayout = useRef(null);
+	const csvLinkK = useRef() // setup the ref that we'll use for the hidden CsvLink click once we've updated the data
 	const [data2, setData2] = React.useState([])
 	const [val, setVal] = React.useState('');
 	const [tableData, setTableData] = React.useState([]);
@@ -49,9 +52,11 @@ function AgentApp() {
 	const [isLoading, setisLoading] = React.useState(false)
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [ok, setOK] = React.useState('')
+	const [name, setName] = React.useState('')
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 	// const [HitValue,setHitValue] = React.useState(false)
 	const getData = ((loadData) => {
+
 		loadData = () => {
 			return CoreHttpHandler.request('reports', 'agentReport', {
 				role_id: 64,
@@ -150,14 +155,16 @@ function AgentApp() {
 
 	}
 	React.useEffect(() => {
-		CoreHttpHandler.request('reports', 'agentChart', {
-			role_id: 64
-		}, dataSourceSuccess, dataSourceFailure)
+		// CoreHttpHandler.request('reports', 'agentChart', {
+		// 	role_id: 64
+		// }, dataSourceSuccess, dataSourceFailure)
 		// engagments()
 
 		getData()
-		return()=>{
+		return () => {
 			am4core.disposeAllCharts();
+			Start = "";
+			End = "";
 		}
 	}, [])
 
@@ -205,20 +212,13 @@ function AgentApp() {
 		getData('', Start, End);
 	}
 	const DownloadData = () => {
-		let name;
-		if (Start === '') {
-			name = new Date().toISOString()
-		}
-		else {
-			name = Start + "-" + End
-		}
-		const csvLink = (<CSVLink filename={`chat_${name}.csv`} data={tableData}><span style={{ color: 'white' }}>Your exported chat is ready for download</span></CSVLink>);
-		setSnackBarMessage(csvLink)
-		setOK("success")
-		setSnackBarOpen(true)
-	}
-	// { HitValue ? getData('',Start,End) : null }
+		if (Start === '') setName(moment(new Date().toISOString()).format('DD/MM/YYYY'))
+		else setName(moment(Start).format('DD/MM/YYYY') + "-" + moment(End).format('DD/MM/YYYY'))
+		setTimeout(() => {
+			csvLinkK.current.link.click()
+		}, 1000);
 
+	}
 	return (
 		<FusePageSimple
 
@@ -249,39 +249,45 @@ function AgentApp() {
 						id="content-upload-button" style={{ marginLeft: '8px', marginTop: '6px', fontSize: '10px' }} size='small' variant="contained" color="primary" component="span"                            >
 						Export
                 </Button>
+					<CSVLink
+						data={tableData}
+						filename={`agent_${name}.csv`}
+						className='hidden'
+						ref={csvLinkK}
+						target='_blank'
+					/>
 
-					{isLoading ? <CircularProgress color="secondary" style={{ marginLeft: '4%', color: 'white' }} /> :
-						null}
+
 
 				</div>
 			}
 			content={
 				<div className="p-12">
-					<FuseAnimateGroup
+					{/* <FuseAnimateGroup
 						className="flex flex-wrap"
 						enter={{
 							animation: 'transition.slideUpBigIn'
-						}}>
+						}}> */}
 
-						<div className="widget flex w-full sm:w-1/1 md:w-1/1 p-12">
-							<Paper className="w-full rounded-8 shadow-none border-1">
-								<div id="chartdivv" style={{ width: "100%", height: "300px" }}></div>
-							</Paper>
-						</div>
+					<div className="widget flex w-full sm:w-1/1 md:w-1/1 p-12">
+						<Paper className="w-full rounded-8 shadow-none border-1">
+							<div id="chartdivv" style={{ width: "100%", height: "300px" }}></div>
+						</Paper>
+					</div>
 
-						<Snackbar
+					<Snackbar
 
-							anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-							open={snackbaropen}
-							autoHideDuration={4000}
-							onClose={() => setSnackBarOpen(false)}
-						>
-							<Alert variant="filled" severity={ok}>
-								{snackbarmessage}
-							</Alert>
-						</Snackbar>
+						anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+						open={snackbaropen}
+						autoHideDuration={4000}
+						onClose={() => setSnackBarOpen(false)}
+					>
+						<Alert variant="filled" severity={ok}>
+							{snackbarmessage}
+						</Alert>
+					</Snackbar>
 
-					</FuseAnimateGroup>
+					{/* </FuseAnimateGroup> */}
 					<FusePageSimple
 						classes={{
 							content: 'flex',
