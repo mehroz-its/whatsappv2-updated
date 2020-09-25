@@ -16,10 +16,12 @@ import CampaignApis from './campaigns';
 import Reports from './reports';
 import ProfileApis from './profile';
 import LocationApis from './locations';
+import CustomerOnBoard from './customerOnBoard';
 
 class ApiResolver {
     constructor() {
         this.apis = {
+            customerOnBoard:CustomerOnBoard.apis(),
             core: CoreApis.apis(),
             dashboard: DashboardApis.apis(),
             roles: RoleApis.apis(),
