@@ -87,20 +87,6 @@ function ComapnyProfile(props) {
 			.catch((error) => {
 			})
 	})
-	// const getCities = ((loadData,id) => {
-	// 	loadData = (id) => {
-	// 		return CoreHttpHandler.request('customerOnBoard', 'getCountries',
-	// 		 {
-
-	// 		}, null, null, true);
-	// 	};
-	// 	loadData().then((response) => {
-	// 		const tableData = response.data.data.countries
-	// 		setCountriesData(tableData)
-	// 	})
-	// 		.catch((error) => {
-	// 		})
-	// })
 
 	React.useEffect(() => {
 		// getCountries()
@@ -111,8 +97,6 @@ function ComapnyProfile(props) {
 
 	const handleCityChange = (event) => {
 		setCity(event.target.value);
-		// getCities(event.target.value.id)
-
 	}
 
 	const handleStatesChange = (event) => {
@@ -274,11 +258,7 @@ function ComapnyProfile(props) {
 														)
 													})
 												}
-												{/* <MenuItem value={10}>Pakistan</MenuItem>
-												<MenuItem value={20}>Pakistan</MenuItem>
-												<MenuItem value={30}>Pakistan</MenuItem> */}
 											</Select>
-											{/* <FormHelperText>Some important helper text</FormHelperText> */}
 										</FormControl>
 									</Grid>
 									<Grid item md={4} sm={12} xs={12} >
@@ -303,7 +283,6 @@ function ComapnyProfile(props) {
 													})
 												}
 											</Select>
-											{/* <FormHelperText>Some important helper text</FormHelperText> */}
 										</FormControl>
 									</Grid>
 									<Grid item md={4} sm={12} xs={12} >
@@ -328,26 +307,12 @@ function ComapnyProfile(props) {
 													})
 												}
 											</Select>
-											{/* <FormHelperText>Some important helper text</FormHelperText> */}
 										</FormControl>
 									</Grid>
 									<Grid item md={4} sm={12} xs={12} >
 										<TextField onChange={handleChange} size='small' name="website" type="website" value={form.website} required id="outlined-basic-email" label="Web-Site" variant="outlined" fullWidth autoComplete="off" />
 									</Grid>
 								</Grid>
-								{/* <FormControl className="items-center">
-										<FormControlLabel
-											control={
-												<Checkbox
-													name="acceptTermsConditions"
-													checked={form.acceptTermsConditions}
-													onChange={handleChange}
-												/>
-											}
-											label="I read and accept terms and conditions"
-										/>
-									</FormControl> */}
-
 								<Button
 									variant="contained"
 									color="primary"
