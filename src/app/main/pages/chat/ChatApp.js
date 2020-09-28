@@ -29,7 +29,7 @@ import { CSVLink } from 'react-csv';
 import Fade from '@material-ui/core/Fade'
 import Tooltip from '@material-ui/core/Tooltip';
 import { EventEmitter } from '../../../../events'
-import { makeStyles,  createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import copy from 'copy-to-clipboard';
@@ -185,10 +185,12 @@ function ChatApp(props) {
 	const userSidebarOpen = false;
 	const contactSidebarOpen = false;
 	var abc = []
+	let numberDummy = []
 	const [mobileChatsSidebarOpen, setmobileChatsSidebarOpen] = React.useState(false);
 	const [lastMessageTimestamp, setlastMessageTimestamp] = React.useState(null);
 	const [latestMessageSender, setlatestMessageSender] = React.useState(null);
 	const [numbers, setnumbers] = React.useState([]);
+	const [numbersdum, setnumbersdum] = React.useState([]);
 	const [lastmessage, setlastmessage] = React.useState([]);
 	const [messages, setmessages] = React.useState([]);
 	const [NewMessages, setNewMessages] = React.useState([]);
@@ -207,25 +209,34 @@ function ChatApp(props) {
 		setmobileChatsSidebarOpen(false)
 		getConversation(e);
 		setint_MessageLists(setInterval(() => {
-				getConversation(e);
-			}, 2000));
+			getConversation(e);
+		}, 2000));
 	}
-	
+
 	const getNumbers = () => {
 		CoreHttpHandler.request('conversations', 'numbers', {}, (response) => {
-			const numbers = response.data.data.customers;
-			const lastMessage = response.data.data.lastMessage;
-			if (lastMessage) {
-				const lastMessageDtu = new Date(lastMessage.dtu);
-				if (lastMessageTimestamp === null)
-					setlastMessageTimestamp(new Date(lastMessage.dtu))
-				if (lastMessageTimestamp < lastMessageDtu) {
-					setlastMessageTimestamp(lastMessageDtu);
-					setlatestMessageSender(lastMessage.number);
+			const numberss = response.data.data.customers;
+			if (numberDummy.length === 0) {
+				console.log("if");
+				numberDummy = numberss
+				setnumbers(numberss)
+			}
+			else {
+				if (numberss.length !== numberss.length ) {
+					console.log("else if ");
+					numberDummy = numberss
+					setnumbers(numberss)
+					EventEmitter.dispatch('Message', true)
+				}
+				else {
+				if (JSON.stringify(numberDummy) !== JSON.stringify(numberss)) {
+					console.log("else else if", numberDummy.length, numberss.length);
+					numberDummy = numberss
+					setnumbers(numberss)
+					EventEmitter.dispatch('Message', true)
 				}
 			}
-			setnumbers(numbers)
-			setlastmessage(lastMessage)
+			}
 		}, (response) => {
 		});
 	}
