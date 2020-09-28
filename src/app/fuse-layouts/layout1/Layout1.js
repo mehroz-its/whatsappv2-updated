@@ -14,6 +14,12 @@ import LeftSideLayout1 from './components/LeftSideLayout1';
 import NavbarWrapperLayout1 from './components/NavbarWrapperLayout1';
 import RightSideLayout1 from './components/RightSideLayout1';
 import ToolbarLayout1 from './components/ToolbarLayout1';
+import Snackbar from '@material-ui/core/Snackbar';
+import Button from '@material-ui/core/Button';
+import MuiAlert from '@material-ui/lab/Alert';
+
+import { EventEmitter } from '../../../../src/events'
+
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -80,19 +86,36 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
+function Alert(props) {
+	return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 function Layout1(props) {
 	const config = useSelector(({ fuse }) => fuse.settings.current.layout.config);
-
+	const [state, setState] = React.useState({
+		open: false,
+		vertical: 'top',
+		horizontal: 'center',
+	});
 	const appContext = useContext(AppContext);
 	const classes = useStyles(props);
 	const { routes } = appContext;
+	const [openn, setOpenn] = React.useState(false);
 
-	// console.warn('FuseLayout:: rendered');
+	const handleClose = () => {
+		setOpenn(false)
+	};
+	React.useEffect(() => {
+		EventEmitter.subscribe('Message', (e) => setOpenn(true))
+	}, [])
+
+
 
 	switch (config.scroll) {
 		case 'body': {
 			return (
 				<div id="fuse-layout" className={clsx(classes.root, config.mode, `scroll-${config.scroll}`)}>
+
 					{config.leftSidePanel.display && <LeftSideLayout1 />}
 
 					<div className="flex flex-1 flex-col overflow-hidden relative">
@@ -183,18 +206,20 @@ function Layout1(props) {
 								{config.footer.display &&
 									config.footer.position === 'below' &&
 									config.footer.style === 'fixed' && <FooterLayout1 />}
-
 								<SettingsPanel />
 							</div>
-
 							{config.navbar.display && config.navbar.position === 'right' && <NavbarWrapperLayout1 />}
 						</div>
-
+						<Snackbar open={openn} autoHideDuration={2000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}  key={'bottom' + 'right'}
+						 onClose={handleClose} 
+						 >
+							<Alert severity="success">
+								You have a new message
+        					</Alert>
+						</Snackbar>
 						{config.footer.display && config.footer.position === 'above' && <FooterLayout1 />}
 					</div>
-
 					{config.rightSidePanel.display && <RightSideLayout1 />}
-
 					<FuseMessage />
 				</div>
 			);

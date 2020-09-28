@@ -8,6 +8,8 @@ import moment from 'moment';
 import React from 'react';
 import StatusIcon from './StatusIcon';
 import FuseAnimate from '@fuse/core/FuseAnimate'
+import { EventEmitter } from '../../../../events'
+
 const useStyles = makeStyles(theme => ({
 	contactListItem: {
 		borderBottom: `1px solid ${theme.palette.divider}`,
@@ -32,6 +34,11 @@ const useStyles = makeStyles(theme => ({
 
 function ContactListItem(props) {
 	const classes = useStyles(props);
+	// let bage = Number(props.contact.message_count)
+	// console.log("bage",bage);
+	// if (bage > 0) {
+	// 	EventEmitter.dispatch('Message', true)
+	// }
 	const showAvatar = () => {
 		if (props.Channel === "") {
 			return (
@@ -60,6 +67,17 @@ function ContactListItem(props) {
 			)
 		}
 	}
+// let val = 1
+// if(props.contact.message_count && val === 1){
+// 	if(props.contact.message_count > 0){
+// 		alert('new message')
+// 		return val = 4
+// 	}
+
+// }
+	
+
+	
 	return (
 
 		<ListItem
@@ -72,6 +90,7 @@ function ContactListItem(props) {
 			<div className="relative">
 				<div className="absolute right-0 bottom-0 -m-2 z-6">
 					<StatusIcon status={props.contact.name} />
+					
 				</div>
 				{showAvatar()}
 			</div>

@@ -15,6 +15,8 @@ import AppContext from './AppContext';
 import { Auth } from './auth';
 import routes from './fuse-configs/routesConfig';
 import store from './store';
+import { Alert, AlertTitle } from '@material-ui/lab';
+
 
 const jss = create({
 	...jssPreset(),
@@ -26,11 +28,18 @@ const generateClassName = createGenerateClassName();
 
 const App = () => {
 	const [hasPermission, setHasPermission] = React.useState(null)
+	const [displaySnack, setDisplaySnack] = React.useState(false)
+
 
 	React.useEffect(() => {
 		const user_acl = localStorage.getItem('user_acl')
 		setHasPermission(user_acl)
 	});
+	setTimeout(() => {
+
+		setDisplaySnack(true)
+
+	}, 4000);
 
 	return (
 		<AppContext.Provider
@@ -44,9 +53,17 @@ const App = () => {
 						<Auth>
 							<Router history={history}>
 								<FuseAuthorization
-								 hasPermission={hasPermission}> 
+									hasPermission={hasPermission}>
 									<FuseTheme>
 										<FuseLayout />
+										{/* {displaySnack ? (
+											<Alert severity="error">
+												<AlertTitle>Error</AlertTitle>
+            This is an error alert — <strong>check it out!</strong>
+											</Alert>
+										) : null
+
+										} */}
 									</FuseTheme>
 								</FuseAuthorization>
 							</Router>
