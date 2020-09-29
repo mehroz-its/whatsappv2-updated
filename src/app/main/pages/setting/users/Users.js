@@ -5,32 +5,14 @@ import FuseAnimate from '@fuse/core/FuseAnimate';
 import reducer from './store/reducers';
 import Fab from '@material-ui/core/Fab';
 import UserHeader from './UserHeader';
-import Checkbox from '@material-ui/core/Checkbox';
-import TextField from '@material-ui/core/TextField';
 import UserTable from './UserTable';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { green } from '@material-ui/core/colors';
-import Dialog from '@material-ui/core/Dialog';
+import { makeStyles } from '@material-ui/core/styles';
 import Icon from '@material-ui/core/Icon';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
 import UserDialog from './UserDialog'
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-const GreenCheckbox = withStyles({
-	root: {
-		color: green[400],
-		'&$checked': {
-			color: green[600],
-		},
-	},
-	checked: {},
-})((props) => <Checkbox color="default" {...props} />);
+
 
 const useStyles = makeStyles((theme) => ({
 	addButton: {
@@ -60,11 +42,6 @@ function Users(props) {
 	const [val, setVal] = React.useState('')
 	const [data, setData] = React.useState([]);
 	const [data2, setData2] = React.useState(data);
-	const [state, setState] = React.useState({
-		checkedG: true,
-		checkedB: true
-
-	})
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [ok, setOK] = React.useState('')
@@ -73,9 +50,7 @@ function Users(props) {
 		getData()
 		setOpen(false);
 	}
-	const updateText = (search) => {
-		setVal(search)
-	}
+
 	const getData = ((loadData) => {
 		loadData = () => {
 			return CoreHttpHandler.request('users', 'listing', {

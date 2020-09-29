@@ -1,20 +1,10 @@
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
+
 import _ from '@lodash';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import MuiAlert from '@material-ui/lab/Alert';
-import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as Actions from '../store/actions';
-import TableData from '../agentdata'
 import Chat from './chat/ChatApp'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
 
@@ -24,8 +14,6 @@ function AgentContent(props) {
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 
-	const [selected, setSelected] = useState([]);
-	const [data, setData] = useState(TableData);
 	const [dropdowntitile, setDropDownTitle] = useState('Agents');
 	const [viewChat, setViewChat] = useState(displayChat);
 

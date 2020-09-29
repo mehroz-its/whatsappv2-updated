@@ -30,11 +30,11 @@ function AgentHeader(props) {
 	const classes = useStyles();
 	const { total } = props
 	const [agentDropDownOpen, setagentDropDownOpen] = React.useState(false);
-	const [viewChat, setViewChat] = useState(null);
+
 	const [agents, setagents] = React.useState([]);
 	const [int_CustomerList, setint_CustomerList] = React.useState(null);
 	const [selectedAgent, setselectedAgent] = React.useState('All');
-	const [numbers, setnumbers] = React.useState([]);
+
 	const defaultDialogData = {
 		selectedContactGroups: [],
 		selectedContacts: [],

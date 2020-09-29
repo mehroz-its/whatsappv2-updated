@@ -26,10 +26,7 @@ import UserSidebar from './UserSidebar';
 import CoreHttpHandler from '../../../../../../http/services/CoreHttpHandler';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import AttachmentDialogV2 from './dialog/chat/AttachmentDialogV2';
-import CannedMessagesDialog from './dialog/chat/CannedMessagesDialog';
-import BlockConfirmDialog from './dialog/chat/BlockConfirmDialog';
-import CustomerProfileDialog from './dialog/chat/CustomerProfileDialog';
+
 import XGlobalDialogCmp from '../../../../../../dialogs/XGlobalDialogCmp';
 import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
 import { CSVLink, CSVDownload } from 'react-csv';

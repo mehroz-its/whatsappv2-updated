@@ -1,13 +1,13 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
-import Hidden from '@material-ui/core/Hidden';
+
 import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
+
 import Input from '@material-ui/core/Input';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
+import { ThemeProvider,createMuiTheme,MuiThemeProvider } from '@material-ui/core/styles';
 
 const SearchStyle = createMuiTheme({
 	overrides: {

@@ -1,76 +1,23 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import moment from 'moment/moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import AttachFileIcon from '@material-ui/icons/AttachFile';
-import Button from '@material-ui/core/Button';
 import AudioMessageType from './messageType/AudioMessageType'
 import ContactMessageType from './messageType/ContactMessageType'
 import DocumentMessageType from './messageType/DocumentMessageType'
 import ImageMessageType from './messageType/ImageMessageType'
 import VideoMessageType from './messageType/VideoMessageType'
 import LocationMessageType from './messageType/LocationMessageType'
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import MicIcon from '@material-ui/icons/Mic'
 import CoreHttpHandler from '../../../../../../http/services/CoreHttpHandler';
-import XGlobalDialogCmp from '../../../../../../dialogs/XGlobalDialogCmp';
-import XGlobalDialog from '../../../../../../dialogs/XGlobalDialog';
-import { CSVLink, CSVDownload } from 'react-csv';
-import AttachmentDialogV2 from './dialog/chat/AttachmentDialogV2';
-import CannedMessagesDialog from './dialog/chat/CannedMessagesDialog';
-import BlockConfirmDialog from './dialog/chat/BlockConfirmDialog';
-import CustomerProfileDialog from './dialog/chat/CustomerProfileDialog';
+import { CSVLink } from 'react-csv';
 import MessageStateResolver from '../../../chat/messageType/MessageStateResolver'
-
-import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
-
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Fade from '@material-ui/core/Fade'
 import copy from 'copy-to-clipboard';
-
 import * as Actions from './store/actions';
-const contacts = [
-	{
-		avatar: "assets/images/avatars/alice.jpg",
-		id: "5725a680b3249760ea21de52",
-		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-		name: "Alice Freeman",
-		status: "online",
-		unread: "2",
-	},
-	{
-		avatar: "assets/images/avatars/Arnold.jpg",
-		id: "5725a680606588342058356d",
-		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-		name: "Arnold",
-		status: "do-not-disturb",
-		unread: "3"
-	},
-	{
-		avatar: "assets/images/avatars/Barrera.jpg",
-		id: "5725a68009e20d0a9e9acf2a",
-		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-		name: "Arnold",
-		status: "do-not-disturb",
-		unread: "3"
-	},
 
-
-]
 const user = {
 	avatar: "assets/images/avatars/profile.jpg",
 	chatList: [
@@ -474,21 +421,10 @@ function Chat(props) {
 		}, (response) => {
 		})
 	};
-	const dialogOptionsConfirmBlock = {
-		onClose: function () {
-			setdialogOpenConfirmBlock(false)
 
-		},
-		'aria-labelledby': "form-dialog-title",
-		'aria-describedby': "form-dialog-title"
-	};
 	const open = Boolean(anchorEl);
-	const handleClick = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
-	const handleClose = () => {
-		setAnchorEl(null);
-	};
+
+
 	useEffect(() => {
 		if (messages) {
 			scrollToBottom();
@@ -501,12 +437,6 @@ function Chat(props) {
 		  }, 1000);
 	}
 
-	function shouldShowContactAvatar(item, i) {
-		return (
-			item.type === "inbound" &&
-			((messages[i + 1] && messages[i + 1].type !== props.selectedRecipient.id) || !messages[i + 1])
-		);
-	}
 
 	function isFirstMessageOfGroup(item, i) {
 		return i === 0 || (chat.dialog[i - 1] && chat.dialog[i - 1].who !== item.who);
@@ -516,20 +446,7 @@ function Chat(props) {
 		return i === chat.dialog.length - 1 || (chat.dialog[i + 1] && chat.dialog[i + 1].who !== item.who);
 	}
 
-	function onInputChange(ev) {
-		setMessageText(ev.target.value);
-	}
 
-	function onMessageSubmit(ev) {
-		ev.preventDefault();
-		if (messageText === '') {
-			return;
-		}
-
-		dispatch(Actions.sendMessage(messageText, chat.id, user.id)).then(() => {
-			setMessageText('');
-		});
-	}
 	const sendMessage = () => {
 		let params = {
 			type: "text",
@@ -546,9 +463,7 @@ function Chat(props) {
 		});
 	}
 	// send message
-	const sendMessageHandler = (event) => {
-		sendMessage();
-	}
+
 	const sendDialogInputHandler = (e) => {
 		const data = { ...sendDialogData };
 
@@ -597,9 +512,7 @@ function Chat(props) {
 			setsendDialogOpen(true)
 		}
 	}
-	const conversationEmail = () => {
-		setdialogOpen(true)
-	}
+
 
 	const conversationExport = () => {
 		let params = {
@@ -699,13 +612,7 @@ function Chat(props) {
 			setdialogOpenCanned(false)
 		}
 	}
-	const dialogOptionsCanned = {
-		onClose: function () {
-			setdialogOpenCanned(false)
-		},
-		'aria-labelledby': "form-dialog-title",
-		'aria-describedby': "form-dialog-title"
-	};
+
 	const cannedMessagesDialog = () => {
 		CoreHttpHandler.request('canned_messages', 'listing', {
 			columns: "*",
@@ -755,32 +662,9 @@ function Chat(props) {
 			copyContent();
 		}
 	}
-	const blockCustomerInputHandler = (props) => {
-		const {
-			key,
-			value,
-			event,
-			dataKey,
-		} = props;
-		setblockReason(value)
-	}
 
-	const dialogActionsConfirmBlock = [
-		{
-			handler: (event, index) => {
-				XGlobalDialogConfirmBlock()
-			},
-			options: {},
-			label: "Cancel",
-		},
-		{
-			handler: (event, index) => {
-				blockNumber()
-			},
-			options: {},
-			label: "Yes",
-		}
-	];
+
+
 	const XGlobalDialogConfirmBlock = () => {
 		setdialogOpenConfirmBlock(false)
 	}
@@ -992,16 +876,7 @@ function Chat(props) {
 					)}
 			</FuseScrollbars>
 
-			{/* <XGlobalDialogCmp onDialogPropsChange={sendDialogInputHandler} data={{ dialogType: sendActionType, attachment: sendDialogData }} dialogTitle={sendDialogTitle} options={dialogOptionsConfirmBlock} content={AttachmentDialogV2} defaultState={sendDialogOpen} actions={sendDialogActions} />
-			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
-			<XGlobalDialogCmp onDialogPropsChange={selectedCannedMessage} data={cannedMessagesList} dialogTitle={`Canned Messages`} options={dialogOptionsCanned} content={CannedMessagesDialog} defaultState={dialogOpenCanned} actions={dialogActionsCanned} />
-			<XGlobalDialogCmp onDialogPropsChange={blockCustomerInputHandler} data={selectedRecipient} dialogTitle={`Confirm Block`} options={dialogOptionsConfirmBlock} content={BlockConfirmDialog} defaultState={dialogOpenConfirmBlock} actions={dialogActionsConfirmBlock} />
-			<XGlobalDialogCmp onDialogPropsChange={customerProfileInputHandler} data={customerProfileData} dialogTitle={`Customer Profile`} options={dialogOptionsCmp} content={CustomerProfileDialog} defaultState={dialogOpenCmp} actions={dialogActionsCmp} /> */}
-
-			{/* <XGlobalDialog onchange={(e) => {
-                    this.onchange(e);
-                }} dialogTitle={`Email [${this.state.selectedRecipient}]'s Conversation`} options={this.dialogOptions} content={ConversationsEmailDialog} defaultState={this.state.dialogOpen} actions={this.dialogActions} /> */}
-		</div>
+			</div>
 	);
 }
 

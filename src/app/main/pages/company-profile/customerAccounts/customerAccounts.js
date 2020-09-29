@@ -11,7 +11,7 @@ import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_material from "@amcharts/amcharts4/themes/material";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import Grid from '@material-ui/core/Grid';
-import Card from '@material-ui/core/Card';
+
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import Widget2 from './widgets/Widget2';
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'

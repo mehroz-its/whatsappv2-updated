@@ -1,21 +1,16 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
-import Checkbox from '@material-ui/core/Checkbox';
-import Icon from '@material-ui/core/Icon';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
-import clsx from 'clsx';
+import { createMuiTheme,MuiThemeProvider } from '@material-ui/core/styles';
 import ContactsTablePaginationActions from '../../setting/canned/ContactsTablePaginationActions';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {  useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import AgentTableHead from './AgentTableHead';
-import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 
 const PaginationStyle = createMuiTheme({
@@ -34,31 +29,14 @@ const PaginationStyle = createMuiTheme({
   });
 
 function AgentTable(props) {
-
-	
-	function closeDialog(){
-		setOpen(false)
-	}
-
-
-	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
-	const[searchVal,setSearchVal]=useState(props.ValueForSearch)
-	const [data2, setData2] = useState(data);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
 		direction: 'asc',
 		id: null
 	});
-	const[dialogData,setDialogData]=useState({
-		enabled:'',
-		id:'',
-		name:'',
-		code:'',
-		country:''
-		
-	})
+
 
     let data=props.data
 	function handleRequestSort(event, property) {
@@ -93,14 +71,7 @@ function AgentTable(props) {
 
 	function handleClick(n) {
 		
-		setOpen(true)
-		setDialogData({
-			enabled:n.enabled,
-			id:n.id,
-			name:n.name,
-			code:n.code,
-            country:0
-         })
+	
 		
 		
 }

@@ -1,6 +1,5 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
-import Checkbox from '@material-ui/core/Checkbox';
 import Icon from '@material-ui/core/Icon';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,16 +7,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import PermissionDialog from './PermissionDialog'
-import React, { useEffect, useState } from 'react';
-import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
-import clsx from 'clsx';
+import React, {  useState } from 'react';
+import {   createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import ContactsTablePaginationActions from '../../setting/canned/ContactsTablePaginationActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import * as Actions from './store/actions';
 import Typography from '@material-ui/core/Typography';
 import PermissionTableHead from './PermissionTableHead';
-import TableData from './PermissionData'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 import DeleteDialog from '../DeletDialog'

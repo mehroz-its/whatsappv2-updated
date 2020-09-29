@@ -8,16 +8,12 @@ import { Bar, Line } from 'react-chartjs-2';
 import widget from '../widgets/Widget5Data'
 
 function Widget5(props) {
-	// console.log('props in widget',props.widget)
+
 	const [currentRange, setCurrentRange] = useState('TW');
 	const theme = useTheme();
 
-	// const widget = _.merge({}, props.widget);
-console.log('widget :' , widget)
 
 	function handleChangeRange(range) {
-		console.log("range : " ,  range);
-		
 		setCurrentRange(range);
 	}
 
@@ -64,15 +60,15 @@ console.log('widget :' , widget)
 				</div>
 				<div className="flex w-full md:w-1/2 p-8 ">
 					{Object.entries(widget[0].supporting).map(([key, item]) => {
-						console.log("item  :" , item);
-						
+						console.log("item  :", item);
+
 						return (
 							<div key={key} className="w-full sm:w-1/2 p-12">
 								<Typography className="text-15 whitespace-no-wrap" color="textSecondary">
-								 {item.chart.options.label}
+									{item.chart.options.label}
 								</Typography>
 								<Typography className="text-32">{item.chart.options.count[currentRange]}</Typography>
-							 <div className="h-400 w-full">
+								<div className="h-400 w-full">
 									<Line
 										data={{
 											labels: item.chart[currentRange].labels,
@@ -96,7 +92,7 @@ console.log('widget :' , widget)
 						);
 					})}
 				</div>
-			
+
 			</div>
 		</Paper>
 	);

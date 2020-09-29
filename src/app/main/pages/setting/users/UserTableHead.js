@@ -73,12 +73,7 @@ function UserTableHead(props) {
 	const createSortHandler = property => event => {
 		props.onRequestSort(event, property);
 	};
-	function openSelectedProductsMenu(event) {
-		setSelectedProductsMenu(event.currentTarget);
-	}
-	function closeSelectedProductsMenu() {
-		setSelectedProductsMenu(null);
-	}
+
 
 	return (
 		<TableHead>
