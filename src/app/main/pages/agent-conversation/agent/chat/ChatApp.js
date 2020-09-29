@@ -16,7 +16,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Chat from './Chat';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import LinearProgress from '@material-ui/core/LinearProgress';
+
 import ChatsSidebar from './ChatsSidebar';
 import ContactSidebar from './ContactSidebar';
 import StatusIcon from './StatusIcon';
@@ -26,19 +26,14 @@ import UserSidebar from './UserSidebar';
 import CoreHttpHandler from '../../../../../../http/services/CoreHttpHandler';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import AttachmentDialogV2 from './dialog/chat/AttachmentDialogV2';
-import CannedMessagesDialog from './dialog/chat/CannedMessagesDialog';
-import BlockConfirmDialog from './dialog/chat/BlockConfirmDialog';
-import CustomerProfileDialog from './dialog/chat/CustomerProfileDialog';
 import XGlobalDialogCmp from '../../../../../../dialogs/XGlobalDialogCmp';
 import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
 import { CSVLink, CSVDownload } from 'react-csv';
-import Fade from '@material-ui/core/Fade'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import copy from 'copy-to-clipboard';
-
 import { EventEmitter } from '../../../../../../events'
+
 const drawerWidth = 320;
 const headerHeight = 200;
 

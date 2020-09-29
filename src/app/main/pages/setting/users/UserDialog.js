@@ -18,6 +18,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import UserRolesListInDialog from './UserRolesListInDialog'
+import Grid from '@material-ui/core/Grid';
 
 const GreenCheckbox = withStyles({
     root: {
@@ -69,6 +70,13 @@ const UserDialog = (props) => {
     const [email, setEmail] = React.useState(data.email);
     const [number, setNumber] = React.useState(data.number);
     const [password, setPassword] = React.useState('');
+    const [city, setCity] = React.useState('');
+    const [country, setCountry] = React.useState('');
+    const [selectedState, setSelectedState] = React.useState('');
+    const [age, setAge] = React.useState('');
+    const [countriesData, setCountriesData] = React.useState([]);
+    const [citiesData, setCitiesData] = React.useState([]);
+    const [statesData, setStatesData] = React.useState([]);
     const [roles, setRoles] = React.useState([])
     const [currentRoles, setCurrentRoles] = React.useState(data.roles);
     const [enabled, setEnabled] = React.useState(data.enabled);
@@ -102,6 +110,10 @@ const UserDialog = (props) => {
         setEnabled(event.target.checked);
     };
     React.useEffect(() => {
+        fetch(`https://glist.its.com.pk/v1/fetch/countries`)
+            .then(response => response.json())
+            .then(data => setCountriesData(data.data.countries));
+
         loadRoles().then(response => {
             const roles = response.data.data.list.data;
             setRoles(roles)
@@ -167,6 +179,32 @@ const UserDialog = (props) => {
             setCurrentRoles(roles);
         }
     }
+
+    const handleCityChange = (event) => {
+        setCity(event.target.value);
+    }
+
+    const handleStatesChange = (event) => {
+        setSelectedState(event.target.value);
+        console.log(event.target.value, 'country')
+        let state = event.target.value
+        fetch(`https://glist.its.com.pk/v1/fetch/cities/${state.id}`)
+            .then(response => response.json())
+            .then(data => setCitiesData(data.data.cities));
+
+    };
+
+    const handleCountryChange = (event) => {
+        setCountry(event.target.value);
+        console.log(event.target.value, 'country')
+        let country = event.target.value
+
+        fetch(`https://glist.its.com.pk/v1/fetch/states/${country.id}`)
+            .then(response => response.json())
+            .then(data => setStatesData(data.data.states));
+
+    };
+
 
     return (
         <Dialog open={openDialog} onClose={handleClose} aria-labelledby="form-dialog-title" classes={{
@@ -254,6 +292,91 @@ const UserDialog = (props) => {
                                 size="small"
                             />
                         </div>
+                        <Grid item md={10} sm={12} xs={12} >
+                            <FormControl variant="filled" size='small' fullWidth style={{ marginTop: '0px' }}>
+                                <InputLabel id="outlined-age-native-simple	">Country</InputLabel>
+                                <Select
+                                    required
+                                    labelId="demo-simple-select-outlined-label"
+                                    id="demo-simple-select-outlined"
+                                    value={country}
+                                    onChange={handleCountryChange}
+                                    fullWidth
+                                >
+                                    <MenuItem value="">
+                                        <em>Select Country</em>
+                                    </MenuItem>
+                                    {
+                                        countriesData.map(val => {
+                                            return (
+                                                <MenuItem value={val}>{val.name}</MenuItem>
+                                            )
+                                        })
+                                    }
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item md={10} sm={12} xs={12} >
+                            <FormControl variant="filled" fullWidth style={{ marginTop: '0px' }}>
+                                <InputLabel id="demo-simple-select-outlined-label">State</InputLabel>
+                                <Select
+                                    required
+                                    labelId="demo-simple-select-outlined-label"
+                                    id="demo-simple-select-outlined"
+                                    value={selectedState}
+                                    onChange={handleStatesChange}
+                                    fullWidth
+                                >
+                                    <MenuItem value="">
+                                        <em>Select State</em>
+                                    </MenuItem>
+                                    {
+                                        statesData.map(val => {
+                                            return (
+                                                <MenuItem value={val}>{val.name}</MenuItem>
+                                            )
+                                        })
+                                    }
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item md={10} sm={12} xs={12} >
+                            <FormControl variant="filled" size='small' fullWidth style={{ marginTop: '0px' }}>
+                                <InputLabel id="demo-simple-select-outlined-label">City</InputLabel>
+                                <Select
+                                    required
+                                    labelId="demo-simple-select-outlined-label"
+                                    id="demo-simple-select-outlined"
+                                    value={city}
+                                    onChange={handleCityChange}
+                                    fullWidth
+                                >
+                                    <MenuItem value="">
+                                        <em>Select City</em>
+                                    </MenuItem>
+                                    {
+                                        citiesData.map(val => {
+                                            return (
+                                                <MenuItem value={val}>{val.name}</MenuItem>
+                                            )
+                                        })
+                                    }
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <FormControl className={classes.formControl}>
+                            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={age}
+                                onChange={handleChange}
+                            >
+                                <MenuItem value={10}>Ten</MenuItem>
+                                <MenuItem value={20}>Twenty</MenuItem>
+                                <MenuItem value={30}>Thirty</MenuItem>
+                            </Select>
+                        </FormControl>
                         <FormControlLabel
                             control={<Checkbox
                                 checked={enabled}

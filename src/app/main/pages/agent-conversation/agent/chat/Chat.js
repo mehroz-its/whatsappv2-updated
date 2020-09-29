@@ -1,48 +1,23 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
-import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import moment from 'moment/moment';
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import AttachFileIcon from '@material-ui/icons/AttachFile';
-import Button from '@material-ui/core/Button';
-import AudioMessageType from './messageType/AudioMessageType'
-import ContactMessageType from './messageType/ContactMessageType'
-import DocumentMessageType from './messageType/DocumentMessageType'
-import ImageMessageType from './messageType/ImageMessageType'
-import VideoMessageType from './messageType/VideoMessageType'
-import LocationMessageType from './messageType/LocationMessageType'
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import PauseIcon from '@material-ui/icons/Pause';
-import GetAppIcon from '@material-ui/icons/GetApp';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import MicIcon from '@material-ui/icons/Mic'
+import { useDispatch } from 'react-redux';
+import AudioMessageType from '../../../chat/messageType/AudioMessageType'
+import ContactMessageType from '../../../chat/messageType/ContactMessageType'
+import DocumentMessageType from '../../../chat/messageType/DocumentMessageType'
+import ImageMessageType from '../../../chat/messageType/ImageMessageType'
+import VideoMessageType from '../../../chat/messageType/VideoMessageType'
+import LocationMessageType from '../../../chat/messageType/LocationMessageType'
 import CoreHttpHandler from '../../../../../../http/services/CoreHttpHandler';
-import XGlobalDialogCmp from '../../../../../../dialogs/XGlobalDialogCmp';
-import XGlobalDialog from '../../../../../../dialogs/XGlobalDialog';
-import { CSVLink, CSVDownload } from 'react-csv';
-import AttachmentDialogV2 from './dialog/chat/AttachmentDialogV2';
-import CannedMessagesDialog from './dialog/chat/CannedMessagesDialog';
-import BlockConfirmDialog from './dialog/chat/BlockConfirmDialog';
-import CustomerProfileDialog from './dialog/chat/CustomerProfileDialog';
+import { CSVLink } from 'react-csv';
 import MessageStateResolver from '../../../chat/messageType/MessageStateResolver'
-
-import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
-
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Fade from '@material-ui/core/Fade'
 import copy from 'copy-to-clipboard';
-
 import * as Actions from './store/actions';
+
 const contacts = [
 	{
 		avatar: "assets/images/avatars/alice.jpg",
@@ -155,15 +130,15 @@ const useStyles = makeStyles(theme => ({
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
 				width: 'auto',
-    			maxWidth: '35vw',
+				maxWidth: '35vw',
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
-				marginBottom:70,
+				marginBottom: 70,
 				'& .time': {
 					marginLeft: '0px',
 					marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom:8
+					paddingBottom: 8
 				}
 			},
 			'&.first-of-group': {
@@ -193,19 +168,19 @@ const useStyles = makeStyles(theme => ({
 				borderTopRightRadius: 5,
 				borderBottomRightRadius: 5,
 				width: 'auto',
-    			maxWidth: '35vw',
+				maxWidth: '35vw',
 				'& .time': {
 					// justifyContent: 'flex-end',
-					display:'flex',
+					display: 'flex',
 					justifyContent: 'flex-end',
 					right: 0,
 					marginLeft: 2,
 					// marginBottom: '-11px',
 					marginTop: '5px',
 					// paddingBottom:5,
-					opacity:'0.8',
-					paddingRight:4
-					
+					opacity: '0.8',
+					paddingRight: 4
+
 
 
 				}
@@ -252,15 +227,15 @@ const useStyles = makeStyles(theme => ({
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
 				width: 'auto',
-    			maxWidth: '35vw',
+				maxWidth: '35vw',
 				borderTopRightRadius: 6,
 				borderBottomRightRadius: 6,
-				marginBottom:70,
+				marginBottom: 70,
 				'& .time': {
 					marginLeft: '0px',
 					marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom:8
+					paddingBottom: 8
 				}
 			},
 			'&.first-of-group': {
@@ -289,15 +264,15 @@ const useStyles = makeStyles(theme => ({
 				borderTopRightRadius: 5,
 				borderBottomRightRadius: 5,
 				width: 'auto',
-    			maxWidth: '35vw',
+				maxWidth: '35vw',
 				'& .time': {
-					display:'flex',
+					display: 'flex',
 					justifyContent: 'flex-end',
 					// right: 0,
 					marginRight: 2,
 					// marginBottom: '-11px',
 					marginTop: '5px',
-					paddingBottom:5
+					paddingBottom: 5
 
 				}
 			},
@@ -497,8 +472,8 @@ function Chat(props) {
 
 	function scrollToBottom() {
 		setTimeout(() => {
-			chatRef.current.scrollTop =  chatRef.current.scrollHeight+200;
-		  }, 1000);
+			chatRef.current.scrollTop = chatRef.current.scrollHeight + 200;
+		}, 1000);
 	}
 
 	function shouldShowContactAvatar(item, i) {
@@ -951,7 +926,7 @@ function Chat(props) {
 												{ 'last-of-group': isLastMessageOfGroup(item, index) },
 												index + 1 === messages.length && 'pb-96'
 											)
-									}	
+									}
 								>
 									{/* {shouldShowContactAvatar(item, index) && (
 										<Avatar
@@ -960,12 +935,12 @@ function Chat(props) {
 										/>
 									)} */}
 									<div className="bubble flex relative items-center justify-center p-12 max-w-full">
-									{item.message_type === "text" ?
-											<div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px' ,wordBreak: 'break-all'}}>
+										{item.message_type === "text" ?
+											<div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px', wordBreak: 'break-all' }}>
 												{item.sender_name !== 'inbound' ?
 													<div style={{ marginTop: '-5px', paddingBottom: '10px', marginLeft: '-3px', fontWeight: '300', fontSize: '12px' }}> {`${item.sender_name.charAt(0).toUpperCase()}${item.sender_name.substring(1)}:`}  </div> : null}
 												{item.message_body}
-												<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')}{item.type=== "outbound"? MessageStateResolver.resolve(item.status):null }</Typography>
+												<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')}{item.type === "outbound" ? MessageStateResolver.resolve(item.status) : null}</Typography>
 											</div>
 											: null}	{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}
 										{item.message_type === "image" ? <ImageMessageType index={index} classes={classes} message={item} /> : null}
