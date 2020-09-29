@@ -1,14 +1,7 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
-import { useForm } from '@fuse/hooks';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import Checkbox from '@material-ui/core/Checkbox';
-import Divider from '@material-ui/core/Divider';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-
-import { darken } from '@material-ui/core/styles/colorManipulator';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
@@ -98,16 +91,6 @@ const styles = {
 
 const Login2Page = (props) => {
 
-    // constructor(props) {
-    //     super(props);
-    //     userToken = localStorage.getItem('user_token');
-    //     this.settings = JSON.parse(localStorage.getItem('client_settings'));
-
-    //         this.state={snackbaropen:false,snackbarmsg:'',ok:''}
-    //     if (this.settings === null) this.settings = {
-    //         client_logo: navigationLogo
-    //     }
-    // }
     if (settings === null) settings = {
         client_logo: navigationLogo
     }
@@ -117,14 +100,6 @@ const Login2Page = (props) => {
     if (settings === null) settings = {
         client_logo: navigationLogo
     }
-
-    // state = {
-    //     username: '',
-    //     passsword: '',
-    //     has_error: false,
-    //     error_message: null,
-    //     client_settings: null,
-    // };
 
     const [username, setUserName] = React.useState('')
     const [passsword, setPassword] = React.useState('')
@@ -138,24 +113,15 @@ const Login2Page = (props) => {
     const [isLoading, setIsLoading] = React.useState(false);
 
 
-
-
-
-
-
-
     let snackbarClose = (event) => {
-        // this.setState({ snackbaropen: false })
         setSnackBarOpen(false)
 
     }
     let handleUserNameInput = (e) => {
-        // this.setState({ username: e.target.value });
         setUserName(e.target.value)
     };
 
     let handlePassordInput = (e) => {
-        // this.setState({ passsword: e.target.value });
         setPassword(e.target.value)
     };
     let authSuccess = (response) => {
@@ -167,20 +133,15 @@ const Login2Page = (props) => {
     };
 
     let authFailure = (error) => {
-        // console.log("CLIENT AUTH ERROR > ", error);
     };
 
     let settingsSuccess = (response) => {
         const settings = response.data.data.setting;
-        // this.setState({
-        //     client_settings: settings
-        // })
         setClientSettings(settings)
         localStorage.setItem('client_settings', JSON.stringify(settings));
     };
 
     let settingsFailure = (error) => {
-        // console.log("CLIENT SETTINGS ERROR >", error);
     };
 
     let clientAuthentication = () => {
@@ -191,49 +152,20 @@ const Login2Page = (props) => {
             props.history.push('/dashboard');
         } else if (hit !== false) {
             clientAuthentication();
-            // setHitFalse(true)
         }
     }
     React.useEffect(() => {
-        // getData()
         checkUser()
 
     }, []);
 
-    // setTimeout(() => {
-    //     checkUser()
-    // }, 1000);
-
-    // componentDidMount() {
-    //     if (userToken !== null) {
-    //         this.props.history.push('/dashboard');
-    //     } else {
-    //         this.clientAuthentication();
-
-    //     }
-    //     // const clientToken = localStorage.getItem('client_token');
-
-    //     // if (clientToken === null) this.clientAuthentication();
-    // }
-
-    // componentDidMount() {
-    //     if (userToken !== null) this.props.history.push('/dashboard');
-    // }
-
     let loginSuccess = (data) => {
-
-        // this.setState({ error_message: '', snackbaropen: true, snackbarmsg: 'Successfully LoggedIn', ok: 'success' })
         setErrorMessage('')
         setSnackBarOpen(true)
         setSnackBarMessage('Successfully Logged In')
         setOK('success')
-        // setIsLoading(false)
-
-
         const { token, acl, app, back, user } = data.data.data;
-
         localStorage.setItem('user_token', token);
-
         if (user) {
             localStorage.setItem('user_data', JSON.stringify(user));
         } else localStorage.setItem('user_data', JSON.stringify({}));
@@ -256,18 +188,6 @@ const Login2Page = (props) => {
     };
 
     let loginFailure = (error) => {
-        // this.setState({
-        //     has_error: true,
-        //     snackbarmsg: error.response.data.message,
-        //     snackbaropen: true,
-        //     ok: 'error'
-
-        // });
-        // setHasError(true)
-        // setErrorMessage('')
-        // setSnackBarOpen('true')
-        // setSnackBarMessage(`${error.response.data.message}`)
-        // setOK('error')
         setHasError(true)
         setErrorMessage('')
         setSnackBarOpen(true)
@@ -279,18 +199,13 @@ const Login2Page = (props) => {
 
     let login = () => {
         setIsLoading(true);
-
-        // this.setState({ error_message: '' })
         setErrorMessage('')
-        // console.log(username, passsword, 'sdssssd',);
         const data = {
             username: username,
             password: passsword,
         };
         if (username == '' || passsword == '' || passsword == undefined || username == undefined) {
-            // console.log(username, passsword, 'sdsd');
             setIsLoading(false)
-            // this.setState({ snackbaropen: true, snackbarmsg: 'Please Fill Every Detail', ok: 'error' })
             setSnackBarOpen(true)
             setSnackBarMessage('Please Fill The Required Fields')
             setOK('error')
@@ -307,9 +222,6 @@ const Login2Page = (props) => {
     };
 
     let _handleKeyDown = (e) => {
-        // console.log('in handleee');
-
-
         if (e.key === 'Enter') {
             login();
         }
@@ -318,8 +230,6 @@ const Login2Page = (props) => {
     let goToForget = () => {
         this.props.history.push('/forget-password');
     };
-
-
 
     const classes = useStyles();
 
@@ -332,7 +242,6 @@ const Login2Page = (props) => {
             >
             <div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 sm:p-16 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
                 <FuseAnimate animation="transition.expandIn">
-                        {/* <img className="w-128 mb-32" src="../../../../../images/itsAppLogo.png" alt="logo" /> */}
                         <div style={{marginLeft:-200}}>
                         <img src={require('../../../../../images/LOGO-1-01.gif')}
                         style={{width:400,marginLeft:'-6%'}}
@@ -354,14 +263,9 @@ const Login2Page = (props) => {
                     As a WhatsApp Business Solution Provider, we enable enterprises to connect to WhatsApp directly – either through our API or using our web-based interface.
 					</Typography>
                 </FuseAnimate>
-                {/* <img src={require('../../../../../images/itsAppLogo.png')}
-                     style={{color:'#fc2254',fontStyle:150,height:100,width:500,backgroundColor:'#fc2254'}} />
-			 */}
-
             </div>
 
             <Snackbar
-
                 anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 open={snackbaropen}
                 autoHideDuration={3000}
@@ -382,7 +286,6 @@ const Login2Page = (props) => {
                         <form
                             name="loginForm"
                             noValidate
-                            
                             className={classes.root}
 
                         >
@@ -402,9 +305,6 @@ const Login2Page = (props) => {
                                 size="small"
                                 onKeyDown={_handleKeyDown}
                             />
-
-
-                          
                             <TextField
                                 className="mb-16 sm:mb-4"
                                 label="Password"
@@ -413,7 +313,6 @@ const Login2Page = (props) => {
                                 size="small"
                                 onChange={handlePassordInput}
                                 variant="outlined"
-                           
                                 value={passsword}
                                 required
                                 style={formItem}
@@ -423,15 +322,6 @@ const Login2Page = (props) => {
                        
 
                             <div className="flex items-center justify-between mt-16 mb-32">
-                                {/* <FormControl>
-									<FormControlLabel
-										control={
-											<Checkbox name="remember" checked={form.remember} onChange={handleChange} />
-										}
-										label="Remember Me"
-									/>
-								</FormControl> */}
-
                                 <Link className="font-medium" to="/pages/auth/forgot-password">
                                     Forgot Password?
 								</Link>
@@ -443,18 +333,12 @@ const Login2Page = (props) => {
                                     color="primary"
                                     className="w-full mx-auto mt-16 sm:mt-0"
                                     aria-label="LOG IN"
-
                                     onClick={login}
-
                                 >
                                     LOGIN
 							</Button>
                             }
-
                         </form>
-
-
-
                     </CardContent>
                 </Card>
             </FuseAnimate>

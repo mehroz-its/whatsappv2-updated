@@ -1,20 +1,11 @@
 import React from 'react'
 import Dialog from '@material-ui/core/Dialog';
-import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 const useStyles = makeStyles((theme) => ({
 	addButton: {
@@ -30,8 +21,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 const BlockDialog = (props) => {
-	const classes = useStyles(props);
-	const { isOpen, type, getUpdatedData, data } = props
+	const { isOpen, data } = props
 	const [openDialog, setopenDialog] = React.useState(isOpen);
 	const [open, setOpen] = React.useState(false);
 	const handleDialogClose = () => {
@@ -53,20 +43,10 @@ const BlockDialog = (props) => {
 
 	};
 
-	const handleClose = () => {
-		setOpen(false);
-	};
-
-	const handleOpen = () => {
-		setOpen(true);
-	};
-	
-
 	return (
 		<Dialog open={openDialog} onClose={handleDialogClose} aria-labelledby="form-dialog-title" classes={{
 			paper: 'm-24'
 		}}
-
 			fullWidth
 			maxWidth="xs">
 			<DialogTitle id="form-dialog-title">{props.type} </DialogTitle>

@@ -1,71 +1,17 @@
 
-import _ from '@lodash';
-import { makeStyles } from '@material-ui/core/styles';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch} from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as Actions from '../store/actions';
 import Chat from './chat/ChatApp'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
 
 function AgentContent(props) {
-	const { displayChat, selectedAgent } = props
+	const {  selectedAgent } = props
 	const dispatch = useDispatch();
-	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
-	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
-
-	const [dropdowntitile, setDropDownTitle] = useState('Agents');
-	const [viewChat, setViewChat] = useState(displayChat);
-
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(10);
-	const [order, setOrder] = useState({
-		direction: 'asc',
-		id: null
-	});
-	const defaultDropdownData = {
-		list: ['agent1', 'agent2'],
-		selected: 0,
-	};
-	const defaultDialogData = {
-		selectedContactGroups: [],
-		selectedContacts: [],
-		state: false,
-		type: null,
-	};
-
-	const [dropDownData, setDropdownData] = React.useState(defaultDropdownData);
-	const [dialogData, setDialogData] = React.useState(defaultDialogData)
-	const [textAreaNumbers, setTextAreaNumbers] = React.useState('');
 	const [loading, setLoading] = React.useState('');
-	const [agents, setagents] = React.useState([]);
 	const [int_CustomerList, setint_CustomerList] = React.useState();
 	const [numbers, setnumbers] = React.useState([]);
-	const useStyles = makeStyles(theme => ({
-		root: {
-			width: '100%',
-		},
-		paper: {
-			width: '100%',
-			marginBottom: theme.spacing(2),
-		},
-		table: {
-			minWidth: 750,
-		},
-		visuallyHidden: {
-			border: 0,
-			clip: 'rect(0 0 0 0)',
-			height: 1,
-			margin: -1,
-			overflow: 'hidden',
-			padding: 0,
-			position: 'absolute',
-			top: 20,
-			width: 1,
-		},
-	}));
-
-	const classes = useStyles();
 
 	useEffect(() => {
 		dispatch(Actions.getProducts());
@@ -85,18 +31,10 @@ function AgentContent(props) {
 			clearInterval(int_CustomerList)
 		}
 	}, [selectedAgent]);
-	const getAgents = () => {
-		CoreHttpHandler.request('conversations', 'agents_list', {
-			columns: "USR.id, USR.username"
-		}, (_response) => {
-			setagents(_response.data.data.agents.data)
-		}, (error) => {
-		});
-	}
+
 	const getAllAgents = () => {
 		setLoading(true)
 		CoreHttpHandler.request('conversations', 'allAgents', {
-
 		}, (_response) => {
 			const numbers = _response.data.data.list.data
 			props.Total(numbers.length)
@@ -119,7 +57,6 @@ function AgentContent(props) {
 		});
 	}
 	const getAgentsCustomersReload = () => {
-		setViewChat(false)
 		let params = {
 			agentId: selectedAgent
 		}
@@ -128,7 +65,6 @@ function AgentContent(props) {
 		}, (_response) => {
 			const numbers = _response.data.data.customers;
 			setnumbers(numbers)
-			setViewChat(true)
 		}, (error) => {
 		});
 	}

@@ -91,17 +91,9 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 function CampaignTableHead(props) {
-	const classes = useStyles(props);
-	const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
 	const createSortHandler = property => event => {
 		props.onRequestSort(event, property);
 	};
-	function openSelectedProductsMenu(event) {
-		setSelectedProductsMenu(event.currentTarget);
-	}
-	function closeSelectedProductsMenu() {
-		setSelectedProductsMenu(null);
-	}
 	return (
 		<TableHead>
 			<TableRow className="h-10">

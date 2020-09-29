@@ -1,8 +1,6 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
-import FuseChipSelect from '@fuse/core/FuseChipSelect';
-import FuseLoading from '@fuse/core/FuseLoading';
 import FusePageCarded from '@fuse/core/FusePageCarded';
-import { useForm, useDeepCompareEffect } from '@fuse/hooks';
+import { useForm} from '@fuse/hooks';
 import FuseUtils from '@fuse/utils';
 import _ from '@lodash';
 import Button from '@material-ui/core/Button';
@@ -17,9 +15,8 @@ import Typography from '@material-ui/core/Typography';
 import withReducer from 'app/store/withReducer';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
-import * as Actions from '../store/actions';
 import reducer from '../store/reducers';
 import TableData from '../productData'
 import GroupDetailHeader from './GroupDetailsHeader';
@@ -61,36 +58,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function GroupDetail(props) {
-	console.log(props)
-	// const dispatch = useDispatch();
 	const product = useSelector(({ eCommerceApp }) => eCommerceApp.product);
 	const theme = useTheme();
-
 	const classes = useStyles(props);
 	const [tabValue, setTabValue] = useState(0);
 	const { form, handleChange, setForm } = useForm(null);
 	const routeParams = useParams();
 
-	// useDeepCompareEffect(() => {
-	// 	function updateProductState() {
-	// 		const { productId } = routeParams;
-
-	// 		if (productId === 'new') {
-	// 			dispatch(Actions.newProduct());
-	// 		} else {
-	// 			dispatch(Actions.getProduct(routeParams));
-	// 		}
-	// 	}
-
-	// 	updateProductState();
-	// }, [dispatch, routeParams]);
-
 	useEffect(() => {
-		// if ((product.data && !form) || (product.data && form && product.data.id !== form.id)) {
 		setForm(TableData[props.location.id - 1]);
-		console.log(form)
-		// }
-
 	}, [form, product.data, setForm]);
 
 	function handleChangeTab(event, value) {
@@ -133,20 +109,12 @@ function GroupDetail(props) {
 		};
 
 		reader.onerror = () => {
-			console.log('error on load image');
 		};
 	}
 
 	function canBeSubmitted() {
 		return form.name.length > 0 && !_.isEqual(product.data, form);
 	}
-
-	// if (
-	// 	(!product.data || (product.data && routeParams.productId !== product.data.id)) &&
-	// 	routeParams.productId !== 'new'
-	// ) {
-	// 	return <FuseLoading />;
-	// }
 
 	return (
 		<FusePageCarded
@@ -174,21 +142,6 @@ function GroupDetail(props) {
 							</FuseAnimate>
 
 							<div className="flex items-center max-w-full">
-								{/* <FuseAnimate animation="transition.expandIn" delay={300}>
-									{form.images.length > 0 && form.featuredImageId ? (
-										<img
-											className="w-32 sm:w-48 rounded"
-											src={_.find(form.images, { id: form.featuredImageId }).url}
-											alt={form.name}
-										/>
-									) : (
-										<img
-											className="w-32 sm:w-48 rounded"
-											src="assets/images/ecommerce/product-image-placeholder.png"
-											alt={form.name}
-										/>
-									)}
-								</FuseAnimate> */}
 								<div className="flex flex-col min-w-0 mx-8 sm:mc-16">
 									<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 										<Typography className="text-16 sm:text-20 truncate">
@@ -210,7 +163,6 @@ function GroupDetail(props) {
 								variant="contained"
 								color="secondary"
 								disabled={!canBeSubmitted()}
-							// onClick={() => dispatch(Actions.saveProduct(form))}
 							>
 								Update
 							</Button>
@@ -229,10 +181,6 @@ function GroupDetail(props) {
 					classes={{ root: 'w-full h-64' }}
 				>
 					<Tab className="h-64 normal-case" label="Group Info" />
-					{/* <Tab className="h-64 normal-case" label="Product Images" />
-					<Tab className="h-64 normal-case" label="Pricing" />
-					<Tab className="h-64 normal-case" label="Inventory" />
-					<Tab className="h-64 normal-case" label="Shipping" /> */}
 				</Tabs>
 			}
 			content={
@@ -274,44 +222,8 @@ function GroupDetail(props) {
 									}}
 									header={<GroupDetailHeader />}
 									content={<GroupDetailTable />}
-									// innerScroll
 								/>
-
-								{/* <FuseChipSelect
-									className="mt-8 mb-24"
-									value={form.categories.map(item => ({
-										value: item,
-										label: item
-									}))}
-									onChange={value => handleChipChange(value, 'categories')}
-									placeholder="Select multiple categories"
-									textFieldProps={{
-										label: 'Categories',
-										InputLabelProps: {
-											shrink: true
-										},
-										variant: 'outlined'
-									}}
-									isMulti
-								/>
-
-								<FuseChipSelect
-									className="mt-8 mb-16"
-									value={form.tags.map(item => ({
-										value: item,
-										label: item
-									}))}
-									onChange={value => handleChipChange(value, 'tags')}
-									placeholder="Select multiple tags"
-									textFieldProps={{
-										label: 'Tags',
-										InputLabelProps: {
-											shrink: true
-										},
-										variant: 'outlined'
-									}}
-									isMulti
-								/> */}
+							
 							</div>
 						)}
 						{tabValue === 1 && (

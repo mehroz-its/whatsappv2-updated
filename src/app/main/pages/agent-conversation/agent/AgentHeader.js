@@ -5,7 +5,7 @@ import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
 import { makeStyles } from '@material-ui/core/styles';
 import { EventEmitter } from '../../../../../events'
@@ -30,17 +30,10 @@ function AgentHeader(props) {
 	const classes = useStyles();
 	const { total } = props
 	const [agentDropDownOpen, setagentDropDownOpen] = React.useState(false);
-
 	const [agents, setagents] = React.useState([]);
 	const [int_CustomerList, setint_CustomerList] = React.useState(null);
 	const [selectedAgent, setselectedAgent] = React.useState('All');
-
-	const defaultDialogData = {
-		selectedContactGroups: [],
-		selectedContacts: [],
-		state: false,
-		type: null,
-	};
+	
 	const handleCloseAgent = () => {
 		setagentDropDownOpen(false)
 	};

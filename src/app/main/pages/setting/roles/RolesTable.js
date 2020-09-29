@@ -1,6 +1,5 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
-import Checkbox from '@material-ui/core/Checkbox';
 import Icon from '@material-ui/core/Icon';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,16 +7,12 @@ import Typography from '@material-ui/core/Typography';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-
-import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
-import clsx from 'clsx';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import ContactsTablePaginationActions from '../../setting/canned/ContactsTablePaginationActions';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {  useState } from 'react';
+import { useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import * as Actions from './store/actions';
 import RolesTableHead from './RolesTableHead';
-import TableData from './RolesData'
 import RolesDialog from './RolesDialog'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
@@ -39,15 +34,11 @@ function RolesTable(props) {
 		setDeleteDialog(false)
 		props.onClose(val)
 	}
-	const dispatch = useDispatch();
-	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
-	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
 	const [deleteDialogData, setDeleteDialogData] = React.useState({});
 	const [deleteDialog, setDeleteDialog] = React.useState(false);
 	const [page, setPage] = useState(0);
-	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [dialogData, setDialogData] = useState({
 		enabled: '',
@@ -89,17 +80,7 @@ function RolesTable(props) {
 			);
 		}
 	}
-	let loadPermissions = () => {
-		return CoreHttpHandler.request('permissions', 'listing', {
-			columns: "id, title",
-			sortby: "ASC",
-			orderby: "id",
-			where: "displayed = $1",
-			values: true,
-			page: 0,
-			limit: 0
-		}, null, null, true);
-	};
+	
 	function handleClick(n) {
 		setOpen(true)
 		setDialogData({
@@ -111,20 +92,7 @@ function RolesTable(props) {
 		})
 	}
 
-	function handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
-		setSelected(newSelected);
-	}
+	
 	function handleChangePage(event, value) {
 		setPage(value);
 	}

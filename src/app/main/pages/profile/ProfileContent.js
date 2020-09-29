@@ -1,14 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import picture from './profileImage.png';
-// import { FaCamera } from 'react-icons/fa';
 import { Button } from '@material-ui/core';
-import Avatar from '@material-ui/core/Avatar';
-// import Validation from "js-textfield-validation";
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import moment from 'moment';
@@ -53,23 +48,14 @@ const Profile = function (props) {
 
     const handleDate = (e) => {
         setDOB(e.target.value)
-        let changedDate = dob
         const id = e.target.id.split('-');
         const name = e.target.name;
         const attrs = profileData.map((attr, i) => {
-            // console.log(attr,'i am atrr')
             if (attr.dob) {
                 attr[name] = e.target.value;
                 return attr;
-
-                //   setProfileData(profileData[i].dob===changedDate)
             }
             else return attr;
-            // if (attr[id[0]] === id[1]) {
-            //     attr[name] = e.target.value;
-            //     console.log(attr, 'attrrr')
-            //     return attrs;
-            // } else return attr;
         });
 
         setProfileData(attrs);
@@ -89,8 +75,6 @@ const Profile = function (props) {
 
         let firstname = "";
         let lastname = "";
-
-
         attrs.find(function (element) {
             if (element.firstname) {
                 if (element.firstname === 'N/A') {
@@ -113,11 +97,9 @@ const Profile = function (props) {
 
         });
         setProfileData(attrs);
-
     };
 
     const _update = () => {
-        // profileData[7] = { id: "8", image: props.urlImageHeader }
         let newData =  profileData
         profileData.map((item,index)=>{
             if(item.image){
@@ -135,10 +117,6 @@ const Profile = function (props) {
             setSnackBarOpen(false)
         }, 4000);
 
-        // console.log(profileData, 'dataaaaa')
-
-        // return
-        // urlImageHeader
         CoreHttpHandler.request('profile', 'update', data, response => {
             const {user_data} = response.data.data;
             if (user_data) {
@@ -151,16 +129,12 @@ const Profile = function (props) {
             setSnackBarOpen(true)
             props.onChange(user_data)
 
-            // setSnackBarMessage("Profile updated successfully", "success");
         },
             error => {
                 setSnackBarMessage("Error! Please Try Again Later")
                 setOK("error")
                 setSnackBarOpen(true)
-                // setSnackBarMessage(
-                //     "Please try again later, Profile not updated",
-                //     "error"
-                // );
+              
             });
     }
 
@@ -187,9 +161,6 @@ const Profile = function (props) {
             setProfileId(user.id)
             setProfileData(profileData);
             props.onChange(user)
-            // props.onChange
-            // (`${nameCapitalized} ${lastname}`)
-
             let image = null
             profileData.map((val, id) => {
                 if (val.image) {
@@ -201,40 +172,6 @@ const Profile = function (props) {
 
         });
     }, []);
-
-    const onChangeHandler = event => {
-        if (event.target.files.length > 0) {
-            const _data = new FormData();
-
-            let _name = event.target.files[0].name;
-
-            _name = _name.replace(/\s/g, "");
-
-            _data.append(
-                "file",
-                event.target.files[0],
-                `${new Date().getTime()}_${_name}`
-            );
-
-            CoreHttpHandler.request("content", "upload", { params: _data },
-                response => {
-
-                    let url = response.data.data.link
-                    setProfileImage(url)
-                    profileData.map((val, id) => {
-                        if (val.image) {
-                            val.image = url
-                            return profileData
-                        }
-                    })
-                    setProfileData(profileData)
-
-                },
-                error => {
-                    // console.log("error :  ", error);
-                });
-        }
-    };
 
     return (
         <>

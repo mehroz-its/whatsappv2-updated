@@ -1,12 +1,10 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
-
 import Icon from '@material-ui/core/Icon';
-
 import Input from '@material-ui/core/Input';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
 import { ThemeProvider,createMuiTheme,MuiThemeProvider } from '@material-ui/core/styles';
 
 const SearchStyle = createMuiTheme({
@@ -20,18 +18,14 @@ const SearchStyle = createMuiTheme({
 		  border:0,
 		  borderRadius:0,
 		  height:'30px'
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
+
 		}
 	  }
 	}
   });
 
 function ChartHeader(props) {
-	const dispatch = useDispatch();
 	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
-
 
 	return (
 		<div className="flex flex-1 items-center justify-between p-8 sm:p-12">

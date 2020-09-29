@@ -1,6 +1,6 @@
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import FuseAnimate from '@fuse/core/FuseAnimate';
@@ -92,43 +92,12 @@ const rader_chart = (list) => {
 
 
 }
-const newMessageList = [
-    { category: "My-Locations", value: "0", full: "100" },
-    { category: "My-Contacts", value: "0", full: "100" },
-    { category: "My-Text", value: "0", full: "100" },
-    { category: "My-Audio", value: "0", full: "100" },
-    { category: "My-Photos", value: "0", full: "100" },
-    { category: "My-MYDocuments", value: "0", full: "100" }
-]
+
 function CustomerAccounts(props) {
     const classes = useStyles();
-    const pageLayout = useRef(null);
-    const [rader, setrader] = React.useState(newMessageList);
     const [box, setBox] = React.useState([]);
     const [radarList, setRadarList] = React.useState([]);
-    const [tabValue, setTabValue] = useState(0);
-    const [state, setState] = React.useState({
-        columns: [
-            { title: 'Name', field: 'name' },
-            { title: 'Surname', field: 'surname' },
-            { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-            {
-                title: 'Birth Place',
-                field: 'birthCity',
-                lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-            },
-        ],
-        data: [
-            { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-            {
-                name: 'Zerya Betül',
-                surname: 'Baran',
-                birthYear: 2017,
-                birthCity: 34,
-            },
-        ],
-    });
-
+  
     const dataSourceOptions = {
         params: {
             columns: "*",
@@ -273,14 +242,7 @@ function CustomerAccounts(props) {
     };
     const messagestateFailure = (response) => {
     };
-    function handleChangeTab(event, value) {
-        setTabValue(value);
-        if (value === 0) {
-            CoreHttpHandler.request('dashboard', 'listing', { ...dataSourceOptions.params }, dataSourceSuccess, dataSourceFailure);
-            CoreHttpHandler.request('dashboard', 'messagestate', { ...dataSourceOptions.params }, messagestateSuccess, messagestateFailure);
-            CoreHttpHandler.request('reports', 'campaignChart', { ...dataSourceOptionss.params }, dataSourceSuccesss, dataSourceFailuree);
-        }
-    }
+
     if (box.length === 0 && radarList.length === 0) {
         return (
             <div className="flex flex-1 items-center justify-center h-full">

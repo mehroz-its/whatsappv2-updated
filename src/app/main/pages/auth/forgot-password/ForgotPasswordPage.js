@@ -11,7 +11,6 @@ import clsx from 'clsx';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Alert from '@material-ui/lab/Alert';
-
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 
 
@@ -54,17 +53,7 @@ function ForgotPasswordPage(props) {
 			pathname: '/pages/auth/token',
 
 		});
-		console.log(props)
-
-
-		// console.log("ev", form.email);
-		// props.history.push("/");
-
 		if (form.email === "") {
-			// this.setState({
-			//     message: "Please enter email",
-			//     severity: 'error',
-			// });
 			setAlertSeveirty('error')
 			setAlertMessage('Pleaseenter a valid email')
 			return;
@@ -79,27 +68,18 @@ function ForgotPasswordPage(props) {
 				'gettoken',
 				data,
 				(response) => {
-					// console.log("response : ", response);
 					props.history.push({
 						pathname: '/pages/auth/token',
 
 					});
 				},
 				(error) => {
-					// this.setState({
-					//     message: error.response.data.message,
-					//     severity: 'error',
-					// });
 					setAlertSeveirty('error')
 					setAlertMessage(error.response.data.message)
 
 				}
 			);
 		} else {
-			// this.setState({
-			//     message: "Please enter valid email",
-			//     severity: 'error',
-			// });
 			setAlertSeveirty('error')
 			setAlertMessage('Please enter valid email')
 
@@ -116,7 +96,6 @@ function ForgotPasswordPage(props) {
 			}}>
 			<div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
 				<FuseAnimate animation="transition.expandIn">
-					{/* <img className="w-128 mb-32" src="../../../../../images/itsAppLogo.png" alt="logo" /> */}
 					<div style={{ marginLeft: -200 }}>
 						<img src={require('../../../../../images/LOGO-1-01.gif')}
 							style={{ width: 400, marginLeft: '-6%' }}
@@ -138,13 +117,6 @@ function ForgotPasswordPage(props) {
 						As a WhatsApp Business Solution Provider, we enable enterprises to connect to WhatsApp directly – either through our API or using our web-based interface.
 					</Typography>
 				</FuseAnimate>
-
-				{/* <FuseAnimate delay={400}>
-					<Typography variant="subtitle1" color="inherit" className="max-w-512 mt-16">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ullamcorper nisl erat, vel
-						convallis elit fermentum pellentesque. Sed mollis velit facilisis facilisis.
-					</Typography>
-				</FuseAnimate> */}
 			</div>
 
 			<FuseAnimate animation={{ translateX: [0, '100%'] }}>
@@ -158,7 +130,6 @@ function ForgotPasswordPage(props) {
 							name="recoverForm"
 							noValidate
 							className="flex flex-col justify-center w-full"
-						// onSubmit={handleSubmit}
 						>
 							{alertmessage ? (
 								<Alert style={{ marginBottom: '10px' }} severity={alertseveirty}>
@@ -186,7 +157,6 @@ function ForgotPasswordPage(props) {
 								aria-label="Reset"
 								disabled={!isFormValid()}
 								type="submit"
-								// onClick={()=>{props.history.push("/pages/auth/reset-password-2")}}
 								onClick={handleSubmit}
 							>
 								Send Token

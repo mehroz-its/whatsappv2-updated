@@ -1,52 +1,33 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
-import FuseUtils from '@fuse/utils';
-import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import ContactsMultiSelectMenu from './ContactsMultiSelectMenu';
+import React, {  useState } from 'react';
+import { useDispatch } from 'react-redux';
 import ContactsTable from './ContactsTable';
-import * as Actions from './store/actions';
-import Data from './ContactData'
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
-import { object } from 'prop-types';
 import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading'
-import BlockContactInDialog from './BlockContactInDialog'
+
 
 
 
 function ContactsList(props) {
 	const [data, setData] = React.useState([])
 	const [rowvalue, setROWvalue] = React.useState('')
-
 	const [openBlockDialog, setOpenBlockDialog] = React.useState(false);
 	const [unblockDialog, setUnBlockDialog] = React.useState(false);
-
-
 	const [data2, setData2] = useState([]);
 	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
 	let filtered = []
-	let newobj = {
-
-	}
 	data.map((i, v) => {
 		let newobj = {
 			...i
 		}
 		i.attributes.map((item, val) => {
-			// console.log(`${Object.keys(item)[0]}${Object.keys(item)[1]}:${Object.values(item)[0]}`,'item')
-			// let val1 = `${Object.keys(item)[0]}${Object.keys(item)[1]}:${Object.values(item)[0]}`
-			// let val2 = `${Object.keys(item)[1]}:${Object.values(item)[1]}`
 			newobj[`${Object.keys(item)[0]}${Object.keys(item)[1]}`] = `${Object.values(item)[0]}`
 			newobj[`${Object.keys(item)[1]}`] = `${Object.values(item)[1]}`
-
-
-
 		})
 		filtered.push(newobj)
-
 	})
 
 	let ContactsData = {
@@ -69,18 +50,10 @@ function ContactsList(props) {
 
 
 	const dispatch = useDispatch();
-	// const contacts = useSelector(({ contactsApp }) => contactsApp.contacts.entities);
-	const contacts = ContactsData.entities
-	// const [contacts,setContacts] = React.useState([])
-	const searchText = ContactsData.searchText
-	// const searchText = useSelector(({ contactsApp }) => console.log(contactsApp) );
-	// const user = useSelector(({ contactsApp }) => contactsApp.user);
 	const user = ContactsData.user
-
 	const getData = ((loadData) => {
 		loadData = () => {
 			return CoreHttpHandler.request('contact_book', 'listing', {
-
 				limit: 100,
 				page: 0,
 				columns: "*",
@@ -121,10 +94,8 @@ function ContactsList(props) {
 		filtered = data2
 	}
 	const handleUnblockClick = (row) => {
-		// ev.stopPropagation();
 		setROWvalue(row.original)
 	}
-	const [filteredData, setFilteredData] = useState(null);
 
 	const columns = React.useMemo(
 		() => [

@@ -5,14 +5,11 @@ import Hidden from '@material-ui/core/Hidden';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import NavbarMobileToggleButton from 'app/fuse-layouts/shared-components/NavbarMobileToggleButton';
-import QuickPanelToggleButton from 'app/fuse-layouts/shared-components/quickPanel/QuickPanelToggleButton';
 import UserMenu from 'app/fuse-layouts/shared-components/UserMenu';
 import React from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import { useSelector } from 'react-redux';
-import LanguageSwitcher from '../../shared-components/LanguageSwitcher';
-import { EventRegister } from 'react-event-listeners'
 import CoreHttpHandler from 'http/services/CoreHttpHandler'
 import { EventEmitter } from '../../../../events'
 
@@ -30,9 +27,7 @@ function ToolbarLayout1(props) {
 	const [online, setOnline] = React.useState(JSON.parse(localStorage.getItem('online')))
 	const classes = useStyles(props);
 	const setAgentOnline = (e) => {
-		// console.log(e.target, 'eee')
 		const isOnline = e.target.checked;
-		// console.log(isOnline, 'isss')
 		if (isOnline) {
 			EventEmitter.dispatch('Online',true)
 			localStorage.setItem('online', true)
@@ -77,15 +72,9 @@ function ToolbarLayout1(props) {
 						<div className="flex">
 							<div style={{ marginTop: '2.3%' }}>
 								<FormControlLabel
-									// style={{ color: '#252525' }}
 									control={
 										<Switch
 											checked={online}
-											// onChange={(e)=>{
-											// setOnline(true)
-											// 	// console.log(e.target,'e.target.value')
-
-											// }}
 											onChange={setAgentOnline}
 											name="online"
 											color="primary"

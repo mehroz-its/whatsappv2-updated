@@ -1,21 +1,18 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
-import Checkbox from '@material-ui/core/Checkbox';
 import Icon from '@material-ui/core/Icon';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import FormControl from '@material-ui/core/FormControl';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {  useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import TableHeader from './TableHeader';
 import ContactsTablePaginationActions from '../../../../setting/canned/ContactsTablePaginationActions';
-import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, createMuiTheme,  MuiThemeProvider } from '@material-ui/core/styles';
 import TemplateDialog from './TemplateDialog'
 import CoreHttpHandler from '../../../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../../../@fuse/core/FuseLoading/FuseLoading'
@@ -108,10 +105,7 @@ function TemplateMessage(props) {
         type: null,
         activated: false,
     });
-    const [number, SetNumber] = useState(10)
-    const handleChange = (event) => {
-        SetNumber(event.target.value);
-    };
+
     const getData = ((loadData) => {
         loadData = () => {
             return CoreHttpHandler.request('campaigns', 'listing', {
@@ -194,10 +188,7 @@ function TemplateMessage(props) {
     function handleChangePage(event, value) {
         setPage(value);
     }
-    function handleDialogClose() {
-        setOpen(false)
-    }
-
+  
 
     function handleChangeRowsPerPage(event) {
         setRowsPerPage(event.target.value);

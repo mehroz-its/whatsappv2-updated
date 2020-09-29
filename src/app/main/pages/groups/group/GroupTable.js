@@ -1,26 +1,16 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
-import Checkbox from '@material-ui/core/Checkbox';
-import Icon from '@material-ui/core/Icon';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import * as Actions from '../store/actions';
 import GroupTableHead from './GroupTableHead';
 import TableData from '../productData'
 
 function GroupTable(props) {
-	console.log(props)
-	const dispatch = useDispatch();
-	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
-	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
-
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(TableData);
 	const [page, setPage] = useState(0);
@@ -29,20 +19,6 @@ function GroupTable(props) {
 		direction: 'asc',
 		id: null
 	});
-
-	// useEffect(() => {
-	// 	dispatch(Actions.getProducts());
-	// }, [dispatch]);
-
-	// useEffect(() => {
-	// 	if (searchText.length !== 0) {
-	// 		setData(_.filter(products, item => item.name.toLowerCase().includes(searchText.toLowerCase())));
-	// 		setPage(0);
-	// 	} else {
-	// 		setData(products);
-	// 		console.log(products,'here in prdoducts table')
-	// 	}
-	// }, [products, searchText]);
 
 	function handleRequestSort(event, property) {
 		const id = property;
@@ -70,22 +46,7 @@ function GroupTable(props) {
 		props.history.push({pathname:`/apps/groups/group-detail`,id:n.id});
 	}
 
-	function handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
-
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
-
-		setSelected(newSelected);
-	}
+	
 
 	function handleChangePage(event, value) {
 		setPage(value);

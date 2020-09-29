@@ -1,4 +1,3 @@
-import FuseSplashScreen from '@fuse/core/FuseSplashScreen';
 import * as userActions from 'app/auth/store/actions';
 import auth0Service from 'app/services/auth0Service';
 import firebaseService from 'app/services/firebaseService';
@@ -15,10 +14,6 @@ class Auth extends Component {
 
 	componentDidMount() {
 		return Promise.all([
-			// Comment the lines which you do not use
-			// this.firebaseCheck(),
-			// this.auth0Check(),
-			// this.jwtCheck()
 		]).then(() => {
 			this.setState({ waitAuthCheck: false });
 		});
@@ -28,7 +23,6 @@ class Auth extends Component {
 		new Promise(resolve => {
 			jwtService.on('onAutoLogin', () => {
 				this.props.showMessage({ message: 'Logging in with JWT' });
-
 				/**
 				 * Sign in and retrieve user data from Api
 				 */

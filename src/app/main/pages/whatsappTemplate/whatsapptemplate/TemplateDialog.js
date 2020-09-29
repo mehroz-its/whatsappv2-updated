@@ -3,15 +3,8 @@ import Dialog from '@material-ui/core/Dialog';
 import TextField from '@material-ui/core/TextField';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 const useStyles = makeStyles((theme) => ({
@@ -27,10 +20,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 const CampaignDialog = (props) => {
-	const classes = useStyles(props);
 	const { isOpen, data } = props
 	const [openDialog, setopenDialog] = React.useState(isOpen);
-	const [age, setAge] = React.useState('');
 	const [params, setParams] = React.useState(data.params);
 	const [name, setName] = React.useState(data.name);
 	const [filteredParams, setfilteredParams] = React.useState(null);
@@ -39,9 +30,7 @@ const CampaignDialog = (props) => {
 		setopenDialog(false);
 	};
 
-	const handleChange = (event) => {
-		setAge(event.target.value);
-	};
+
 
 	const handleParams = e => {
 		setParams(e.target.value)

@@ -115,45 +115,6 @@ const AgentDialog = (props) => {
                 break;
         }
     }
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleOpen = () => {
-        setOpen(true);
-    };
-    const onChangeHandler = event => {
-        setIsLoading(true);
-        if (event.target.files.length > 0) {
-            const _data = new FormData();
-            let _name = event.target.files[0].name;
-            _name = _name.replace(/\s/g, "");
-            _data.append(
-                "file",
-                event.target.files[0],
-                `${new Date().getTime()}_${_name}`
-            );
-            CoreHttpHandler.request(
-                "content",
-                "upload",
-                {
-                    params: _data
-                },
-                response => {
-                    setIsLoading(false);
-                    setUploadedFilePath(response.data.data.link)
-                    onInputChange({
-                        target: {
-                            name: 'msisdnUrl',
-                            value: response.data.data.link
-                        }
-                    })
-                },
-                error => {
-                }
-            );
-        }
-    };
 
     return (
         <Dialog open={openDialog} onClose={handleDialogClose} aria-labelledby="form-dialog-title" classes={{

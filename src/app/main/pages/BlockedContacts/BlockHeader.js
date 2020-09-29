@@ -6,7 +6,7 @@ import Input from '@material-ui/core/Input';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { ThemeProvider, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 const SearchStyle = createMuiTheme({
 	overrides: {
@@ -64,7 +64,6 @@ function ContactsHeader(props) {
 									onChange={e => {
 										props.SearchVal(e.target.value)
 									}}
-									placeholder="Search"
 								/>
 							</MuiThemeProvider>
 						</Paper>

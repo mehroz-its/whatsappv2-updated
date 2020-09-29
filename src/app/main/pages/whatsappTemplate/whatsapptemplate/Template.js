@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 function Campaign(props) {
-	const classes = useStyles(props);
 	const [open, setOpen] = React.useState(false);
 	const [data, setData] = React.useState([]);
 	const [data2, setData2] = React.useState(data);
@@ -55,17 +54,10 @@ function Campaign(props) {
 		setVal(value)
 		setData2(data.filter(n => n.template_name.toLowerCase().includes(value.toLowerCase())))
 	}
-
-
 	const handleClose = () => {
 		setOpen(false);
 	};
 
-	const updateText = (search) => {
-		setVal(search)
-	}
-
-	const [age, setAge] = React.useState('Text');
 
 	return (
 		<>

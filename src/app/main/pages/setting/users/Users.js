@@ -98,22 +98,22 @@ function Users(props) {
 	}
 
 	const snackbar = (snackmsg) => {
-		if (snackmsg == "create") {
+		if (snackmsg === "create") {
 			setSnackBarMessage("Created Successfully")
 			setOK("success")
 			setSnackBarOpen(true)
 		}
-		else if (snackmsg == "update") {
+		else if (snackmsg === "update") {
 			setSnackBarMessage("Update Successfully")
 			setOK("success")
 			setSnackBarOpen(true)
 		}
-		else if (snackmsg == "delete") {
+		else if (snackmsg === "delete") {
 			setSnackBarMessage("Deleted Successfully")
 			setOK("success")
 			setSnackBarOpen(true)
 		}
-		else if (snackmsg == "error") {
+		else if (snackmsg === "error") {
 			setSnackBarMessage("Error!Please Try Again Later")
 			setOK("error")
 			setSnackBarOpen(true)
@@ -143,7 +143,6 @@ function Users(props) {
 				}}
 				header={<UserHeader SearchVal={search} />}
 				content={<UserTable snackbar={snackbar} ValueForSearch={val} dataa={data2} onClose={closeDialog} />}
-			// innerScroll
 			/>
 			<FuseAnimate animation="transition.expandIn" delay={300}>
 				<Fab
@@ -152,7 +151,6 @@ function Users(props) {
 					aria-label="add"
 					className={classes.addButton}
 					onClick={handleClickOpen}
-				// onClick={ev => dispatch(Actions.openNewContactDialog())}
 				>
 					<Icon>person_add</Icon>
 				</Fab>

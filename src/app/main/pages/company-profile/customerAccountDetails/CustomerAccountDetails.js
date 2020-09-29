@@ -30,22 +30,16 @@ const useStyles = makeStyles((theme) => ({
 function CustomerDetails(props) {
     const { location } = props
     const companyDetails = location.data
-    const classes = useStyles();
     const pageLayout = useRef(null);
-    const [open, setOpen] = React.useState(false);
-    const dispatch = useDispatch();
     const [data, setData] = React.useState([]);
     const [data2, setData2] = React.useState(data);
     const [snackbaropen, setSnackBarOpen] = React.useState(false)
     const [snackbarmessage, setSnackBarMessage] = React.useState('')
     const [ok, setOK] = React.useState('')
-    const [val, setVal] = React.useState('')
     const [cannedtype, setCannedType] = React.useState('all')
     const [tab, setTab] = React.useState('Intelligence')
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    }
+   
     const [dialogData, setDialogData] = React.useState(
         {
             id: 0,
@@ -98,17 +92,17 @@ function CustomerDetails(props) {
     }, [cannedtype]);
     const valueReceived = (value) => {
         // alert(value)
-        if (value == "update") {
+        if (value === "update") {
             setSnackBarMessage("Updated Successfully")
             setOK("success")
             setSnackBarOpen(true)
         }
-        else if (value == "create") {
+        else if (value === "create") {
             setSnackBarMessage("Created Succecfully")
             setOK("success")
             setSnackBarOpen(true)
         }
-        else if (value == "error") {
+        else if (value === "error") {
             setSnackBarMessage("Error!Please Try Again Later")
             setOK("error")
             setSnackBarOpen(true)
@@ -131,14 +125,9 @@ function CustomerDetails(props) {
     }, 4000);
 
     function search(val) {
-        setVal(val)
         setData2(data.filter(n => n.message_name.toLowerCase().includes(val.toLowerCase())))
     }
-    function closeDialog(val) {
-        setOpen(false);
-        getData()
-        valueReceived(val)
-    };
+ 
     const handleCannedMessageType = (val) => {
         setCannedType(val)
     }

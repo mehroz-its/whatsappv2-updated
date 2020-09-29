@@ -1,23 +1,17 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
-import Checkbox from '@material-ui/core/Checkbox';
 import Icon from '@material-ui/core/Icon';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, {  useState } from 'react';
 import { withRouter } from 'react-router-dom';
-import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
-import * as Actions from '../store/actions';
+import {createMuiTheme,MuiThemeProvider } from '@material-ui/core/styles';
 import TemplateTableHead from './TemplateTableHead';
-import TableData from '../TemplateData'
 import TemplateDialog from './TemplateDialog'
 import ContactsTablePaginationActions from '../../setting/canned/ContactsTablePaginationActions';
-import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 import Typography from '@material-ui/core/Typography';
 
@@ -34,15 +28,11 @@ const PaginationStyle = createMuiTheme({
 
 function TemplateTable(props) {
 	let data2 = props.dataa
-	const dispatch = useDispatch();
-	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
-	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState([]);
 	const [page, setPage] = useState(0);
 	const [open, setOpen] = React.useState(false)
 	const [dialogData, setDialogData] = React.useState({ name: '', params: '' })
-	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
 		direction: 'asc',
@@ -94,21 +84,6 @@ function TemplateTable(props) {
 	}
 	function handleClose() {
 		setOpen(false)
-	}
-
-	function handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
-		setSelected(newSelected);
 	}
 	function handleChangePage(event, value) {
 		setPage(value);
