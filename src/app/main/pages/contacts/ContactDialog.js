@@ -9,23 +9,15 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Icon from '@material-ui/core/Icon';
-import InputLabel from '@material-ui/core/InputLabel';
 import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { green, purple } from '@material-ui/core/colors';
-import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Actions from './store/actions';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
-import CitiesDropDown from './CitiesDropDown'
+
 const defaultFormState = {
 	id: '',
 	name: '',
@@ -45,42 +37,56 @@ const defaultFormState = {
 
 
 const useStyles = makeStyles((theme) => ({
-margin: {
-  
-  color:'white',
-  paddingLeft:'14px',
-  fontWeight:'bold',
-  paddingRight:'14px',
-  paddingTop:'5px',
-  paddingBottom:'5px',
-  fontSize:'12px',
- 
-},
+	margin: {
+
+		color: 'white',
+		paddingLeft: '14px',
+		fontWeight: 'bold',
+		paddingRight: '14px',
+		paddingTop: '5px',
+		paddingBottom: '5px',
+		fontSize: '12px',
+
+	},
+	formControl: {
+		margin: theme.spacing(1),
+		minWidth: 330,
+	},
+	selectEmpty: {
+		marginTop: theme.spacing(2),
+	},
 }));
 
 const theme = createMuiTheme({
-palette: {
-  primary: green,
-},
+	palette: {
+		primary: green,
+	},
 });
 
 function ContactDialog(props) {
 	const classes = useStyles();
 	const { data, isOpen, type } = props
+	console.log(data, "datadatadata");
 	const dispatch = useDispatch();
 	const contactDialog = { data: data, props: { open: isOpen }, type: type }
 	const [value, setValue] = React.useState(data.gender);
 	const [selectedcountry, setSelectedCountry] = React.useState('Country');
 	const [country, setCountry] = React.useState(data.country);
-    const [valid,SetValid]=React.useState('')
-	const [city, setCity] = React.useState('Country');
-	const [countries, setCountries] = React.useState([]);
-	const [cities, setCities] = React.useState([]);
-    const [initialSelect,setinitialSelect]= ("Select Gender")
+	const [valid, SetValid] = React.useState('')
+	// const [city, setCity] = React.useState('Country');
+	// const [countries, setCountries] = React.useState([]);
+	// const [cities, setCities] = React.useState([]);
+	const [initialSelect, setinitialSelect] = ("Select Gender")
 	const [countryopen, setSelectCountryOpen] = React.useState(false);
 	const [cityopen, setSelectCityOpen] = React.useState(false);
 	const [selectedCity, setSelectedCity] = React.useState('')
-
+	const [city, setCity] = React.useState(data.city);
+	// const [country, setCountry] = React.useState('');
+	const [selectedState, setSelectedState] = React.useState('');
+	const [countriesData, setCountriesData] = React.useState([]);
+	const [citiesData, setCitiesData] = React.useState([]);
+	const [statesData, setStatesData] = React.useState([]);
+	const [age, setAge] = React.useState('');
 
 	const { form, handleChange, setForm } = useForm(defaultFormState);
 	const getData = ((loadData) => {
@@ -98,18 +104,23 @@ function ContactDialog(props) {
 		};
 		loadData().then((response) => {
 			const data = response.data.data.list.data
-			setCountries(data)
+			// setCountries(data)
 
 
 		});
 	})
+	
 	const getSelectedCity = (val) => {
 		setSelectedCity(val)
 	}
+
 	const byName = true
 	const defaultValueCountry = country === 'N/A' ? 'Select Country' : country
 
 	React.useEffect(() => {
+		fetch(`https://glist.its.com.pk/v1/fetch/countries`)
+			.then(response => response.json())
+			.then(data => setCountriesData(data.data.countries));
 		getData()
 	}, []);
 
@@ -154,13 +165,13 @@ function ContactDialog(props) {
 	const handleRadio = (event) => {
 		setValue(event.target.value);
 	};
-	const handleCountryChange = (event) => {
-		setCountry(event.target.value);
-	}
-	const handleCityChange = (event) => {
-		setCity(event.target.value);
+	// const handleCountryChange = (event) => {
+	// 	setCountry(event.target.value);
+	// }
+	// const handleCityChange = (event) => {
+	// 	setCity(event.target.value);
 
-	}
+	// }
 
 	const handleCountryClose = () => {
 		setSelectCountryOpen(false);
@@ -179,10 +190,14 @@ function ContactDialog(props) {
 
 	function handleSubmit(event) {
 		event.preventDefault();
-		console.log(data)
-		
+		console.log(data, "DATAAAAA")
+
 		let params = {
+
 			id: data.id,
+			city: city,
+			country: country,
+			// state:selectedState,
 			number: data.number,
 			assign_name: `${form.firstname}${form.lastname}`,
 			attributes: [
@@ -214,63 +229,82 @@ function ContactDialog(props) {
 		closeComposeDialog();
 	}
 
-	if(form.lastname=="N/A")
-	{
-		form.lastname=''
+	if (form.lastname == "N/A") {
+		form.lastname = ''
 	}
-	if(form.firstname=="N/A")
-	{
-		form.firstname=''
+	if (form.firstname == "N/A") {
+		form.firstname = ''
 	}
-	if(form.email=="N/A")
-	{
-		form.email=''
+	if (form.email == "N/A") {
+		form.email = ''
 	}
-	if(form.age=="N/A")
-	{
-		form.age=''
+	if (form.age == "N/A") {
+		form.age = ''
 	}
 
-	if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-	.test(form.email))
-	{
-	var abc=false
+	if (!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+		.test(form.email)) {
+		var abc = false
 	}
 	else {
-var abc=true
+		var abc = true
 	}
 	const handleMethodChange = (e) => {
-	
-		}
-	
 
-console.log(value,'vlsssssssssssssssssss');
- 
+	}
+	const handleCityChange = (event) => {
+		setCity(event.target.value);
+		console.log(city, event.target.value, "CITY_INSIDE");
+	}
+
+	const handleStatesChange = (event) => {
+		setSelectedState(event.target.value);
+		console.log(event.target.value, 'country')
+		let state = event.target.value
+		fetch(`https://glist.its.com.pk/v1/fetch/cities/${state}`)
+			.then(response => response.json())
+			.then(data => setCitiesData(data.data.cities));
+
+	};
+
+	const handleCountryChange = (event) => {
+		setCountry(event.target.value);
+		console.log(event.target.value, 'country')
+		let country = event.target.value
+
+		fetch(`https://glist.its.com.pk/v1/fetch/states/${country}`)
+			.then(response => response.json())
+			.then(data => setStatesData(data.data.states));
+
+	};
+
+	console.log(form, country, city, selectedState, 'vlsssssssssssssssssss');
+
 	return (
 		<Dialog
 			classes={{
 				paper: 'm-24'
 			}}
 			{...contactDialog.props}
-			onClose={()=>{props.closeDialog()}} 
+			onClose={() => { props.closeDialog() }}
 			fullWidth
 			maxWidth="xs"
 		>
 			<AppBar position="static" elevation={1}>
-			
+
 				<div className="flex flex-col items-center justify-center pb-10 pt-16">
-				
+
 					<Avatar className="w-56 h-56" alt="contact avatar" src={form.avatar} />
 					{contactDialog.type === 'edit' && (
 						<Typography variant="h6" color="inherit" className="pt-0">
-					  {form.name =="N/AN/A" ?
-					  form.name='':form.name }
+							{form.name == "N/AN/A" ?
+								form.name = '' : form.name}
 						</Typography>
 					)}
 				</div>
 			</AppBar>
 			<form noValidate onSubmit={handleSubmit} className="flex flex-col md:overflow-hidden">
-				<DialogContent classes={{ root: 'p-24' }} style={{marginTop:'2%'}}>
+				<DialogContent classes={{ root: 'p-24' }} style={{ marginTop: '2%' }}>
 
 					<div className="flex">
 						<div className="min-w-48 pt-10">
@@ -372,26 +406,96 @@ console.log(value,'vlsssssssssssssssssss');
 
 
 
-					
-<div className="flex mb-20">
-					
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  defaultValue='Select Gender'
-				  onChange={handleRadio}
-				  fullWidth
-				  value={value}
-                >
-                  <MenuItem value={value}>Select Gender</MenuItem>
-                  <MenuItem value="male">Male</MenuItem>
-                  <MenuItem value="female">Female</MenuItem>
-                  <MenuItem value="others">Others</MenuItem>
-              
-                </Select>
+
+					<div className="flex mb-20">
+
+						<Select
+							labelId="demo-simple-select-label"
+							id="demo-simple-select"
+							defaultValue='Select Gender'
+							onChange={handleRadio}
+							fullWidth
+							value={value}
+						>
+							<MenuItem value={value}>Select Gender</MenuItem>
+							<MenuItem value="male">Male</MenuItem>
+							<MenuItem value="female">Female</MenuItem>
+							<MenuItem value="others">Others</MenuItem>
+
+						</Select>
+					</div>
+					<div className="flex mb-20">
+
+						<Select
+							required
+							labelId="demo-simple-select-outlined-label"
+							id="demo-simple-select-outlined"
+							value={country}
+							onChange={handleCountryChange}
+							fullWidth
+						>
+							<MenuItem value="">
+								<em>Select Country</em>
+							</MenuItem>
+							{
+								countriesData.map(val => {
+									return (
+										<MenuItem value={val.id}>{val.name}</MenuItem>
+									)
+								})
+							}
+						</Select>
+
 					</div>
 
+					<div className="flex mb-20">
+						<Select
+							required
+							labelId="demo-simple-select-outlined-label"
+							id="demo-simple-select-outlined"
+							value={selectedState}
+							onChange={handleStatesChange}
+							fullWidth
+						>
+							<MenuItem value="">
+								<em>Select State</em>
+							</MenuItem>
+							{
+								statesData.map(val => {
+									return (
+										<MenuItem value={val.id}>{val.name}</MenuItem>
+									)
+								})
+							}
+						</Select>
+					</div>
+					<div className="flex mb-20">
+						<Select
+							required
+							labelId="demo-simple-select-outlined-label"
+							id="demo-simple-select-outlined"
+							value={city}
+							onChange={handleCityChange}
+							fullWidth
+						>
+							<MenuItem value="">
+								<em>Select City</em>
+							</MenuItem>
+							{
+								citiesData.map(val => {
+									return (
+										<MenuItem value={val.id}>{val.name}</MenuItem>
+									)
+								})
+							}
+						</Select>
+					</div>
+
+
+
 				</DialogContent>
+
+
 
 				{contactDialog.type === 'new' ? (
 					<DialogActions className="justify-between p-8">
@@ -410,28 +514,28 @@ console.log(value,'vlsssssssssssssssssss');
 				) : (
 						<DialogActions className="justify-between p-8">
 							<div className="px-16 my-10">
-							<ThemeProvider theme={theme}>
-								<Button
-									variant="contained"
-									color="primary"
-									className={classes.margin}
-									type="submit"
-									onClick={handleSubmit}
-									disabled={!form.firstname||!form.lastname||!form.email||!form.age||form.email=="N/A"
-								||value=="N/A"||value=="select" ||abc != true}
-									size="small"
-								>
-									Save
+								<ThemeProvider theme={theme}>
+									<Button
+										variant="contained"
+										color="primary"
+										className={classes.margin}
+										type="submit"
+										onClick={handleSubmit}
+										disabled={!form.firstname || !form.lastname || !form.email || !form.age || form.email == "N/A"
+											|| value == "N/A" || value == "select" || abc != true}
+										size="small"
+									>
+										Save
 							</Button>
-							</ThemeProvider>
+								</ThemeProvider>
 							</div>
-							
+
 							<div className="mx-16 my-10">
 								<Button
 									variant="contained"
 									color="primary"
 									type="submit"
-									onClick={()=>{props.closeDialog()}}
+									onClick={() => { props.closeDialog() }}
 									size="small"
 								>
 									Cancel

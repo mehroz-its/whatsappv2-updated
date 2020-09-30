@@ -6,14 +6,12 @@ import clsx from 'clsx';
 import moment from 'moment/moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import AudioMessageType from '../chat//messageType/AudioMessageType'
-import DocumentMessageType from './messageType/DocumentMessageType'
-import ImageMessageType from './messageType/ImageMessageType'
-import VideoMessageType from './messageType/VideoMessageType'
-import ContactMessageType from './messageType/ContactMessageType'
-import LocationMessageType from './messageType/LocationMessageType'
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import AudioMessageType from '../chat/messageType/AudioMessageType'
+import DocumentMessageType from '../chat/messageType/DocumentMessageType'
+import ImageMessageType from '../chat/messageType/ImageMessageType'
+import VideoMessageType from '../chat/messageType/VideoMessageType'
+import ContactMessageType from '../chat/messageType/ContactMessageType'
+import LocationMessageType from '../chat/messageType/LocationMessageType'
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler';
 import XGlobalDialogCmp from '../../../../dialogs/XGlobalDialogCmp';
 import XGlobalDialog from '../../../../dialogs/XGlobalDialog';
@@ -24,9 +22,6 @@ import BlockConfirmDialog from './dialog/chat/BlockConfirmDialog';
 import CustomerProfileDialog from './dialog/chat/CustomerProfileDialog';
 import ReadMoreReact from 'read-more-react';
 import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Fade from '@material-ui/core/Fade'
 import { makeStyles } from '@material-ui/core/styles';
 import copy from 'copy-to-clipboard';
 import * as Actions from './store/actions';

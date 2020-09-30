@@ -19,12 +19,12 @@ import reducer from './store/reducers';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import AttachmentDialogV2 from './dialog/chat/AttachmentDialogV2';
-import CannedMessagesDialog from './dialog/chat/CannedMessagesDialog';
-import BlockConfirmDialog from './dialog/chat/BlockConfirmDialog';
-import CustomerProfileDialog from './dialog/chat/CustomerProfileDialog';
+import AttachmentDialogV2 from '../../globalComponents/dialogs/AttachmentDialogV2';
+import CannedMessagesDialog from '../../globalComponents/dialogs/CannedMessagesDialog';
+import BlockConfirmDialog from '../../globalComponents/dialogs/BlockConfirmDialog';
+import CustomerProfileDialog from '../../globalComponents/dialogs/CustomerProfileDialog';
 import XGlobalDialogCmp from '../../../../dialogs/XGlobalDialogCmp';
-import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
+import ShiftConversationDialog from '../../globalComponents/dialogs/ShiftConversationDialog';
 import { CSVLink } from 'react-csv';
 import Fade from '@material-ui/core/Fade'
 import Tooltip from '@material-ui/core/Tooltip';

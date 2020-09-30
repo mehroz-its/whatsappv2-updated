@@ -7,14 +7,15 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
-
+import Select from '@material-ui/core/Select';
 import PortableCountryDropdown from './PortableCountryDropdown';
 import PortableCityDropdown from './PortableCityDropdown';
 
 const CustomerProfileDialog = function (props) {
-    
+
     const useStyles = makeStyles((theme) => ({
         formControl: {
             margin: theme.spacing(1),
@@ -27,6 +28,12 @@ const CustomerProfileDialog = function (props) {
 
     const [selectedCountry, setSelectedCountry] = React.useState('');
     const [selectedCity, setSelectedCity] = React.useState('');
+    const [city, setCity] = React.useState('');
+    const [country, setCountry] = React.useState('');
+    const [selectedState, setSelectedState] = React.useState('');
+    const [countriesData, setCountriesData] = React.useState([]);
+    const [citiesData, setCitiesData] = React.useState([]);
+    const [statesData, setStatesData] = React.useState([]);
 
     const { edit, onDialogPropsChange, data } = props;
 
@@ -107,6 +114,10 @@ const CustomerProfileDialog = function (props) {
     };
 
     React.useEffect(() => {
+
+        fetch(`https://glist.its.com.pk/v1/fetch/countries`)
+            .then(response => response.json())
+            .then(data => setCountriesData(data.data.countries));
         attributes.forEach(attr => {
             const keys = Object.keys(attr);
 
@@ -114,6 +125,33 @@ const CustomerProfileDialog = function (props) {
             if (keys[1] === 'city') setSelectedCity(attr[keys[1]]);
         });
     }, []);
+
+    const handleCityChange = (event) => {
+        setCity(event.target.value);
+    }
+
+    const handleStatesChange = (event) => {
+        setSelectedState(event.target.value);
+        console.log(event.target.value, 'country')
+        let state = event.target.value
+        fetch(`https://glist.its.com.pk/v1/fetch/cities/${state.id}`)
+            .then(response => response.json())
+            .then(data => setCitiesData(data.data.cities));
+
+    };
+
+    const handleCountryChange = (event) => {
+        setCountry(event.target.value);
+        console.log(event.target.value, 'country')
+        let country = event.target.value
+
+        fetch(`https://glist.its.com.pk/v1/fetch/states/${country.id}`)
+            .then(response => response.json())
+            .then(data => setStatesData(data.data.states));
+
+    };
+
+
 
     return (
         <DialogContent >
@@ -146,15 +184,94 @@ const CustomerProfileDialog = function (props) {
                         } else if (keys[1] === "country") {
                             return (
                                 <div key={`customer_attribute_data_holder_${i}`} style={{ marginBottom: 20 }}>
-                                    <PortableCountryDropdown controlId={`attribute_id-${id}`} countries={countries} onInputChange={onInputChange} selectedCountry={value} byName={true} />
+                                    <Grid item md={12} sm={12} xs={12} >
+                                        <FormControl variant="outlined" size='small' fullWidth style={{ marginTop: '0px' }}>
+                                            <InputLabel id="outlined-age-native-simple	">Country</InputLabel>
+                                            <Select
+                                                required
+                                                labelId="demo-simple-select-outlined-label"
+                                                id="demo-simple-select-outlined"
+                                                value={country}
+                                                onChange={handleCountryChange}
+                                                fullWidth
+                                            >
+                                                <MenuItem value="">
+                                                    <em>Select Country</em>
+                                                </MenuItem>
+                                                {
+                                                    countriesData.map(val => {
+                                                        return (
+                                                            <MenuItem value={val}>{val.name}</MenuItem>
+                                                        )
+                                                    })
+                                                }
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
                                 </div>)
                         } else if (keys[1] === "city") {
 
                             return (
                                 <div key={`customer_attribute_data_holder_${i}`} style={{ marginBottom: 20 }}>
-                                    {selectedCountry && <PortableCityDropdown controlId={`attribute_id-${id}`} selectedCountry={selectedCountry} onInputChange={onInputChange} selectedCity={selectedCity} byName={true} />}
+
+                                    <Grid item md={12} sm={12} xs={12} >
+                                        <FormControl variant="outlined" fullWidth style={{ marginTop: '0px' }}>
+                                            <InputLabel id="demo-simple-select-outlined-label">State</InputLabel>
+                                            <Select
+                                                required
+                                                labelId="demo-simple-select-outlined-label"
+                                                id="demo-simple-select-outlined"
+                                                value={selectedState}
+                                                onChange={handleStatesChange}
+                                                fullWidth
+                                            >
+                                                <MenuItem value="">
+                                                    <em>Select State</em>
+                                                </MenuItem>
+                                                {
+                                                    statesData.map(val => {
+                                                        return (
+                                                            <MenuItem value={val}>{val.name}</MenuItem>
+                                                        )
+                                                    })
+                                                }
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+
                                 </div>
                             );
+                        }
+                        else if (keys[1] === "country") {
+                            console.log(keys[1], "=== country")
+                            return (
+                                <div key={`customer_attribute_data_holder_${i}`} style={{ marginBottom: 20 }}>
+                                    <Grid item md={12} sm={12} xs={12} >
+                                        <FormControl variant="outlined" size='small' fullWidth style={{ marginTop: '0px' }}>
+                                            <InputLabel id="demo-simple-select-outlined-label">City</InputLabel>
+                                            <Select
+                                                required
+                                                labelId="demo-simple-select-outlined-label"
+                                                id="demo-simple-select-outlined"
+                                                value={city}
+                                                onChange={handleCityChange}
+                                                fullWidth
+                                            >
+                                                <MenuItem value="">
+                                                    <em>Select City</em>
+                                                </MenuItem>
+                                                {
+                                                    citiesData.map(val => {
+                                                        return (
+                                                            <MenuItem value={val}>{val.name}</MenuItem>
+                                                        )
+                                                    })
+                                                }
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                </div>
+                            )
                         }
                         else if (keys[1] === "age") {
                             return (

@@ -177,6 +177,7 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, props,
 	};
 
 	const handleClick = (ev, row) => {
+		console.log(row,"ROWWWWWWWW");
 		setDialogData(row.original)
 		handleClickOpen()
 	}

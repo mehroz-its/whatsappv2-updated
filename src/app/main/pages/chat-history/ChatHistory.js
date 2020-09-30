@@ -15,26 +15,26 @@ import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Chat from './Chat';
-import ChatsSidebar from './ChatsSidebar';
-import ContactSidebar from './ContactSidebar';
-import StatusIcon from './StatusIcon';
+import ChatsSidebar from '../chat/ChatsSidebar';
+import ContactSidebar from '../chat/ContactSidebar';
+import StatusIcon from '../chat/StatusIcon';
 import * as Actions from './store/actions';
 import reducer from './store/reducers';
-import UserSidebar from './UserSidebar';
+import UserSidebar from '../chat/UserSidebar';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import AttachmentDialogV2 from './dialog/chat/AttachmentDialogV2';
-import CannedMessagesDialog from './dialog/chat/CannedMessagesDialog';
-import BlockConfirmDialog from './dialog/chat/BlockConfirmDialog';
-import CustomerProfileDialog from './dialog/chat/CustomerProfileDialog';
+import AttachmentDialogV2 from '../../globalComponents/dialogs/AttachmentDialogV2';
+import CannedMessagesDialog from '../../globalComponents/dialogs/CannedMessagesDialog';
+import BlockConfirmDialog from '../../globalComponents/dialogs/BlockConfirmDialog';
+import CustomerProfileDialog from "../../globalComponents/dialogs/CustomerProfileDialog";
 import XGlobalDialogCmp from '../../../../dialogs/XGlobalDialogCmp';
-import ShiftConversationDialog from './dialog/chat/ShiftConversationDialog';
+import ShiftConversationDialog from '../../globalComponents/dialogs/ShiftConversationDialog';
 import { CSVLink, CSVDownload } from 'react-csv';
-import Fade from '@material-ui/core/Fade'
 import copy from 'copy-to-clipboard';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
+
 const drawerWidth = 320;
 const headerHeight = 200;
 const useStyles = makeStyles(theme => ({
