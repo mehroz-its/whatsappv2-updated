@@ -104,15 +104,15 @@ class CoreHttpHandler {
                     success(result);
                 })
                 .catch((error) => {
-                    // let ah = JSON.stringify(error)
-                    // let ff = JSON.parse(ah)
-                    // if (ff.message === "Request failed with status code 401") {
-                    //     alert("Your session has expired please try to login in again")
-                    //     localStorage.clear()
-                    //     window.location.reload(false);
-                    //     return
-                    // }
-                    // failure(error);
+                    let ah = JSON.stringify(error)
+                    let ff = JSON.parse(ah)
+                    if (ff.message === "Request failed with status code 401") {
+                        alert("Your session has expired please try to login in again")
+                        localStorage.clear()
+                        window.location.reload(false);
+                        return
+                    }
+                    failure(error);
                 });
         }
     }
@@ -184,16 +184,21 @@ class CoreHttpHandler {
             args.push(params);
         }
         console.log("args ", args);
+        console.log("PROMISE",promise)
          if (promise) {
         return axios[apiCall.method].apply(this, args);
-    } else {
+    } else {                
+        console.log("HERE1");
+
         axios[apiCall.method]
             .apply(this, args)
             .then((result) => {
-
+                console.log("HERE2");
                 success(result);
             })
             .catch((error) => {
+                console.log("HERE3");
+
                 console.log('====================================');
                 console.log("error",error);
                 console.log('====================================');

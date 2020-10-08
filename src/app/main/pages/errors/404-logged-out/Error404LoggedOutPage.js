@@ -3,11 +3,23 @@ import Icon from '@material-ui/core/Icon';
 import Input from '@material-ui/core/Input';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
 import { Link } from 'react-router-dom';
-import {HOME_URL} from "../../../../common/parameters";
+import React, { useEffect, useState } from "react";
 
 function Error404Page() {
+	let [seconds, setSeconds] = useState(5)
+	useEffect(() => {
+		if(seconds>0){
+			const timer = setTimeout(() => {
+				if(seconds>=0){
+					setSeconds(seconds-1)
+				}
+			}, 1000);
+	
+		}else{
+			window.location = "/login"
+		}
+	  });
 	return (
 		<div className="flex flex-col flex-1 items-center justify-center p-16">
 			<div className="max-w-512 text-center">
@@ -16,12 +28,17 @@ function Error404Page() {
 					Temporarily Unavialabe
 					</Typography>
 				</FuseAnimate> */}
-
-				<FuseAnimate delay={500}>
-					<Typography variant="h5" color="textSecondary" className="mb-16">
-					No Data Found
+				
+					<Typography variant="h4" color="textSecondary" className="mb-16">
+					Oops.. Page you are looking for does not exist
 					</Typography>
-				</FuseAnimate>
+					
+
+
+					<Typography variant="subtitle1" color="textSecondary" className="mb-5">
+					Going back in {seconds}
+					</Typography>
+					
 
 				{/* <Paper className="flex items-center w-full h-56 p-16 mt-48 mb-16" elevation={1}>
 					<Icon color="action">search</Icon>
@@ -36,9 +53,11 @@ function Error404Page() {
 					/>
 				</Paper> */}
 
-				<Link className="font-medium" to={HOME_URL}>
-					Go back to home
+
+				<Link className="font-bold" to="/login" id="nav-link-404">
+					Go back now
 				</Link>
+				
 			</div>
 		</div>
 	);

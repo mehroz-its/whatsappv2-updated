@@ -6,15 +6,21 @@ import { useSelector } from 'react-redux';
 function Navigation(props) {
 	const navigation = useSelector(({ fuse }) => fuse.navigation);
 
-	return (
-		<FuseNavigation
-			className={clsx('navigation', props.className)}
-			navigation={navigation}
-			layout={props.layout}
-			dense={props.dense}
-			active={props.active}
-		/>
-	);
+	let userAcl = localStorage.getItem('user_acl');
+
+	if(userAcl){
+		return (
+			<FuseNavigation
+				className={clsx('navigation', props.className)}
+				navigation={navigation}
+				layout={props.layout}
+				dense={props.dense}
+				active={props.active}
+			/>
+		);
+	}else{
+		return null
+	}
 }
 
 Navigation.defaultProps = {

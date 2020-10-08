@@ -13,7 +13,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
-
+import {HOME_URL} from "./../../../../common/parameters.js";
+import {useSelector, useDispatch} from "react-redux";
 
 
 const useStyles = makeStyles(theme => ({
@@ -90,6 +91,7 @@ const styles = {
 }
 
 const Login2Page = (props) => {
+    const dispatch = useDispatch()
 
     if (settings === null) settings = {
         client_logo: navigationLogo
@@ -149,7 +151,7 @@ const Login2Page = (props) => {
     }
     let checkUser = () => {
         if (userToken !== null) {
-            props.history.push('/dashboard');
+            props.history.push(HOME_URL);
         } else if (hit !== false) {
             clientAuthentication();
         }
@@ -160,6 +162,7 @@ const Login2Page = (props) => {
     }, []);
 
     let loginSuccess = (data) => {
+
         setErrorMessage('')
         setSnackBarOpen(true)
         setSnackBarMessage('Successfully Logged In')
@@ -184,10 +187,12 @@ const Login2Page = (props) => {
 
         localStorage.setItem('online', false);
 
-        window.location.reload(false);
+        
+        // window.location.reload(false);
     };
 
     let loginFailure = (error) => {
+        console.log("HIN HEREO343432432432432432432432432432432432432")
         setHasError(true)
         setErrorMessage('')
         setSnackBarOpen(true)
