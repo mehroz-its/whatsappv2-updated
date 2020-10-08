@@ -49,10 +49,24 @@ const rows = [
 		sort: true
 	},
 	{
-		id: 'emal',
+		id: 'email',
 		align: 'center',
 		disablePadding: false,
 		label: 'Email',
+		sort: true
+	},
+	{
+		id: 'date',
+		align: 'center',
+		disablePadding: false,
+		label: 'date',
+		sort: true
+	},
+	{
+		id: 'block',
+		align: 'center',
+		disablePadding: false,
+		label: 'block',
 		sort: true
 	},
 ];

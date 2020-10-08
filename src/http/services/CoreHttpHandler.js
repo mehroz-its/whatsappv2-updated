@@ -104,15 +104,16 @@ class CoreHttpHandler {
                     success(result);
                 })
                 .catch((error) => {
-                    // let ah = JSON.stringify(error)
-                    // let ff = JSON.parse(ah)
-                    // if (ff.message === "Request failed with status code 401") {
-                    //     alert("Your session has expired please try to login in again")
-                    //     localStorage.clear()
-                    //     window.location.reload(false);
-                    //     return
-                    // }
-                    // failure(error);
+                    failure(error)
+                    let ah = JSON.stringify(error)
+                    let ff = JSON.parse(ah)
+                    if (ff.message === "Request failed with status code 401") {
+                        alert("Your session has expired please try to login in again")
+                        localStorage.clear()
+                        window.location.reload(false);
+                        return
+                    }
+                    failure(error);
                 });
         }
     }

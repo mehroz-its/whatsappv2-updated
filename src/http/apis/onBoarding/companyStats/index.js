@@ -1,26 +1,19 @@
 class APIS {
     apis() {
         return {
-            getCountries: {
+            get: {
                 headers: {
                     'xt-user-token': null
                 },
                 method: 'get',
-                path: '/fetch/countries'
+                path: '/client/stats/:client_id'
             },
-            submitForm: {
+            postStats: {
                 headers: {
                     'xt-user-token': null
                 },
                 method: 'post',
-                path: '/register'
-            },
-            updateProfile: {
-                headers: {
-                    'xt-user-token': null
-                },
-                method: 'post',
-                path: '/backend/client/update'
+                path: '/client/stats'
             }
         }
     }

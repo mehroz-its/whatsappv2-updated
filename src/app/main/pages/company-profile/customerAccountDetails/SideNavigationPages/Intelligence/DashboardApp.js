@@ -106,6 +106,11 @@ function DashboardApp(props) {
 	const [box, setBox] = React.useState([]);
 	const [radarList, setRadarList] = React.useState([]);
 	const [tabValue, setTabValue] = useState(0);
+	const [companyDetails, setCompanyDetails] = React.useState(props.data);
+	const [totalIngoingMessages, setTotalIngoingMessages] = React.useState(0);
+	const [totalOutgoingMessages, setTotalOutgoingMessages] = React.useState(0);
+	const [totalEngagement, setTotalEngagement] = React.useState(0);
+
 	const [state, setState] = React.useState({
 		columns: [
 			{ title: 'Name', field: 'name' },
@@ -146,14 +151,21 @@ function DashboardApp(props) {
 		},
 	};
 	React.useEffect(() => {
-
-		CoreHttpHandler.request('dashboard', 'listing', { ...dataSourceOptions.params }, dataSourceSuccess, dataSourceFailure);
-		CoreHttpHandler.request('dashboard', 'messagestate', { ...dataSourceOptions.params }, messagestateSuccess, messagestateFailure);
-		CoreHttpHandler.request('reports', 'campaignChart', { ...dataSourceOptionss.params }, dataSourceSuccesss, dataSourceFailuree);
-
+		if (companyDetails) {
+			let update_params = {
+				params: {
+					startingDate: "",
+					endingDate: "",
+					client_id: companyDetails.id
+				}
+			}
+			CoreHttpHandler.request('CompanyStats', 'postStats', update_params, messagestateSuccess, messagestateFailure);
+		}
 	}, [])
 	const dataSourceSuccesss = (response) => {
 		const list = response.data.data.report;
+		setBox(list)
+		console.log("list :", list);
 		const data = list.map((item, i) => {
 			const chartObj = {
 				country: item.name,
@@ -173,7 +185,6 @@ function DashboardApp(props) {
 		});
 		campaign_report_chart(data);
 	};
-
 	const dataSourceFailuree = (response) => {
 	};
 	const campaign_report_chart = (dataa) => {
@@ -240,18 +251,51 @@ function DashboardApp(props) {
 	const dataSourceFailure = (response) => {
 	};
 	const messagestateSuccess = (response) => {
-		const list = response.data.data.chartData;
+		const list = response.data.data.report.finalbox[0].chart;
 		setRadarList(list)
 		rader_chart(list)
+		totalCountConversation(response.data.data.report.finalbox[0].conversations)
+		totalEngagements(response.data.data.report.finalbox[0].engagements)
 	};
 	const messagestateFailure = (response) => {
+	};
+	const totalCountConversation = (response) => {
+		const data = response;
+		console.log("data totalCountConversation : ", data);
+		let totalIngoing = 0;
+		let totalOutgoing = 0;
+		for (var i = 0; i < data.length; i++) {
+			totalIngoing = totalIngoing + parseInt(data[i][1].count)
+			totalOutgoing = totalOutgoing + parseInt(data[i][0].count)
+		}
+		console.log("data totalIngoing : ", totalIngoing);
+		console.log("data totalOutgoing : ", totalOutgoing);
+
+		setTotalIngoingMessages(totalIngoing)
+		setTotalOutgoingMessages(totalOutgoing)
+	};
+	const totalEngagements = (response) => {
+		const data = response;
+		let totalEngagement = 0;
+		for (var i = 0; i < data.length; i++) {
+			totalEngagement = totalEngagement + parseInt(data[i][0].count)
+		}
+		console.log("totalEngagement :", totalEngagement);
+		setTotalEngagement(totalEngagement)
 	};
 	function handleChangeTab(event, value) {
 		setTabValue(value);
 		if (value === 0) {
-			CoreHttpHandler.request('dashboard', 'listing', { ...dataSourceOptions.params }, dataSourceSuccess, dataSourceFailure);
-			CoreHttpHandler.request('dashboard', 'messagestate', { ...dataSourceOptions.params }, messagestateSuccess, messagestateFailure);
-			CoreHttpHandler.request('reports', 'campaignChart', { ...dataSourceOptionss.params }, dataSourceSuccesss, dataSourceFailuree);
+			if (companyDetails) {
+				let update_params = {
+					key: ':client_id',
+					value: companyDetails.id,
+					params: {}
+				}
+				// CoreHttpHandler.request('dashboard', 'listing', { ...dataSourceOptions.params }, dataSourceSuccess, dataSourceFailure);
+				// CoreHttpHandler.request('CompanyStats', 'get', update_params, messagestateSuccess, messagestateFailure);
+				// CoreHttpHandler.request('reports', 'campaignChart', { ...dataSourceOptionss.params }, dataSourceSuccesss, dataSourceFailuree);
+			}
 		}
 	}
 	if (box.length === 0 && radarList.length === 0) {
@@ -283,6 +327,14 @@ function DashboardApp(props) {
 	const SelectedDates = (start, end) => {
 		Start = start.toISOString()
 		End = end.toISOString()
+		let update_params = {
+			params: {
+				startingDate: Start,
+				endingDate:End,
+				client_id: companyDetails.id
+			}
+		}
+		CoreHttpHandler.request('CompanyStats', 'postStats', update_params, messagestateSuccess, messagestateFailure);
 	}
 	return (
 		<FusePageSimple
@@ -308,18 +360,19 @@ function DashboardApp(props) {
 										</Grid>
 										<Grid item md={8} sm={12} xs={12}>
 											<Grid container spacing={3}>
-												{box.map((value, index) => {
-													return (
-														<Grid item md={4} sm={12} xs={12} >
-															<Widget2 title={value.title} count={value.value} bottom_title={value.subtitle} />
-														</Grid>
-													)
-												})}
+												<Grid item md={4} sm={12} xs={12} >
+													<Widget2 title='Dummy' count={totalIngoingMessages} bottom_title='Inbound' />
+												</Grid>
+												<Grid item md={4} sm={12} xs={12} >
+													<Widget2 title='Dummy' count={totalOutgoingMessages} bottom_title='Outbound' />
+												</Grid>
+												<Grid item md={4} sm={12} xs={12} >
+													<Widget2 title='Dummy' count={totalEngagement} bottom_title='Engagements' />
+												</Grid>
 											</Grid>
 										</Grid>
 										<Grid item md={4} sm={12} xs={12} >
 											<Paper className="w-full rounded-8 shadow-none border-1 pt-10 pb-10">
-
 												<div id="chartdivv" style={{ width: "100%", height: "221px" }}></div>
 											</Paper>
 										</Grid>

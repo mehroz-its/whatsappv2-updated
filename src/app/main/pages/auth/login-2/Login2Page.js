@@ -159,7 +159,33 @@ const Login2Page = (props) => {
 
     }, []);
 
-    let loginSuccess = (data) => {
+  
+
+    let login = () => {
+        setIsLoading(true);
+        setErrorMessage('')
+        const data = {
+            username: username,
+            password: passsword,
+        };
+        if (username == '' || passsword == '' || passsword == undefined || username == undefined) {
+            setIsLoading(false)
+            setSnackBarOpen(true)
+            setSnackBarMessage('Please Fill The Required Fields')
+            setOK('error')
+        }
+        else {
+            CoreHttpHandler.request(
+                'core',
+                'userAuth',
+                data,
+                loginSuccess,
+                loginFailure
+            );
+        }
+    };
+    const loginSuccess = (data) => {
+        console.log("loginSuccess  data",data);
         setErrorMessage('')
         setSnackBarOpen(true)
         setSnackBarMessage('Successfully Logged In')
@@ -187,7 +213,8 @@ const Login2Page = (props) => {
         window.location.reload(false);
     };
 
-    let loginFailure = (error) => {
+    const loginFailure = (error) => {
+        console.log("loginFailure data",error);
         setHasError(true)
         setErrorMessage('')
         setSnackBarOpen(true)
@@ -196,31 +223,6 @@ const Login2Page = (props) => {
         setIsLoading(false)
 
     };
-
-    let login = () => {
-        setIsLoading(true);
-        setErrorMessage('')
-        const data = {
-            username: username,
-            password: passsword,
-        };
-        if (username == '' || passsword == '' || passsword == undefined || username == undefined) {
-            setIsLoading(false)
-            setSnackBarOpen(true)
-            setSnackBarMessage('Please Fill The Required Fields')
-            setOK('error')
-        }
-        else {
-            CoreHttpHandler.request(
-                'core',
-                'userAuth',
-                data,
-                loginSuccess,
-                loginFailure
-            );
-        }
-    };
-
     let _handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             login();

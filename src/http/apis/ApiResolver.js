@@ -17,10 +17,18 @@ import Reports from './reports';
 import ProfileApis from './profile';
 import LocationApis from './locations';
 import CustomerOnBoard from './customerOnBoard';
+import Business from './onBoarding/business';
+import BusinessDetails from './onBoarding/businessDetails';
+import CompanyStats from './onBoarding/companyStats';
+import CompanyAgent from './onBoarding/companyAgent';
 
 class ApiResolver {
     constructor() {
         this.apis = {
+            CompanyAgent:CompanyAgent.apis(),
+            CompanyStats:CompanyStats.apis(),
+            Business:Business.apis(),
+            BusinessDetails:BusinessDetails.apis(),
             customerOnBoard:CustomerOnBoard.apis(),
             core: CoreApis.apis(),
             dashboard: DashboardApis.apis(),

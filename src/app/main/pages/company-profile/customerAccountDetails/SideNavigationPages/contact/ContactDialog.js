@@ -55,6 +55,9 @@ function ContactDialog(props) {
 	const dispatch = useDispatch();
 	const contactDialog = { data: data, props: { open: isOpen }, type: type }
 	const [value, setValue] = React.useState(data.gender);
+	const { id, number, assign_name, attributes } = data;
+    const [customerAttributes, setCustomerAttributes] = React.useState(attributes);
+
 	const [selectedcountry, setSelectedCountry] = React.useState('Country');
 	const [country, setCountry] = React.useState(data.country);
 	const [valid, SetValid] = React.useState('')
@@ -88,6 +91,12 @@ function ContactDialog(props) {
 	}
 	React.useEffect(() => {
 		getData()
+		attributes.forEach(attr => {
+            const keys = Object.keys(attr);
+
+            if (keys[1] === 'country') setSelectedCountry(attr[keys[1]]);
+            if (keys[1] === 'city') setSelectedCity(attr[keys[1]]);
+        });
 	}, []);
 	const initDialog = useCallback(() => {
 		if (contactDialog.type === 'edit' && contactDialog.data) {
@@ -101,6 +110,7 @@ function ContactDialog(props) {
 			});
 		}
 	}, [contactDialog.data, contactDialog.type, setForm]);
+	
 	useEffect(() => {
 		if (contactDialog.props.open) {
 			initDialog();
@@ -197,18 +207,20 @@ function ContactDialog(props) {
 		>
 			<AppBar position="static" elevation={1}>
 				<div className="flex flex-col items-center justify-center pb-10 pt-16">
-					<Avatar className="w-56 h-56" alt="contact avatar" src={form.avatar} />
+					<Avatar className="w-56 h-56" alt="contact avatar" src={contactDialog.data.avatar} />
 					{contactDialog.type === 'edit' && (
 						<Typography variant="h6" color="inherit" className="pt-0">
-							{form.name == "N/AN/A" ?
-								form.name = '' : form.name}
+							{contactDialog.data.name == "N/AN/A" ?
+								contactDialog.data.name = '' : contactDialog.data.name}
 						</Typography>
 					)}
 				</div>
 			</AppBar>
 			<form noValidate onSubmit={handleSubmit} className="flex flex-col md:overflow-hidden">
 				<DialogContent classes={{ root: 'p-24' }} style={{ marginTop: '2%' }}>
-					<div className="flex">
+
+					
+					{/* <div className="flex">
 						<div className="min-w-48 pt-10">
 							<Icon color="action">phone</Icon>
 						</div>
@@ -219,7 +231,7 @@ function ContactDialog(props) {
 							required
 							id="phone"
 							name="phone"
-							value={form.number}
+							value={contactDialog.data.number}
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth
@@ -236,7 +248,7 @@ function ContactDialog(props) {
 							label="First Name"
 							id="firstname"
 							name="firstname"
-							value={form.firstname}
+							value={contactDialog.data.firstname}
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth
@@ -253,7 +265,7 @@ function ContactDialog(props) {
 							label="LastName"
 							id="lastname"
 							name="lastname"
-							value={form.lastname}
+							value={contactDialog.data.lastname}
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth
@@ -270,7 +282,7 @@ function ContactDialog(props) {
 							label="Email"
 							id="email"
 							name="email"
-							value={form.email}
+							value={contactDialog.data.email}
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth
@@ -287,7 +299,7 @@ function ContactDialog(props) {
 							label="Age"
 							id="age"
 							name="age"
-							value={form.age}
+							value={contactDialog.data.age}
 							required
 							onChange={handleChange}
 							variant="outlined"
@@ -310,7 +322,7 @@ function ContactDialog(props) {
 							<MenuItem value="female">Female</MenuItem>
 							<MenuItem value="others">Others</MenuItem>
 						</Select>
-					</div>
+					</div> */}
 				</DialogContent>
 				{contactDialog.type === 'new' ? (
 					<DialogActions className="justify-between p-8">
@@ -336,7 +348,7 @@ function ContactDialog(props) {
 										className={classes.margin}
 										type="submit"
 										onClick={handleSubmit}
-										disabled={!form.firstname || !form.lastname || !form.email || !form.age || form.email == "N/A"
+										disabled={!contactDialog.data.firstname || !contactDialog.data.lastname || !contactDialog.data.email || !contactDialog.data.age || contactDialog.data.email == "N/A"
 											|| value == "N/A" || value == "select" || abc != true}
 										size="small"
 									>

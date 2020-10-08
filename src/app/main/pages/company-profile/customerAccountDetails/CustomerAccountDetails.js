@@ -29,8 +29,10 @@ const useStyles = makeStyles((theme) => ({
 
 function CustomerDetails(props) {
     const { location } = props
-    const companyDetails = location.data
     const pageLayout = useRef(null);
+    const [companyDetails, setCompanyDetails] = React.useState(location.data);
+    const [statics, setStatics] = React.useState([]);
+    const [agent, setAgent] = React.useState([]);
     const [data, setData] = React.useState([]);
     const [data2, setData2] = React.useState(data);
     const [snackbaropen, setSnackBarOpen] = React.useState(false)
@@ -39,7 +41,7 @@ function CustomerDetails(props) {
     const [cannedtype, setCannedType] = React.useState('all')
     const [tab, setTab] = React.useState('Intelligence')
 
-   
+
     const [dialogData, setDialogData] = React.useState(
         {
             id: 0,
@@ -87,9 +89,48 @@ function CustomerDetails(props) {
 
 
     })
+
     React.useEffect(() => {
-        getData()
-    }, [cannedtype]);
+        console.log("companyDetailssss", companyDetails);
+        if (companyDetails) {
+            let update_params = {
+                key: ':client_id',
+                value: companyDetails.id,
+                params: {}
+            }
+            CoreHttpHandler.request('BusinessDetails', 'get', update_params, dataSourceSuccessBusinessDetails, dataSourceFailureBusinessDetails);
+            // CoreHttpHandler.request('CompanyStats', 'get', update_params, dataSourceSuccessCompanyStats, dataSourceFailureCompanyStats);
+            // CoreHttpHandler.request('CompanyAgent', 'get', update_params, dataSourceSuccessCompanyAgent, dataSourceFailureCompanyAgent);
+        }
+        else {
+            props.history.push({ pathname: '/apps/company-profile' })
+        }
+
+    }, [])
+
+    const dataSourceSuccessBusinessDetails = (response) => {
+        console.log("dataSourceSuccessBusinessDetails response : ", response);
+
+    };
+    const dataSourceFailureBusinessDetails = (response) => {
+        console.log("dataSourceFailureBusinessDetails response : ", response);
+    };
+    const dataSourceSuccessCompanyStats = (response) => {
+        console.log("dataSourceSuccessCompanyStats response", response);
+        setStatics(response.data.data.chart)
+    };
+    const dataSourceFailureCompanyStats = (response) => {
+        console.log("dataSourceFailureCompanyStats response : ", response);
+    };
+
+    const dataSourceSuccessCompanyAgent = (response) => {
+        setAgent(response.data.data.all_agents)
+        console.log("dataSourceSuccessCompanyAgent response", response);
+    };
+    const dataSourceFailureCompanyAgent = (response) => {
+        console.log("dataSourceFailureCompanyAgent response : ", response);
+    };
+   
     const valueReceived = (value) => {
         // alert(value)
         if (value === "update") {
@@ -119,6 +160,7 @@ function CustomerDetails(props) {
         }
 
     }
+
     setTimeout(() => {
         setSnackBarMessage('')
         setSnackBarOpen(false)
@@ -127,7 +169,7 @@ function CustomerDetails(props) {
     function search(val) {
         setData2(data.filter(n => n.message_name.toLowerCase().includes(val.toLowerCase())))
     }
- 
+
     const handleCannedMessageType = (val) => {
         setCannedType(val)
     }
@@ -156,11 +198,11 @@ function CustomerDetails(props) {
                 }}
                 header={<CustomerDetailsHeader pageLayout={pageLayout} SearchVal={search} data={companyDetails} />}
                 content={
-                    tab === 'Intelligence' ? <Dashboard />
-                        : tab === 'Profile' ? <Profile />
-                            : tab === 'Contact' ? <ContactTable />
+                    tab === 'Intelligence' ? <Dashboard data={companyDetails} />
+                        : tab === 'Profile' ? <Profile data={companyDetails}/>
+                            : tab === 'Contact' ? <ContactTable data={companyDetails} />
                                 : tab === 'TemplateMessage' ? <TemplateMessage />
-                                    : tab === 'Agents' ? <AgentTable />
+                                    : tab === 'Agents' ? <AgentTable data={companyDetails} />
                                         : tab === 'CannedReplies' ? <CannedReplies />
                                             : null
                 }

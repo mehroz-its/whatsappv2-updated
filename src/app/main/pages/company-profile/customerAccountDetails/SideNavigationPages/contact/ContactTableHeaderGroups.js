@@ -1,4 +1,3 @@
-import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
@@ -6,58 +5,35 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 import clsx from 'clsx';
 import React, { useState } from 'react';
-
 const rows = [
 	{
-		id: 'Id',
+		id: 'id',
 		align: 'center',
 		disablePadding: false,
-		label: 'Id',
+		label: 'ID',
 		sort: true
 	},
 	{
-		id: 'firstname',
+		id: 'title',
 		align: 'center',
 		disablePadding: false,
-		label: 'First Name',
+		label: 'Title',
 		sort: true
 	},
 	{
-		id: 'lastname',
+		id: 'description',
 		align: 'center',
 		disablePadding: false,
-		label: 'Last Name',
+		label: 'Description',
 		sort: true
 	},
 	{
-		id: 'mobile',
+		id: 'totalCustomer',
 		align: 'center',
 		disablePadding: false,
-		label: 'Mobile',
+		label: 'Total Customer',
 		sort: true
 	},
-	{
-		id: 'email',
-		align: 'center',
-		disablePadding: false,
-		label: 'Email',
-		sort: true
-	},
-	{
-		id: 'position',
-		align: 'center',
-		disablePadding: false,
-		label: 'Position',
-		sort: true
-	},
-	{
-		id: 'type',
-		align: 'center',
-		disablePadding: false,
-		label: 'Type',
-		sort: true
-	},
-	
 	{
 		id: 'status',
 		align: 'center',
@@ -65,19 +41,11 @@ const rows = [
 		label: 'Status',
 		sort: true
 	},
-
 ];
-const useStyles = makeStyles(theme => ({
-	actionsButtonWrapper: {
-		background: theme.palette.background.paper
-	}
-}));
-function CampaignTableHead(props) {
+function CampaignTableHeadGroups(props) {
 	const createSortHandler = property => event => {
 		props.onRequestSort(event, property);
 	};
-
-
 	return (
 		<TableHead>
 			<TableRow className="h-10">
@@ -112,4 +80,4 @@ function CampaignTableHead(props) {
 		</TableHead>
 	);
 }
-export default CampaignTableHead;
+export default CampaignTableHeadGroups;

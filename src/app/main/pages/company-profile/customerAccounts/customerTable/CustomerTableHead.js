@@ -42,47 +42,19 @@ const rows = [
 		sort: true
 	},
 	{
+		id: 'success',
+		align: 'center',
+		disablePadding: false,
+		label: 'Date',
+		sort: true
+	},
+	{
 		id: 'progress',
 		align: 'center',
 		disablePadding: false,
 		label: 'Active',
 		sort: true
 	},
-	{
-		id: 'consumer',
-		align: 'center',
-		disablePadding: false,
-		label: 'Groups',
-		sort: true
-	},
-	{
-		id: 'success',
-		align: 'center',
-		disablePadding: false,
-		label: 'Date',
-		sort: true
-	}
-	// {
-	// 	id: 'faliure',
-	// 	align: 'center',
-	// 	disablePadding: false,
-	// 	label: 'Failure',
-	// 	sort: true
-	// },
-	// {
-	// 	id: 'lastUpdated',
-	// 	align: 'center',
-	// 	disablePadding: false,
-	// 	label: 'Last Updated',
-	// 	sort: true
-	// },
-	// {
-	// 	id: 'completed',
-	// 	align: 'center',
-	// 	disablePadding: false,
-	// 	label: 'Completed',
-	// 	sort: true
-	// }
 
 ];
 const useStyles = makeStyles(theme => ({

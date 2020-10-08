@@ -1,4 +1,3 @@
-import Icon from '@material-ui/core/Icon';
 import _ from '@lodash';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,9 +8,8 @@ import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import CampaignTableHead from './CustomerTableHead';
 import ContactsTablePaginationActions from '../../../setting/canned/ContactsTablePaginationActions';
-import { createMuiTheme,  MuiThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import CampaignDialog from './CampaignDialog'
-import CoreHttpHandler from '../../../../../../http/services/CoreHttpHandler'
 import FuseLoading from '../../../../../../@fuse/core/FuseLoading/FuseLoading'
 import Typography from '@material-ui/core/Typography';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -34,7 +32,7 @@ const PaginationStyle = createMuiTheme({
 function CampaignTable(props) {
 	const [open, setOpen] = React.useState(false)
 	const [selected, setSelected] = useState([]);
-	const [data, setData] = useState([]);
+	const [data, setData] = useState(props.clients);
 	const [data2, setData2] = useState(data);
 	const [page, setPage] = useState(0);
 	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
@@ -59,30 +57,13 @@ function CampaignTable(props) {
 		type: null,
 		activated: false,
 	});
-	const getData = ((loadData) => {
-		loadData = () => {
-			return CoreHttpHandler.request('campaigns', 'listing', {
-				columns: "*",
-				limit: 100,
-				orderby: "id",
-				page: 0,
-				sortby: "ASC",
-				values: 1,
-				where: "displayed = $1",
-			}, null, null, true);
-		};
-		loadData().then((response) => {
-			const tableData = response.data.data.list.data
-			setData(tableData)
-			setData2(tableData)
-		});
-	})
+
 	setTimeout(() => {
 		setSnackBarOpen(false)
 		setSnackBarMessage("")
 	}, 3000);
 	React.useEffect(() => {
-		getData()
+		// getData()
 	}, []);
 	function handleRequestSort(event, property) {
 		const id = property;
@@ -116,7 +97,7 @@ function CampaignTable(props) {
 		props.history.push({ pathname: '/apps/company-details', data: n });
 	}
 
-	if (data2.length === 0) {
+	if (data.length === 0) {
 		if (props.ValueForSearch !== '') {
 			return (
 				<div className="flex flex-1 items-center justify-center h-full">
@@ -133,20 +114,7 @@ function CampaignTable(props) {
 			);
 		}
 	}
-	function handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
-		setSelected(newSelected);
-	}
+	
 	function handleChangePage(event, value) {
 		setPage(value);
 	}
@@ -172,102 +140,82 @@ function CampaignTable(props) {
 				</Alert>
 			</Snackbar>
 			<div className="w-full flex flex-col">
-					<TableContainer component={Paper}>
-						<Table className="min-w-xl" aria-labelledby="tableTitle">
-							<CampaignTableHead
-								numSelected={selected.length}
-								order={order}
-								onSelectAllClick={handleSelectAllClick}
-								onRequestSort={handleRequestSort}
-								rowCount={data.length}
-							/>
-							<TableBody>
-								{_.orderBy(
-									data2,
-									[
-										o => {
-											switch (order.id) {
-												case 'categories': {
-													return o.categories[0];
-												}
-												default: {
-													return o[order.id];
-												}
+				<TableContainer component={Paper}>
+					<Table className="min-w-xl" aria-labelledby="tableTitle">
+						<CampaignTableHead
+							numSelected={selected.length}
+							order={order}
+							onSelectAllClick={handleSelectAllClick}
+							onRequestSort={handleRequestSort}
+							rowCount={data.length}
+						/>
+						<TableBody>
+							{_.orderBy(
+								data2,
+								[
+									o => {
+										switch (order.id) {
+											case 'categories': {
+												return o.categories[0];
+											}
+											default: {
+												return o[order.id];
 											}
 										}
-									],
-									[order.direction]
-								)
-									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-									.map(n => {
-										const isSelected = selected.indexOf(n.id) !== -1;
-										console.log(n, 'i am in table')
-										return (
-											<TableRow
-												className="h-10 cursor-pointer"
-												hover
-												role="checkbox"
-												aria-checked={isSelected}
-												tabIndex={-1}
-												key={n.id}
-												selected={isSelected}
-											>
-												<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-													{n.id}
-												</TableCell>
-												<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-													{n.name}
-												</TableCell>
-												<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-													{n.description}
-												</TableCell>
-												{<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-													{n.begin_dt === null ? 'N/A' : n.begin_dt}
-												</TableCell>}
-												<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-													{n.activated ? (
-														<Icon className="text-green text-16">check_circle</Icon>
-													) : (
-															<Icon className="text-red text-16">cancel</Icon>
-														)}
-												</TableCell>
-												<TableCell  component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-													<FormControlLabel
-														style={{ marginLeft: '2px' }}
-														control={
-															<Switch
-																checked={checked}
-																onChange={toggleChecked}
-																name="checkedB"
-																color="primary"
-																size="small"
-															/>
-														}
-													/>
-												</TableCell>
-												<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-													{n.consumers}
-												</TableCell>
-												<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-													{n.success}
-												</TableCell >
-												<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-													{n.failures}
-												</TableCell>
-												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-													{n.completed ? (
-														<Icon className="text-green text-16">check_circle</Icon>
-													) : (
-															<Icon className="text-red text-16">cancel</Icon>
-														)}
-												</TableCell>
-											</TableRow>
-										);
-									})}
-							</TableBody>
-						</Table>
-					</TableContainer>
-		
+									}
+								],
+								[order.direction]
+							)
+								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+								.map((n, i) => {
+									const isSelected = selected.indexOf(n.id) !== -1;
+									return (
+										<TableRow
+											className="h-10 cursor-pointer"
+											hover
+											role="checkbox"
+											aria-checked={isSelected}
+											tabIndex={-1}
+											key={i}
+											selected={isSelected} >
+											<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+												{n.id}
+											</TableCell>
+											<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+												{n.comapny}
+											</TableCell>
+											<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+												{n.number}
+											</TableCell>
+											<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+												{n.email}
+											</TableCell>
+											<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+												{n.phone}
+											</TableCell >
+											{<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+												{n.dt === null ? 'N/A' : n.dt}
+											</TableCell>}
+											<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+												<FormControlLabel
+													style={{ marginLeft: '2px' }}
+													control={
+														<Switch
+															checked={n.enabled}
+															onChange={toggleChecked}
+															name="checkedB"
+															color="primary"
+															size="small" />
+													}
+												/>
+											</TableCell>
+
+										</TableRow>
+									);
+								})}
+						</TableBody>
+					</Table>
+				</TableContainer>
 				<MuiThemeProvider theme={PaginationStyle}>
 					<TablePagination
 						classes={{

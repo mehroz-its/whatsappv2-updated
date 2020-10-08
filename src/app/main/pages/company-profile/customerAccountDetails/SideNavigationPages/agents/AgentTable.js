@@ -72,7 +72,10 @@ function AgentTable(props) {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false)
 	const [selected, setSelected] = useState([]);
+	const [companyDetails, setCompanyDetails] = React.useState(props.data);
 	const [data, setData] = useState([]);
+	const [agent, setAgent] = React.useState([]);
+
 	const [data2, setData2] = useState(data);
 	const [page, setPage] = useState(0);
 	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
@@ -124,8 +127,25 @@ function AgentTable(props) {
 		setSnackBarMessage("")
 	}, 3000);
 	React.useEffect(() => {
-		getData()
+		if (companyDetails) {
+			let update_params = {
+				key: ':client_id',
+				value: companyDetails.id,
+				params: {}
+			}
+			CoreHttpHandler.request('CompanyAgent', 'get', update_params, dataSourceSuccessCompanyAgent, dataSourceFailureCompanyAgent);
+		}
+		// getData()
 	}, []);
+	const dataSourceSuccessCompanyAgent = (response) => {
+		setAgent(response.data.data.all_agents)
+		setData(response.data.data.all_agents)
+		console.log("dataSourceSuccessCompanyAgent response", response);
+	};
+	const dataSourceFailureCompanyAgent = (response) => {
+		console.log("dataSourceFailureCompanyAgent response : ", response);
+	};
+
 	function handleRequestSort(event, property) {
 		const id = property;
 		let direction = 'desc';
@@ -157,7 +177,7 @@ function AgentTable(props) {
 		setOpen(true)
 		setDialogData(n)
 	}
-	if (data2.length === 0) {
+	if (data.length === 0) {
 		if (props.ValueForSearch === '') {
 			return (
 				<div className="flex flex-1 items-center justify-center h-full">
@@ -232,7 +252,7 @@ function AgentTable(props) {
 								/>
 								<TableBody>
 									{_.orderBy(
-										data2,
+										data,
 										[
 											o => {
 												switch (order.id) {
@@ -248,7 +268,7 @@ function AgentTable(props) {
 										[order.direction]
 									)
 										.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-										.map(n => {
+										.map((n, i) => {
 											const isSelected = selected.indexOf(n.id) !== -1;
 											return (
 												<TableRow
@@ -265,20 +285,31 @@ function AgentTable(props) {
 														{n.id}
 													</TableCell>
 													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-														{n.name}
+														{n.firstname}
 													</TableCell>
 													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-														{n.description}
+														{n.lastname}
 													</TableCell>
-													{<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-														{n.begin_dt === null ? 'N/A' : n.begin_dt}
-													</TableCell>}
+
 													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+														{n.number}
+													</TableCell>
+													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+														{n.email}
+													</TableCell>
+													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+														{n.position}
+													</TableCell>
+
+													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+														{n.max_token_count === 1 ? "Agent" : "Admin"}
+													</TableCell>
+													{/* <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
 														<FormControlLabel
 															style={{ marginLeft: '2px' }}
 															control={
 																<Switch
-																	checked={checked}
+																	checked={n.enabled}
 																	onChange={toggleChecked}
 																	name="checkedB"
 																	color="primary"
@@ -287,7 +318,7 @@ function AgentTable(props) {
 																/>
 															}
 														/>
-													</TableCell>
+													</TableCell> */}
 												</TableRow>
 											);
 										})}

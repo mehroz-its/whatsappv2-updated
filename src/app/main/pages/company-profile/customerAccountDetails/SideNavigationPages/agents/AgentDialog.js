@@ -50,7 +50,6 @@ const AgentDialog = (props) => {
     const [uploadedFilePath, setUploadedFilePath] = React.useState(data.attachment_url);
     const [attachment_name, setAttachment_name] = React.useState(data.file_name)
     const [attachment_params, setAttachment_params] = React.useState('')
-
     const handleDialogClose = () => {
         props.closeDialog()
         setopenDialog(false);
@@ -141,7 +140,7 @@ const AgentDialog = (props) => {
                         // autoFocus
                         id="name"
                         name="name"
-                        value={name}
+                        value={data.username}
                         variant="outlined"
                         required
                         fullWidth
@@ -218,7 +217,7 @@ const AgentDialog = (props) => {
                         // autoFocus
                         id="name"
                         name="name"
-                        value={name}
+                        value={data.email}
                         variant="outlined"
                         required
                         fullWidth
@@ -237,7 +236,7 @@ const AgentDialog = (props) => {
                         // autoFocus
                         id="name"
                         name="name"
-                        value={name}
+                        value={data.number}
                         variant="outlined"
                         required
                         fullWidth

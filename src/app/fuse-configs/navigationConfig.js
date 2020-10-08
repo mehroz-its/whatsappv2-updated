@@ -26,35 +26,45 @@ let userAcl = localStorage.getItem('user_acl');
 if (userAcl !== null) userAcl = JSON.parse(userAcl);
 
 const navigationConfig = [
+    // {
+    //     id: 'applications',
+    //     title: 'Applications',
+    //     translate: 'Super Admin',
+    //     type: 'group',
+    //     icon: 'apps',
+    //     children: [
+    //         {
+    //             id: 'companyProfile',
+    //             title: 'Company Profile',
+    //             translate: 'Bussiness',
+    //             type: 'item',
+    //             icon: 'dashboard',
+    //             url: '/apps/company-profile',
+    //             exact: true
+
+    //         },
+
+
+    //     ]
+    // },
+    
     {
         id: 'applications',
         title: 'Applications',
-        translate: 'Super Admin',
+        translate: 'BI Board',
         type: 'group',
         icon: 'apps',
         children: [
             {
                 id: 'companyProfile',
                 title: 'Company Profile',
-                translate: 'Customers',
+                translate: 'Business',
                 type: 'item',
                 icon: 'dashboard',
                 url: '/apps/company-profile',
                 exact: true
 
             },
-
-
-        ]
-    },
-    
-    {
-        id: 'applications',
-        title: 'Applications',
-        translate: 'Navigation',
-        type: 'group',
-        icon: 'apps',
-        children: [
             {
                 id: 'dashboards',
                 title: 'Intelligence',

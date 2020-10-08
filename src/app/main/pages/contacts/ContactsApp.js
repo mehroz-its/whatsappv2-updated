@@ -80,12 +80,9 @@ function ContactsApp() {
 		<>
 
 			<Snackbar
-
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 				open={snackbaropen}
-				autoHideDuration={3000}
-
-			>
+				autoHideDuration={3000}	>
 				<Alert variant="filled" severity={ok}>
 					{snackbarmessage}
 				</Alert>
