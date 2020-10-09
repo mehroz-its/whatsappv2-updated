@@ -159,10 +159,10 @@ function ComapnyProfile(props) {
 
 
 		}, (error) => {
-			alert('hi')
-			setSnackBarOpen(true)
-			setSnackBarMessage('Loggin Failed')
-			setOK('error')
+			// alert('hi')
+			// setSnackBarOpen(true)
+			// setSnackBarMessage('Loggin Failed')
+			// setOK('error')
 
 
 
