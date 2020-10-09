@@ -146,7 +146,7 @@ function ComapnyProfile(props) {
 	function handleTabChange(ev) {
 		ev.preventDefault();
 		console.log('form', form, country, city)
-		let params = { ...form, city: city.name, country: country.name, logo: profileImage }
+		let params = { ...form, city: city.id, country: country.id, state: state.id, logo: profileImage }
 		console.log(params, 'params')
 		// return;
 		CoreHttpHandler.request('customerOnBoard', 'submitForm', params, (response) => {

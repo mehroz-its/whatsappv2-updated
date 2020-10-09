@@ -19,35 +19,16 @@ if (user_token !== null) {
         user_routes.push(val[1])
     })
 
+    console.log("user_routes", user_routes)
 } else {
+    console.log("user_token null")
+
 }
 let userAcl = localStorage.getItem('user_acl');
 
 if (userAcl !== null) userAcl = JSON.parse(userAcl);
 
 const navigationConfig = [
-    // {
-    //     id: 'applications',
-    //     title: 'Applications',
-    //     translate: 'Super Admin',
-    //     type: 'group',
-    //     icon: 'apps',
-    //     children: [
-    //         {
-    //             id: 'companyProfile',
-    //             title: 'Company Profile',
-    //             translate: 'Bussiness',
-    //             type: 'item',
-    //             icon: 'dashboard',
-    //             url: '/apps/company-profile',
-    //             exact: true
-
-    //         },
-
-
-    //     ]
-    // },
-    
     {
         id: 'applications',
         title: 'Applications',
@@ -56,16 +37,6 @@ const navigationConfig = [
         icon: 'apps',
         children: [
             {
-                id: 'companyProfile',
-                title: 'Company Profile',
-                translate: 'Business',
-                type: 'item',
-                icon: 'dashboard',
-                url: '/apps/company-profile',
-                exact: true
-
-            },
-            {
                 id: 'dashboards',
                 title: 'Intelligence',
                 translate: 'Intelligence',
@@ -73,7 +44,10 @@ const navigationConfig = [
                 icon: 'dashboard',
                 url: '/dashboard',
                 exact: true
+
             },
+            
+
             {
                 id: 'Chat',
                 title: 'Chat',
@@ -102,38 +76,40 @@ const navigationConfig = [
                     },
                 ]
             },
-            // {
-            //     id: 'Template',
-            //     title: 'Template',
-            //     translate: 'Template',
-            //     type: 'collapse',
-            //     icon: 'chrome_reader_mode',
-            //     // url: '/apps/groups/group',
-            //     children: [
-            //         {
-            //             id: 'Campaigns',
-            //             title: 'Campaigns',
-            //             translate: 'Campaigns',
-            //             type: 'item',
-            //             url: '/apps/campaign',
-            //             exact: true
-            //             // badge: {
-            //             //  title: 25,
-            //             //  bg: '#F44336',
-            //             //  fg: '#FFFFFF'
-            //             // }
-            //         },
-            //         {
-            //             id: 'Template List',
-            //             title: 'Template List',
-            //             type: 'item',
-            //             translate: 'Template List',
-            //             url: '/apps/whatsapp-template',
-            //             exact: true
-            //         },
+          
+            {
+                id: 'Template',
+                title: 'Template',
+                translate: 'Template',
+                type: 'collapse',
+                icon: 'chrome_reader_mode',
+                // url: '/apps/groups/group',
+                children: [
+                    {
+                        id: 'Campaigns',
+                        title: 'Campaigns',
+                        translate: 'Campaigns',
+                        type: 'item',
+                        url: '/apps/campaign',
+                        exact: true
+                        // badge: {
+                        // 	title: 25,
+                        // 	bg: '#F44336',
+                        // 	fg: '#FFFFFF'
+                        // }
+                    },
+                    {
+                        id: 'Template List',
+                        title: 'Template List',
+                        type: 'item',
+                        translate: 'Template List',
+                        url: '/apps/whatsapp-template',
+                        exact: true
+                    },
 
-            //     ]
-            // },
+                ]
+            },
+          
             {
                 id: 'Contact Book',
                 title: 'Contact Book',
@@ -214,51 +190,30 @@ const navigationConfig = [
 
 
                 ]
-            }
+            },
+            
+            {
+                id: 'companyprofile',
+                title: 'Company Profile',
+                translate: 'Business',
+                type: 'item',
+                icon: 'dashboard',
+                url: '/apps/company-profile',
+                exact: true
 
+            },
         ]
     },
-    
-    // {
-    //  id: 'applicationss',
-    //  title: 'Applicationss',
-    //  translate: 'Super Admins',
-    //  type: 'group',
-    //  icon: 'apps',
-    //  children: [
-    //      {
-    //          id: 'companyProfile',
-    //          title: 'Company Profile',
-    //          translate: 'Company Profile',
-    //          type: 'item',
-    //          icon: 'dashboard',
-    //          url: '/company-profile',
-    //          exact: true
-
-    //      },
-    //      {
-    //          id: 'companyProfilee',
-    //          title: 'Company Profilee',
-    //          translate: 'Company Profilee',
-    //          type: 'item',
-    //          icon: 'dashboard',
-    //          url: '/company-profilee',
-    //          exact: true
-
-    //      },
-    //  ]
-    // },   
 ];
 let NewNav = navigationConfig
-// console.log("NAV =>", NewNav);
 if (userAcl !== null) {
-
-    NewNav.map((item) => {
+    let it = Object.keys(userAcl)
+    var itv;
+    NewNav.map((item, ii) => {
         if (item.children) {
-            // console.log("ITEM  =>", item.children);
             var i;
             for (i = 0; i < item.children.length; i++) {
-                // console.log("item.children : ", item.children[i]);
+                console.log("item.children : ", item.children[i]);
                 if (item.children[i].url) {
                     if (!userAcl.hasOwnProperty([`FRONT:${item.children[i].url}`])) {
                         item.children.splice(i, item.children.length);
@@ -266,7 +221,7 @@ if (userAcl !== null) {
                 }
                 else {
                     if (item.children[i].children.length > 0) {
-                        // console.log("item.children[i].children :", item.children[i].children);
+                        console.log("item.children[i].children :", item.children[i].children);
                         if (item.children[i].children.length > 0) {
                             item.children[i].children.map((child, childIndex) => {
                                 if (child.url) {
@@ -285,21 +240,19 @@ if (userAcl !== null) {
         }
     })
 }
-let CustomNavigation = NewNav;
-// console.log("CustomNavigation : ", CustomNavigation);
-CustomNavigation.map((CustomNavigationitem, CustomNavigationii) => {
-    if (CustomNavigationitem.children.length > 0) {
-        CustomNavigationitem.children.map((CustomNavigationitemCh, CustomNavigationitemChInc) => {
-            // console.log("CustomNavigationitemCh : ", CustomNavigationitemCh);
-            if (CustomNavigationitemCh.children <= 0) {
-                CustomNavigationitem.children.splice(CustomNavigationitemChInc, 1);
-            }
-        })
-
-    }
-    else {
-        CustomNavigation.splice(CustomNavigationitem, 1);
+let uzair = NewNav;
+console.log("uzair : ", uzair);
+uzair.map((uzairitem, uzairii) => {
+    if (uzairitem.children.length > 0) {
+    uzairitem.children.map((uzairitemCh, uzairitemChInc) => {
+        console.log("uzairitemCh : ", uzairitemCh);
+        if (uzairitemCh.children <= 0) {
+            uzairitem.children.splice(uzairitemChInc, 1);
+        }
+    })
+    
     }
 })
+console.log("NewNav :", NewNav);
 
-export default CustomNavigation;
+export default uzair;
