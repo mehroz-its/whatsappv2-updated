@@ -16,19 +16,13 @@ const rows = [
 		sort: true
 	},
 	{
-		id: 'firstname',
+		id: 'Username',
 		align: 'center',
 		disablePadding: false,
-		label: 'First Name',
+		label: 'User Name',
 		sort: true
 	},
-	{
-		id: 'lastname',
-		align: 'center',
-		disablePadding: false,
-		label: 'Last Name',
-		sort: true
-	},
+
 	{
 		id: 'mobile',
 		align: 'center',

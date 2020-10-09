@@ -14,8 +14,9 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
-
-const useStyles = makeStyles((theme)=>({
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
+const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: '100%',
         padding: '0px'
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme)=>({
     large: {
         width: theme.spacing(7),
         height: theme.spacing(7),
-      },
+    },
 }));
 function Profile(props) {
     const classes = useStyles();
@@ -50,7 +51,9 @@ function Profile(props) {
     const [website, setwebsite] = React.useState('');
     const [isLoading, setIsLoading] = React.useState(false)
     const [profileImage, setProfileImage] = React.useState('')
-
+    const [snackbaropen, setSnackBarOpen] = React.useState(false)
+    const [snackbarmessage, setSnackBarMessage] = React.useState('')
+    const [ok, setOK] = React.useState('')
 
     React.useEffect(() => {
         if (companyDetails) {
@@ -116,14 +119,27 @@ function Profile(props) {
         setcityy(response.data.data.clients[0].city)
         setProfileImage(response.data.data.clients[0].logo)
         setwebsite(response.data.data.clients[0].website)
-        fetch(`https://glist.its.com.pk/v1/fetch/states/${response.data.data.clients[0].country}`)
-            .then(response => response.json())
-            .then(data => setStatesData(data.data.states));
-
-        fetch(`https://glist.its.com.pk/v1/fetch/cities/${response.data.data.clients[0].state}`)
-            .then(response => response.json())
-            .then(data => setCitiesData(data.data.cities));
-
+        console.log("response.data.data.clients[0].country :", response.data.data.clients[0]);
+        if (response.data.data.clients[0].country !== "" && response.data.data.clients[0].country !== null) {
+            fetch(`https://glist.its.com.pk/v1/fetch/states/${response.data.data.clients[0].country}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("data : ", data);
+                    if (data.data) {
+                        setStatesData(data.data.states)
+                    }
+                });
+            if (response.data.data.clients[0].state !== "" && response.data.data.clients[0].state !== null) {
+                fetch(`https://glist.its.com.pk/v1/fetch/cities/${response.data.data.clients[0].state}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("city data", data);
+                        if (data.data) {
+                            setCitiesData(data.data.cities)
+                        }
+                    });
+            }
+        }
     };
     const dataSourceFailureBusinessDetails = (response) => {
     };
@@ -141,23 +157,24 @@ function Profile(props) {
         profileData['address'] = address
         profileData['website'] = website
         let params = profileData
-        console.log("updateed",profileData);
+        console.log("updateed", profileData);
         CoreHttpHandler.request('customerOnBoard', 'updateProfile', params, (response) => {
-            console.log("response : " ,  response);
-			// setSnackBarOpen(true)
-			// setOK('success')
-			// setSnackBarMessage('Created successfully')
-			// props.history.push({
-			// 	pathname: '/login'
-
-            // });
+            console.log("response : ", response);
+            setSnackBarOpen(true)
+            setOK('success')
+            setSnackBarMessage('Updated successfully')
+            setTimeout(() => {
+                setSnackBarOpen(false)
+            }, 1000);
         }, (error) => {
-            console.log("error : " ,  error);
-			// alert('hi')
-			// setSnackBarOpen(true)
-			// setSnackBarMessage('Loggin Failed')
-			// setOK('error')
-		});
+            console.log("error : ", error);
+            setSnackBarOpen(true)
+            setOK('success')
+            setSnackBarMessage('Not updated')
+            setTimeout(() => {
+                setSnackBarOpen(false)
+            }, 1000);
+        });
     }
     const onChangeHandler = event => {
         setIsLoading(true)
@@ -191,21 +208,21 @@ function Profile(props) {
         <Card className={classes.root}>
             <CardContent className={classes.content} style={{ width: '100%' }}>
                 <Typography variant='h2' className='companyDetailHeader' >Profile</Typography>
-                <div className="flex flex-col items-center justify-center " style={{marginTop:23}}>
-                {isLoading ? <CircularProgress color="secondary" /> :
+                <div className="flex flex-col items-center justify-center " style={{ marginTop: 23 }}>
+                    {isLoading ? <CircularProgress color="secondary" /> :
 
-                    <Avatar alt="Remy Sharp" src={profileImage} className={classes.large} />
-                }
-                <span>
-                    <input id="contained-button-file" type="file" name="url" style={{ cursor: 'pointer', display: "none", marginBottom: '0px' }} onChange={onChangeHandler} accept="image/*" />
-                    <label htmlFor="contained-button-file">
-                        <Icon color="action"
-                            style={{ position: 'absolute', left: '51%', top: '15%' }}
-                            fontSize="small"
-                        >
-                            linked_camera</Icon>
-                    </label>
-                </span>
+                        <Avatar alt="Remy Sharp" src={profileImage} className={classes.large} />
+                    }
+                    <span>
+                        <input id="contained-button-file" type="file" name="url" style={{ cursor: 'pointer', display: "none", marginBottom: '0px' }} onChange={onChangeHandler} accept="image/*" />
+                        <label htmlFor="contained-button-file">
+                            <Icon color="action"
+                                style={{ position: 'absolute', left: '51%', top: '15%' }}
+                                fontSize="small"
+                            >
+                                linked_camera</Icon>
+                        </label>
+                    </span>
                 </div>
                 <Grid container style={{ marginTop: "5px", paddingRight: '15px', paddingLeft: '15px' }} spacing={3}>
                     <Grid item md={6} sm={12} xs={12}  >
@@ -387,7 +404,17 @@ function Profile(props) {
                         Update
 								</Button>
                 </div>
+                <Snackbar
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                open={snackbaropen}
+                autoHideDuration={1000}
+            >
+                <Alert variant="filled" severity={ok}>
+                    {snackbarmessage}
+                </Alert>
+            </Snackbar>
             </CardContent>
+            
         </Card>
     )
 }

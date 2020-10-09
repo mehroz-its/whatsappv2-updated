@@ -19,6 +19,10 @@ import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import AgentDialog from './AgentDialog'
+import FuseAnimate from '@fuse/core/FuseAnimate';
+import Fab from '@material-ui/core/Fab';
+import Icon from '@material-ui/core/Icon';
+
 const useStyles = makeStyles((theme) => ({
 	root: {
 		maxWidth: '100%',
@@ -26,6 +30,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 	content: {
 		padding: '0px'
+	},
+	addButton: {
+		position: 'fixed',
+		bottom: 80,
+		right: 50,
+		zIndex: 99
 	},
 	root2: {
 		'& > *': {
@@ -71,6 +81,7 @@ const PaginationStyle = createMuiTheme({
 function AgentTable(props) {
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false)
+	const [type, setType] = React.useState("update")
 	const [selected, setSelected] = useState([]);
 	const [companyDetails, setCompanyDetails] = React.useState(props.data);
 	const [data, setData] = useState([]);
@@ -174,25 +185,47 @@ function AgentTable(props) {
 	}
 
 	function handleClick(n) {
+		setType("update")
 		setOpen(true)
 		setDialogData(n)
 	}
+	const handleClickAdd = () => {
+		// alert("handleClickAdd")
+		setOpen(true);
+		setType("Create")
+	};
+	function handleDialogClose() {
+		setDialogData({})
+		let update_params = {
+			key: ':client_id',
+			value: companyDetails.id,
+			params: {}
+		}
+		CoreHttpHandler.request('CompanyAgent', 'get', update_params, dataSourceSuccessCompanyAgent, dataSourceFailureCompanyAgent);
+		setOpen(false)
+	}
 	if (data.length === 0) {
-		if (props.ValueForSearch === '') {
-			return (
+		return (
+			<>
 				<div className="flex flex-1 items-center justify-center h-full">
 					<Typography color="textSecondary" variant="h5">
 						No Data Found
 					</Typography>
 				</div>
-			)
-		} else {
-			return (
-				<div className="flex flex-1 items-center justify-center h-full">
-					<FuseLoading />
-				</div>
-			);
-		}
+				<FuseAnimate animation="transition.expandIn" delay={300}>
+					<Fab
+						color="primary"
+						aria-label="add"
+						size="medium"
+						className={classes.addButton}
+						onClick={handleClickAdd}
+					>
+						<Icon>person_add</Icon>
+					</Fab>
+				</FuseAnimate>
+				{open && <AgentDialog isOpen={open} type={type} data={dialogData} clientId={companyDetails.id} closeDialog={handleDialogClose} />}
+			</>
+		)
 	}
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
@@ -213,9 +246,7 @@ function AgentTable(props) {
 	function handleChangePage(event, value) {
 		setPage(value);
 	}
-	function handleDialogClose() {
-		setOpen(false)
-	}
+
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
 	}
@@ -226,6 +257,7 @@ function AgentTable(props) {
 		setDialogData('')
 		setOpen(true);
 	}
+	
 	return (
 		<>
 			<Card className={classes.root}>
@@ -285,10 +317,7 @@ function AgentTable(props) {
 														{n.id}
 													</TableCell>
 													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-														{n.firstname}
-													</TableCell>
-													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-														{n.lastname}
+														{n.username}
 													</TableCell>
 
 													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
@@ -304,8 +333,11 @@ function AgentTable(props) {
 													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
 														{n.max_token_count === 1 ? "Agent" : "Admin"}
 													</TableCell>
-													{/* <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-														<FormControlLabel
+													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+														{n.enabled === true ?
+															<div>	<Icon name='lock' color='primary'>check_circle</Icon></div> :
+															<div>	<Icon name='lock'>radio_button_unchecked</Icon></div>}
+														{/* <FormControlLabel
 															style={{ marginLeft: '2px' }}
 															control={
 																<Switch
@@ -313,18 +345,27 @@ function AgentTable(props) {
 																	onChange={toggleChecked}
 																	name="checkedB"
 																	color="primary"
-																	size="small"
-
-																/>
+																	size="small" />
 															}
-														/>
-													</TableCell> */}
+														/> */}
+													</TableCell>
 												</TableRow>
 											);
 										})}
 								</TableBody>
 							</Table>
 						</FuseScrollbars>
+						<FuseAnimate animation="transition.expandIn" delay={300}>
+							<Fab
+								color="primary"
+								aria-label="add"
+								size="medium"
+								className={classes.addButton}
+								onClick={handleClickAdd}
+							>
+								<Icon>person_add</Icon>
+							</Fab>
+						</FuseAnimate>
 						<TablePagination
 							classes={{
 								root: 'overflow-hidden',
@@ -341,7 +382,7 @@ function AgentTable(props) {
 							onChangePage={handleChangePage}
 							onChangeRowsPerPage={handleChangeRowsPerPage}
 						/>
-						{open && <AgentDialog isOpen={open} type='Update Agent' data={dialogData} closeDialog={handleDialogClose} />}
+						{open && <AgentDialog isOpen={open} type={type} data={dialogData} clientId={companyDetails.id} closeDialog={handleDialogClose} />}
 					</div>
 				</CardContent>
 			</Card>

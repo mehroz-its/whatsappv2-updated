@@ -21,7 +21,22 @@ class APIS {
                 },
                 method: 'post',
                 path: '/backend/client/update'
+            },
+            updateSubject: {
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'post',
+                path: '/backend/client/update/subject'
+            },
+            getSubject: {
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'get',
+                path: '/backend/fetch/subject/:client_id'
             }
+
         }
     }
 }

@@ -56,8 +56,6 @@ function CustomerDetailSideBar(props) {
 		value = titleCase(data.username);
 	}
 	const classes = useStyles(props);
-
-	
 	return (
 		<div className="p-0 lg:p-24 lg:ltr:pr-4 lg:rtl:pl-4">
 			<FuseAnimate animation="transition.slideLeftIn" delay={200}>
@@ -98,9 +96,7 @@ function CustomerDetailSideBar(props) {
 							to="/apps/company-details/Contact"
 							activeClassName="active"
 							className={classes.listItem}
-							onClick={() => { onTabChange('Contact') }}
-
-						>
+							onClick={() => { onTabChange('Contact') }}>
 							<Icon className="list-item-icon text-16" color="action">
 								textsms
 							</Icon>
@@ -114,9 +110,7 @@ function CustomerDetailSideBar(props) {
 							to="/apps/company-details/Agents"
 							activeClassName="active"
 							className={classes.listItem}
-							onClick={() => { onTabChange("Agents") }}
-
-						>
+							onClick={() => { onTabChange("Agents") }}>
 							<Icon className="list-item-icon text-16" color="action">
 								audiotrack
 							</Icon>
@@ -127,34 +121,30 @@ function CustomerDetailSideBar(props) {
 							exact
 							button
 							component={NavLinkAdapter}
-							to="/apps/company-details/TemplateMessage"
+							to="/apps/company-details/configration"
 							activeClassName="active"
 							className={classes.listItem}
-							onClick={() => { onTabChange("Template Message") }}
-
-						>
+							onClick={() => { onTabChange("Configration") }}>
 							<Icon className="list-item-icon text-16" color="action">
 								image
-						</Icon>
+							</Icon>
 							<ListItemText
-								primary="TemplateMessage" disableTypography />
+								primary="Configration" disableTypography />
 						</ListItem>
-						<ListItem
+						{/* <ListItem
 							exact
 							button
 							component={NavLinkAdapter}
 							to="/apps/company-details/CannedReplies"
 							activeClassName="active"
 							className={classes.listItem}
-							onClick={() => { onTabChange("CannedReplies") }}
-
-						>
+							onClick={() => { onTabChange("CannedReplies") }}>
 							<Icon className="list-item-icon text-16" color="action">
 								switch_video
 						</Icon>
 							<ListItemText
 								primary="Canned Replies" disableTypography />
-						</ListItem>
+						</ListItem> */}
 					</List>
 				</Paper>
 			</FuseAnimate>

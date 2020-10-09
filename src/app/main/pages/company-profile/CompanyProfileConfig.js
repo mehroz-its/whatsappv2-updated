@@ -13,7 +13,8 @@ const CompanyProfileConfig = {
     	{
 			path: '/apps/company-profile',
 			component: React.lazy(() => import('./customerAccounts/customerAccounts.js'))
-		},
+        },
+       
     	{
 			path: '/apps/company-details',
 			component: React.lazy(() => import('./customerAccountDetails/CustomerAccountDetails.js'))

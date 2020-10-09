@@ -33,7 +33,7 @@ function CampaignTable(props) {
 	const [open, setOpen] = React.useState(false)
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(props.clients);
-	const [data2, setData2] = useState(data);
+	const [data2, setData2] = useState(props.clients);
 	const [page, setPage] = useState(0);
 	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
 	const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -114,7 +114,7 @@ function CampaignTable(props) {
 			);
 		}
 	}
-	
+
 	function handleChangePage(event, value) {
 		setPage(value);
 	}
@@ -124,9 +124,15 @@ function CampaignTable(props) {
 	function handleChangeRowsPerPage(event) {
 		setRowsPerPage(event.target.value);
 	}
-	const toggleChecked = (event) => {
+	const toggleChecked = (event, id) => {
+		console.log("event :,", event.target.checked, "id :", id);
+		let data = {
+			enabled: event.target.checked,
+			id: id
+		}
+		props.onchange(data)
 		event.stopPropagation()
-		setChecked((prev) => !prev);
+		// setChecked((prev) => !prev);
 	};
 	return (
 		<>
@@ -151,7 +157,7 @@ function CampaignTable(props) {
 						/>
 						<TableBody>
 							{_.orderBy(
-								data2,
+								props.clients,
 								[
 									o => {
 										switch (order.id) {
@@ -202,7 +208,7 @@ function CampaignTable(props) {
 													control={
 														<Switch
 															checked={n.enabled}
-															onChange={toggleChecked}
+															onChange={(e) => toggleChecked(e, n.id)}
 															name="checkedB"
 															color="primary"
 															size="small" />

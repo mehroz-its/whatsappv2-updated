@@ -7,6 +7,13 @@ class APIS {
                 },
                 method: 'get',
                 path: '/backend/fetch/clients'
+            },
+            changeStatus: {
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'post',
+                path: '/backend/client/toggle'
             }
         }
     }

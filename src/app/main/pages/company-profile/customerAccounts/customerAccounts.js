@@ -29,7 +29,7 @@ function CustomerAccounts(props) {
             columns: "*",
             sortby: "ASC",
             orderby: "id",
-            where: "id != $1 AND displayed = false",
+            where: "id != $1 AND displayed = false order by id",
             values: 0,
         },
         type: 'dashboard',
@@ -37,9 +37,7 @@ function CustomerAccounts(props) {
     };
 
     React.useEffect(() => {
-        CoreHttpHandler.request('Business', 'get', { ...dataSourceOptions.params }, dataSourceSuccessBusiness, dataSourceFailureBusiness);
-       
-
+        CoreHttpHandler.request('Business', 'get', { }, dataSourceSuccessBusiness, dataSourceFailureBusiness);
     }, [])
     const dataSourceSuccessBusiness = (response) => {
         setClient(response.data.data.clients.clients)
@@ -47,7 +45,18 @@ function CustomerAccounts(props) {
         setInactiveClients(response.data.data.clients.inactive_clients.inactive)
     };
     const dataSourceFailureBusiness = (response) => {
-        console.log("dataSourceFailureBusiness response : ", response);
+    };
+    const changeStatus = (params) =>{
+        CoreHttpHandler.request('Business', 'changeStatus', params, dataSourceSuccessChangeStatus, dataSourceFailureChangeStatus);
+
+    }
+    const dataSourceSuccessChangeStatus = (response) => {
+        CoreHttpHandler.request('Business', 'get', { ...dataSourceOptions.params }, dataSourceSuccessBusiness, dataSourceFailureBusiness);
+
+  
+    };
+    const dataSourceFailureChangeStatus = (response) => {
+        console.log("dataSourceFailureChangeStatus response : ", response);
     };
 
     
@@ -108,7 +117,7 @@ function CustomerAccounts(props) {
                             </Grid>
                             <Grid container spacing={3} style={{ marginTop: 10 }}>
                                 <Grid item md={12} sm={12} xs={12} >
-                                    <CustomerTable clients={clients} />
+                                    <CustomerTable clients={clients} onchange={(e)=>{changeStatus(e)}} />
                                 </Grid>
                             </Grid>
                         </FuseAnimateGroup>

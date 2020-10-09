@@ -145,7 +145,29 @@ function ComapnyProfile(props) {
 	}
 	function handleTabChange(ev) {
 		ev.preventDefault();
-		setStep(2)
+		console.log('form', form, country, city)
+		let params = { ...form, city: city.name, country: country.name, logo: profileImage }
+		console.log(params, 'params')
+		// return;
+		CoreHttpHandler.request('customerOnBoard', 'submitForm', params, (response) => {
+			setSnackBarOpen(true)
+			setOK('success')
+			setSnackBarMessage('Created successfully')
+			props.history.push({
+				pathname: '/apps/company-profile'
+			});
+
+
+		}, (error) => {
+			alert('hi')
+			setSnackBarOpen(true)
+			setSnackBarMessage('Loggin Failed')
+			setOK('error')
+
+
+
+		});
+		// setStep(2)
 	}
 	let snackbarClose = (event) => {
 		// this.setState({ snackbaropen: false })
@@ -182,7 +204,31 @@ function ComapnyProfile(props) {
 				});
 		}
 	};
+const submitForms = () =>{
+	console.log('form', form, country, city)
+		let params = { ...form, city: city.name, country: country.name, logo: profileImage }
+		console.log(params, 'params')
+		// return;
+		CoreHttpHandler.request('customerOnBoard', 'submitForm', params, (response) => {
+			setSnackBarOpen(true)
+			setOK('success')
+			setSnackBarMessage('Created successfully')
+			props.history.push({
+				pathname: '/login'
 
+			});
+
+
+		}, (error) => {
+			alert('hi')
+			setSnackBarOpen(true)
+			setSnackBarMessage('Loggin Failed')
+			setOK('error')
+
+
+
+		});
+}
 	let pic = require('../../../../../images/logo-head.png')
 	return (
 		<div className={clsx(classes.root, 'flex flex-col flex-auto flex-shrink-0 items-center justify-center p-0')}>
@@ -314,7 +360,7 @@ function ComapnyProfile(props) {
 									color="primary"
 									className="w-224 mx-auto mt-16"
 									aria-label="Register"
-									disabled={false}
+									disabled={(form.firstname !== '' && form.lastname  !== ''  && form.phone  !== '' && form.number  !== '' && form.email  !== '' && form.address  !== ''&& country  !== ''&& state !== ''&& city  !== '' ) ? false : true}
 									type="submit"
 								>
 									Register
