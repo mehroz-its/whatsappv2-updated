@@ -26,9 +26,12 @@ if (user_token !== null) {
 }
 let userAcl = localStorage.getItem('user_acl');
 
-if (userAcl !== null) userAcl = JSON.parse(userAcl);
+let CustomNavigation = []
+let NewNav = []
 
-const navigationConfig = [
+if (userAcl !== null) {
+    userAcl = JSON.parse(userAcl);
+    const navigationConfig = [
     {
         id: 'applications',
         title: 'Applications',
@@ -64,14 +67,14 @@ const navigationConfig = [
                         url: '/apps/chat',
                         exact: true
 
-                    },
-                    {
-                        id: 'History',
-                        title: 'History',
-                        translate: 'History',
-                        type: 'item',
-                        url: '/apps/history',
-                        exact: true
+                        },
+                        {
+                            id: 'History',
+                            title: 'History',
+                            translate: 'History',
+                            type: 'item',
+                            url: '/apps/history',
+                            exact: true
 
                     },
                 ]
@@ -149,43 +152,43 @@ const navigationConfig = [
                     },
 
 
-                ]
-            },
-            {
-                id: 'Settings',
-                title: 'Settings',
-                translate: 'Settings',
-                type: 'collapse',
-                icon: 'settings',
-                children: [
-                    {
-                        id: 'Canned Replies',
-                        title: 'Canned Replies',
-                        type: 'item',
-                        url: '/apps/canned-messages',
-                        exact: true,
-                    },
-                    {
-                        id: 'Roles',
-                        title: 'Roles',
-                        type: 'item',
-                        url: '/apps/roles',
-                        exact: true
-                    },
-                    {
-                        id: 'Permissions',
-                        title: 'Permissions',
-                        type: 'item',
-                        url: '/apps/permissions',
-                        exact: true
-                    },
-                    {
-                        id: 'Users',
-                        title: 'Users',
-                        type: 'item',
-                        url: '/apps/users',
-                        exact: true
-                    },
+                    ]
+                },
+                {
+                    id: 'Settings',
+                    title: 'Settings',
+                    translate: 'Settings',
+                    type: 'collapse',
+                    icon: 'settings',
+                    children: [
+                        {
+                            id: 'Canned Replies',
+                            title: 'Canned Replies',
+                            type: 'item',
+                            url: '/apps/canned-messages',
+                            exact: true,
+                        },
+                        {
+                            id: 'Roles',
+                            title: 'Roles',
+                            type: 'item',
+                            url: '/apps/roles',
+                            exact: true
+                        },
+                        {
+                            id: 'Permissions',
+                            title: 'Permissions',
+                            type: 'item',
+                            url: '/apps/permissions',
+                            exact: true
+                        },
+                        {
+                            id: 'Users',
+                            title: 'Users',
+                            type: 'item',
+                            url: '/apps/users',
+                            exact: true
+                        },
 
 
 
@@ -205,7 +208,7 @@ const navigationConfig = [
         ]
     },
 ];
-let NewNav = navigationConfig
+NewNav = navigationConfig
 if (userAcl !== null) {
     let it = Object.keys(userAcl)
     var itv;
@@ -223,20 +226,42 @@ if (userAcl !== null) {
                     if (item.children[i].children.length > 0) {
                         console.log("item.children[i].children :", item.children[i].children);
                         if (item.children[i].children.length > 0) {
-                            item.children[i].children.map((child, childIndex) => {
-                                if (child.url) {
-                                    if (!userAcl.hasOwnProperty(`FRONT:${child.url}`)) {
-                                        item.children[i].children.splice(childIndex, item.children[i].children.length);
+                            // console.log("item.children[i].children :", item.children[i].children);
+                            if (item.children[i].children.length > 0) {
+                                item.children[i].children.map((child, childIndex) => {
+                                    if (child.url) {
+                                        if (!userAcl.hasOwnProperty(`FRONT:${child.url}`)) {
+                                            item.children[i].children.splice(childIndex, item.children[i].children.length);
+                                        }
                                     }
-                                }
-                            })
+                                })
+                            }
+
                         }
 
                     }
-
                 }
-            }
 
+            }
+        }
+        })
+    
+}
+   
+CustomNavigation = NewNav;
+    // console.log("CustomNavigation : ", CustomNavigation);
+    CustomNavigation.map((CustomNavigationitem, CustomNavigationii) => {
+        if (CustomNavigationitem.children.length > 0) {
+            CustomNavigationitem.children.map((CustomNavigationitemCh, CustomNavigationitemChInc) => {
+                // console.log("CustomNavigationitemCh : ", CustomNavigationitemCh);
+                if (CustomNavigationitemCh.children <= 0) {
+                    CustomNavigationitem.children.splice(CustomNavigationitemChInc, 1);
+                }
+            })
+
+        }
+        else {
+            CustomNavigation.splice(CustomNavigationitem, 1);
         }
     })
 }

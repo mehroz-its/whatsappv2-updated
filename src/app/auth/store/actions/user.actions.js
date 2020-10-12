@@ -7,7 +7,7 @@ import * as MessageActions from 'app/store/actions/fuse/message.actions';
 import * as FuseActions from 'app/store/actions/fuse';
 import firebase from 'firebase/app';
 
-export const SET_USER_DATA = '[USER] SET DATA';
+export const SET_USER_DATA = 'NEW_LOGIN';
 export const REMOVE_USER_DATA = '[USER] REMOVE DATA';
 export const USER_LOGGED_OUT = '[USER] LOGGED OUT';
 
