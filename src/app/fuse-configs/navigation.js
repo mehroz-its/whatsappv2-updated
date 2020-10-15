@@ -17,16 +17,7 @@ module.exports = [
                 exact: true
 
             },
-            {
-                id: 'companyprofile',
-                title: 'Company Profile',
-                translate: 'Business',
-                type: 'item',
-                icon: 'dashboard',
-                url: '/apps/company-profile',
-                exact: true
-
-            },
+           
             
 
             {
@@ -172,7 +163,16 @@ module.exports = [
 
                 ]
             },
-            
+            {
+                id: 'companyprofile',
+                title: 'Company Profile',
+                translate: 'Business',
+                type: 'item',
+                icon: 'dashboard',
+                url: '/apps/company-profile',
+                exact: true
+
+            },
             
            
         ]

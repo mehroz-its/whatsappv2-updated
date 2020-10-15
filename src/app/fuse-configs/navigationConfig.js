@@ -63,5 +63,5 @@ if(userAcl&&navigationConfig&&navigationConfig.length){
     }
     
 }
-console.log("navigationBar=======>",navigationBar)
+
 export default navigationBar;
