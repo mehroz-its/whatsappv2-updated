@@ -2,6 +2,7 @@
     "name": "fuse-react-app",
     "version": "4.1.5",
     "private": true,
+    "proxy":"http://localhost:30001",
     "dependencies": {
         "@amcharts/amcharts4": "^4.9.23",
         "@date-io/core": "1.3.9",
