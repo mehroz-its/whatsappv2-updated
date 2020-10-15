@@ -103,11 +103,19 @@ const UserMenu = (props) => {
 	let username = ''
 	if (data !== null) {
 		function titleCase(str) {
+			if (str) {
+				
+		
+			console.log("str :" ,  str);
 			str = str.toLowerCase().split(' ');
 			for (var i = 0; i < str.length; i++) {
 				str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
 			}
 			return str.join(' ');
+		}
+		else{
+			return "Nan"
+		}
 		}
 		// console.log(data)
 		username = titleCase(data.username);

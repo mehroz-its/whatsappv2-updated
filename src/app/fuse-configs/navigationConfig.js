@@ -13,14 +13,14 @@ let userAcl = localStorage.getItem('user_acl');
 
 let navigationBar = []
 
-if(userAcl&&navigationConfig&&navigationConfig.length){
+if (userAcl && navigationConfig && navigationConfig.length) {
 
     userAcl = JSON.parse(userAcl);
 
-    
-    if (userAcl&&Object.keys(userAcl)&&Object.keys(userAcl).length) {
-        let keys = Object.keys(userAcl);      
-        userAcl = keys.filter(key=>userAcl[key])
+
+    if (userAcl && Object.keys(userAcl) && Object.keys(userAcl).length) {
+        let keys = Object.keys(userAcl);
+        userAcl = keys.filter(key => userAcl[key])
         navigationBar = [
             {
                 id: navigationConfig[0].id,
@@ -28,40 +28,38 @@ if(userAcl&&navigationConfig&&navigationConfig.length){
                 translate: navigationConfig[0].translate,
                 type: navigationConfig[0].type,
                 icon: navigationConfig[0].icon,
-                children:[]
+                children: []
             }
         ]
-        if(navigationConfig[0].children&&navigationConfig[0].children.length){
+        if (navigationConfig[0].children && navigationConfig[0].children.length) {
 
-            function urlInACL(url){
-                return userAcl.includes("FRONT:"+url)
-            }  
+            function urlInACL(url) {
+                return userAcl.includes("FRONT:" + url)
+            }
 
-            function parseChildren(child){
+            function parseChildren(child) {
                 let result = []
-                if(child&&child.length){
-                    result = child.map(item=>{
-                        if(item){
-                            if(item.children&&item.children.length){
-                                item.children = parseChildren(item.children)                 
-                                item.children = item.children.filter(el=>el)
-                                if(item.children&&item.children.length){
+                if (child && child.length) {
+                    result = child.map(item => {
+                        if (item) {
+                            if (item.children && item.children.length) {
+                                item.children = parseChildren(item.children)
+                                item.children = item.children.filter(el => el)
+                                if (item.children && item.children.length) {
                                     return item
                                 }
-                            }else if(item.url && urlInACL(item.url)){
+                            } else if (item.url && urlInACL(item.url)) {
                                 return item
                             }
                         }
                     })
                 }
-                return result.filter(el=>el)
+                return result.filter(el => el)
             }
-            
+
 
             navigationBar[0].children = parseChildren(navigationConfig[0].children)
         }
     }
-    
 }
-
 export default navigationBar;
