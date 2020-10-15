@@ -13,7 +13,7 @@ const ContactsAppConfig = {
 			component: React.lazy(() => import('./ContactsApp'))
 		},
 		{
-			path: '/apps/contacts',
+			path: '/apps/contacts/all',
 			component: () => <Redirect to="/apps/contacts/all" />
 		}
 	]

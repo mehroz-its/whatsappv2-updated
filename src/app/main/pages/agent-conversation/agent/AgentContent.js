@@ -14,27 +14,41 @@ function AgentContent(props) {
 	const {  selectedAgent } = props
 	const dispatch = useDispatch();
 	const [loading, setLoading] = React.useState('');
-	const [int_CustomerList, setint_CustomerList] = React.useState();
+	const [agentCustomerInterval, setAgentCustomerInterval] = React.useState(0);
 	const [numbers, setnumbers] = React.useState([]);
-
+	let intervalAgent = ""
 	useEffect(() => {
-		dispatch(Actions.getProducts());
-	}, [dispatch]);
+		if(!intervalAgent){
+			intervalAgent = setInterval(() => {
+				getAgentsCustomers();
+			}, 2000)
+	
+		}
+		return () => {
+			if(intervalAgent){
+				clearInterval(intervalAgent)
+			}
+		}
+		
+	}, [])
+	
+	// useEffect(() => {
+	// 	dispatch(Actions.getProducts());
+	// }, [dispatch]);
+	
+
+
+	
 	useEffect(() => {
 		if (selectedAgent === "All") {
 			getAllAgents()
 		}
-		if (selectedAgent !== null) {
-			clearInterval(int_CustomerList)
-			getAgentsCustomers()
-			setint_CustomerList(setInterval(() => {
-				getAgentsCustomers();
-			}, 5000))
-		}
-		return () => {
-			clearInterval(int_CustomerList)
-		}
+		// return () => {
+		// 	console.log("CLEARING IT",agentCustomerInterval)
+		// 	clearInterval(agentCustomerInterval)
+		// }
 	}, [selectedAgent]);
+
 
 	const getAllAgents = () => {
 		setLoading(true)
@@ -49,16 +63,21 @@ function AgentContent(props) {
 	}
 
 	const getAgentsCustomers = () => {
-		let params = {
-			agentId: selectedAgent
+		if(selectedAgent){
+			let params = {
+				agentId: selectedAgent
+			}
+			CoreHttpHandler.request('conversations', 'agents_customer_list', {
+				params
+			}, (_response) => {
+				const numbers = _response.data.data.customers;
+				setnumbers(numbers)
+			}, (error) => {
+				clearInterval(agentCustomerInterval)
+				console.log("================ERROR================")
+				console.log(error)
+			});
 		}
-		CoreHttpHandler.request('conversations', 'agents_customer_list', {
-			params
-		}, (_response) => {
-			const numbers = _response.data.data.customers;
-			setnumbers(numbers)
-		}, (error) => {
-		});
 	}
 	const getAgentsCustomersReload = () => {
 		let params = {

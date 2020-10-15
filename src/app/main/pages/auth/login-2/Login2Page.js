@@ -188,11 +188,10 @@ const Login2Page = (props) => {
         localStorage.setItem('online', false);
 
         
-        // window.location.reload(false);
+        window.location.reload(false);
     };
 
     let loginFailure = (error) => {
-        console.log("HIN HEREO343432432432432432432432432432432432432")
         setHasError(true)
         setErrorMessage('')
         setSnackBarOpen(true)
