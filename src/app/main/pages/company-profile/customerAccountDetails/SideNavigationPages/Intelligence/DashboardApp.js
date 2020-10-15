@@ -22,6 +22,8 @@ import FuseLoading from '../.././../../../../../@fuse/core/FuseLoading/FuseLoadi
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import DatePicker from './DatePicker'
+import Button from '@material-ui/core/Button';
+
 am4core.useTheme(am4themes_material);
 am4core.useTheme(am4themes_animated);
 const useStyles = makeStyles({
@@ -327,10 +329,13 @@ function DashboardApp(props) {
 	const SelectedDates = (start, end) => {
 		Start = start.toISOString()
 		End = end.toISOString()
+		
+	}
+	const submit = () =>{
 		let update_params = {
 			params: {
 				startingDate: Start,
-				endingDate:End,
+				endingDate: End,
 				client_id: companyDetails.id
 			}
 		}
@@ -355,9 +360,25 @@ function DashboardApp(props) {
 										animation: 'transition.slideUpBigIn'
 									}}>
 									<Grid container spacing={4}>
-										<Grid style={{ display: 'flex', justifyContent: 'flex-end' }} item md={12} sm={12} xs={12}>
+										<Grid  item md={12} sm={12} xs={12}>
 											<DatePicker SelectedDates={SelectedDates} />
+											<Button
+												variant="contained"
+												color="primary"
+												size='small'
+												style={{fontSize:10,marginTop:-1}}
+												aria-label="Generte"
+												onClick={() => submit()}
+											>
+												Generate Report
+								</Button>
 										</Grid>
+									
+										{/* <Grid item md={2} sm={12} xs={12}>
+										
+								<Grid item md={5} sm={12} xs={12}></Grid>
+
+										</Grid> */}
 										<Grid item md={8} sm={12} xs={12}>
 											<Grid container spacing={3}>
 												<Grid item md={4} sm={12} xs={12} >

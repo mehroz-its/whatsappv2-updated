@@ -18,7 +18,23 @@ const CompanyProfileConfig = {
     	{
 			path: '/apps/company-details',
 			component: React.lazy(() => import('./customerAccountDetails/CustomerAccountDetails.js'))
-		},
+        },
+        {
+			path: '/apps/company-details/Profile',
+			component: React.lazy(() => import('./customerAccountDetails/SideNavigationPages/Profile/Index.js'))
+        },
+        {
+			path: '/apps/company-details/Contact',
+			component: React.lazy(() => import('./customerAccountDetails/SideNavigationPages/contact/Contact.js'))
+        },
+        {
+			path: '/apps/company-details/configration',
+			component: React.lazy(() => import('./customerAccountDetails/SideNavigationPages/configration/config.js'))
+        },
+        {
+			path: '/apps/company-details/Agents',
+			component: React.lazy(() => import('./customerAccountDetails/SideNavigationPages/agents/AgentTable.js'))
+        },
     ]
 };
 

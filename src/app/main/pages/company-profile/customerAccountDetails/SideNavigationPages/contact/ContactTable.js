@@ -14,7 +14,9 @@ import Select from '@material-ui/core/Select';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState , useRef } from 'react';
+import moment from "moment";
+
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import ContactTableHeader from './ContactTableHeader';
@@ -41,6 +43,8 @@ import SwipeableViews from 'react-swipeable-views';
 import { useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
+import { CSVLink, CSVDownload } from 'react-csv';
+
 function TabPanel(props) {
 	const { children, value, index, ...other } = props;
 
@@ -125,6 +129,7 @@ function ContactTable(props) {
 	const [companyDetails, setCompanyDetails] = React.useState(props.data);
 	const [value, setValue] = React.useState(0);
 	const theme = useTheme();
+	const csvLinkK = useRef() // setup the ref that we'll use for the hidden CsvLink click once we've updated the data
 
 	const handleChangee = (event, newValue) => {
 		setValue(newValue);
@@ -166,6 +171,8 @@ function ContactTable(props) {
 		activated: false,
 	});
 	const [number, SetNumber] = useState(10)
+	const [name, setName] = React.useState('')
+
 	const e = (event) => {
 		SetNumber(event.target.value);
 	};
@@ -329,7 +336,17 @@ console.log("data.length  :" , data.length);
 		setContactDialogData(data)
 		setUpdateContactDialog(true)
 	};
+	const  numberExport = () =>{	
+	alert("number Export")
+	if (Start === '') setName(moment(new Date().toISOString()).format('DD/MM/YYYY'))
+	else setName(moment(Start).format('DD/MM/YYYY') + "-" + moment(End).format('DD/MM/YYYY'))
 	
+	setTimeout(() => {
+		csvLinkK.current.link.click()
+	}, 1000);
+}
+var Start = "";
+var End = "";
 	return (
 		<>
 			<Card className={classes.root}>
@@ -365,36 +382,23 @@ console.log("data.length  :" , data.length);
 						onChangeIndex={handleChangeIndex}>
 						<TabPanel value={value} index={0} dir={theme.direction}>
 							<div style={{ flexDirection: 'row', flex: 1, display: 'flex', paddingLeft: '14px' }}>
-								<FormControl className={classes.formControl}>
-									<Select
-										value={number}
-										onChange={e}
-										displayEmpty
-										className={classes.selectEmpty}
-										inputProps={{ 'aria-label': 'Without label' }}>
-										<MenuItem value={10}>10</MenuItem>
-										<MenuItem value={25}>25</MenuItem>
-										<MenuItem value={50}>50</MenuItem>
-									</Select>
-								</FormControl>
-								<div style={{ marginTop: '20px' }}>
+								<div >
 									<Button
-										size='small'
-										variant="contained"
-										style={{ borderRadius: 0 }}>
-										Export
-           							 </Button>
-									<Button
-										style={{ marginLeft: '-4px', paddingTop: '10px' }}
 										size='small'
 										variant="contained"
 										style={{ borderRadius: 0 }}
-									>
-										<Icon
-											fontSize="small"
-											className={classes.largeIcon}
-										>send</Icon>
-									</Button>
+										onClick={numberExport}
+										>
+										Export
+           							 </Button>
+										<CSVLink
+							data={data}
+							filename={`contacts_${name}.csv`}
+							className='hidden'
+							ref={csvLinkK}
+							target='_blank'
+						/>
+									
 								</div>
 							</div>
 							<div className="w-full flex flex-col">
@@ -519,39 +523,16 @@ console.log("data.length  :" , data.length);
 						</TabPanel>
 
 						<TabPanel value={value} index={1} dir={theme.direction}>
-							<div style={{ flexDirection: 'row', flex: 1, display: 'flex', paddingLeft: '14px' }}>
-								<FormControl className={classes.formControl}>
-									<Select
-										value={number}
-										onChange={e}
-										displayEmpty
-										className={classes.selectEmpty}
-										inputProps={{ 'aria-label': 'Without label' }}>
-										<MenuItem value={10}>10</MenuItem>
-										<MenuItem value={25}>25</MenuItem>
-										<MenuItem value={50}>50</MenuItem>
-									</Select>
-								</FormControl>
-								<div style={{ marginTop: '20px' }}>
+							{/* <div style={{ flexDirection: 'row', flex: 1, display: 'flex', paddingLeft: '14px' }}>
+								<div>
 									<Button
 										size='small'
 										variant="contained"
 										style={{ borderRadius: 0 }}>
 										Export
            							 </Button>
-									<Button
-										style={{ marginLeft: '-4px', paddingTop: '10px' }}
-										size='small'
-										variant="contained"
-										style={{ borderRadius: 0 }}
-									>
-										<Icon
-											fontSize="small"
-											className={classes.largeIcon}
-										>send</Icon>
-									</Button>
 								</div>
-							</div>
+							</div> */}
 							<div className="w-full flex flex-col">
 								<FuseScrollbars className="flex-grow overflow-x-auto">
 									<Table className="min-w-xl" aria-labelledby="tableTitle">

@@ -51,19 +51,7 @@ function Contact() {
             </Button>
       </div>
       <div style={{ flexDirection: 'row', flex: 1, display: 'flex' }}>
-        <FormControl className={classes.formControl}>
-          <Select
-            value={number}
-            onChange={handleChange}
-            displayEmpty
-            className={classes.selectEmpty}
-            inputProps={{ 'aria-label': 'Without label' }}
-          >
-            <MenuItem value={10}>10</MenuItem>
-            <MenuItem value={25}>25</MenuItem>
-            <MenuItem value={50}>50</MenuItem>
-          </Select>
-        </FormControl>
+
         <div style={{ marginTop: '20px' }}>
           <Button
             size='small'
@@ -73,19 +61,7 @@ function Contact() {
           >
             Export
             </Button>
-          <Button
-            style={{ marginLeft: '-4px', paddingTop: '10px' }}
-            size='small'
-            variant="contained"
-            color="primary"
-            style={{ borderRadius: 0 }}
-          >
-            <Icon
-              fontSize="small"
-              className={classes.largeIcon}
 
-            >send</Icon>
-          </Button>
         </div>
       </div>
       <FusePageCarded

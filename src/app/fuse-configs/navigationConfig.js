@@ -35,10 +35,11 @@ if (userAcl !== null) {
     {
         id: 'applications',
         title: 'Applications',
-        translate: 'BI Board',
+        translate: 'Navigation',
         type: 'group',
         icon: 'apps',
         children: [
+           
             {
                 id: 'dashboards',
                 title: 'Intelligence',
@@ -49,6 +50,7 @@ if (userAcl !== null) {
                 exact: true
 
             },
+           
             
 
             {
@@ -194,7 +196,6 @@ if (userAcl !== null) {
 
                 ]
             },
-            
             {
                 id: 'companyprofile',
                 title: 'Company Profile',
@@ -205,6 +206,8 @@ if (userAcl !== null) {
                 exact: true
 
             },
+            
+           
         ]
     },
 ];

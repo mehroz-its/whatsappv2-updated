@@ -43,7 +43,7 @@ const theme = createMuiTheme({
 });
 const AgentDialog = (props) => {
     const classes = useStyles(props);
-    const { isOpen, type, getUpdatedData, data,clientId } = props
+    const { isOpen, type, getUpdatedData, data, clientId } = props
     const [openDialog, setopenDialog] = React.useState(isOpen);
     const [canned_type, setCannedType] = React.useState(data.message_type);
 
@@ -130,21 +130,21 @@ const AgentDialog = (props) => {
             case "position":
                 setPosition(e.target.value)
                 break;
-                
+
         }
     }
     const handleTypeChange = (event) => {
-        console.log("event.target.value : " ,  event.target.value);
+        console.log("event.target.value : ", event.target.value);
         setMaxTokenCount(event.target.value)
 
     }
     const toggleChecked = (e) => {
-        console.log("ToggleChecked e" , e.target.checked);
+        console.log("ToggleChecked e", e.target.checked);
         setStatus(e.target.checked)
 
     }
     const handleSubmit = () => {
-      
+
         let params = {
             username: username,
             password: password,
@@ -153,16 +153,18 @@ const AgentDialog = (props) => {
             email: email,
             number: mobile,
             enabled: status,
-            role: maxTokenCount=== -1? "61":"64",
-            position:position,
-            max_token_count:maxTokenCount,
-            default_receiver:maxTokenCount=== -1? true:false,
-            clientId:clientId
+            role: maxTokenCount === -1 ? "61" : "64",
+            position: position,
+            max_token_count: maxTokenCount,
+            default_receiver: maxTokenCount === -1 ? true : false,
+            clientId: clientId
         };
         if (type !== 'update') {
-          
+
             CoreHttpHandler.request('CompanyAgent', 'create', params, (response) => {
-                console.log("CompanyAgent response : " ,  response);
+                console.log("CompanyAgent response : ", response);
+
+
                 props.closeDialog()
             }, (error) => {
             });
@@ -173,12 +175,27 @@ const AgentDialog = (props) => {
                 params: params
             }
             CoreHttpHandler.request('CompanyAgent', 'update', update_params, (response) => {
-                console.log("CompanyAgent response : " ,  response);
+                console.log("CompanyAgent response : ", response);
+                if (maxTokenCount === -1) {
+                    let data = {
+                        enabled:!enabled,
+                        id: clientId
+                    }
+                    CoreHttpHandler.request('Business', 'changeStatus', data, dataSourceSuccessChangeStatus, dataSourceFailureChangeStatus);
+                }
+
                 props.closeDialog()
             }, (error) => {
             });
         }
     };
+    const dataSourceSuccessChangeStatus = (response) => {
+        // CoreHttpHandler.request('Business', 'get', { ...dataSourceOptions.params }, dataSourceSuccessBusiness, dataSourceFailureBusiness);
+    };
+    const dataSourceFailureChangeStatus = (response) => {
+        // console.log("dataSourceFailureChangeStatus response : ", response);
+    };
+
     return (
         <Dialog open={openDialog} onClose={handleDialogClose} aria-labelledby="form-dialog-title" classes={{
             paper: 'm-24'
@@ -189,7 +206,7 @@ const AgentDialog = (props) => {
             <AppBar position="static" elevation={1}>
                 <div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
                     style={{ paddingBottom: 20, paddingTop: 20 }}>
-                     {type === "update" ? "Update" : "Create"} Agent
+                    {type === "update" ? "Update" : "Create"} Agent
                 </div>
             </AppBar>
             <DialogContent classes={{ root: 'p-24' }}>
@@ -230,7 +247,7 @@ const AgentDialog = (props) => {
                         size="small"
                     />
                 </div>
-              
+
                 <div className="flex">
                     <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
                         <Icon color="action">account_circle</Icon>
@@ -339,7 +356,7 @@ const AgentDialog = (props) => {
                         </div>
                         :
                         <div className="mx-32 md:mx-24 my-10">
-                            <Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit}  color="primary">
+                            <Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} color="primary">
                                 Update
 					</Button>
                         </div>
