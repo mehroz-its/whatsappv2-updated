@@ -193,6 +193,19 @@ function ChatApp(props) {
 			getConversation(e);
 		}, 3000));
 	}
+	//////
+	useEffect(() => {
+		return () => {
+			
+			if(int_CustomerList){
+				clearInterval(int_CustomerList)
+			}
+
+			if(int_MessageLists){
+				clearInterval(int_MessageLists)
+			}
+		}
+	}, [])
 	const getNumbers = () => {
 		CoreHttpHandler.request('conversations', 'historyNumbers', {}, (response) => {
 			const numbers = response.data.data.customers;

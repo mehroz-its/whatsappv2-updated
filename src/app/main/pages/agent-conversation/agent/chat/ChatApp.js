@@ -172,7 +172,13 @@ function ChatApp(props) {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	
 	// console.log(NewAgent, 'iiiiii')
-
+	useEffect(() => {
+		return () => {
+			if(int_MessageLists){
+				clearInterval(int_MessageLists)
+			}
+		}
+	}, [])
 
 	// const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
 

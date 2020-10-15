@@ -18,16 +18,8 @@ const ContactsAppConfig = {
 		// },
 		{
 			path: '/apps/contacts/all',
-			component: React.lazy(() => import('./ContactsApp.js'))
-		},
-		{
-			path: '/apps/blocklist',
-			component: React.lazy(() => import('../BlockedContacts/BlockContactApp'))
-		},
-		{
-			path: '/apps/contact-groups',
-			component: React.lazy(() => import('../ContactGoup/ContactGroupApp'))
-        },
+			component: () => <Redirect to="/apps/contacts/all" />
+		}
 	]
 };
 

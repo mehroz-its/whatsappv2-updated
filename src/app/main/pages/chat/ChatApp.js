@@ -435,6 +435,21 @@ function ChatApp(props) {
 			clearInterval(int_MessageLists);
 		}
 	}, [selectedRecipient]);
+
+	/////////////
+	useEffect(() => {
+		return () => {
+			
+			if(int_CustomerList){
+				clearInterval(int_CustomerList)
+			}
+
+			if(int_MessageLists){
+				clearInterval(int_MessageLists)
+			}
+		}
+	}, [])
+		
 	const checkOnline = (online) => {
 		if (online === false) {
 			setselectedRecipient(null)

@@ -30,7 +30,12 @@ const App = () => {
 	const [hasPermission, setHasPermission] = React.useState(null)
 	const [displaySnack, setDisplaySnack] = React.useState(false)
 
-
+	window.addEventListener("storage",e=>{
+		let userToken = localStorage.getItem("user_token")
+		if(!userToken&&window.location.pathname!=="/login"){
+			window.location.reload()
+		}
+	})
 	React.useEffect(() => {
 		const user_acl = localStorage.getItem('user_acl')
 		setHasPermission(user_acl)

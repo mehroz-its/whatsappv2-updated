@@ -9,7 +9,7 @@ class CoreHttpHandler {
         this.apiEndpoint = 'https://whatsapp-ent-be.its.com.pk/v1';
         // this.apiEndpoint = 'http://192.168.2.62:3001/v1';
         // this.apiEndpoint = 'https://local-whatsapp.its.com.pk/v1';
-        // this.apiEndpoint = 'http://localhost:3001/v1';
+        // this.apiEndpoint = 'http://localhost:3000/v1';
 
         this.config = {
             headers: {
@@ -188,17 +188,12 @@ class CoreHttpHandler {
          if (promise) {
         return axios[apiCall.method].apply(this, args);
     } else {                
-        console.log("HERE1");
-
         axios[apiCall.method]
             .apply(this, args)
             .then((result) => {
-                console.log("HERE2");
                 success(result);
             })
             .catch((error) => {
-                console.log("HERE3");
-
                 console.log('====================================');
                 console.log("error",error);
                 console.log('====================================');

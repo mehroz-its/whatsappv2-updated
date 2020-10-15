@@ -216,8 +216,7 @@ const Login2Page = (props) => {
         window.location.reload(false);
     };
 
-    const loginFailure = (error) => {
-        console.log("loginFailure data",error);
+    let loginFailure = (error) => {
         setHasError(true)
         setErrorMessage('')
         setSnackBarOpen(true)
