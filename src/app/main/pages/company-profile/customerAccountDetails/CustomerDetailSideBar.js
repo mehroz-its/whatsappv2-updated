@@ -115,7 +115,7 @@ function CustomerDetailSideBar(props) {
 								audiotrack
 							</Icon>
 							<ListItemText
-								primary="Agents" disableTypography />
+								primary="Users" disableTypography />
 						</ListItem>
 						<ListItem
 							exact

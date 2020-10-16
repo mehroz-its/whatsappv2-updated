@@ -16,6 +16,8 @@ import Avatar from '@material-ui/core/Avatar';
 import Icon from '@material-ui/core/Icon';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
+
+
 const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: '100%',
@@ -205,217 +207,219 @@ function Profile(props) {
     };
 
     return (
-        <Card className={classes.root}>
-            <CardContent className={classes.content} style={{ width: '100%' }}>
-                <Typography variant='h2' className='companyDetailHeader' >Profile</Typography>
-                <div className="flex flex-col items-center justify-center " style={{ marginTop: 23 }}>
-                    {isLoading ? <CircularProgress color="secondary" /> :
+        <>
+            <Card className={classes.root}>
+                <CardContent className={classes.content} style={{ width: '100%' }}>
+                    <Typography variant='h2' className='companyDetailHeader' >Profile</Typography>
+                    <div className="flex flex-col items-center justify-center " style={{ marginTop: 23 }}>
+                        {isLoading ? <CircularProgress color="secondary" /> :
 
-                        <Avatar alt="Remy Sharp" src={profileImage} className={classes.large} />
-                    }
-                    <span>
-                        <input id="contained-button-file" type="file" name="url" style={{ cursor: 'pointer', display: "none", marginBottom: '0px' }} onChange={onChangeHandler} accept="image/*" />
-                        <label htmlFor="contained-button-file">
-                            <Icon color="action"
-                                style={{ position: 'absolute', left: '51%', top: '15%' }}
-                                fontSize="small"
-                            >
-                                linked_camera</Icon>
-                        </label>
-                    </span>
-                </div>
-                <Grid container style={{ marginTop: "5px", paddingRight: '15px', paddingLeft: '15px' }} spacing={3}>
-                    <Grid item md={6} sm={12} xs={12}  >
-                        <TextField required
-                            size="small"
-                            value={first_name}
-                            name='firstName'
-                            autoFocus
-                            placeholder='First Name'
-                            type='text'
-                            variant="outlined"
-                            fullWidth
-                            autoComplete="off"
-                            onChange={(e) => { setfirst_name(e.target.value) }} />
-                    </Grid>
-                    <Grid item md={6} sm={12} xs={12} >
-                        <TextField required
-                            size="small"
-                            value={last_name}
-                            name='lastName'
-                            autoFocus
-                            placeholder='Last Name'
-                            type='text'
-                            variant="outlined"
-                            fullWidth
-                            autoComplete="off"
-                            onChange={(e) => { setlast_name(e.target.value) }} />
-                    </Grid>
-                    <Grid item md={6} sm={12} xs={12} >
-                        <TextField required
-                            size="small"
-                            value={number}
-                            name='number'
-                            autoFocus
-                            placeholder='Number'
-                            type='text'
-                            variant="outlined"
-                            fullWidth
-                            autoComplete="off"
-                            onChange={(e) => { setnumber(e.target.value) }} />
-                    </Grid>
-                    <Grid item md={6} sm={12} xs={12} >
-                        <TextField required
-                            size="small"
-                            value={phone}
-                            name='phone'
-                            autoFocus
-                            placeholder='Phone'
-                            type='text'
-                            variant="outlined"
-                            fullWidth
-                            autoComplete="off"
-                            onChange={(e) => { setphone(e.target.value) }} />
-                    </Grid>
-                    <Grid item md={6} sm={12} xs={12} >
-                        <TextField required
-                            size="small"
-                            value={email}
-                            name='email'
-                            autoFocus
-                            placeholder='Email'
-                            type='text'
-                            variant="outlined"
-                            fullWidth
-                            autoComplete="off"
-                            onChange={(e) => { setemail(e.target.value) }} />
-                    </Grid>
-                    <Grid item md={6} sm={12} xs={12} >
-                        <TextField required
-                            size="small"
-                            value={address}
-                            name='address'
-                            autoFocus
-                            placeholder='Address'
-                            type='text'
-                            variant="outlined"
-                            fullWidth
-                            autoComplete="off"
-                            onChange={(e) => { setaddress(e.target.value) }} />
-                    </Grid>
-
-
-                    <Grid item md={6} sm={12} xs={12} >
-                        <FormControl variant="outlined" size='small' fullWidth style={{ marginTop: '0px' }}>
-                            <InputLabel id="outlined-age-native-simple	">Country</InputLabel>
-                            <Select
-                                required
-                                labelId="demo-simple-select-outlined-label"
-                                id="demo-simple-select-outlined"
-                                value={parseInt(countryy)}
-                                onChange={handleCountryChange}
+                            <Avatar alt="Remy Sharp" src={profileImage} className={classes.large} />
+                        }
+                        <span>
+                            <input id="contained-button-file" type="file" name="url" style={{ cursor: 'pointer', display: "none", marginBottom: '0px' }} onChange={onChangeHandler} accept="image/*" />
+                            <label htmlFor="contained-button-file">
+                                <Icon color="action"
+                                    style={{ position: 'absolute', left: '51%', top: '15%' }}
+                                    fontSize="small"
+                                >
+                                    linked_camera</Icon>
+                            </label>
+                        </span>
+                    </div>
+                    <Grid container style={{ marginTop: "5px", paddingRight: '15px', paddingLeft: '15px' }} spacing={3}>
+                        <Grid item md={6} sm={12} xs={12}  >
+                            <TextField required
+                                size="small"
+                                value={first_name}
+                                name='firstName'
+                                autoFocus
+                                placeholder='First Name'
+                                type='text'
+                                variant="outlined"
                                 fullWidth
-                            >
-                                <MenuItem value="">
-                                    <em>Select Country</em>
-                                </MenuItem>
-                                {
-                                    countriesData.map(val => {
-                                        return (
-                                            <MenuItem value={val.id}>{val.name}</MenuItem>
-                                        )
-                                    })
-                                }
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item md={6} sm={12} xs={12} >
-                        <FormControl variant="outlined" size='small' fullWidth style={{ marginTop: '0px' }}>
-                            <InputLabel id="demo-simple-select-outlined-label">State</InputLabel>
-                            <Select
-                                required
-                                labelId="demo-simple-select-outlined-label"
-                                id="demo-simple-select-outlined"
-                                value={parseInt(statee)}
-                                onChange={handleStatesChange}
+                                autoComplete="off"
+                                onChange={(e) => { setfirst_name(e.target.value) }} />
+                        </Grid>
+                        <Grid item md={6} sm={12} xs={12} >
+                            <TextField required
+                                size="small"
+                                value={last_name}
+                                name='lastName'
+                                autoFocus
+                                placeholder='Last Name'
+                                type='text'
+                                variant="outlined"
                                 fullWidth
-                            >
-                                <MenuItem value="">
-                                    <em>Select State</em>
-                                </MenuItem>
-                                {
-                                    statesData.map(val => {
-                                        return (
-                                            <MenuItem value={val.id}>{val.name}</MenuItem>
-                                        )
-                                    })
-                                }
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item md={6} sm={12} xs={12} >
-                        <FormControl variant="outlined" size='small' fullWidth style={{ marginTop: '0px' }}>
-                            <InputLabel id="demo-simple-select-outlined-label">City</InputLabel>
-                            <Select
-                                required
-                                labelId="demo-simple-select-outlined-label"
-                                id="demo-simple-select-outlined"
-                                value={parseInt(cityy)}
-                                onChange={handleCityChange}
+                                autoComplete="off"
+                                onChange={(e) => { setlast_name(e.target.value) }} />
+                        </Grid>
+                        <Grid item md={6} sm={12} xs={12} >
+                            <TextField required
+                                size="small"
+                                value={number}
+                                name='number'
+                                autoFocus
+                                placeholder='Number'
+                                type='text'
+                                variant="outlined"
                                 fullWidth
-                            >
-                                <MenuItem value="">
-                                    <em>Select City</em>
-                                </MenuItem>
-                                {
-                                    citiesData.map(val => {
-                                        return (
-                                            <MenuItem value={val.id}>{val.name}</MenuItem>
-                                        )
-                                    })
-                                }
-                            </Select>
-                        </FormControl>
+                                autoComplete="off"
+                                onChange={(e) => { setnumber(e.target.value) }} />
+                        </Grid>
+                        <Grid item md={6} sm={12} xs={12} >
+                            <TextField required
+                                size="small"
+                                value={phone}
+                                name='phone'
+                                autoFocus
+                                placeholder='Phone'
+                                type='text'
+                                variant="outlined"
+                                fullWidth
+                                autoComplete="off"
+                                onChange={(e) => { setphone(e.target.value) }} />
+                        </Grid>
+                        <Grid item md={6} sm={12} xs={12} >
+                            <TextField required
+                                size="small"
+                                value={email}
+                                name='email'
+                                autoFocus
+                                placeholder='Email'
+                                type='text'
+                                variant="outlined"
+                                fullWidth
+                                autoComplete="off"
+                                onChange={(e) => { setemail(e.target.value) }} />
+                        </Grid>
+                        <Grid item md={6} sm={12} xs={12} >
+                            <TextField required
+                                size="small"
+                                value={address}
+                                name='address'
+                                autoFocus
+                                placeholder='Address'
+                                type='text'
+                                variant="outlined"
+                                fullWidth
+                                autoComplete="off"
+                                onChange={(e) => { setaddress(e.target.value) }} />
+                        </Grid>
 
-                    </Grid>
 
-                    <Grid item md={6} sm={12} xs={12} >
-                        <TextField required
-                            size="small"
-                            value={website}
-                            name='Website'
-                            autoFocus
-                            label='Website'
-                            type='text'
-                            variant="outlined"
-                            fullWidth
-                            autoComplete="off"
-                            onChange={(e) => { setwebsite(e.target.value) }} />
+                        <Grid item md={6} sm={12} xs={12} >
+                            <FormControl variant="outlined" size='small' fullWidth style={{ marginTop: '0px' }}>
+                                <InputLabel id="outlined-age-native-simple	">Country</InputLabel>
+                                <Select
+                                    required
+                                    labelId="demo-simple-select-outlined-label"
+                                    id="demo-simple-select-outlined"
+                                    value={parseInt(countryy)}
+                                    onChange={handleCountryChange}
+                                    fullWidth
+                                >
+                                    <MenuItem value="">
+                                        <em>Select Country</em>
+                                    </MenuItem>
+                                    {
+                                        countriesData.map(val => {
+                                            return (
+                                                <MenuItem value={val.id}>{val.name}</MenuItem>
+                                            )
+                                        })
+                                    }
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item md={6} sm={12} xs={12} >
+                            <FormControl variant="outlined" size='small' fullWidth style={{ marginTop: '0px' }}>
+                                <InputLabel id="demo-simple-select-outlined-label">State</InputLabel>
+                                <Select
+                                    required
+                                    labelId="demo-simple-select-outlined-label"
+                                    id="demo-simple-select-outlined"
+                                    value={parseInt(statee)}
+                                    onChange={handleStatesChange}
+                                    fullWidth
+                                >
+                                    <MenuItem value="">
+                                        <em>Select State</em>
+                                    </MenuItem>
+                                    {
+                                        statesData.map(val => {
+                                            return (
+                                                <MenuItem value={val.id}>{val.name}</MenuItem>
+                                            )
+                                        })
+                                    }
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item md={6} sm={12} xs={12} >
+                            <FormControl variant="outlined" size='small' fullWidth style={{ marginTop: '0px' }}>
+                                <InputLabel id="demo-simple-select-outlined-label">City</InputLabel>
+                                <Select
+                                    required
+                                    labelId="demo-simple-select-outlined-label"
+                                    id="demo-simple-select-outlined"
+                                    value={parseInt(cityy)}
+                                    onChange={handleCityChange}
+                                    fullWidth
+                                >
+                                    <MenuItem value="">
+                                        <em>Select City</em>
+                                    </MenuItem>
+                                    {
+                                        citiesData.map(val => {
+                                            return (
+                                                <MenuItem value={val.id}>{val.name}</MenuItem>
+                                            )
+                                        })
+                                    }
+                                </Select>
+                            </FormControl>
+
+                        </Grid>
+
+                        <Grid item md={6} sm={12} xs={12} >
+                            <TextField required
+                                size="small"
+                                value={website}
+                                name='Website'
+                                autoFocus
+                                label='Website'
+                                type='text'
+                                variant="outlined"
+                                fullWidth
+                                autoComplete="off"
+                                onChange={(e) => { setwebsite(e.target.value) }} />
+                        </Grid>
                     </Grid>
-                </Grid>
-                <div style={{ alignContent: 'center', alignItems: 'center', alignSelf: 'center', textAlign: "center" }}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        className="w-224 mx-auto mt-16"
-                        aria-label="Register"
-                        onClick={() => submit()}
+                    <Snackbar
+                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                        open={snackbaropen}
+                        autoHideDuration={1000}
                     >
-                        Update
-								</Button>
-                </div>
-                <Snackbar
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-                open={snackbaropen}
-                autoHideDuration={1000}
-            >
-                <Alert variant="filled" severity={ok}>
-                    {snackbarmessage}
-                </Alert>
-            </Snackbar>
-            </CardContent>
-            
-        </Card>
+                        <Alert variant="filled" severity={ok}>
+                            {snackbarmessage}
+                        </Alert>
+                    </Snackbar>
+                </CardContent>
+            </Card >
+
+            <Card className={classes.root} style={{ marginTop: 20 }}>
+                <CardContent className={classes.content} >
+                    <Grid container spacing={3}>
+                        <Grid item md={9} sm={12} xs={12} >
+                            </Grid>
+                            <Grid item md={3} sm={12} xs={12} style={{alignSelf:"center"}} >
+                            <Button variant="contained" color="primary"  aria-label="Register" onClick={() => submit()} >   Update	</Button>
+                            </Grid>
+                            </Grid>
+                </CardContent>
+            </Card>
+        </>
     )
 }
 
