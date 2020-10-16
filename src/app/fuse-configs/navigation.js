@@ -6,7 +6,16 @@ module.exports = [
         type: 'group',
         icon: 'apps',
         children: [
-           
+            {
+                id: 'companyprofile',
+                title: 'Company Profile',
+                translate: 'Business',
+                type: 'item',
+                icon: 'dashboard',
+                url: '/apps/company-profile',
+                exact: true
+
+            },
             {
                 id: 'dashboards',
                 title: 'Intelligence',
@@ -163,16 +172,7 @@ module.exports = [
 
                 ]
             },
-            {
-                id: 'companyprofile',
-                title: 'Company Profile',
-                translate: 'Business',
-                type: 'item',
-                icon: 'dashboard',
-                url: '/apps/company-profile',
-                exact: true
-
-            },
+           
             
            
         ]
