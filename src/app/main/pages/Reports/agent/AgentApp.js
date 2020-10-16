@@ -15,7 +15,7 @@ import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 import Button from '@material-ui/core/Button';
-import DateRangePickerVal from '../Chat/DatePicker'
+import DateRangePickerVal from '../chat/DatePicker'
 import { CSVLink, CSVDownload } from 'react-csv';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert'

@@ -407,18 +407,22 @@ function Profile(props) {
                     </Snackbar>
                 </CardContent>
             </Card >
+            <div style={{width:'100%',height:64,marginTop:24,position:"relative",backgroundColor: 'white',boxShadow:'0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)',borderRadius:3}}>
+                <div style={{width:'9%',position:"absolute",top:'18%',right:'3%'}}>
+                <Button style={{alignItems: 'center',alignSelf: 'center',alignContent: 'center',justifyContent:'center'}} variant="contained" color="primary"  aria-label="Register" onClick={() => submit()} >   Update	</Button>
+                </div>
 
-            <Card className={classes.root} style={{ marginTop: 20 }}>
+            </div>
+
+            {/* <Card className={classes.root} style={{ marginTop: 20 }}>
                 <CardContent className={classes.content} >
-                    <Grid container spacing={3}>
-                        <Grid item md={9} sm={12} xs={12} >
-                            </Grid>
-                            <Grid item md={3} sm={12} xs={12} style={{alignSelf:"center"}} >
-                            <Button variant="contained" color="primary"  aria-label="Register" onClick={() => submit()} >   Update	</Button>
-                            </Grid>
-                            </Grid>
+                   
+                            <div style={{flex:1,alignItems: 'center',alignSelf: 'center',alignContent: 'center',backgroundColor: 'green',}} >
+                            <Button style={{alignItems: 'center',alignSelf: 'center',alignContent: 'center',justifyContent:'center'}} variant="contained" color="primary"  aria-label="Register" onClick={() => submit()} >   Update	</Button>
+                            </div>
+                          
                 </CardContent>
-            </Card>
+            </Card> */}
         </>
     )
 }

@@ -361,8 +361,9 @@ function ComapnyProfile(props) {
 										color="Primary"
 										variant="contained"
 										className="w-224 mx-auto mt-16"
+										onClick={()=>props.history.goBack()}
 									>
-										<Link to="/apps/company-profile" style={{ textDecoration: "none", color: "white" }}>Go Back</Link>
+										Go Back
 									</Button>
 									<Button
 										variant="contained"
