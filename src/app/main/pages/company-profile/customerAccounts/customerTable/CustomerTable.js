@@ -145,105 +145,113 @@ function CampaignTable(props) {
 					{snackbarmessage}
 				</Alert>
 			</Snackbar>
-			<div className="w-full flex flex-col">
-				<TableContainer component={Paper}>
-					<Table className="min-w-xl" aria-labelledby="tableTitle">
-						<CampaignTableHead
-							numSelected={selected.length}
-							order={order}
-							onSelectAllClick={handleSelectAllClick}
-							onRequestSort={handleRequestSort}
-							rowCount={data.length}
-						/>
-						<TableBody>
-							{_.orderBy(
-								props.clients,
-								[
-									o => {
-										switch (order.id) {
-											case 'categories': {
-												return o.categories[0];
-											}
-											default: {
-												return o[order.id];
+			{props.clients.filter((item) => {
+				return item.id.includes(props.searchValue) || item.comapny.toLowerCase().includes(props.searchValue.toLowerCase()) || item.number.includes(props.searchValue) || item.email.toLowerCase().includes(props.searchValue.toLowerCase()) || item.phone.includes(props.searchValue) || item.dt.includes(props.searchValue)
+			}).length ?
+				<div className="w-full flex flex-col">
+					<TableContainer component={Paper}>
+						<Table className="min-w-xl" aria-labelledby="tableTitle">
+							<CampaignTableHead
+								numSelected={selected.length}
+								order={order}
+								onSelectAllClick={handleSelectAllClick}
+								onRequestSort={handleRequestSort}
+								rowCount={data.length}
+							/>
+							<TableBody>
+								{_.orderBy(
+									props.clients,
+									[
+										o => {
+											switch (order.id) {
+												case 'categories': {
+													return o.categories[0];
+												}
+												default: {
+													return o[order.id];
+												}
 											}
 										}
-									}
-								],
-								[order.direction]
-							)
-								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-								.map((n, i) => {
-									const isSelected = selected.indexOf(n.id) !== -1;
-									return (
-										<TableRow
-											className="h-10 cursor-pointer"
-											hover
-											role="checkbox"
-											aria-checked={isSelected}
-											tabIndex={-1}
-											key={i}
-											selected={isSelected} >
-											<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{n.id}
-											</TableCell>
-											<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{n.comapny}
-											</TableCell>
-											<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{n.number}
-											</TableCell>
-											<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{n.email}
-											</TableCell>
-											<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{n.phone}
-											</TableCell >
-											{<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												{n.dt === null ? 'N/A' : n.dt}
-											</TableCell>}
-											<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-												<FormControlLabel
-													style={{ marginLeft: '2px' }}
-													control={
-														<Switch
-															checked={n.enabled}
-															onChange={(e) => toggleChecked(e, n.id)}
-															name="checkedB"
-															color="primary"
-															size="small" />
-													}
-												/>
-											</TableCell>
+									],
+									[order.direction]
+								)
+									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+									.filter((item) => {
+										return props.searchValue ? item.id.includes(props.searchValue) || item.comapny.toLowerCase().includes(props.searchValue.toLowerCase()) || item.number.includes(props.searchValue) || item.email.toLowerCase().includes(props.searchValue.toLowerCase()) || item.phone.includes(props.searchValue) || item.dt.includes(props.searchValue) : true
+									})
+									.map((n, i) => {
+										const isSelected = selected.indexOf(n.id) !== -1;
+										return (
+											<TableRow
+												className="h-10 cursor-pointer"
+												hover
+												role="checkbox"
+												aria-checked={isSelected}
+												tabIndex={-1}
+												key={i}
+												selected={isSelected} >
+												<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.id}
+												</TableCell>
+												<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.comapny}
+												</TableCell>
+												<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.number}
+												</TableCell>
+												<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.email}
+												</TableCell>
+												<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.phone}
+												</TableCell >
+												{<TableCell onClick={event => handleClick(n)} component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.dt === null ? 'N/A' : n.dt}
+												</TableCell>}
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													<FormControlLabel
+														style={{ marginLeft: '2px' }}
+														control={
+															<Switch
+																checked={n.enabled}
+																onChange={(e) => toggleChecked(e, n.id)}
+																name="checkedB"
+																color="primary"
+																size="small" />
+														}
+													/>
+												</TableCell>
+											</TableRow>
+										);
+									})}
+							</TableBody>
+						</Table>
+					</TableContainer>
 
-										</TableRow>
-									);
-								})}
-						</TableBody>
-					</Table>
-				</TableContainer>
-				<MuiThemeProvider theme={PaginationStyle}>
-					<TablePagination
-						classes={{
-							root: 'overflow-hidden',
-							spacer: 'w-0 max-w-0',
-							actions: 'text-64',
-							select: 'text-12 mt-4',
-							selectIcon: 'mt-4',
-						}}
-						className="overflow-hidden"
-						component="div"
-						count={data.length}
-						style={{ fontSize: '12px' }}
-						rowsPerPage={rowsPerPage}
-						page={page}
-						onChangePage={handleChangePage}
-						onChangeRowsPerPage={handleChangeRowsPerPage}
-						ActionsComponent={ContactsTablePaginationActions}
-					/>
-				</MuiThemeProvider>
-				{open && <CampaignDialog isOpen={open} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} />}
-			</div>
+					<MuiThemeProvider theme={PaginationStyle}>
+						<TablePagination
+							classes={{
+								root: 'overflow-hidden',
+								spacer: 'w-0 max-w-0',
+								actions: 'text-64',
+								select: 'text-12 mt-4',
+								selectIcon: 'mt-4',
+							}}
+							className="overflow-hidden"
+							component="div"
+							count={data.length}
+							style={{ fontSize: '12px' }}
+							rowsPerPage={rowsPerPage}
+							page={page}
+							onChangePage={handleChangePage}
+							onChangeRowsPerPage={handleChangeRowsPerPage}
+							ActionsComponent={ContactsTablePaginationActions}
+						/>
+					</MuiThemeProvider>
+					{open && <CampaignDialog isOpen={open} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} />}
+				</div> : <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}><h1 style={{ color: "gray" }}>Data Not Found</h1></div>
+			}
+
 		</>
 	);
 }

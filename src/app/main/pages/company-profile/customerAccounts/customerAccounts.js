@@ -3,14 +3,37 @@ import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
-import FuseAnimate from '@fuse/core/FuseAnimate';
-import Icon from '@material-ui/core/Icon';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import Widget2 from './widgets/Widget2';
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 import CustomerTable from './customerTable/CustomerTable'
+import FuseAnimate from '@fuse/core/FuseAnimate';
+import Icon from '@material-ui/core/Icon';
+import Input from '@material-ui/core/Input';
+import Paper from '@material-ui/core/Paper';
+import { useSelector } from 'react-redux';
+
+import { ThemeProvider, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
+const SearchStyle = createMuiTheme({
+    overrides: {
+        MuiInput: {
+            root: {
+                paddingTop: 0,
+                fontSize: '12px',
+                paddingBottom: 0,
+                margin: 0,
+                border: 0,
+                borderRadius: 0,
+                height: '30px'
+            }
+        }
+    }
+});
+
+
 const useStyles = makeStyles({
     layoutRoot: {},
     content: {
@@ -20,10 +43,14 @@ const useStyles = makeStyles({
     }
 });
 function CustomerAccounts(props) {
+
+    const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
+
     const classes = useStyles();
     const [clients, setClient] = React.useState([]);
     const [activeClients, setActiveClients] = React.useState("");
     const [inactiveClients, setInactiveClients] = React.useState("");
+    const [value, setValue] = React.useState("");
     const dataSourceOptions = {
         params: {
             columns: "*",
@@ -37,7 +64,7 @@ function CustomerAccounts(props) {
     };
 
     React.useEffect(() => {
-        CoreHttpHandler.request('Business', 'get', { }, dataSourceSuccessBusiness, dataSourceFailureBusiness);
+        CoreHttpHandler.request('Business', 'get', {}, dataSourceSuccessBusiness, dataSourceFailureBusiness);
     }, [])
     const dataSourceSuccessBusiness = (response) => {
         setClient(response.data.data.clients.clients)
@@ -46,20 +73,20 @@ function CustomerAccounts(props) {
     };
     const dataSourceFailureBusiness = (response) => {
     };
-    const changeStatus = (params) =>{
+    const changeStatus = (params) => {
         CoreHttpHandler.request('Business', 'changeStatus', params, dataSourceSuccessChangeStatus, dataSourceFailureChangeStatus);
 
     }
     const dataSourceSuccessChangeStatus = (response) => {
         CoreHttpHandler.request('Business', 'get', { ...dataSourceOptions.params }, dataSourceSuccessBusiness, dataSourceFailureBusiness);
 
-  
+
     };
     const dataSourceFailureChangeStatus = (response) => {
         console.log("dataSourceFailureChangeStatus response : ", response);
     };
 
-    
+
     if (clients.length === 0) {
         return (
             <div className="flex flex-1 items-center justify-center h-full">
@@ -67,6 +94,7 @@ function CustomerAccounts(props) {
             </div>
         );
     }
+
     return (
         <FusePageSimple
             classes={{
@@ -81,9 +109,33 @@ function CustomerAccounts(props) {
                         </FuseAnimate>
                         <FuseAnimate animation="transition.slideLeftIn" delay={300}>
                             <Typography className=" py-0 sm:py-24 hidden sm:flex mx-0 sm:mx-12 text-20" variant="h6">
-                                Customer Accounts
+                                Bussiness Accounts
 							</Typography>
                         </FuseAnimate>
+                        {/*  */}
+                        <div className="flex flex-1 items-center justify-center px-12">
+                            <ThemeProvider theme={mainTheme}>
+                                <FuseAnimate animation="transition.slideDownIn" delay={300}>
+                                    <Paper className="flex items-center w-full max-w-sm px-8 py-4" elevation={1}>
+                                        <Icon color="action" fontSize="small">search</Icon>
+                                        <MuiThemeProvider theme={SearchStyle}>
+                                            <Input
+                                                style={{ border: 'none' }}
+                                                rows={1}
+                                                placeholder="Search"
+                                                className="flex flex-1 mx-8 "
+                                                disableUnderline
+                                                onChange={e => {
+                                                    setValue(e.target.value)
+                                                }}
+                                            />
+                                        </MuiThemeProvider>
+                                    </Paper>
+                                </FuseAnimate>
+                            </ThemeProvider>
+                        </div>
+
+
                     </div>
                 </div>
             }
@@ -117,7 +169,7 @@ function CustomerAccounts(props) {
                             </Grid>
                             <Grid container spacing={3} style={{ marginTop: 10 }}>
                                 <Grid item md={12} sm={12} xs={12} >
-                                    <CustomerTable clients={clients} onchange={(e)=>{changeStatus(e)}} />
+                                    <CustomerTable clients={clients} onchange={(e) => { changeStatus(e) }} searchValue={value} />
                                 </Grid>
                             </Grid>
                         </FuseAnimateGroup>

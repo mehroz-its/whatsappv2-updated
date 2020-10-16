@@ -204,8 +204,8 @@ function ComapnyProfile(props) {
 				});
 		}
 	};
-const submitForms = () =>{
-	console.log('form', form, country, city)
+	const submitForms = () => {
+		console.log('form', form, country, city)
 		let params = { ...form, city: city.name, country: country.name, logo: profileImage }
 		console.log(params, 'params')
 		// return;
@@ -228,7 +228,7 @@ const submitForms = () =>{
 
 
 		});
-}
+	}
 	let pic = require('../../../../../images/logo-head.png')
 	return (
 		<div className={clsx(classes.root, 'flex flex-col flex-auto flex-shrink-0 items-center justify-center p-0')}>
@@ -355,16 +355,27 @@ const submitForms = () =>{
 										<TextField onChange={handleChange} size='small' name="website" type="website" value={form.website} required id="outlined-basic-email" label="Web-Site" variant="outlined" fullWidth autoComplete="off" />
 									</Grid>
 								</Grid>
-								<Button
-									variant="contained"
-									color="primary"
-									className="w-224 mx-auto mt-16"
-									aria-label="Register"
-									disabled={(form.firstname !== '' && form.lastname  !== ''  && form.phone  !== '' && form.number  !== '' && form.email  !== '' && form.address  !== ''&& country  !== ''&& state !== ''&& city  !== '' ) ? false : true}
-									type="submit"
-								>
-									Register
+
+								<div style={{ display: "flex", margin: "5px", flexWrap: "wrap" }}>
+									<Button
+										color="Primary"
+										variant="contained"
+										className="w-224 mx-auto mt-16"
+									>
+										<Link to="/apps/company-profile" style={{ textDecoration: "none", color: "white" }}>Go Back</Link>
 									</Button>
+									<Button
+										variant="contained"
+										style={{ color: "#8b8b8b" }}
+										className="w-224 mx-auto mt-16"
+										aria-label="Register"
+										// disabled={(form.firstname !== '' && form.lastname !== '' && form.phone !== '' && form.number !== '' && form.email !== '' && form.address !== '' && country !== '' && state !== '' && city !== '') ? false : true}
+										type="submit"
+									>
+										Register
+									</Button>
+								</div>
+
 							</form>
 
 						</CardContent>
