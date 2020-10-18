@@ -14,6 +14,10 @@ import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading'
 function ContactsList(props) {
 	const [data, setData] = React.useState([])
 	const [rowvalue, setROWvalue] = React.useState('')
+	const [totalItems, setTotalItems] = React.useState(0)
+	const [currentParams, setCurrentParams] = React.useState({limit:5,page:0})
+	const [isLoading, setLoading] = React.useState(true)
+	
 	const [openBlockDialog, setOpenBlockDialog] = React.useState(false);
 	const [unblockDialog, setUnBlockDialog] = React.useState(false);
 	const [data2, setData2] = useState([]);
@@ -53,9 +57,11 @@ function ContactsList(props) {
 	const user = ContactsData.user
 	const getData = ((loadData) => {
 		loadData = () => {
+			setLoading(true)
+
 			return CoreHttpHandler.request('contact_book', 'listing', {
-				limit: 100,
-				page: 0,
+				limit: currentParams.limit,
+				page: currentParams.page,
 				columns: "*",
 				sortby: "DESC",
 				orderby: "id",
@@ -64,7 +70,9 @@ function ContactsList(props) {
 			}, null, null, true);
 		};
 		loadData().then((response) => {
+			setLoading(false)
 			const tableData = response.data.data.list.data
+			setTotalItems(response.data.data.list.totalItems)
 			setData(tableData)
 
 		});
@@ -72,8 +80,15 @@ function ContactsList(props) {
 
 	React.useEffect(() => {
 		getData()
-	}, []);
+	  }, [currentParams]);
 
+	const setPage = (currentPage)=>{
+		setCurrentParams({limit:currentParams.limit,page:currentPage})
+	}
+	
+	const setLimit = (pageLimit)=>{
+		setCurrentParams({limit:pageLimit,page:0})
+	}
 	if (searchVal !== props.ValueForSearch) {
 		{ search() }
 	}
@@ -174,51 +189,54 @@ function ContactsList(props) {
 	);
 
 
-	if (filtered.length === 0) {
-		if (searchVal !== '') {
-			return (
-				<div className="flex flex-1 items-center justify-center h-full">
-
-					<Typography color="textSecondary" variant="h5">
-						{/* There are no contacts! */}
-					No Data Found!
-				</Typography>
-				</div>
-			)
-
-
-		} else {
-			return (
-				<div className="flex flex-1 items-center justify-center h-full">
-					<FuseLoading />
-				</div>
-			);
-		}
-
-	}
-	console.log(ContactsData, 'ContactsData')
 	// console.log(user, 'user')
 
 	function handleClick(n) {
 		setROWvalue(n.original)
 		setOpenBlockDialog(true)
 	}
-	return (
-		<FuseAnimate animation="transition.slideUpIn" delay={300}>
-			<ContactsTable
-			   giveVal={props.GiveVal}
-				getUpdatedData={() => { getData() }}
-				openUnBlockDialog={unblockDialog}
-				onBlockDialogClose={handleClose}
-				blockRowData={rowvalue}
-				openBlockDialog={openBlockDialog}
-				columns={columns}
-				data={filtered}
-				onRowClick={(ev, row) => {
-				}}
-			/>
-		</FuseAnimate>
-	);
+
+	if(isLoading){
+		
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+		);
+	}else if (filtered.length === 0) {
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+
+				<Typography color="textSecondary" variant="h5">
+					{/* There are no contacts! */}
+				No Data Found!
+			</Typography>
+			</div>
+		)
+	}else{
+
+		return (
+			// <FuseAnimate animation="transition.slideUpIn" delay={300}>
+				<ContactsTable
+				   giveVal={props.GiveVal}
+					getUpdatedData={() => { getData() }}
+					openUnBlockDialog={unblockDialog}
+					onBlockDialogClose={handleClose}
+					blockRowData={rowvalue}
+					openBlockDialog={openBlockDialog}
+					columns={columns}
+					data={filtered}
+					totalItems={totalItems}
+					setPage={setPage}
+					setLimit={setLimit}
+					rowsPerPage={currentParams.limit}
+					currentPage={currentParams.page}
+					onRowClick={(ev, row) => {
+					}}
+				/>
+			// </FuseAnimate>
+		);
+	}
 }
 
 export default ContactsList;

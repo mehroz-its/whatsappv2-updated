@@ -10,6 +10,12 @@ function ContactsList(props) {
 	const [data, setData] = React.useState([])
 	const [data2, setData2] = useState([]);
 	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
+
+	const [totalItems, setTotalItems] = React.useState(0)
+	const [currentParams, setCurrentParams] = React.useState({limit:5,page:0})
+	const [isLoading, setLoading] = React.useState(true)
+	
+
 	let filtered = []
 	let newobj = {
 	}
@@ -43,10 +49,12 @@ function ContactsList(props) {
 	const dispatch = useDispatch();
 	const user = ContactsData.user
 	const getData = ((loadData) => {
+		setLoading(true)
+
 		loadData = () => {
 			return CoreHttpHandler.request('contact_book', 'listing', {
-				limit: 100,
-				page: 0,
+				limit: currentParams.limit,
+				page: currentParams.page,
 				columns: "*",
 				sortby: "DESC",
 				orderby: "id",
@@ -55,14 +63,26 @@ function ContactsList(props) {
 			}, null, null, true);
 		};
 		loadData().then((response) => {
+			setLoading(false)
+			setTotalItems(response.data.data.list.totalItems)
+
 			const tableData = response.data.data.list.data
 			setData(tableData)
 		});
 	})
 
+
 	React.useEffect(() => {
 		getData()
-	}, []);
+	  }, [currentParams]);
+	const setPage = (currentPage)=>{
+		setCurrentParams({limit:currentParams.limit,page:currentPage})
+	}
+	
+	const setLimit = (pageLimit)=>{
+		setCurrentParams({limit:pageLimit,page:0})
+	}
+
 	if (searchVal !== props.ValueForSearch) {
 		{ search() }
 	}
@@ -117,7 +137,14 @@ function ContactsList(props) {
 	setTimeout(() => {
 		return (<FuseLoading />)
 	}, 5000);
-	if (ContactsData.entities.length == 0) {
+	if(isLoading){
+		
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+		);
+	}else if (ContactsData.entities.length == 0) {
 		return (
 			<div className="flex flex-1 items-center justify-center h-full">
 				<Typography color="textSecondary" variant="h5">
@@ -125,35 +152,34 @@ function ContactsList(props) {
 		</Typography>
 			</div>
 		)
+	}else if (filtered.length === 0 && searchVal !== '') {
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<Typography color="textSecondary" variant="h5">
+					No Data Found!
+			</Typography>
+			</div>
+		)
+	}else{
+
+		return (
+			// <FuseAnimate animation="transition.slideUpIn" delay={300}>
+				<BlockContactsTable
+					giveVal={props.GiveVal}
+					columns={columns}
+					data={data}
+					getData={getData}
+					
+					totalItems={totalItems}
+					setPage={setPage}
+					setLimit={setLimit}
+					rowsPerPage={currentParams.limit}
+					currentPage={currentParams.page}
+					onRowClick={(ev, row) => {
+					}}
+				/>
+			// </FuseAnimate>
+		);
 	}
-	if (filtered.length === 0) {
-		if (searchVal !== '') {
-			return (
-				<div className="flex flex-1 items-center justify-center h-full">
-					<Typography color="textSecondary" variant="h5">
-						No Data Found!
-				</Typography>
-				</div>
-			)
-		} else {
-			return (
-				<div className="flex flex-1 items-center justify-center h-full">
-					<FuseLoading />
-				</div>
-			);
-		}
-	}
-	return (
-		<FuseAnimate animation="transition.slideUpIn" delay={300}>
-			<BlockContactsTable
-				giveVal={props.GiveVal}
-				columns={columns}
-				data={data}
-				getData={getData}
-				onRowClick={(ev, row) => {
-				}}
-			/>
-		</FuseAnimate>
-	);
 }
 export default ContactsList;

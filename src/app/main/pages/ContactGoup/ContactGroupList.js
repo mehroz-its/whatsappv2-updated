@@ -7,7 +7,8 @@ import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading'
 
 
 function ContactsList(props) {
-	const {data,onDialogClose,isSearched,displaySnack }  = props
+
+	const {data,onDialogClose,isSearched,displaySnack,isLoading,totalItems,setPage,setLimit,rowsPerPage,currentPage}  = props
 	const columns = React.useMemo(
 		() => [
 			{
@@ -41,38 +42,43 @@ function ContactsList(props) {
 		],
 		[]
 	);
+	if(isLoading){
 
-	if (data.length === 0) {
-		if (isSearched !== '') {
-			return (
-				<div className="flex flex-1 items-center justify-center h-full">
-					<Typography color="textSecondary" variant="h5">
-					No Data Found!
-				</Typography>
-				</div>
-			)
-		} else {
-			return (
-				<div className="flex flex-1 items-center justify-center h-full">
-					<FuseLoading />
-				</div>
-			);
-		}
-	}
-	return (
-		<FuseAnimate animation="transition.slideUpIn" delay={300}>
-			<BlockContactsTable
-				columns={columns}
-				data={data}
-				onRowClick={(ev, row) => {
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+		);
+	}else if(data.length === 0){
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<Typography color="textSecondary" variant="h5">
+				No Data Found!
+			</Typography>
+			</div>
+		)
+	}else{
+		return (
+			
+				<BlockContactsTable
+					columns={columns}
+					data={data}
+					onRowClick={(ev, row) => {
+						
+						console.log(row, 'rowrow')
+					}}
+					onClose={onDialogClose}
+					displaySnack={displaySnack}
 					
-					console.log(row, 'rowrow')
-				}}
-				onClose={onDialogClose}
-				displaySnack={displaySnack}
-			/>
-		</FuseAnimate>
-	);
+					totalItems={totalItems}
+					setPage={setPage}
+					setLimit={setLimit}
+					rowsPerPage={rowsPerPage}
+					currentPage={currentPage}
+				/>
+				
+		);
+	}	
 }
 
 export default ContactsList;

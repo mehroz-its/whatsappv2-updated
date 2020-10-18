@@ -85,7 +85,7 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 	);
 });
 
-const EnhancedTable = ({ columns, data, onRowClick, getData, props }) => {
+const EnhancedTable = ({ columns, data, onRowClick, getData, props, rowsPerPage, currentPage, setLimit, totalItems, setPage, }) => {
 	const classes = useStyles(props);
 	const [open, setOpen] = React.useState(false);
 	const handleClose = () => {
@@ -138,12 +138,15 @@ const EnhancedTable = ({ columns, data, onRowClick, getData, props }) => {
 		}
 	);
 
+
 	const handleChangePage = (event, newPage) => {
-		gotoPage(newPage);
+		setPage(newPage)
 	};
 
 	const handleChangeRowsPerPage = event => {
+		setLimit(Number(event.target.value));
 		setPageSize(Number(event.target.value));
+
 	};
 
 	const handleClick = (ev, row) => {
@@ -235,12 +238,12 @@ const EnhancedTable = ({ columns, data, onRowClick, getData, props }) => {
 									select: 'text-12 mt-4',
 									selectIcon: 'mt-4',
 								}}
-								rowsPerPageOptions={[5, 10, 25, { label: 'All', value: data.length + 1 }]}
+								rowsPerPageOptions={[5, 10, 25, { label: 'All', value: totalItems }]}
 								colSpan={5}
 								style={{ fontSize: '12px' }}
-								count={data.length}
-								rowsPerPage={pageSize}
-								page={pageIndex}
+								count={totalItems}
+								rowsPerPage={rowsPerPage}
+								page={currentPage}
 								SelectProps={{
 									inputProps: { 'aria-label': 'rows per page' },
 									native: false

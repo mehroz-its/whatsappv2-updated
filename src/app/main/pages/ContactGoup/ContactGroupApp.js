@@ -27,11 +27,6 @@ const useStyles = makeStyles((theme) => ({
 
 }))
 
-
-
-
-
-
 function ContactsApp() {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
@@ -44,6 +39,10 @@ function ContactsApp() {
 	const [ok, setOK] = React.useState('')
 	const[val,setVal]=React.useState('')
 
+	const [totalItems, setTotalItems] = React.useState(0)
+	const [currentParams, setCurrentParams] = React.useState({limit:5,page:0})
+	const [isLoading, setLoading] = React.useState(true)
+	
 
 	// const handleChange = (event) => {
 	// 	setAge(event.target.value);
@@ -65,12 +64,14 @@ function ContactsApp() {
 	)
 
 	const getData = ((loadData) => {
+		setLoading(true)
+
 		console.log('called get data')
 		loadData = () => {
 			return CoreHttpHandler.request('contact_group', 'listing', {
 
-				limit: 100,
-				page: 0,
+				limit: currentParams.limit,
+				page: currentParams.page+1,
 				columns: "*",
 				sortby: "DESC",
 				orderby: "id",
@@ -83,6 +84,8 @@ function ContactsApp() {
 			console.log(tableData)
 			setData(tableData)
 			setData2(tableData)
+			setLoading(false)
+			setTotalItems(response.data.data.list.totalItems)
 			setTimeout(() => {
 				setSnackBarMessage('')
 				setSnackBarOpen(false)
@@ -102,7 +105,15 @@ function ContactsApp() {
 
 	React.useEffect(() => {
 		getData()
-	}, []);
+	  }, [currentParams]);
+
+	const setPage = (currentPage)=>{
+		setCurrentParams({limit:currentParams.limit,page:currentPage})
+	}
+	
+	const setLimit = (pageLimit)=>{
+		setCurrentParams({limit:pageLimit,page:0})
+	}
 
 	  const valueReceived = (value) =>{
 		  console.log('i am called')
@@ -167,7 +178,7 @@ function ContactsApp() {
 				}}
 				header={<ContactsHeader pageLayout={pageLayout}  SearchVal={search} />}
 
-				content={<ContactsList isSearched={val} data={data2} onDialogClose={handleClose}  ValueForSearch={val} displaySnack={valueReceived}/>}
+				content={<ContactsList totalItems={totalItems} setPage={setPage} setLimit={setLimit} rowsPerPage={currentParams.limit} currentPage={currentParams.page} isLoading={isLoading} isSearched={val} data={data2} onDialogClose={handleClose}  ValueForSearch={val} displaySnack={valueReceived}/>}
 
 				leftSidebarContent={<ContactsSidebarContent />}
 				sidebarInner
