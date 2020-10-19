@@ -140,8 +140,9 @@ class FuseAuthorization extends Component {
 						window.location = "/pages/errors/error-404"
 					}
 				} else {
-
-					if (window.location.pathname !== '/pagenotfound') {
+					if(window.location.pathname === '/'){
+						window.location = "/login"
+					}else if (window.location.pathname !== '/pagenotfound' ) {
 						window.location = "/pagenotfound"
 					}
 				}
