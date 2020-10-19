@@ -17,20 +17,6 @@ function AgentContent(props) {
 	const [agentCustomerInterval, setAgentCustomerInterval] = React.useState(0);
 	const [numbers, setnumbers] = React.useState([]);
 	let intervalAgent = ""
-	useEffect(() => {
-		if(!intervalAgent){
-			intervalAgent = setInterval(() => {
-				getAgentsCustomers();
-			}, 2000)
-	
-		}
-		return () => {
-			if(intervalAgent){
-				clearInterval(intervalAgent)
-			}
-		}
-		
-	}, [])
 	
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
@@ -40,8 +26,31 @@ function AgentContent(props) {
 
 	
 	useEffect(() => {
+		
+		if(intervalAgent){
+			clearInterval(intervalAgent)
+		}
+		
 		if (selectedAgent === "All") {
-			getAllAgents()
+			getAllAgents()	
+
+			intervalAgent = setInterval(() => {
+				getAllAgents()	
+			}, 2000)
+			
+		}else{
+			getAgentsCustomers();
+
+			intervalAgent = setInterval(() => {
+				getAgentsCustomers();
+			}, 2000)
+		}
+	
+			
+		return () => {
+			if(intervalAgent){
+				clearInterval(intervalAgent)
+			}
 		}
 		// return () => {
 		// 	console.log("CLEARING IT",agentCustomerInterval)
