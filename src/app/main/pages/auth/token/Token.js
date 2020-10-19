@@ -38,16 +38,16 @@ function ResetPasswordPage2(props) {
 	function handleSubmit(ev) {
 		ev.preventDefault();
 		props.history.push({
-			pathname: '/pages/auth/reset-password',token:form.token
-			
+			pathname: '/pages/auth/reset-password', token: form.token
+
 		});
-	
+
 	}
 
 	return (
 		<div className={clsx(classes.root, 'flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}>
 			<div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
-			<FuseAnimate animation="transition.expandIn">
+				<FuseAnimate animation="transition.expandIn">
 					{/* <img className="w-128 mb-32" src="../../../../../images/itsAppLogo.png" alt="logo" /> */}
 					<div style={{ marginLeft: -200 }}>
 						<img src={require('../../../../../images/LOGO-1-01.gif')}
@@ -57,20 +57,20 @@ function ResetPasswordPage2(props) {
 				</FuseAnimate>
 
 				<FuseAnimate animation="transition.slideUpIn" delay={300}>
-                    <Typography variant="h3" color="inherit" className="font-light mt-20">
-                        Welcome to Intellexal Solutions!
+					<Typography variant="h3" color="inherit" className="font-light mt-20">
+						Welcome to Intellexal Solutions!
 					</Typography>
-                </FuseAnimate>
-                <FuseAnimate animation="transition.slideUpIn" delay={400}>
-                    <Typography variant="subtitle1" color="inherit" className="font-light mt-20 ">
-                    Using our experience from across industries and continents, we tailor solutions that fit your business needs.
+				</FuseAnimate>
+				<FuseAnimate animation="transition.slideUpIn" delay={400}>
+					<Typography variant="subtitle1" color="inherit" className="font-light mt-20 text-13 sm:text-20 md:text-20 lg:text-25 xl:text-30 ">
+						Using our experience from across industries and continents, we tailor solutions that fit your business needs.
 					</Typography>
-                </FuseAnimate>
-                <FuseAnimate animation="transition.slideUpIn" delay={500}>
-                    <Typography variant="subtitle1" color="inherit" className="font-light mt-20">
-                    As a WhatsApp Business Solution Provider, we enable enterprises to connect to WhatsApp directly – either through our API or using our web-based interface.
+				</FuseAnimate>
+				<FuseAnimate animation="transition.slideUpIn" delay={500}>
+					<Typography variant="subtitle1" color="inherit" className="font-light mt-20 text-13 sm:text-20 md:text-20 lg:text-25 xl:text-30">
+						As a WhatsApp Business Solution Provider, we enable enterprises to connect to WhatsApp directly – either through our API or using our web-based interface.
 					</Typography>
-                </FuseAnimate>
+				</FuseAnimate>
 
 				{/* <FuseAnimate delay={400}>
 					<Typography variant="subtitle1" color="inherit" className="max-w-512 mt-16">
@@ -87,7 +87,7 @@ function ResetPasswordPage2(props) {
 							RESET YOUR PASSWORD
 						</Typography>
 
-				
+
 
 
 						<form
@@ -97,7 +97,7 @@ function ResetPasswordPage2(props) {
 							onSubmit={handleSubmit}
 						>
 							<TextField
-                                className="mb-16 sm:mb-4"
+								className="mb-16 sm:mb-4"
 								label="Token"
 								autoFocus
 								type="token"
@@ -125,7 +125,7 @@ function ResetPasswordPage2(props) {
 						</form>
 
 						<div className="flex flex-col items-center justify-center pt-32 pb-24">
-							<Link className="font-medium" to="/login">
+							<Link className="font-medium" to="/login" style={{ fontSize: "14px" }}>
 								Go back to login
 							</Link>
 						</div>

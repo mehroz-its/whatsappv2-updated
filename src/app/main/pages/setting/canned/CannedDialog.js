@@ -12,7 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { makeStyles,ThemeProvider,createMuiTheme } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
@@ -20,6 +20,10 @@ import { getUserData } from '../../chat/store/actions';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AppBar from '@material-ui/core/AppBar';
 import { green, purple } from '@material-ui/core/colors';
+import PersonIcon from '@material-ui/icons/Person';
+import AttachmentIcon from '@material-ui/icons/Attachment';
+
+
 const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'absolute',
@@ -33,22 +37,22 @@ const useStyles = makeStyles((theme) => ({
 
 	},
 	margin: {
-		color:'white',
-		paddingLeft:'14px',
-		fontWeight:'300',
-		paddingRight:'14px',
-		paddingTop:'5px',
-		paddingBottom:'5px',
-		fontSize:'13px',
-	   
-	  },
+		color: 'white',
+		paddingLeft: '14px',
+		fontWeight: '300',
+		paddingRight: '14px',
+		paddingTop: '5px',
+		paddingBottom: '5px',
+		fontSize: '13px',
+
+	},
 
 }));
 const theme = createMuiTheme({
 	palette: {
-	  primary: green,
+		primary: green,
 	},
-	});
+});
 
 const CampaignDialog = (props) => {
 
@@ -71,11 +75,11 @@ const CampaignDialog = (props) => {
 	};
 
 	const handleSubmit = () => {
-		let fileName 
-		if(uploadedFilePath !=''){
+		let fileName
+		if (uploadedFilePath != '') {
 			fileName = uploadedFilePath.split('https://upload.its.com.pk/')
-		}else{
-			fileName=''
+		} else {
+			fileName = ''
 		}
 		let params = {
 			message_name: name,
@@ -175,16 +179,16 @@ const CampaignDialog = (props) => {
 			fullWidth
 			maxWidth="xs">
 			<AppBar position="static" elevation={1}>
-				
+
 				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
-        style={{paddingBottom:20,paddingTop:20}}>
-	      {props.type} 
+					style={{ paddingBottom: 20, paddingTop: 20 }}>
+					{props.type}
 				</div>
 			</AppBar>
-			<DialogContent classes={{ root: 'p-24' }} style={{marginTop:'2%'}} >
+			<DialogContent classes={{ root: 'p-24' }} style={{ marginTop: '2%' }} >
 				<div className="flex">
-					<div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
-						<Icon color="action">account_circle</Icon>
+					<div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
+						<PersonIcon style={{ color: "#8b8b8b" }} />
 					</div>
 					<TextField
 						className="mb-24"
@@ -201,7 +205,7 @@ const CampaignDialog = (props) => {
 				</div>
 				<div className="flex" style={{ marginBottom: 20 }}>
 					<div className="min-w-48 pt-20" >
-						<Icon color="action">account_circle</Icon>
+						<AttachmentIcon style={{ color: "#8b8b8b", marginTop: "15px" }} />
 					</div>
 					<FormControl className={classes.formControl}>
 						<InputLabel id="demo-simple-select-label" style={{ marginLeft: 10 }}>Type</InputLabel>
@@ -224,8 +228,8 @@ const CampaignDialog = (props) => {
 					</FormControl>
 				</div>
 				{canned_type === 'text' ? (<div className="flex">
-					<div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
-						<Icon color="action">account_circle</Icon>
+					<div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
+						<Icon color="action" >account_circle</Icon>
 					</div>
 					<TextField
 						className="mb-24"
@@ -243,8 +247,8 @@ const CampaignDialog = (props) => {
 				</div>) : canned_type !== 'text' ? (
 					<div container >
 						<div className="flex" >
-							<div className="min-w-48 pt-20" style={{marginTop:'10px'}}>
-								<Icon color="action">attach_file</Icon>
+							<div className="min-w-48 pt-20" style={{ marginTop: '10px' }}>
+								<Icon color="action" style={{ color: "#8b8b8b" }}>attach_file</Icon>
 							</div>
 							{isLoading === true ? <CircularProgress color="secondary" style={{ marginLeft: '40%' }} />
 								: <TextField size="small" className="mt-20 mb-20" id="outlined-basic-email" name={"url"} label="Url" variant="outlined" fullWidth disabled={true} onChange={onInputChange} value={uploadedFilePath} />
@@ -253,9 +257,9 @@ const CampaignDialog = (props) => {
 						<div item xs={12} >
 							<input accept={canned_type !== 'document' ? `${canned_type}/*` : "application/pdf, application/vnd.ms-excel"} style={{ paddingTop: '10px' }} id="contained-button-file" type="file" name="url" filename={uploadedFilePath} style={{ display: "none" }} onChange={onChangeHandler} />
 							<label htmlFor="contained-button-file">
-								<Button 
-								style={{marginLeft:'12%'}}
-								size="small" variant="contained" id="content-upload-button" variant="contained" color="primary" component="span"                            >
+								<Button
+									style={{ marginLeft: '12%' }}
+									size="small" variant="contained" id="content-upload-button" variant="contained" color="primary" component="span"                            >
 									Upload
  							</Button>
 							</label>
@@ -263,37 +267,37 @@ const CampaignDialog = (props) => {
 					</div>
 				) : null}
 				<FormControlLabel
-					control={	
-					<Checkbox
-						style={{marginLeft:'6%'}}
-						checked={enabled}
-						onChange={handleEnable}
-					/>}
+					control={
+						<Checkbox
+							style={{ marginLeft: '6%' }}
+							checked={enabled}
+							onChange={handleEnable}
+						/>}
 					label="Enabled"
 				/>
 			</DialogContent>
 			<DialogActions className="justify-between p-8">
-			<div className="px-16 my-10">	
-				<Button variant="contained" onClick={handleDialogClose} color="primary" size="small">
-					Cancel
+				<div className="px-16 my-10">
+					<Button variant="contained" onClick={handleDialogClose} color="primary" size="small">
+						Cancel
              </Button>
-			 </div>
-			 <ThemeProvider theme={theme}>
-				
-		{canned_type ==='text' ?
-		 <div className="mx-32 md:mx-24 my-10">	
-			<Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} disabled={!name||!text||!canned_type} color="primary">
-					Done
+				</div>
+				<ThemeProvider theme={theme}>
+
+					{canned_type === 'text' ?
+						<div className="mx-32 md:mx-24 my-10">
+							<Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} disabled={!name || !text || !canned_type} color="primary">
+								Done
          </Button>
-		 </div>
-   : 
-   <div className="mx-32 md:mx-24 my-10">
-	   	<Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} disabled={!name||!uploadedFilePath||!canned_type} color="primary">
-					Done
-					</Button> 
-					</div>
+						</div>
+						:
+						<div className="mx-32 md:mx-24 my-10">
+							<Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} disabled={!name || !uploadedFilePath || !canned_type} color="primary">
+								Done
+					</Button>
+						</div>
 					}
-		 </ThemeProvider>
+				</ThemeProvider>
 			</DialogActions>
 		</Dialog>
 

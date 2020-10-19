@@ -86,13 +86,13 @@ function Intelligence(props) {
 								aria-label="Reset"
 								// disabled={!isFormValid()}
 								type="submit"
-								onClick={()=>{props.history.push("/")}}
+								onClick={() => { props.history.push("/") }}
 							> SEND RESET LINK
 							</Button>
 						</form>
 
 						<div className="flex flex-col items-center justify-center pt-32 pb-24">
-							<Link className="font-medium" to="/pages/auth/login-2">
+							<Link className="font-medium" to="/pages/auth/login-2" style={{ fontSize: "14px" }}>
 								Go back to login
 							</Link>
 						</div>
