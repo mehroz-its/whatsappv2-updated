@@ -9,7 +9,7 @@ const ReportsAppConfig = {
 	routes: [
 		{
 			path: '/report/chat',
-			component: React.lazy(() => import('./Chat/ChatApp'))
+			component: React.lazy(() => import('./chat/ChatApp'))
 		},
 		{
 			path: '/report/agent-report',
