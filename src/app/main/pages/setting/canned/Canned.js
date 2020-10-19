@@ -44,7 +44,7 @@ function ContactsApp() {
 	}
 	const [isLoading,setIsLoading] =  React.useState(true)
 	const [totalItems, setTotalItems] = React.useState(0)
-	const [currentParams, setCurrentParams] = React.useState({limit:2,page:0})
+	const [currentParams, setCurrentParams] = React.useState({limit:10,page:0})
 	
 
 	const [dialogData, setDialogData] = React.useState(
@@ -115,7 +115,7 @@ function ContactsApp() {
 	}
 
 	React.useEffect(() => {
-		setCurrentParams({limit:2,page:0})
+		setCurrentParams({limit:10,page:0})
 	}, [cannedtype]);
 	const valueReceived = (value) => {
 		// alert(value)
