@@ -9,11 +9,11 @@ import Fab from '@material-ui/core/Fab';
 import Icon from '@material-ui/core/Icon';
 import * as Actions from './store/actions';
 import { useDispatch } from 'react-redux';
-import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
+import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
-import CannedDialog from './CannedDialog'
-const useStyles = makeStyles((theme) => ({
+import CannedDialog from './CannedDialog';
+const useStyles = makeStyles(theme => ({
 	addButton: {
 		position: 'fixed',
 		bottom: 50,
@@ -22,9 +22,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	formControl: {
 		margin: theme.spacing(1),
-		minWidth: 330,
-
-	},
+		minWidth: 330
+	}
 }));
 
 function ContactsApp() {
@@ -34,135 +33,130 @@ function ContactsApp() {
 	const dispatch = useDispatch();
 	const [data, setData] = React.useState([]);
 	const [data2, setData2] = React.useState(data);
-	const [snackbaropen, setSnackBarOpen] = React.useState(false)
-	const [snackbarmessage, setSnackBarMessage] = React.useState('')
-	const [ok, setOK] = React.useState('')
-	const [val, setVal] = React.useState('')
-	const [cannedtype, setCannedType] = React.useState('all')
+	const [snackbaropen, setSnackBarOpen] = React.useState(false);
+	const [snackbarmessage, setSnackBarMessage] = React.useState('');
+	const [ok, setOK] = React.useState('');
+	const [val, setVal] = React.useState('');
+	const [cannedtype, setCannedType] = React.useState('all');
 	const handleClickOpen = () => {
 		setOpen(true);
-	}
-	const [isLoading,setIsLoading] =  React.useState(true)
-	const [totalItems, setTotalItems] = React.useState(0)
-	const [currentParams, setCurrentParams] = React.useState({limit:10,page:0})
-	
+	};
+	const [isLoading, setIsLoading] = React.useState(true);
+	const [totalItems, setTotalItems] = React.useState(0);
+	const [currentParams, setCurrentParams] = React.useState({ limit: 10, page: 0 });
 
-	const [dialogData, setDialogData] = React.useState(
-		{
-			id: 0,
-			title: '',
-			description: '',
-			enabled: true,
-			customers: [],
-			attachment_url: ''
-		}
-	)
+	const [dialogData, setDialogData] = React.useState({
+		id: 0,
+		title: '',
+		description: '',
+		enabled: true,
+		customers: [],
+		attachment_url: ''
+	});
 
-	const getData = ((loadData) => {
-		setIsLoading(true)
-		setData([])
-		setData2([])
+	const getData = loadData => {
+		setIsLoading(true);
+		setData([]);
+		setData2([]);
 		loadData = () => {
-			return CoreHttpHandler.request('canned_messages', 'type_listing', {
-				...currentParams,
-				key: ':type',
-				value: cannedtype,
-				columns: "*",
-				sortby: "DESC",
-				orderby: "id",
-				where: "id != $1",
-				values: 0,
-			}, null, null, true);
+			return CoreHttpHandler.request(
+				'canned_messages',
+				'type_listing',
+				{
+					...currentParams,
+					key: ':type',
+					value: cannedtype,
+					columns: '*',
+					sortby: 'DESC',
+					orderby: 'id',
+					where: 'message_type = $1',
+					values: 0
+				},
+				null,
+				null,
+				true
+			);
 		};
-		loadData().then((response) => {
-			setIsLoading(false)
+		loadData()
+			.then(response => {
+				setIsLoading(false);
 
-			const tableData = response.data.data.list.data
-			console.log(tableData)
-			setData(tableData)
-			setData2(tableData)
-			setIsLoading(false)
-			setTotalItems(response.data.data.list.totalItems)
-			
-			setTimeout(() => {
-				setSnackBarMessage('')
-				setSnackBarOpen(false)
-			}, 3000);
+				const tableData = response.data.data.list.data;
+				console.log(tableData);
+				setData(tableData);
+				setData2(tableData);
+				setIsLoading(false);
+				setTotalItems(response.data.data.list.totalItems);
 
-		})
-			.catch((error) => {
 				setTimeout(() => {
-					setSnackBarMessage('')
-					setSnackBarOpen(false)
+					setSnackBarMessage('');
+					setSnackBarOpen(false);
 				}, 3000);
-
 			})
-
-
-	})
-
-	
-	React.useEffect(() => {
-		getData()
-	  }, [currentParams]);
-
-	const setPage = (currentPage)=>{
-		setCurrentParams({limit:currentParams.limit,page:currentPage})
-	}
-	
-	const setLimit = (pageLimit)=>{
-		setCurrentParams({limit:pageLimit,page:0})
-	}
+			.catch(error => {
+				setTimeout(() => {
+					setSnackBarMessage('');
+					setSnackBarOpen(false);
+				}, 3000);
+			});
+	};
 
 	React.useEffect(() => {
-		setCurrentParams({limit:10,page:0})
+		getData();
+	}, [currentParams]);
+
+	const setPage = currentPage => {
+		setCurrentParams({ limit: currentParams.limit, page: currentPage });
+	};
+
+	const setLimit = pageLimit => {
+		setCurrentParams({ limit: pageLimit, page: 0 });
+	};
+
+	React.useEffect(() => {
+		setCurrentParams({ limit: 10, page: 0 });
 	}, [cannedtype]);
-	const valueReceived = (value) => {
+	const valueReceived = value => {
 		// alert(value)
-		if (value == "update") {
-			setSnackBarMessage("Updated Successfully")
-			setOK("success")
-			setSnackBarOpen(true)
+		if (value == 'update') {
+			setSnackBarMessage('Updated Successfully');
+			setOK('success');
+			setSnackBarOpen(true);
+		} else if (value == 'create') {
+			setSnackBarMessage('Created Succecfully');
+			setOK('success');
+			setSnackBarOpen(true);
+		} else if (value == 'error') {
+			setSnackBarMessage('Error!Please Try Again Later');
+			setOK('error');
+			setSnackBarOpen(true);
+		} else if (value === 'delete') {
+			setSnackBarMessage('Deleted Successfully');
+			setOK('success');
+			setSnackBarOpen(true);
+		} else if (value !== ('update' || 'delete' || 'create')) {
+			setSnackBarMessage(value);
+			setOK('error');
+			setSnackBarOpen(true);
 		}
-		else if (value == "create") {
-			setSnackBarMessage("Created Succecfully")
-			setOK("success")
-			setSnackBarOpen(true)
-		}
-		else if (value == "error") {
-			setSnackBarMessage("Error!Please Try Again Later")
-			setOK("error")
-			setSnackBarOpen(true)
-		}
-		else if (value === "delete") {
-			setSnackBarMessage("Deleted Successfully")
-			setOK("success")
-			setSnackBarOpen(true)
-		}
-		else if (value !== ("update" || "delete" || "create" )) {
-			setSnackBarMessage(value)
-			setOK("error")
-			setSnackBarOpen(true)
-		}
-	
-	}
+	};
 	setTimeout(() => {
-		setSnackBarMessage('')
-		setSnackBarOpen(false)
+		setSnackBarMessage('');
+		setSnackBarOpen(false);
 	}, 4000);
 
 	function search(val) {
-		setVal(val)
-		setData2(data.filter(n => n.message_name.toLowerCase().includes(val.toLowerCase())))
+		setVal(val);
+		setData2(data.filter(n => n.message_name.toLowerCase().includes(val.toLowerCase())));
 	}
 	function closeDialog(val) {
 		setOpen(false);
-		getData()
-		valueReceived(val)
-	};
-	const handleCannedMessageType = (val) => {
-		setCannedType(val)
+		getData();
+		valueReceived(val);
 	}
+	const handleCannedMessageType = val => {
+		setCannedType(val);
+	};
 
 	return (
 		<>
@@ -184,11 +178,31 @@ function ContactsApp() {
 					wrapper: 'min-h-0'
 				}}
 				header={<CannedHeader pageLayout={pageLayout} SearchVal={search} />}
-				content={<CannedList isSearched={val} data={data2} onDialogClose={closeDialog} ValueForSearch={val} displaySnack={valueReceived} isLoading={isLoading}  totalItems={totalItems} setPage={setPage} setLimit={setLimit} rowsPerPage={currentParams.limit} currentPage={currentParams.page}/>}
-				leftSidebarContent={<CannedSideBar cannedType={handleCannedMessageType} setCannedType={setCannedType} cannedtype={cannedtype} />}
+				content={
+					<CannedList
+						isSearched={val}
+						data={data2}
+						onDialogClose={closeDialog}
+						ValueForSearch={val}
+						displaySnack={valueReceived}
+						isLoading={isLoading}
+						totalItems={totalItems}
+						setPage={setPage}
+						setLimit={setLimit}
+						rowsPerPage={currentParams.limit}
+						currentPage={currentParams.page}
+					/>
+				}
+				leftSidebarContent={
+					<CannedSideBar
+						cannedType={handleCannedMessageType}
+						setCannedType={setCannedType}
+						cannedtype={cannedtype}
+					/>
+				}
 				sidebarInner
 				ref={pageLayout}
-			// innerScroll
+				// innerScroll
 			/>
 			<FuseAnimate animation="transition.expandIn" delay={300}>
 				<Fab
@@ -197,12 +211,20 @@ function ContactsApp() {
 					aria-label="add"
 					className={classes.addButton}
 					onClick={handleClickOpen}
-				// onClick={ev => dispatch(Actions.openNewContactDialog())}
+					// onClick={ev => dispatch(Actions.openNewContactDialog())}
 				>
 					<Icon>person_add</Icon>
 				</Fab>
 			</FuseAnimate>
-			{open ? <CannedDialog isSearched={val} type="Add Canned Message" isOpen={open} closeDialog={closeDialog} data={dialogData} /> : null}
+			{open ? (
+				<CannedDialog
+					isSearched={val}
+					type="Add Canned Message"
+					isOpen={open}
+					closeDialog={closeDialog}
+					data={dialogData}
+				/>
+			) : null}
 		</>
 	);
 }
