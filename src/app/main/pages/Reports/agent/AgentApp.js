@@ -15,11 +15,12 @@ import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 import Button from '@material-ui/core/Button';
-import DateRangePickerVal from '../chat/DatePicker'
+import DateRangePickerVal from '../Chat/DatePicker'
 import { CSVLink, CSVDownload } from 'react-csv';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert'
 import moment from "moment";
+import ReportIcon from '@material-ui/icons/Report';
 
 const useStyles = makeStyles((theme) => ({
 	layoutRoot: {},
@@ -226,7 +227,8 @@ function AgentApp() {
 				<div className="flex flex-1 w-full items-center  px-20">
 					<div className="flex items-center">
 						<FuseAnimate animation="transition.expandIn" delay={300}>
-							<Icon className="text-26">face</Icon>
+							{/* <Icon className="text-26">face</Icon> */}
+							<ReportIcon style={{ color: "#8b8b8b" }} />
 						</FuseAnimate>
 						<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 							<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">

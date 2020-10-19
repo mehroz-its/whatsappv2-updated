@@ -19,6 +19,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import UserRolesListInDialog from './UserRolesListInDialog'
 import Grid from '@material-ui/core/Grid';
+import PersonIcon from '@material-ui/icons/Person';
+import EmailIcon from '@material-ui/icons/Email';
+import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import WorkIcon from '@material-ui/icons/Work';
 
 const GreenCheckbox = withStyles({
     root: {
@@ -67,16 +72,10 @@ const UserDialog = (props) => {
     const { isOpen, type } = props
     const [openDialog, setopenDialog] = React.useState(isOpen);
     const [userName, setUserName] = React.useState(data.username);
+    const [position, setPosition] = React.useState(data.position);
     const [email, setEmail] = React.useState(data.email);
     const [number, setNumber] = React.useState(data.number);
     const [password, setPassword] = React.useState('');
-    const [city, setCity] = React.useState('');
-    const [country, setCountry] = React.useState('');
-    const [selectedState, setSelectedState] = React.useState('');
-    const [age, setAge] = React.useState('');
-    const [countriesData, setCountriesData] = React.useState([]);
-    const [citiesData, setCitiesData] = React.useState([]);
-    const [statesData, setStatesData] = React.useState([]);
     const [roles, setRoles] = React.useState([])
     const [currentRoles, setCurrentRoles] = React.useState(data.roles);
     const [enabled, setEnabled] = React.useState(data.enabled);
@@ -95,30 +94,11 @@ const UserDialog = (props) => {
         setState({ ...state, [event.target.name]: event.target.checked });
     };
     const result = Object.values(state)
-    const loadRoles = () => {
-        return CoreHttpHandler.request('roles', 'listing', {
-            columns: "id, name",
-            sortby: "ASC",
-            orderby: "id",
-            where: "displayed = $1",
-            values: true,
-            page: 0,
-            limit: 0
-        }, null, null, true);
-    };
+    
     const handleEnable = (event) => {
         setEnabled(event.target.checked);
     };
-    React.useEffect(() => {
-        fetch(`https://glist.its.com.pk/v1/fetch/countries`)
-            .then(response => response.json())
-            .then(data => setCountriesData(data.data.countries));
-
-        loadRoles().then(response => {
-            const roles = response.data.data.list.data;
-            setRoles(roles)
-        });
-    }, [])
+    
     const handleSubmit = () => {
         if (type !== 'Update') {
             let params = {
@@ -127,10 +107,16 @@ const UserDialog = (props) => {
                 email: email,
                 number: number,
                 password: password,
-                enabled: enabled,
+                enabled: true,
                 displayed: true,
-                roles: currentRoles
+                position: position,  
+                role: 64,            
+                max_token_count: 1,  
+                default_receiver: false, 
+                clientId: JSON.parse(localStorage.getItem("user_data")).id
             };
+            console.log("Paramss ", params);
+            console.log("clientId ", localStorage.getItem("user_data"));
             CoreHttpHandler.request('users', 'create_user', params, (response) => {
                 props.closeDialog('create')
                 setopenDialog(false);
@@ -139,15 +125,22 @@ const UserDialog = (props) => {
                 setopenDialog(false);
             });
         } else {
+            alert("Update")
+
             let params = {
                 id: data.id,
                 username: userName,
                 email: email,
                 number: number,
                 password: password,
-                enabled: enabled,
+                enabled: true,      
                 displayed: true,
-                roles: currentRoles
+                roles: currentRoles,
+                position: position,  
+                role: 64,            
+                max_token_count: 1,  
+                default_receiver: false,
+                clientId: JSON.parse(localStorage.getItem("user_data")).id
             };
             let update_params = {
                 key: 'id',
@@ -180,31 +173,6 @@ const UserDialog = (props) => {
         }
     }
 
-    const handleCityChange = (event) => {
-        setCity(event.target.value);
-    }
-
-    const handleStatesChange = (event) => {
-        setSelectedState(event.target.value);
-        console.log(event.target.value, 'country')
-        let state = event.target.value
-        fetch(`https://glist.its.com.pk/v1/fetch/cities/${state.id}`)
-            .then(response => response.json())
-            .then(data => setCitiesData(data.data.cities));
-
-    };
-
-    const handleCountryChange = (event) => {
-        setCountry(event.target.value);
-        console.log(event.target.value, 'country')
-        let country = event.target.value
-
-        fetch(`https://glist.its.com.pk/v1/fetch/states/${country.id}`)
-            .then(response => response.json())
-            .then(data => setStatesData(data.data.states));
-
-    };
-
 
     return (
         <Dialog open={openDialog} onClose={handleClose} aria-labelledby="form-dialog-title" classes={{
@@ -224,7 +192,7 @@ const UserDialog = (props) => {
                     <div style={{ flex: 1 }}>
                         <div className="flex">
                             <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-                                <Icon color="action">account_circle</Icon>
+                                <PersonIcon style={{ color: "#8b8b8b" }} />
                             </div>
                             <TextField
                                 className="mb-24"
@@ -242,7 +210,25 @@ const UserDialog = (props) => {
                         </div>
                         <div className="flex">
                             <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-                                <Icon color="action">account_circle</Icon>
+                                <WorkIcon style={{ color: "#8b8b8b" }} />
+                            </div>
+                            <TextField
+                                className="mb-24"
+                                label="Position"
+                                autoFocus
+                                id="position"
+                                name="position"
+                                value={position}
+                                onChange={e => setPosition(e.target.value)}
+                                variant="outlined"
+                                required
+                                fullWidth
+                                size="small"
+                            />
+                        </div>
+                        <div className="flex">
+                            <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
+                                <EmailIcon style={{ color: "#8b8b8b" }} />
                             </div>
                             <TextField
                                 className="mb-24"
@@ -259,7 +245,7 @@ const UserDialog = (props) => {
                         </div>
                         <div className="flex">
                             <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-                                <Icon color="action">account_circle</Icon>
+                                <PhoneAndroidIcon style={{ color: "#8b8b8b" }} />
                             </div>
                             <TextField
                                 className="mb-24"
@@ -277,7 +263,7 @@ const UserDialog = (props) => {
                         </div>
                         <div className="flex">
                             <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-                                <Icon color="action">account_circle</Icon>
+                                <VisibilityOffIcon style={{ color: "#8b8b8b" }} />
                             </div>
                             <TextField
                                 className="mb-24"
@@ -292,91 +278,6 @@ const UserDialog = (props) => {
                                 size="small"
                             />
                         </div>
-                        <Grid item md={10} sm={12} xs={12} >
-                            <FormControl variant="filled" size='small' fullWidth style={{ marginTop: '0px' }}>
-                                <InputLabel id="outlined-age-native-simple	">Country</InputLabel>
-                                <Select
-                                    required
-                                    labelId="demo-simple-select-outlined-label"
-                                    id="demo-simple-select-outlined"
-                                    value={country}
-                                    onChange={handleCountryChange}
-                                    fullWidth
-                                >
-                                    <MenuItem value="">
-                                        <em>Select Country</em>
-                                    </MenuItem>
-                                    {
-                                        countriesData.map(val => {
-                                            return (
-                                                <MenuItem value={val}>{val.name}</MenuItem>
-                                            )
-                                        })
-                                    }
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item md={10} sm={12} xs={12} >
-                            <FormControl variant="filled" fullWidth style={{ marginTop: '0px' }}>
-                                <InputLabel id="demo-simple-select-outlined-label">State</InputLabel>
-                                <Select
-                                    required
-                                    labelId="demo-simple-select-outlined-label"
-                                    id="demo-simple-select-outlined"
-                                    value={selectedState}
-                                    onChange={handleStatesChange}
-                                    fullWidth
-                                >
-                                    <MenuItem value="">
-                                        <em>Select State</em>
-                                    </MenuItem>
-                                    {
-                                        statesData.map(val => {
-                                            return (
-                                                <MenuItem value={val}>{val.name}</MenuItem>
-                                            )
-                                        })
-                                    }
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item md={10} sm={12} xs={12} >
-                            <FormControl variant="filled" size='small' fullWidth style={{ marginTop: '0px' }}>
-                                <InputLabel id="demo-simple-select-outlined-label">City</InputLabel>
-                                <Select
-                                    required
-                                    labelId="demo-simple-select-outlined-label"
-                                    id="demo-simple-select-outlined"
-                                    value={city}
-                                    onChange={handleCityChange}
-                                    fullWidth
-                                >
-                                    <MenuItem value="">
-                                        <em>Select City</em>
-                                    </MenuItem>
-                                    {
-                                        citiesData.map(val => {
-                                            return (
-                                                <MenuItem value={val}>{val.name}</MenuItem>
-                                            )
-                                        })
-                                    }
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <FormControl className={classes.formControl}>
-                            <InputLabel id="demo-simple-select-label">Age</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={age}
-                                onChange={handleChange}
-                            >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
-                            </Select>
-                        </FormControl>
                         <FormControlLabel
                             control={<Checkbox
                                 checked={enabled}
@@ -384,9 +285,6 @@ const UserDialog = (props) => {
                             />}
                             label="Enabled"
                         />
-                    </div>
-                    <div style={{ marginLeft: 10, flexDirection: 'column', flex: 1, display: 'flex' }}>
-                        <UserRolesListInDialog edit roles={roles} onInputChange={onInputChange} checkedRoles={currentRoles} classes={classes} />
                     </div>
                 </div>
 
@@ -396,17 +294,12 @@ const UserDialog = (props) => {
                     Cancel
                 </Button>
                 <ThemeProvider theme={theme}>
-                    <Button size="small" className={classes.margin} variant="contained" onClick={handleSubmit} disabled={!userName || !email || !number || !roles || !currentRoles} color="primary">
+                    <Button size="small" className={classes.margin} variant="contained" onClick={handleSubmit} disabled={!userName || !position || !email || !number || !roles || !currentRoles} color="primary">
                         Done
                 </Button>
                 </ThemeProvider>
             </DialogActions>
         </Dialog>
-
-
-
-
-
 
     )
 }

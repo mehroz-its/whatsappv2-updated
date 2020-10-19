@@ -114,12 +114,12 @@ function ResetPasswordPage2(props) {
 					</Typography>
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideUpIn" delay={400}>
-					<Typography variant="subtitle1" color="inherit" className="font-light mt-20 ">
+					<Typography variant="subtitle1" color="inherit" className="font-light mt-20 text-13 sm:text-20 md:text-20 lg:text-25 xl:text-30 ">
 						Using our experience from across industries and continents, we tailor solutions that fit your business needs.
 					</Typography>
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideUpIn" delay={500}>
-					<Typography variant="subtitle1" color="inherit" className="font-light mt-20">
+					<Typography variant="subtitle1" color="inherit" className="font-light mt-20 text-13 sm:text-20 md:text-20 lg:text-25 xl:text-30">
 						As a WhatsApp Business Solution Provider, we enable enterprises to connect to WhatsApp directly – either through our API or using our web-based interface.
 					</Typography>
 				</FuseAnimate>
@@ -191,7 +191,7 @@ function ResetPasswordPage2(props) {
 						</form>
 
 						<div className="flex flex-col items-center justify-center pt-32 pb-24">
-							<Link className="font-medium" to="/login">
+							<Link className="font-medium" to="/login" style={{ fontSize: "14px" }}>
 								Go back to login
 							</Link>
 						</div>

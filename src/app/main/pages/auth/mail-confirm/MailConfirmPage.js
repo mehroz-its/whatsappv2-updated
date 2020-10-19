@@ -44,7 +44,7 @@ function MailConfirmPage() {
 							</Typography>
 
 							<div className="flex flex-col items-center justify-center pt-32 pb-24">
-								<Link className="font-medium" to="/pages/auth/login">
+								<Link className="font-medium" to="/pages/auth/login" style={{ fontSize: "14px" }}>
 									Go back to login
 								</Link>
 							</div>

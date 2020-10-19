@@ -34,6 +34,7 @@ function Users(props) {
 		enabled: true,
 		id: '',
 		username: '',
+		position: '',
 		email: '',
 		number: '',
 		roles: []
@@ -118,7 +119,7 @@ function Users(props) {
 			setOK("error")
 			setSnackBarOpen(true)
 		}
-		else if (snackmsg !==( "update" || "delete"||"create"|| "error")) {
+		else if (snackmsg !== ("update" || "delete" || "create" || "error")) {
 			setSnackBarMessage(snackmsg)
 			setOK("error")
 			setSnackBarOpen(true)

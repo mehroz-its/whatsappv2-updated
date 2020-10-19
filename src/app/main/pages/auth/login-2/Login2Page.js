@@ -12,48 +12,48 @@ import { Link } from 'react-router-dom';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
-import {HOME_URL} from "./../../../../common/parameters.js";
-import {useSelector, useDispatch} from "react-redux";
+import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
+import { HOME_URL } from "./../../../../common/parameters.js";
+import { useSelector, useDispatch } from "react-redux";
 
 
 const useStyles = makeStyles(theme => ({
 
     underline: {
         "&&&:before": {
-          borderBottom: "30px"
+            borderBottom: "30px"
         },
         "&&:after": {
-          borderBottom: "none"
+            borderBottom: "none"
         },
-        "&:focus":{
-        border:"none"
+        "&:focus": {
+            border: "none"
         }
-      },
-      root: {
+    },
+    root: {
         '& .MuiTextField-root': {
-          margin: theme.spacing(1),
-          width: '100%',
+            margin: theme.spacing(1),
+            width: '100%',
         },
-        
-      },
-    
+
+    },
+
 }));
 
 const HeaderStyle = createMuiTheme({
-	overrides: {
+    overrides: {
         MuiTextField: {
-		root: {
-        border:'none',
-		  "&:focus": {
-            paddingRight: 500,
-            borderColor:'pink',
-            paddingTop:600
-		  }
-		}
-	  }
-	}
-  });
+            root: {
+                border: 'none',
+                "&:focus": {
+                    paddingRight: 500,
+                    borderColor: 'pink',
+                    paddingTop: 600
+                }
+            }
+        }
+    }
+});
 
 
 
@@ -161,7 +161,7 @@ const Login2Page = (props) => {
 
     }, []);
 
-  
+
 
     let login = () => {
         setIsLoading(true);
@@ -187,7 +187,7 @@ const Login2Page = (props) => {
         }
     };
     const loginSuccess = (data) => {
-        console.log("loginSuccess  data",data);
+        console.log("loginSuccess  data", data);
         setErrorMessage('')
         setSnackBarOpen(true)
         setSnackBarMessage('Successfully Logged In')
@@ -212,7 +212,7 @@ const Login2Page = (props) => {
 
         localStorage.setItem('online', false);
 
-        
+
         window.location.reload(false);
     };
 
@@ -240,31 +240,32 @@ const Login2Page = (props) => {
     return (
         <div
             className={clsx('flex flex-col flex-auto flex-shrink-0 p-24 md:flex-row md:p-0')}
-            style={{backgroundImage: 'url(' + require('../../../../../images/background-04.jpg') + ')',
-        backgroundSize:'cover'
-    }}
-            >
+            style={{
+                backgroundImage: 'url(' + require('../../../../../images/background-04.jpg') + ')',
+                backgroundSize: 'cover'
+            }}
+        >
             <div className="flex flex-col flex-grow-0 items-center text-white p-16 text-center md:p-128 sm:p-16 md:items-start md:flex-shrink-0 md:flex-1 md:text-left">
                 <FuseAnimate animation="transition.expandIn">
-                        <div style={{marginLeft:-200}}>
+                    <div style={{ marginLeft: -200 }}>
                         <img src={require('../../../../../images/LOGO-1-01.gif')}
-                        style={{width:400,marginLeft:'-6%'}}
-                    />
+                            style={{ width: 400, marginLeft: '-6%' }}
+                        />
                     </div>
                 </FuseAnimate>
                 <FuseAnimate animation="transition.slideUpIn" delay={300}>
-                <Typography variant="h3" color="inherit" className="font-light mt-20">
+                    <Typography variant="h3" color="inherit" className="font-light mt-20">
                         Welcome to Intellexal Solutions!
 					</Typography>
                 </FuseAnimate>
                 <FuseAnimate animation="transition.slideUpIn" delay={400}>
                     <Typography variant="subtitle1" color="inherit" className="font-light mt-20 text-13 sm:text-20 md:text-20 lg:text-25 xl:text-30">
-                    Using our experience from across industries and continents, we tailor solutions that fit your business needs.
+                        Using our experience from across industries and continents, we tailor solutions that fit your business needs.
 					</Typography>
                 </FuseAnimate>
                 <FuseAnimate animation="transition.slideUpIn" delay={500}>
                     <Typography variant="subtitle1" color="inherit" className="font-light mt-20 text-13 sm:text-20 md:text-20 lg:text-25 xl:text-30">
-                    As a WhatsApp Business Solution Provider, we enable enterprises to connect to WhatsApp directly – either through our API or using our web-based interface.
+                        As a WhatsApp Business Solution Provider, we enable enterprises to connect to WhatsApp directly – either through our API or using our web-based interface.
 					</Typography>
                 </FuseAnimate>
             </div>
@@ -283,7 +284,7 @@ const Login2Page = (props) => {
             <FuseAnimate animation={{ translateX: [0, '100%'] }}>
                 <Card className="w-full max-w-400 mx-auto m-16 md:m-0" square>
                     <CardContent className="flex flex-col items-center justify-center p-32 md:p-48 md:pt-128 sm:p-0">
-                        <Typography  style={{marginTop:'2%'}} variant="h6" className="mt-32 md:w-full mb-16 sm:mb-0 text-center text-13 sm:text-20 md:text-20 lg:text-25 xl:text-30 sm:p-0">
+                        <Typography style={{ marginTop: '2%' }} variant="h6" className="mt-32 md:w-full mb-16 sm:mb-0 text-center text-13 sm:text-20 md:text-20 lg:text-25 xl:text-30 sm:p-0">
                             LOGIN TO YOUR ACCOUNT
 						</Typography>
 
@@ -293,7 +294,7 @@ const Login2Page = (props) => {
                             className={classes.root}
 
                         >
-                         
+
                             <TextField
                                 className="mb-16 sm:mb-4"
                                 label="Username"
@@ -323,10 +324,10 @@ const Login2Page = (props) => {
                                 fullWidth
                                 onKeyDown={_handleKeyDown}
                             />
-                       
+
 
                             <div className="flex items-center justify-between mt-16 mb-32">
-                                <Link className="font-medium" to="/pages/auth/forgot-password">
+                                <Link className="font-large" to="/pages/auth/forgot-password" style={{ fontSize: "14px" }}>
                                     Forgot Password?
 								</Link>
                             </div>

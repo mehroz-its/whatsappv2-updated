@@ -15,11 +15,13 @@ import Select from '@material-ui/core/Select';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { green } from '@material-ui/core/colors';
-import { makeStyles,ThemeProvider,createMuiTheme,withStyles } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme, withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import RuleListInDialog from '../RolesListInDialog'
+import TitleIcon from '@material-ui/icons/Title';
+import DescriptionIcon from '@material-ui/icons/Description';
 
 const GreenCheckbox = withStyles({
   root: {
@@ -44,25 +46,25 @@ const useStyles = makeStyles((theme) => ({
 
   },
   margin: {
-	  
-		color:'white',
-		paddingLeft:'14px',
-		fontWeight:'300',
-		paddingRight:'14px',
-		paddingTop:'5px',
-		paddingBottom:'5px',
-		fontSize:'13px',
-	   
-	  },
+
+    color: 'white',
+    paddingLeft: '14px',
+    fontWeight: '300',
+    paddingRight: '14px',
+    paddingTop: '5px',
+    paddingBottom: '5px',
+    fontSize: '13px',
+
+  },
 }))
 
 const theme = createMuiTheme({
-	palette: {
-	  primary: green,
-	},
-	});
+  palette: {
+    primary: green,
+  },
+});
 
-  const PermissionDialog = (props) => {
+const PermissionDialog = (props) => {
   const { data } = props
   const { isOpen, type } = props
   const [openDialog, setopenDialog] = React.useState(isOpen);
@@ -93,7 +95,7 @@ const theme = createMuiTheme({
 
 
   };
- 
+
   const handleToggleChange = () => {
     setIsToggled(!isToggled)
   };
@@ -186,7 +188,7 @@ const theme = createMuiTheme({
       setCurrenconsumertRules(rules);
     }
   }
-  const disabled = type === "Update"?true:false
+  const disabled = type === "Update" ? true : false
 
   return (
     <Dialog open={openDialog} onClose={handleClose} aria-labelledby="form-dialog-title" classes={{
@@ -195,19 +197,20 @@ const theme = createMuiTheme({
 
       fullWidth
       maxWidth="sm">
-        <AppBar position="static" elevation={1}>
-				
-				<div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
-        style={{paddingBottom:20,paddingTop:20}}>
-	      {type} Permissions
+      <AppBar position="static" elevation={1}>
+
+        <div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
+          style={{ paddingBottom: 20, paddingTop: 20 }}>
+          {type} Permissions
 				</div>
-			</AppBar>
+      </AppBar>
       <DialogContent classes={{ root: 'p-24' }}>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <div>
             <div className="flex">
-              <div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
-                <Icon color="action">account_circle</Icon>
+              <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
+                {/* <Icon color="action">account_circle</Icon> */}
+                <TitleIcon style={{ color: "#8b8b8b" }} />
               </div>
 
               <TextField
@@ -221,14 +224,15 @@ const theme = createMuiTheme({
                 variant="outlined"
                 required
                 fullWidth
-                disabled={type === "Update"?true:false}
-                size="small" 
+                disabled={type === "Update" ? true : false}
+                size="small"
               />
             </div>
 
             <div className="flex">
-              <div className="min-w-48 pt-20" style={{marginTop:'-12px'}}>
-                <Icon color="action">account_circle</Icon>
+              <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
+                {/* <Icon color="action">account_circle</Icon> */}
+                <DescriptionIcon style={{ color: "#8b8b8b" }} />
               </div>
 
               <TextField
@@ -242,8 +246,8 @@ const theme = createMuiTheme({
                 variant="outlined"
                 required
                 fullWidth
-                disabled={type === "Update"?true:false}
-                size="small" 
+                disabled={type === "Update" ? true : false}
+                size="small"
 
               />
             </div>
@@ -290,14 +294,14 @@ const theme = createMuiTheme({
         </div>
       </DialogContent>
       <DialogActions>
-        <Button size="small" variant="contained" onClick={handleClose}  color="primary">
+        <Button size="small" variant="contained" onClick={handleClose} color="primary">
           Cancel
              </Button>
-             <ThemeProvider theme={theme}>
-        <Button size="small" className={classes.margin} variant="contained" onClick={handleSubmit} disabled={!title||!description||!consumer} color="primary">
-          Done
+        <ThemeProvider theme={theme}>
+          <Button size="small" className={classes.margin} variant="contained" onClick={handleSubmit} disabled={!title || !description || !consumer} color="primary">
+            Done
          </Button>
-         </ThemeProvider>
+        </ThemeProvider>
       </DialogActions>
     </Dialog>
   )

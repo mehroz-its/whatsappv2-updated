@@ -11,7 +11,7 @@ import React, { useState } from 'react';
 
 import { withRouter } from 'react-router-dom';
 import UserTableHead from './UserTableHead';
-import {createMuiTheme,MuiThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import ContactsTablePaginationActions from '../../setting/canned/ContactsTablePaginationActions';
 import UserDialog from './UserDialog'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
@@ -20,16 +20,16 @@ import DeleteDialog from '../DeletDialog'
 const PaginationStyle = createMuiTheme({
 	overrides: {
 		MuiTypography: {
-		body2: {
-			fontSize:'12px',
-			marginTop:'1px'
+			body2: {
+				fontSize: '12px',
+				marginTop: '1px'
+			}
 		}
-	  }
 	}
-  });
+});
 
 function UserTable(props) {
-	function closeDialog(val){
+	function closeDialog(val) {
 		setOpen(false)
 		setDeleteDialog(false)
 		props.onClose(val)
@@ -44,14 +44,15 @@ function UserTable(props) {
 		direction: 'asc',
 		id: null
 	});
-	const[dialogData,setDialogData]=useState({
-		enabled:'',
-		id:'',
-		username:'',
-		email:'',
-		number:'',
-		roles:[]
-		
+	const [dialogData, setDialogData] = useState({
+		enabled: '',
+		id: '',
+		username: '',
+		position: "",
+		email: '',
+		number: '',
+		roles: []
+
 	})
 	function handleRequestSort(event, property) {
 		const id = property;
@@ -65,14 +66,15 @@ function UserTable(props) {
 		});
 	}
 	function handleClick(n) {
-			setOpen(true)
-			setDialogData({
-				enabled:n.enabled,
-				id:n.id,
-				username:n.username,
-				email:n.email,
-				number:n.number,
-				roles:n.roles
+		setOpen(true)
+		setDialogData({
+			enabled: n.enabled,
+			id: n.id,
+			username: n.username,
+			position: n.position,
+			email: n.email,
+			number: n.number,
+			roles: n.roles
 		})
 	}
 	let data2 = props.dataa
@@ -163,19 +165,22 @@ function UserTable(props) {
 										selected={isSelected}
 										onClick={event => handleClick(n)}
 									>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 											{n.id}
 										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 											{n.username}
 										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
+											{n.position}
+										</TableCell>
+										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 											{n.email}
 										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 											{n.number}
 										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 											{n.enabled ? (
 												<Icon className="text-green text-16">check_circle</Icon>
 											) : (
@@ -192,27 +197,27 @@ function UserTable(props) {
 				</Table>
 			</FuseScrollbars>
 			<MuiThemeProvider theme={PaginationStyle}>
-			<TablePagination
-						style={{fontSize:'12px'}}
-						classes={{
-							root: 'overflow-hidden',
-							spacer: 'w-0 max-w-0',
-							actions:'text-64',
-							select:'text-12 mt-4',
-							 selectIcon:'mt-4',
-						}}
-				className="overflow-hidden"
-				component="div"
-				count={data2.length}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				onChangePage={handleChangePage}
-				onChangeRowsPerPage={handleChangeRowsPerPage}
-				ActionsComponent={ContactsTablePaginationActions}
-			/>
+				<TablePagination
+					style={{ fontSize: '12px' }}
+					classes={{
+						root: 'overflow-hidden',
+						spacer: 'w-0 max-w-0',
+						actions: 'text-64',
+						select: 'text-12 mt-4',
+						selectIcon: 'mt-4',
+					}}
+					className="overflow-hidden"
+					component="div"
+					count={data2.length}
+					rowsPerPage={rowsPerPage}
+					page={page}
+					onChangePage={handleChangePage}
+					onChangeRowsPerPage={handleChangeRowsPerPage}
+					ActionsComponent={ContactsTablePaginationActions}
+				/>
 			</MuiThemeProvider>
-			{open ? <UserDialog  isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData}/>:null}
-			{deleteDialog && <DeleteDialog path='users' method='delete' isOpen={deleteDialog} type="Delete" closeDialog={closeDialog}  data={deleteDialogData} />}
+			{open ? <UserDialog isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData} /> : null}
+			{deleteDialog && <DeleteDialog path='users' method='delete' isOpen={deleteDialog} type="Delete" closeDialog={closeDialog} data={deleteDialogData} />}
 
 		</div>
 	);

@@ -18,6 +18,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
 import PermissionsListInDialog from '../PermissionsListInDialog'
+import DescriptionIcon from '@material-ui/icons/Description';
+import PersonIcon from '@material-ui/icons/Person';
 
 const GreenCheckbox = withStyles({
     root: {
@@ -187,7 +189,8 @@ const RolesDialog = (props) => {
                     <div style={{ flex: 1 }}>
                         <div className="flex">
                             <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-                                <Icon color="action">account_circle</Icon>
+                                {/* <Icon color="action">account_circle</Icon> */}
+                                <PersonIcon style={{ color: "#8b8b8b" }} />
                             </div>
                             <TextField
                                 className="mb-24"
@@ -206,7 +209,8 @@ const RolesDialog = (props) => {
                         </div>
                         <div className="flex">
                             <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-                                <Icon color="action">account_circle</Icon>
+                                {/* <Icon color="action">account_circle</Icon> */}
+                                <DescriptionIcon style={{ color: "#8b8b8b" }} />
                             </div>
                             <TextField
                                 className="mb-24"
