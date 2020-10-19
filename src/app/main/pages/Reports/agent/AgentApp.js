@@ -55,13 +55,19 @@ function AgentApp() {
 	const [name, setName] = React.useState('')
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 	// const [HitValue,setHitValue] = React.useState(false)
+
+
+	
+	const [totalItems, setTotalItems] = React.useState(0)
+	const [currentParams, setCurrentParams] = React.useState({limit:10,page:0})
+
 	const getData = ((loadData) => {
+		setisLoading(true)
 
 		loadData = () => {
 			return CoreHttpHandler.request('reports', 'agentReport', {
+				...currentParams,
 				role_id: 64,
-				limit: 10,
-				page: 0,
 				start_date: Start,
 				end_date: End,
 
@@ -69,6 +75,7 @@ function AgentApp() {
 		};
 		loadData().then((response) => {
 			let tableData = response.data.data.list.data
+			setTotalItems(response.data.data.list.totalItems)
 			setTableData(tableData)
 			setisLoading(false)
 		});
@@ -154,6 +161,19 @@ function AgentApp() {
 		}
 
 	}
+
+	React.useEffect(() => {
+		getData()
+	  }, [currentParams]);
+
+	const setPage = (currentPage)=>{
+		setCurrentParams({limit:currentParams.limit,page:currentPage})
+	}
+	
+	const setLimit = (pageLimit)=>{
+		setCurrentParams({limit:pageLimit,page:0})
+	}
+
 	React.useEffect(() => {
 		// CoreHttpHandler.request('reports', 'agentChart', {
 		// 	role_id: 64
@@ -286,9 +306,19 @@ function AgentApp() {
 							{snackbarmessage}
 						</Alert>
 					</Snackbar>
+					{
+						isLoading?
 
-					{/* </FuseAnimateGroup> */}
-					<FusePageSimple
+					
+					
+			<div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+			
+
+						:
+						
+<FusePageSimple
 						classes={{
 							content: 'flex',
 							header: 'min-h-72 h-72 sm:h-100 sm:min-h-100',
@@ -299,8 +329,21 @@ function AgentApp() {
 							wrapper: 'min-h-0'
 						}}
 						header={<AgentHeader SearchVal={searchContact} />}
-						content={<AgentTable data={tableData} />}
+						content={<AgentTable 
+						
+						totalItems={totalItems}
+						setPage={setPage}
+						setLimit={setLimit}
+						rowsPerPage={currentParams.limit}
+						currentPage={currentParams.page}
+						
+						
+						data={tableData} />}
 					/>
+
+						
+					}
+					
 					<div style={{ height: '128px' }}></div>
 				</div>
 			}

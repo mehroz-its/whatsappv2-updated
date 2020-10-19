@@ -30,13 +30,12 @@ const PaginationStyle = createMuiTheme({
 
 function AgentTable(props) {
 	const [selected, setSelected] = useState([]);
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
 		direction: 'asc',
 		id: null
 	});
 
+	const {rowsPerPage,currentPage,setLimit, totalItems, setPage} = props;
 
     let data=props.data
 	function handleRequestSort(event, property) {
@@ -53,6 +52,11 @@ function AgentTable(props) {
 		});
 	}
 
+	const handleChangeRowsPerPage = event => {
+		setLimit(Number(event.target.value));		
+		// setPageSize(Number(event.target.value));
+
+	};
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
 			setSelected(data.map(n => n.id));
@@ -97,9 +101,6 @@ function AgentTable(props) {
 		setPage(value);
 	}
 
-	function handleChangeRowsPerPage(event) {
-		setRowsPerPage(event.target.value);
-	}
 	if (data.length === 0) {
 		if (props.val !== '') {
 			return (
@@ -151,7 +152,6 @@ function AgentTable(props) {
 							],
 							[order.direction]
 						)
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map(n => {
                                 const isSelected = selected.indexOf(n.id) !== -1;
                                 
@@ -259,9 +259,11 @@ function AgentTable(props) {
 					// toolbar:'text-64',
 					// selectRoot:'text-64'
 				}}
-				count={data.length}
+
+				rowsPerPageOptions={[10,25,50, { label: 'All', value: totalItems }]}
+				count={totalItems}
 				rowsPerPage={rowsPerPage}
-				page={page}
+				page={currentPage}
 				onChangePage={handleChangePage}
 				onChangeRowsPerPage={handleChangeRowsPerPage}
 				ActionsComponent={ContactsTablePaginationActions}

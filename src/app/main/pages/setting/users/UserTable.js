@@ -36,10 +36,12 @@ function UserTable(props) {
 	}
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
-	const [page, setPage] = useState(0);
+
+	const {rowsPerPage, currentPage, setLimit, totalItems, setPage, isLoading} = props;
+
 	const [deleteDialogData, setDeleteDialogData] = React.useState({});
 	const [deleteDialog, setDeleteDialog] = React.useState(false);
-	const [rowsPerPage, setRowsPerPage] = useState(10);
+
 	const [order, setOrder] = useState({
 		direction: 'asc',
 		id: null
@@ -76,32 +78,16 @@ function UserTable(props) {
 		})
 	}
 	let data2 = props.dataa
-	if (data2.length === 0) {
-		if (props.ValueForSearch !== '') {
-			return (
-				<div className="flex flex-1 items-center justify-center h-full">
-					<Typography color="textSecondary" variant="h5">
-						No Data Found
-					</Typography>
-				</div>
-			)
-		} else {
-			return (
-				<div className="flex flex-1 items-center justify-center h-full">
-					<FuseLoading />
-				</div>
-			);
-		}
-	}
 
 
-	function handleChangePage(event, value) {
-		setPage(value);
-	}
 
-	function handleChangeRowsPerPage(event) {
-		setRowsPerPage(event.target.value);
-	}
+	const handleChangePage = (event, newPage) => {
+		setPage(newPage)
+	};
+
+	const handleChangeRowsPerPage = event => {
+		setLimit(Number(event.target.value));
+	};
 
 	const hadleDelete = (event, n) => {
 		event.stopPropagation()
@@ -120,102 +106,125 @@ function UserTable(props) {
 			});
 	}
 
-	return (
-		<div className="w-full flex flex-col">
-			<FuseScrollbars className="flex-grow overflow-x-auto">
-				<Table className="min-w-xl" aria-labelledby="tableTitle">
-					<UserTableHead
-						numSelected={selected.length}
-						order={order}
-						// onSelectAllClick={handleSelectAllClick}
-						onRequestSort={handleRequestSort}
-						rowCount={data2.length}
-					/>
 
-					<TableBody>
-						{_.orderBy(
-							data2,
-							[
-								o => {
-									switch (order.id) {
-										case 'categories': {
-											return o.categories[0];
-										}
-										default: {
-											return o[order.id];
+	
+	if(isLoading){
+
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+		);
+	}else if(data2.length===0){
+
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<Typography color="textSecondary" variant="h5">
+					No Data Found
+				</Typography>
+			</div>
+		)
+	}else{
+
+		return (
+			<div className="w-full flex flex-col">
+				<FuseScrollbars className="flex-grow overflow-x-auto">
+					<Table className="min-w-xl" aria-labelledby="tableTitle">
+						<UserTableHead
+							numSelected={selected.length}
+							order={order}
+							// onSelectAllClick={handleSelectAllClick}
+							onRequestSort={handleRequestSort}
+							rowCount={data2.length}
+						/>
+	
+						<TableBody>
+							{_.orderBy(
+								data2,
+								[
+									o => {
+										switch (order.id) {
+											case 'categories': {
+												return o.categories[0];
+											}
+											default: {
+												return o[order.id];
+											}
 										}
 									}
-								}
-							],
-							[order.direction]
-						)
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map(n => {
-								const isSelected = selected.indexOf(n.id) !== -1;
-								return (
-									<TableRow
-										className="h-10 cursor-pointer"
-										hover
-										role="checkbox"
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
-										onClick={event => handleClick(n)}
-									>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
-											{n.id}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
-											{n.username}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
-											{n.email}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
-											{n.number}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
-											{n.enabled ? (
-												<Icon className="text-green text-16">check_circle</Icon>
-											) : (
-													<Icon className="text-red text-16">cancel</Icon>
-												)}
-										</TableCell>
-										<TableCell className="w-64 text-center" padding="none">
-											<Icon onClick={event => hadleDelete(event, n)} className="text-16">delete_outline</Icon>
-										</TableCell>
-									</TableRow>
-								);
-							})}
-					</TableBody>
-				</Table>
-			</FuseScrollbars>
-			<MuiThemeProvider theme={PaginationStyle}>
-			<TablePagination
-						style={{fontSize:'12px'}}
-						classes={{
-							root: 'overflow-hidden',
-							spacer: 'w-0 max-w-0',
-							actions:'text-64',
-							select:'text-12 mt-4',
-							 selectIcon:'mt-4',
-						}}
-				className="overflow-hidden"
-				component="div"
-				count={data2.length}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				onChangePage={handleChangePage}
-				onChangeRowsPerPage={handleChangeRowsPerPage}
-				ActionsComponent={ContactsTablePaginationActions}
-			/>
-			</MuiThemeProvider>
-			{open ? <UserDialog  isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData}/>:null}
-			{deleteDialog && <DeleteDialog path='users' method='delete' isOpen={deleteDialog} type="Delete" closeDialog={closeDialog}  data={deleteDialogData} />}
+								],
+								[order.direction]
+							)
+								.map(n => {
+									const isSelected = selected.indexOf(n.id) !== -1;
+									return (
+										<TableRow
+											className="h-10 cursor-pointer"
+											hover
+											role="checkbox"
+											aria-checked={isSelected}
+											tabIndex={-1}
+											key={n.id}
+											selected={isSelected}
+											onClick={event => handleClick(n)}
+										>
+											<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+												{n.id}
+											</TableCell>
+											<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+												{n.username}
+											</TableCell>
+											<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+												{n.email}
+											</TableCell>
+											<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+												{n.number}
+											</TableCell>
+											<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+												{n.enabled ? (
+													<Icon className="text-green text-16">check_circle</Icon>
+												) : (
+														<Icon className="text-red text-16">cancel</Icon>
+													)}
+											</TableCell>
+											<TableCell className="w-64 text-center" padding="none">
+												<Icon onClick={event => hadleDelete(event, n)} className="text-16">delete_outline</Icon>
+											</TableCell>
+										</TableRow>
+									);
+								})}
+						</TableBody>
+					</Table>
+				</FuseScrollbars>
+				<MuiThemeProvider theme={PaginationStyle}>
+				<TablePagination
+							style={{fontSize:'12px'}}
+							classes={{
+								root: 'overflow-hidden',
+								spacer: 'w-0 max-w-0',
+								actions:'text-64',
+								select:'text-12 mt-4',
+								 selectIcon:'mt-4',
+							}}
+					className="overflow-hidden"
+					component="div"
+					rowsPerPageOptions={[10, 25, 50, { label: 'All', value: totalItems }]}
 
-		</div>
-	);
+					count={totalItems}
+					rowsPerPage={rowsPerPage}
+					page={currentPage}
+					onChangePage={handleChangePage}
+					onChangeRowsPerPage={handleChangeRowsPerPage}
+					ActionsComponent={ContactsTablePaginationActions}
+				/>
+				</MuiThemeProvider>
+				{open ? <UserDialog  isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData}/>:null}
+				{deleteDialog && <DeleteDialog path='users' method='delete' isOpen={deleteDialog} type="Delete" closeDialog={closeDialog}  data={deleteDialogData} />}
+	
+			</div>
+		);
+	}
+
 }
 
 export default withRouter(UserTable);

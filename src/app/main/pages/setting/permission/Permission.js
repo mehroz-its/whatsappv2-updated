@@ -56,14 +56,22 @@ function Permissions(props) {
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [ok, setOK] = React.useState('')
 
+	const [totalItems, setTotalItems] = React.useState(0)
+	const [currentParams, setCurrentParams] = React.useState({limit:10,page:0})
+	const [isLoading, setLoading] = React.useState(true)
+	
+
 	const classes = useStyles(props);
 
 	const getData = ((loadData) => {
+		setLoading(true)
+
+		setData([])
+		setData2([])
 		loadData = () => {
 			return CoreHttpHandler.request('permissions', 'listing', {
 
-				limit: 100,
-				page: 0,
+				...currentParams,
 				columns: "*",
 				sortby: "ASC",
 				orderby: "id",
@@ -75,6 +83,8 @@ function Permissions(props) {
 			const tableData = response.data.data.list.data
 			setData(tableData)
 			setData2(tableData)
+			setLoading(false)
+			setTotalItems(response.data.data.list.totalItems)
 
 			setTimeout(() => {
 				setSnackBarMessage('')
@@ -83,6 +93,8 @@ function Permissions(props) {
 
 		})
 			.catch((error) => {
+				setLoading(false)
+
 				setTimeout(() => {
 					setSnackBarMessage('')
 					setSnackBarOpen(false)
@@ -91,9 +103,17 @@ function Permissions(props) {
 			})
 	});
 
+
 	React.useEffect(() => {
 		getData()
-	}, []);
+	  }, [currentParams]);
+	const setPage = (currentPage)=>{
+		setCurrentParams({limit:currentParams.limit,page:currentPage})
+	}
+	
+	const setLimit = (pageLimit)=>{
+		setCurrentParams({limit:pageLimit,page:0})
+	}
 	const handleClickOpen = () => {
 		setOpen(true);
 	};
@@ -153,7 +173,14 @@ function Permissions(props) {
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
 				header={<PermissionHeader SearchVal={search} />}
-				content={<PermissionTable snackbar={snackbar} ValueForSearch={val} dataa={data2} onClose={closeDialog} />}
+				content={<PermissionTable 
+				isLoading={isLoading}
+				totalItems={totalItems}
+				setPage={setPage}
+				setLimit={setLimit}
+				rowsPerPage={currentParams.limit}
+				currentPage={currentParams.page}
+				snackbar={snackbar} ValueForSearch={val} dataa={data2} onClose={closeDialog} />}
 			// innerScroll
 			/>
 			<FuseAnimate animation="transition.expandIn" delay={300}>

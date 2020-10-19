@@ -210,7 +210,7 @@ function ChatApp() {
 	const [totalIngoingMessages, setTotalIngoingMessages] = React.useState(0);
 	const [totalOutgoingMessages, setTotalOutgoingMessages] = React.useState(0);
 	const [totalEngagement, setTotalEngagement] = React.useState(0);
-	const [age, setAge] = React.useState('day');
+	const [age, setAge] = React.useState('days');
 	const [selectOPen, setSelectOPen] = React.useState(false);
 	const [isLoading, setisLoading] = React.useState(true)
 	const toggle = () => setOpen(!open);

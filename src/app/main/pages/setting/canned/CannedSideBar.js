@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
 
 function CannedSideBar(props) {
 	const user = null;
-	let data = null
+	let data = null;
 	data = JSON.parse(localStorage.getItem('user_data'))
 	let value = null
 	if (data !== null) {
@@ -61,10 +61,11 @@ function CannedSideBar(props) {
 		value = titleCase(data.username);
 	}
 	const classes = useStyles(props);
-
+	console.log("=======================>classes",classes)
 	const handleClick = (val) => {
 		props.cannedType(val)
 	}
+	const {cannedtype} = props;
 	return (
 		<div className="p-0 lg:p-24 lg:ltr:pr-4 lg:rtl:pl-4">
 			<FuseAnimate animation="transition.slideLeftIn" delay={200}>
@@ -79,12 +80,11 @@ function CannedSideBar(props) {
 					<List>
 						<ListItem
 							exact
-							button
-							component={NavLinkAdapter}
+							button							
 							to="/apps/canned-messages"
 							activeClassName="active"
-							className={classes.listItem}
-							onClick={() => { handleClick("all") }}
+							className={classes.listItem+(cannedtype==="all"?" active":"")}
+							onClick={(e) => {e.preventDefault(); handleClick("all") }}
 						>
 							<Icon className="list-item-icon text-16" color="action">
 								rate_review
@@ -93,12 +93,10 @@ function CannedSideBar(props) {
 						</ListItem>
 						<ListItem
 							exact
-							button
-							component={NavLinkAdapter}
-							to="/apps/canned-messages/text"
+							button							
 							activeClassName="active"
-							className={classes.listItem}
-							onClick={() => { handleClick("text") }}
+							className={classes.listItem+(cannedtype==="text"?" active":"")}
+							onClick={(e) => {e.preventDefault(); handleClick("text") }}
 
 						>
 							<Icon className="list-item-icon text-16" color="action">
@@ -109,12 +107,10 @@ function CannedSideBar(props) {
 						</ListItem>
 						<ListItem
 							exact
-							button
-							component={NavLinkAdapter}
-							to="/apps/canned-messages/audio"
+							button							
 							activeClassName="active"
-							className={classes.listItem}
-							onClick={() => { handleClick("audio") }}
+							className={classes.listItem+(cannedtype==="audio"?" active":"")}
+							onClick={(e) => {e.preventDefault(); handleClick("audio") }}
 
 						>
 							<Icon className="list-item-icon text-16" color="action">
@@ -125,12 +121,10 @@ function CannedSideBar(props) {
 						</ListItem>
 						<ListItem
 							exact
-							button
-							component={NavLinkAdapter}
-							to="/apps/canned-messages/images"
+							button							
 							activeClassName="active"
-							className={classes.listItem}
-							onClick={() => { handleClick("image") }}
+							className={classes.listItem+(cannedtype==="image"?" active":"")}
+							onClick={(e) => {e.preventDefault(); handleClick("image") }}
 
 						>
 							<Icon className="list-item-icon text-16" color="action">
@@ -141,12 +135,10 @@ function CannedSideBar(props) {
 						</ListItem>
 						<ListItem
 							exact
-							button
-							component={NavLinkAdapter}
-							to="/apps/canned-messages/videos"
+							button							
 							activeClassName="active"
-							className={classes.listItem}
-							onClick={() => { handleClick("video") }}
+							className={classes.listItem+(cannedtype==="video"?" active":"")}
+							onClick={(e) => {e.preventDefault(); handleClick("video") }}
 
 						>
 							<Icon className="list-item-icon text-16" color="action">
@@ -157,12 +149,10 @@ function CannedSideBar(props) {
 						</ListItem>
 						<ListItem
 							exact
-							button
-							component={NavLinkAdapter}
-							to="/apps/canned-messages/docs"
+							button							
 							activeClassName="active"
-							className={classes.listItem}
-							onClick={() => { handleClick("document") }}
+							className={classes.listItem+(cannedtype==="document"?" active":"")}
+							onClick={(e) => {e.preventDefault(); handleClick("document") }}
 
 						>
 							<Icon className="list-item-icon text-16" color="action">
