@@ -42,6 +42,11 @@ function ContactsApp() {
 	const handleClickOpen = () => {
 		setOpen(true);
 	}
+	const [isLoading,setIsLoading] =  React.useState(true)
+	const [totalItems, setTotalItems] = React.useState(0)
+	const [currentParams, setCurrentParams] = React.useState({limit:10,page:0})
+	
+
 	const [dialogData, setDialogData] = React.useState(
 		{
 			id: 0,
@@ -54,14 +59,14 @@ function ContactsApp() {
 	)
 
 	const getData = ((loadData) => {
+		setIsLoading(true)
 		setData([])
 		setData2([])
 		loadData = () => {
 			return CoreHttpHandler.request('canned_messages', 'type_listing', {
-				limit: 100,
+				...currentParams,
 				key: ':type',
 				value: cannedtype,
-				page: 0,
 				columns: "*",
 				sortby: "DESC",
 				orderby: "id",
@@ -70,10 +75,15 @@ function ContactsApp() {
 			}, null, null, true);
 		};
 		loadData().then((response) => {
+			setIsLoading(false)
+
 			const tableData = response.data.data.list.data
 			console.log(tableData)
 			setData(tableData)
 			setData2(tableData)
+			setIsLoading(false)
+			setTotalItems(response.data.data.list.totalItems)
+			
 			setTimeout(() => {
 				setSnackBarMessage('')
 				setSnackBarOpen(false)
@@ -90,8 +100,22 @@ function ContactsApp() {
 
 
 	})
+
+	
 	React.useEffect(() => {
 		getData()
+	  }, [currentParams]);
+
+	const setPage = (currentPage)=>{
+		setCurrentParams({limit:currentParams.limit,page:currentPage})
+	}
+	
+	const setLimit = (pageLimit)=>{
+		setCurrentParams({limit:pageLimit,page:0})
+	}
+
+	React.useEffect(() => {
+		setCurrentParams({limit:10,page:0})
 	}, [cannedtype]);
 	const valueReceived = (value) => {
 		// alert(value)
@@ -160,8 +184,8 @@ function ContactsApp() {
 					wrapper: 'min-h-0'
 				}}
 				header={<CannedHeader pageLayout={pageLayout} SearchVal={search} />}
-				content={<CannedList isSearched={val} data={data2} onDialogClose={closeDialog} ValueForSearch={val} displaySnack={valueReceived} />}
-				leftSidebarContent={<CannedSideBar cannedType={handleCannedMessageType} />}
+				content={<CannedList isSearched={val} data={data2} onDialogClose={closeDialog} ValueForSearch={val} displaySnack={valueReceived} isLoading={isLoading}  totalItems={totalItems} setPage={setPage} setLimit={setLimit} rowsPerPage={currentParams.limit} currentPage={currentParams.page}/>}
+				leftSidebarContent={<CannedSideBar cannedType={handleCannedMessageType} setCannedType={setCannedType} cannedtype={cannedtype} />}
 				sidebarInner
 				ref={pageLayout}
 			// innerScroll

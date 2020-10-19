@@ -99,7 +99,7 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 	);
 });
 
-const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, props,openUnBlockDialog,openBlockDialog, blockRowData ,onBlockDialogClose}) => {
+const EnhancedTable = ({giveVal,columns, data,rowsPerPage,currentPage,setLimit, totalItems, setPage, getUpdatedData,onRowClick, props,openUnBlockDialog,openBlockDialog, blockRowData ,onBlockDialogClose}) => {
 	const [open, setOpen] = React.useState(false);
 	const classes = useStyles(props);
 	const handleClose = (val) => {
@@ -167,15 +167,16 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, props,
 	);
 
 	const handleChangePage = (event, newPage) => {
-		gotoPage(newPage);
+		setPage(newPage)
 	};
 
 	const handleChangeRowsPerPage = event => {
+		setLimit(Number(event.target.value));		
 		setPageSize(Number(event.target.value));
+
 	};
 
 	const handleClick = (ev, row) => {
-		console.log(row,"ROWWWWWWWW");
 		setDialogData(row.original)
 		handleClickOpen()
 	}
@@ -250,12 +251,12 @@ const EnhancedTable = ({giveVal,columns, data, getUpdatedData,onRowClick, props,
 								select:'text-12 mt-4',
 								 selectIcon:'mt-4',
 							}}							
-							rowsPerPageOptions={[5, 10, 25, { label: 'All', value: data.length + 1 }]}
+							rowsPerPageOptions={[5,10,25, { label: 'All', value: totalItems }]}
 							colSpan={5}
 							style={{fontSize:'12px'}}
-							count={data.length}
-							rowsPerPage={pageSize}
-							page={pageIndex}
+							count={totalItems}
+							rowsPerPage={rowsPerPage}
+							page={currentPage}
 							SelectProps={{
 								inputProps: { 'aria-label': 'rows per page' },
 								native: false

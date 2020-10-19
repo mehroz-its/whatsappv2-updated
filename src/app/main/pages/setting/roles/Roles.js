@@ -51,6 +51,12 @@ function Roles(props) {
 	const [dialogData, setdialogData] = React.useState({
 		enabled: false
 	})
+	
+	const [totalItems, setTotalItems] = React.useState(0)
+	const [currentParams, setCurrentParams] = React.useState({limit:10,page:0})
+	const [isLoading, setLoading] = React.useState(true)
+	
+
 	const classes = useStyles(props);
 	const [val, setVal] = React.useState('')
 	const handleClickOpen = () => {
@@ -63,10 +69,11 @@ function Roles(props) {
 
 	}
 	const getData = ((loadData) => {
+		setLoading(true)
+
 		loadData = () => {
 			return CoreHttpHandler.request('roles', 'listing', {
-				limit: 100,
-				page: 0,
+				...currentParams,
 				columns: "*",
 				sortby: "ASC",
 				orderby: "id",
@@ -78,6 +85,9 @@ function Roles(props) {
 			const tableData = response.data.data.list.data
 			setData(tableData)
 			setData2(tableData)
+			setLoading(false)
+			setTotalItems(response.data.data.list.totalItems)
+
 			setTimeout(() => {
 				setSnackBarMessage('')
 				setSnackBarOpen(false)
@@ -91,9 +101,18 @@ function Roles(props) {
 
 			})
 	})
+	
 	React.useEffect(() => {
 		getData()
-	}, []);
+	  }, [currentParams]);
+	const setPage = (currentPage)=>{
+		setCurrentParams({limit:currentParams.limit,page:currentPage})
+	}
+	
+	const setLimit = (pageLimit)=>{
+		setCurrentParams({limit:pageLimit,page:0})
+	}
+
 	function search(value) {
 		setVal(value)
 		setData2(data.filter(n => n.name.toLowerCase().includes(value.toLowerCase())))
@@ -144,7 +163,15 @@ function Roles(props) {
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
 				header={<RolesHeader SearchVal={search} />}
-				content={<Rolestable snackbar={snackbar} dataa={data2} ValueForSearch={val} onClose={closeDialog} />}
+				content={<Rolestable 
+				
+				totalItems={totalItems}
+				setPage={setPage}
+				setLimit={setLimit}
+				rowsPerPage={currentParams.limit}
+				currentPage={currentParams.page}
+				isLoading={isLoading}
+				snackbar={snackbar} dataa={data2} ValueForSearch={val} onClose={closeDialog} />}
 			// innerScroll
 			/>
 			<FuseAnimate animation="transition.expandIn" delay={300}>

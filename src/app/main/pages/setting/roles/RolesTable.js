@@ -38,8 +38,6 @@ function RolesTable(props) {
 	const [selected, setSelected] = useState([]);
 	const [deleteDialogData, setDeleteDialogData] = React.useState({});
 	const [deleteDialog, setDeleteDialog] = React.useState(false);
-	const [page, setPage] = useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [dialogData, setDialogData] = useState({
 		enabled: '',
 		id: '0',
@@ -92,14 +90,14 @@ function RolesTable(props) {
 		})
 	}
 
-	
-	function handleChangePage(event, value) {
-		setPage(value);
-	}
+	const handleChangePage = (event, newPage) => {
+		setPage(newPage)
+	};
 
-	function handleChangeRowsPerPage(event) {
-		setRowsPerPage(event.target.value);
-	}
+	const handleChangeRowsPerPage = event => {
+		setLimit(Number(event.target.value));
+
+	};
 	const hadleDelete = (event, n) => {
 		setDeleteDialog(true)
 		event.stopPropagation()
@@ -117,99 +115,123 @@ function RolesTable(props) {
 
 			});
 	}
-	return (
-		<div className="w-full flex flex-col">
-			<FuseScrollbars className="flex-grow overflow-x-auto">
-				<Table className="min-w-xl" aria-labelledby="tableTitle">
-					<RolesTableHead
-						numSelected={selected.length}
-						order={order}
-						onRequestSort={handleRequestSort}
-						rowCount={data2.length}
-					/>
+	const {rowsPerPage, currentPage, setLimit, totalItems, setPage, isLoading} = props;
 
-					<TableBody>
-						{_.orderBy(
-							data2,
-							[
-								o => {
-									switch (order.id) {
-										case 'categories': {
-											return o.categories[0];
-										}
-										default: {
-											return o[order.id];
+	if(isLoading){
+		return (
+
+			<div className="flex flex-1 items-center justify-center h-full">
+			<FuseLoading />
+		</div>
+		)
+	}else if(data2.length===0){
+		return (
+			
+			<div className="flex flex-1 items-center justify-center h-full">
+				<Typography color="textSecondary" variant="h5">
+				No Data Found!
+			</Typography>
+			</div>
+		)
+	}else{
+
+		return (
+			<div className="w-full flex flex-col">
+				<FuseScrollbars className="flex-grow overflow-x-auto">
+					<Table className="min-w-xl" aria-labelledby="tableTitle">
+						<RolesTableHead
+							numSelected={selected.length}
+							order={order}
+							onRequestSort={handleRequestSort}
+							rowCount={data2.length}
+						/>
+	
+						<TableBody>
+							{_.orderBy(
+								data2,
+								[
+									o => {
+										switch (order.id) {
+											case 'categories': {
+												return o.categories[0];
+											}
+											default: {
+												return o[order.id];
+											}
 										}
 									}
-								}
-							],
-							[order.direction]
-						)
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map(n => {
-								const isSelected = selected.indexOf(n.id) !== -1;
-								return (
-									<TableRow
-										className="h-10 cursor-pointer"
-										hover
-										role="checkbox"
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
-										onClick={event => handleClick(n)}
-									>
-										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
-											{n.id}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
-											{n.name}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
-											{n.description}
-										</TableCell>
+								],
+								[order.direction]
+							)
+								.map(n => {
+									const isSelected = selected.indexOf(n.id) !== -1;
+									return (
+										<TableRow
+											className="h-10 cursor-pointer"
+											hover
+											role="checkbox"
+											aria-checked={isSelected}
+											tabIndex={-1}
+											key={n.id}
+											selected={isSelected}
+											onClick={event => handleClick(n)}
+										>
+											<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
+												{n.id}
+											</TableCell>
+											<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
+												{n.name}
+											</TableCell>
+											<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
+												{n.description}
+											</TableCell>
+	
+											<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
+												{n.enabled ? (
+													<Icon className="text-green text-16">check_circle</Icon>
+												) : (
+														<Icon className="text-red text-16">cancel</Icon>
+													)}
+											</TableCell>
+											<TableCell className="w-64 text-center" padding="none">
+												<Icon onClick={event => hadleDelete(event, n)} className="text-16">delete_outline</Icon>
+											</TableCell>
+										</TableRow>
+									);
+								})}
+						</TableBody>
+					</Table>
+				</FuseScrollbars>
+				<MuiThemeProvider theme={PaginationStyle}>
+					<TablePagination
+						rowsPerPageOptions={[10, 25, 50, { label: 'All', value: totalItems }]}
 
-										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
-											{n.enabled ? (
-												<Icon className="text-green text-16">check_circle</Icon>
-											) : (
-													<Icon className="text-red text-16">cancel</Icon>
-												)}
-										</TableCell>
-										<TableCell className="w-64 text-center" padding="none">
-											<Icon onClick={event => hadleDelete(event, n)} className="text-16">delete_outline</Icon>
-										</TableCell>
-									</TableRow>
-								);
-							})}
-					</TableBody>
-				</Table>
-			</FuseScrollbars>
-			<MuiThemeProvider theme={PaginationStyle}>
-				<TablePagination
-					className="overflow-hidden"
-					component="div"
-					classes={{
-						root: 'overflow-hidden',
-						spacer: 'w-0 max-w-0',
-						actions: 'text-64',
-						select: 'text-12 mt-4',
-						selectIcon: 'mt-4',
-					}}
-					count={data2.length}
-					style={{ fontSize: '12px' }}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					onChangePage={handleChangePage}
-					onChangeRowsPerPage={handleChangeRowsPerPage}
-					ActionsComponent={ContactsTablePaginationActions}
-				/>
-			</MuiThemeProvider>
-			{open ? <RolesDialog isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData} /> : null}
-			{deleteDialog && <DeleteDialog path='roles' method='delete' isOpen={deleteDialog} type="Delete" closeDialog={closeDialog}  data={deleteDialogData} />}
-
-		</div>
-	);
+						className="overflow-hidden"
+						component="div"
+						classes={{
+							root: 'overflow-hidden',
+							spacer: 'w-0 max-w-0',
+							actions: 'text-64',
+							select: 'text-12 mt-4',
+							selectIcon: 'mt-4',
+						}}
+						
+						
+						style={{ fontSize: '12px' }}
+						count={totalItems}
+						rowsPerPage={rowsPerPage}
+						page={currentPage}
+						onChangePage={handleChangePage}
+						onChangeRowsPerPage={handleChangeRowsPerPage}
+						ActionsComponent={ContactsTablePaginationActions}
+					/>
+				</MuiThemeProvider>
+				{open ? <RolesDialog isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData} /> : null}
+				{deleteDialog && <DeleteDialog path='roles' method='delete' isOpen={deleteDialog} type="Delete" closeDialog={closeDialog}  data={deleteDialogData} />}
+	
+			</div>
+		);
+	}
 }
 
 export default withRouter(RolesTable);

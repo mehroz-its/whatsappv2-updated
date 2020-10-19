@@ -38,19 +38,18 @@ function PermissionTable(props) {
 		setDeleteDialog(false)
 		props.onClose(val)
 	}
+	const {rowsPerPage,currentPage,setLimit, totalItems, setPage, isLoading} = props;
 
-
-	console.log(props)
 	const dispatch = useDispatch();
 	const products = useSelector(({ eCommerceApp }) => eCommerceApp.products.data);
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
 	const [userRules, setUserRules] = useState([])
-	const [page, setPage] = useState(0);
+
 	const [deleteDialogData, setDeleteDialogData] = React.useState({});
 	const [deleteDialog, setDeleteDialog] = React.useState(false);
-	const [rowsPerPage, setRowsPerPage] = useState(10);
+
 	const [order, setOrder] = useState({
 		direction: 'asc',
 		id: null
@@ -87,23 +86,23 @@ function PermissionTable(props) {
 			id
 		});
 	}
-	if (data2.length === 0) {
-		if (props.ValueForSearch !== '') {
-			return (
-				<div className="flex flex-1 items-center justify-center h-full">
-					<Typography color="textSecondary" variant="h5">
-						No Data Found
-					</Typography>
-				</div>
-			)
-		} else {
-			return (
-				<div className="flex flex-1 items-center justify-center h-full">
-					<FuseLoading />
-				</div>
-			);
-		}
-	}
+	// if (data2.length === 0) {
+	// 	if (props.ValueForSearch !== '') {
+	// 		return (
+	// 			<div className="flex flex-1 items-center justify-center h-full">
+	// 				<Typography color="textSecondary" variant="h5">
+	// 					No Data Found
+	// 				</Typography>
+	// 			</div>
+	// 		)
+	// 	} else {
+	// 		return (
+	// 			<div className="flex flex-1 items-center justify-center h-full">
+	// 				<FuseLoading />
+	// 			</div>
+	// 		);
+	// 	}
+	// }
 	function handleClick(n) {
 		setDialogData({
 			enabled: n.enabled,
@@ -134,112 +133,133 @@ function PermissionTable(props) {
 		setSelected(newSelected);
 	}
 
-	function handleChangePage(event, value) {
-		setPage(value);
-	}
 
-	function handleChangeRowsPerPage(event) {
-		setRowsPerPage(event.target.value);
-	}
+	const handleChangePage = (event, newPage) => {
+		setPage(newPage)
+	};
+
+	const handleChangeRowsPerPage = event => {
+		setLimit(Number(event.target.value));		
+	};
+
 	const hadleDelete = (event, n) => {
 		setDeleteDialog(true)
 		event.stopPropagation()
 		setDeleteDialogData(n)
 	}
-	return (
-		<div className="w-full flex flex-col">
-			<FuseScrollbars className="flex-grow overflow-x-auto">
-				<Table className="min-w-xl" aria-labelledby="tableTitle">
-					<PermissionTableHead
-						numSelected={selected.length}
-						order={order}
-						onRequestSort={handleRequestSort}
-						rowCount={data2.length}
-					/>
+	if(isLoading){
 
-					<TableBody>
-						{_.orderBy(
-							data2,
-							[
-								o => {
-									switch (order.id) {
-										case 'categories': {
-											return o.categories[0];
-										}
-										default: {
-											return o[order.id];
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+		);
+	}else if(data2.length===0){
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<Typography color="textSecondary" variant="h5">
+					No Data Found!
+		</Typography>
+			</div>
+		)
+	}else{
+		return (
+			<div className="w-full flex flex-col">
+				<FuseScrollbars className="flex-grow overflow-x-auto">
+					<Table className="min-w-xl" aria-labelledby="tableTitle">
+						<PermissionTableHead
+							numSelected={selected.length}
+							order={order}
+							onRequestSort={handleRequestSort}
+							rowCount={data2.length}
+						/>
+	
+						<TableBody>
+							{_.orderBy(
+								data2,
+								[
+									o => {
+										switch (order.id) {
+											case 'categories': {
+												return o.categories[0];
+											}
+											default: {
+												return o[order.id];
+											}
 										}
 									}
-								}
-							],
-							[order.direction]
-						)
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map(n => {
-								const isSelected = selected.indexOf(n.id) !== -1;
-								return (
-									<TableRow
-										className="h-10 cursor-pointer"
-										hover
-										role="checkbox"
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
-										onClick={event => handleClick(n)}
-									>
-										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
-											{n.id}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
-											{n.title}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
-											{n.method !== 'APP' ? `${n.method}END` : n.method}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
-											{n.enabled ? (
-												<Icon className="text-green text-16">check_circle</Icon>
-											) : (
-													<Icon className="text-red text-16">cancel</Icon>
-												)}
-										</TableCell>
-										<TableCell className="w-64 text-center" padding="none">
-											<Icon onClick={event => hadleDelete(event, n)} className="text-16">delete_outline</Icon>
-										</TableCell>
-									</TableRow>
-								);
-							})}
-					</TableBody>
-				</Table>
-			</FuseScrollbars>
-			<MuiThemeProvider theme={PaginationStyle}>
-				<TablePagination
-					style={{ fontSize: '12px' }}
-					classes={{
-						root: 'overflow-hidden',
-						spacer: 'w-0 max-w-0',
-						actions: 'text-64',
-						select: 'text-12 mt-4',
-						selectIcon: 'mt-4',
-					
-					}}
-					className="overflow-hidden"
-					component="div"
-					count={data2.length}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					onChangePage={handleChangePage}
-					onChangeRowsPerPage={handleChangeRowsPerPage}
-					ActionsComponent={ContactsTablePaginationActions}
-				/>
-			</MuiThemeProvider>
+								],
+								[order.direction]
+							)
+								.map(n => {
+									const isSelected = selected.indexOf(n.id) !== -1;
+									return (
+										<TableRow
+											className="h-10 cursor-pointer"
+											hover
+											role="checkbox"
+											aria-checked={isSelected}
+											tabIndex={-1}
+											key={n.id}
+											selected={isSelected}
+											onClick={event => handleClick(n)}
+										>
+											<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
+												{n.id}
+											</TableCell>
+											<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
+												{n.title}
+											</TableCell>
+											<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
+												{n.method !== 'APP' ? `${n.method}END` : n.method}
+											</TableCell>
+											<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
+												{n.enabled ? (
+													<Icon className="text-green text-16">check_circle</Icon>
+												) : (
+														<Icon className="text-red text-16">cancel</Icon>
+													)}
+											</TableCell>
+											<TableCell className="w-64 text-center" padding="none">
+												<Icon onClick={event => hadleDelete(event, n)} className="text-16">delete_outline</Icon>
+											</TableCell>
+										</TableRow>
+									);
+								})}
+						</TableBody>
+					</Table>
+				</FuseScrollbars>
+				<MuiThemeProvider theme={PaginationStyle}>
+					<TablePagination
+						style={{ fontSize: '12px' }}
+						classes={{
+							root: 'overflow-hidden',
+							spacer: 'w-0 max-w-0',
+							actions: 'text-64',
+							select: 'text-12 mt-4',
+							selectIcon: 'mt-4',
+						
+						}}
+						rowsPerPageOptions={[10,25,50, { label: 'All', value: totalItems }]}
 	
-			{open ? <PermissionDialog isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData} /> : null}
-			{deleteDialog && <DeleteDialog path='permissions' method='delete' isOpen={deleteDialog} type="Delete" closeDialog={closeDialog}  data={deleteDialogData} />}
+						className="overflow-hidden"
+						component="div"
+						count={totalItems}
+						rowsPerPage={rowsPerPage}
+						page={currentPage}
+						onChangePage={handleChangePage}
+						onChangeRowsPerPage={handleChangeRowsPerPage}
+						ActionsComponent={ContactsTablePaginationActions}
+					/>
+				</MuiThemeProvider>
+		
+				{open ? <PermissionDialog isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData} /> : null}
+				{deleteDialog && <DeleteDialog path='permissions' method='delete' isOpen={deleteDialog} type="Delete" closeDialog={closeDialog}  data={deleteDialogData} />}
+	
+			</div>
+		);
+	}
 
-		</div>
-	);
 }
 
 export default withRouter(PermissionTable);

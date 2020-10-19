@@ -4,7 +4,7 @@ import React from 'react';
 import CannedTable from './CannedTable';
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 function CannedList(props) {
-	const {data,onDialogClose,isSearched,displaySnack }  = props
+	const {data,onDialogClose,isSearched,displaySnack,isLoading, rowsPerPage,currentPage,setLimit, totalItems, setPage  }  = props
 	const columns = React.useMemo(
 		() => [
 			{
@@ -48,26 +48,40 @@ function CannedList(props) {
 		],
 		[]
 	);
+	if(isLoading){
 
-	if (data.length === 0) {
-		if (isSearched !== '') {
-			return (
-				<div className="flex flex-1 items-center justify-center h-full">
-					<Typography color="textSecondary" variant="h5">
-					No Data Found!
-				</Typography>
-				</div>
-			)
-		} else {
-			return (
-				<div className="flex flex-1 items-center justify-center h-full">
-					<FuseLoading />
-				</div>
-			);
-		}
-	}
-	return (
-		<FuseAnimate animation="transition.slideUpIn" delay={300}>
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+		);
+	}else if (data.length === 0) {
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<Typography color="textSecondary" variant="h5">
+				No Data Found!
+			</Typography>
+			</div>
+		)
+		// if (isSearched !== '') {
+		// 	return (
+		// 		<div className="flex flex-1 items-center justify-center h-full">
+		// 			<Typography color="textSecondary" variant="h5">
+		// 			No Data Found!
+		// 		</Typography>
+		// 		</div>
+		// 	)
+		// } else {
+		// 	return (
+		// 		<div className="flex flex-1 items-center justify-center h-full">
+		// 			<FuseLoading />
+		// 		</div>
+		// 	);
+		// }
+	}else{
+
+		return (
+		
 			<CannedTable
 				columns={columns}
 				data={data}
@@ -77,8 +91,10 @@ function CannedList(props) {
 				}}
 				onClose={onDialogClose}
 				displaySnack={displaySnack}
+				totalItems={totalItems} setPage={setPage} setLimit={setLimit} rowsPerPage={rowsPerPage} currentPage={currentPage}
 			/>
-		</FuseAnimate>
+			
 	);
+	}
 }
 export default CannedList;
