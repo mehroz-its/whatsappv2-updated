@@ -14,7 +14,7 @@ import Select from '@material-ui/core/Select';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
-import React, { useEffect, useState , useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import moment from "moment";
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -141,7 +141,7 @@ function ContactTable(props) {
 	const [data, setData] = useState([]);
 	const [groupData, setGroupData] = useState([]);
 	const [blockContact, setBlockContact] = useState([]);
-	const [page, setPage] = useState(0);
+
 	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
@@ -157,6 +157,13 @@ function ContactTable(props) {
 		direction: 'asc',
 		id: null
 	});
+
+
+	const [totalItems, setTotalItems] = React.useState(0)
+	const [currentParams, setCurrentParams] = React.useState({ limit: 10, page: 0, blocked: false })
+	const [isLoading, setLoading] = React.useState(true)
+
+
 	const [checked, setChecked] = React.useState(false);
 	const [dialogData, setDialogData] = React.useState({
 		id: 0,
@@ -176,15 +183,20 @@ function ContactTable(props) {
 	const e = (event) => {
 		SetNumber(event.target.value);
 	};
+
 	const getData = ((loadData) => {
+		setLoading(true)
+
 		loadData = () => {
 			return CoreHttpHandler.request('contact_book', 'listing', {
+
+				limit: currentParams.limit,
+				page: currentParams.page,
+
 				columns: "*",
-				limit: 100,
 				orderby: "id",
-				page: 0,
 				sortby: "ASC",
-				where: `client_id = $1`,
+				where: `client_id = $1 AND blocked=${currentParams.blocked}`,
 				values: `${companyDetails.id}`,
 			}, null, null, true);
 		};
@@ -194,6 +206,9 @@ function ContactTable(props) {
 			const result = tableData.filter(tableData => tableData.blocked === true);
 			console.log("result : ", result);
 			setBlockContact(result)
+			setLoading(false)
+			setTotalItems(response.data.data.list.totalItems)
+
 		});
 	})
 	const getDataGroup = ((loadData) => {
@@ -222,10 +237,25 @@ function ContactTable(props) {
 		setSnackBarOpen(false)
 		setSnackBarMessage("")
 	}, 3000);
+
+
+
 	React.useEffect(() => {
 		getData()
-		// getDataGroup()
-	}, []);
+	}, [currentParams]);
+
+	const setPage = (currentPage) => {
+		setCurrentParams({ limit: currentParams.limit, page: currentPage, blocked: currentParams.blocked })
+	}
+
+	const setLimit = (pageLimit) => {
+		setCurrentParams({ limit: pageLimit, page: 0, blocked: currentParams.blocked })
+	}
+
+	const setBlockedOpen = (bool) => {
+		setCurrentParams({ limit: currentParams.limit, page: 0, blocked: bool })
+	}
+
 	function handleRequestSort(event, property) {
 		const id = property;
 		let direction = 'desc';
@@ -259,23 +289,6 @@ function ContactTable(props) {
 		setOpen(true)
 		setDialogData(n)
 	}
-console.log("data.length  :" , data.length);
-	if (data.length === 0) {
-			return (
-				<div className="flex flex-1 items-center justify-center h-full">
-					<Typography color="textSecondary" variant="h5">
-						No Data Found
-					</Typography>
-				</div>
-			)
-		} 
-		// else {
-		// 	return (
-		// 		<div className="flex flex-1 items-center justify-center h-full">
-		// 			<FuseLoading />
-		// 		</div>
-		// 	);
-		// }
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
@@ -293,15 +306,20 @@ console.log("data.length  :" , data.length);
 
 		setSelected(newSelected);
 	}
-	function handleChangePage(event, value) {
-		setPage(value);
-	}
+
+
+	const handleChangePage = (event, newPage) => {
+		setPage(newPage)
+	};
+
+	const handleChangeRowsPerPage = event => {
+		setLimit(Number(event.target.value));
+	};
+
 	function handleDialogClose() {
 		setUpdateContactDialog(false)
 	}
-	function handleChangeRowsPerPage(event) {
-		setRowsPerPage(event.target.value);
-	}
+
 	const toggleChecked = () => {
 		setChecked((prev) => !prev);
 	};
@@ -336,17 +354,18 @@ console.log("data.length  :" , data.length);
 		setContactDialogData(data)
 		setUpdateContactDialog(true)
 	};
-	const  numberExport = () =>{	
-	alert("number Export")
-	if (Start === '') setName(moment(new Date().toISOString()).format('DD/MM/YYYY'))
-	else setName(moment(Start).format('DD/MM/YYYY') + "-" + moment(End).format('DD/MM/YYYY'))
-	
-	setTimeout(() => {
-		csvLinkK.current.link.click()
-	}, 1000);
-}
-var Start = "";
-var End = "";
+	const numberExport = () => {
+		alert("number Export")
+		if (Start === '') setName(moment(new Date().toISOString()).format('DD/MM/YYYY'))
+		else setName(moment(Start).format('DD/MM/YYYY') + "-" + moment(End).format('DD/MM/YYYY'))
+
+		setTimeout(() => {
+			csvLinkK.current.link.click()
+		}, 1000);
+	}
+
+	var Start = "";
+	var End = "";
 	return (
 		<>
 			<Card className={classes.root}>
@@ -362,8 +381,8 @@ var End = "";
 							className="w-full border-b-1 px-100 text-center h-48 "
 							style={{ marginBottom: '8px' }}
 						>
-							<Tab label="Contacts" {...a11yProps(0)} />
-							<Tab label="Blocked Contacts" {...a11yProps(1)} />
+							<Tab label="Contacts" {...a11yProps(0)} onClick={() => { setBlockedOpen(false) }} />
+							<Tab label="Blocked Contacts" {...a11yProps(1)} onClick={() => { setBlockedOpen(true) }} />
 							{/* <Tab label="Contact Group" {...a11yProps(2)} /> */}
 						</Tabs>
 					</div>
@@ -380,160 +399,197 @@ var End = "";
 						axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
 						index={value}
 						onChangeIndex={handleChangeIndex}>
+
+
+
 						<TabPanel value={value} index={0} dir={theme.direction}>
-							<div style={{ flexDirection: 'row', flex: 1, display: 'flex', paddingLeft: '14px' }}>
-								<div >
-									<Button
-										size='small'
-										variant="contained"
-										style={{ borderRadius: 0 }}
-										onClick={numberExport}
-										>
-										Export
+
+
+							{
+								isLoading ?
+									<div className="flex flex-1 items-center justify-center h-full">
+										<FuseLoading />
+									</div>
+									:
+									(
+										data.length ?
+											(
+												<React.Fragment>
+													<div style={{ flexDirection: 'row', flex: 1, display: 'flex', paddingLeft: '14px' }}>
+														<div >
+															<Button
+																size='small'
+																variant="contained"
+																style={{ borderRadius: 0 }}
+																onClick={numberExport}
+															>
+																Export
            							 </Button>
-										<CSVLink
-							data={data}
-							filename={`contacts_${name}.csv`}
-							className='hidden'
-							ref={csvLinkK}
-							target='_blank'
-						/>
-									
-								</div>
-							</div>
-							<div className="w-full flex flex-col">
-								<FuseScrollbars className="flex-grow overflow-x-auto">
-									<Table className="min-w-xl" aria-labelledby="tableTitle">
-										<ContactTableHeader
-											numSelected={selected.length}
-											order={order}
-											onSelectAllClick={handleSelectAllClick}
-											onRequestSort={handleRequestSort}
-											rowCount={data.length}
-										/>
-										<TableBody>
-											{_.orderBy(
-												data,
-												[
-													o => {
-														switch (order.id) {
-															case 'categories': {
-																return o.categories[0];
-															}
-															default: {
-																return o[order.id];
-															}
-														}
-													}
-												],
-												[order.direction]
+															<CSVLink
+																data={data}
+																filename={`contacts_${name}.csv`}
+																className='hidden'
+																ref={csvLinkK}
+																target='_blank'
+															/>
+
+														</div>
+													</div>
+													<div className="w-full flex flex-col">
+														<FuseScrollbars className="flex-grow overflow-x-auto">
+															<Table className="min-w-xl" aria-labelledby="tableTitle">
+																<ContactTableHeader
+																	numSelected={selected.length}
+																	order={order}
+																	onSelectAllClick={handleSelectAllClick}
+																	onRequestSort={handleRequestSort}
+																	rowCount={data.length}
+																/>
+																<TableBody>
+																	{_.orderBy(
+																		data,
+																		[
+																			o => {
+																				switch (order.id) {
+																					case 'categories': {
+																						return o.categories[0];
+																					}
+																					default: {
+																						return o[order.id];
+																					}
+																				}
+																			}
+																		],
+																		[order.direction]
+																	)
+																		.map(n => {
+																			const isSelected = selected.indexOf(n.id) !== -1;
+																			return (
+																				<TableRow
+																					className="h-10 cursor-pointer"
+																					hover
+																					role="checkbox"
+																					aria-checked={isSelected}
+																					tabIndex={-1}
+																					key={n.id}
+																					selected={isSelected}
+																				// onClick={event => handleClickUpdateContact(n)}
+																				>
+																					<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+																						{n.id}
+																					</TableCell>
+																					<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+																						{n.attributes[0].firstname}
+																					</TableCell>
+																					<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+																						{n.attributes[1].lastname}
+																					</TableCell>
+																					<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+																						{n.attributes[3].age}
+																					</TableCell>
+																					<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+																						{n.attributes[2].gender}
+																					</TableCell>
+																					<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+																						{n.number}
+																					</TableCell>
+																					<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+																						{n.attributes[4].email}
+
+																					</TableCell>
+																					{<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+																						{n.dt === null ? 'N/A' : n.dt}
+																					</TableCell>}
+																					<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+																						{n.blocked === true ?
+																							(
+																								<IconButton
+																									onClick={ev => {
+																										setUnblockDialogData(n)
+																										setUnblockDialog(true)
+																										ev.stopPropagation();
+																										// handleClick(n)
+																									}}
+																								>
+																									<Icon name='lock'>block</Icon>
+																								</IconButton>
+																							) : (
+																								<IconButton
+																									onClick={ev => {
+																										ev.stopPropagation();
+																										setOpenBlockDialog(true)
+																										setROWvalue(n)
+																									}}
+																								>
+																									<Icon>phone</Icon>
+																								</IconButton>
+																							)}
+
+																					</TableCell>
+																				</TableRow>
+																			);
+																		})}
+																</TableBody>
+															</Table>
+														</FuseScrollbars>
+														<MuiThemeProvider theme={PaginationStyle}>
+															<TablePagination
+																classes={{
+																	root: 'overflow-hidden',
+																	spacer: 'w-0 max-w-0',
+																	actions: 'text-64',
+																	select: 'text-12 mt-4',
+																	selectIcon: 'mt-4',
+																}}
+																className="overflow-hidden"
+																component="div"
+																style={{ fontSize: '12px' }}
+																onChangePage={handleChangePage}
+																onChangeRowsPerPage={handleChangeRowsPerPage}
+																ActionsComponent={ContactsTablePaginationActions}
+																rowsPerPageOptions={[10, 25, 50, { label: 'All', value: totalItems }]}
+																count={totalItems}
+																rowsPerPage={currentParams.limit}
+																page={currentParams.page}
+
+															/>
+														</MuiThemeProvider>
+													</div>
+
+												</React.Fragment>
 											)
-												.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-												.map(n => {
-													const isSelected = selected.indexOf(n.id) !== -1;
-													return (
-														<TableRow
-															className="h-10 cursor-pointer"
-															hover
-															role="checkbox"
-															aria-checked={isSelected}
-															tabIndex={-1}
-															key={n.id}
-															selected={isSelected}
-															// onClick={event => handleClickUpdateContact(n)}
-														>
-															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-																{n.id}
-															</TableCell>
-															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-																{n.attributes[0].firstname}
-															</TableCell>
-															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-															{n.attributes[1].lastname}
-															</TableCell>
-															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-															{n.attributes[3].age}
-															</TableCell>
-															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-															{n.attributes[2].gender}
-															</TableCell>
-															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-																{n.number}
-															</TableCell>
-															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-															{n.attributes[4].email}
 
-															</TableCell>
-															{<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-																{n.dt === null ? 'N/A' : n.dt}
-															</TableCell>}
-															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-																{n.blocked === true ?
-																	(
-																		<IconButton
-																			onClick={ev => {
-																				setUnblockDialogData(n)
-																				setUnblockDialog(true)
-																				ev.stopPropagation();
-																				// handleClick(n)
-																			}}
-																		>
-																			<Icon name='lock'>block</Icon>
-																		</IconButton>
-																	) : (
-																		<IconButton
-																			onClick={ev => {
-																				ev.stopPropagation();
-																				setOpenBlockDialog(true)
-																				setROWvalue(n)
-																			}}
-																		>
-																			<Icon>phone</Icon>
-																		</IconButton>
-																	)}
+											:
 
-															</TableCell>
-														</TableRow>
-													);
-												})}
-										</TableBody>
-									</Table>
-								</FuseScrollbars>
-								<MuiThemeProvider theme={PaginationStyle}>
-									<TablePagination
-										classes={{
-											root: 'overflow-hidden',
-											spacer: 'w-0 max-w-0',
-											actions: 'text-64',
-											select: 'text-12 mt-4',
-											selectIcon: 'mt-4',
-										}}
-										className="overflow-hidden"
-										component="div"
-										count={data.length}
-										style={{ fontSize: '12px' }}
-										rowsPerPage={rowsPerPage}
-										page={page}
-										onChangePage={handleChangePage}
-										onChangeRowsPerPage={handleChangeRowsPerPage}
-										ActionsComponent={ContactsTablePaginationActions}
-									/>
-								</MuiThemeProvider>
-							</div>
+
+											<div className="flex flex-1 items-center justify-center h-full">
+												<Typography color="textSecondary" variant="h5">
+													No Data Found
+										</Typography>
+											</div>
+									)
+
+
+							}
+
+
+
 						</TabPanel>
 
 						<TabPanel value={value} index={1} dir={theme.direction}>
-							{/* <div style={{ flexDirection: 'row', flex: 1, display: 'flex', paddingLeft: '14px' }}>
-								<div>
-									<Button
-										size='small'
-										variant="contained"
-										style={{ borderRadius: 0 }}>
-										Export
-           							 </Button>
+							
+							
+						{
+							isLoading?
+								<div className="flex flex-1 items-center justify-center h-full">
+									<FuseLoading />
 								</div>
-							</div> */}
-							<div className="w-full flex flex-col">
+							:
+							(
+								data.length?
+								(
+									<React.Fragment>
+									<div className="w-full flex flex-col">
 								<FuseScrollbars className="flex-grow overflow-x-auto">
 									<Table className="min-w-xl" aria-labelledby="tableTitle">
 										<ContactTableHeader
@@ -560,7 +616,6 @@ var End = "";
 												],
 												[order.direction]
 											)
-												.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 												.map(n => {
 													const isSelected = selected.indexOf(n.id) !== -1;
 													return (
@@ -572,7 +627,7 @@ var End = "";
 															tabIndex={-1}
 															key={n.id}
 															selected={isSelected}
-															// onClick={event => handleClick(n)}
+														// onClick={event => handleClick(n)}
 														>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
 																{n.id}
@@ -581,19 +636,19 @@ var End = "";
 																{n.attributes[0].firstname}
 															</TableCell>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-															{n.attributes[1].lastname}
+																{n.attributes[1].lastname}
 															</TableCell>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-															{n.attributes[3].age}
+																{n.attributes[3].age}
 															</TableCell>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-															{n.attributes[2].gender}
+																{n.attributes[2].gender}
 															</TableCell>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
 																{n.number}
 															</TableCell>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-															{n.attributes[4].email}
+																{n.attributes[4].email}
 
 															</TableCell>
 															{<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
@@ -642,19 +697,64 @@ var End = "";
 										}}
 										className="overflow-hidden"
 										component="div"
-										count={data.length}
 										style={{ fontSize: '12px' }}
-										rowsPerPage={rowsPerPage}
-										page={page}
 										onChangePage={handleChangePage}
 										onChangeRowsPerPage={handleChangeRowsPerPage}
 										ActionsComponent={ContactsTablePaginationActions}
+
+										rowsPerPageOptions={[ 10, 25, 50, { label: 'All', value: totalItems }]}
+										count={totalItems}
+										rowsPerPage={currentParams.limit}
+										page={currentParams.page}
+
 									/>
 								</MuiThemeProvider>
 
 							</div>
 
+									</React.Fragment>
+								)
+
+								:
+
+
+									<div className="flex flex-1 items-center justify-center h-full">
+										<Typography color="textSecondary" variant="h5">
+											No Data Found
+										</Typography>
+									</div>
+							)
+
+
+						}
+
+							
+							
+							{/* <div style={{ flexDirection: 'row', flex: 1, display: 'flex', paddingLeft: '14px' }}>
+								<div>
+									<Button
+										size='small'
+										variant="contained"
+										style={{ borderRadius: 0 }}>
+										Export
+           							 </Button>
+								</div>
+							</div> */}
+							
 						</TabPanel>
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
 						{/* <TabPanel value={value} index={2} dir={theme.direction}>
 							{groupData.length > 0 ?
 								<div>
