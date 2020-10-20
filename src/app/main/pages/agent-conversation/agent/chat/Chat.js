@@ -459,7 +459,9 @@ function Chat(props) {
 
 	function scrollToBottom() {
 		setTimeout(() => {
-			chatRef.current.scrollTop = chatRef.current.scrollHeight + 200;
+			if(chatRef&&chatRef.current){
+				chatRef.current.scrollTop = chatRef.current.scrollHeight + 200;
+			}
 		}, 1000);
 	}
 
