@@ -807,15 +807,16 @@ function ChatApp(props) {
 							}}
 						>
 					
-		{props.Loading === true||LoaderValue === true ?
+		{/* {props.Loading === true||LoaderValue === true ?
 			<div style={{flex:1,display:'flex',justifyContent:'center',alignItems:'center'}}>
 			<CircularProgress color="secondary" />
 			</div>
 	
 		:
-		<ChatsSidebar numbers={numberr} onContactClick={(e) => { selectedRecipientt(e) }} Loading={props.Loading} />  
-	
-}
+			<ChatsSidebar numbers={numberr} onContactClick={(e) => { selectedRecipientt(e) }} Loading={props.Loading} />  
+
+} */}
+<ChatsSidebar numbers={numberr} onContactClick={(e) => { selectedRecipientt(e) }} Loading={props.Loading} />  
 
 						
 					

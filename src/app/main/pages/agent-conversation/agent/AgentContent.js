@@ -26,7 +26,7 @@ function AgentContent(props) {
 
 	
 	useEffect(() => {
-		
+		setnumbers([])
 		if(intervalAgent){
 			clearInterval(intervalAgent)
 		}
