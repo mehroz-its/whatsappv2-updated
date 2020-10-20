@@ -406,6 +406,7 @@ function Chat(props) {
 	const [dialogOpenCanned, setdialogOpenCanned] = React.useState(false);
 	const [cannedMessagesList, setcannedMessagesList] = React.useState([]);
 	const [blockReason, setblockReason] = React.useState('');
+	const [isDisabled,setDisabled] = React.useState(false)
 	const [customerProfileData, setcustomerProfileData] = React.useState({
 		id: 0,
 		number: null,
@@ -505,22 +506,41 @@ function Chat(props) {
 		});
 	}
 	const sendMessage = () => {
-		let params = {
-			type: "text",
-			text: {
-				to: [props.selectedRecipient.number],
-				message: {
-					text: messageTextNew
-				}
-			}
-		};
-		CoreHttpHandler.request('conversations', 'send_text', params, (response) => {
+		const messageToSend = String(messageTextNew||" ").trim();
+		if(messageToSend){
+
 			setMessageText('')
 			setMessageTextNew('')
 			setTextLength(800)
 			setEmo('')
-		}, (error) => {
-		});
+			
+			setDisabled(true)
+			let params = {
+				type: "text",
+				text: {
+					to: [props.selectedRecipient.number],
+					message: {
+						text: messageToSend
+					}
+				}
+			};
+			CoreHttpHandler.request('conversations', 'send_text', params, (response) => {
+				setMessageText('')
+				setMessageTextNew('')
+				setTextLength(800)
+				setEmo('')
+				setDisabled(false)
+			}, (error) => {
+				setDisabled(false)
+	
+			});
+		}else{
+			setMessageText('')
+			setMessageTextNew('')
+			setTextLength(800)
+			setEmo('')
+		}
+		
 	}
 	const sendMessageHandler = (event) => {
 		setChosenEmoji(false)
@@ -879,10 +899,14 @@ function Chat(props) {
 		setTextLength(textLength - 2)
 	};
 	const scrollToBottom = () => {
-		chatRef.current.scrollTop =  chatRef.current.scrollHeight;
-		setTimeout(() => {
+		if(chatRef&&chatRef.current){
 			chatRef.current.scrollTop =  chatRef.current.scrollHeight;
-		  }, 1500);
+			setTimeout(() => {
+				if(chatRef&&chatRef.current){
+					chatRef.current.scrollTop =  chatRef.current.scrollHeight;
+				}
+			  }, 1500);
+		}
 	}
 	const prevCountRef = useRef();
 	prevCountRef.current = messageText;
@@ -901,6 +925,7 @@ function Chat(props) {
 					<div className="flex flex-col pt-16 px-16 pb-40">
 						{messages.map((item, index) => {
 							const contact = null;
+							const maxLength = 400;
 							return (
 								<div
 									key={item.time}
@@ -930,14 +955,20 @@ function Chat(props) {
 									<div className="bubble flex relative items-center justify-center p-8 max-w-full">
 										{item.message_type === "text" ?
 											item.message_body.length > '400' ?
-												<div className="leading-tight whitespace-pre-wrap" >
-													<ReadMoreReact text={item.message_body}
+											<React.Fragment>
+											
+
+												<div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px', textAlign: 'justify', wordBreak: 'break-all' }}>
+
+													<ReadMoreReact text={item.message_body} onClick={e=>{maxLength=item.message_body.length}}
 														min={200}
 														ideal={400}
 														max={1000}
 														readMoreText="Click Here to Read More" />
 													<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} {item.type === "outbound" ? MessageStateResolver.resolve(item.status) : null}</Typography>
 												</div>
+											</React.Fragment>
+												
 												:
 												<div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px', textAlign: 'justify', wordBreak: 'break-all' }}>
 													{item.message_body}
@@ -1035,7 +1066,7 @@ function Chat(props) {
 						</Tooltip>
 						<p style={{ position: 'absolute', color: 'grey', fontSize: 10, left: 120, bottom: 13, paddingTop: 2, paddingBottom: 4, paddingLeft: 35, paddingRight: 10, }}>{textLength}</p>
 						<Tooltip title="Send Message">
-							<IconButton aria-controls="fade-menu" aria-haspopup="true" style={{ position: 'absolute', fontSize: 10, right: 15, bottom: 5, color: 'grey' }} onClick={sendMessageHandler}>
+							<IconButton aria-controls="fade-menu" aria-haspopup="true" style={{ position: 'absolute', fontSize: 10, right: 15, bottom: 5, color: 'grey' }} disabled={isDisabled} onClick={sendMessageHandler}>
 								<SendIcon />
 							</IconButton>
 						</Tooltip>
