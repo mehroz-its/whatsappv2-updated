@@ -88,9 +88,9 @@ function AgentTable(props) {
 	const [agent, setAgent] = React.useState([]);
 
 	const [data2, setData2] = useState(data);
-	const [page, setPage] = useState(0);
+
 	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
-	const [rowsPerPage, setRowsPerPage] = useState(10);
+
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [ok, setOK] = React.useState('')
@@ -115,6 +115,13 @@ function AgentTable(props) {
 	const handleChange = (event) => {
 		SetNumber(event.target.value);
 	};
+
+	
+	const [totalItems, setTotalItems] = React.useState(0)
+	const [currentParams, setCurrentParams] = React.useState({limit:10,page:0})
+	const [isLoading, setLoading] = React.useState(true)
+	
+
 	const getData = ((loadData) => {
 		loadData = () => {
 			return CoreHttpHandler.request('campaigns', 'listing', {
@@ -137,19 +144,33 @@ function AgentTable(props) {
 		setSnackBarOpen(false)
 		setSnackBarMessage("")
 	}, 3000);
+		
 	React.useEffect(() => {
+		getPaginatedData()
+	  }, [currentParams]);
+
+	const getPaginatedData = () => {
 		if (companyDetails) {
+
+			setLoading(true)
+
 			let update_params = {
-				key: ':client_id',
-				value: companyDetails.id,
-				params: {}
+				client_id: companyDetails.id,
+				...currentParams,
 			}
-			CoreHttpHandler.request('CompanyAgent', 'get', update_params, dataSourceSuccessCompanyAgent, dataSourceFailureCompanyAgent);
+			CoreHttpHandler.request('CompanyAgent', 'get_paginated', update_params, (response)=>{
+				setAgent(response.data.data.agentList)
+				setData(response.data.data.agentList)
+				setTotalItems(response.data.data.totalItems)
+
+				setLoading(false)
+
+				console.log("Agent=>",response)
+			}, dataSourceFailureCompanyAgent);
 		}
-		// getData()
-	}, []);
+	}
 	const dataSourceSuccessCompanyAgent = (response) => {
-		setAgent(response.data.data.all_agents)
+		setAgent(response.data.agentList)
 		setData(response.data.data.all_agents)
 		console.log("dataSourceSuccessCompanyAgent response", response);
 	};
@@ -196,37 +217,39 @@ function AgentTable(props) {
 	};
 	function handleDialogClose() {
 		setDialogData({})
-		let update_params = {
-			key: ':client_id',
-			value: companyDetails.id,
-			params: {}
-		}
-		CoreHttpHandler.request('CompanyAgent', 'get', update_params, dataSourceSuccessCompanyAgent, dataSourceFailureCompanyAgent);
+		// let update_params = {
+		// 	key: ':client_id',
+		// 	value: companyDetails.id,
+		// 	params: {}
+		// }
+		getPaginatedData()
+
+		// CoreHttpHandler.request('CompanyAgent', 'get', update_params, dataSourceSuccessCompanyAgent, dataSourceFailureCompanyAgent);
 		setOpen(false)
 	}
-	if (data.length === 0) {
-		return (
-			<>
-				<div className="flex flex-1 items-center justify-center h-full">
-					<Typography color="textSecondary" variant="h5">
-						No Data Found
-					</Typography>
-				</div>
-				<FuseAnimate animation="transition.expandIn" delay={300}>
-					<Fab
-						color="primary"
-						aria-label="add"
-						size="medium"
-						className={classes.addButton}
-						onClick={handleClickAdd}
-					>
-						<Icon>person_add</Icon>
-					</Fab>
-				</FuseAnimate>
-				{open && <AgentDialog isOpen={open} type={type} data={dialogData} clientId={companyDetails.id} closeDialog={handleDialogClose} />}
-			</>
-		)
-	}
+	// if (data.length === 0) {
+	// 	return (
+	// 		<>
+	// 			<div className="flex flex-1 items-center justify-center h-full">
+	// 				<Typography color="textSecondary" variant="h5">
+	// 					No Data Found
+	// 				</Typography>
+	// 			</div>
+	// 			<FuseAnimate animation="transition.expandIn" delay={300}>
+	// 				<Fab
+	// 					color="primary"
+	// 					aria-label="add"
+	// 					size="medium"
+	// 					className={classes.addButton}
+	// 					onClick={handleClickAdd}
+	// 				>
+	// 					<Icon>person_add</Icon>
+	// 				</Fab>
+	// 			</FuseAnimate>
+	// 			{open && <AgentDialog isOpen={open} type={type} data={dialogData} clientId={companyDetails.id} closeDialog={handleDialogClose} />}
+	// 		</>
+	// 	)
+	// }
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
 		let newSelected = [];
@@ -243,13 +266,16 @@ function AgentTable(props) {
 		setSelected(newSelected);
 	}
 
-	function handleChangePage(event, value) {
-		setPage(value);
-	}
+	
 
-	function handleChangeRowsPerPage(event) {
-		setRowsPerPage(event.target.value);
+	const setPage = (currentPage)=>{
+		setCurrentParams({limit:currentParams.limit,page:currentPage})
 	}
+	
+	const setLimit = (pageLimit)=>{
+		setCurrentParams({limit:pageLimit,page:0})
+	}
+	
 	const toggleChecked = () => {
 		setChecked((prev) => !prev);
 	};
@@ -258,6 +284,13 @@ function AgentTable(props) {
 		setOpen(true);
 	}
 	
+	const handleChangePage = (event, newPage) => {
+		setPage(newPage)
+	};
+
+	const handleChangeRowsPerPage = event => {
+		setLimit(Number(event.target.value));
+	};
 	return (
 		<>
 			<Card className={classes.root}>
@@ -272,7 +305,19 @@ function AgentTable(props) {
 							{snackbarmessage}
 						</Alert>
 					</Snackbar>
-					<div className="w-full flex flex-col">
+					{
+						isLoading?
+
+						<div className="flex flex-1 items-center justify-center h-full">
+							<FuseLoading />
+						</div>
+						:
+
+
+						(
+							data.length?
+
+							<div className="w-full flex flex-col">
 						<FuseScrollbars className="flex-grow overflow-x-auto">
 							<Table className="min-w-xl" aria-labelledby="tableTitle">
 								<AgentTableHeader
@@ -299,7 +344,6 @@ function AgentTable(props) {
 										],
 										[order.direction]
 									)
-										.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 										.map((n, i) => {
 											const isSelected = selected.indexOf(n.id) !== -1;
 											return (
@@ -375,16 +419,35 @@ function AgentTable(props) {
 							}}
 							className="overflow-hidden"
 							component="div"
-							count={data.length}
 							style={{ fontSize: '12px' }}
-							rowsPerPage={rowsPerPage}
-							page={page}
+
+							rowsPerPageOptions={[10, 25, 50, { label: 'All', value: totalItems }]}
+							count={totalItems}
+							rowsPerPage={currentParams.limit}
+							page={currentParams.page}
+
 							onChangePage={handleChangePage}
 							onChangeRowsPerPage={handleChangeRowsPerPage}
+								
 						/>
 						{open && <AgentDialog isOpen={open} type={type} data={dialogData} clientId={companyDetails.id} closeDialog={handleDialogClose} />}
 					</div>
-				</CardContent>
+				
+
+
+							:
+
+							<div className="flex flex-1 items-center justify-center h-full">
+								<Typography color="textSecondary" variant="h5">
+								No Data Found!
+							</Typography>
+							</div>
+
+
+						)
+					}
+
+					</CardContent>
 			</Card>
 		</>
 	);
