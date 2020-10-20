@@ -7,24 +7,27 @@ import clsx from 'clsx';
 import moment from 'moment';
 import React from 'react';
 import StatusIcon from './StatusIcon';
-import FuseAnimate from '@fuse/core/FuseAnimate'
-import { EventEmitter } from '../../../../events'
+import FuseAnimate from '@fuse/core/FuseAnimate';
+import { EventEmitter } from '../../../../events';
 
 const useStyles = makeStyles(theme => ({
 	contactListItem: {
 		borderBottom: `1px solid ${theme.palette.divider}`,
 		'&.active': {
 			backgroundColor: theme.palette.background.paper
-		},
-
+		}
 	},
 	listItemText: {
-		fontSize: '12px',//Insert your required size
+		fontSize: '12px', //Insert your required size
 		marginLeft: '4%'
 	},
 	listItemText2: {
-		fontSize: '11px',//Insert your required size
-		marginLeft: '4%'
+		fontSize: '11px', //Insert your required size
+		textAlign: 'right',
+		right: 0,
+		top: '11%',
+		position: 'absolute'
+		// marginLeft: '4%'
 	},
 	unreadBadge: {
 		backgroundColor: theme.palette.secondary.main,
@@ -40,46 +43,26 @@ function ContactListItem(props) {
 	// 	EventEmitter.dispatch('Message', true)
 	// }
 	const showAvatar = () => {
-		if (props.Channel === "") {
-			return (
-				<Avatar src={props.contact.avatar} alt={props.contact.name}>
-				</Avatar>
-			)
+		if (props.Channel === '') {
+			return <Avatar src={props.contact.avatar} alt={props.contact.name}></Avatar>;
+		} else if (props.Channel == 0) {
+			return <Avatar src={require('./images/download.png')} alt={props.contact.name}></Avatar>;
+		} else if (props.Channel == 1) {
+			return <Avatar src={require('./images/messanger.png')} alt={props.contact.name}></Avatar>;
+		} else if (props.Channel == 2) {
+			return <Avatar src={require('./images/instagram.jpeg')} alt={props.contact.name}></Avatar>;
 		}
-		else if (props.Channel == 0) {
-			return (
-				<Avatar src={require('./images/download.png')} alt={props.contact.name}>
-				</Avatar>
-			)
-		}
+	};
+	// let val = 1
+	// if(props.contact.message_count && val === 1){
+	// 	if(props.contact.message_count > 0){
+	// 		alert('new message')
+	// 		return val = 4
+	// 	}
 
-		else if (props.Channel == 1) {
-			return (
-				<Avatar src={require('./images/messanger.png')} alt={props.contact.name}>
-				</Avatar>
-			)
-		}
+	// }
 
-		else if (props.Channel == 2) {
-			return (
-				<Avatar src={require('./images/instagram.jpeg')} alt={props.contact.name}>
-				</Avatar>
-			)
-		}
-	}
-// let val = 1
-// if(props.contact.message_count && val === 1){
-// 	if(props.contact.message_count > 0){
-// 		alert('new message')
-// 		return val = 4
-// 	}
-
-// }
-	
-
-	
 	return (
-
 		<ListItem
 			button
 			className={clsx(classes.contactListItem, 'px-18 py-12 min-h-36', {
@@ -90,7 +73,6 @@ function ContactListItem(props) {
 			<div className="relative">
 				<div className="absolute right-0 bottom-0 -m-2 z-6">
 					<StatusIcon status={props.contact.name} />
-					
 				</div>
 				{showAvatar()}
 			</div>
@@ -98,8 +80,11 @@ function ContactListItem(props) {
 				<ListItemText
 					classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
 					primary={props.contact.name}
-					secondary={props.contact.number === props.contact.name ? null : props.contact.number}
+					secondary={
+						props.contact.number === props.contact.name ? props.contact.agent_name : props.contact.number
+					}
 				/>
+				{/* <div>{props.contact.agent_name} </div> */}
 			</FuseAnimate>
 
 			{props.contact.message_count && (
@@ -119,7 +104,6 @@ function ContactListItem(props) {
 							{moment(props.contact.dtu).format('ll')}
 						</Typography>
 					)}
-
 				</div>
 			)}
 		</ListItem>
