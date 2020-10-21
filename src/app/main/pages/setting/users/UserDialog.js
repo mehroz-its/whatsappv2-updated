@@ -80,6 +80,18 @@ const UserDialog = (props) => {
     const [currentRoles, setCurrentRoles] = React.useState(data.roles);
     const [enabled, setEnabled] = React.useState(data.enabled);
     const [isToggled, setIsToggled] = React.useState(data.enabled);
+    // const [displayed, setDisplayed] = React.useState(data.displayed);
+
+    const [dataCopy,setCopy] = React.useState({
+        username: data.username,
+        email: data.email,
+        number: data.number,
+        password: "",
+        enabled: data.enabled,
+        // displayed: data.displayed,
+        position: data.position
+    })
+
     const [state, setState] = React.useState({
         checkedAgent: false,
         checkedaSaS: false,
@@ -96,9 +108,23 @@ const UserDialog = (props) => {
     const result = Object.values(state)
     
     const handleEnable = (event) => {
+        console.log("I AM CALLED",event.target.checked)
         setEnabled(event.target.checked);
     };
-    
+    function filterData(params){
+        let updated = {}
+        console.log("params",params)
+        console.log("dataCopy",dataCopy)
+        if(dataCopy&&Object.keys(dataCopy)&&Object.keys(dataCopy).length){
+            Object.keys(dataCopy).forEach(key=>{
+                if(dataCopy[key]!=params[key]){
+                    updated[key]=params[key]
+                }
+            })
+        }
+
+        return updated
+    }
     const handleSubmit = () => {
         if (type !== 'Update') {
             let params = {
@@ -113,7 +139,7 @@ const UserDialog = (props) => {
                 role: 64,            
                 max_token_count: 1,  
                 default_receiver: false, 
-                clientId: JSON.parse(localStorage.getItem("user_data")).id
+                // clientId: JSON.parse(localStorage.getItem("user_data")).id
             };
             console.log("Paramss ", params);
             console.log("clientId ", localStorage.getItem("user_data"));
@@ -121,39 +147,83 @@ const UserDialog = (props) => {
                 props.closeDialog('create')
                 setopenDialog(false);
             }, (error) => {
-                props.closeDialog("error")
-                setopenDialog(false);
+                
+                if(error&&error.response&&error.response.data&&error.response.data.message){
+                    if(props.snackbar){
+                        props.snackbar(error.response.data.message)
+                        setTimeout(()=>{
+                            if(props.snackbar){
+                                props.snackbar("")
+                            }
+                        },2000)
+                    }else{
+                        if(props.displayError){
+                            props.displayError(error.response.data.message)
+                        }else{
+                            props.closeDialog(error.response.data.message)
+                            setopenDialog(false);
+                        }
+                    }
+                }else{
+                    props.closeDialog("Error")
+                    setopenDialog(false);
+                }
             });
         } else {
-            alert("Update")
-
             let params = {
                 id: data.id,
                 username: userName,
                 email: email,
                 number: number,
                 password: password,
-                enabled: true,      
-                displayed: true,
+                enabled: enabled,      
+                // displayed: true,
                 roles: currentRoles,
                 position: position,  
-                role: 64,            
-                max_token_count: 1,  
-                default_receiver: false,
-                clientId: JSON.parse(localStorage.getItem("user_data")).id
+                // clientId: JSON.parse(localStorage.getItem("user_data")).id
             };
-            let update_params = {
-                key: 'id',
-                value: props.data.id,
-                params: params
+            let filtered = filterData(params)
+            if(filtered&&Object.keys(filtered)&&Object.keys(filtered).length){
+
+                // filtered.rol =  64           
+                // filtered.max_token_count = 1 
+                // filtered.default_receiver = false
+
+                let update_params = {
+                    key: 'id',
+                    value: props.data.id,
+                    params: filtered
+                }
+                CoreHttpHandler.request('users', 'update_user', update_params, (response) => {
+                    props.closeDialog("update")
+                    setopenDialog(false);
+                }, (error) => {
+                    if(error&&error.response&&error.response.data&&error.response.data.message){
+                        if(props.snackbar){
+                            props.snackbar(error.response.data.message)
+                            setTimeout(()=>{
+                                if(props.snackbar){
+                                    props.snackbar("")
+                                }
+                            },2000)
+                        }else{
+                            if(props.displayError){
+                                props.displayError(error.response.data.message)
+                            }else{
+                                props.closeDialog(error.response.data.message)
+                                setopenDialog(false);
+                            }
+                        }
+                    }else{
+                        props.closeDialog("Error")
+                        setopenDialog(false);
+                    }
+                });
+            }else{
+                if(props.displayError){
+                    props.displayError("No Changes Made!")
+                }
             }
-            CoreHttpHandler.request('users', 'update_user', update_params, (response) => {
-                props.closeDialog("update")
-                setopenDialog(false);
-            }, (error) => {
-                props.closeDialog("error")
-                setopenDialog(false);
-            });
         }
     }
     const handleToggleChange = () => {
