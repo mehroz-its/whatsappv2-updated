@@ -108,13 +108,11 @@ const UserDialog = (props) => {
     const result = Object.values(state)
     
     const handleEnable = (event) => {
-        console.log("I AM CALLED",event.target.checked)
         setEnabled(event.target.checked);
     };
     function filterData(params){
         let updated = {}
-        console.log("params",params)
-        console.log("dataCopy",dataCopy)
+        
         if(dataCopy&&Object.keys(dataCopy)&&Object.keys(dataCopy).length){
             Object.keys(dataCopy).forEach(key=>{
                 if(dataCopy[key]!=params[key]){
@@ -141,8 +139,7 @@ const UserDialog = (props) => {
                 default_receiver: false, 
                 // clientId: JSON.parse(localStorage.getItem("user_data")).id
             };
-            console.log("Paramss ", params);
-            console.log("clientId ", localStorage.getItem("user_data"));
+            
             CoreHttpHandler.request('users', 'create_user', params, (response) => {
                 props.closeDialog('create')
                 setopenDialog(false);
