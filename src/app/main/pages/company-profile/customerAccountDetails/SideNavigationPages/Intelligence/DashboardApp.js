@@ -50,7 +50,7 @@ const rader_chart = list => {
 	if (myEle) {
 		// Add and configure Series
 		let pieSeries = chart.series.push(new am4charts.PieSeries());
-		pieSeries.dataFields.value = 'full';
+		pieSeries.dataFields.value = 'value';
 		pieSeries.dataFields.category = 'category';
 		pieSeries.slices.template.stroke = am4core.color('#fff');
 		pieSeries.slices.template.strokeOpacity = 1;
