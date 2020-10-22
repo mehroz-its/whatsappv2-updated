@@ -2,7 +2,7 @@ import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import ContactsTable from './ContactsTable';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
@@ -15,9 +15,9 @@ function ContactsList(props) {
 	const [data, setData] = React.useState([])
 	const [rowvalue, setROWvalue] = React.useState('')
 	const [totalItems, setTotalItems] = React.useState(0)
-	const [currentParams, setCurrentParams] = React.useState({limit:5,page:0})
+	const [currentParams, setCurrentParams] = React.useState({ limit: 5, page: 0 })
 	const [isLoading, setLoading] = React.useState(true)
-	
+
 	const [openBlockDialog, setOpenBlockDialog] = React.useState(false);
 	const [unblockDialog, setUnBlockDialog] = React.useState(false);
 	const [data2, setData2] = useState([]);
@@ -80,14 +80,14 @@ function ContactsList(props) {
 
 	React.useEffect(() => {
 		getData()
-	  }, [currentParams]);
+	}, [currentParams]);
 
-	const setPage = (currentPage)=>{
-		setCurrentParams({limit:currentParams.limit,page:currentPage})
+	const setPage = (currentPage) => {
+		setCurrentParams({ limit: currentParams.limit, page: currentPage })
 	}
-	
-	const setLimit = (pageLimit)=>{
-		setCurrentParams({limit:pageLimit,page:0})
+
+	const setLimit = (pageLimit) => {
+		setCurrentParams({ limit: pageLimit, page: 0 })
 	}
 	if (searchVal !== props.ValueForSearch) {
 		{ search() }
@@ -152,22 +152,27 @@ function ContactsList(props) {
 				accessor: 'email',
 				sortable: true
 			},
+
 			{
+				Header: 'Block',
+				accessor: 'block',
+
 				id: 'action',
-			    
-				width: 128,
+				// width: 128,
 				sortable: false,
 				Cell: ({ row }) => (
-					<div className="flex items-center">
+					<div className="flex" style={{ justifyContent: 'flex-end' }}>
 						{row.original.blocked === false ?
 							(
 								<IconButton
+									style={{ alignItems: 'flex-end', alignSelf: 'flex-end' }}
 									onClick={ev => {
 										ev.stopPropagation();
 										handleClick(row)
 									}}
 								>
 									<Icon name='lock'>block</Icon>
+
 								</IconButton>
 							) : (
 								<IconButton
@@ -196,14 +201,14 @@ function ContactsList(props) {
 		setOpenBlockDialog(true)
 	}
 
-	if(isLoading){
-		
+	if (isLoading) {
+
 		return (
 			<div className="flex flex-1 items-center justify-center h-full">
 				<FuseLoading />
 			</div>
 		);
-	}else if (filtered.length === 0) {
+	} else if (filtered.length === 0) {
 		return (
 			<div className="flex flex-1 items-center justify-center h-full">
 
@@ -213,27 +218,27 @@ function ContactsList(props) {
 			</Typography>
 			</div>
 		)
-	}else{
+	} else {
 
 		return (
 			// <FuseAnimate animation="transition.slideUpIn" delay={300}>
-				<ContactsTable
-				   giveVal={props.GiveVal}
-					getUpdatedData={() => { getData() }}
-					openUnBlockDialog={unblockDialog}
-					onBlockDialogClose={handleClose}
-					blockRowData={rowvalue}
-					openBlockDialog={openBlockDialog}
-					columns={columns}
-					data={filtered}
-					totalItems={totalItems}
-					setPage={setPage}
-					setLimit={setLimit}
-					rowsPerPage={currentParams.limit}
-					currentPage={currentParams.page}
-					onRowClick={(ev, row) => {
-					}}
-				/>
+			<ContactsTable
+				giveVal={props.GiveVal}
+				getUpdatedData={() => { getData() }}
+				openUnBlockDialog={unblockDialog}
+				onBlockDialogClose={handleClose}
+				blockRowData={rowvalue}
+				openBlockDialog={openBlockDialog}
+				columns={columns}
+				data={filtered}
+				totalItems={totalItems}
+				setPage={setPage}
+				setLimit={setLimit}
+				rowsPerPage={currentParams.limit}
+				currentPage={currentParams.page}
+				onRowClick={(ev, row) => {
+				}}
+			/>
 			// </FuseAnimate>
 		);
 	}

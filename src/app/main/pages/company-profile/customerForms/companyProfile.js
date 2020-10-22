@@ -153,9 +153,12 @@ function ComapnyProfile(props) {
 			setSnackBarOpen(true)
 			setOK('success')
 			setSnackBarMessage('Created successfully')
-			props.history.push({
-				pathname: '/apps/company-profile'
-			});
+			setTimeout(() => {
+				props.history.push({
+					pathname: '/apps/company-profile'
+				});
+			}, 1000);
+			
 
 
 		}, (error) => {
@@ -352,7 +355,7 @@ function ComapnyProfile(props) {
 										</FormControl>
 									</Grid>
 									<Grid item md={4} sm={12} xs={12} >
-										<TextField onChange={handleChange} size='small' name="website" type="website" value={form.website} required id="outlined-basic-email" label="Web-Site" variant="outlined" fullWidth autoComplete="off" />
+										<TextField onChange={handleChange} size='small' name="website" type="website" value={form.website} required id="outlined-basic-email" label="Website" variant="outlined" fullWidth autoComplete="off" />
 									</Grid>
 								</Grid>
 
@@ -361,16 +364,16 @@ function ComapnyProfile(props) {
 										color="Primary"
 										variant="contained"
 										className="w-224 mx-auto mt-16"
-										onClick={()=>props.history.goBack()}
+										onClick={() => props.history.goBack()}
 									>
 										Go Back
 									</Button>
 									<Button
 										variant="contained"
-										style={{ color: "#8b8b8b" }}
+										color="Primary"
 										className="w-224 mx-auto mt-16"
 										aria-label="Register"
-										// disabled={(form.firstname !== '' && form.lastname !== '' && form.phone !== '' && form.number !== '' && form.email !== '' && form.address !== '' && country !== '' && state !== '' && city !== '') ? false : true}
+										disabled={(form.firstname !== '' && form.lastname !== '' && form.phone !== '' && form.number !== '' && form.email !== '' && form.address !== '' && country !== '' && state !== '' && city !== '' && form.website !== "") ? false : true}
 										type="submit"
 									>
 										Register

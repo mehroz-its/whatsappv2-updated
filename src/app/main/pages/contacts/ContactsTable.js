@@ -16,51 +16,51 @@ import ContactsTablePaginationActions from '../setting/canned/ContactsTablePagin
 import ContactDialog from './ContactDialog'
 import BlockContactInDialog from './BlockContactInDialog'
 import BlockDialog from '../BlockedContacts/BlockListDialog'
-import { makeStyles,ThemeProvider,createMuiTheme,withStyles,MuiThemeProvider } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
 
 
 const BodyStyle = createMuiTheme({
 	overrides: {
-	  MuiTableCell: {
-		root: {
-		  paddingTop: 4,
-		  fontSize:'12px',
-		  paddingBottom: 4,
+		MuiTableCell: {
+			root: {
+				paddingTop: 4,
+				fontSize: '12px',
+				paddingBottom: 4,
+			}
 		}
-	  }
 	}
-  });
-  
-  const PaginationStyle = createMuiTheme({
+});
+
+const PaginationStyle = createMuiTheme({
 	overrides: {
 		MuiTypography: {
-		body2: {
-			fontSize:'12px',
-			marginTop:'1px'
+			body2: {
+				fontSize: '12px',
+				marginTop: '1px'
+			}
 		}
-	  }
 	}
-  });
+});
 
 
 const HeaderStyle = createMuiTheme({
 	overrides: {
-	  MuiTableCell: {
-		root: {
-	
-		  paddingLeft:40,
+		MuiTableCell: {
+			root: {
 
-		  fontSize:'12px',
-		  paddingBottom: 4,
-		  "&:first-child": {
-			paddingRight: 40
-		  }
+				paddingLeft: 40,
+
+				fontSize: '12px',
+				paddingBottom: 4,
+				"&:first-child": {
+					paddingRight: 40
+				}
+			}
 		}
-	  }
 	}
-  });
+});
 
-  const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'absolute',
 		bottom: 50,
@@ -73,16 +73,16 @@ const HeaderStyle = createMuiTheme({
 
 	},
 	margin: {
-	  
-		color:'white',
-		paddingLeft:'14px',
-		
-		paddingRight:'14px',
-		paddingTop:'5px',
-		paddingBottom:'5px',
-		fontSize:'12px',
-	   
-	  },
+
+		color: 'white',
+		paddingLeft: '14px',
+
+		paddingRight: '14px',
+		paddingTop: '5px',
+		paddingBottom: '5px',
+		fontSize: '12px',
+
+	},
 }));
 const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
 	const defaultRef = React.useRef();
@@ -99,7 +99,7 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 	);
 });
 
-const EnhancedTable = ({giveVal,columns, data,rowsPerPage,currentPage,setLimit, totalItems, setPage, getUpdatedData,onRowClick, props,openUnBlockDialog,openBlockDialog, blockRowData ,onBlockDialogClose}) => {
+const EnhancedTable = ({ giveVal, columns, data, rowsPerPage, currentPage, setLimit, totalItems, setPage, getUpdatedData, onRowClick, props, openUnBlockDialog, openBlockDialog, blockRowData, onBlockDialogClose }) => {
 	const [open, setOpen] = React.useState(false);
 	const classes = useStyles(props);
 	const handleClose = (val) => {
@@ -171,7 +171,7 @@ const EnhancedTable = ({giveVal,columns, data,rowsPerPage,currentPage,setLimit, 
 	};
 
 	const handleChangeRowsPerPage = event => {
-		setLimit(Number(event.target.value));		
+		setLimit(Number(event.target.value));
 		setPageSize(Number(event.target.value));
 
 	};
@@ -184,28 +184,29 @@ const EnhancedTable = ({giveVal,columns, data,rowsPerPage,currentPage,setLimit, 
 	return (<div>
 		<TableContainer className="min-h-full sm:border-1 sm:rounded-16" >
 			<MaUTable {...getTableProps()}>
-				<TableHead style={{fontSize:'11px'}}>
+				{/* {console.log("myData",getTableProps())} */}
+				<TableHead style={{ fontSize: '11px' }}>
 					{headerGroups.map(headerGroup => (
 						<TableRow {...headerGroup.getHeaderGroupProps()}>
 							{headerGroup.headers.map(column => (
-									<MuiThemeProvider theme={HeaderStyle}>
-								<TableCell
-								style={{fontSize:'11px'}}
-								align="center"
-									className="whitespace-no-wrap px-50 py-0" 	
-									{...(!column.sortable
-										? column.getHeaderProps()
-										: column.getHeaderProps(column.getSortByToggleProps()))}
-								>
-									{column.render('Header')}
-									{column.sortable ? (
-										<TableSortLabel
-											active={column.isSorted}
-											// react-table has a unsorted state which is not treated here
-											direction={column.isSortedDesc ? 'desc' : 'asc'}
-										/>
-									) : null}
-								</TableCell>
+								<MuiThemeProvider theme={HeaderStyle}>
+									<TableCell
+										style={{ fontSize: '11px' }}
+										align="center"
+										className="whitespace-no-wrap px-50 py-0"
+										{...(!column.sortable
+											? column.getHeaderProps()
+											: column.getHeaderProps(column.getSortByToggleProps()))}
+									>
+										{column.render('Header')}
+										{column.sortable ? (
+											<TableSortLabel
+												active={column.isSorted}
+												// react-table has a unsorted state which is not treated here
+												direction={column.isSortedDesc ? 'desc' : 'asc'}
+											/>
+										) : null}
+									</TableCell>
 								</MuiThemeProvider>
 							))}
 						</TableRow>
@@ -216,7 +217,7 @@ const EnhancedTable = ({giveVal,columns, data,rowsPerPage,currentPage,setLimit, 
 						prepareRow(row);
 						return (
 							<TableRow
-							style={{fontSize:'11px'}}
+								style={{ fontSize: '11px' }}
 								{...row.getRowProps()}
 								onClick={ev => handleClick(ev, row)}
 								className="truncate cursor-pointer"
@@ -224,13 +225,12 @@ const EnhancedTable = ({giveVal,columns, data,rowsPerPage,currentPage,setLimit, 
 								{row.cells.map(cell => {
 									return (
 										<MuiThemeProvider theme={BodyStyle}>
-										<TableCell
-										
-										className="whitespace-no-wrap px-50 py-0"
-										align="center"
-										>
-											{cell.render('Cell')}
-										</TableCell>
+											<TableCell
+												className="whitespace-no-wrap px-50 py-0"
+												align="center"
+											>
+												{cell.render('Cell')}
+											</TableCell>
 										</MuiThemeProvider>
 									);
 								})}
@@ -240,42 +240,42 @@ const EnhancedTable = ({giveVal,columns, data,rowsPerPage,currentPage,setLimit, 
 				</TableBody>
 
 				<TableFooter>
-				
+
 					<TableRow>
-					<MuiThemeProvider theme={PaginationStyle}>
-						<TablePagination
-							classes={{
-								root: 'overflow-hidden',
-								spacer: 'w-0 max-w-0',
-								actions:'text-64',
-								select:'text-12 mt-4',
-								 selectIcon:'mt-4',
-							}}							
-							rowsPerPageOptions={[5,10,25, { label: 'All', value: totalItems }]}
-							colSpan={5}
-							style={{fontSize:'12px'}}
-							count={totalItems}
-							rowsPerPage={rowsPerPage}
-							page={currentPage}
-							SelectProps={{
-								inputProps: { 'aria-label': 'rows per page' },
-								native: false
-							}}
-						
-							onChangePage={handleChangePage}
-							onChangeRowsPerPage={handleChangeRowsPerPage}
-							ActionsComponent={ContactsTablePaginationActions}
-						/>
+						<MuiThemeProvider theme={PaginationStyle}>
+							<TablePagination
+								classes={{
+									root: 'overflow-hidden',
+									spacer: 'w-0 max-w-0',
+									actions: 'text-64',
+									select: 'text-12 mt-4',
+									selectIcon: 'mt-4',
+								}}
+								rowsPerPageOptions={[5, 10, 25, { label: 'All', value: totalItems }]}
+								colSpan={5}
+								style={{ fontSize: '12px' }}
+								count={totalItems}
+								rowsPerPage={rowsPerPage}
+								page={currentPage}
+								SelectProps={{
+									inputProps: { 'aria-label': 'rows per page' },
+									native: false
+								}}
+
+								onChangePage={handleChangePage}
+								onChangeRowsPerPage={handleChangeRowsPerPage}
+								ActionsComponent={ContactsTablePaginationActions}
+							/>
 						</MuiThemeProvider>
-					
+
 					</TableRow>
-			
+
 				</TableFooter>
 			</MaUTable>
 		</TableContainer>
-		{open && <ContactDialog type="edit" data={dialogData} isOpen={open} closeDialog={handleClose}  />}
+		{open && <ContactDialog type="edit" data={dialogData} isOpen={open} closeDialog={handleClose} />}
 		{openBlockDialog && <BlockContactInDialog isOpen={openBlockDialog} type="Block Number" data={blockRowData} closeDialog={handleClose} />}
-		{openUnBlockDialog && <BlockDialog isOpen={openUnBlockDialog} type="UnBlock Number" closeDialog={handleClose} data={blockRowData} />}
+		{openUnBlockDialog && <BlockDialog isOpen={openUnBlockDialog} type="Unblock Number" closeDialog={handleClose} data={blockRowData} />}
 
 
 	</div>

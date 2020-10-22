@@ -59,14 +59,14 @@ const rows = [
 		id: 'date',
 		align: 'center',
 		disablePadding: false,
-		label: 'date',
+		label: 'Date',
 		sort: true
 	},
 	{
 		id: 'block',
 		align: 'center',
 		disablePadding: false,
-		label: 'block',
+		label: 'Block',
 		sort: true
 	},
 ];

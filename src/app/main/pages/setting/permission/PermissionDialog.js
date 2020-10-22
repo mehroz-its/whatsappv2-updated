@@ -77,6 +77,7 @@ const PermissionDialog = (props) => {
   const [currentRules, setCurrenconsumertRules] = React.useState(data.rule_set);
   const [enabled, setEnabled] = React.useState(data.enabled);
   const [consumer, setConsumer] = React.useState(data.consumer);
+
   const handleClose = () => {
     props.closeDialog()
     setopenDialog(false);

@@ -64,7 +64,7 @@ function Config(props) {
     return (
         <Card className={classes.root}>
             <CardContent className={classes.content} style={{ width: '100%' }}>
-                <Typography variant='h2' className='companyDetailHeader' >Configration</Typography>
+                <Typography variant='h2' className='companyDetailHeader'style={{ backgroundColor: "#fc2254",color:"white" }} >Configration</Typography>
                 <Grid container style={{ marginTop: "5px", paddingRight: '15px', paddingLeft: '15px' }} spacing={3}>
                     <Grid item md={6} sm={12} xs={12}  >
                         <TextField required

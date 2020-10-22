@@ -9,8 +9,8 @@ import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import AgentTableHeader from './AgentTableHeader';
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
-import CoreHttpHandler from '../../../../../../../http/services/CoreHttpHandler'
-import FuseLoading from '../../../../../../../@fuse/core/FuseLoading/FuseLoading'
+import CoreHttpHandler from '../../../../../../../http/services/CoreHttpHandler';
+import FuseLoading from '../../../../../../../@fuse/core/FuseLoading/FuseLoading';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -18,12 +18,12 @@ import Switch from '@material-ui/core/Switch';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
-import AgentDialog from './AgentDialog'
+import AgentDialog from './AgentDialog';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Fab from '@material-ui/core/Fab';
 import Icon from '@material-ui/core/Icon';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
 	root: {
 		maxWidth: '100%',
 		padding: '0px'
@@ -39,8 +39,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	root2: {
 		'& > *': {
-			margin: theme.spacing(1),
-		},
+			margin: theme.spacing(1)
+		}
 	},
 	formControl: {
 		margin: theme.spacing(1),
@@ -48,23 +48,21 @@ const useStyles = makeStyles((theme) => ({
 		maxWidth: 150,
 		marginTop: '-4',
 		minHeight: 10,
-		maxHeight: 100,
+		maxHeight: 100
 	},
 	selectEmpty: {
-		marginTop: theme.spacing(2),
+		marginTop: theme.spacing(2)
 	},
 	largeIcon: {
-		height: 22.5,
-
+		height: 22.5
 	},
 	addButton: {
 		position: 'fixed',
 		bottom: 80,
 		right: 50,
 		zIndex: 99
-	},
-
-}))
+	}
+}));
 
 const PaginationStyle = createMuiTheme({
 	overrides: {
@@ -77,11 +75,10 @@ const PaginationStyle = createMuiTheme({
 	}
 });
 
-
 function AgentTable(props) {
 	const classes = useStyles();
-	const [open, setOpen] = React.useState(false)
-	const [type, setType] = React.useState("update")
+	const [open, setOpen] = React.useState(false);
+	const [type, setType] = React.useState('update');
 	const [selected, setSelected] = useState([]);
 	const [companyDetails, setCompanyDetails] = React.useState(props.data);
 	const [data, setData] = useState([]);
@@ -89,11 +86,11 @@ function AgentTable(props) {
 
 	const [data2, setData2] = useState(data);
 
-	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
+	const [searchVal, setSearchVal] = useState(props.ValueForSearch);
 
-	const [snackbaropen, setSnackBarOpen] = React.useState(false)
-	const [snackbarmessage, setSnackBarMessage] = React.useState('')
-	const [ok, setOK] = React.useState('')
+	const [snackbaropen, setSnackBarOpen] = React.useState(false);
+	const [snackbarmessage, setSnackBarMessage] = React.useState('');
+	const [ok, setOK] = React.useState('');
 	const [order, setOrder] = useState({
 		direction: 'asc',
 		id: null
@@ -101,81 +98,91 @@ function AgentTable(props) {
 	const [checked, setChecked] = React.useState(false);
 	const [dialogData, setDialogData] = React.useState({
 		id: 0,
-		name: "",
-		description: "",
+		name: '',
+		description: '',
 		begin_dt: null,
 		begin_time: null,
-		msisdnUrl: "",
+		msisdnUrl: '',
 		state: false,
 		template_id: 0,
 		type: null,
-		activated: false,
+		activated: false
 	});
-	const [number, SetNumber] = useState(10)
-	const handleChange = (event) => {
+	const [number, SetNumber] = useState(10);
+	const handleChange = event => {
 		SetNumber(event.target.value);
 	};
 
-	
-	const [totalItems, setTotalItems] = React.useState(0)
-	const [currentParams, setCurrentParams] = React.useState({limit:10,page:0})
-	const [isLoading, setLoading] = React.useState(true)
-	
+	const [totalItems, setTotalItems] = React.useState(0);
+	const [currentParams, setCurrentParams] = React.useState({ limit: 10, page: 0 });
+	const [isLoading, setLoading] = React.useState(true);
 
-	const getData = ((loadData) => {
+	const getData = loadData => {
 		loadData = () => {
-			return CoreHttpHandler.request('campaigns', 'listing', {
-				columns: "*",
-				limit: 100,
-				orderby: "id",
-				page: 0,
-				sortby: "ASC",
-				values: 1,
-				where: "displayed = $1",
-			}, null, null, true);
+			return CoreHttpHandler.request(
+				'campaigns',
+				'listing',
+				{
+					columns: '*',
+					limit: 100,
+					orderby: 'id',
+					page: 0,
+					sortby: 'ASC',
+					values: 1,
+					where: 'displayed = $1'
+				},
+				null,
+				null,
+				true
+			);
 		};
-		loadData().then((response) => {
-			const tableData = response.data.data.list.data
-			setData(tableData)
-			setData2(tableData)
+		loadData().then(response => {
+			const tableData = response.data.data.list.data;
+			setData(tableData);
+			setData2(tableData);
 		});
-	})
+	};
 	setTimeout(() => {
-		setSnackBarOpen(false)
-		setSnackBarMessage("")
+		setSnackBarOpen(false);
+		setSnackBarMessage('');
 	}, 3000);
-		
+
 	React.useEffect(() => {
-		getPaginatedData()
-	  }, [currentParams]);
+		getPaginatedData();
+	}, [currentParams]);
 
 	const getPaginatedData = () => {
 		if (companyDetails) {
-
-			setLoading(true)
+			setLoading(true);
 
 			let update_params = {
 				client_id: companyDetails.id,
-				...currentParams,
-			}
-			CoreHttpHandler.request('CompanyAgent', 'get_paginated', update_params, (response)=>{
-				setAgent(response.data.data.agentList)
-				setData(response.data.data.agentList)
-				setTotalItems(response.data.data.totalItems)
+				...currentParams
+			};
+			CoreHttpHandler.request(
+				'CompanyAgent',
+				'get_paginated',
+				update_params,
+				response => {
+					setAgent(response.data.data.agentList);
+					setData(response.data.data.agentList);
+					setTotalItems(response.data.data.totalItems);
 
-				setLoading(false)
+					setLoading(false);
 
-				console.log("Agent=>",response)
-			}, dataSourceFailureCompanyAgent);
+					console.log('Agent=>', response);
+				},
+				dataSourceFailureCompanyAgent
+			);
 		}
-	}
-	const dataSourceSuccessCompanyAgent = (response) => {
-		setAgent(response.data.agentList)
-		setData(response.data.data.all_agents)
-		console.log("dataSourceSuccessCompanyAgent response", response);
 	};
-	const dataSourceFailureCompanyAgent = (response) => {
-		console.log("dataSourceFailureCompanyAgent response : ", response);
+	const dataSourceSuccessCompanyAgent = response => {
+		setAgent(response.data.agentList);
+		setData(response.data.data.all_agents);
+		console.log('dataSourceSuccessCompanyAgent response', response);
+	};
+	const dataSourceFailureCompanyAgent = response => {
+		console.log('dataSourceFailureCompanyAgent response : ', response);
 	};
 
 	function handleRequestSort(event, property) {
@@ -191,11 +198,13 @@ function AgentTable(props) {
 	}
 
 	function search() {
-		setSearchVal(props.ValueForSearch)
-		setData2(data.filter(n => n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+		setSearchVal(props.ValueForSearch);
+		setData2(data.filter(n => n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())));
 	}
 	if (searchVal !== props.ValueForSearch) {
-		{ search() }
+		{
+			search();
+		}
 	}
 	function handleSelectAllClick(event) {
 		if (event.target.checked) {
@@ -206,26 +215,45 @@ function AgentTable(props) {
 	}
 
 	function handleClick(n) {
-		setType("update")
-		setOpen(true)
-		setDialogData(n)
+		setType('update');
+		setOpen(true);
+		setDialogData(n);
 	}
 	const handleClickAdd = () => {
 		// alert("handleClickAdd")
 		setOpen(true);
-		setType("Create")
+		setType('Create');
 	};
-	function handleDialogClose() {
-		setDialogData({})
+	function handleDialogClose(e) {
+		if (e == 'create') {
+			setSnackBarMessage('Created Successfully');
+			setOK('success');
+			setSnackBarOpen(true);
+		} else if (e == 'update') {
+			setSnackBarMessage('Update Successfully');
+			setOK('success');
+			setSnackBarOpen(true);
+		} else if (e == 'error') {
+			setSnackBarMessage('Error!Please Try Again Later');
+			setOK('error');
+			setSnackBarOpen(true);
+			setOpen(false);
+			return;
+		}
+		// setOpen(false)
+		// setDeleteDialog(false)
+		// props.onClose(val)
+
+		setDialogData({});
 		// let update_params = {
 		// 	key: ':client_id',
 		// 	value: companyDetails.id,
 		// 	params: {}
 		// }
-		getPaginatedData()
+		getPaginatedData();
 
 		// CoreHttpHandler.request('CompanyAgent', 'get', update_params, dataSourceSuccessCompanyAgent, dataSourceFailureCompanyAgent);
-		setOpen(false)
+		setOpen(false);
 	}
 	// if (data.length === 0) {
 	// 	return (
@@ -266,85 +294,82 @@ function AgentTable(props) {
 		setSelected(newSelected);
 	}
 
-	
+	const setPage = currentPage => {
+		setCurrentParams({ limit: currentParams.limit, page: currentPage });
+	};
 
-	const setPage = (currentPage)=>{
-		setCurrentParams({limit:currentParams.limit,page:currentPage})
-	}
-	
-	const setLimit = (pageLimit)=>{
-		setCurrentParams({limit:pageLimit,page:0})
-	}
-	
+	const setLimit = pageLimit => {
+		setCurrentParams({ limit: pageLimit, page: 0 });
+	};
+
 	const toggleChecked = () => {
-		setChecked((prev) => !prev);
+		setChecked(prev => !prev);
 	};
 	const handleClickOpen = () => {
-		setDialogData('')
+		setDialogData('');
 		setOpen(true);
-	}
-	
+	};
+
 	const handleChangePage = (event, newPage) => {
-		setPage(newPage)
+		setPage(newPage);
 	};
 
 	const handleChangeRowsPerPage = event => {
 		setLimit(Number(event.target.value));
 	};
+
 	return (
 		<>
 			<Card className={classes.root}>
 				<CardContent className={classes.content} style={{ width: '100%' }}>
-					<Typography variant='h2' className='companyDetailHeader'>Agents</Typography>
+					<Typography
+						variant="h2"
+						className="companyDetailHeader"
+						style={{ backgroundColor: '#fc2254', color: 'white' }}
+					>
+						Users
+					</Typography>
 					<Snackbar
-						anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+						anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 						open={snackbaropen}
-						autoHideDuration={3000}
+						autoHideDuration={7000}
 					>
 						<Alert variant="filled" severity={ok}>
 							{snackbarmessage}
 						</Alert>
 					</Snackbar>
-					{
-						isLoading?
-
+					{isLoading ? (
 						<div className="flex flex-1 items-center justify-center h-full">
 							<FuseLoading />
 						</div>
-						:
-
-
-						(
-							data.length?
-
-							<div className="w-full flex flex-col">
-						<FuseScrollbars className="flex-grow overflow-x-auto">
-							<Table className="min-w-xl" aria-labelledby="tableTitle">
-								<AgentTableHeader
-									numSelected={selected.length}
-									order={order}
-									onSelectAllClick={handleSelectAllClick}
-									onRequestSort={handleRequestSort}
-									rowCount={data.length}
-								/>
-								<TableBody>
-									{_.orderBy(
-										data,
-										[
-											o => {
-												switch (order.id) {
-													case 'categories': {
-														return o.categories[0];
-													}
-													default: {
-														return o[order.id];
+					) : data.length ? (
+						<div className="w-full flex flex-col">
+							<FuseScrollbars className="flex-grow overflow-x-auto">
+								<Table className="min-w-xl" aria-labelledby="tableTitle">
+									<AgentTableHeader
+										numSelected={selected.length}
+										order={order}
+										onSelectAllClick={handleSelectAllClick}
+										onRequestSort={handleRequestSort}
+										rowCount={data.length}
+									/>
+									<TableBody>
+										{_.orderBy(
+											data,
+											[
+												o => {
+													switch (order.id) {
+														case 'categories': {
+															return o.categories[0];
+														}
+														default: {
+															return o[order.id];
+														}
 													}
 												}
-											}
-										],
-										[order.direction]
-									)
-										.map((n, i) => {
+											],
+											[order.direction]
+										).map((n, i) => {
 											const isSelected = selected.indexOf(n.id) !== -1;
 											return (
 												<TableRow
@@ -357,30 +382,75 @@ function AgentTable(props) {
 													selected={isSelected}
 													onClick={event => handleClick(n)}
 												>
-													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													<TableCell
+														component="th"
+														scope="row"
+														align="center"
+														style={{ fontSize: '11px', padding: '10px' }}
+													>
 														{n.id}
 													</TableCell>
-													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													<TableCell
+														component="th"
+														scope="row"
+														align="center"
+														style={{ fontSize: '11px', padding: '10px' }}
+													>
 														{n.username}
 													</TableCell>
 
-													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													<TableCell
+														component="th"
+														scope="row"
+														align="center"
+														style={{ fontSize: '11px', padding: '10px' }}
+													>
 														{n.number}
 													</TableCell>
-													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													<TableCell
+														component="th"
+														scope="row"
+														align="center"
+														style={{ fontSize: '11px', padding: '10px' }}
+													>
 														{n.email}
 													</TableCell>
-													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													<TableCell
+														component="th"
+														scope="row"
+														align="center"
+														style={{ fontSize: '11px', padding: '10px' }}
+													>
 														{n.position}
 													</TableCell>
 
-													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-														{n.max_token_count === 1 ? "Agent" : "Admin"}
+													<TableCell
+														component="th"
+														scope="row"
+														align="center"
+														style={{ fontSize: '11px', padding: '10px' }}
+													>
+														{n.max_token_count === 1 ? 'Agent' : 'Admin'}
 													</TableCell>
-													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-														{n.enabled === true ?
-															<div>	<Icon name='lock' color='primary'>check_circle</Icon></div> :
-															<div>	<Icon name='lock'>radio_button_unchecked</Icon></div>}
+													<TableCell
+														component="th"
+														scope="row"
+														align="center"
+														style={{ fontSize: '11px', padding: '10px' }}
+													>
+														{n.enabled === true ? (
+															<div>
+																{' '}
+																<Icon name="lock" color="primary">
+																	check_circle
+																</Icon>
+															</div>
+														) : (
+															<div>
+																{' '}
+																<Icon name="lock">radio_button_unchecked</Icon>
+															</div>
+														)}
 														{/* <FormControlLabel
 															style={{ marginLeft: '2px' }}
 															control={
@@ -396,58 +466,55 @@ function AgentTable(props) {
 												</TableRow>
 											);
 										})}
-								</TableBody>
-							</Table>
-						</FuseScrollbars>
-						<FuseAnimate animation="transition.expandIn" delay={300}>
-							<Fab
-								color="primary"
-								aria-label="add"
-								size="medium"
-								className={classes.addButton}
-								onClick={handleClickAdd}
-							>
-								<Icon>person_add</Icon>
-							</Fab>
-						</FuseAnimate>
-						<TablePagination
-							classes={{
-								root: 'overflow-hidden',
-								spacer: 'w-0 max-w-0',
-								actions: 'text-64',
-								select: 'text-12',
-							}}
-							className="overflow-hidden"
-							component="div"
-							style={{ fontSize: '12px' }}
-
-							rowsPerPageOptions={[10, 25, 50, { label: 'All', value: totalItems }]}
-							count={totalItems}
-							rowsPerPage={currentParams.limit}
-							page={currentParams.page}
-
-							onChangePage={handleChangePage}
-							onChangeRowsPerPage={handleChangeRowsPerPage}
-								
-						/>
-						{open && <AgentDialog isOpen={open} type={type} data={dialogData} clientId={companyDetails.id} closeDialog={handleDialogClose} />}
-					</div>
-				
-
-
-							:
-
-							<div className="flex flex-1 items-center justify-center h-full">
-								<Typography color="textSecondary" variant="h5">
+									</TableBody>
+								</Table>
+							</FuseScrollbars>
+							<FuseAnimate animation="transition.expandIn" delay={300}>
+								<Fab
+									color="primary"
+									aria-label="add"
+									size="medium"
+									className={classes.addButton}
+									onClick={handleClickAdd}
+								>
+									<Icon>person_add</Icon>
+								</Fab>
+							</FuseAnimate>
+							<TablePagination
+								classes={{
+									root: 'overflow-hidden',
+									spacer: 'w-0 max-w-0',
+									actions: 'text-64',
+									select: 'text-12'
+								}}
+								className="overflow-hidden"
+								component="div"
+								style={{ fontSize: '12px' }}
+								rowsPerPageOptions={[10, 25, 50, { label: 'All', value: totalItems }]}
+								count={totalItems}
+								rowsPerPage={currentParams.limit}
+								page={currentParams.page}
+								onChangePage={handleChangePage}
+								onChangeRowsPerPage={handleChangeRowsPerPage}
+							/>
+							{open && (
+								<AgentDialog
+									isOpen={open}
+									type={type}
+									data={dialogData}
+									clientId={companyDetails.id}
+									closeDialog={handleDialogClose}
+								/>
+							)}
+						</div>
+					) : (
+						<div className="flex flex-1 items-center justify-center h-full">
+							<Typography color="textSecondary" variant="h5">
 								No Data Found!
 							</Typography>
-							</div>
-
-
-						)
-					}
-
-					</CardContent>
+						</div>
+					)}
+				</CardContent>
 			</Card>
 		</>
 	);

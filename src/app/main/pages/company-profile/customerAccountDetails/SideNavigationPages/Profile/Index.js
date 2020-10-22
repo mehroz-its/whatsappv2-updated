@@ -210,7 +210,7 @@ function Profile(props) {
         <>
             <Card className={classes.root}>
                 <CardContent className={classes.content} style={{ width: '100%' }}>
-                    <Typography variant='h2' className='companyDetailHeader' >Profile</Typography>
+                    <Typography variant='h2' className='companyDetailHeader' style={{ backgroundColor: "#fc2254", color: "white" }} >Profile</Typography>
                     <div className="flex flex-col items-center justify-center " style={{ marginTop: 23 }}>
                         {isLoading ? <CircularProgress color="secondary" /> :
 
@@ -232,6 +232,7 @@ function Profile(props) {
                             <TextField required
                                 size="small"
                                 value={first_name}
+                                label="FirstName"
                                 name='firstName'
                                 autoFocus
                                 placeholder='First Name'
@@ -246,6 +247,7 @@ function Profile(props) {
                                 size="small"
                                 value={last_name}
                                 name='lastName'
+                                label="LastName"
                                 autoFocus
                                 placeholder='Last Name'
                                 type='text'
@@ -259,9 +261,10 @@ function Profile(props) {
                                 size="small"
                                 value={number}
                                 name='number'
+                                label="Number"
                                 autoFocus
                                 placeholder='Number'
-                                type='text'
+                                type='number'
                                 variant="outlined"
                                 fullWidth
                                 autoComplete="off"
@@ -272,9 +275,10 @@ function Profile(props) {
                                 size="small"
                                 value={phone}
                                 name='phone'
+                                label="Phone"
                                 autoFocus
                                 placeholder='Phone'
-                                type='text'
+                                type='number'
                                 variant="outlined"
                                 fullWidth
                                 autoComplete="off"
@@ -284,6 +288,7 @@ function Profile(props) {
                             <TextField required
                                 size="small"
                                 value={email}
+                                label="Email"
                                 name='email'
                                 autoFocus
                                 placeholder='Email'
@@ -297,6 +302,7 @@ function Profile(props) {
                             <TextField required
                                 size="small"
                                 value={address}
+                                label="Address"
                                 name='address'
                                 autoFocus
                                 placeholder='Address'
@@ -407,9 +413,9 @@ function Profile(props) {
                     </Snackbar>
                 </CardContent>
             </Card >
-            <div style={{width:'100%',height:64,marginTop:24,position:"relative",backgroundColor: 'white',boxShadow:'0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)',borderRadius:3}}>
-                <div style={{width:'9%',position:"absolute",top:'18%',right:'3%'}}>
-                <Button style={{alignItems: 'center',alignSelf: 'center',alignContent: 'center',justifyContent:'center'}} variant="contained" color="primary"  aria-label="Register" onClick={() => submit()} >   Update	</Button>
+            <div style={{ width: '100%', height: 64, marginTop: 24, position: "relative", backgroundColor: 'white', boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)', borderRadius: 3 }}>
+                <div style={{ width: '9%', position: "absolute", top: '18%', right: '3%' }}>
+                    <Button style={{ alignItems: 'center', alignSelf: 'center', alignContent: 'center', justifyContent: 'center' }} variant="contained" color="primary" aria-label="Register" onClick={() => submit()} disabled={(address !== "" && first_name !== "" && last_name !== "" && number !== "" && phone !== "" && email !== "" && countryy !== "" && statee !== "" && cityy !== "" && website !== "" && email !== "") ? false : true} >   Update	</Button>
                 </div>
 
             </div>

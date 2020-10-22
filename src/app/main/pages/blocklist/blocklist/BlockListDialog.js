@@ -35,10 +35,10 @@ const BlockDialog = (props) => {
 			<DialogTitle id="form-dialog-title">{props.type} </DialogTitle>
 			<DialogContent classes={{ root: 'p-24' }}>
 				<div className="flex">
-					<div className="min-w-48 pt-10">
+					<div className="min-w-48 pt-10" style={{marginTop:"-13px"}}>
 						<Icon color="action">block</Icon>
 					</div>
-					{`Are you sure you want to unblock this number [${data.number}] ?`}
+					<h6 style={{fontSize:"11px"}}>{`Are you sure you want to unblock this number [${data.number}] ?`}</h6>
 				</div>
 			</DialogContent>
 			<DialogActions>

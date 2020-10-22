@@ -7,6 +7,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
+import PersonIcon from '@material-ui/icons/Person';
+import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
+import GroupIcon from '@material-ui/icons/Group';
+import SpeakerNotesIcon from '@material-ui/icons/SpeakerNotes';
+
+
+
 const useStyles = makeStyles(theme => ({
 	listItem: {
 		color: 'inherit!important',
@@ -84,9 +91,10 @@ function CustomerDetailSideBar(props) {
 							className={classes.listItem}
 							onClick={() => { onTabChange('Profile') }}
 						>
-							<Icon className="list-item-icon text-16" color="action">
+							{/* <Icon className="list-item-icon text-16" color="action">
 								rate_review
-							</Icon>
+							</Icon> */}
+							<PersonIcon className="list-item-icon text-16" color="action" />
 							<ListItemText className="truncate" primary="Profile" disableTypography />
 						</ListItem>
 						<ListItem
@@ -97,9 +105,10 @@ function CustomerDetailSideBar(props) {
 							activeClassName="active"
 							className={classes.listItem}
 							onClick={() => { onTabChange('Contact') }}>
-							<Icon className="list-item-icon text-16" color="action">
+							{/* <Icon className="list-item-icon text-16" color="action">
 								textsms
-							</Icon>
+							</Icon> */}
+							<PhoneAndroidIcon className="list-item-icon text-16" color="action" />
 							<ListItemText
 								primary="Contacts" disableTypography />
 						</ListItem>
@@ -111,11 +120,27 @@ function CustomerDetailSideBar(props) {
 							activeClassName="active"
 							className={classes.listItem}
 							onClick={() => { onTabChange("Agents") }}>
-							<Icon className="list-item-icon text-16" color="action">
+							{/* <Icon className="list-item-icon text-16" color="action">
 								audiotrack
-							</Icon>
+							</Icon> */}
+							<GroupIcon className="list-item-icon text-16" color="action" />
 							<ListItemText
 								primary="Users" disableTypography />
+						</ListItem>
+						<ListItem
+							exact
+							button
+							component={NavLinkAdapter}
+							to="/apps/company-details/CannedReplies"
+							activeClassName="active"
+							className={classes.listItem}
+							onClick={() => { onTabChange("CannedReplies") }}>
+							{/* <Icon className="list-item-icon text-16" color="action"> */}
+							{/* switch_video */}
+							{/* </Icon> */}
+							<SpeakerNotesIcon className="list-item-icon text-16" color="action" />
+							<ListItemText
+								primary="Canned Replies" disableTypography />
 						</ListItem>
 						<ListItem
 							exact

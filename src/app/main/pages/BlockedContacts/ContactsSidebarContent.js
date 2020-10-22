@@ -77,7 +77,7 @@ function ContactsSidebarContent(props) {
 							<Icon className="list-item-icon text-16" color="action">
 								people
 							</Icon>
-							<ListItemText className="truncate" primary="All contacts" disableTypography />
+							<ListItemText className="truncate" primary="All Contacts" disableTypography />
 						</ListItem>
 						<ListItem
 							button

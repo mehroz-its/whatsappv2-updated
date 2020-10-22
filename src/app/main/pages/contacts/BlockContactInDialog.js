@@ -14,7 +14,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { green } from '@material-ui/core/colors';
-import { makeStyles,ThemeProvider,createMuiTheme,withStyles } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme, withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Checkbox from '@material-ui/core/Checkbox';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
@@ -36,25 +36,25 @@ const useStyles = makeStyles((theme) => ({
 
     },
     margin: {
-	  
-		color:'white',
-		paddingLeft:'14px',
-		fontWeight:'300',
-		paddingRight:'14px',
-		paddingTop:'5px',
-		paddingBottom:'5px',
-		fontSize:'13px',
-	   
-	  },
+
+        color: 'white',
+        paddingLeft: '14px',
+        fontWeight: '300',
+        paddingRight: '14px',
+        paddingTop: '5px',
+        paddingBottom: '5px',
+        fontSize: '13px',
+
+    },
 }));
 
 
 
 const theme = createMuiTheme({
-	palette: {
-	  primary: green,
-	},
-	});
+    palette: {
+        primary: green,
+    },
+});
 
 const BlockDialog = (props) => {
     const classes = useStyles(props);
@@ -110,7 +110,7 @@ const BlockDialog = (props) => {
 			</AppBar>
             <DialogContent classes={{ root: 'p-24' }}>
                 <div className="flex mt-10" style={{fontSize:'12px'}}>
-                    <div className="min-w-48 mb-20">
+                    <div className="min-w-48 mb-20" style={{marginTop:"-5px"}}>
                         <Icon color="action">block</Icon>
                     </div>
                     {`Are you sure you want to block this number [${data.number}] ?`}
@@ -137,7 +137,7 @@ const BlockDialog = (props) => {
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleDialogClose} color="primary" variant="contained" size="small">
-                    Cancel
+                Cancel
              </Button>
           
           <ThemeProvider theme={theme}>
@@ -152,7 +152,7 @@ const BlockDialog = (props) => {
          </Button>
          </ThemeProvider>
             </DialogActions>
-        </Dialog>
+        </Dialog >
 
     )
 }

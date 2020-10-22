@@ -14,6 +14,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import PersonIcon from '@material-ui/icons/Person';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import DraftsIcon from '@material-ui/icons/Drafts';
+import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
+import WorkIcon from '@material-ui/icons/Work';
+
+
 const useStyles = makeStyles((theme) => ({
     addButton: {
         position: 'absolute',
@@ -46,7 +53,6 @@ const AgentDialog = (props) => {
     const { isOpen, type, getUpdatedData, data, clientId } = props
     const [openDialog, setopenDialog] = React.useState(isOpen);
     const [canned_type, setCannedType] = React.useState(data.message_type);
-
     const [username, setUsername] = React.useState(data.username);
     const [password, setPassword] = React.useState(data.password);
     const [firstname, setFirstname] = React.useState(data.firstname);
@@ -56,13 +62,20 @@ const AgentDialog = (props) => {
     const [position, setPosition] = React.useState(data.position);
     const [maxTokenCount, setMaxTokenCount] = React.useState(data.max_token_count);
     const [status, setStatus] = React.useState(data.enabled);
-
     const [enabled, setEnabled] = React.useState(data.enabled);
 
     const handleDialogClose = () => {
         props.closeDialog()
         setopenDialog(false);
     };
+
+    // const handleClose = () => {
+    //     props.closeDialog()
+    //     setopenDialog(false);
+    // };
+
+
+
     // const handleSubmit = () => {
     //     let fileName
     //     if (uploadedFilePath != '') {
@@ -164,9 +177,12 @@ const AgentDialog = (props) => {
             CoreHttpHandler.request('CompanyAgent', 'create', params, (response) => {
                 console.log("CompanyAgent response : ", response);
 
+                props.closeDialog('create')
+                setopenDialog(false);
 
-                props.closeDialog()
             }, (error) => {
+                props.closeDialog("error")
+                setopenDialog(false);
             });
         } else {
             let update_params = {
@@ -178,14 +194,18 @@ const AgentDialog = (props) => {
                 console.log("CompanyAgent response : ", response);
                 if (maxTokenCount === -1) {
                     let data = {
-                        enabled:!enabled,
+                        enabled: !enabled,
                         id: clientId
                     }
                     CoreHttpHandler.request('Business', 'changeStatus', data, dataSourceSuccessChangeStatus, dataSourceFailureChangeStatus);
-                }
 
-                props.closeDialog()
+                }
+                props.closeDialog("update")
+                setopenDialog(false);
             }, (error) => {
+
+                props.closeDialog("error")
+                setopenDialog(false);
             });
         }
     };
@@ -206,13 +226,14 @@ const AgentDialog = (props) => {
             <AppBar position="static" elevation={1}>
                 <div className="flex flex-col items-center justify-center pb-10 text-20 align-items-center "
                     style={{ paddingBottom: 20, paddingTop: 20 }}>
-                    {type === "update" ? "Update" : "Create"} Agent
+                    {type === "update" ? "Update" : "Create"} User
                 </div>
             </AppBar>
             <DialogContent classes={{ root: 'p-24' }}>
                 <div className="flex">
                     <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-                        <Icon color="action">account_circle</Icon>
+                        {/* <Icon color="action">account_circle</Icon> */}
+                        <PersonIcon color="action" style={{ color: "#8b8b8b" }} />
                     </div>
                     <TextField
                         className="mb-24"
@@ -230,7 +251,8 @@ const AgentDialog = (props) => {
                 </div>
                 <div className="flex">
                     <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-                        <Icon color="action">account_circle</Icon>
+                        {/* <Icon color="action">account_circle</Icon> */}
+                        <VisibilityOffIcon color="action" style={{ color: "#8b8b8b" }} />
                     </div>
 
                     <TextField
@@ -250,7 +272,8 @@ const AgentDialog = (props) => {
 
                 <div className="flex">
                     <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-                        <Icon color="action">account_circle</Icon>
+                        {/* <Icon color="action">account_circle</Icon> */}
+                        <DraftsIcon color="action" style={{ color: "#8b8b8b" }} />
                     </div>
                     <TextField
                         className="mb-24"
@@ -268,7 +291,8 @@ const AgentDialog = (props) => {
                 </div>
                 <div className="flex">
                     <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-                        <Icon color="action">account_circle</Icon>
+                        {/* <Icon color="action">account_circle</Icon> */}
+                        <PhoneAndroidIcon color="action" style={{ color: "#8b8b8b" }} />
                     </div>
 
                     <TextField
@@ -287,7 +311,8 @@ const AgentDialog = (props) => {
                 </div>
                 <div className="flex">
                     <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-                        <Icon color="action">account_circle</Icon>
+                        {/* <Icon color="action">account_circle</Icon> */}
+                        <WorkIcon color="action" style={{ color: "#8b8b8b" }} />
                     </div>
 
                     <TextField
@@ -306,7 +331,7 @@ const AgentDialog = (props) => {
                 </div>
                 <div className="flex">
                     <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-                        <Icon color="action">accessibility</Icon>
+                        <Icon color="action" style={{ color: "#8b8b8b" }}>accessibility</Icon>
                     </div>
                     <Select
                         required
@@ -326,7 +351,8 @@ const AgentDialog = (props) => {
                 </div>
                 <div className="flex" style={{ marginTop: 20 }}>
                     <div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-                        <Icon color="action">accessibility</Icon>
+                        {/* <Icon color="action">accessibility</Icon> */}
+                        <h3 style={{ color: "red", fontWeight: "bold", marginTop: "-8px" }}>Enable</h3>
                     </div>
                     <FormControlLabel
                         style={{ marginLeft: '2px' }}
@@ -350,7 +376,7 @@ const AgentDialog = (props) => {
                 <ThemeProvider theme={theme}>
                     {type !== 'update' ?
                         <div className="mx-32 md:mx-24 my-10">
-                            <Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} color="primary">
+                            <Button className={classes.margin} size="small" variant="contained" onClick={handleSubmit} color="primary" disabled={(username !== "" && username !== undefined && password !== "" && password !== undefined && email !== "" && email !== undefined && mobile !== "" && mobile !== undefined && position !== "" && position !== undefined) ? false : true}>
                                 create
        				  </Button>
                         </div>
