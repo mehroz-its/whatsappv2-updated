@@ -6,12 +6,13 @@ import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import NavbarMobileToggleButton from 'app/fuse-layouts/shared-components/NavbarMobileToggleButton';
 import UserMenu from 'app/fuse-layouts/shared-components/UserMenu';
-import React from 'react';
+import React, { useEffect } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import { useSelector } from 'react-redux';
-import CoreHttpHandler from 'http/services/CoreHttpHandler'
-import { EventEmitter } from '../../../../events'
+import CoreHttpHandler from 'http/services/CoreHttpHandler';
+import { EventEmitter } from '../../../../events';
+import PermissionResolver from '../../../common/PermissionResolver';
 
 const useStyles = makeStyles(theme => ({
 	separator: {
@@ -24,28 +25,41 @@ const useStyles = makeStyles(theme => ({
 function ToolbarLayout1(props) {
 	const config = useSelector(({ fuse }) => fuse.settings.current.layout.config);
 	const toolbarTheme = useSelector(({ fuse }) => fuse.settings.toolbarTheme);
-	const [online, setOnline] = React.useState(JSON.parse(localStorage.getItem('online')))
+	const [online, setOnline] = React.useState(JSON.parse(localStorage.getItem('online')));
+	const [toggleShow, setToggleShow] = React.useState(false);
 	const classes = useStyles(props);
-	const setAgentOnline = (e) => {
+	const setAgentOnline = e => {
 		const isOnline = e.target.checked;
 		if (isOnline) {
-			EventEmitter.dispatch('Online',true)
-			localStorage.setItem('online', true)
-			setOnline(true)
-			CoreHttpHandler.request('core', 'online', {}, (response) => {
-				localStorage.setItem('online', true)
-			}, (response) => {
-
-			});
+			EventEmitter.dispatch('Online', true);
+			localStorage.setItem('online', true);
+			setOnline(true);
+			CoreHttpHandler.request(
+				'core',
+				'online',
+				{},
+				response => {
+					localStorage.setItem('online', true);
+				},
+				response => {}
+			);
 		} else {
-			EventEmitter.dispatch('Online',false)
-			localStorage.setItem('online', false)
-				setOnline(false)
-			CoreHttpHandler.request('core', 'offline', {}, (response) => {
-			}, (response) => {
-			});
+			EventEmitter.dispatch('Online', false);
+			localStorage.setItem('online', false);
+			setOnline(false);
+			CoreHttpHandler.request(
+				'core',
+				'offline',
+				{},
+				response => {},
+				response => {}
+			);
 		}
 	};
+	useEffect(() => {
+		setToggleShow(PermissionResolver.hasPermission('app', 'toggle'));
+		console.log('toggleShow : ', toggleShow);
+	}, []);
 	return (
 		<ThemeProvider theme={toolbarTheme}>
 			<AppBar
@@ -63,26 +77,29 @@ function ToolbarLayout1(props) {
 							</Hidden>
 						)}
 
-						<div className="flex flex-1" style={{marginTop:'-0.4%'}}>
-							<Hidden mdDown >
-								<FuseShortcuts className="px-16 py-0"  />
+						<div className="flex flex-1" style={{ marginTop: '-0.4%' }}>
+							<Hidden mdDown>
+								<FuseShortcuts className="px-16 py-0" />
 							</Hidden>
 						</div>
 
 						<div className="flex">
-							<div style={{ marginTop: '2.3%' }}>
-								<FormControlLabel
-									control={
-										<Switch
-											checked={online}
-											onChange={setAgentOnline}
-											name="online"
-											color="primary"
-										/>
-									}
-									label={online ? 'Go Offline' : 'Go Online'}
-								/>
-							</div>
+							{toggleShow === true ? (
+								<div style={{ marginTop: '2.3%' }}>
+									<FormControlLabel
+										control={
+											<Switch
+												checked={online}
+												onChange={setAgentOnline}
+												name="online"
+												color="primary"
+											/>
+										}
+										label={online ? 'Go Offline' : 'Go Online'}
+									/>
+								</div>
+							) : null}
+
 							<UserMenu />
 
 							<div className={classes.separator} />
