@@ -891,12 +891,16 @@ function Chat(props) {
 														ideal={400}
 														max={1000}
 														readMoreText="Click Here to Read More" />
-													<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} {item.type === "outbound" ? MessageStateResolver.resolve(item.status) : null}</Typography>
+													<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} 
+													{item.type === "outbound" && !item.hideStatus  ? MessageStateResolver.resolve(item.status) : null}
+													</Typography>
 												</div>
 												:
 												<div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px', textAlign: 'justify', wordBreak: 'break-all' }}>
 													{item.message_body}
-													<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} {item.type === "outbound" ? MessageStateResolver.resolve(item.status) : null}</Typography>
+													<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} 
+													{item.type === "outbound" && !item.hideStatus  ? MessageStateResolver.resolve(item.status) : null}
+													</Typography>
 												</div>
 											: null}
 										{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}

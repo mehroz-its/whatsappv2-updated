@@ -52,9 +52,15 @@ function Users(props) {
 	const [currentParams, setCurrentParams] = React.useState({limit:10,page:0})
 	const [isLoading, setLoading] = React.useState(true)
 	
+	function showError(mes){
+		if(mes)
+			snackbar(mes)
 
+	}
 	function closeDialog(mes) {
-		snackbar(mes)
+		if(mes)
+			snackbar(mes)
+
 		getData()
 		setOpen(false);
 	}
@@ -137,14 +143,19 @@ function Users(props) {
 			setSnackBarOpen(true)
 		}
 		else if (snackmsg === "error") {
-			setSnackBarMessage("Error!Please Try Again Later")
+			setSnackBarMessage("Error! Please Try Again Later")
 			setOK("error")
 			setSnackBarOpen(true)
 		}
 		else if (snackmsg !== ("update" || "delete" || "create" || "error")) {
-			setSnackBarMessage(snackmsg)
-			setOK("error")
-			setSnackBarOpen(true)
+			if(snackmsg){
+				setSnackBarMessage(snackmsg)
+				setOK("error")
+				setSnackBarOpen(true)
+			}else{
+				setSnackBarMessage("")
+				setSnackBarOpen(false)
+			}
 		}
 	}
 
@@ -166,6 +177,7 @@ function Users(props) {
 				}}
 				header={<UserHeader SearchVal={search} />}
 				content={<UserTable 
+					showError={showError}
 					totalItems={totalItems} setPage={setPage} setLimit={setLimit} rowsPerPage={currentParams.limit} currentPage={currentParams.page} isLoading={isLoading} 
 				snackbar={snackbar} ValueForSearch={val} dataa={data2} onClose={closeDialog} />}
 			/>

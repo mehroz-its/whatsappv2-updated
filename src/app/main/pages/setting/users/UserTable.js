@@ -29,6 +29,9 @@ const PaginationStyle = createMuiTheme({
 });
 
 function UserTable(props) {
+	function displayError(msg){
+		props.showError(msg)
+	}
 	function closeDialog(val) {
 		setOpen(false)
 		setDeleteDialog(false)
@@ -177,6 +180,9 @@ function UserTable(props) {
 												{n.username}
 											</TableCell>
 											<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
+												{n.position}
+											</TableCell>
+											<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
 												{n.email}
 											</TableCell>
 											<TableCell component="th" scope="row" align="center" style={{fontSize:'12px',padding:'10px'}}>
@@ -220,7 +226,7 @@ function UserTable(props) {
 					ActionsComponent={ContactsTablePaginationActions}
 				/>
 				</MuiThemeProvider>
-				{open ? <UserDialog  isOpen={open} closeDialog={closeDialog} type="Update" data={dialogData}/>:null}
+				{open ? <UserDialog  isOpen={open} closeDialog={closeDialog} displayError={displayError} type="Update" data={dialogData}/>:null}
 				{deleteDialog && <DeleteDialog path='users' method='delete' isOpen={deleteDialog} type="Delete" closeDialog={closeDialog}  data={deleteDialogData} />}
 	
 			</div>
