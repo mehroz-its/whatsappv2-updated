@@ -11,26 +11,24 @@ import GroupChatAppConfig from './group-chat/GroupChatAppConfig';
 import GroupConfig from './groups/GroupConfig';
 import ContactsAppConfig from './contacts/ContactsAppConfig';
 import CampaignConfig from './campaigns/CampaignConfig';
-import WhatsAppTemplateConfig from  './whatsappTemplate/WhatsAppTemplateConfig'
-import CannedAppConfig from './setting/canned/CannedAppConfig'
-import PermissionConfig from './setting/permission/PermissionConfig'
-import RolesConfig from './setting/roles/RolesConfig'
-import UserConfig from './setting/users/UserConfig'
-import TemplateAppConfig from './templae-messages/TemplateAppConfig'
-import ReportsAppConfig from './Reports/ReportsAppConfig'
-import AdminDashboardAppConfig from './adminDashboard/AdminDashboardAppConfig'
-import AgentConfig from './agent-conversation/AgentConfig'
-import BlockListConfig from './blocklist/BlockListConfig'
-import ContactGroupConfig from './ContactGoup/ContactGroupConfig'
-import TokenConfig from './auth/token/TokenConfig'
-import ResetPassword2PageConfig from './auth/reset-password-2/ResetPassword2PageConfig'
-import BlockAppConfig from './BlockedContacts/BlockAppConfig'
-import ProfileAppConfig from './profile/ProfileAppConfig'
-import ChatHistoryConfig from './chat-history/ChatHistoryConfig'
-import CompanyProfileConfig   from './company-profile/CompanyProfileConfig';
+import WhatsAppTemplateConfig from './whatsappTemplate/WhatsAppTemplateConfig';
+import CannedAppConfig from './setting/canned/CannedAppConfig';
+import PermissionConfig from './setting/permission/PermissionConfig';
+import RolesConfig from './setting/roles/RolesConfig';
+import UserConfig from './setting/users/UserConfig';
+import TemplateAppConfig from './templae-messages/TemplateAppConfig';
+import ReportsAppConfig from './reports/ReportsAppConfig';
+import AdminDashboardAppConfig from './adminDashboard/AdminDashboardAppConfig';
+import AgentConfig from './agent-conversation/AgentConfig';
+import BlockListConfig from './blocklist/BlockListConfig';
+import ContactGroupConfig from './ContactGoup/ContactGroupConfig';
+import TokenConfig from './auth/token/TokenConfig';
+import ResetPassword2PageConfig from './auth/reset-password-2/ResetPassword2PageConfig';
+import BlockAppConfig from './BlockedContacts/BlockAppConfig';
+import ProfileAppConfig from './profile/ProfileAppConfig';
+import ChatHistoryConfig from './chat-history/ChatHistoryConfig';
+import CompanyProfileConfig from './company-profile/CompanyProfileConfig';
 import Error404LoggedOutPageConfig from './errors/404-logged-out/Error404LoggedOutPageConfig';
-
-
 
 let allPagesConfig = [
 	CompanyProfileConfig,
@@ -64,8 +62,6 @@ let allPagesConfig = [
 	AgentConfig,
 	TokenConfig,
 	Error404LoggedOutPageConfig
-]
-	
-
+];
 
 export default allPagesConfig;

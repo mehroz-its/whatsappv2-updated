@@ -634,7 +634,7 @@ function ContactTable(props) {
 												],
 												[order.direction]
 											)
-												.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+												// .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 												.map(n => {
 													const isSelected = selected.indexOf(n.id) !== -1;
 													return (
@@ -763,7 +763,7 @@ function ContactTable(props) {
 										count={data.length}
 										style={{ fontSize: '12px' }}
 										rowsPerPage={rowsPerPage}
-										page={page}
+										// page={page}
 										onChangePage={handleChangePage}
 										onChangeRowsPerPage={handleChangeRowsPerPage}
 										ActionsComponent={ContactsTablePaginationActions}
