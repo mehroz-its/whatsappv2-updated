@@ -224,6 +224,12 @@ function AgentTable(props) {
 		setOpen(true);
 		setType('Create');
 	};
+	function showError(msg){
+		
+		setSnackBarMessage(msg);
+		setOK('error');
+		setSnackBarOpen(true);
+	}
 	function handleDialogClose(e) {
 		if (e == 'create') {
 			setSnackBarMessage('Created Successfully');
@@ -234,10 +240,15 @@ function AgentTable(props) {
 			setOK('success');
 			setSnackBarOpen(true);
 		} else if (e == 'error') {
-			setSnackBarMessage('Error!Please Try Again Later');
+			setSnackBarMessage('Error! Please Try Again Later');
 			setOK('error');
 			setSnackBarOpen(true);
 			setOpen(false);
+			return;
+		}else if (e == 'No Change') {
+			setSnackBarMessage('You did not make any changes');
+			setOK('error');
+			setSnackBarOpen(true);
 			return;
 		}
 		// setOpen(false)
@@ -504,14 +515,36 @@ function AgentTable(props) {
 									data={dialogData}
 									clientId={companyDetails.id}
 									closeDialog={handleDialogClose}
+									showError={showError}
 								/>
 							)}
 						</div>
 					) : (
-						<div className="flex flex-1 items-center justify-center h-full">
+						<div className="flex flex-1 items-center justify-center h-full mt-2">
 							<Typography color="textSecondary" variant="h5">
 								No Data Found!
 							</Typography>
+							<FuseAnimate animation="transition.expandIn" delay={300}>
+								<Fab
+									color="primary"
+									aria-label="add"
+									size="medium"
+									className={classes.addButton}
+									onClick={handleClickAdd}
+								>
+									<Icon>person_add</Icon>
+								</Fab>
+							</FuseAnimate>
+							{open && (
+								<AgentDialog
+									isOpen={open}
+									type={type}
+									data={dialogData}
+									clientId={companyDetails.id}
+									closeDialog={handleDialogClose}
+									showError={showError}
+								/>
+							)}
 						</div>
 					)}
 				</CardContent>

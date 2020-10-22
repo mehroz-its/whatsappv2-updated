@@ -22,6 +22,13 @@ class APIS {
                 method: 'put',
                 path: '/backend/users/update/:id'
             },
+            update_partial: {
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'put',
+                path: '/backend/users/update-partial/:id'
+            },
             create: {
                 headers: {
                     'xt-user-token': null

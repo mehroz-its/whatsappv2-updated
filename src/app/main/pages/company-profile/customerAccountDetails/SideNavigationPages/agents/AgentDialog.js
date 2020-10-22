@@ -54,7 +54,7 @@ const AgentDialog = (props) => {
     const [openDialog, setopenDialog] = React.useState(isOpen);
     const [canned_type, setCannedType] = React.useState(data.message_type);
     const [username, setUsername] = React.useState(data.username);
-    const [password, setPassword] = React.useState(data.password);
+    const [password, setPassword] = React.useState('');
     const [firstname, setFirstname] = React.useState(data.firstname);
     const [lastname, setLastname] = React.useState(data.lastname);
     const [email, setEmail] = React.useState(data.email);
@@ -63,6 +63,35 @@ const AgentDialog = (props) => {
     const [maxTokenCount, setMaxTokenCount] = React.useState(data.max_token_count);
     const [status, setStatus] = React.useState(data.enabled);
     const [enabled, setEnabled] = React.useState(data.enabled);
+
+
+    const [dataCopy, setDataCopy] = React.useState({
+        username: data.username,
+        password: '',
+        firstname: data.firstname,
+        lastname: data.lastname,
+        email: data.email,
+        number: data.number,
+        enabled: data.enabled,
+        role: data.max_token_count === -1 ? "61" : "64",
+        position: data.position,
+        max_token_count: data.max_token_count,
+        default_receiver: data.max_token_count === -1 ? true : false,
+    })
+    
+    function filterData(params){
+        let updated = {}
+        
+        if(dataCopy&&Object.keys(dataCopy)&&Object.keys(dataCopy).length){
+            Object.keys(dataCopy).forEach(key=>{
+                if(dataCopy[key]!=params[key]){
+                    updated[key]=params[key]
+                }
+            })
+        }
+
+        return updated
+    }
 
     const handleDialogClose = () => {
         props.closeDialog()
@@ -170,9 +199,9 @@ const AgentDialog = (props) => {
             position: position,
             max_token_count: maxTokenCount,
             default_receiver: maxTokenCount === -1 ? true : false,
-            clientId: clientId
         };
         if (type !== 'update') {
+            params.clientId = clientId
 
             CoreHttpHandler.request('CompanyAgent', 'create', params, (response) => {
                 console.log("CompanyAgent response : ", response);
@@ -181,32 +210,52 @@ const AgentDialog = (props) => {
                 setopenDialog(false);
 
             }, (error) => {
-                props.closeDialog("error")
-                setopenDialog(false);
+                if(error&&error.response&&error.response.data&&error.response.data.message){
+                
+                    props.showError(error.response.data.message)
+                }else{
+
+                    props.closeDialog("error")
+                    setopenDialog(false);
+                }
             });
         } else {
-            let update_params = {
-                key: ':id',
-                value: data.id,
-                params: params
-            }
-            CoreHttpHandler.request('CompanyAgent', 'update', update_params, (response) => {
-                console.log("CompanyAgent response : ", response);
-                if (maxTokenCount === -1) {
-                    let data = {
-                        enabled: !enabled,
-                        id: clientId
-                    }
-                    CoreHttpHandler.request('Business', 'changeStatus', data, dataSourceSuccessChangeStatus, dataSourceFailureChangeStatus);
+            
+            let filtered = filterData(params)
+            if(filtered&&Object.keys(filtered)&&Object.keys(filtered).length){
+                filtered.clientId = clientId
 
+                let update_params = {
+                    key: ':id',
+                    value: data.id,
+                    params: filtered
                 }
-                props.closeDialog("update")
-                setopenDialog(false);
-            }, (error) => {
+                CoreHttpHandler.request('CompanyAgent', 'update_partial', update_params, (response) => {
+                    console.log("CompanyAgent response : ", response);
+                    if (maxTokenCount === -1) {
+                        let data = {
+                            enabled: !enabled,
+                            id: clientId
+                        }
+                        CoreHttpHandler.request('Business', 'changeStatus', data, dataSourceSuccessChangeStatus, dataSourceFailureChangeStatus);
+    
+                    }
+                    props.closeDialog("update")
+                    setopenDialog(false);
+                }, (error) => {
+                    if(error&&error.response&&error.response.data&&error.response.data.message){
+                    
+                        props.showError(error.response.data.message)
+                    }else{
 
-                props.closeDialog("error")
-                setopenDialog(false);
-            });
+                        props.closeDialog("error")
+                        setopenDialog(false);
+                    }
+                });
+            }else{
+                props.closeDialog("No Change")
+            }
+           
         }
     };
     const dataSourceSuccessChangeStatus = (response) => {
