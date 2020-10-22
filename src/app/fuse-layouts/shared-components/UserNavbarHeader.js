@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { EventEmitter } from '../../../events'
+import { EventEmitter } from '../../../events';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -43,17 +43,17 @@ function UserNavbarHeader(props) {
 	const [lastNameData, setLastNameData] = React.useState('');
 	const [imageData, setImageData] = React.useState('');
 	const [emailData, setEmailData] = React.useState('');
-	
+
 	const user = useSelector(({ auth }) => auth.user);
 	const classes = useStyles();
-	
-	const checkUpdate = () =>{
+
+	const checkUpdate = () => {
 		// alert("update")
-		let data = null
-		data = JSON.parse(localStorage.getItem('user_data'))
+		let data = null;
+		data = JSON.parse(localStorage.getItem('user_data'));
 		// console.log("user_data user",data)
-		let username = null
-		let lastname = null
+		let username = null;
+		let lastname = null;
 		if (data !== null) {
 			function titleCase(str) {
 				str = str.toLowerCase().split(' ');
@@ -63,22 +63,30 @@ function UserNavbarHeader(props) {
 				return str.join(' ');
 			}
 			// console.log(data, 'from local storage')
-			if(data.firstName){
-				username = titleCase(data.firstName);
-				setFirstNameData(username)
+			if (data.firstName) {
+				if (data.firstName === 'N/A') {
+					setFirstNameData('-');
+				} else {
+					username = titleCase(data.firstName);
+					setFirstNameData(username);
+				}
 			}
-			if(data.lastName){
-				lastname = titleCase(data.lastName);
-				setLastNameData(lastname)
+			if (data.lastName) {
+				if (data.lastName === 'N/A') {
+					setLastNameData('-');
+				} else {
+					lastname = titleCase(data.lastName);
+					setLastNameData(lastname);
+				}
 			}
-			setEmailData(data.email)
-			setImageData(data.image)
-	}
-}
-useEffect(() => {
-	EventEmitter.subscribe('ProfileUpdate', (event) => checkUpdate())
-	checkUpdate()
-}, []);
+			setEmailData(data.email);
+			setImageData(data.image);
+		}
+	};
+	useEffect(() => {
+		EventEmitter.subscribe('ProfileUpdate', event => checkUpdate());
+		checkUpdate();
+	}, []);
 
 	return (
 		<AppBar
@@ -91,21 +99,15 @@ useEffect(() => {
 			<Typography className="username text-14 whitespace-no-wrap" color="inherit">
 				{/* {user.data.displayName} */}
 				{`${firstNameData} ${lastNameData}`}
-
 			</Typography>
 			<Typography className="email text-11 mt-8  whitespace-no-wrap" color="inherit">
 				{emailData}
-
 			</Typography>
 			<Avatar
 				className={clsx(classes.avatar, 'avatar')}
 				alt="user photo"
 				// style={{ width: 60, height: 60 }}
-				src={
-					imageData && imageData !== ''
-						? imageData
-						: '../../../'
-				}
+				src={imageData && imageData !== '' ? imageData : '../../../'}
 			/>
 		</AppBar>
 	);
