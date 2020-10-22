@@ -60,6 +60,7 @@ const BlockDialog = (props) => {
     const classes = useStyles(props);
 
     const { isOpen, type, getUpdatedData, data } = props
+
     const [openDialog, setopenDialog] = React.useState(isOpen);
     const [open, setOpen] = React.useState(false);
     const [description, setDescription] = React.useState('');
@@ -72,6 +73,7 @@ const BlockDialog = (props) => {
         CoreHttpHandler.request('conversations', 'block', {
             key: ':number', value: data.number, params: {
                 reason: description,
+                clientId:props.data.client_id
             }
         },
             (response) => {

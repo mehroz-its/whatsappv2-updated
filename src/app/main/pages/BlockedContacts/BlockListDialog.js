@@ -45,6 +45,7 @@ const BlockDialog = (props) => {
 		CoreHttpHandler.request('conversations', 'unblock', {
 			key: ':number',
 			value: data.number,
+			clientId:props.data.client_id
 		}, (response) => {
 			props.closeDialog()
 			setopenDialog(false);

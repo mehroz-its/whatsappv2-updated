@@ -15,17 +15,16 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
 import React, { useEffect, useState, useRef } from 'react';
-import moment from 'moment';
+import moment from "moment";
 
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import ContactTableHeader from './ContactTableHeader';
-import ContactTableUnblockHeading from './ContactTableUnblockHeading.js';
 import ContactTableHeaderGroups from './ContactTableHeaderGroups';
 import ContactsTablePaginationActions from '../../../../setting/canned/ContactsTablePaginationActions';
 import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
-import CoreHttpHandler from '../../../../../../../http/services/CoreHttpHandler';
-import FuseLoading from '../../../../../../../@fuse/core/FuseLoading/FuseLoading';
+import CoreHttpHandler from '../../../../../../../http/services/CoreHttpHandler'
+import FuseLoading from '../../../../../../../@fuse/core/FuseLoading/FuseLoading'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -33,11 +32,11 @@ import Switch from '@material-ui/core/Switch';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
-import ContactDialog from './ContactDialog';
+import ContactDialog from './ContactDialog'
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Fab from '@material-ui/core/Fab';
-import BlockContactInDialog from '../../../../contacts/BlockContactInDialog';
-import BlockDialog from '../../../../BlockedContacts/BlockListDialog';
+import BlockContactInDialog from '../../../../contacts/BlockContactInDialog'
+import BlockDialog from '../../../../BlockedContacts/BlockListDialog'
 import IconButton from '@material-ui/core/IconButton';
 
 import SwipeableViews from 'react-swipeable-views';
@@ -47,336 +46,333 @@ import Box from '@material-ui/core/Box';
 import { CSVLink, CSVDownload } from 'react-csv';
 
 function TabPanel(props) {
-	const { children, value, index, ...other } = props;
+    const { children, value, index, ...other } = props;
 
-	return (
-		<div
-			role="tabpanel"
-			hidden={value !== index}
-			id={`full-width-tabpanel-${index}`}
-			aria-labelledby={`full-width-tab-${index}`}
-			{...other}
-		>
-			{value === index && (
-				<Box p={3}>
-					<Typography>{children}</Typography>
-				</Box>
-			)}
-		</div>
-	);
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`full-width-tabpanel-${index}`}
+            aria-labelledby={`full-width-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box p={3}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
 }
 TabPanel.propTypes = {
-	children: PropTypes.node,
-	index: PropTypes.any.isRequired,
-	value: PropTypes.any.isRequired
+    children: PropTypes.node,
+    index: PropTypes.any.isRequired,
+    value: PropTypes.any.isRequired,
 };
 function a11yProps(index) {
-	return {
-		id: `full-width-tab-${index}`,
-		'aria-controls': `full-width-tabpanel-${index}`
-	};
+    return {
+        id: `full-width-tab-${index}`,
+        'aria-controls': `full-width-tabpanel-${index}`,
+    };
 }
-const useStyles = makeStyles(theme => ({
-	root: {
-		maxWidth: '100%',
-		padding: '0px'
-	},
-	content: {
-		padding: '0px'
-	},
-	root2: {
-		'& > *': {
-			margin: theme.spacing(1)
-		}
-	},
-	formControl: {
-		margin: theme.spacing(1),
-		minWidth: 100,
-		maxWidth: 150,
-		marginTop: '-4',
-		minHeight: 10,
-		maxHeight: 100
-	},
-	selectEmpty: {
-		marginTop: theme.spacing(2)
-	},
-	largeIcon: {
-		height: 22.5
-	},
-	addButton: {
-		position: 'fixed',
-		bottom: 80,
-		right: 50,
-		zIndex: 99
-	}
-}));
+const useStyles = makeStyles((theme) => ({
+    root: {
+        maxWidth: '100%',
+        padding: '0px'
+    },
+    content: {
+        padding: '0px'
+    },
+    root2: {
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 100,
+        maxWidth: 150,
+        marginTop: '-4',
+        minHeight: 10,
+        maxHeight: 100,
+    },
+    selectEmpty: {
+        marginTop: theme.spacing(2),
+    },
+    largeIcon: {
+        height: 22.5,
+
+    },
+    addButton: {
+        position: 'fixed',
+        bottom: 80,
+        right: 50,
+        zIndex: 99
+    },
+}))
 const PaginationStyle = createMuiTheme({
-	overrides: {
-		MuiTypography: {
-			body2: {
-				fontSize: '12px',
-				marginTop: '1px'
-			}
-		}
-	}
+    overrides: {
+        MuiTypography: {
+            body2: {
+                fontSize: '12px',
+                marginTop: '1px'
+            }
+        }
+    }
 });
 
+
 function ContactTable(props) {
-	const classes = useStyles();
-	const [open, setOpen] = React.useState(false);
-	const [selected, setSelected] = useState([]);
-	const [companyDetails, setCompanyDetails] = React.useState(props.data);
-	const [value, setValue] = React.useState(0);
-	const theme = useTheme();
-	const csvLinkK = useRef(); // setup the ref that we'll use for the hidden CsvLink click once we've updated the data
+    const classes = useStyles();
+    const [open, setOpen] = React.useState(false)
+    const [selected, setSelected] = useState([]);
+    const [companyDetails, setCompanyDetails] = React.useState(props.data);
+    const [value, setValue] = React.useState(0);
+    const theme = useTheme();
+    const csvLinkK = useRef() // setup the ref that we'll use for the hidden CsvLink click once we've updated the data
 
-	const handleChangee = (event, newValue) => {
-		setValue(newValue);
-	};
-	const handleChangeIndex = index => {
-		setValue(index);
-	};
-	const [mainTab, setMainTab] = useState(0);
-	const [data, setData] = useState([]);
-	const [groupData, setGroupData] = useState([]);
-	const [blockContact, setBlockContact] = useState([]);
+    const handleChangee = (event, newValue) => {
+        setValue(newValue);
+    };
+    const handleChangeIndex = (index) => {
+        setValue(index);
+    };
+    const [mainTab, setMainTab] = useState(0);
+    const [data, setData] = useState([]);
+    const [groupData, setGroupData] = useState([]);
+    const [blockContact, setBlockContact] = useState([]);
 
-	const [searchVal, setSearchVal] = useState(props.ValueForSearch);
-	const [rowsPerPage, setRowsPerPage] = useState(10);
-	const [snackbaropen, setSnackBarOpen] = React.useState(false);
-	const [snackbarmessage, setSnackBarMessage] = React.useState('');
-	const [ok, setOK] = React.useState('');
-	const [openBlockDialog, setOpenBlockDialog] = React.useState(false);
-	const [unblockDialog, setUnblockDialog] = React.useState(false);
-	const [updateContactDialog, setUpdateContactDialog] = React.useState(false);
-	const [unblockDialogData, setUnblockDialogData] = React.useState({});
-	const [contactDialogData, setContactDialogData] = React.useState({});
-	const [rowvalue, setROWvalue] = React.useState('');
-	const [order, setOrder] = useState({
-		direction: 'asc',
-		id: null
-	});
+    const [searchVal, setSearchVal] = useState(props.ValueForSearch)
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [snackbaropen, setSnackBarOpen] = React.useState(false)
+    const [snackbarmessage, setSnackBarMessage] = React.useState('')
+    const [ok, setOK] = React.useState('')
+    const [openBlockDialog, setOpenBlockDialog] = React.useState(false);
+    const [unblockDialog, setUnblockDialog] = React.useState(false);
+    const [updateContactDialog, setUpdateContactDialog] = React.useState(false);
+    const [unblockDialogData, setUnblockDialogData] = React.useState({});
+    const [contactDialogData, setContactDialogData] = React.useState({});
+    const [rowvalue, setROWvalue] = React.useState('')
+    const [order, setOrder] = useState({
+        direction: 'asc',
+        id: null
+    });
 
-	const [totalItems, setTotalItems] = React.useState(0);
-	const [currentParams, setCurrentParams] = React.useState({ limit: 10, page: 0, blocked: false });
-	const [isLoading, setLoading] = React.useState(true);
 
-	const [checked, setChecked] = React.useState(false);
-	const [dialogData, setDialogData] = React.useState({
-		id: 0,
-		name: '',
-		description: '',
-		begin_dt: null,
-		begin_time: null,
-		msisdnUrl: '',
-		state: false,
-		template_id: 0,
-		type: null,
-		activated: false
-	});
-	const [number, SetNumber] = useState(10);
-	const [name, setName] = React.useState('');
+    const [totalItems, setTotalItems] = React.useState(0)
+    const [currentParams, setCurrentParams] = React.useState({ limit: 10, page: 0, blocked: false })
+    const [isLoading, setLoading] = React.useState(true)
 
-	const e = event => {
-		SetNumber(event.target.value);
-	};
 
-	const getData = loadData => {
-		setLoading(true);
+    const [checked, setChecked] = React.useState(false);
+    const [dialogData, setDialogData] = React.useState({
+        id: 0,
+        name: "",
+        description: "",
+        begin_dt: null,
+        begin_time: null,
+        msisdnUrl: "",
+        state: false,
+        template_id: 0,
+        type: null,
+        activated: false,
+    });
+    const [number, SetNumber] = useState(10)
+    const [name, setName] = React.useState('')
 
-		loadData = () => {
-			return CoreHttpHandler.request(
-				'contact_book',
-				'listing',
-				{
-					limit: currentParams.limit,
-					page: currentParams.page,
+    const e = (event) => {
+        SetNumber(event.target.value);
+    };
 
-					columns: '*',
-					orderby: 'id',
-					sortby: 'ASC',
-					where: `client_id = $1 AND blocked=${currentParams.blocked}`,
-					values: `${companyDetails.id}`
-				},
-				null,
-				null,
-				true
-			);
-		};
-		loadData().then(response => {
-			const tableData = response.data.data.list.data;
-			setData(tableData);
-			const result = tableData.filter(tableData => tableData.blocked === true);
-			console.log('result : ', result);
-			setBlockContact(result);
-			setLoading(false);
-			setTotalItems(response.data.data.list.totalItems);
-		});
-	};
-	const getDataGroup = loadData => {
-		console.log('called get data');
-		loadData = () => {
-			return CoreHttpHandler.request(
-				'contact_group',
-				'listing',
-				{
-					limit: 100,
-					page: 0,
-					columns: '*',
-					sortby: 'DESC',
-					orderby: 'id',
-					where: `client_id = $1`,
-					values: `${companyDetails.id}`
-				},
-				null,
-				null,
-				true
-			);
-		};
-		loadData()
-			.then(response => {
-				const tableData = response.data.data.list.data;
-				console.log('getDataGroup', tableData);
-				setGroupData(tableData);
-			})
-			.catch(error => {});
-	};
-	setTimeout(() => {
-		setSnackBarOpen(false);
-		setSnackBarMessage('');
-	}, 3000);
+    const getData = ((loadData) => {
+        setLoading(true)
 
-	React.useEffect(() => {
-		getData();
-	}, [currentParams]);
+        loadData = () => {
+            return CoreHttpHandler.request('contact_book', 'listing', {
 
-	const setPage = currentPage => {
-		setCurrentParams({ limit: currentParams.limit, page: currentPage, blocked: currentParams.blocked });
-	};
+                limit: currentParams.limit,
+                page: currentParams.page,
 
-	const setLimit = pageLimit => {
-		setCurrentParams({ limit: pageLimit, page: 0, blocked: currentParams.blocked });
-	};
+                columns: "*",
+                orderby: "id",
+                sortby: "ASC",
+                where: `client_id = $1 AND blocked=${currentParams.blocked}`,
+                values: `${companyDetails.id}`,
+            }, null, null, true);
+        };
+        loadData().then((response) => {
+            const tableData = response.data.data.list.data
+            setData(tableData)
+            const result = tableData.filter(tableData => tableData.blocked === true);
+            console.log("result : ", result);
+            setBlockContact(result)
+            setLoading(false)
+            setTotalItems(response.data.data.list.totalItems)
 
-	const setBlockedOpen = bool => {
-		setCurrentParams({ limit: currentParams.limit, page: 0, blocked: bool });
-	};
+        });
+    })
+    const getDataGroup = ((loadData) => {
+        console.log('called get data')
+        loadData = () => {
+            return CoreHttpHandler.request('contact_group', 'listing', {
+                limit: 100,
+                page: 0,
+                columns: "*",
+                sortby: "DESC",
+                orderby: "id",
+                where: `client_id = $1`,
+                values: `${companyDetails.id}`,
+            }, null, null, true);
+        };
+        loadData().then((response) => {
+            const tableData = response.data.data.list.data
+            console.log("getDataGroup", tableData)
+            setGroupData(tableData)
 
-	function handleRequestSort(event, property) {
-		const id = property;
-		let direction = 'desc';
-		if (order.id === property && order.direction === 'desc') {
-			direction = 'asc';
-		}
-		setOrder({
-			direction,
-			id
-		});
-	}
-	function handleChangeTabMain(event, value) {
-		setMainTab(value);
-	}
-	function search() {
-		setSearchVal(props.ValueForSearch);
-		setData(data.filter(n => n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())));
-	}
-	if (searchVal !== props.ValueForSearch) {
-		{
-			search();
-		}
-	}
-	function handleSelectAllClick(event) {
-		if (event.target.checked) {
-			setSelected(data.map(n => n.id));
-			return;
-		}
-		setSelected([]);
-	}
-	function handleClick(n) {
-		alert('handleClick');
-		setOpen(true);
-		setDialogData(n);
-	}
+        })
+            .catch((error) => {
+            })
+    })
+    setTimeout(() => {
+        setSnackBarOpen(false)
+        setSnackBarMessage("")
+    }, 3000);
 
-	function handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
 
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
 
-		setSelected(newSelected);
-	}
+    React.useEffect(() => {
+        getData()
+    }, [currentParams]);
 
-	const handleChangePage = (event, newPage) => {
-		setPage(newPage);
-	};
+    const setPage = (currentPage) => {
+        setCurrentParams({ limit: currentParams.limit, page: currentPage, blocked: currentParams.blocked })
+    }
 
-	const handleChangeRowsPerPage = event => {
-		setLimit(Number(event.target.value));
-	};
+    const setLimit = (pageLimit) => {
+        setCurrentParams({ limit: pageLimit, page: 0, blocked: currentParams.blocked })
+    }
 
-	function handleDialogClose() {
-		setUpdateContactDialog(false);
-	}
+    const setBlockedOpen = (bool) => {
+        setCurrentParams({ limit: currentParams.limit, page: 0, blocked: bool })
+    }
 
-	const toggleChecked = () => {
-		setChecked(prev => !prev);
-	};
-	const handleClickOpen = () => {
-		setDialogData('');
-		setOpen(true);
-	};
-	function handleClick(n) {
-		console.log('handleClick : ', n);
-		setROWvalue(n);
-		setOpenBlockDialog(true);
-	}
-	const handleUnblockClick = row => {
-		console.log('handleUnblockClick : ', row);
-		setROWvalue(row);
-	};
-	const handleClose = val => {
-		setOpen(false);
-		setOpenBlockDialog(false);
-	};
-	const handleCloseAddBlockNumber = () => {
-		setOpenBlockDialog(false);
-		getData();
-	};
-	const handleCloseUnBlockUser = () => {
-		setUnblockDialog(false);
-		getData();
-	};
-	const handleClickUpdateContact = data => {
-		setContactDialogData(data);
-		setUpdateContactDialog(true);
-	};
-	const numberExport = () => {
-		alert('number Export');
-		if (Start === '') setName(moment(new Date().toISOString()).format('DD/MM/YYYY'));
-		else setName(moment(Start).format('DD/MM/YYYY') + '-' + moment(End).format('DD/MM/YYYY'));
+    function handleRequestSort(event, property) {
+        const id = property;
+        let direction = 'desc';
+        if (order.id === property && order.direction === 'desc') {
+            direction = 'asc';
+        }
+        setOrder({
+            direction,
+            id
+        });
+    }
+    function handleChangeTabMain(event, value) {
+        setMainTab(value);
+    }
+    function search() {
+        setSearchVal(props.ValueForSearch)
+        setData(data.filter(n => n.name.toLowerCase().includes(props.ValueForSearch.toLowerCase())))
+    }
+    if (searchVal !== props.ValueForSearch) {
+        { search() }
+    }
+    function handleSelectAllClick(event) {
+        if (event.target.checked) {
+            setSelected(data.map(n => n.id));
+            return;
+        }
+        setSelected([]);
+    }
+    function handleClick(n) {
+        alert("handleClick")
+        setOpen(true)
+        setDialogData(n)
+    }
 
-		setTimeout(() => {
-			csvLinkK.current.link.click();
-		}, 1000);
-	};
-	var Start = '';
-	var End = '';
-	return (
-		<>
-			<Card className={classes.root}>
-				<CardContent className={classes.content} style={{ width: '100%' }}>
-					<div className="companyDetailHeaderTabs" style={{ backgroundColor: '#fc2254' }}>
-						<Tabs
-							value={value}
+    function handleCheck(event, id) {
+        const selectedIndex = selected.indexOf(id);
+        let newSelected = [];
+
+        if (selectedIndex === -1) {
+            newSelected = newSelected.concat(selected, id);
+        } else if (selectedIndex === 0) {
+            newSelected = newSelected.concat(selected.slice(1));
+        } else if (selectedIndex === selected.length - 1) {
+            newSelected = newSelected.concat(selected.slice(0, -1));
+        } else if (selectedIndex > 0) {
+            newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+        }
+
+        setSelected(newSelected);
+    }
+
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage)
+    };
+
+    const handleChangeRowsPerPage = event => {
+        setLimit(Number(event.target.value));
+    };
+
+    function handleDialogClose() {
+        setUpdateContactDialog(false)
+    }
+
+    const toggleChecked = () => {
+        setChecked((prev) => !prev);
+    };
+    const handleClickOpen = () => {
+        setDialogData('')
+        setOpen(true);
+
+    }
+    function handleClick(n) {
+        console.log("handleClick : ", n);
+        setROWvalue(n)
+        setOpenBlockDialog(true)
+    }
+    const handleUnblockClick = (row) => {
+        console.log("handleUnblockClick : ", row);
+        setROWvalue(row)
+    }
+    const handleClose = (val) => {
+        setOpen(false)
+        setOpenBlockDialog(false)
+
+    };
+    const handleCloseAddBlockNumber = () => {
+        setOpenBlockDialog(false)
+        getData()
+    };
+    const handleCloseUnBlockUser = () => {
+        setUnblockDialog(false)
+        getData()
+    };
+    const handleClickUpdateContact = (data) => {
+        setContactDialogData(data)
+        setUpdateContactDialog(true)
+    };
+    const numberExport = () => {
+        // alert("number Export")
+        if (Start === '') setName(moment(new Date().toISOString()).format('DD/MM/YYYY'))
+        else setName(moment(Start).format('DD/MM/YYYY') + "-" + moment(End).format('DD/MM/YYYY'))
+
+        setTimeout(() => {
+            csvLinkK.current.link.click()
+        }, 1000);
+    }
+
+    var Start = "";
+    var End = "";
+    return (
+        <>
+            <Card className={classes.root}>
+                <CardContent className={classes.content} style={{ width: '100%' }}>
+                    <div className='companyDetailHeaderTabs' style={{ backgroundColor: '#fc2254' }}>
+                        <Tabs
+value={value}
 							onChange={handleChangee}
 							indicatorColor="primary"
 							textColor="white"
@@ -387,33 +383,45 @@ function ContactTable(props) {
 							TabIndicatorProps={{
 								style: { backgroundColor: '#ffffff', height: '3px' }
 							}}
-						>
-							<Tab label="Contacts" {...a11yProps(0)} style={{ color: 'white', textColor: 'white' }} />
-							<Tab
-								label="Blocked Contacts"
-								{...a11yProps(1)}
-								style={{ color: 'white', textColor: 'white' }}
-							/>
-							{/* <Tab label="Contact Group" {...a11yProps(2)} /> */}
-						</Tabs>
-					</div>
-					<Snackbar
-						anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-						open={snackbaropen}
-						autoHideDuration={3000}
-					>
-						<Alert variant="filled" severity={ok}>
-							{snackbarmessage}
-						</Alert>
-					</Snackbar>
-					<SwipeableViews
-						axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-						index={value}
-						onChangeIndex={handleChangeIndex}
-					>
-						<TabPanel value={value} index={0} dir={theme.direction}>
-							<div style={{ flexDirection: 'row', flex: 1, display: 'flex', paddingLeft: '14px' }}>
-								<div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
+                        >
+                            <Tab label="Contacts" {...a11yProps(0)} onClick={() => { setBlockedOpen(false) }} style={{ color: 'white', textColor: 'white' }}/>
+                            <Tab label="Blocked Contacts" {...a11yProps(1)} style={{ color: 'white', textColor: 'white' }} onClick={() => { setBlockedOpen(true) }} />
+                           
+							   
+						   {/* <Tab label="Contact Group" {...a11yProps(2)} /> */}
+                        </Tabs>
+                    </div>
+                    <Snackbar
+                        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                        open={snackbaropen}
+                        autoHideDuration={3000}
+                    >
+                        <Alert variant="filled" severity={ok}>
+                            {snackbarmessage}
+                        </Alert>
+                    </Snackbar>
+                    <SwipeableViews
+                        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                        index={value}
+                        onChangeIndex={handleChangeIndex}>
+
+
+
+                        <TabPanel value={value} index={0} dir={theme.direction}>
+
+
+                            {
+                                isLoading ?
+                                    <div className="flex flex-1 items-center justify-center h-full">
+                                        <FuseLoading />
+                                    </div>
+                                    :
+                                    (
+                                        data.length ?
+                                            (
+                                                <React.Fragment>
+                                                    <div style={{ flexDirection: 'row', flex: 1, display: 'flex', paddingLeft: '14px' }}>
+													<div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
 									<Button
 										color="primary"
 										size="small"
@@ -431,519 +439,482 @@ function ContactTable(props) {
 										target="_blank"
 									/>
 								</div>
-							</div>
-							<div className="w-full flex flex-col" style={{ marginTop: '10px' }}>
-								<FuseScrollbars className="flex-grow overflow-x-auto">
-									<Table className="min-w-xl" aria-labelledby="tableTitle">
-										<ContactTableHeader
-											numSelected={selected.length}
-											order={order}
-											onSelectAllClick={handleSelectAllClick}
-											onRequestSort={handleRequestSort}
-											rowCount={blockContact.length}
-										/>
-										<TableBody>
-											{_.orderBy(
-												blockContact,
-												[
-													o => {
-														switch (order.id) {
-															case 'categories': {
-																return o.categories[0];
-															}
-															default: {
-																return o[order.id];
-															}
-														}
-													}
-												],
-												[order.direction]
-											).map(n => {
-												const isSelected = selected.indexOf(n.id) !== -1;
-												return (
-													<TableRow
-														className="h-10 cursor-pointer"
-														hover
-														role="checkbox"
-														aria-checked={isSelected}
-														tabIndex={-1}
-														key={n.id}
-														selected={isSelected}
-														// onClick={event => handleClickUpdateContact(n)}
-													>
-														<TableCell
-															component="th"
-															scope="row"
-															align="center"
-															style={{ fontSize: '11px', padding: '10px' }}
-														>
-															{n.id}
-														</TableCell>
-														<TableCell
-															component="th"
-															scope="row"
-															align="center"
-															style={{ fontSize: '11px', padding: '10px' }}
-														>
-															{n.attributes[0].firstname}
-														</TableCell>
-														<TableCell
-															component="th"
-															scope="row"
-															align="center"
-															style={{ fontSize: '11px', padding: '10px' }}
-														>
-															{n.attributes[1].lastname}
-														</TableCell>
-														<TableCell
-															component="th"
-															scope="row"
-															align="center"
-															style={{ fontSize: '11px', padding: '10px' }}
-														>
-															{n.attributes[3].age}
-														</TableCell>
-														<TableCell
-															component="th"
-															scope="row"
-															align="center"
-															style={{ fontSize: '11px', padding: '10px' }}
-														>
-															{n.attributes[2].gender}
-														</TableCell>
-														<TableCell
-															component="th"
-															scope="row"
-															align="center"
-															style={{ fontSize: '11px', padding: '10px' }}
-														>
-															{n.number}
-														</TableCell>
-														<TableCell
-															component="th"
-															scope="row"
-															align="center"
-															style={{ fontSize: '11px', padding: '10px' }}
-														>
-															{n.attributes[4].email}
-														</TableCell>
-														{
-															<TableCell
-																component="th"
-																scope="row"
-																align="center"
-																style={{ fontSize: '11px', padding: '10px' }}
-															>
-																{n.dt === null ? 'N/A' : n.dt}
-															</TableCell>
-														}
-														<TableCell
-															component="th"
-															scope="row"
-															align="center"
-															style={{ fontSize: '11px', padding: '10px' }}
-														>
-															{n.blocked === true ? (
-																<IconButton
-																	onClick={ev => {
-																		setUnblockDialogData(n);
-																		setUnblockDialog(true);
-																		ev.stopPropagation();
-																		// handleClick(n)
-																	}}
-																>
-																	<Icon name="lock">block</Icon>
-																</IconButton>
-															) : (
-																<IconButton
-																	onClick={ev => {
-																		ev.stopPropagation();
-																		setOpenBlockDialog(true);
-																		setROWvalue(n);
-																	}}
-																>
-																	<Icon name="lock">block</Icon>
-																	{/* <Icon>phone</Icon> */}
-																</IconButton>
-															)}
-														</TableCell>
-													</TableRow>
-												);
-											})}
-										</TableBody>
-									</Table>
-								</FuseScrollbars>
-								<MuiThemeProvider theme={PaginationStyle}>
-									<TablePagination
-										classes={{
-											root: 'overflow-hidden',
-											spacer: 'w-0 max-w-0',
-											actions: 'text-64',
-											select: 'text-12 mt-4',
-											selectIcon: 'mt-4'
-										}}
-										className="overflow-hidden"
-										component="div"
-										style={{ fontSize: '12px' }}
-										onChangePage={handleChangePage}
-										onChangeRowsPerPage={handleChangeRowsPerPage}
-										ActionsComponent={ContactsTablePaginationActions}
-										rowsPerPageOptions={[10, 25, 50, { label: 'All', value: totalItems }]}
-										count={totalItems}
-										rowsPerPage={currentParams.limit}
-										page={currentParams.page}
-									/>
-								</MuiThemeProvider>
-							</div>
+                                                    </div>
+                                                    <div className="w-full flex flex-col">
+                                                        <FuseScrollbars className="flex-grow overflow-x-auto">
+                                                            <Table className="min-w-xl" aria-labelledby="tableTitle">
+                                                                <ContactTableHeader
+                                                                    numSelected={selected.length}
+                                                                    order={order}
+                                                                    onSelectAllClick={handleSelectAllClick}
+                                                                    onRequestSort={handleRequestSort}
+                                                                    rowCount={data.length}
+                                                                />
+                                                                <TableBody>
+                                                                    {_.orderBy(
+                                                                        data,
+                                                                        [
+                                                                            o => {
+                                                                                switch (order.id) {
+                                                                                    case 'categories': {
+                                                                                        return o.categories[0];
+                                                                                    }
+                                                                                    default: {
+                                                                                        return o[order.id];
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ],
+                                                                        [order.direction]
+                                                                    )
+                                                                        .map(n => {
+                                                                            const isSelected = selected.indexOf(n.id) !== -1;
+                                                                            return (
+                                                                                <TableRow
+                                                                                    className="h-10 cursor-pointer"
+                                                                                    hover
+                                                                                    role="checkbox"
+                                                                                    aria-checked={isSelected}
+                                                                                    tabIndex={-1}
+                                                                                    key={n.id}
+                                                                                    selected={isSelected}
+                                                                                // onClick={event => handleClickUpdateContact(n)}
+                                                                                >
+                                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.id}
+                                                                                    </TableCell>
+                                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.attributes[0].firstname}
+                                                                                    </TableCell>
+                                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.attributes[1].lastname}
+                                                                                    </TableCell>
+                                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.attributes[3].age}
+                                                                                    </TableCell>
+                                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.attributes[2].gender}
+                                                                                    </TableCell>
+                                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.number}
+                                                                                    </TableCell>
+                                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.attributes[4].email}
 
-							{/* <div style={{ flexDirection: 'row', flex: 1, display: 'flex', paddingLeft: '14px' }}>
-								<div>
-									<Button
-										size='small'
-										variant="contained"
-										style={{ borderRadius: 0 }}>
-										Export
+                                                                                    </TableCell>
+                                                                                    {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.dt === null ? 'N/A' : n.dt}
+                                                                                    </TableCell>}
+                                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.blocked === true ?
+                                                                                            (
+                                                                                                <IconButton
+                                                                                                    onClick={ev => {
+                                                                                                        setUnblockDialogData(n)
+                                                                                                        setUnblockDialog(true)
+                                                                                                        ev.stopPropagation();
+                                                                                                        // handleClick(n)
+                                                                                                    }}
+                                                                                                >
+																								 
+                                                                                                   <Icon>phone</Icon>
+
+                                                                                                </IconButton>
+                                                                                            ) : (
+                                                                                                <IconButton
+                                                                                                    onClick={ev => {
+                                                                                                        ev.stopPropagation();
+                                                                                                        setOpenBlockDialog(true)
+                                                                                                        setROWvalue(n)
+                                                                                                    }}
+                                                                                                >
+																									<Icon name='lock'>block</Icon>
+
+                                                                                                </IconButton>
+                                                                                            )}
+
+                                                                                    </TableCell>
+                                                                                </TableRow>
+                                                                            );
+                                                                        })}
+                                                                </TableBody>
+                                                            </Table>
+                                                        </FuseScrollbars>
+                                                        <MuiThemeProvider theme={PaginationStyle}>
+                                                            <TablePagination
+                                                                classes={{
+                                                                    root: 'overflow-hidden',
+                                                                    spacer: 'w-0 max-w-0',
+                                                                    actions: 'text-64',
+                                                                    select: 'text-12 mt-4',
+                                                                    selectIcon: 'mt-4',
+                                                                }}
+                                                                className="overflow-hidden"
+                                                                component="div"
+                                                                style={{ fontSize: '12px' }}
+                                                                onChangePage={handleChangePage}
+                                                                onChangeRowsPerPage={handleChangeRowsPerPage}
+                                                                ActionsComponent={ContactsTablePaginationActions}
+                                                                rowsPerPageOptions={[10, 25, 50, { label: 'All', value: totalItems }]}
+                                                                count={totalItems}
+                                                                rowsPerPage={currentParams.limit}
+                                                                page={currentParams.page}
+
+                                                            />
+                                                        </MuiThemeProvider>
+                                                    </div>
+
+                                                </React.Fragment>
+                                            )
+
+                                            :
+
+
+                                            <div className="flex flex-1 items-center justify-center h-full">
+                                                <Typography color="textSecondary" variant="h5">
+                                                    No Data Found
+                                        </Typography>
+                                            </div>
+                                    )
+
+
+                            }
+
+
+
+                        </TabPanel>
+
+                        <TabPanel value={value} index={1} dir={theme.direction}>
+                            
+                            
+                        {
+                            isLoading?
+                                <div className="flex flex-1 items-center justify-center h-full">
+                                    <FuseLoading />
+                                </div>
+                            :
+                            (
+                                data.length?
+                                (
+                                    <React.Fragment>
+                                    <div className="w-full flex flex-col">
+                                <FuseScrollbars className="flex-grow overflow-x-auto">
+                                    <Table className="min-w-xl" aria-labelledby="tableTitle">
+                                        <ContactTableHeader
+                                            numSelected={selected.length}
+                                            order={order}
+                                            onSelectAllClick={handleSelectAllClick}
+                                            onRequestSort={handleRequestSort}
+                                            rowCount={blockContact.length}
+                                        />
+                                        <TableBody>
+                                            {_.orderBy(
+                                                blockContact,
+                                                [
+                                                    o => {
+                                                        switch (order.id) {
+                                                            case 'categories': {
+                                                                return o.categories[0];
+                                                            }
+                                                            default: {
+                                                                return o[order.id];
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                [order.direction]
+                                            )
+                                                .map(n => {
+                                                    const isSelected = selected.indexOf(n.id) !== -1;
+                                                    return (
+                                                        <TableRow
+                                                            className="h-10 cursor-pointer"
+                                                            hover
+                                                            role="checkbox"
+                                                            aria-checked={isSelected}
+                                                            tabIndex={-1}
+                                                            key={n.id}
+                                                            selected={isSelected}
+                                                        // onClick={event => handleClick(n)}
+                                                        >
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.id}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.attributes[0].firstname}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.attributes[1].lastname}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.attributes[3].age}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.attributes[2].gender}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.number}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.attributes[4].email}
+
+                                                            </TableCell>
+                                                            {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.dt === null ? 'N/A' : n.dt}
+                                                            </TableCell>}
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.blocked === true ?
+                                                                    (
+                                                                        <IconButton
+                                                                            onClick={ev => {
+                                                                                setUnblockDialogData(n)
+                                                                                setUnblockDialog(true)
+                                                                                ev.stopPropagation();
+                                                                                // handleClick(n)
+                                                                            }}
+                                                                        >
+                                                                            <Icon>phone</Icon>
+                                                                        </IconButton>
+                                                                    ) : (
+                                                                        <IconButton
+                                                                            onClick={ev => {
+                                                                                ev.stopPropagation();
+                                                                                setOpenBlockDialog(true)
+                                                                                setROWvalue(n)
+                                                                            }}
+                                                                        >
+																			<Icon name='lock'>block</Icon>
+
+                                                                        </IconButton>
+                                                                    )}
+
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
+                                        </TableBody>
+                                    </Table>
+                                </FuseScrollbars>
+                                <MuiThemeProvider theme={PaginationStyle}>
+                                    <TablePagination
+                                        classes={{
+                                            root: 'overflow-hidden',
+                                            spacer: 'w-0 max-w-0',
+                                            actions: 'text-64',
+                                            select: 'text-12 mt-4',
+                                            selectIcon: 'mt-4',
+                                        }}
+                                        className="overflow-hidden"
+                                        component="div"
+                                        style={{ fontSize: '12px' }}
+                                        onChangePage={handleChangePage}
+                                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                                        ActionsComponent={ContactsTablePaginationActions}
+
+                                        rowsPerPageOptions={[ 10, 25, 50, { label: 'All', value: totalItems }]}
+                                        count={totalItems}
+                                        rowsPerPage={currentParams.limit}
+                                        page={currentParams.page}
+
+                                    />
+                                </MuiThemeProvider>
+
+                            </div>
+
+                                    </React.Fragment>
+                                )
+
+                                :
+
+
+                                    <div className="flex flex-1 items-center justify-center h-full">
+                                        <Typography color="textSecondary" variant="h5">
+                                            No Data Found
+                                        </Typography>
+                                    </div>
+                            )
+
+
+                        }
+
+                            
+                            
+                            {/* <div style={{ flexDirection: 'row', flex: 1, display: 'flex', paddingLeft: '14px' }}>
+                                <div>
+                                    <Button
+                                        size='small'
+                                        variant="contained"
+                                        style={{ borderRadius: 0 }}>
+                                        Export
            							 </Button>
-								</div>
-							</div> */}
-							<div className="w-full flex flex-col">
-								<FuseScrollbars className="flex-grow overflow-x-auto">
-									<Table className="min-w-xl" aria-labelledby="tableTitle">
-										{/* <ContactTableHeader */}
-										<ContactTableUnblockHeading
-											numSelected={selected.length}
-											order={order}
-											onSelectAllClick={handleSelectAllClick}
-											onRequestSort={handleRequestSort}
-											rowCount={blockContact.length}
-										/>
-										<TableBody>
-											{_.orderBy(
-												blockContact,
-												[
-													o => {
-														switch (order.id) {
-															case 'categories': {
-																return o.categories[0];
-															}
-															default: {
-																return o[order.id];
-															}
-														}
-													}
-												],
-												[order.direction]
-											)
-												// .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-												.map(n => {
-													const isSelected = selected.indexOf(n.id) !== -1;
-													return (
-														<TableRow
-															className="h-10 cursor-pointer"
-															hover
-															role="checkbox"
-															aria-checked={isSelected}
-															tabIndex={-1}
-															key={n.id}
-															selected={isSelected}
-															// onClick={event => handleClick(n)}
-														>
-															<TableCell
-																component="th"
-																scope="row"
-																align="center"
-																style={{ fontSize: '11px', padding: '10px' }}
-															>
-																{n.id}
-															</TableCell>
-															<TableCell
-																component="th"
-																scope="row"
-																align="center"
-																style={{ fontSize: '11px', padding: '10px' }}
-															>
-																{n.attributes[0].firstname}
-															</TableCell>
-															<TableCell
-																component="th"
-																scope="row"
-																align="center"
-																style={{ fontSize: '11px', padding: '10px' }}
-															>
-																{n.attributes[1].lastname}
-															</TableCell>
-															<TableCell
-																component="th"
-																scope="row"
-																align="center"
-																style={{ fontSize: '11px', padding: '10px' }}
-															>
-																{n.attributes[3].age}
-															</TableCell>
-															<TableCell
-																component="th"
-																scope="row"
-																align="center"
-																style={{ fontSize: '11px', padding: '10px' }}
-															>
-																{n.attributes[2].gender}
-															</TableCell>
-															<TableCell
-																component="th"
-																scope="row"
-																align="center"
-																style={{ fontSize: '11px', padding: '10px' }}
-															>
-																{n.number}
-															</TableCell>
-															<TableCell
-																component="th"
-																scope="row"
-																align="center"
-																style={{ fontSize: '11px', padding: '10px' }}
-															>
-																{n.attributes[4].email}
-															</TableCell>
-															{
-																<TableCell
-																	component="th"
-																	scope="row"
-																	align="center"
-																	style={{ fontSize: '11px', padding: '10px' }}
-																>
-																	{n.dt === null ? 'N/A' : n.dt}
-																</TableCell>
-															}
-															<TableCell
-																component="th"
-																scope="row"
-																align="center"
-																style={{ fontSize: '11px', padding: '10px' }}
-															>
-																{n.blocked === true ? (
-																	<IconButton
-																		onClick={ev => {
-																			setUnblockDialogData(n);
-																			setUnblockDialog(true);
-																			ev.stopPropagation();
-																			// handleClick(n)
-																		}}
-																	>
-																		<Icon name="lock">block</Icon>
-																	</IconButton>
-																) : (
-																	<IconButton
-																		onClick={ev => {
-																			ev.stopPropagation();
-																			setOpenBlockDialog(true);
-																			setROWvalue(n);
-																		}}
-																	>
-																		<Icon>phone</Icon>
-																	</IconButton>
-																)}
-															</TableCell>
-														</TableRow>
-													);
-												})}
-										</TableBody>
-									</Table>
-								</FuseScrollbars>
-								<MuiThemeProvider theme={PaginationStyle}>
-									<TablePagination
-										classes={{
-											root: 'overflow-hidden',
-											spacer: 'w-0 max-w-0',
-											actions: 'text-64',
-											select: 'text-12 mt-4',
-											selectIcon: 'mt-4'
-										}}
-										className="overflow-hidden"
-										component="div"
-										count={data.length}
-										style={{ fontSize: '12px' }}
-										rowsPerPage={rowsPerPage}
-										// page={page}
-										onChangePage={handleChangePage}
-										onChangeRowsPerPage={handleChangeRowsPerPage}
-										ActionsComponent={ContactsTablePaginationActions}
-									/>
-								</MuiThemeProvider>
-							</div>
-						</TabPanel>
-
-						{/* <TabPanel value={value} index={2} dir={theme.direction}>
-							{groupData.length > 0 ?
-								<div>
-									<div style={{ flexDirection: 'row', flex: 1, display: 'flex', paddingLeft: '14px' }}>
-										<FormControl className={classes.formControl}>
-											<Select
-												value={number}
-												onChange={e}
-												displayEmpty
-												className={classes.selectEmpty}
-												inputProps={{ 'aria-label': 'Without label' }}
-											>
-												<MenuItem value={10}>10</MenuItem>
-												<MenuItem value={25}>25</MenuItem>
-												<MenuItem value={50}>50</MenuItem>
-											</Select>
-										</FormControl>
-										<div style={{ marginTop: '20px' }}>
-											<Button
-												size='small'
-												variant="contained"
-												style={{ borderRadius: 0 }}
-											>
-												Export
+                                </div>
+                            </div> */}
+                            
+                        </TabPanel>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        {/* <TabPanel value={value} index={2} dir={theme.direction}>
+                            {groupData.length > 0 ?
+                                <div>
+                                    <div style={{ flexDirection: 'row', flex: 1, display: 'flex', paddingLeft: '14px' }}>
+                                        <FormControl className={classes.formControl}>
+                                            <Select
+                                                value={number}
+                                                onChange={e}
+                                                displayEmpty
+                                                className={classes.selectEmpty}
+                                                inputProps={{ 'aria-label': 'Without label' }}
+                                            >
+                                                <MenuItem value={10}>10</MenuItem>
+                                                <MenuItem value={25}>25</MenuItem>
+                                                <MenuItem value={50}>50</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                        <div style={{ marginTop: '20px' }}>
+                                            <Button
+                                                size='small'
+                                                variant="contained"
+                                                style={{ borderRadius: 0 }}
+                                            >
+                                                Export
             </Button>
-											<Button
-												style={{ marginLeft: '-4px', paddingTop: '10px' }}
-												size='small'
-												variant="contained"
-												style={{ borderRadius: 0 }}
-											>
-												<Icon
-													fontSize="small"
-													className={classes.largeIcon}
-												>send</Icon>
-											</Button>
-										</div>
-									</div>
-									<div className="w-full flex flex-col">
-										<FuseScrollbars className="flex-grow overflow-x-auto">
-											<Table className="min-w-xl" aria-labelledby="tableTitle">
-												<ContactTableHeaderGroups
-													numSelected={selected.length}
-													order={order}
-													onSelectAllClick={handleSelectAllClick}
-													onRequestSort={handleRequestSort}
-													rowCount={data.length}
-												/>
-												<TableBody>
-													{_.orderBy(
-														groupData,
-														[
-															o => {
-																switch (order.id) {
-																	case 'categories': {
-																		return o.categories[0];
-																	}
-																	default: {
-																		return o[order.id];
-																	}
-																}
-															}
-														],
-														[order.direction]
-													)
-														.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-														.map(n => {
-															const isSelected = selected.indexOf(n.id) !== -1;
-															return (
-																<TableRow
+                                            <Button
+                                                style={{ marginLeft: '-4px', paddingTop: '10px' }}
+                                                size='small'
+                                                variant="contained"
+                                                style={{ borderRadius: 0 }}
+                                            >
+                                                <Icon
+                                                    fontSize="small"
+                                                    className={classes.largeIcon}
+                                                >send</Icon>
+                                            </Button>
+                                        </div>
+                                    </div>
+                                    <div className="w-full flex flex-col">
+                                        <FuseScrollbars className="flex-grow overflow-x-auto">
+                                            <Table className="min-w-xl" aria-labelledby="tableTitle">
+                                                <ContactTableHeaderGroups
+                                                    numSelected={selected.length}
+                                                    order={order}
+                                                    onSelectAllClick={handleSelectAllClick}
+                                                    onRequestSort={handleRequestSort}
+                                                    rowCount={data.length}
+                                                />
+                                                <TableBody>
+                                                    {_.orderBy(
+                                                        groupData,
+                                                        [
+                                                            o => {
+                                                                switch (order.id) {
+                                                                    case 'categories': {
+                                                                        return o.categories[0];
+                                                                    }
+                                                                    default: {
+                                                                        return o[order.id];
+                                                                    }
+                                                                }
+                                                            }
+                                                        ],
+                                                        [order.direction]
+                                                    )
+                                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                        .map(n => {
+                                                            const isSelected = selected.indexOf(n.id) !== -1;
+                                                            return (
+                                                                <TableRow
 
-																	className="h-10 cursor-pointer"
-																	hover
-																	role="checkbox"
-																	aria-checked={isSelected}
-																	tabIndex={-1}
-																	key={n.id}
-																	selected={isSelected}
-																	onClick={event => handleClick(n)}
-																>
-																	<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-																		{n.id}
-																	</TableCell>
-																	<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-																		{n.title}
-																	</TableCell>
-																	<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-																		{n.description}
-																	</TableCell>
-																	<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-																		{n.customers.length}
-																	</TableCell>
-																	<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-																		<FormControlLabel
-																			style={{ marginLeft: '2px' }}
-																			control={
-																				<Switch
-																					checked={n.enabled}
-																					onChange={toggleChecked}
-																					name="checkedB"
-																					color="primary"
-																					size="small"
+                                                                    className="h-10 cursor-pointer"
+                                                                    hover
+                                                                    role="checkbox"
+                                                                    aria-checked={isSelected}
+                                                                    tabIndex={-1}
+                                                                    key={n.id}
+                                                                    selected={isSelected}
+                                                                    onClick={event => handleClick(n)}
+                                                                >
+                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                        {n.id}
+                                                                    </TableCell>
+                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                        {n.title}
+                                                                    </TableCell>
+                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                        {n.description}
+                                                                    </TableCell>
+                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                        {n.customers.length}
+                                                                    </TableCell>
+                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                        <FormControlLabel
+                                                                            style={{ marginLeft: '2px' }}
+                                                                            control={
+                                                                                <Switch
+                                                                                    checked={n.enabled}
+                                                                                    onChange={toggleChecked}
+                                                                                    name="checkedB"
+                                                                                    color="primary"
+                                                                                    size="small"
 
-																				/>
-																			}
-																		/>
-																	</TableCell>
-																</TableRow>
-															);
-														})}
-												</TableBody>
-											</Table>
-										</FuseScrollbars>
-										<MuiThemeProvider theme={PaginationStyle}>
-											<TablePagination
-												classes={{
-													root: 'overflow-hidden',
-													spacer: 'w-0 max-w-0',
-													actions: 'text-64',
-													select: 'text-12 mt-4',
-													selectIcon: 'mt-4',
-												}}
-												className="overflow-hidden"
-												component="div"
-												count={data.length}
-												style={{ fontSize: '12px' }}
-												rowsPerPage={rowsPerPage}
-												page={page}
-												onChangePage={handleChangePage}
-												onChangeRowsPerPage={handleChangeRowsPerPage}
-												ActionsComponent={ContactsTablePaginationActions}
-											/>
-										</MuiThemeProvider>
-										{open && <ContactDialog isOpen={open} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} />}
-									</div>
-								</div>
-								: <div className="flex flex-1 items-center justify-center h-full">
-									<Typography color="textSecondary" variant="p">
-										No Data Found
-								</Typography>
-								</div>}
-						</TabPanel>
-				 */}
-					</SwipeableViews>
-					{updateContactDialog && (
-						<ContactDialog
-							isOpen={updateContactDialog}
-							type="edit"
-							data={contactDialogData}
-							closeDialog={handleDialogClose}
-						/>
-					)}
-					{/* <ContactDialog isOpen={true} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} /> */}
-					{openBlockDialog && (
-						<BlockContactInDialog
-							isOpen={openBlockDialog}
-							type="Block Number"
-							data={rowvalue}
-							closeDialog={handleCloseAddBlockNumber}
-						/>
-					)}
-					{unblockDialog && (
-						<BlockDialog
-							isOpen={unblockDialog}
-							type="Unblock Number"
-							closeDialog={handleCloseUnBlockUser}
-							data={unblockDialogData}
-						/>
-					)}
-				</CardContent>
-			</Card>
-		</>
-	);
+                                                                                />
+                                                                            }
+                                                                        />
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            );
+                                                        })}
+                                                </TableBody>
+                                            </Table>
+                                        </FuseScrollbars>
+                                        <MuiThemeProvider theme={PaginationStyle}>
+                                            <TablePagination
+                                                classes={{
+                                                    root: 'overflow-hidden',
+                                                    spacer: 'w-0 max-w-0',
+                                                    actions: 'text-64',
+                                                    select: 'text-12 mt-4',
+                                                    selectIcon: 'mt-4',
+                                                }}
+                                                className="overflow-hidden"
+                                                component="div"
+                                                count={data.length}
+                                                style={{ fontSize: '12px' }}
+                                                rowsPerPage={rowsPerPage}
+                                                page={page}
+                                                onChangePage={handleChangePage}
+                                                onChangeRowsPerPage={handleChangeRowsPerPage}
+                                                ActionsComponent={ContactsTablePaginationActions}
+                                            />
+                                        </MuiThemeProvider>
+                                        {open && <ContactDialog isOpen={open} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} />}
+                                    </div>
+                                </div>
+                                : <div className="flex flex-1 items-center justify-center h-full">
+                                    <Typography color="textSecondary" variant="p">
+                                        No Data Found
+                                </Typography>
+                                </div>}
+                        </TabPanel>
+                 */}
+                    </SwipeableViews>
+                    {updateContactDialog && <ContactDialog isOpen={updateContactDialog} type='edit' data={contactDialogData} closeDialog={handleDialogClose} />}
+                    {/* <ContactDialog isOpen={true} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} /> */}
+                    {openBlockDialog && <BlockContactInDialog isOpen={openBlockDialog} type="Block Number" data={rowvalue} closeDialog={handleCloseAddBlockNumber} />}
+                    {unblockDialog && <BlockDialog isOpen={unblockDialog} type="UnBlock Number" closeDialog={handleCloseUnBlockUser} data={unblockDialogData} />}
+                </CardContent>
+            </Card>
+        </>
+    );
 }
 export default withRouter(ContactTable);
