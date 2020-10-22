@@ -5,9 +5,9 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import { createMuiTheme,MuiThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import ContactsTablePaginationActions from '../../setting/canned/ContactsTablePaginationActions';
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import AgentTableHead from './AgentTableHead';
@@ -16,17 +16,17 @@ import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 const PaginationStyle = createMuiTheme({
 	overrides: {
 		MuiTypography: {
-		body2: {
-			fontSize:'12px',
-			marginTop:'1px'
+			body2: {
+				fontSize: '12px',
+				marginTop: '1px'
 
-		//   "&:last-child": {
-		// 	paddingRight: 5
-		//   }
+				//   "&:last-child": {
+				// 	paddingRight: 5
+				//   }
+			}
 		}
-	  }
 	}
-  });
+});
 
 function AgentTable(props) {
 	const [selected, setSelected] = useState([]);
@@ -35,9 +35,9 @@ function AgentTable(props) {
 		id: null
 	});
 
-	const {rowsPerPage,currentPage,setLimit, totalItems, setPage} = props;
+	const { rowsPerPage, currentPage, setLimit, totalItems, setPage, isLoading } = props;
 
-    let data=props.data
+	let data = props.data
 	function handleRequestSort(event, property) {
 		const id = property;
 		let direction = 'desc';
@@ -53,7 +53,7 @@ function AgentTable(props) {
 	}
 
 	const handleChangeRowsPerPage = event => {
-		setLimit(Number(event.target.value));		
+		setLimit(Number(event.target.value));
 		// setPageSize(Number(event.target.value));
 
 	};
@@ -74,11 +74,11 @@ function AgentTable(props) {
 	// }
 
 	function handleClick(n) {
-		
-	
-		
-		
-}
+
+
+
+
+	}
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
@@ -104,9 +104,9 @@ function AgentTable(props) {
 	if (data.length === 0) {
 		if (props.val !== '') {
 			return (
-				<div 
-				style={{alignItems:'flex-end',flex:1,marginTop:'30%'}}
-				className="flex flex-1 items-center justify-center h-full">
+				<div
+					style={{ alignItems: 'flex-end', flex: 1, marginTop: '30%' }}
+					className="flex flex-1 items-center justify-center h-full">
 					<Typography color="textSecondary" variant="h5">
 						No Data Found
 					</Typography>
@@ -114,9 +114,9 @@ function AgentTable(props) {
 			)
 		} else {
 			return (
-				<div 
-				style={{alignItems:'flex-end',flex:1,marginTop:'30%'}}
-				className="flex flex-1 items-center justify-center h-full">
+				<div
+					style={{ alignItems: 'flex-end', flex: 1, marginTop: '30%' }}
+					className="flex flex-1 items-center justify-center h-full">
 					<FuseLoading />
 				</div>
 			);
@@ -124,82 +124,92 @@ function AgentTable(props) {
 	}
 
 	return (
-		<div className="w-full flex flex-col">
-			<FuseScrollbars className="flex-grow overflow-x-auto">
-				<Table className="min-w-xl" aria-labelledby="tableTitle">
-					<AgentTableHead
-						numSelected={selected.length}
-						order={order}
-						onSelectAllClick={handleSelectAllClick}
-						onRequestSort={handleRequestSort}
-						rowCount={data.length}
-					/>
+		<>	{
+			data.filter((item) => {
+				return item.agent_name.toLowerCase().includes(props.SearchVal.toLowerCase())
+			}).length ?
+				<div className="w-full flex flex-col">
+					<FuseScrollbars className="flex-grow overflow-x-auto">
 
-					<TableBody>
-						{_.orderBy(
-							data,
-							[
-								o => {
-									switch (order.id) {
-										case 'categories': {
-											return o.categories[0];
-										}
-										default: {
-											return o[order.id];
-										}
-									}
-								}
-							],
-							[order.direction]
-						)
-							.map(n => {
-                                const isSelected = selected.indexOf(n.id) !== -1;
-                                
-								return (
-									<TableRow
-										className="h-10 cursor-pointer"
-										hover
-										role="checkbox"
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
-										onClick={event => handleClick(n)}
-									>
 
-										{/* <TableCell className="w-64 text-center" padding="none">
+						<Table className="min-w-xl" aria-labelledby="tableTitle">
+							<AgentTableHead
+								numSelected={selected.length}
+								order={order}
+								onSelectAllClick={handleSelectAllClick}
+								onRequestSort={handleRequestSort}
+								rowCount={data.length}
+							/>
+
+							<TableBody>
+								{_.orderBy(
+									data,
+									[
+										o => {
+											switch (order.id) {
+												case 'categories': {
+													return o.categories[0];
+												}
+												default: {
+													return o[order.id];
+												}
+											}
+										}
+									],
+									[order.direction]
+								)
+									.filter((item) => {
+										// return props.SearchValue ? item.agent_name.toLowerCase().includes(props.SearchValue.toLowerCase()) : true
+										return props.SearchVal ? item.agent_name.toLowerCase().includes(props.SearchVal.toLowerCase()) : true
+									})
+									.map(n => {
+										const isSelected = selected.indexOf(n.id) !== -1;
+
+										return (
+											<TableRow
+												className="h-10 cursor-pointer"
+												hover
+												role="checkbox"
+												aria-checked={isSelected}
+												tabIndex={-1}
+												key={n.id}
+												selected={isSelected}
+												onClick={event => handleClick(n)}
+											>
+
+												{/* <TableCell className="w-64 text-center" padding="none">
 											<Checkbox
 												checked={isSelected}
 												onClick={event => event.stopPropagation()}
 												onChange={event => handleCheck(event, n.id)}
 											/>
 										</TableCell> */}
-										<TableCell component="th" scope="row"  align="center" style={{fontSize:'11px',padding:'10px'}}>
-											{n.agent_id}
-										</TableCell>
-										<TableCell component="th" scope="row"  align="center" style={{fontSize:'11px',padding:'10px'}}>
-											{n.agent_name}
-										</TableCell>
-										<TableCell component="th" scope="row"  align="center" style={{fontSize:'11px',padding:'10px'}}>
-											{n.inbound}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'11px' ,padding:'10px'}}>
-											{n.outbound}
-										</TableCell>
-                                        <TableCell component="th" scope="row" align="center" style={{fontSize:'11px' ,padding:'10px'}}>
-											{n.total_engagement_count}
-										</TableCell>
-                                        <TableCell component="th" scope="row" align="center" style={{fontSize:'11px' ,padding:'10px'}}>
-											{n.total_chat_count}
-										</TableCell>
-                                        <TableCell component="th" scope="row" align="center" style={{fontSize:'11px' ,padding:'10px'}}>
-											{n.responsetime}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{fontSize:'11px' ,padding:'10px'}}>
-											{n.account_status}
-										</TableCell>
-									
-										{/* <TableCell component="th" scope="row" align="right">
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.agent_id}
+												</TableCell>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.agent_name}
+												</TableCell>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.inbound}
+												</TableCell>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.outbound}
+												</TableCell>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.total_engagement_count}
+												</TableCell>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.total_chat_count}
+												</TableCell>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.responsetime}
+												</TableCell>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.account_status}
+												</TableCell>
+
+												{/* <TableCell component="th" scope="row" align="right">
 											{n.progress ? (
 												<Icon className="text-red text-20">check_circle</Icon>
 												) : (
@@ -218,7 +228,7 @@ function AgentTable(props) {
 										<TableCell component="th" scope="row" align="right">
 											{n.lastUpdated}
 										</TableCell> */}
-										{/* 
+												{/* 
 										<TableCell component="th" scope="row" align="right">
 											{n.quantity}
 											<i
@@ -231,45 +241,50 @@ function AgentTable(props) {
 											/>
 										</TableCell> */}
 
-										{/* <TableCell component="th" scope="row" align="right">
+												{/* <TableCell component="th" scope="row" align="right">
 											{n.active ? (
 												<Icon className="text-green text-20">check_circle</Icon>
 											) : (
 													<Icon className="text-red text-20">remove_circle</Icon>
 												)}
 										</TableCell> */}
-									</TableRow>
-								);
-							})}
-					</TableBody>
-				</Table>
-			</FuseScrollbars>
-			<MuiThemeProvider theme={PaginationStyle}>
-			<TablePagination
-				className="overflow-hidden"
-				component="div"
-				classes={{
-					root: 'overflow-hidden',
-					spacer: 'w-0 max-w-0',
-					actions:'text-64',
-					select:'text-12 mt-4',
-					 selectIcon:'mt-4',
-					// input:'text-64',
-					// menuItem:'text-64',
-					// toolbar:'text-64',
-					// selectRoot:'text-64'
-				}}
+											</TableRow>
+										);
+									})}
+							</TableBody>
+						</Table>
+					</FuseScrollbars>
+					<MuiThemeProvider theme={PaginationStyle}>
+						<TablePagination
+							className="overflow-hidden"
+							component="div"
+							classes={{
+								root: 'overflow-hidden',
+								spacer: 'w-0 max-w-0',
+								actions: 'text-64',
+								select: 'text-12 mt-4',
+								selectIcon: 'mt-4',
+								// input:'text-64',
+								// menuItem:'text-64',
+								// toolbar:'text-64',
+								// selectRoot:'text-64'
+							}}
 
-				rowsPerPageOptions={[10,25,50, { label: 'All', value: totalItems }]}
-				count={totalItems}
-				rowsPerPage={rowsPerPage}
-				page={currentPage}
-				onChangePage={handleChangePage}
-				onChangeRowsPerPage={handleChangeRowsPerPage}
-				ActionsComponent={ContactsTablePaginationActions}
-			/>
-				</MuiThemeProvider>
-		</div>
+							rowsPerPageOptions={[10, 25, 50, { label: 'All', value: totalItems }]}
+							count={totalItems}
+							rowsPerPage={rowsPerPage}
+							page={currentPage}
+							onChangePage={handleChangePage}
+							onChangeRowsPerPage={handleChangeRowsPerPage}
+							ActionsComponent={ContactsTablePaginationActions}
+						/>
+					</MuiThemeProvider>
+				</div> : <div style={{ display: "flex", alignContent: "center", alignItems: "center", justifyContent: "center", width: "100%" }}>
+					<h1 style={{ display: "flex", alignContent: "center", alignItems: "center", justifyContent: "center" }}>No Data Found</h1>
+					{/* <FuseLoading /> */}
+				</div>
+		}
+		</>
 	);
 }
 

@@ -14,12 +14,13 @@ import Select from '@material-ui/core/Select';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
-import React, { useEffect, useState , useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import moment from "moment";
 
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import ContactTableHeader from './ContactTableHeader';
+import ContactTableUnblockHeading from "./ContactTableUnblockHeading.js"
 import ContactTableHeaderGroups from './ContactTableHeaderGroups';
 import ContactsTablePaginationActions from '../../../../setting/canned/ContactsTablePaginationActions';
 import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider } from '@material-ui/core/styles';
@@ -259,23 +260,23 @@ function ContactTable(props) {
 		setOpen(true)
 		setDialogData(n)
 	}
-console.log("data.length  :" , data.length);
+	console.log("data.length  :", data.length);
 	if (data.length === 0) {
-			return (
-				<div className="flex flex-1 items-center justify-center h-full">
-					<Typography color="textSecondary" variant="h5">
-						No Data Found
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<Typography color="textSecondary" variant="h5">
+					No Data Found
 					</Typography>
-				</div>
-			)
-		} 
-		// else {
-		// 	return (
-		// 		<div className="flex flex-1 items-center justify-center h-full">
-		// 			<FuseLoading />
-		// 		</div>
-		// 	);
-		// }
+			</div>
+		)
+	}
+	// else {
+	// 	return (
+	// 		<div className="flex flex-1 items-center justify-center h-full">
+	// 			<FuseLoading />
+	// 		</div>
+	// 	);
+	// }
 
 	function handleCheck(event, id) {
 		const selectedIndex = selected.indexOf(id);
@@ -336,34 +337,37 @@ console.log("data.length  :" , data.length);
 		setContactDialogData(data)
 		setUpdateContactDialog(true)
 	};
-	const  numberExport = () =>{	
-	alert("number Export")
-	if (Start === '') setName(moment(new Date().toISOString()).format('DD/MM/YYYY'))
-	else setName(moment(Start).format('DD/MM/YYYY') + "-" + moment(End).format('DD/MM/YYYY'))
-	
-	setTimeout(() => {
-		csvLinkK.current.link.click()
-	}, 1000);
-}
-var Start = "";
-var End = "";
+	const numberExport = () => {
+		alert("number Export")
+		if (Start === '') setName(moment(new Date().toISOString()).format('DD/MM/YYYY'))
+		else setName(moment(Start).format('DD/MM/YYYY') + "-" + moment(End).format('DD/MM/YYYY'))
+
+		setTimeout(() => {
+			csvLinkK.current.link.click()
+		}, 1000);
+	}
+	var Start = "";
+	var End = "";
 	return (
 		<>
 			<Card className={classes.root}>
 				<CardContent className={classes.content} style={{ width: '100%' }}>
-					<div className='companyDetailHeaderTabs'>
+					<div className='companyDetailHeaderTabs' style={{ backgroundColor: "#fc2254" }}>
 						<Tabs
 							value={value}
 							onChange={handleChangee}
 							indicatorColor="primary"
-							textColor="primary"
+							textColor="white"
 							variant="scrollable"
 							scrollButtons="off"
-							className="w-full border-b-1 px-100 text-center h-48 "
-							style={{ marginBottom: '8px' }}
+							// className="w-full border-b-1 px-100 text-center"
+							// style={{ marginBottom: '0px' }}
+							TabIndicatorProps={{
+								style: { backgroundColor: "#ffffff", height: "3px", }
+							}}
 						>
-							<Tab label="Contacts" {...a11yProps(0)} />
-							<Tab label="Blocked Contacts" {...a11yProps(1)} />
+							<Tab label="Contacts" {...a11yProps(0)} style={{ color: "white", textColor: "white" }} />
+							<Tab label="Blocked Contacts" {...a11yProps(1)} style={{ color: "white", textColor: "white" }} />
 							{/* <Tab label="Contact Group" {...a11yProps(2)} /> */}
 						</Tabs>
 					</div>
@@ -382,26 +386,27 @@ var End = "";
 						onChangeIndex={handleChangeIndex}>
 						<TabPanel value={value} index={0} dir={theme.direction}>
 							<div style={{ flexDirection: 'row', flex: 1, display: 'flex', paddingLeft: '14px' }}>
-								<div >
+								<div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }} >
 									<Button
+										color="primary"
 										size='small'
 										variant="contained"
-										style={{ borderRadius: 0 }}
+										style={{ borderRadius: 2, marginTop: "-10px" }}
 										onClick={numberExport}
-										>
+									>
 										Export
            							 </Button>
-										<CSVLink
-							data={data}
-							filename={`contacts_${name}.csv`}
-							className='hidden'
-							ref={csvLinkK}
-							target='_blank'
-						/>
-									
+									<CSVLink
+										data={data}
+										filename={`contacts_${name}.csv`}
+										className='hidden'
+										ref={csvLinkK}
+										target='_blank'
+									/>
+
 								</div>
 							</div>
-							<div className="w-full flex flex-col">
+							<div className="w-full flex flex-col" style={{ marginTop: "10px" }}>
 								<FuseScrollbars className="flex-grow overflow-x-auto">
 									<Table className="min-w-xl" aria-labelledby="tableTitle">
 										<ContactTableHeader
@@ -440,7 +445,7 @@ var End = "";
 															tabIndex={-1}
 															key={n.id}
 															selected={isSelected}
-															// onClick={event => handleClickUpdateContact(n)}
+														// onClick={event => handleClickUpdateContact(n)}
 														>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
 																{n.id}
@@ -449,19 +454,19 @@ var End = "";
 																{n.attributes[0].firstname}
 															</TableCell>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-															{n.attributes[1].lastname}
+																{n.attributes[1].lastname}
 															</TableCell>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-															{n.attributes[3].age}
+																{n.attributes[3].age}
 															</TableCell>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-															{n.attributes[2].gender}
+																{n.attributes[2].gender}
 															</TableCell>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
 																{n.number}
 															</TableCell>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-															{n.attributes[4].email}
+																{n.attributes[4].email}
 
 															</TableCell>
 															{<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
@@ -488,7 +493,8 @@ var End = "";
 																				setROWvalue(n)
 																			}}
 																		>
-																			<Icon>phone</Icon>
+																			<Icon name='lock'>block</Icon>
+																			{/* <Icon>phone</Icon> */}
 																		</IconButton>
 																	)}
 
@@ -536,7 +542,8 @@ var End = "";
 							<div className="w-full flex flex-col">
 								<FuseScrollbars className="flex-grow overflow-x-auto">
 									<Table className="min-w-xl" aria-labelledby="tableTitle">
-										<ContactTableHeader
+										{/* <ContactTableHeader */}
+										<ContactTableUnblockHeading
 											numSelected={selected.length}
 											order={order}
 											onSelectAllClick={handleSelectAllClick}
@@ -572,7 +579,7 @@ var End = "";
 															tabIndex={-1}
 															key={n.id}
 															selected={isSelected}
-															// onClick={event => handleClick(n)}
+														// onClick={event => handleClick(n)}
 														>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
 																{n.id}
@@ -581,19 +588,19 @@ var End = "";
 																{n.attributes[0].firstname}
 															</TableCell>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-															{n.attributes[1].lastname}
+																{n.attributes[1].lastname}
 															</TableCell>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-															{n.attributes[3].age}
+																{n.attributes[3].age}
 															</TableCell>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-															{n.attributes[2].gender}
+																{n.attributes[2].gender}
 															</TableCell>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
 																{n.number}
 															</TableCell>
 															<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-															{n.attributes[4].email}
+																{n.attributes[4].email}
 
 															</TableCell>
 															{<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
@@ -802,7 +809,7 @@ var End = "";
 					{updateContactDialog && <ContactDialog isOpen={updateContactDialog} type='edit' data={contactDialogData} closeDialog={handleDialogClose} />}
 					{/* <ContactDialog isOpen={true} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} /> */}
 					{openBlockDialog && <BlockContactInDialog isOpen={openBlockDialog} type="Block Number" data={rowvalue} closeDialog={handleCloseAddBlockNumber} />}
-					{unblockDialog && <BlockDialog isOpen={unblockDialog} type="UnBlock Number" closeDialog={handleCloseUnBlockUser} data={unblockDialogData} />}
+					{unblockDialog && <BlockDialog isOpen={unblockDialog} type="Unblock Number" closeDialog={handleCloseUnBlockUser} data={unblockDialogData} />}
 				</CardContent>
 			</Card>
 		</>

@@ -350,7 +350,7 @@ function DashboardApp(props) {
 			content={
 				<Card className={classes.root}>
 					<CardContent className={classes.contentCard} style={{ width: '100%' }}>
-						<Typography variant='h2' className='companyDetailHeader' >Intelligence
+						<Typography variant='h2' className='companyDetailHeader' style={{backgroundColor:"#fc2254",color:"white"}} >Intelligence
 						</Typography>
 						<div className="p-24">
 							{tabValue === 0 && (

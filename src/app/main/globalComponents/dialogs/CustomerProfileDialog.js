@@ -14,7 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 // import PortableCityDropdown from './PortableCityDropdown';
 
 const CustomerProfileDialog = function (props) {
-    
+
     const useStyles = makeStyles((theme) => ({
         formControl: {
             margin: theme.spacing(1),
@@ -35,7 +35,7 @@ const CustomerProfileDialog = function (props) {
     const { id, number, assign_name, attributes } = data;
 
     const [customerAttributes, setCustomerAttributes] = React.useState(attributes);
-
+    console.log("attributes : ", attributes);
     const onInputChange = e => {
         let id = (e.target.id) ? e.target.id : e.target.name;
 
@@ -109,7 +109,6 @@ const CustomerProfileDialog = function (props) {
     React.useEffect(() => {
         attributes.forEach(attr => {
             const keys = Object.keys(attr);
-
             if (keys[1] === 'country') setSelectedCountry(attr[keys[1]]);
             if (keys[1] === 'city') setSelectedCity(attr[keys[1]]);
         });
@@ -119,8 +118,8 @@ const CustomerProfileDialog = function (props) {
         <DialogContent >
             <Grid container spacing={2}>
                 <Grid item md={12} xs={12}>
-                    <div style={{ marginBottom: 20,marginTop:20}}>
-                        <TextField  size="small" value={number} name={'number'} label="Phone Number" variant="outlined" fullWidth autoComplete="off" disabled={true} />
+                    <div style={{ marginBottom: 20, marginTop: 20 }}>
+                        <TextField size="small" value={number} name={'number'} label="Phone Number" variant="outlined" fullWidth autoComplete="off" disabled={true} />
                     </div>
                     {customerAttributes.map((attribute, i) => {
                         const _field = (obj, props) => {
@@ -159,13 +158,13 @@ const CustomerProfileDialog = function (props) {
                         else if (keys[1] === "age") {
                             return (
                                 <div key={`customer_attribute_data_holder_${i}`} style={{ marginBottom: 20 }}>
-                                    <TextField  size="small" id={`attribute_id-${id}`} key={`customer_attribute_data_${i}`} value={value} name={keys[1]} autoFocus label={`${keys[1].toUpperCase()}`} variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
+                                    <TextField size="small" id={`attribute_id-${id}`} key={`customer_attribute_data_${i}`} value={value} name={keys[1]} autoFocus label={`${keys[1].toUpperCase()}`} variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
                                 </div>
                             );
                         } else {
                             return (
                                 <div key={`customer_attribute_data_holder_${i}`} style={{ marginBottom: 20 }}>
-                                    <TextField  size="small" id={`attribute_id-${id}`} key={`customer_attribute_data_${i}`} value={value} name={keys[1]} autoFocus label={`${keys[1].toUpperCase()}`} variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
+                                    <TextField size="small" id={`attribute_id-${id}`} key={`customer_attribute_data_${i}`} value={value} name={keys[1]} autoFocus label={`${keys[1].toUpperCase()}`} variant="outlined" fullWidth autoComplete="off" onChange={onInputChange} />
                                 </div>
                             );
                         }

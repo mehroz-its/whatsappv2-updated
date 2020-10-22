@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 		color: 'inherit!important',
 		textDecoration: 'none!important',
 		height: 40,
-		fontSize:'12px',
+		fontSize: '12px',
 		width: 'calc(100% - 16px)',
 		borderRadius: '0 20px 20px 0',
 		paddingLeft: 24,
@@ -36,15 +36,15 @@ const useStyles = makeStyles(theme => ({
 		}
 	},
 	avatar: {
-	
-		padding:0,
-		width:30,
-		height:30
-	  },
-	  listItemText:{
-		fontSize:'100px',//Insert your required size
-	
-	  }
+
+		padding: 0,
+		width: 30,
+		height: 30
+	},
+	listItemText: {
+		fontSize: '100px',//Insert your required size
+
+	}
 }));
 
 function ContactsSidebarContent(props) {
@@ -61,7 +61,7 @@ function ContactsSidebarContent(props) {
 			return str.join(' ');
 		}
 		console.log(data)
-		 value = titleCase(data.username);
+		value = titleCase(data.username);
 
 	}
 	const classes = useStyles(props);
@@ -70,10 +70,10 @@ function ContactsSidebarContent(props) {
 			<FuseAnimate animation="transition.slideLeftIn" delay={200}>
 				<Paper className="rounded-0 shadow-none lg:rounded-8 lg:shadow-1">
 					<div className="p-24 flex items-center">
-						<Avatar alt={value.charAt(0)} src="../../../"  
-						className={classes.avatar}
+						<Avatar alt={value.charAt(0)} src="../../../"
+							className={classes.avatar}
 						/>
-						<Typography className="mx-12" style={{fontSize:'12px',marginTop:'1px'}}>{value}</Typography>
+						<Typography className="mx-12" style={{ fontSize: '12px', marginTop: '1px' }}>{value}</Typography>
 					</div>
 					<Divider />
 					<List>
@@ -90,8 +90,8 @@ function ContactsSidebarContent(props) {
 							<ListItemText className="truncate" primary="All Contacts" disableTypography />
 						</ListItem>
 						<ListItem
-						
-							 
+
+
 							button
 							component={NavLinkAdapter}
 							to="/apps/blocklist"
@@ -101,13 +101,13 @@ function ContactsSidebarContent(props) {
 							<Icon className="list-item-icon text-16" color="action">
 								block
 							</Icon>
-							<ListItemText 
-						
-							primary="Blocked Contacts" disableTypography />
+							<ListItemText
+									style={{fontSize:"12px"}}
+								primary="Blocked Contacts" disableTypography />
 						</ListItem>
 						<ListItem
-						
-							 
+
+
 							button
 							component={NavLinkAdapter}
 							to="/apps/contact-groups"
@@ -115,11 +115,11 @@ function ContactsSidebarContent(props) {
 							className={classes.listItem}
 						>
 							<Icon className="list-item-icon text-16" color="action">
-							people
+								people
 							</Icon>
-							<ListItemText 
-						
-							primary="Contact Groups" disableTypography />
+							<ListItemText
+
+								primary="Contact Groups" disableTypography />
 						</ListItem>
 					</List>
 				</Paper>

@@ -5,8 +5,8 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import React, {  useState } from 'react';
-import {  createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import React, { useState } from 'react';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import ContactsTablePaginationActions from '../../setting/canned/ContactsTablePaginationActions';
 import Typography from '@material-ui/core/Typography';
@@ -25,7 +25,7 @@ const PaginationStyle = createMuiTheme({
 });
 
 function ChartTable(props) {
-	
+
 	const [selected, setSelected] = useState([]);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -33,7 +33,7 @@ function ChartTable(props) {
 		direction: 'asc',
 		id: null
 	});
-	
+
 
 	let data = props.data
 	function handleRequestSort(event, property) {
@@ -58,9 +58,9 @@ function ChartTable(props) {
 		setSelected([]);
 	}
 	function handleClick(n) {
-		
+
 	}
-	
+
 
 	function handleChangePage(event, value) {
 		setPage(value);
@@ -92,93 +92,103 @@ function ChartTable(props) {
 		}
 	}
 	return (
-		<div className="w-full flex flex-col">
-			<FuseScrollbars className="flex-grow overflow-x-auto">
-				<Table className="min-w-xl" aria-labelledby="tableTitle">
-					<ChartTableHead
-						numSelected={selected.length}
-						order={order}
-						onSelectAllClick={handleSelectAllClick}
-						onRequestSort={handleRequestSort}
-						rowCount={data.length}
-					/>
 
-					<TableBody>
-						{_.orderBy(
-							data,
-							[
-								o => {
-									switch (order.id) {
-										case 'categories': {
-											return o.categories[0];
+		<>
+			{  data.filter((item) => {
+				return item.date.includes(props.val)
+			}).length ?
+				< div className="w-full flex flex-col">
+					<FuseScrollbars className="flex-grow overflow-x-auto">
+						<Table className="min-w-xl" aria-labelledby="tableTitle">
+							<ChartTableHead
+								numSelected={selected.length}
+								order={order}
+								onSelectAllClick={handleSelectAllClick}
+								onRequestSort={handleRequestSort}
+								rowCount={data.length}
+							/>
+
+							<TableBody>
+								{_.orderBy(
+									data,
+									[
+										o => {
+											switch (order.id) {
+												case 'categories': {
+													return o.categories[0];
+												}
+												default: {
+													return o[order.id];
+												}
+											}
 										}
-										default: {
-											return o[order.id];
-										}
-									}
-								}
-							],
-							[order.direction]
-						)
-							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-							.map(n => {
-								const isSelected = selected.indexOf(n.id) !== -1;
-							
+									],
+									[order.direction]
+								)
+									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+									.filter((item) => {
+										return props.val ? item.date.includes(props.val) : true
+									}).map(n => {
+										const isSelected = selected.indexOf(n.id) !== -1;
 
-								return (
-									<TableRow
-										className="h-10 cursor-pointer"
-										hover
-										role="checkbox"
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
-										onClick={event => handleClick(n)}
-									>
-										<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-											{n.id}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-											{n.date}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-											{n.inbound}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-											{n.outbound}
-										</TableCell>
-										<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-											{n.engagements}
-										</TableCell>
-									</TableRow>
-								);
-							})}
-					</TableBody>
-				</Table>
-			</FuseScrollbars>
-			<MuiThemeProvider theme={PaginationStyle}>
-				<TablePagination
-					classes={{
-						root: 'overflow-hidden',
-						spacer: 'w-0 max-w-0',
-						actions: 'text-64',
-						select: 'text-12 mt-4',
-						selectIcon: 'mt-4',
 
-					}}
-					className="overflow-hidden"
-					component="div"
-					count={data.length}
-					style={{ fontSize: '12px' }}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					onChangePage={handleChangePage}
-					onChangeRowsPerPage={handleChangeRowsPerPage}
-					ActionsComponent={ContactsTablePaginationActions}
-				/>
-			</MuiThemeProvider>
-		</div>
+										return (
+											<TableRow
+												className="h-10 cursor-pointer"
+												hover
+												role="checkbox"
+												aria-checked={isSelected}
+												tabIndex={-1}
+												key={n.id}
+												selected={isSelected}
+												onClick={event => handleClick(n)}
+											>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.id}
+												</TableCell>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.date}
+												</TableCell>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.inbound}
+												</TableCell>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.outbound}
+												</TableCell>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+													{n.engagements}
+												</TableCell>
+											</TableRow>
+										);
+									})}
+							</TableBody>
+						</Table>
+					</FuseScrollbars>
+					<MuiThemeProvider theme={PaginationStyle}>
+						<TablePagination
+							classes={{
+								root: 'overflow-hidden',
+								spacer: 'w-0 max-w-0',
+								actions: 'text-64',
+								select: 'text-12 mt-4',
+								selectIcon: 'mt-4',
+
+							}}
+							className="overflow-hidden"
+							component="div"
+							count={data.length}
+							style={{ fontSize: '12px' }}
+							rowsPerPage={rowsPerPage}
+							page={page}
+							onChangePage={handleChangePage}
+							onChangeRowsPerPage={handleChangeRowsPerPage}
+							ActionsComponent={ContactsTablePaginationActions}
+						/>
+					</MuiThemeProvider>
+				</div> : <div style={{ display: "flex", alignItems: "center", alignContent: "center", justifyContent: "center" }}><h1>Data Not Found</h1></div>
+			}
+
+		</>
 	);
 }
 

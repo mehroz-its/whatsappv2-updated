@@ -109,7 +109,7 @@ function CustomerAccounts(props) {
                         </FuseAnimate>
                         <FuseAnimate animation="transition.slideLeftIn" delay={300}>
                             <Typography className=" py-0 sm:py-24 hidden sm:flex mx-0 sm:mx-12 text-20" variant="h6">
-                                Bussiness Accounts
+                                Business Accounts
 							</Typography>
                         </FuseAnimate>
                         {/*  */}
@@ -152,7 +152,7 @@ function CustomerAccounts(props) {
                                 <Grid item md={12} sm={12} xs={12} >
                                     <Grid container spacing={4} style={{ marginBottom: '22px', marginTop: '-1px', marginLeft: 4 }}>
                                         <Button style={{ fontSize: '11px' }} variant="contained" color="primary" onClick={(e) => { props.history.push({ pathname: '/apps/company-forms' }) }}>
-                                            New Account
+                                            <span style={{textTransform:"capitalize",fontSize:"13px"}}>Create Account</span>
                                         </Button>
                                     </Grid>
 

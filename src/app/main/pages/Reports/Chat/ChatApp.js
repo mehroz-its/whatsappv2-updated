@@ -51,54 +51,54 @@ const incomingAndOutGoingCount = (data) => {
 	console.log("dataa : ", data);
 	let myEle = document.getElementById("chartdivv");
 	if (myEle) {
-	// Create chart instance
-	let chart = am4core.create("chartdivv", am4charts.XYChart);
+		// Create chart instance
+		let chart = am4core.create("chartdivv", am4charts.XYChart);
 
-	// Add data
-	chart.data = generateChartData();
+		// Add data
+		chart.data = generateChartData();
 
-	// Create axes
-	let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-	dateAxis.renderer.minGridDistance = 50;
+		// Create axes
+		let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+		dateAxis.renderer.minGridDistance = 50;
 
-	let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+		let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
-	// Create series
-	let series = chart.series.push(new am4charts.ColumnSeries());
-	series.dataFields.valueY = "visits";
-	series.dataFields.dateX = "date";
-	series.strokeWidth = 2;
-	series.minBulletDistance = 10;
-	series.tooltipText = "{valueY}";
-	series.tooltip.pointerOrientation = "vertical";
-	series.tooltip.background.cornerRadius = 20;
-	series.tooltip.background.fillOpacity = 0.5;
-	series.tooltip.label.padding(12, 12, 12, 12)
+		// Create series
+		let series = chart.series.push(new am4charts.ColumnSeries());
+		series.dataFields.valueY = "visits";
+		series.dataFields.dateX = "date";
+		series.strokeWidth = 2;
+		series.minBulletDistance = 10;
+		series.tooltipText = "{valueY}";
+		series.tooltip.pointerOrientation = "vertical";
+		series.tooltip.background.cornerRadius = 20;
+		series.tooltip.background.fillOpacity = 0.5;
+		series.tooltip.label.padding(12, 12, 12, 12)
 
 
 
-	// Add cursor
-	chart.cursor = new am4charts.XYCursor();
-	chart.cursor.xAxis = dateAxis;
-	chart.cursor.snapToSeries = series;
-	// Add scrollbar
-	chart.scrollbarX = new am4charts.XYChartScrollbar();
-	chart.scrollbarX.series.push(series);
-	chart.scrollbarX.parent = chart.bottomAxesContainer;
+		// Add cursor
+		chart.cursor = new am4charts.XYCursor();
+		chart.cursor.xAxis = dateAxis;
+		chart.cursor.snapToSeries = series;
+		// Add scrollbar
+		chart.scrollbarX = new am4charts.XYChartScrollbar();
+		chart.scrollbarX.series.push(series);
+		chart.scrollbarX.parent = chart.bottomAxesContainer;
 
-	function generateChartData() {
-		let chartData = [];
-		for (var i = 0; i < data.length; i++) {
-			chartData.push({
-				date: data[i][2].date,
-				visits: data[i][0].count,
-			});
+		function generateChartData() {
+			let chartData = [];
+			for (var i = 0; i < data.length; i++) {
+				chartData.push({
+					date: data[i][2].date,
+					visits: data[i][0].count,
+				});
 
+			}
+			console.log("chartData", chartData);
+			return chartData;
 		}
-		console.log("chartData", chartData);
-		return chartData;
 	}
-}
 }
 
 
@@ -107,94 +107,94 @@ const engagments = (data) => {
 	console.log("dataa : ", data);
 	let myEle = document.getElementById("chartdiv");
 	if (myEle) {
-	// Create chart instance
-	let chart = am4core.create("chartdiv", am4charts.XYChart);
+		// Create chart instance
+		let chart = am4core.create("chartdiv", am4charts.XYChart);
 
-	// Add data
-	chart.data = generateChartData();
+		// Add data
+		chart.data = generateChartData();
 
-	// Create axes
-	let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-	dateAxis.renderer.minGridDistance = 50;
+		// Create axes
+		let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+		dateAxis.renderer.minGridDistance = 50;
 
-	let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+		let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
-	// Create series
-	let series = chart.series.push(new am4charts.ColumnSeries());
-	series.dataFields.valueY = "visits";
-	series.dataFields.dateX = "date";
-	series.strokeWidth = 2;
-	series.minBulletDistance = 10;
-	series.tooltipText = "{valueY}";
-	series.tooltip.pointerOrientation = "vertical";
-	series.tooltip.background.cornerRadius = 20;
-	series.tooltip.background.fillOpacity = 0.5;
-	series.tooltip.label.padding(12, 12, 12, 12)
+		// Create series
+		let series = chart.series.push(new am4charts.ColumnSeries());
+		series.dataFields.valueY = "visits";
+		series.dataFields.dateX = "date";
+		series.strokeWidth = 2;
+		series.minBulletDistance = 10;
+		series.tooltipText = "{valueY}";
+		series.tooltip.pointerOrientation = "vertical";
+		series.tooltip.background.cornerRadius = 20;
+		series.tooltip.background.fillOpacity = 0.5;
+		series.tooltip.label.padding(12, 12, 12, 12)
 
 
 
-	// Add cursor
-	chart.cursor = new am4charts.XYCursor();
-	chart.cursor.xAxis = dateAxis;
-	chart.cursor.snapToSeries = series;
-	// Add scrollbar
-	chart.scrollbarX = new am4charts.XYChartScrollbar();
-	chart.scrollbarX.series.push(series);
-	chart.scrollbarX.parent = chart.bottomAxesContainer;
+		// Add cursor
+		chart.cursor = new am4charts.XYCursor();
+		chart.cursor.xAxis = dateAxis;
+		chart.cursor.snapToSeries = series;
+		// Add scrollbar
+		chart.scrollbarX = new am4charts.XYChartScrollbar();
+		chart.scrollbarX.series.push(series);
+		chart.scrollbarX.parent = chart.bottomAxesContainer;
 
-	function generateChartData() {
-		let chartData = [];
-		for (var i = 0; i < data.length; i++) {
-			chartData.push({
-				date: data[i][2].date,
-				visits: data[i][1].count,
-			});
+		function generateChartData() {
+			let chartData = [];
+			for (var i = 0; i < data.length; i++) {
+				chartData.push({
+					date: data[i][2].date,
+					visits: data[i][1].count,
+				});
 
+			}
+			console.log("chartData", chartData);
+			return chartData;
 		}
-		console.log("chartData", chartData);
-		return chartData;
 	}
-}
 }
 const engagmentss = (data) => {
 	let myEle = document.getElementById("chartdivvv");
 	if (myEle) {
-	let chart = am4core.create("chartdivvv", am4charts.XYChart);
-	chart.data = generateChartData();
-	let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-	dateAxis.renderer.minGridDistance = 50;
+		let chart = am4core.create("chartdivvv", am4charts.XYChart);
+		chart.data = generateChartData();
+		let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+		dateAxis.renderer.minGridDistance = 50;
 
-	let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+		let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
 
-	// Create series
-	let series = chart.series.push(new am4charts.ColumnSeries());
-	series.dataFields.valueY = "visits";
-	series.dataFields.dateX = "date";
-	series.strokeWidth = 2;
-	series.minBulletDistance = 10;
-	series.tooltipText = "{valueY}";
-	series.tooltip.pointerOrientation = "vertical";
-	series.tooltip.background.cornerRadius = 20;
-	series.tooltip.background.fillOpacity = 0.5;
-	series.tooltip.label.padding(12, 12, 12, 12)
-	chart.cursor = new am4charts.XYCursor();
-	chart.cursor.xAxis = dateAxis;
-	chart.cursor.snapToSeries = series;
-	chart.scrollbarX = new am4charts.XYChartScrollbar();
-	chart.scrollbarX.series.push(series);
-	chart.scrollbarX.parent = chart.bottomAxesContainer;
-	function generateChartData() {
-		let chartData = [];
-		for (var i = 0; i < data.length; i++) {
-			chartData.push({
-				date: data[i][1].date,
-				visits: data[i][0].count,
-			});
+		// Create series
+		let series = chart.series.push(new am4charts.ColumnSeries());
+		series.dataFields.valueY = "visits";
+		series.dataFields.dateX = "date";
+		series.strokeWidth = 2;
+		series.minBulletDistance = 10;
+		series.tooltipText = "{valueY}";
+		series.tooltip.pointerOrientation = "vertical";
+		series.tooltip.background.cornerRadius = 20;
+		series.tooltip.background.fillOpacity = 0.5;
+		series.tooltip.label.padding(12, 12, 12, 12)
+		chart.cursor = new am4charts.XYCursor();
+		chart.cursor.xAxis = dateAxis;
+		chart.cursor.snapToSeries = series;
+		chart.scrollbarX = new am4charts.XYChartScrollbar();
+		chart.scrollbarX.series.push(series);
+		chart.scrollbarX.parent = chart.bottomAxesContainer;
+		function generateChartData() {
+			let chartData = [];
+			for (var i = 0; i < data.length; i++) {
+				chartData.push({
+					date: data[i][1].date,
+					visits: data[i][0].count,
+				});
 
+			}
+			return chartData;
 		}
-		return chartData;
 	}
-}
 }
 var Start = "";
 var End = "";
@@ -323,7 +323,11 @@ function ChatApp() {
 	};
 	const searchContact = (value) => {
 		setVal(value)
-		setData2(data.filter(n => n.number.toLowerCase().includes(value.toLowerCase())))
+		// setData2(data.filter(n => n.number.toLowerCase().includes(value.toLowerCase())))
+
+
+
+
 	}
 	const handleChange = (event) => {
 		setAge(event.target.value);
@@ -409,13 +413,13 @@ function ChatApp() {
 
 			content={
 				<>
-				<div className="p-12">
-			
-						 {isLoading? 
-							<div style={{width:'100%',textAlign:'center',margin:'18px 0'}}>
-							<CircularProgress color="red" style={{flex:1,alignItems: 'center',alignSelf: 'center',alignContent: 'center',}} /> 
+					<div className="p-12">
+
+						{isLoading ?
+							<div style={{ width: '100%', textAlign: 'center', margin: '18px 0' }}>
+								<CircularProgress color="red" style={{ flex: 1, alignItems: 'center', alignSelf: 'center', alignContent: 'center', }} />
 							</div>
-				:  
+							:
 							<Grid container spacing={3} style={{ paddingLeft: 12, paddingRight: 12 }}>
 								<Grid item md={4} sm={12} xs={12} >
 									<Widget2 title='Dummy' count={totalIngoingMessages} bottom_title='Inbound' />
@@ -429,52 +433,52 @@ function ChatApp() {
 
 							</Grid>
 						}
-							<Grid container spacing={3} style={{ paddingLeft: 12, paddingRight: 12 }}>
-								<Grid item md={6} sm={12} xs={12} >
-									<Paper className="w-full rounded-8 shadow-none border-1">
-										<Typography variant="h6" className="header-card text-center pt-8" >Conversation outgoing</Typography>
-										<div id="chartdivv" style={{ width: "100%", height: "300px" }}></div>
-									</Paper>
-								</Grid>
-								<Grid item md={6} sm={12} xs={12} >
-									<Paper className="w-full rounded-8 shadow-none border-1">
-										<Typography variant="h6" className="header-card text-center pt-8" >Conversation incoming</Typography>
-										<div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>
-									</Paper>
-								</Grid>
+						<Grid container spacing={3} style={{ paddingLeft: 12, paddingRight: 12 }}>
+							<Grid item md={6} sm={12} xs={12} >
+								<Paper className="w-full rounded-8 shadow-none border-1">
+									<Typography variant="h6" className="header-card text-center pt-8" >Conversation outgoing</Typography>
+									<div id="chartdivv" style={{ width: "100%", height: "300px" }}></div>
+								</Paper>
 							</Grid>
-							<Grid container spacing={3} style={{ paddingLeft: 12, paddingRight: 12 }}>
-								<Grid item md={12} sm={12} xs={12} >
-									<Paper className="w-full rounded-8 shadow-none border-1">
-										<Typography variant="h6" className="header-card text-center pt-8" >Engagements</Typography>
-										<div id="chartdivvv" style={{ width: "100%", height: "300px" }}></div>
-									</Paper>
-								</Grid>
+							<Grid item md={6} sm={12} xs={12} >
+								<Paper className="w-full rounded-8 shadow-none border-1">
+									<Typography variant="h6" className="header-card text-center pt-8" >Conversation incoming</Typography>
+									<div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>
+								</Paper>
 							</Grid>
-							<Snackbar
-								anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-								open={snackbaropen}
-								autoHideDuration={4000}
-								onClose={() => setSnackBarOpen(false)}
-							>
-								<Alert variant="filled" severity={ok}>
-									{snackbarmessage}
-								</Alert>
-							</Snackbar>
-							<FusePageSimple
-								classes={{
-									contentWrapper: 'p-0 sm:p-12 pb-80 sm:pb-80 h-full',
-									content: 'flex flex-col h-full',
-									leftSidebar: 'w-256 border-0',
-									header: 'min-h-72 h-72 sm:h-100 sm:min-h-100',
-									wrapper: 'min-h-0'
-								}}
-								header={<ChartHeader SearchVal={searchContact} />}
-								content={
-									<ChartTable data={data2} val={val} />}
-							/>
-						</div>
-			</>
+						</Grid>
+						<Grid container spacing={3} style={{ paddingLeft: 12, paddingRight: 12 }}>
+							<Grid item md={12} sm={12} xs={12} >
+								<Paper className="w-full rounded-8 shadow-none border-1">
+									<Typography variant="h6" className="header-card text-center pt-8" >Engagements</Typography>
+									<div id="chartdivvv" style={{ width: "100%", height: "300px" }}></div>
+								</Paper>
+							</Grid>
+						</Grid>
+						<Snackbar
+							anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+							open={snackbaropen}
+							autoHideDuration={4000}
+							onClose={() => setSnackBarOpen(false)}
+						>
+							<Alert variant="filled" severity={ok}>
+								{snackbarmessage}
+							</Alert>
+						</Snackbar>
+						<FusePageSimple
+							classes={{
+								contentWrapper: 'p-0 sm:p-12 pb-80 sm:pb-80 h-full',
+								content: 'flex flex-col h-full',
+								leftSidebar: 'w-256 border-0',
+								header: 'min-h-72 h-72 sm:h-100 sm:min-h-100',
+								wrapper: 'min-h-0'
+							}}
+							header={<ChartHeader SearchVal={searchContact} />}
+							content={
+								<ChartTable data={data2} val={val} />}
+						/>
+					</div>
+				</>
 			}
 		/>
 	);

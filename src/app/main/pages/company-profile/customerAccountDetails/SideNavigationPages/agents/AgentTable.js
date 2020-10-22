@@ -79,6 +79,7 @@ const PaginationStyle = createMuiTheme({
 
 
 function AgentTable(props) {
+
 	const classes = useStyles();
 	const [open, setOpen] = React.useState(false)
 	const [type, setType] = React.useState("update")
@@ -194,7 +195,29 @@ function AgentTable(props) {
 		setOpen(true);
 		setType("Create")
 	};
-	function handleDialogClose() {
+	function handleDialogClose(e) {
+		if (e == "create") {
+			setSnackBarMessage("Created Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+		}
+		else if (e == "update") {
+			setSnackBarMessage("Update Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+		}		
+		else if (e == "error") {
+			setSnackBarMessage("Error!Please Try Again Later")
+			setOK("error")
+			setSnackBarOpen(true)
+			setOpen(false)
+			return
+
+		}
+		// setOpen(false)
+		// setDeleteDialog(false)
+		// props.onClose(val)
+
 		setDialogData({})
 		let update_params = {
 			key: ':client_id',
@@ -257,16 +280,16 @@ function AgentTable(props) {
 		setDialogData('')
 		setOpen(true);
 	}
-	
+
 	return (
 		<>
 			<Card className={classes.root}>
 				<CardContent className={classes.content} style={{ width: '100%' }}>
-					<Typography variant='h2' className='companyDetailHeader'>Agents</Typography>
+					<Typography variant='h2' className='companyDetailHeader' style={{ backgroundColor: "#fc2254", color: "white" }}>Users</Typography>
 					<Snackbar
-						anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+						anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 						open={snackbaropen}
-						autoHideDuration={3000}
+						autoHideDuration={7000}
 					>
 						<Alert variant="filled" severity={ok}>
 							{snackbarmessage}

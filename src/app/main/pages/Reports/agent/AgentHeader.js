@@ -4,26 +4,28 @@ import Input from '@material-ui/core/Input';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
-import {  useSelector } from 'react-redux';
-import {ThemeProvider,createMuiTheme,MuiThemeProvider } from '@material-ui/core/styles';
+import { useSelector } from 'react-redux';
+import { ThemeProvider, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+// import  { useState } from 'react';
+// import AgentTable from './AgentTable';
 
-
+// const [val, setVal] = React.useState('');
 
 const SearchStyle = createMuiTheme({
 	overrides: {
 		MuiInput: {
-		root: {
-		  paddingTop: 0,
-		  fontSize:'12px',
-		  paddingBottom: 0,
-		  margin:0,
-		  border:0,
-		  borderRadius:0,
-		  height:'30px'
+			root: {
+				paddingTop: 0,
+				fontSize: '12px',
+				paddingBottom: 0,
+				margin: 0,
+				border: 0,
+				borderRadius: 0,
+				height: '30px'
+			}
 		}
-	  }
 	}
-  });
+});
 
 function AgentHeader(props) {
 	const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
@@ -36,7 +38,7 @@ function AgentHeader(props) {
 					</FuseAnimate>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 						<Typography variant="h6" className="mx-12 hidden sm:flex">
-						<span style={{fontSize:'15px'}}>Chart Report</span>
+							<span style={{ fontSize: '15px' }}>Chart Report</span>
 						</Typography>
 					</FuseAnimate>
 				</div>
@@ -47,18 +49,21 @@ function AgentHeader(props) {
 						<Paper className="flex items-center w-full max-w-sm  px-8 py-4" elevation={1}>
 							<Icon color="action">search</Icon>
 							<MuiThemeProvider theme={SearchStyle}>
-							<Input
-							style={{border:'none'}}
-							rows={1}
-							placeholder="Search"
-							className="flex flex-1 mx-8 "
-							disableUnderline
-							onChange={e=>{
-							
-								props.SearchVal(e.target.value)
-								
-							}}
-							/>
+								<Input
+									style={{ border: 'none' }}
+									rows={1}
+									placeholder="Search"
+									className="flex flex-1 mx-8 "
+									disableUnderline
+									onChange={e => {
+
+										props.SearchVal(e.target.value)
+
+									}}
+									// onChange={<AgentTable SearchValue={(event) => {
+									// 	setVal(event.target.value)
+									// }} val={val} />}
+								/>
 							</MuiThemeProvider>
 						</Paper>
 					</FuseAnimate>

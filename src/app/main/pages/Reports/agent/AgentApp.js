@@ -15,7 +15,7 @@ import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading'
 import Button from '@material-ui/core/Button';
-import DateRangePickerVal from '../chat/DatePicker'
+import DateRangePickerVal from '../Chat/DatePicker'
 import { CSVLink, CSVDownload } from 'react-csv';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert'
@@ -46,8 +46,9 @@ function AgentApp() {
 	const pageLayout = useRef(null);
 	const csvLinkK = useRef() // setup the ref that we'll use for the hidden CsvLink click once we've updated the data
 	const [data2, setData2] = React.useState([])
-	const [val, setVal] = React.useState('');
+	const [val, setVal] = React.useState('')
 	const [tableData, setTableData] = React.useState([]);
+	const [tableData2, setTableData2] = React.useState([]);
 	const [StartingDate, setStartingDate] = React.useState('')
 	const [EndingDate, setEndingDate] = React.useState('')
 	const [isLoading, setisLoading] = React.useState(false)
@@ -58,9 +59,9 @@ function AgentApp() {
 	// const [HitValue,setHitValue] = React.useState(false)
 
 
-	
+
 	const [totalItems, setTotalItems] = React.useState(0)
-	const [currentParams, setCurrentParams] = React.useState({limit:10,page:0})
+	const [currentParams, setCurrentParams] = React.useState({ limit: 10, page: 0 })
 
 	const getData = ((loadData) => {
 		setisLoading(true)
@@ -78,6 +79,7 @@ function AgentApp() {
 			let tableData = response.data.data.list.data
 			setTotalItems(response.data.data.list.totalItems)
 			setTableData(tableData)
+			setTableData2(tableData)
 			setisLoading(false)
 		});
 	})
@@ -165,14 +167,14 @@ function AgentApp() {
 
 	React.useEffect(() => {
 		getData()
-	  }, [currentParams]);
+	}, [currentParams]);
 
-	const setPage = (currentPage)=>{
-		setCurrentParams({limit:currentParams.limit,page:currentPage})
+	const setPage = (currentPage) => {
+		setCurrentParams({ limit: currentParams.limit, page: currentPage })
 	}
-	
-	const setLimit = (pageLimit)=>{
-		setCurrentParams({limit:pageLimit,page:0})
+
+	const setLimit = (pageLimit) => {
+		setCurrentParams({ limit: pageLimit, page: 0 })
 	}
 
 	React.useEffect(() => {
@@ -218,7 +220,12 @@ function AgentApp() {
 
 	const searchContact = (value) => {
 		setVal(value)
-		setData2(tableData.filter(n => n.agent_name.toLowerCase().includes(value.toLowerCase())))
+		// if (value !== "") {
+		// setTableData2(tableData2.filter(n => n.agent_name.toLowerCase().includes(value.toLowerCase())))
+		// } else  {
+		// setTableData2(tableData)
+		// }   
+
 	}
 
 	const SelectedDates = (start, end) => {
@@ -309,43 +316,42 @@ function AgentApp() {
 						</Alert>
 					</Snackbar>
 					{
-						isLoading?
+						isLoading ?
 
-					
-					
-			<div className="flex flex-1 items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-			
 
-						:
-						
-<FusePageSimple
-						classes={{
-							content: 'flex',
-							header: 'min-h-72 h-72 sm:h-100 sm:min-h-100',
-							contentWrapper: 'p-0 sm:p-12 pb-80 sm:pb-80',
-							// content: 'flex flex-col h-full',
-							leftSidebar: 'w-256 border-0',
-							// header: 'min-h-72 h-full sm:h-136 sm:min-h-136',
-							wrapper: 'min-h-0'
-						}}
-						header={<AgentHeader SearchVal={searchContact} />}
-						content={<AgentTable 
-						
-						totalItems={totalItems}
-						setPage={setPage}
-						setLimit={setLimit}
-						rowsPerPage={currentParams.limit}
-						currentPage={currentParams.page}
-						
-						
-						data={tableData} />}
-					/>
 
-						
+							<div className="flex flex-1 items-center justify-center h-full">
+								<FuseLoading />
+							</div>
+
+
+							:
+
+							<FusePageSimple
+								classes={{
+									content: 'flex',
+									header: 'min-h-72 h-72 sm:h-100 sm:min-h-100',
+									contentWrapper: 'p-0 sm:p-12 pb-80 sm:pb-80',
+									// content: 'flex flex-col h-full',
+									leftSidebar: 'w-256 border-0',
+									// header: 'min-h-72 h-full sm:h-136 sm:min-h-136',
+									wrapper: 'min-h-0'
+								}}
+								header={<AgentHeader SearchVal={searchContact} />}
+								content={<AgentTable
+
+									totalItems={totalItems}
+									setPage={setPage}
+									setLimit={setLimit}
+									rowsPerPage={currentParams.limit}
+									currentPage={currentParams.page}
+									SearchVal={val}
+									data={tableData2} />}
+							/>
+
+
 					}
-					
+
 					<div style={{ height: '128px' }}></div>
 				</div>
 			}
