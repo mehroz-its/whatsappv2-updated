@@ -52,17 +52,17 @@ function CustomerAccounts(props) {
     const [inactiveClients, setInactiveClients] = React.useState("");
     const [value, setValue] = React.useState("");
 
-    
-	const [totalItems, setTotalItems] = React.useState(0)
-	const [currentParams, setCurrentParams] = React.useState({limit:10,page:0})
+
+    const [totalItems, setTotalItems] = React.useState(0)
+    const [currentParams, setCurrentParams] = React.useState({ limit: 10, page: 0 })
     const [isLoading, setLoading] = React.useState(true)
-    
+
     const dataSourceOptions = {
         params: {
             columns: "*",
             sortby: "ASC",
-            page:1,
-            limit:1,
+            page: 1,
+            limit: 1,
             orderby: "id",
             where: "id != $1 AND displayed = false order by id",
             values: 0,
@@ -71,10 +71,10 @@ function CustomerAccounts(props) {
         apiType: 'listing',
     };
 
-	React.useEffect(() => {
-		fetchPagination()
-	  }, [currentParams]);
-    
+    React.useEffect(() => {
+        fetchPagination()
+    }, [currentParams]);
+
     React.useEffect(() => {
         fetchMeta()
     }, [])
@@ -87,7 +87,7 @@ function CustomerAccounts(props) {
     const dataSourceFailureBusiness = (response) => {
     };
     const changeStatus = (params) => {
-        CoreHttpHandler.request('Business', 'changeStatus', params, (response)=>{
+        CoreHttpHandler.request('Business', 'changeStatus', params, (response) => {
 
             fetchPagination(false)
             fetchMeta()
@@ -100,50 +100,50 @@ function CustomerAccounts(props) {
         console.log("dataSourceFailureChangeStatus response : ", response);
     };
 
-    const fetchMeta = () =>{
-        CoreHttpHandler.request('Business', 'get_meta', {}, (response)=>{
+    const fetchMeta = () => {
+        CoreHttpHandler.request('Business', 'get_meta', {}, (response) => {
             setActiveClients(response.data.data.clients.active_clients.active)
             setInactiveClients(response.data.data.clients.inactive_clients.inactive)
-        }, (error)=>{
+        }, (error) => {
             console.log(error)
         });
     }
-    
-    
-	const setPage = (currentPage)=>{
-		setCurrentParams({limit:currentParams.limit,page:currentPage})
-	}
-	
-	const setLimit = (pageLimit)=>{
-		setCurrentParams({limit:pageLimit,page:0})
+
+
+    const setPage = (currentPage) => {
+        setCurrentParams({ limit: currentParams.limit, page: currentPage })
     }
-    
-    const fetchPagination = (bool=true) =>{
+
+    const setLimit = (pageLimit) => {
+        setCurrentParams({ limit: pageLimit, page: 0 })
+    }
+
+    const fetchPagination = (bool = true) => {
         console.trace()
-        if(bool)
-        setLoading(true)
+        if (bool)
+            setLoading(true)
 
         CoreHttpHandler.request('Business', 'get_pagination',
-        {
-            ...currentParams,
-            columns: "*",
-            sortby: "ASC",
-            orderby: "id",
-            where: "id != $1 AND displayed = false order by id",
-            values: 0,
-        }
-        , (response)=>{   
-            setLoading(false)
-			setTotalItems(response.data.data.clients.totalItems)
+            {
+                ...currentParams,
+                columns: "*",
+                sortby: "ASC",
+                orderby: "id",
+                where: "id != $1 AND displayed = false order by id",
+                values: 0,
+            }
+            , (response) => {
+                setLoading(false)
+                setTotalItems(response.data.data.clients.totalItems)
 
-            setClient(response.data.data.clients.clients)
-        }, (error)=>{
-            console.log(error)
-        });
+                setClient(response.data.data.clients.clients)
+            }, (error) => {
+                console.log(error)
+            });
     }
-    
-    
-    
+
+
+
     return (
         <FusePageSimple
             classes={{
@@ -200,8 +200,8 @@ function CustomerAccounts(props) {
                             <Grid container spacing={4}>
                                 <Grid item md={12} sm={12} xs={12} >
                                     <Grid container spacing={4} style={{ marginBottom: '22px', marginTop: '-1px', marginLeft: 4 }}>
-                                        <Button style={{ fontSize: '11px' }} variant="contained" color="primary" onClick={(e) => { props.history.push({ pathname: '/apps/company-forms' }) }}>
-                                            <span style={{textTransform:"capitalize",fontSize:"13px"}}>Create Account</span>
+                                        <Button style={{ fontSize: '11px', backgroundColor: "#e73859", color: "white" }} variant="contained" color="primary" onClick={(e) => { props.history.push({ pathname: '/apps/company-forms' }) }}>
+                                            <span style={{ textTransform: "capitalize", fontSize: "13px" }}>Create Account</span>
                                         </Button>
                                     </Grid>
 
@@ -219,13 +219,13 @@ function CustomerAccounts(props) {
                             <Grid container spacing={3} style={{ marginTop: 10 }}>
                                 <Grid item md={12} sm={12} xs={12} >
                                     <CustomerTable
-                                    isLoading={isLoading}
-                                    totalItems={totalItems}
-                                    setPage={setPage}
-                                    setLimit={setLimit}
-                                    rowsPerPage={currentParams.limit}
-                                    currentPage={currentParams.page}
-                                     clients={clients} onchange={(e) => { changeStatus(e) }} searchValue={value} />
+                                        isLoading={isLoading}
+                                        totalItems={totalItems}
+                                        setPage={setPage}
+                                        setLimit={setLimit}
+                                        rowsPerPage={currentParams.limit}
+                                        currentPage={currentParams.page}
+                                        clients={clients} onchange={(e) => { changeStatus(e) }} searchValue={value} />
                                 </Grid>
                             </Grid>
                         </FuseAnimateGroup>

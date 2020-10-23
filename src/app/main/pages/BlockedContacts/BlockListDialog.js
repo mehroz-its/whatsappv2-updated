@@ -8,6 +8,8 @@ import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 import AppBar from '@material-ui/core/AppBar';
 import { green } from '@material-ui/core/colors';
 import { makeStyles, ThemeProvider, createMuiTheme, } from '@material-ui/core/styles';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+
 const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'absolute',
@@ -45,7 +47,7 @@ const BlockDialog = (props) => {
 		CoreHttpHandler.request('conversations', 'unblock', {
 			key: ':number',
 			value: data.number,
-			clientId:props.data.client_id
+			clientId: props.data.client_id
 		}, (response) => {
 			props.closeDialog()
 			setopenDialog(false);
@@ -68,11 +70,12 @@ const BlockDialog = (props) => {
 				</div>
 			</AppBar>
 			<DialogContent classes={{ root: 'p-24' }}>
-				<div className="flex" style={{fontSize:"11px"}}>
-					<div className="min-w-48 pt-10" style={{marginTop:"-13px"}}>
-						<Icon color="action">block</Icon>
+				<div className="flex" style={{ fontSize: "11px" }}>
+					<div className="min-w-48 pt-10" style={{ marginTop: "-13px" }}>
+						{/* <Icon color="action">block</Icon> */}
+						<LockOpenIcon color="action" style={{ color: "#8b8b8b" }} />
 					</div>
-					<h6 style={{fontSize:"11px"}}>{`Are you sure you want to unblock this number [${data.number}] ?`}</h6>
+					<h6 style={{ fontSize: "11px" }}>{`Are you sure you want to unblock this number [${data.number}] ?`}</h6>
 				</div>
 			</DialogContent>
 			<DialogActions>

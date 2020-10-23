@@ -10,7 +10,7 @@ function Widget2(props) {
 			</div>
 			<div className="flex items-center justify-center mt-20 px-8 h-40 border-t-1">
 				<Typography className="text-11 px-10" color="textSecondary">
-					<b className="px-8" style={{ fontSize: 8 }}>
+					<b className="px-8" style={{ fontSize: 10}}>
 						{props.bottom_title}
 					</b>
 				</Typography>

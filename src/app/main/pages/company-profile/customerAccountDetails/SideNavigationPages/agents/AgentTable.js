@@ -325,7 +325,7 @@ function AgentTable(props) {
 					<Typography
 						variant="h2"
 						className="companyDetailHeader"
-						style={{ backgroundColor: '#fc2254', color: 'white' }}
+						style={{ backgroundColor: '#e73859', color: 'white' }}
 					>
 						Users
 					</Typography>
@@ -369,7 +369,9 @@ function AgentTable(props) {
 												}
 											],
 											[order.direction]
-										).map((n, i) => {
+										).filter((a) => {
+											return props.val ? a.username.toLowerCase().includes(props.val.toLowerCase()) : true
+										}).map((n, i) => {
 											const isSelected = selected.indexOf(n.id) !== -1;
 											return (
 												<TableRow
@@ -446,11 +448,11 @@ function AgentTable(props) {
 																</Icon>
 															</div>
 														) : (
-															<div>
-																{' '}
-																<Icon name="lock">radio_button_unchecked</Icon>
-															</div>
-														)}
+																<div>
+																	{' '}
+																	<Icon name="lock">radio_button_unchecked</Icon>
+																</div>
+															)}
 														{/* <FormControlLabel
 															style={{ marginLeft: '2px' }}
 															control={
@@ -508,12 +510,12 @@ function AgentTable(props) {
 							)}
 						</div>
 					) : (
-						<div className="flex flex-1 items-center justify-center h-full">
-							<Typography color="textSecondary" variant="h5">
-								No Data Found!
+								<div className="flex flex-1 items-center justify-center h-full">
+									<Typography color="textSecondary" variant="h5">
+										No Data Found!
 							</Typography>
-						</div>
-					)}
+								</div>
+							)}
 				</CardContent>
 			</Card>
 		</>

@@ -35,6 +35,11 @@ const CompanyProfileConfig = {
 			path: '/apps/company-details/Agents',
 			component: React.lazy(() => import('./customerAccountDetails/SideNavigationPages/agents/AgentTable.js'))
         },
+        {
+			path: '/apps/company-details/CannedReplies',
+			component: React.lazy(() => import('./customerAccountDetails/SideNavigationPages/CannedReplies/Index.js'))
+        },
+        
     ]
 };
 
