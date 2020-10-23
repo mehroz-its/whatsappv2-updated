@@ -525,11 +525,32 @@ function AgentTable(props) {
 							)}
 						</div>
 					) : (
-						<div className="flex flex-1 items-center justify-center h-full">
-							<Typography color="textSecondary" variant="h5">
-								No Data Found!
-							</Typography>
-						</div>
+						<div className="flex flex-1 items-center justify-center h-full mt-2">
+ 							<Typography color="textSecondary" variant="h5">
+ 								No Data Found!
+ 							</Typography>
+							<FuseAnimate animation="transition.expandIn" delay={300}>
+								<Fab
+									color="primary"
+									aria-label="add"
+									size="medium"
+									className={classes.addButton}
+									onClick={handleClickAdd}
+								>
+									<Icon>person_add</Icon>
+								</Fab>
+							</FuseAnimate>
+							{open && (
+								<AgentDialog
+									isOpen={open}
+									type={type}
+									data={dialogData}
+									clientId={companyDetails.id}
+									closeDialog={handleDialogClose}
+									showError={showError}
+								/>
+							)}
+ 						</div>
 					)}
 				</CardContent>
 			</Card>
