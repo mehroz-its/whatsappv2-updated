@@ -66,7 +66,7 @@ const AgentDialog = (props) => {
 
 
     const [dataCopy, setDataCopy] = React.useState({
-        username: data.username,
+        // username: data.username,
         password: '',
         firstname: data.firstname,
         lastname: data.lastname,
@@ -224,6 +224,7 @@ const AgentDialog = (props) => {
             let filtered = filterData(params)
             if(filtered&&Object.keys(filtered)&&Object.keys(filtered).length){
                 filtered.clientId = clientId
+                filtered.username = undefined
 
                 let update_params = {
                     key: ':id',
@@ -296,6 +297,7 @@ const AgentDialog = (props) => {
                         fullWidth
                         onChange={onInputChange}
                         size="small"
+                        disabled={type == 'update'}
                     />
                 </div>
                 <div className="flex">

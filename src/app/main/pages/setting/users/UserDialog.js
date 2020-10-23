@@ -83,7 +83,7 @@ const UserDialog = (props) => {
     // const [displayed, setDisplayed] = React.useState(data.displayed);
 
     const [dataCopy,setCopy] = React.useState({
-        username: data.username,
+        // username: data.username,
         email: data.email,
         number: data.number,
         password: "",
@@ -169,7 +169,7 @@ const UserDialog = (props) => {
         } else {
             let params = {
                 id: data.id,
-                username: userName,
+                // username: userName,
                 email: email,
                 number: number,
                 password: password,
@@ -273,6 +273,7 @@ const UserDialog = (props) => {
                                 required
                                 fullWidth
                                 size="small"
+                                disabled={type == 'Update'}
                             />
                         </div>
                         <div className="flex">
