@@ -224,8 +224,7 @@ function AgentTable(props) {
 		setOpen(true);
 		setType('Create');
 	};
-	function showError(msg){
-		
+	function showError(msg) {
 		setSnackBarMessage(msg);
 		setOK('error');
 		setSnackBarOpen(true);
@@ -245,7 +244,7 @@ function AgentTable(props) {
 			setSnackBarOpen(true);
 			setOpen(false);
 			return;
-		}else if (e == 'No Change') {
+		} else if (e == 'No Change') {
 			setSnackBarMessage('You did not make any changes');
 			setOK('error');
 			setSnackBarOpen(true);
@@ -336,7 +335,7 @@ function AgentTable(props) {
 					<Typography
 						variant="h2"
 						className="companyDetailHeader"
-						style={{ backgroundColor: '#fc2254', color: 'white' }}
+						style={{ backgroundColor: '#e73859', color: 'white' }}
 					>
 						Users
 					</Typography>
@@ -380,89 +379,95 @@ function AgentTable(props) {
 												}
 											],
 											[order.direction]
-										).map((n, i) => {
-											const isSelected = selected.indexOf(n.id) !== -1;
-											return (
-												<TableRow
-													className="h-10 cursor-pointer"
-													hover
-													role="checkbox"
-													aria-checked={isSelected}
-													tabIndex={-1}
-													key={n.id}
-													selected={isSelected}
-													onClick={event => handleClick(n)}
-												>
-													<TableCell
-														component="th"
-														scope="row"
-														align="center"
-														style={{ fontSize: '11px', padding: '10px' }}
+										)
+											.filter(a => {
+												return props.val
+													? a.username.toLowerCase().includes(props.val.toLowerCase())
+													: true;
+											})
+											.map((n, i) => {
+												const isSelected = selected.indexOf(n.id) !== -1;
+												return (
+													<TableRow
+														className="h-10 cursor-pointer"
+														hover
+														role="checkbox"
+														aria-checked={isSelected}
+														tabIndex={-1}
+														key={n.id}
+														selected={isSelected}
+														onClick={event => handleClick(n)}
 													>
-														{n.id}
-													</TableCell>
-													<TableCell
-														component="th"
-														scope="row"
-														align="center"
-														style={{ fontSize: '11px', padding: '10px' }}
-													>
-														{n.username}
-													</TableCell>
+														<TableCell
+															component="th"
+															scope="row"
+															align="center"
+															style={{ fontSize: '11px', padding: '10px' }}
+														>
+															{n.id}
+														</TableCell>
+														<TableCell
+															component="th"
+															scope="row"
+															align="center"
+															style={{ fontSize: '11px', padding: '10px' }}
+														>
+															{n.username}
+														</TableCell>
 
-													<TableCell
-														component="th"
-														scope="row"
-														align="center"
-														style={{ fontSize: '11px', padding: '10px' }}
-													>
-														{n.number}
-													</TableCell>
-													<TableCell
-														component="th"
-														scope="row"
-														align="center"
-														style={{ fontSize: '11px', padding: '10px' }}
-													>
-														{n.email}
-													</TableCell>
-													<TableCell
-														component="th"
-														scope="row"
-														align="center"
-														style={{ fontSize: '11px', padding: '10px' }}
-													>
-														{n.position}
-													</TableCell>
+														<TableCell
+															component="th"
+															scope="row"
+															align="center"
+															style={{ fontSize: '11px', padding: '10px' }}
+														>
+															{n.number}
+														</TableCell>
+														<TableCell
+															component="th"
+															scope="row"
+															align="center"
+															style={{ fontSize: '11px', padding: '10px' }}
+														>
+															{n.email}
+														</TableCell>
+														<TableCell
+															component="th"
+															scope="row"
+															align="center"
+															style={{ fontSize: '11px', padding: '10px' }}
+														>
+															{n.position}
+														</TableCell>
 
-													<TableCell
-														component="th"
-														scope="row"
-														align="center"
-														style={{ fontSize: '11px', padding: '10px' }}
-													>
-														{n.max_token_count === 1 ? 'Agent' : 'Admin'}
-													</TableCell>
-													<TableCell
-														component="th"
-														scope="row"
-														align="center"
-														style={{ fontSize: '11px', padding: '10px' }}
-													>
-														{n.enabled === true ? (
-															<div>
-																{' '}
-																<Icon name="lock" color="primary">
-																	check_circle
-																</Icon>
-															</div>
-														) : (
-															<div>
-																{' '}
-																<Icon name="lock">radio_button_unchecked</Icon>
-															</div>
-														)}
-														{/* <FormControlLabel
+														<TableCell
+															component="th"
+															scope="row"
+															align="center"
+															style={{ fontSize: '11px', padding: '10px' }}
+														>
+															{n.max_token_count === 1 ? 'Agent' : 'Admin'}
+														</TableCell>
+														<TableCell
+															component="th"
+															scope="row"
+															align="center"
+															style={{ fontSize: '11px', padding: '10px' }}
+														>
+															{n.enabled === true ? (
+																<div>
+																	{' '}
+																	<Icon name="lock" color="primary">
+																		check_circle
+																	</Icon>
+																</div>
+															) : (
+																<div>
+																	{' '}
+																	<Icon name="lock">radio_button_unchecked</Icon>
+																</div>
+															)}
+															{/* <FormControlLabel
 															style={{ marginLeft: '2px' }}
 															control={
 																<Switch
@@ -473,10 +478,10 @@ function AgentTable(props) {
 																	size="small" />
 															}
 														/> */}
-													</TableCell>
-												</TableRow>
-											);
-										})}
+														</TableCell>
+													</TableRow>
+												);
+											})}
 									</TableBody>
 								</Table>
 							</FuseScrollbars>
@@ -520,31 +525,10 @@ function AgentTable(props) {
 							)}
 						</div>
 					) : (
-						<div className="flex flex-1 items-center justify-center h-full mt-2">
+						<div className="flex flex-1 items-center justify-center h-full">
 							<Typography color="textSecondary" variant="h5">
 								No Data Found!
 							</Typography>
-							<FuseAnimate animation="transition.expandIn" delay={300}>
-								<Fab
-									color="primary"
-									aria-label="add"
-									size="medium"
-									className={classes.addButton}
-									onClick={handleClickAdd}
-								>
-									<Icon>person_add</Icon>
-								</Fab>
-							</FuseAnimate>
-							{open && (
-								<AgentDialog
-									isOpen={open}
-									type={type}
-									data={dialogData}
-									clientId={companyDetails.id}
-									closeDialog={handleDialogClose}
-									showError={showError}
-								/>
-							)}
 						</div>
 					)}
 				</CardContent>

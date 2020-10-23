@@ -39,20 +39,20 @@ function Config(props) {
         CoreHttpHandler.request('customerOnBoard', 'getSubject', data, (response) => {
             console.log("response : ", response);
             setSubjectId(response.data.data.clients[0].subject_id)
-            }, (error) => {
-                console.log("error : ", error);
-            });
+        }, (error) => {
+            console.log("error : ", error);
+        });
     }, [])
-   
+
     const submit = () => {
-     let params = {
-        client_id: companyDetails.id,
-        subject_id: subjectId
-     }
+        let params = {
+            client_id: companyDetails.id,
+            subject_id: subjectId
+        }
         CoreHttpHandler.request('customerOnBoard', 'updateSubject', params, (response) => {
-        console.log("response : ", response);
-             setSnackBarOpen(true)
-			setOK('success')
+            console.log("response : ", response);
+            setSnackBarOpen(true)
+            setOK('success')
             setSnackBarMessage('Updated successfully')
             setTimeout(() => {
                 setSnackBarOpen(false)
@@ -64,7 +64,7 @@ function Config(props) {
     return (
         <Card className={classes.root}>
             <CardContent className={classes.content} style={{ width: '100%' }}>
-                <Typography variant='h2' className='companyDetailHeader'style={{ backgroundColor: "#fc2254",color:"white" }} >Configration</Typography>
+                <Typography variant='h2' className='companyDetailHeader' style={{ backgroundColor: "#e73859", color: "white" }} >Configration</Typography>
                 <Grid container style={{ marginTop: "5px", paddingRight: '15px', paddingLeft: '15px' }} spacing={3}>
                     <Grid item md={6} sm={12} xs={12}  >
                         <TextField required
@@ -91,14 +91,14 @@ function Config(props) {
                     </Grid>
                 </Grid>
                 <Snackbar
-				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-				open={snackbaropen}
-				autoHideDuration={1000}
-			>
-				<Alert variant="filled" severity={ok}>
-					{snackbarmessage}
-				</Alert>
-			</Snackbar>
+                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                    open={snackbaropen}
+                    autoHideDuration={1000}
+                >
+                    <Alert variant="filled" severity={ok}>
+                        {snackbarmessage}
+                    </Alert>
+                </Snackbar>
             </CardContent>
         </Card>
     )

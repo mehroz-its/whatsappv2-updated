@@ -44,6 +44,8 @@ import { useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
 import { CSVLink, CSVDownload } from 'react-csv';
+import ContactTableUnblockHeading from './ContactTableUnblockHeading.js';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -370,25 +372,25 @@ function ContactTable(props) {
         <>
             <Card className={classes.root}>
                 <CardContent className={classes.content} style={{ width: '100%' }}>
-                    <div className='companyDetailHeaderTabs' style={{ backgroundColor: '#fc2254' }}>
+                    <div className='companyDetailHeaderTabs' style={{ backgroundColor: '#e73859' }}>
                         <Tabs
-value={value}
-							onChange={handleChangee}
-							indicatorColor="primary"
-							textColor="white"
-							variant="scrollable"
-							scrollButtons="off"
-							// className="w-full border-b-1 px-100 text-center"
-							// style={{ marginBottom: '0px' }}
-							TabIndicatorProps={{
-								style: { backgroundColor: '#ffffff', height: '3px' }
-							}}
+                            value={value}
+                            onChange={handleChangee}
+                            indicatorColor="primary"
+                            textColor="white"
+                            variant="scrollable"
+                            scrollButtons="off"
+                            // className="w-full border-b-1 px-100 text-center"
+                            // style={{ marginBottom: '0px' }}
+                            TabIndicatorProps={{
+                                style: { backgroundColor: '#ffffff', height: '3px' }
+                            }}
                         >
-                            <Tab label="Contacts" {...a11yProps(0)} onClick={() => { setBlockedOpen(false) }} style={{ color: 'white', textColor: 'white' }}/>
+                            <Tab label="Contacts" {...a11yProps(0)} onClick={() => { setBlockedOpen(false) }} style={{ color: 'white', textColor: 'white' }} />
                             <Tab label="Blocked Contacts" {...a11yProps(1)} style={{ color: 'white', textColor: 'white' }} onClick={() => { setBlockedOpen(true) }} />
-                           
-							   
-						   {/* <Tab label="Contact Group" {...a11yProps(2)} /> */}
+
+
+                            {/* <Tab label="Contact Group" {...a11yProps(2)} /> */}
                         </Tabs>
                     </div>
                     <Snackbar
@@ -421,24 +423,24 @@ value={value}
                                             (
                                                 <React.Fragment>
                                                     <div style={{ flexDirection: 'row', flex: 1, display: 'flex', paddingLeft: '14px' }}>
-													<div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
-									<Button
-										color="primary"
-										size="small"
-										variant="contained"
-										style={{ borderRadius: 2, marginTop: '-10px' }}
-										onClick={numberExport}
-									>
-										Export
+                                                        <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end' }}>
+                                                            <Button
+                                                                color="primary"
+                                                                size="small"
+                                                                variant="contained"
+                                                                style={{ borderRadius: 2, marginTop: '-10px' }}
+                                                                onClick={numberExport}
+                                                            >
+                                                                Export
 									</Button>
-									<CSVLink
-										data={data}
-										filename={`contacts_${name}.csv`}
-										className="hidden"
-										ref={csvLinkK}
-										target="_blank"
-									/>
-								</div>
+                                                            <CSVLink
+                                                                data={data}
+                                                                filename={`contacts_${name}.csv`}
+                                                                className="hidden"
+                                                                ref={csvLinkK}
+                                                                target="_blank"
+                                                            />
+                                                        </div>
                                                     </div>
                                                     <div className="w-full flex flex-col">
                                                         <FuseScrollbars className="flex-grow overflow-x-auto">
@@ -516,8 +518,8 @@ value={value}
                                                                                                         // handleClick(n)
                                                                                                     }}
                                                                                                 >
-																								 
-                                                                                                   <Icon>phone</Icon>
+
+                                                                                                    <Icon>phone</Icon>
 
                                                                                                 </IconButton>
                                                                                             ) : (
@@ -528,7 +530,7 @@ value={value}
                                                                                                         setROWvalue(n)
                                                                                                     }}
                                                                                                 >
-																									<Icon name='lock'>block</Icon>
+                                                                                                    <Icon name='lock'>block</Icon>
 
                                                                                                 </IconButton>
                                                                                             )}
@@ -585,160 +587,163 @@ value={value}
                         </TabPanel>
 
                         <TabPanel value={value} index={1} dir={theme.direction}>
-                            
-                            
-                        {
-                            isLoading?
-                                <div className="flex flex-1 items-center justify-center h-full">
-                                    <FuseLoading />
-                                </div>
-                            :
-                            (
-                                data.length?
-                                (
-                                    <React.Fragment>
-                                    <div className="w-full flex flex-col">
-                                <FuseScrollbars className="flex-grow overflow-x-auto">
-                                    <Table className="min-w-xl" aria-labelledby="tableTitle">
-                                        <ContactTableHeader
-                                            numSelected={selected.length}
-                                            order={order}
-                                            onSelectAllClick={handleSelectAllClick}
-                                            onRequestSort={handleRequestSort}
-                                            rowCount={blockContact.length}
-                                        />
-                                        <TableBody>
-                                            {_.orderBy(
-                                                blockContact,
-                                                [
-                                                    o => {
-                                                        switch (order.id) {
-                                                            case 'categories': {
-                                                                return o.categories[0];
-                                                            }
-                                                            default: {
-                                                                return o[order.id];
-                                                            }
-                                                        }
-                                                    }
-                                                ],
-                                                [order.direction]
-                                            )
-                                                .map(n => {
-                                                    const isSelected = selected.indexOf(n.id) !== -1;
-                                                    return (
-                                                        <TableRow
-                                                            className="h-10 cursor-pointer"
-                                                            hover
-                                                            role="checkbox"
-                                                            aria-checked={isSelected}
-                                                            tabIndex={-1}
-                                                            key={n.id}
-                                                            selected={isSelected}
-                                                        // onClick={event => handleClick(n)}
-                                                        >
-                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.id}
-                                                            </TableCell>
-                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.attributes[0].firstname}
-                                                            </TableCell>
-                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.attributes[1].lastname}
-                                                            </TableCell>
-                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.attributes[3].age}
-                                                            </TableCell>
-                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.attributes[2].gender}
-                                                            </TableCell>
-                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.number}
-                                                            </TableCell>
-                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.attributes[4].email}
-
-                                                            </TableCell>
-                                                            {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.dt === null ? 'N/A' : n.dt}
-                                                            </TableCell>}
-                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.blocked === true ?
-                                                                    (
-                                                                        <IconButton
-                                                                            onClick={ev => {
-                                                                                setUnblockDialogData(n)
-                                                                                setUnblockDialog(true)
-                                                                                ev.stopPropagation();
-                                                                                // handleClick(n)
-                                                                            }}
-                                                                        >
-                                                                            <Icon>phone</Icon>
-                                                                        </IconButton>
-                                                                    ) : (
-                                                                        <IconButton
-                                                                            onClick={ev => {
-                                                                                ev.stopPropagation();
-                                                                                setOpenBlockDialog(true)
-                                                                                setROWvalue(n)
-                                                                            }}
-                                                                        >
-																			<Icon name='lock'>block</Icon>
-
-                                                                        </IconButton>
-                                                                    )}
-
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    );
-                                                })}
-                                        </TableBody>
-                                    </Table>
-                                </FuseScrollbars>
-                                <MuiThemeProvider theme={PaginationStyle}>
-                                    <TablePagination
-                                        classes={{
-                                            root: 'overflow-hidden',
-                                            spacer: 'w-0 max-w-0',
-                                            actions: 'text-64',
-                                            select: 'text-12 mt-4',
-                                            selectIcon: 'mt-4',
-                                        }}
-                                        className="overflow-hidden"
-                                        component="div"
-                                        style={{ fontSize: '12px' }}
-                                        onChangePage={handleChangePage}
-                                        onChangeRowsPerPage={handleChangeRowsPerPage}
-                                        ActionsComponent={ContactsTablePaginationActions}
-
-                                        rowsPerPageOptions={[ 10, 25, 50, { label: 'All', value: totalItems }]}
-                                        count={totalItems}
-                                        rowsPerPage={currentParams.limit}
-                                        page={currentParams.page}
-
-                                    />
-                                </MuiThemeProvider>
-
-                            </div>
-
-                                    </React.Fragment>
-                                )
-
-                                :
 
 
+                            {
+                                isLoading ?
                                     <div className="flex flex-1 items-center justify-center h-full">
-                                        <Typography color="textSecondary" variant="h5">
-                                            No Data Found
-                                        </Typography>
+                                        <FuseLoading />
                                     </div>
-                            )
+                                    :
+                                    (
+                                        data.length ?
+                                            (
+                                                <React.Fragment>
+                                                    <div className="w-full flex flex-col">
+                                                        <FuseScrollbars className="flex-grow overflow-x-auto">
+                                                            <Table className="min-w-xl" aria-labelledby="tableTitle">
+                                                                {/* <ContactTableHeader */}
+                                                                <ContactTableUnblockHeading
+
+                                                                    numSelected={selected.length}
+                                                                    order={order}
+                                                                    onSelectAllClick={handleSelectAllClick}
+                                                                    onRequestSort={handleRequestSort}
+                                                                    rowCount={blockContact.length}
+                                                                />
+                                                                <TableBody>
+                                                                    {_.orderBy(
+                                                                        blockContact,
+                                                                        [
+                                                                            o => {
+                                                                                switch (order.id) {
+                                                                                    case 'categories': {
+                                                                                        return o.categories[0];
+                                                                                    }
+                                                                                    default: {
+                                                                                        return o[order.id];
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        ],
+                                                                        [order.direction]
+                                                                    )
+                                                                        .map(n => {
+                                                                            const isSelected = selected.indexOf(n.id) !== -1;
+                                                                            return (
+                                                                                <TableRow
+                                                                                    className="h-10 cursor-pointer"
+                                                                                    hover
+                                                                                    role="checkbox"
+                                                                                    aria-checked={isSelected}
+                                                                                    tabIndex={-1}
+                                                                                    key={n.id}
+                                                                                    selected={isSelected}
+                                                                                // onClick={event => handleClick(n)}
+                                                                                >
+                                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.id}
+                                                                                    </TableCell>
+                                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.attributes[0].firstname}
+                                                                                    </TableCell>
+                                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.attributes[1].lastname}
+                                                                                    </TableCell>
+                                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.attributes[3].age}
+                                                                                    </TableCell>
+                                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.attributes[2].gender}
+                                                                                    </TableCell>
+                                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.number}
+                                                                                    </TableCell>
+                                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.attributes[4].email}
+
+                                                                                    </TableCell>
+                                                                                    {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.dt === null ? 'N/A' : n.dt}
+                                                                                    </TableCell>}
+                                                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                                        {n.blocked === true ?
+                                                                                            (
+                                                                                                <IconButton
+                                                                                                    onClick={ev => {
+                                                                                                        setUnblockDialogData(n)
+                                                                                                        setUnblockDialog(true)
+                                                                                                        ev.stopPropagation();
+                                                                                                        // handleClick(n)
+                                                                                                    }}
+                                                                                                >
+                                                                                                    {/* <Icon>phone</Icon> */}
+                                                                                                    <LockOpenIcon style={{ color: "#8b8b8b" }} />
+                                                                                                </IconButton>
+                                                                                            ) : (
+                                                                                                <IconButton
+                                                                                                    onClick={ev => {
+                                                                                                        ev.stopPropagation();
+                                                                                                        setOpenBlockDialog(true)
+                                                                                                        setROWvalue(n)
+                                                                                                    }}
+                                                                                                >
+                                                                                                    <Icon name='lock'>block</Icon>
+
+                                                                                                </IconButton>
+                                                                                            )}
+
+                                                                                    </TableCell>
+                                                                                </TableRow>
+                                                                            );
+                                                                        })}
+                                                                </TableBody>
+                                                            </Table>
+                                                        </FuseScrollbars>
+                                                        <MuiThemeProvider theme={PaginationStyle}>
+                                                            <TablePagination
+                                                                classes={{
+                                                                    root: 'overflow-hidden',
+                                                                    spacer: 'w-0 max-w-0',
+                                                                    actions: 'text-64',
+                                                                    select: 'text-12 mt-4',
+                                                                    selectIcon: 'mt-4',
+                                                                }}
+                                                                className="overflow-hidden"
+                                                                component="div"
+                                                                style={{ fontSize: '12px' }}
+                                                                onChangePage={handleChangePage}
+                                                                onChangeRowsPerPage={handleChangeRowsPerPage}
+                                                                ActionsComponent={ContactsTablePaginationActions}
+
+                                                                rowsPerPageOptions={[10, 25, 50, { label: 'All', value: totalItems }]}
+                                                                count={totalItems}
+                                                                rowsPerPage={currentParams.limit}
+                                                                page={currentParams.page}
+
+                                                            />
+                                                        </MuiThemeProvider>
+
+                                                    </div>
+
+                                                </React.Fragment>
+                                            )
+
+                                            :
 
 
-                        }
+                                            <div className="flex flex-1 items-center justify-center h-full">
+                                                <Typography color="textSecondary" variant="h5">
+                                                    No Data Found
+                                        </Typography>
+                                            </div>
+                                    )
 
-                            
-                            
+
+                            }
+
+
+
                             {/* <div style={{ flexDirection: 'row', flex: 1, display: 'flex', paddingLeft: '14px' }}>
                                 <div>
                                     <Button
@@ -749,21 +754,21 @@ value={value}
            							 </Button>
                                 </div>
                             </div> */}
-                            
+
                         </TabPanel>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
+
+
+
+
+
+
+
+
+
+
+
+
+
                         {/* <TabPanel value={value} index={2} dir={theme.direction}>
                             {groupData.length > 0 ?
                                 <div>
@@ -911,7 +916,7 @@ value={value}
                     {updateContactDialog && <ContactDialog isOpen={updateContactDialog} type='edit' data={contactDialogData} closeDialog={handleDialogClose} />}
                     {/* <ContactDialog isOpen={true} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} /> */}
                     {openBlockDialog && <BlockContactInDialog isOpen={openBlockDialog} type="Block Number" data={rowvalue} closeDialog={handleCloseAddBlockNumber} />}
-                    {unblockDialog && <BlockDialog isOpen={unblockDialog} type="UnBlock Number" closeDialog={handleCloseUnBlockUser} data={unblockDialogData} />}
+                    {unblockDialog && <BlockDialog isOpen={unblockDialog} type="Unblock Number" closeDialog={handleCloseUnBlockUser} data={unblockDialogData} />}
                 </CardContent>
             </Card>
         </>

@@ -210,7 +210,7 @@ function Profile(props) {
         <>
             <Card className={classes.root}>
                 <CardContent className={classes.content} style={{ width: '100%' }}>
-                    <Typography variant='h2' className='companyDetailHeader' style={{ backgroundColor: "#fc2254", color: "white" }} >Profile</Typography>
+                    <Typography variant='h2' className='companyDetailHeader' style={{ backgroundColor: "#e73859", color: "white" }} >Profile</Typography>
                     <div className="flex flex-col items-center justify-center " style={{ marginTop: 23 }}>
                         {isLoading ? <CircularProgress color="secondary" /> :
 

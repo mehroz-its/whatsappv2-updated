@@ -27,6 +27,18 @@ import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Fab from '@material-ui/core/Fab';
+import SwipeableViews from 'react-swipeable-views';
+
+
+
+import PropTypes from 'prop-types';
+import { useTheme } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+
+import Box from '@material-ui/core/Box';
+
+
+
 const useStyles = makeStyles((theme) => ({
     addButton: {
         position: 'fixed',
@@ -73,7 +85,6 @@ const PaginationStyle = createMuiTheme({
     }
 });
 
-
 function CannedReplies(props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false)
@@ -92,6 +103,10 @@ function CannedReplies(props) {
     });
     const [checked, setChecked] = React.useState(false);
     const [tabValue, setTabValue] = useState(0);
+    const [value, setValue] = React.useState(0);
+    const theme = useTheme();
+    const [currentParams, setCurrentParams] = React.useState({ limit: 10, page: 0 });
+
     const [dialogData, setDialogData] = React.useState({
         id: 0,
         name: "",
@@ -110,20 +125,29 @@ function CannedReplies(props) {
     };
     const getData = ((loadData) => {
         loadData = () => {
-            return CoreHttpHandler.request('campaigns', 'listing', {
-                columns: "*",
-                limit: 100,
-                orderby: "id",
-                page: 0,
-                sortby: "ASC",
-                values: 1,
-                where: "displayed = $1",
-            }, null, null, true);
+            return CoreHttpHandler.request(
+				'canned_messages',
+				'type_listing',
+				{
+					...currentParams,
+					key: ':type',
+					value: "all",
+					columns: '*',
+					sortby: 'DESC',
+					orderby: 'id',
+					where: 'message_type = $1',
+					values: 0
+				},
+				null,
+				null,
+				true
+			);
         };
         loadData().then((response) => {
             const tableData = response.data.data.list.data
             setData(tableData)
             setData2(tableData)
+            console.log(tableData)
         });
     })
     setTimeout(() => {
@@ -226,13 +250,803 @@ function CannedReplies(props) {
         setOpen(true);
     };
 
+
+    function TabPanel(props) {
+        const { children, value, index, ...other } = props;
+
+        return (
+            <div
+                role="tabpanel"
+                hidden={value !== index}
+                id={`full-width-tabpanel-${index}`}
+                aria-labelledby={`full-width-tab-${index}`}
+                {...other}
+            >
+                {value === index && (
+                    <Box p={3}>
+                        <Typography>{children}</Typography>
+                    </Box>
+                )}
+            </div>
+        );
+    }
+
+    TabPanel.propTypes = {
+        children: PropTypes.node,
+        index: PropTypes.any.isRequired,
+        value: PropTypes.any.isRequired,
+    };
+
+    function a11yProps(index) {
+        return {
+            id: `full-width-tab-${index}`,
+            'aria-controls': `full-width-tabpanel-${index}`,
+        };
+    }
+
+
+    const handleChangee = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    const handleChangeIndexx = (index) => {
+        setValue(index);
+    };
+
+    console.log(data2)
+
     return (
+
         <>
+
             <Card className={classes.root} >
 
                 <CardContent className={classes.content} style={{ width: '100%' }}>
-                    <Typography variant='h2' className='companyDetailHeader'>Canned Replies</Typography>
+                    <Typography variant='h2' className='companyDetailHeader' style={{ backgroundColor: "#e73859", color: "white" }}>Canned Replies</Typography>
+
                     <Tabs
+                        value={value}
+                        onChange={handleChangee}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        variant="scrollable"
+                        scrollButtons="off"
+                        className="w-full border-b-1 px-100 text-center h-48 "
+                        style={{ marginBottom: '8px' }}
+                    >
+                        {/* <Tab label="All Messages" {...a11yProps(0)} /> */}
+                        <Tab label="text" {...a11yProps(0)} />
+                        <Tab label="image" {...a11yProps(1)} />
+                        <Tab label="Video" {...a11yProps(2)} />
+                        <Tab label="Audio" {...a11yProps(3)} />
+                        <Tab label="document" {...a11yProps(4)} />
+                    </Tabs>
+
+                    <SwipeableViews
+                        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                        index={value}
+                        onChangeIndex={handleChangeIndexx}
+                    >
+
+
+                        {/* all messages */}
+                        {/* 
+                        <TabPanel value={value} index={0} dir={theme.direction}>
+
+                            <div className="w-full flex flex-col">
+                                <FuseScrollbars className="flex-grow overflow-x-auto">
+                                    <Table className="min-w-xl" aria-labelledby="tableTitle">
+                                        <TableHeader
+                                            numSelected={selected.length}
+                                            order={order}
+                                            onSelectAllClick={handleSelectAllClick}
+                                            onRequestSort={handleRequestSort}
+                                            rowCount={data.length}
+                                        />
+                                        <TableBody>
+                                            {_.orderBy(
+                                                data2,
+                                                [
+                                                    o => {
+                                                        switch (order.id) {
+                                                            case 'categories': {
+                                                                return o.categories[0];
+                                                            }
+                                                            default: {
+                                                                return o[order.id];
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                [order.direction]
+                                            )
+                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                .map(n => {
+                                                    const isSelected = selected.indexOf(n.id) !== -1;
+                                                    return (
+                                                        <TableRow
+
+                                                            className="h-10 cursor-pointer"
+                                                            hover
+                                                            role="checkbox"
+                                                            aria-checked={isSelected}
+                                                            tabIndex={-1}
+                                                            key={n.id}
+                                                            selected={isSelected}
+                                                            onClick={event => handleClick(n)}
+                                                        >
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.id}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.name}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.description}
+                                                            </TableCell>
+                                                            {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.begin_dt === null ? 'N/A' : n.begin_dt}
+                                                            </TableCell>}
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                <FormControlLabel
+                                                                    style={{ marginLeft: '2px' }}
+                                                                    control={
+                                                                        <Switch
+                                                                            checked={checked}
+                                                                            onChange={toggleChecked}
+                                                                            name="checkedB"
+                                                                            color="primary"
+                                                                            size="small"
+
+                                                                        />
+                                                                    }
+                                                                />
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
+                                        </TableBody>
+                                    </Table>
+                                </FuseScrollbars>
+                                <MuiThemeProvider theme={PaginationStyle}>
+                                    <TablePagination
+                                        classes={{
+                                            root: 'overflow-hidden',
+                                            spacer: 'w-0 max-w-0',
+                                            actions: 'text-64',
+                                            select: 'text-12 mt-4',
+                                            selectIcon: 'mt-4',
+                                        }}
+                                        className="overflow-hidden"
+                                        component="div"
+                                        count={data.length}
+                                        style={{ fontSize: '12px' }}
+                                        rowsPerPage={rowsPerPage}
+                                        page={page}
+                                        onChangePage={handleChangePage}
+                                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                                        ActionsComponent={ContactsTablePaginationActions}
+                                    />
+                                </MuiThemeProvider>
+                                <FuseAnimate animation="transition.expandIn" delay={300}>
+                                    <Fab
+                                        color="primary"
+                                        aria-label="add"
+                                        size="medium"
+                                        className={classes.addButton}
+                                        onClick={handleClickOpen}
+                                    >
+                                        <Icon>person_add</Icon>
+                                    </Fab>
+                                </FuseAnimate>
+                                {open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
+                            </div>
+
+                        </TabPanel> */}
+
+
+
+                        {/* 0 */}
+                        <TabPanel value={value} index={0} dir={theme.direction}>
+
+                            <div className="w-full flex flex-col">
+                                <FuseScrollbars className="flex-grow overflow-x-auto">
+                                    <Table className="min-w-xl" aria-labelledby="tableTitle">
+                                        <TableHeader
+                                            numSelected={selected.length}
+                                            order={order}
+                                            onSelectAllClick={handleSelectAllClick}
+                                            onRequestSort={handleRequestSort}
+                                            rowCount={data.length}
+                                        />
+                                        <TableBody>
+                                            {_.orderBy(
+                                                data2,
+
+                                                [
+                                                    o => {
+                                                        switch (order.id) {
+                                                            case 'categories': {
+                                                                return o.categories[0];
+                                                            }
+                                                            default: {
+                                                                return o[order.id];
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                [order.direction]
+                                            )
+                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                .map(n => {
+                                                    const isSelected = selected.indexOf(n.id) !== -1;
+                                                    return (
+                                                        <TableRow
+
+                                                            className="h-10 cursor-pointer"
+                                                            hover
+                                                            role="checkbox"
+                                                            aria-checked={isSelected}
+                                                            tabIndex={-1}
+                                                            key={n.id}
+                                                            selected={isSelected}
+                                                            onClick={event => handleClick(n)}
+                                                        >
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.id}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.name}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.description}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {/* {n.canned_type} */}
+                                                                {n.message_type}
+
+                                                            </TableCell>
+                                                            {/* {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.begin_dt === null ? 'N/A' : n.begin_dt}
+                                                            </TableCell>} */}
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                <FormControlLabel
+                                                                    style={{ marginLeft: '2px' }}
+                                                                    control={
+                                                                        <Switch
+                                                                            checked={checked}
+                                                                            onChange={toggleChecked}
+                                                                            name="checkedB"
+                                                                            color="primary"
+                                                                            size="small"
+
+                                                                        />
+                                                                    }
+                                                                />
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
+                                        </TableBody>
+                                    </Table>
+                                </FuseScrollbars>
+                                <MuiThemeProvider theme={PaginationStyle}>
+                                    <TablePagination
+                                        classes={{
+                                            root: 'overflow-hidden',
+                                            spacer: 'w-0 max-w-0',
+                                            actions: 'text-64',
+                                            select: 'text-12 mt-4',
+                                            selectIcon: 'mt-4',
+                                        }}
+                                        className="overflow-hidden"
+                                        component="div"
+                                        count={data.length}
+                                        style={{ fontSize: '12px' }}
+                                        rowsPerPage={rowsPerPage}
+                                        page={page}
+                                        onChangePage={handleChangePage}
+                                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                                        ActionsComponent={ContactsTablePaginationActions}
+                                    />
+                                </MuiThemeProvider>
+                                <FuseAnimate animation="transition.expandIn" delay={300}>
+                                    <Fab
+                                        color="primary"
+                                        aria-label="add"
+                                        size="medium"
+                                        className={classes.addButton}
+                                        onClick={handleClickOpen}
+                                    >
+                                        <Icon>person_add</Icon>
+                                    </Fab>
+                                </FuseAnimate>
+                                {open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
+                            </div>
+
+                        </TabPanel>
+
+                        {/* 1 */}
+
+
+                        <TabPanel value={value} index={1} dir={theme.direction}>
+
+                            <div className="w-full flex flex-col">
+                                <FuseScrollbars className="flex-grow overflow-x-auto">
+                                    <Table className="min-w-xl" aria-labelledby="tableTitle">
+                                        <TableHeader
+                                            numSelected={selected.length}
+                                            order={order}
+                                            onSelectAllClick={handleSelectAllClick}
+                                            onRequestSort={handleRequestSort}
+                                            rowCount={data.length}
+                                        />
+                                        <TableBody>
+                                            {_.orderBy(
+                                                data2,
+                                                [
+                                                    o => {
+                                                        switch (order.id) {
+                                                            case 'categories': {
+                                                                return o.categories[0];
+                                                            }
+                                                            default: {
+                                                                return o[order.id];
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                [order.direction]
+                                            )
+                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                .map(n => {
+                                                    const isSelected = selected.indexOf(n.id) !== -1;
+                                                    return (
+                                                        <TableRow
+
+                                                            className="h-10 cursor-pointer"
+                                                            hover
+                                                            role="checkbox"
+                                                            aria-checked={isSelected}
+                                                            tabIndex={-1}
+                                                            key={n.id}
+                                                            selected={isSelected}
+                                                            onClick={event => handleClick(n)}
+                                                        >
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.id}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.name}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.description}
+                                                            </TableCell>
+                                                            {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.begin_dt === null ? 'N/A' : n.begin_dt}
+                                                            </TableCell>}
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                <FormControlLabel
+                                                                    style={{ marginLeft: '2px' }}
+                                                                    control={
+                                                                        <Switch
+                                                                            checked={checked}
+                                                                            onChange={toggleChecked}
+                                                                            name="checkedB"
+                                                                            color="primary"
+                                                                            size="small"
+
+                                                                        />
+                                                                    }
+                                                                />
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
+                                        </TableBody>
+                                    </Table>
+                                </FuseScrollbars>
+                                <MuiThemeProvider theme={PaginationStyle}>
+                                    <TablePagination
+                                        classes={{
+                                            root: 'overflow-hidden',
+                                            spacer: 'w-0 max-w-0',
+                                            actions: 'text-64',
+                                            select: 'text-12 mt-4',
+                                            selectIcon: 'mt-4',
+                                        }}
+                                        className="overflow-hidden"
+                                        component="div"
+                                        count={data.length}
+                                        style={{ fontSize: '12px' }}
+                                        rowsPerPage={rowsPerPage}
+                                        page={page}
+                                        onChangePage={handleChangePage}
+                                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                                        ActionsComponent={ContactsTablePaginationActions}
+                                    />
+                                </MuiThemeProvider>
+                                <FuseAnimate animation="transition.expandIn" delay={300}>
+                                    <Fab
+                                        color="primary"
+                                        aria-label="add"
+                                        size="medium"
+                                        className={classes.addButton}
+                                        onClick={handleClickOpen}
+                                    >
+                                        <Icon>person_add</Icon>
+                                    </Fab>
+                                </FuseAnimate>
+                                {open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
+                            </div>
+
+                        </TabPanel>
+
+
+                        {/* 2 */}
+
+
+                        <TabPanel value={value} index={2} dir={theme.direction}>
+
+                            <div className="w-full flex flex-col">
+                                <FuseScrollbars className="flex-grow overflow-x-auto">
+                                    <Table className="min-w-xl" aria-labelledby="tableTitle">
+                                        <TableHeader
+                                            numSelected={selected.length}
+                                            order={order}
+                                            onSelectAllClick={handleSelectAllClick}
+                                            onRequestSort={handleRequestSort}
+                                            rowCount={data.length}
+                                        />
+                                        <TableBody>
+                                            {_.orderBy(
+                                                data2,
+                                                [
+                                                    o => {
+                                                        switch (order.id) {
+                                                            case 'categories': {
+                                                                return o.categories[0];
+                                                            }
+                                                            default: {
+                                                                return o[order.id];
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                [order.direction]
+                                            )
+                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                .map(n => {
+                                                    const isSelected = selected.indexOf(n.id) !== -1;
+                                                    return (
+                                                        <TableRow
+
+                                                            className="h-10 cursor-pointer"
+                                                            hover
+                                                            role="checkbox"
+                                                            aria-checked={isSelected}
+                                                            tabIndex={-1}
+                                                            key={n.id}
+                                                            selected={isSelected}
+                                                            onClick={event => handleClick(n)}
+                                                        >
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.id}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.name}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.description}
+                                                            </TableCell>
+                                                            {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.begin_dt === null ? 'N/A' : n.begin_dt}
+                                                            </TableCell>}
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                <FormControlLabel
+                                                                    style={{ marginLeft: '2px' }}
+                                                                    control={
+                                                                        <Switch
+                                                                            checked={checked}
+                                                                            onChange={toggleChecked}
+                                                                            name="checkedB"
+                                                                            color="primary"
+                                                                            size="small"
+
+                                                                        />
+                                                                    }
+                                                                />
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
+                                        </TableBody>
+                                    </Table>
+                                </FuseScrollbars>
+                                <MuiThemeProvider theme={PaginationStyle}>
+                                    <TablePagination
+                                        classes={{
+                                            root: 'overflow-hidden',
+                                            spacer: 'w-0 max-w-0',
+                                            actions: 'text-64',
+                                            select: 'text-12 mt-4',
+                                            selectIcon: 'mt-4',
+                                        }}
+                                        className="overflow-hidden"
+                                        component="div"
+                                        count={data.length}
+                                        style={{ fontSize: '12px' }}
+                                        rowsPerPage={rowsPerPage}
+                                        page={page}
+                                        onChangePage={handleChangePage}
+                                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                                        ActionsComponent={ContactsTablePaginationActions}
+                                    />
+                                </MuiThemeProvider>
+                                <FuseAnimate animation="transition.expandIn" delay={300}>
+                                    <Fab
+                                        color="primary"
+                                        aria-label="add"
+                                        size="medium"
+                                        className={classes.addButton}
+                                        onClick={handleClickOpen}
+                                    >
+                                        <Icon>person_add</Icon>
+                                    </Fab>
+                                </FuseAnimate>
+                                {open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
+                            </div>
+
+                        </TabPanel>
+
+
+
+                        {/* 3 */}
+
+
+
+
+                        <TabPanel value={value} index={3} dir={theme.direction}>
+
+                            <div className="w-full flex flex-col">
+                                <FuseScrollbars className="flex-grow overflow-x-auto">
+                                    <Table className="min-w-xl" aria-labelledby="tableTitle">
+                                        <TableHeader
+                                            numSelected={selected.length}
+                                            order={order}
+                                            onSelectAllClick={handleSelectAllClick}
+                                            onRequestSort={handleRequestSort}
+                                            rowCount={data.length}
+                                        />
+                                        <TableBody>
+                                            {_.orderBy(
+                                                data2,
+                                                [
+                                                    o => {
+                                                        switch (order.id) {
+                                                            case 'categories': {
+                                                                return o.categories[0];
+                                                            }
+                                                            default: {
+                                                                return o[order.id];
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                [order.direction]
+                                            )
+                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                .map(n => {
+                                                    const isSelected = selected.indexOf(n.id) !== -1;
+                                                    return (
+                                                        <TableRow
+
+                                                            className="h-10 cursor-pointer"
+                                                            hover
+                                                            role="checkbox"
+                                                            aria-checked={isSelected}
+                                                            tabIndex={-1}
+                                                            key={n.id}
+                                                            selected={isSelected}
+                                                            onClick={event => handleClick(n)}
+                                                        >
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.id}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.name}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.description}
+                                                            </TableCell>
+                                                            {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.begin_dt === null ? 'N/A' : n.begin_dt}
+                                                            </TableCell>}
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                <FormControlLabel
+                                                                    style={{ marginLeft: '2px' }}
+                                                                    control={
+                                                                        <Switch
+                                                                            checked={checked}
+                                                                            onChange={toggleChecked}
+                                                                            name="checkedB"
+                                                                            color="primary"
+                                                                            size="small"
+
+                                                                        />
+                                                                    }
+                                                                />
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
+                                        </TableBody>
+                                    </Table>
+                                </FuseScrollbars>
+                                <MuiThemeProvider theme={PaginationStyle}>
+                                    <TablePagination
+                                        classes={{
+                                            root: 'overflow-hidden',
+                                            spacer: 'w-0 max-w-0',
+                                            actions: 'text-64',
+                                            select: 'text-12 mt-4',
+                                            selectIcon: 'mt-4',
+                                        }}
+                                        className="overflow-hidden"
+                                        component="div"
+                                        count={data.length}
+                                        style={{ fontSize: '12px' }}
+                                        rowsPerPage={rowsPerPage}
+                                        page={page}
+                                        onChangePage={handleChangePage}
+                                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                                        ActionsComponent={ContactsTablePaginationActions}
+                                    />
+                                </MuiThemeProvider>
+                                <FuseAnimate animation="transition.expandIn" delay={300}>
+                                    <Fab
+                                        color="primary"
+                                        aria-label="add"
+                                        size="medium"
+                                        className={classes.addButton}
+                                        onClick={handleClickOpen}
+                                    >
+                                        <Icon>person_add</Icon>
+                                    </Fab>
+                                </FuseAnimate>
+                                {open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
+                            </div>
+
+                        </TabPanel>
+
+
+
+
+                        {/* 4 */}
+
+
+
+                        <TabPanel value={value} index={4} dir={theme.direction}>
+
+                            <div className="w-full flex flex-col">
+                                <FuseScrollbars className="flex-grow overflow-x-auto">
+                                    <Table className="min-w-xl" aria-labelledby="tableTitle">
+                                        <TableHeader
+                                            numSelected={selected.length}
+                                            order={order}
+                                            onSelectAllClick={handleSelectAllClick}
+                                            onRequestSort={handleRequestSort}
+                                            rowCount={data.length}
+                                        />
+                                        <TableBody>
+                                            {_.orderBy(
+                                                data2,
+                                                [
+                                                    o => {
+                                                        switch (order.id) {
+                                                            case 'categories': {
+                                                                return o.categories[0];
+                                                            }
+                                                            default: {
+                                                                return o[order.id];
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                [order.direction]
+                                            )
+                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                .map(n => {
+                                                    const isSelected = selected.indexOf(n.id) !== -1;
+                                                    return (
+                                                        <TableRow
+
+                                                            className="h-10 cursor-pointer"
+                                                            hover
+                                                            role="checkbox"
+                                                            aria-checked={isSelected}
+                                                            tabIndex={-1}
+                                                            key={n.id}
+                                                            selected={isSelected}
+                                                            onClick={event => handleClick(n)}
+                                                        >
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.id}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.name}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.description}
+                                                            </TableCell>
+                                                            {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.begin_dt === null ? 'N/A' : n.begin_dt}
+                                                            </TableCell>}
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                <FormControlLabel
+                                                                    style={{ marginLeft: '2px' }}
+                                                                    control={
+                                                                        <Switch
+                                                                            checked={checked}
+                                                                            onChange={toggleChecked}
+                                                                            name="checkedB"
+                                                                            color="primary"
+                                                                            size="small"
+
+                                                                        />
+                                                                    }
+                                                                />
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
+                                        </TableBody>
+                                    </Table>
+                                </FuseScrollbars>
+                                <MuiThemeProvider theme={PaginationStyle}>
+                                    <TablePagination
+                                        classes={{
+                                            root: 'overflow-hidden',
+                                            spacer: 'w-0 max-w-0',
+                                            actions: 'text-64',
+                                            select: 'text-12 mt-4',
+                                            selectIcon: 'mt-4',
+                                        }}
+                                        className="overflow-hidden"
+                                        component="div"
+                                        count={data.length}
+                                        style={{ fontSize: '12px' }}
+                                        rowsPerPage={rowsPerPage}
+                                        page={page}
+                                        onChangePage={handleChangePage}
+                                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                                        ActionsComponent={ContactsTablePaginationActions}
+                                    />
+                                </MuiThemeProvider>
+                                <FuseAnimate animation="transition.expandIn" delay={300}>
+                                    <Fab
+                                        color="primary"
+                                        aria-label="add"
+                                        size="medium"
+                                        className={classes.addButton}
+                                        onClick={handleClickOpen}
+                                    >
+                                        <Icon>person_add</Icon>
+                                    </Fab>
+                                </FuseAnimate>
+                                {open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
+                            </div>
+
+                        </TabPanel>
+
+
+
+
+
+
+
+                    </SwipeableViews>
+                    {/* <Tabs
                         value={tabValue}
                         onChange={handleChangeTab}
                         indicatorColor="primary"
@@ -244,7 +1058,8 @@ function CannedReplies(props) {
                     >
                         <Tab
                             style={{ marginTop: '0.2%' }}
-                            className="text-12 font-600 normal-case" label="All" />
+                            className="text-12 font-600 normal-case" label="All">
+                                </Tab>
                         <Tab
                             style={{ marginTop: '0.2%' }}
                             className="text-12 font-600 normal-case" label="Text" />
@@ -257,7 +1072,8 @@ function CannedReplies(props) {
                         <Tab
                             style={{ marginTop: '0.2%' }}
                             className="text-12 font-600 normal-case" label="Documents" />
-                    </Tabs>
+                    </Tabs> */}
+
                     <Snackbar
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
                         open={snackbaropen}
@@ -267,114 +1083,7 @@ function CannedReplies(props) {
                             {snackbarmessage}
                         </Alert>
                     </Snackbar>
-                    <div className="w-full flex flex-col">
-                        <FuseScrollbars className="flex-grow overflow-x-auto">
-                            <Table className="min-w-xl" aria-labelledby="tableTitle">
-                                <TableHeader
-                                    numSelected={selected.length}
-                                    order={order}
-                                    onSelectAllClick={handleSelectAllClick}
-                                    onRequestSort={handleRequestSort}
-                                    rowCount={data.length}
-                                />
-                                <TableBody>
-                                    {_.orderBy(
-                                        data2,
-                                        [
-                                            o => {
-                                                switch (order.id) {
-                                                    case 'categories': {
-                                                        return o.categories[0];
-                                                    }
-                                                    default: {
-                                                        return o[order.id];
-                                                    }
-                                                }
-                                            }
-                                        ],
-                                        [order.direction]
-                                    )
-                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                        .map(n => {
-                                            const isSelected = selected.indexOf(n.id) !== -1;
-                                            return (
-                                                <TableRow
 
-                                                    className="h-10 cursor-pointer"
-                                                    hover
-                                                    role="checkbox"
-                                                    aria-checked={isSelected}
-                                                    tabIndex={-1}
-                                                    key={n.id}
-                                                    selected={isSelected}
-                                                    onClick={event => handleClick(n)}
-                                                >
-                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                        {n.id}
-                                                    </TableCell>
-                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                        {n.name}
-                                                    </TableCell>
-                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                        {n.description}
-                                                    </TableCell>
-                                                    {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                        {n.begin_dt === null ? 'N/A' : n.begin_dt}
-                                                    </TableCell>}
-                                                    <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                        <FormControlLabel
-                                                            style={{ marginLeft: '2px' }}
-                                                            control={
-                                                                <Switch
-                                                                    checked={checked}
-                                                                    onChange={toggleChecked}
-                                                                    name="checkedB"
-                                                                    color="primary"
-                                                                    size="small"
-
-                                                                />
-                                                            }
-                                                        />
-                                                    </TableCell>
-                                                </TableRow>
-                                            );
-                                        })}
-                                </TableBody>
-                            </Table>
-                        </FuseScrollbars>
-                        <MuiThemeProvider theme={PaginationStyle}>
-                            <TablePagination
-                                classes={{
-                                    root: 'overflow-hidden',
-                                    spacer: 'w-0 max-w-0',
-                                    actions: 'text-64',
-                                    select: 'text-12 mt-4',
-                                    selectIcon: 'mt-4',
-                                }}
-                                className="overflow-hidden"
-                                component="div"
-                                count={data.length}
-                                style={{ fontSize: '12px' }}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                onChangePage={handleChangePage}
-                                onChangeRowsPerPage={handleChangeRowsPerPage}
-                                ActionsComponent={ContactsTablePaginationActions}
-                            />
-                        </MuiThemeProvider>
-                        <FuseAnimate animation="transition.expandIn" delay={300}>
-                            <Fab
-                                color="primary"
-                                aria-label="add"
-                                size="medium"
-                                className={classes.addButton}
-                                onClick={handleClickOpen}
-                            >
-                                <Icon>person_add</Icon>
-                            </Fab>
-                        </FuseAnimate>
-                        {open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
-                    </div>
                 </CardContent>
             </Card>
         </>

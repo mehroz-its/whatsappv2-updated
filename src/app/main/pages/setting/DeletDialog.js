@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import { makeStyles } from '@material-ui/core/styles';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
+import DeleteIcon from '@material-ui/icons/Delete';
+
 const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'absolute',
@@ -21,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 const DeleteDialog = (props) => {
-	const { isOpen,  data ,path,method} = props
+	const { isOpen, data, path, method } = props
 	const [openDialog, setopenDialog] = React.useState(isOpen);
 	const handleDialogClose = () => {
 		props.closeDialog()
@@ -52,18 +54,19 @@ const DeleteDialog = (props) => {
 			<DialogTitle id="form-dialog-title">{props.type} </DialogTitle>
 			<DialogContent classes={{ root: 'p-24' }}>
 				<div className="flex">
-					<div className="min-w-48" style={{marginTop:'-3px'}}>
-						<Icon color="action">block</Icon>
+					<div className="min-w-48" style={{ marginTop: '-3px' }}>
+						{/* <Icon color="action">block</Icon> */}
+						<DeleteIcon color="action" style={{ color: "#8b8b8b" }} />
 					</div>
-					{`Are you sure you want to delete?`}
+					<h3>{`Are you sure you want to delete?`}a</h3>
 				</div>
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={handleDialogClose} color="primary">
+				<Button onClick={handleDialogClose} color="primary" variant="contained">
 					Cancel
              </Button>
-				<Button onClick={handleSubmit} color="primary">
-					Confirm
+				<Button onClick={handleSubmit} style={{ backgroundColor: "#4caf50", color: "white" }} variant="contained">
+					Confirm  
          </Button>
 			</DialogActions>
 		</Dialog>

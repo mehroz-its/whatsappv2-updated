@@ -165,7 +165,7 @@ function DashboardApp(props) {
 		});
 		campaign_report_chart(data);
 	};
-	const dataSourceFailuree = response => {};
+	const dataSourceFailuree = response => { };
 	const campaign_report_chart = dataa => {
 		let data = dataa;
 		let chart = am4core.create('chartdivcampaign', am4charts.XYChart);
@@ -226,7 +226,7 @@ function DashboardApp(props) {
 		const list = response.data.data.dashboardBoxInfo.boxes;
 		setBox(list);
 	};
-	const dataSourceFailure = response => {};
+	const dataSourceFailure = response => { };
 	const messagestateSuccess = response => {
 		const list = response.data.data.report.finalbox[0].chart;
 		setRadarList(list);
@@ -234,7 +234,7 @@ function DashboardApp(props) {
 		totalCountConversation(response.data.data.report.finalbox[0].conversations);
 		totalEngagements(response.data.data.report.finalbox[0].engagements);
 	};
-	const messagestateFailure = response => {};
+	const messagestateFailure = response => { };
 	const totalCountConversation = response => {
 		const data = response;
 		console.log('data totalCountConversation : ', data);
@@ -326,7 +326,7 @@ function DashboardApp(props) {
 						<Typography
 							variant="h2"
 							className="companyDetailHeader"
-							style={{ backgroundColor: '#fc2254', color: 'white' }}
+							style={{ backgroundColor: '#e73859', color: 'white' }}
 						>
 							Intelligence
 						</Typography>
@@ -343,9 +343,10 @@ function DashboardApp(props) {
 											<DatePicker SelectedDates={SelectedDates} />
 											<Button
 												variant="contained"
-												color="primary"
+												// color="primary"
+												// style={{ backgroundColor: "#e73859" }}
 												size="small"
-												style={{ fontSize: 10, marginTop: -1 }}
+												style={{ fontSize: 10, marginTop: -1, backgroundColor: "#e73859", color: "white" }}
 												aria-label="Generte"
 												onClick={() => submit()}
 											>
@@ -360,11 +361,13 @@ function DashboardApp(props) {
 										</Grid> */}
 										<Grid item md={6} sm={12} xs={12}>
 											<Grid container spacing={1}>
-												<Grid item md={4} sm={12} xs={12}>
+
+												<Grid item md={4} sm={12} xs={12}  >
 													<Widget2
 														title="Dummy"
 														count={totalIngoingMessages}
 														bottom_title="Inbound"
+													// style={{ fontSize: "10px", color: "red" }}
 													/>
 												</Grid>
 												<Grid item md={4} sm={12} xs={12}>
