@@ -190,6 +190,9 @@ function ChatApp(props) {
 	const [lastMessageTimestamp, setlastMessageTimestamp] = React.useState(null);
 	const [latestMessageSender, setlatestMessageSender] = React.useState(null);
 	const [numbers, setnumbers] = React.useState([]);
+	const [dummy, setDummy] = React.useState([]);
+	const [firstLoad, setFirstLoad] = React.useState(true);
+	const [numbersLength, setNumbersLength] = React.useState(0);
 	const [numbersdum, setnumbersdum] = React.useState([]);
 	const [lastmessage, setlastmessage] = React.useState([]);
 	const [messages, setmessages] = React.useState([]);
@@ -213,30 +216,27 @@ function ChatApp(props) {
 		}, 2000));
 	}
 
+	
+	React.useEffect(()=>{
+		
+		if(JSON.stringify(dummy)!==JSON.stringify(numbers)){
+			if(firstLoad){
+				setFirstLoad(false)
+			}
+			else if(dummy.length>numbers.length){
+				EventEmitter.dispatch('Message', true)
+			}	
+			setnumbers(dummy)
+		}
+
+	},[dummy])
+
 	const getNumbers = () => {
 		CoreHttpHandler.request('conversations', 'numbers', {}, (response) => {
-			const numberss = response.data.data.customers;
-			if (numberDummy.length === 0) {
-				console.log("if");
-				numberDummy = numberss
-				setnumbers(numberss)
-			}
-			else {
-				if (numberss.length !== numberss.length ) {
-					console.log("else if ");
-					numberDummy = numberss
-					setnumbers(numberss)
-					EventEmitter.dispatch('Message', true)
-				}
-				else {
-				if (JSON.stringify(numberDummy) !== JSON.stringify(numberss)) {
-					console.log("else else if", numberDummy.length, numberss.length);
-					numberDummy = numberss
-					setnumbers(numberss)
-					EventEmitter.dispatch('Message', true)
-				}
-			}
-			}
+			const newData = response.data.data.customers;
+
+			setDummy(newData)
+
 		}, (response) => {
 		});
 	}
