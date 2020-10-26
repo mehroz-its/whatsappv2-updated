@@ -50,13 +50,13 @@ const rows = [
 		label: 'Active',
 		sort: true
 	},
-	{
-		id: 'Delete',
-		align: 'center',
-		disablePadding: false,
-		label: 'Delete',
-		sort: true
-	},
+	// {
+	// 	id: 'Delete',
+	// 	align: 'center',
+	// 	disablePadding: false,
+	// 	label: 'Delete',
+	// 	sort: true
+	// },
 ];
 const useStyles = makeStyles(theme => ({
 	actionsButtonWrapper: {

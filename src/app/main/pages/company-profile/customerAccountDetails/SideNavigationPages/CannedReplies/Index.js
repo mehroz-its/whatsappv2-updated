@@ -90,18 +90,31 @@ function CannedReplies(props) {
     const [open, setOpen] = React.useState(false)
     const [selected, setSelected] = useState([]);
     const [data, setData] = useState([]);
+    const [companyDetails, setCompanyDetails] = React.useState(props.data);
+
     const [data2, setData2] = useState(data);
     const [page, setPage] = useState(0);
     const [searchVal, setSearchVal] = useState(props.ValueForSearch)
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [snackbaropen, setSnackBarOpen] = React.useState(false)
     const [snackbarmessage, setSnackBarMessage] = React.useState('')
+    const [type, setType] = React.useState('')
+    const [totalItems, setTotalItems] = React.useState(0);
+
     const [ok, setOK] = React.useState('')
+    const [textType, settextType] = React.useState([])
+    const [audioType, setaudioType] = React.useState([])
+    const [videoType, setvideoType] = React.useState([])
+    const [docmentType, setdocumentType] = React.useState([])
+    const [imageype, setimageType] = React.useState([])
     const [order, setOrder] = useState({
         direction: 'asc',
         id: null
     });
     const [checked, setChecked] = React.useState(false);
+    const [enabled, setEnabled] = React.useState(false);
+
+
     const [tabValue, setTabValue] = useState(0);
     const [value, setValue] = React.useState(0);
     const theme = useTheme();
@@ -118,6 +131,8 @@ function CannedReplies(props) {
         template_id: 0,
         type: null,
         activated: false,
+        client_id: props.data.id,
+        enabled: false
     });
     const [number, SetNumber] = useState(10)
     const handleChange = (event) => {
@@ -126,28 +141,36 @@ function CannedReplies(props) {
     const getData = ((loadData) => {
         loadData = () => {
             return CoreHttpHandler.request(
-				'canned_messages',
-				'type_listing',
-				{
-					...currentParams,
-					key: ':type',
-					value: "all",
-					columns: '*',
-					sortby: 'DESC',
-					orderby: 'id',
-					where: 'message_type = $1',
-					values: 0
-				},
-				null,
-				null,
-				true
-			);
+                'canned_messages',
+                'type_listing',
+                {
+                    ...currentParams,
+                    key: ':type',
+                    value: "all",
+                    columns: '*',
+                    sortby: 'DESC',
+                    orderby: 'id',
+                    where: 'message_type = $1',
+                    values: 0,
+                    client_id: props.data.id
+                },
+                null,
+                null,
+                true
+            );
         };
         loadData().then((response) => {
             const tableData = response.data.data.list.data
             setData(tableData)
             setData2(tableData)
             console.log(tableData)
+            setTotalItems(response.data.data.list.totalItems);
+            settextType(tableData.filter(type => type.message_type === "text"));
+            setvideoType(tableData.filter(type => type.message_type === "video"))
+            setaudioType(tableData.filter(type => type.message_type === "audio"))
+            setdocumentType(tableData.filter(type => type.message_type === "document"))
+            setimageType(tableData.filter(type => type.message_type === "image"))
+           
         });
     })
     setTimeout(() => {
@@ -191,6 +214,9 @@ function CannedReplies(props) {
     }
 
     function handleClick(n) {
+        console.log("row data : ", n);
+        setDialogData(n)
+        setType('Update Canned Message')
         setOpen(true)
     }
 
@@ -203,13 +229,14 @@ function CannedReplies(props) {
 					</Typography>
                 </div>
             )
-        } else {
-            return (
-                <div className="flex flex-1 items-center justify-center h-full">
-                    <FuseLoading />
-                </div>
-            );
         }
+        // else {
+        //     return (
+        //         <div className="flex flex-1 items-center justify-center h-full">
+        //             <FuseLoading />
+        //         </div>
+        //     );
+        // }
     }
     function handleCheck(event, id) {
         const selectedIndex = selected.indexOf(id);
@@ -240,13 +267,38 @@ function CannedReplies(props) {
         setRowsPerPage(event.target.value);
     }
 
-    const toggleChecked = () => {
-        setChecked((prev) => !prev);
+    // const toggleChecked = () => {
+    //     setChecked((prev) => !prev);
+    // };
+
+    const toggleChecked = (e) => {
+        console.log("e", e);
+        // setEnabled((prev) => !prev);
     };
+
+
     const closeDialog = () => {
         setOpen(false);
+        getData();
+
     };
     const handleClickOpen = () => {
+        // alert("Create")
+        setDialogData({
+            id: 0,
+            name: "",
+            description: "",
+            begin_dt: null,
+            begin_time: null,
+            msisdnUrl: "",
+            state: false,
+            template_id: 0,
+            type: null,
+            activated: false,
+            client_id: props.data.id,
+            enabled: false
+        })
+        setType("Create Canned Message")
         setOpen(true);
     };
 
@@ -314,12 +366,12 @@ function CannedReplies(props) {
                         className="w-full border-b-1 px-100 text-center h-48 "
                         style={{ marginBottom: '8px' }}
                     >
-                        {/* <Tab label="All Messages" {...a11yProps(0)} /> */}
-                        <Tab label="text" {...a11yProps(0)} />
-                        <Tab label="image" {...a11yProps(1)} />
-                        <Tab label="Video" {...a11yProps(2)} />
-                        <Tab label="Audio" {...a11yProps(3)} />
-                        <Tab label="document" {...a11yProps(4)} />
+                        <Tab label="All Messages" {...a11yProps(0)} />
+                        <Tab label="text" {...a11yProps(1)} />
+                        <Tab label="image" {...a11yProps(2)} />
+                        <Tab label="Video" {...a11yProps(3)} />
+                        <Tab label="Audio" {...a11yProps(4)} />
+                        <Tab label="document" {...a11yProps(5)} />
                     </Tabs>
 
                     <SwipeableViews
@@ -327,128 +379,7 @@ function CannedReplies(props) {
                         index={value}
                         onChangeIndex={handleChangeIndexx}
                     >
-
-
-                        {/* all messages */}
-                        {/* 
                         <TabPanel value={value} index={0} dir={theme.direction}>
-
-                            <div className="w-full flex flex-col">
-                                <FuseScrollbars className="flex-grow overflow-x-auto">
-                                    <Table className="min-w-xl" aria-labelledby="tableTitle">
-                                        <TableHeader
-                                            numSelected={selected.length}
-                                            order={order}
-                                            onSelectAllClick={handleSelectAllClick}
-                                            onRequestSort={handleRequestSort}
-                                            rowCount={data.length}
-                                        />
-                                        <TableBody>
-                                            {_.orderBy(
-                                                data2,
-                                                [
-                                                    o => {
-                                                        switch (order.id) {
-                                                            case 'categories': {
-                                                                return o.categories[0];
-                                                            }
-                                                            default: {
-                                                                return o[order.id];
-                                                            }
-                                                        }
-                                                    }
-                                                ],
-                                                [order.direction]
-                                            )
-                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                                .map(n => {
-                                                    const isSelected = selected.indexOf(n.id) !== -1;
-                                                    return (
-                                                        <TableRow
-
-                                                            className="h-10 cursor-pointer"
-                                                            hover
-                                                            role="checkbox"
-                                                            aria-checked={isSelected}
-                                                            tabIndex={-1}
-                                                            key={n.id}
-                                                            selected={isSelected}
-                                                            onClick={event => handleClick(n)}
-                                                        >
-                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.id}
-                                                            </TableCell>
-                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.name}
-                                                            </TableCell>
-                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.description}
-                                                            </TableCell>
-                                                            {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.begin_dt === null ? 'N/A' : n.begin_dt}
-                                                            </TableCell>}
-                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                <FormControlLabel
-                                                                    style={{ marginLeft: '2px' }}
-                                                                    control={
-                                                                        <Switch
-                                                                            checked={checked}
-                                                                            onChange={toggleChecked}
-                                                                            name="checkedB"
-                                                                            color="primary"
-                                                                            size="small"
-
-                                                                        />
-                                                                    }
-                                                                />
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    );
-                                                })}
-                                        </TableBody>
-                                    </Table>
-                                </FuseScrollbars>
-                                <MuiThemeProvider theme={PaginationStyle}>
-                                    <TablePagination
-                                        classes={{
-                                            root: 'overflow-hidden',
-                                            spacer: 'w-0 max-w-0',
-                                            actions: 'text-64',
-                                            select: 'text-12 mt-4',
-                                            selectIcon: 'mt-4',
-                                        }}
-                                        className="overflow-hidden"
-                                        component="div"
-                                        count={data.length}
-                                        style={{ fontSize: '12px' }}
-                                        rowsPerPage={rowsPerPage}
-                                        page={page}
-                                        onChangePage={handleChangePage}
-                                        onChangeRowsPerPage={handleChangeRowsPerPage}
-                                        ActionsComponent={ContactsTablePaginationActions}
-                                    />
-                                </MuiThemeProvider>
-                                <FuseAnimate animation="transition.expandIn" delay={300}>
-                                    <Fab
-                                        color="primary"
-                                        aria-label="add"
-                                        size="medium"
-                                        className={classes.addButton}
-                                        onClick={handleClickOpen}
-                                    >
-                                        <Icon>person_add</Icon>
-                                    </Fab>
-                                </FuseAnimate>
-                                {open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
-                            </div>
-
-                        </TabPanel> */}
-
-
-
-                        {/* 0 */}
-                        <TabPanel value={value} index={0} dir={theme.direction}>
-
                             <div className="w-full flex flex-col">
                                 <FuseScrollbars className="flex-grow overflow-x-auto">
                                     <Table className="min-w-xl" aria-labelledby="tableTitle">
@@ -482,7 +413,6 @@ function CannedReplies(props) {
                                                     const isSelected = selected.indexOf(n.id) !== -1;
                                                     return (
                                                         <TableRow
-
                                                             className="h-10 cursor-pointer"
                                                             hover
                                                             role="checkbox"
@@ -496,33 +426,20 @@ function CannedReplies(props) {
                                                                 {n.id}
                                                             </TableCell>
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.name}
+                                                                {n.message_name}
                                                             </TableCell>
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.description}
+                                                                {n.message_text}
                                                             </TableCell>
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {/* {n.canned_type} */}
                                                                 {n.message_type}
-
                                                             </TableCell>
-                                                            {/* {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.begin_dt === null ? 'N/A' : n.begin_dt}
-                                                            </TableCell>} */}
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                <FormControlLabel
-                                                                    style={{ marginLeft: '2px' }}
-                                                                    control={
-                                                                        <Switch
-                                                                            checked={checked}
-                                                                            onChange={toggleChecked}
-                                                                            name="checkedB"
-                                                                            color="primary"
-                                                                            size="small"
-
-                                                                        />
-                                                                    }
-                                                                />
+                                                                {n.enabled ? (
+                                                                    <Icon className="text-green text-16">check_circle</Icon>
+                                                                ) : (
+                                                                        <Icon className="text-red text-16">cancel</Icon>
+                                                                    )}
                                                             </TableCell>
                                                         </TableRow>
                                                     );
@@ -550,7 +467,7 @@ function CannedReplies(props) {
                                         ActionsComponent={ContactsTablePaginationActions}
                                     />
                                 </MuiThemeProvider>
-                                <FuseAnimate animation="transition.expandIn" delay={300}>
+                                {/* <FuseAnimate animation="transition.expandIn" delay={300}>
                                     <Fab
                                         color="primary"
                                         aria-label="add"
@@ -560,17 +477,12 @@ function CannedReplies(props) {
                                     >
                                         <Icon>person_add</Icon>
                                     </Fab>
-                                </FuseAnimate>
-                                {open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
+                                </FuseAnimate> */}
+                               
                             </div>
 
                         </TabPanel>
-
-                        {/* 1 */}
-
-
                         <TabPanel value={value} index={1} dir={theme.direction}>
-
                             <div className="w-full flex flex-col">
                                 <FuseScrollbars className="flex-grow overflow-x-auto">
                                     <Table className="min-w-xl" aria-labelledby="tableTitle">
@@ -579,11 +491,12 @@ function CannedReplies(props) {
                                             order={order}
                                             onSelectAllClick={handleSelectAllClick}
                                             onRequestSort={handleRequestSort}
-                                            rowCount={data.length}
+                                            rowCount={textType.length}
                                         />
                                         <TableBody>
                                             {_.orderBy(
-                                                data2,
+                                                textType,
+
                                                 [
                                                     o => {
                                                         switch (order.id) {
@@ -603,7 +516,6 @@ function CannedReplies(props) {
                                                     const isSelected = selected.indexOf(n.id) !== -1;
                                                     return (
                                                         <TableRow
-
                                                             className="h-10 cursor-pointer"
                                                             hover
                                                             role="checkbox"
@@ -617,28 +529,20 @@ function CannedReplies(props) {
                                                                 {n.id}
                                                             </TableCell>
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.name}
+                                                                {n.message_name}
                                                             </TableCell>
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.description}
+                                                                {n.message_text}
                                                             </TableCell>
-                                                            {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.begin_dt === null ? 'N/A' : n.begin_dt}
-                                                            </TableCell>}
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                <FormControlLabel
-                                                                    style={{ marginLeft: '2px' }}
-                                                                    control={
-                                                                        <Switch
-                                                                            checked={checked}
-                                                                            onChange={toggleChecked}
-                                                                            name="checkedB"
-                                                                            color="primary"
-                                                                            size="small"
-
-                                                                        />
-                                                                    }
-                                                                />
+                                                                {n.message_type}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.enabled ? (
+                                                                    <Icon className="text-green text-16">check_circle</Icon>
+                                                                ) : (
+                                                                        <Icon className="text-red text-16">cancel</Icon>
+                                                                    )}
                                                             </TableCell>
                                                         </TableRow>
                                                     );
@@ -666,7 +570,7 @@ function CannedReplies(props) {
                                         ActionsComponent={ContactsTablePaginationActions}
                                     />
                                 </MuiThemeProvider>
-                                <FuseAnimate animation="transition.expandIn" delay={300}>
+                                {/* <FuseAnimate animation="transition.expandIn" delay={300}>
                                     <Fab
                                         color="primary"
                                         aria-label="add"
@@ -676,18 +580,12 @@ function CannedReplies(props) {
                                     >
                                         <Icon>person_add</Icon>
                                     </Fab>
-                                </FuseAnimate>
-                                {open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
+                                </FuseAnimate> */}
+                               
                             </div>
 
                         </TabPanel>
-
-
-                        {/* 2 */}
-
-
                         <TabPanel value={value} index={2} dir={theme.direction}>
-
                             <div className="w-full flex flex-col">
                                 <FuseScrollbars className="flex-grow overflow-x-auto">
                                     <Table className="min-w-xl" aria-labelledby="tableTitle">
@@ -696,11 +594,12 @@ function CannedReplies(props) {
                                             order={order}
                                             onSelectAllClick={handleSelectAllClick}
                                             onRequestSort={handleRequestSort}
-                                            rowCount={data.length}
+                                            rowCount={imageype.length}
                                         />
                                         <TableBody>
                                             {_.orderBy(
-                                                data2,
+                                                imageype,
+
                                                 [
                                                     o => {
                                                         switch (order.id) {
@@ -720,7 +619,6 @@ function CannedReplies(props) {
                                                     const isSelected = selected.indexOf(n.id) !== -1;
                                                     return (
                                                         <TableRow
-
                                                             className="h-10 cursor-pointer"
                                                             hover
                                                             role="checkbox"
@@ -734,28 +632,20 @@ function CannedReplies(props) {
                                                                 {n.id}
                                                             </TableCell>
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.name}
+                                                                {n.message_name}
                                                             </TableCell>
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.description}
+                                                                {n.message_text}
                                                             </TableCell>
-                                                            {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.begin_dt === null ? 'N/A' : n.begin_dt}
-                                                            </TableCell>}
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                <FormControlLabel
-                                                                    style={{ marginLeft: '2px' }}
-                                                                    control={
-                                                                        <Switch
-                                                                            checked={checked}
-                                                                            onChange={toggleChecked}
-                                                                            name="checkedB"
-                                                                            color="primary"
-                                                                            size="small"
-
-                                                                        />
-                                                                    }
-                                                                />
+                                                                {n.message_type}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.enabled ? (
+                                                                    <Icon className="text-green text-16">check_circle</Icon>
+                                                                ) : (
+                                                                        <Icon className="text-red text-16">cancel</Icon>
+                                                                    )}
                                                             </TableCell>
                                                         </TableRow>
                                                     );
@@ -783,31 +673,12 @@ function CannedReplies(props) {
                                         ActionsComponent={ContactsTablePaginationActions}
                                     />
                                 </MuiThemeProvider>
-                                <FuseAnimate animation="transition.expandIn" delay={300}>
-                                    <Fab
-                                        color="primary"
-                                        aria-label="add"
-                                        size="medium"
-                                        className={classes.addButton}
-                                        onClick={handleClickOpen}
-                                    >
-                                        <Icon>person_add</Icon>
-                                    </Fab>
-                                </FuseAnimate>
-                                {open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
+                                
+                               
                             </div>
 
                         </TabPanel>
-
-
-
-                        {/* 3 */}
-
-
-
-
                         <TabPanel value={value} index={3} dir={theme.direction}>
-
                             <div className="w-full flex flex-col">
                                 <FuseScrollbars className="flex-grow overflow-x-auto">
                                     <Table className="min-w-xl" aria-labelledby="tableTitle">
@@ -816,11 +687,12 @@ function CannedReplies(props) {
                                             order={order}
                                             onSelectAllClick={handleSelectAllClick}
                                             onRequestSort={handleRequestSort}
-                                            rowCount={data.length}
+                                            rowCount={videoType.length}
                                         />
                                         <TableBody>
                                             {_.orderBy(
-                                                data2,
+                                                videoType,
+
                                                 [
                                                     o => {
                                                         switch (order.id) {
@@ -840,7 +712,6 @@ function CannedReplies(props) {
                                                     const isSelected = selected.indexOf(n.id) !== -1;
                                                     return (
                                                         <TableRow
-
                                                             className="h-10 cursor-pointer"
                                                             hover
                                                             role="checkbox"
@@ -854,28 +725,20 @@ function CannedReplies(props) {
                                                                 {n.id}
                                                             </TableCell>
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.name}
+                                                                {n.message_name}
                                                             </TableCell>
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.description}
+                                                                {n.message_text}
                                                             </TableCell>
-                                                            {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.begin_dt === null ? 'N/A' : n.begin_dt}
-                                                            </TableCell>}
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                <FormControlLabel
-                                                                    style={{ marginLeft: '2px' }}
-                                                                    control={
-                                                                        <Switch
-                                                                            checked={checked}
-                                                                            onChange={toggleChecked}
-                                                                            name="checkedB"
-                                                                            color="primary"
-                                                                            size="small"
-
-                                                                        />
-                                                                    }
-                                                                />
+                                                                {n.message_type}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.enabled ? (
+                                                                    <Icon className="text-green text-16">check_circle</Icon>
+                                                                ) : (
+                                                                        <Icon className="text-red text-16">cancel</Icon>
+                                                                    )}
                                                             </TableCell>
                                                         </TableRow>
                                                     );
@@ -914,20 +777,11 @@ function CannedReplies(props) {
                                         <Icon>person_add</Icon>
                                     </Fab>
                                 </FuseAnimate>
-                                {open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
+                               
                             </div>
 
                         </TabPanel>
-
-
-
-
-                        {/* 4 */}
-
-
-
                         <TabPanel value={value} index={4} dir={theme.direction}>
-
                             <div className="w-full flex flex-col">
                                 <FuseScrollbars className="flex-grow overflow-x-auto">
                                     <Table className="min-w-xl" aria-labelledby="tableTitle">
@@ -936,11 +790,12 @@ function CannedReplies(props) {
                                             order={order}
                                             onSelectAllClick={handleSelectAllClick}
                                             onRequestSort={handleRequestSort}
-                                            rowCount={data.length}
+                                            rowCount={audioType.length}
                                         />
                                         <TableBody>
                                             {_.orderBy(
-                                                data2,
+                                                audioType,
+
                                                 [
                                                     o => {
                                                         switch (order.id) {
@@ -960,7 +815,6 @@ function CannedReplies(props) {
                                                     const isSelected = selected.indexOf(n.id) !== -1;
                                                     return (
                                                         <TableRow
-
                                                             className="h-10 cursor-pointer"
                                                             hover
                                                             role="checkbox"
@@ -974,28 +828,20 @@ function CannedReplies(props) {
                                                                 {n.id}
                                                             </TableCell>
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.name}
+                                                                {n.message_name}
                                                             </TableCell>
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.description}
+                                                                {n.message_text}
                                                             </TableCell>
-                                                            {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.begin_dt === null ? 'N/A' : n.begin_dt}
-                                                            </TableCell>}
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                <FormControlLabel
-                                                                    style={{ marginLeft: '2px' }}
-                                                                    control={
-                                                                        <Switch
-                                                                            checked={checked}
-                                                                            onChange={toggleChecked}
-                                                                            name="checkedB"
-                                                                            color="primary"
-                                                                            size="small"
-
-                                                                        />
-                                                                    }
-                                                                />
+                                                                {n.message_type}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.enabled ? (
+                                                                    <Icon className="text-green text-16">check_circle</Icon>
+                                                                ) : (
+                                                                        <Icon className="text-red text-16">cancel</Icon>
+                                                                    )}
                                                             </TableCell>
                                                         </TableRow>
                                                     );
@@ -1034,46 +880,117 @@ function CannedReplies(props) {
                                         <Icon>person_add</Icon>
                                     </Fab>
                                 </FuseAnimate>
-                                {open && <CannedDialog type="Update Canned Message" data={dialogData} isOpen={open} closeDialog={closeDialog} />}
+                               
                             </div>
 
                         </TabPanel>
+                        <TabPanel value={value} index={5} dir={theme.direction}>
+                            <div className="w-full flex flex-col">
+                                <FuseScrollbars className="flex-grow overflow-x-auto">
+                                    <Table className="min-w-xl" aria-labelledby="tableTitle">
+                                        <TableHeader
+                                            numSelected={selected.length}
+                                            order={order}
+                                            onSelectAllClick={handleSelectAllClick}
+                                            onRequestSort={handleRequestSort}
+                                            rowCount={docmentType.length}
+                                        />
+                                        <TableBody>
+                                            {_.orderBy(
+                                                docmentType,
 
+                                                [
+                                                    o => {
+                                                        switch (order.id) {
+                                                            case 'categories': {
+                                                                return o.categories[0];
+                                                            }
+                                                            default: {
+                                                                return o[order.id];
+                                                            }
+                                                        }
+                                                    }
+                                                ],
+                                                [order.direction]
+                                            )
+                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                .map(n => {
+                                                    const isSelected = selected.indexOf(n.id) !== -1;
+                                                    return (
+                                                        <TableRow
+                                                            className="h-10 cursor-pointer"
+                                                            hover
+                                                            role="checkbox"
+                                                            aria-checked={isSelected}
+                                                            tabIndex={-1}
+                                                            key={n.id}
+                                                            selected={isSelected}
+                                                            onClick={event => handleClick(n)}
+                                                        >
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.id}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.message_name}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.message_text}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.message_type}
+                                                            </TableCell>
+                                                            <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+                                                                {n.enabled ? (
+                                                                    <Icon className="text-green text-16">check_circle</Icon>
+                                                                ) : (
+                                                                        <Icon className="text-red text-16">cancel</Icon>
+                                                                    )}
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    );
+                                                })}
+                                        </TableBody>
+                                    </Table>
+                                </FuseScrollbars>
+                                <MuiThemeProvider theme={PaginationStyle}>
+                                    <TablePagination
+                                        classes={{
+                                            root: 'overflow-hidden',
+                                            spacer: 'w-0 max-w-0',
+                                            actions: 'text-64',
+                                            select: 'text-12 mt-4',
+                                            selectIcon: 'mt-4',
+                                        }}
+                                        className="overflow-hidden"
+                                        component="div"
+                                        count={data.length}
+                                        style={{ fontSize: '12px' }}
+                                        rowsPerPage={rowsPerPage}
+                                        page={page}
+                                        onChangePage={handleChangePage}
+                                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                                        ActionsComponent={ContactsTablePaginationActions}
+                                    />
+                                </MuiThemeProvider>
+                                <FuseAnimate animation="transition.expandIn" delay={300}>
+                                    <Fab
+                                        color="primary"
+                                        aria-label="add"
+                                        size="medium"
+                                        className={classes.addButton}
+                                        onClick={handleClickOpen}
+                                    >
+                                        <Icon>person_add</Icon>
+                                    </Fab>
+                                </FuseAnimate>
+                               
+                            </div>
 
-
-
-
-
-
+                        </TabPanel>
+                   
+                   
+                   
                     </SwipeableViews>
-                    {/* <Tabs
-                        value={tabValue}
-                        onChange={handleChangeTab}
-                        indicatorColor="primary"
-                        textColor="primary"
-                        variant="scrollable"
-                        scrollButtons="off"
-                        className="w-full border-b-1 px-100 text-center h-48 "
-                        style={{ marginBottom: '8px' }}
-                    >
-                        <Tab
-                            style={{ marginTop: '0.2%' }}
-                            className="text-12 font-600 normal-case" label="All">
-                                </Tab>
-                        <Tab
-                            style={{ marginTop: '0.2%' }}
-                            className="text-12 font-600 normal-case" label="Text" />
-                        <Tab
-                            style={{ marginTop: '0.2%' }}
-                            className="text-12 font-600 normal-case" label="Image" />
-                        <Tab
-                            style={{ marginTop: '0.2%' }}
-                            className="text-12 font-600 normal-case" label="Video" />
-                        <Tab
-                            style={{ marginTop: '0.2%' }}
-                            className="text-12 font-600 normal-case" label="Documents" />
-                    </Tabs> */}
-
                     <Snackbar
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
                         open={snackbaropen}
@@ -1083,7 +1000,18 @@ function CannedReplies(props) {
                             {snackbarmessage}
                         </Alert>
                     </Snackbar>
-
+                    <FuseAnimate animation="transition.expandIn" delay={300}>
+                                    <Fab
+                                        color="primary"
+                                        aria-label="add"
+                                        size="medium"
+                                        className={classes.addButton}
+                                        onClick={handleClickOpen}
+                                    >
+                                        <Icon>person_add</Icon>
+                                    </Fab>
+                                </FuseAnimate>
+                    {open && <CannedDialog type={type} data={dialogData} isOpen={open} closeDialog={closeDialog} />}
                 </CardContent>
             </Card>
         </>

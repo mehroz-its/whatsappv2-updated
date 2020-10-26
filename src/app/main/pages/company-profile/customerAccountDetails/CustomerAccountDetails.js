@@ -79,7 +79,7 @@ function CustomerDetails(props) {
                             : tab === 'Contact' ? <ContactTable data={companyDetails} />
                                 : tab === 'Configration' ? <Config data={companyDetails}/>
                                     : tab === 'Agents' ? <AgentTable data={companyDetails} />
-                                        : tab === 'CannedReplies' ? <CannedReplies />
+                                        : tab === 'CannedReplies' ? <CannedReplies  data={companyDetails} />
                                         // : tab === 'CannedReplies' ? <CannedReplies />
                                             : null
                 }
