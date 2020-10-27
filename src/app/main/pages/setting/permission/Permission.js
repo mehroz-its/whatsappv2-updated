@@ -149,7 +149,7 @@ function Permissions(props) {
 			setOK("error")
 			setSnackBarOpen(true)
 		}
-		else if (snackmsg !==( "update" || "delete"||"create"|| "error")) {
+		else if (snackmsg && snackmsg !==( "update" || "delete"||"create"|| "error")) {
 			setSnackBarMessage(snackmsg)
 			setOK("error")
 			setSnackBarOpen(true)
