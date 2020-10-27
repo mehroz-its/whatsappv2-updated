@@ -65,25 +65,42 @@ const CampaignDialog = (props) => {
 	const handleDialogClose = () => {
 		props.closeDialog()
 		setopenDialog(false);
+		// props.getData();  /// zeeshan
 	};
 
 	const handleSubmit = () => {
 		let fileName
-		if (uploadedFilePath != '') {
+		if (uploadedFilePath != '' && uploadedFilePath != undefined && uploadedFilePath !== null) {
 			fileName = uploadedFilePath.split('https://upload.its.com.pk/')
 		} else {
 			fileName = ''
 		}
-		let params = {
-			message_name: name,
-			message_text: text,
-			message_params: attachment_params,
-			attachment_url: uploadedFilePath,
-			attachment_name: fileName[1],
-			message_type: canned_type,
-			enabled: enabled
-		};
-		if (type !== 'Update Canned Message') {
+		let params = {}
+		if (data.client_id) {
+			params = {
+				message_name: name,
+				message_text: text,
+				message_params: attachment_params,
+				attachment_url: uploadedFilePath,
+				attachment_name: fileName[1],
+				message_type: canned_type,
+				enabled: enabled,
+				client_id: data.client_id
+			};
+		}
+		else {
+			params = {
+				message_name: name,
+				message_text: text,
+				message_params: attachment_params,
+				attachment_url: uploadedFilePath,
+				attachment_name: fileName[1],
+				message_type: canned_type,
+				enabled: enabled,
+			};
+		}
+		// alert(type)
+		if (props.type !== 'Update Canned Message') {
 			CoreHttpHandler.request('canned_messages', 'create_message', params, (response) => {
 				props.closeDialog('create')
 				setopenDialog(false);
