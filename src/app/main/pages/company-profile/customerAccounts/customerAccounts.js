@@ -60,27 +60,30 @@ function CustomerAccounts(props) {
 	const [currentParams, setCurrentParams] = React.useState({ limit: 10, page: 0 });
 	const [isLoading, setLoading] = React.useState(true);
 	const [treeData, setTreeData] = React.useState([
-		{ title: 'Incoming Files' },
 		{
-			title: 'Encyclopedia',
-			type: 'text',
-			parameters: 'abc ',
+			title: 'Incoming Files',
 			children: [
 				{
-					title: 'Culture',
-					children: [{ title: 'Art' }, { title: 'Craft' }]
+					title: 'Culture'
 				},
-				{ title: 'Science' }
-			]
-		},
-		{
-			title: 'Retail',
-			children: [
-				{ title: 'Node 01' },
-				{ title: 'Node 02' },
-				{ title: 'Node 03', children: [{ title: 'Subnode 01' }] },
-				{ title: 'Node 04' },
-				{ title: 'Node 05' }
+				{
+					title: 'Encyclopedia',
+					type: 'text',
+					parameters: 'abc '
+				},
+				{
+					title: 'Retail',
+					children: [
+						{ title: 'Node 01' },
+						{ title: 'Node 02' },
+						{
+							title: 'Node 03',
+							children: [{ title: 'Subnode 01' }, { title: 'Subnode 01' }, { title: 'Subnode 01' }]
+						},
+						{ title: 'Node 04' },
+						{ title: 'Node 05' }
+					]
+				}
 			]
 		}
 	]);
@@ -539,6 +542,46 @@ function CustomerAccounts(props) {
 		// If the target node is not found, return the farthest traversed index
 		return { nextIndex: childIndex };
 	}
+	const createJson = () => {
+		console.log('treedata', treeData);
+		let createjs = [];
+		let createjsChild = [];
+		let defaultt = [];
+		treeData.map((data, i) => {
+			createjs.defaultmsg = [data.title];
+			// defaultt = data.title;
+			// createjs.push(defaultt);
+
+			if (data.children && data.children.length > 0) {
+				createjsChild = parseChildren(data.children);
+				console.log('createjsChild befor push', createjsChild);
+				createjs.push(createjsChild);
+			}
+		});
+		console.log('createjs : ', createjs);
+	};
+
+	function parseChildren(child) {
+		let result = [];
+		if (child && child.length) {
+			result = child.map((item, i) => {
+				if (item) {
+					if (item.children && item.children.length) {
+						item.children = parseChildren(item.children);
+						item.children = item.children.filter(el => el);
+						if (item.children && item.children.length) {
+							return item.children;
+							// return item.children.map(el => el.title);
+						}
+					} else {
+						return item.title;
+					}
+				}
+			});
+		}
+		return result.filter(el => el);
+	}
+
 	return (
 		<FusePageSimple
 			classes={{
@@ -683,6 +726,18 @@ function CustomerAccounts(props) {
 										}}
 									>
 										<span style={{ textTransform: 'capitalize', fontSize: '13px' }}>Add Tree</span>
+									</Button>
+									<Button
+										style={{ fontSize: '11px', backgroundColor: '#e73859', color: 'white' }}
+										variant="contained"
+										color="primary"
+										onClick={e => {
+											createJson();
+										}}
+									>
+										<span style={{ textTransform: 'capitalize', fontSize: '13px' }}>
+											create Json
+										</span>
 									</Button>
 								</Grid>
 							</Grid> */}
