@@ -59,7 +59,7 @@ const BlockDialog = (props) => {
 
 			fullWidth
 			maxWidth="xs">
-			<DialogTitle id="form-dialog-title">{props.type} </DialogTitle>
+			<DialogTitle id="form-dialog-title" style={{ backgroundColor: "#fc2254", width: "100%", color: "white", display: "flex", justifyContent: "center" }}>{props.type} </DialogTitle>
 			<DialogContent classes={{ root: 'p-24' }}>
 				<div className="flex">
 					<div className="min-w-48" style={{ marginTop: '-3px' }}>
