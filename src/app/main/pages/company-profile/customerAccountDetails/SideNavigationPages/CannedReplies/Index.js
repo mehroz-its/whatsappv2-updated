@@ -115,6 +115,7 @@ function CannedReplies(props) {
     const [enabled, setEnabled] = React.useState(false);
 
 
+
     const [tabValue, setTabValue] = useState(0);
     const [value, setValue] = React.useState(0);
     const theme = useTheme();
@@ -170,7 +171,7 @@ function CannedReplies(props) {
             setaudioType(tableData.filter(type => type.message_type === "audio"))
             setdocumentType(tableData.filter(type => type.message_type === "document"))
             setimageType(tableData.filter(type => type.message_type === "image"))
-           
+
         });
     })
     setTimeout(() => {
@@ -277,10 +278,32 @@ function CannedReplies(props) {
     };
 
 
-    const closeDialog = () => {
+    const closeDialog = (e) => {
+
+        if (e == "create") {
+            setSnackBarMessage("Created Successfully");
+            setOK("success");
+            setSnackBarOpen(true);
+
+        } else if (e == "update") {
+            setSnackBarMessage("Update Successfully");
+            setOK("success");
+            setSnackBarOpen(true);
+        } else if (e == "error") {
+            setSnackBarMessage("Error! Please Try Again Later");
+            setOK("error");
+            setSnackBarOpen(true);
+            setOpen(false);
+            return;
+        } else if (e == "No Change") {
+            setSnackBarMessage("You did not make any changes");
+            setOK("error");
+            setSnackBarOpen(true);
+            // setOpen(false);
+            return
+        }
         setOpen(false);
         getData();
-
     };
     const handleClickOpen = () => {
         // alert("Create")
@@ -478,7 +501,7 @@ function CannedReplies(props) {
                                         <Icon>person_add</Icon>
                                     </Fab>
                                 </FuseAnimate> */}
-                               
+
                             </div>
 
                         </TabPanel>
@@ -581,7 +604,7 @@ function CannedReplies(props) {
                                         <Icon>person_add</Icon>
                                     </Fab>
                                 </FuseAnimate> */}
-                               
+
                             </div>
 
                         </TabPanel>
@@ -673,8 +696,8 @@ function CannedReplies(props) {
                                         ActionsComponent={ContactsTablePaginationActions}
                                     />
                                 </MuiThemeProvider>
-                                
-                               
+
+
                             </div>
 
                         </TabPanel>
@@ -777,7 +800,7 @@ function CannedReplies(props) {
                                         <Icon>person_add</Icon>
                                     </Fab>
                                 </FuseAnimate>
-                               
+
                             </div>
 
                         </TabPanel>
@@ -880,7 +903,7 @@ function CannedReplies(props) {
                                         <Icon>person_add</Icon>
                                     </Fab>
                                 </FuseAnimate>
-                               
+
                             </div>
 
                         </TabPanel>
@@ -983,16 +1006,16 @@ function CannedReplies(props) {
                                         <Icon>person_add</Icon>
                                     </Fab>
                                 </FuseAnimate>
-                               
+
                             </div>
 
                         </TabPanel>
-                   
-                   
-                   
+
+
+
                     </SwipeableViews>
                     <Snackbar
-                        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                         open={snackbaropen}
                         autoHideDuration={3000}
                     >
@@ -1001,16 +1024,16 @@ function CannedReplies(props) {
                         </Alert>
                     </Snackbar>
                     <FuseAnimate animation="transition.expandIn" delay={300}>
-                                    <Fab
-                                        color="primary"
-                                        aria-label="add"
-                                        size="medium"
-                                        className={classes.addButton}
-                                        onClick={handleClickOpen}
-                                    >
-                                        <Icon>person_add</Icon>
-                                    </Fab>
-                                </FuseAnimate>
+                        <Fab
+                            color="primary"
+                            aria-label="add"
+                            size="medium"
+                            className={classes.addButton}
+                            onClick={handleClickOpen}
+                        >
+                            <Icon>person_add</Icon>
+                        </Fab>
+                    </FuseAnimate>
                     {open && <CannedDialog type={type} data={dialogData} isOpen={open} closeDialog={closeDialog} />}
                 </CardContent>
             </Card>

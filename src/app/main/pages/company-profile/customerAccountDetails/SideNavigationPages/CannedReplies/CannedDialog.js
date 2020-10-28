@@ -59,7 +59,7 @@ const CampaignDialog = (props) => {
 	const [open, setOpen] = React.useState(false);
 	const [description, setDescription] = React.useState('');
 	const [isLoading, setIsLoading] = React.useState(false);
-	const [uploadedFilePath, setUploadedFilePath] = React.useState(data.attachment_url);
+	const [uploadedFilePath, setUploadedFilePath] = React.useState(data.attachment_url);   ////  get from backEnd??
 	const [attachment_name, setAttachment_name] = React.useState(data.file_name)
 	const [attachment_params, setAttachment_params] = React.useState('')
 	const handleDialogClose = () => {
@@ -71,16 +71,16 @@ const CampaignDialog = (props) => {
 	const handleSubmit = () => {
 		let fileName
 		if (uploadedFilePath != '' && uploadedFilePath != undefined && uploadedFilePath !== null) {
-			fileName = uploadedFilePath.split('https://upload.its.com.pk/')
+			fileName = uploadedFilePath.split('https://upload.its.com.pk/')   ////?????
 		} else {
 			fileName = ''
 		}
 		let params = {}
-		if (data.client_id) {
+		if (data.client_id) {   /////   ????  get from backEnd
 			params = {
 				message_name: name,
 				message_text: text,
-				message_params: attachment_params,
+				message_params: attachment_params,  ///???
 				attachment_url: uploadedFilePath,
 				attachment_name: fileName[1],
 				message_type: canned_type,
@@ -154,7 +154,7 @@ const CampaignDialog = (props) => {
 		if (event.target.files.length > 0) {
 			const _data = new FormData();
 			let _name = event.target.files[0].name;
-			_name = _name.replace(/\s/g, "");
+			_name = _name.replace(/\s/g, "");      /////?????
 			_data.append(
 				"file",
 				event.target.files[0],
@@ -171,7 +171,7 @@ const CampaignDialog = (props) => {
 					setUploadedFilePath(response.data.data.link)
 					onInputChange({
 						target: {
-							name: 'msisdnUrl',
+							name: 'msisdnUrl',    /////????
 							value: response.data.data.link
 						}
 					})
@@ -264,6 +264,7 @@ const CampaignDialog = (props) => {
 							}
 						</div>
 						<div item xs={12} >
+								{/* ????? */}
 							<input accept={canned_type !== 'document' ? `${canned_type}/*` : "application/pdf, application/vnd.ms-excel"} style={{ paddingTop: '10px' }} id="contained-button-file" type="file" name="url" filename={uploadedFilePath} style={{ display: "none" }} onChange={onChangeHandler} />
 							<label htmlFor="contained-button-file">
 								<Button

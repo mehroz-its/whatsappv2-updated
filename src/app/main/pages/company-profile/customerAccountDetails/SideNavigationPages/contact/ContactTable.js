@@ -486,26 +486,26 @@ function ContactTable(props) {
                                                                                         {n.id}
                                                                                     </TableCell>
                                                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                                        {n.attributes[0].firstname}
+                                                                                        {n.attributes[0].firstname === "N/A" ? "-" : n.attributes[0].firstname}
                                                                                     </TableCell>
                                                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                                        {n.attributes[1].lastname}
+                                                                                        {n.attributes[1].lastname === "N/A" ? "-" : n.attributes[1].lastname}
                                                                                     </TableCell>
                                                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                                        {n.attributes[3].age}
+                                                                                        {n.attributes[3].age === "N/A" ? "-" : n.attributes[3].age}
                                                                                     </TableCell>
                                                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                                        {n.attributes[2].gender}
+                                                                                        {n.attributes[2].gender === "N/A" ? "-" : n.attributes[2].gender}
                                                                                     </TableCell>
                                                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                                        {n.number}
+                                                                                        {n.number === "N/A" ? "-" : n.number}
                                                                                     </TableCell>
                                                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                                        {n.attributes[4].email}
+                                                                                        {n.attributes[4].email === "N/A" ? "-" : n.attributes[4].email}
 
                                                                                     </TableCell>
                                                                                     {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                                        {n.dt === null ? 'N/A' : n.dt}
+                                                                                        {n.dt === null ? '-' : n.dt}
                                                                                     </TableCell>}
                                                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
                                                                                         {n.blocked === true ?
@@ -645,26 +645,26 @@ function ContactTable(props) {
                                                                                         {n.id}
                                                                                     </TableCell>
                                                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                                        {n.attributes[0].firstname}
+                                                                                        {n.attributes[0].firstname === "N/A" ? "-" : n.attributes[0].firstname}
                                                                                     </TableCell>
                                                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                                        {n.attributes[1].lastname}
+                                                                                        {n.attributes[1].lastname === "N/A" ? "-" : n.attributes[1].lastname}
                                                                                     </TableCell>
                                                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                                        {n.attributes[3].age}
+                                                                                        {n.attributes[3].age === "N/A" ? "-" : n.attributes[3].age}
                                                                                     </TableCell>
                                                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                                        {n.attributes[2].gender}
+                                                                                        {n.attributes[2].gender === "N/A" ? "-" : n.attributes[2].gender}
                                                                                     </TableCell>
                                                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                                        {n.number}
+                                                                                        {n.number === "N/A" ? "-" : n.number}
                                                                                     </TableCell>
                                                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                                        {n.attributes[4].email}
+                                                                                        {n.attributes[4].email === "N/A" ? "-" : n.attributes[4].email}
 
                                                                                     </TableCell>
                                                                                     {<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                                        {n.dt === null ? 'N/A' : n.dt}
+                                                                                        {n.dt === null ? '-' : n.dt}
                                                                                     </TableCell>}
                                                                                     <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
                                                                                         {n.blocked === true ?
