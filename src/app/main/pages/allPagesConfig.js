@@ -32,7 +32,6 @@ import Error404LoggedOutPageConfig from './errors/404-logged-out/Error404LoggedO
 
 
 let allPagesConfig = [
-	
 	CompanyProfileConfig,
 	ContactGroupConfig,
 	ChatHistoryConfig,

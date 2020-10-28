@@ -295,18 +295,11 @@ function CannedReplies(props) {
             setSnackBarOpen(true);
             setOpen(false);
             return;
-        } else if (e == "No Change") {
-            setSnackBarMessage("You did not make any changes");
-            setOK("error");
-            setSnackBarOpen(true);
-            // setOpen(false);
-            return
         }
         setOpen(false);
         getData();
     };
     const handleClickOpen = () => {
-        // alert("Create")
         setDialogData({
             id: 0,
             name: "",
