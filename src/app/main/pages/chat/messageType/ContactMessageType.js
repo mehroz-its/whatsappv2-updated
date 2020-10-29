@@ -61,7 +61,7 @@ const ContactMessageType = function (props) {
                         )
                     })
                 }
-                <p style={{ width: "100%", margin: '5px 0px', fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status) : null}</p>
+                <p style={{ width: "100%", margin: '5px 0px', fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm A')}{message.type === "outbound"  && !message.hideStatus ? MessageStateResolver.resolve(message.status) : null}</p>
 
             </CardContent>
         </Card>

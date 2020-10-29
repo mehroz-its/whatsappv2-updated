@@ -2,9 +2,11 @@ import FuseAnimate from '@fuse/core/FuseAnimate';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import TemplateMessageTable from './TemplateMessageTable';
-import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading'
+import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading';
+
 function CannedList(props) {
-	const {data,onDialogClose,isSearched,displaySnack }  = props
+	const {onDialogClose,isSearched,displaySnack,currentParams,totalItems,setPage,setLimit,isLoading,data}  = props
+	
 	const columns = React.useMemo(
 		() => [
 			{
@@ -48,37 +50,42 @@ function CannedList(props) {
 		],
 		[]
 	);
-
-	if (data.length === 0) {
-		if (isSearched !== '') {
-			return (
-				<div className="flex flex-1 items-center justify-center h-full">
-					<Typography color="textSecondary" variant="h5">
-					No Data Found!
-				</Typography>
-				</div>
-			)
-		} else {
-			return (
-				<div className="flex flex-1 items-center justify-center h-full">
-					<FuseLoading />
-				</div>
-			);
-		}
+	if(isLoading){
+		
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+		);
+	}else if (data.length == 0) {
+		return (
+			<div className="flex flex-1 items-center justify-center h-full">
+				<Typography color="textSecondary" variant="h5">
+					No Template Messages
+		</Typography>
+			</div>
+		)
 	}
-	return (
-		<FuseAnimate animation="transition.slideUpIn" delay={300}>
+	else{
+
+		return (
 			<TemplateMessageTable
 				columns={columns}
 				data={data}
 				onRowClick={(ev, row) => {
-					
+
 					console.log(row, 'rowrow')
 				}}
 				onClose={onDialogClose}
 				displaySnack={displaySnack}
-			/>
-		</FuseAnimate>
-	);
+				setPage={setPage}
+				setLimit={setLimit}
+				rowsPerPage={currentParams.limit}
+				currentPage={currentParams.page}
+				totalItems={totalItems}
+					
+				/>
+		);
+	}
 }
 export default CannedList;

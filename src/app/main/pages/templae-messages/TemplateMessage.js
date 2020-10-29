@@ -1,32 +1,88 @@
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import React, { useRef } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import CannedHeader from './TemplateHeader';
 import CannedList from './TemplateList';
 import CannedSideBar from './TemplateMessageSideBar';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
+import TemplateDialog from './TemplateDialog'
+import FuseAnimate from '@fuse/core/FuseAnimate';
+import Fab from '@material-ui/core/Fab';
+import Icon from '@material-ui/core/Icon';
 
 
-function ContactsApp() {
+const useStyles = makeStyles((theme) => ({
+	addButton: {
+		position: 'fixed',
+		bottom: 50,
+		right: 50,
+		zIndex: 99
+	},
+	formControl: {
+		margin: theme.spacing(1),
+		minWidth: 330,
+
+	},
+}))
+
+function TemplateMessage(props) {
+	const classes = useStyles(props);
 	const pageLayout = useRef(null);
 	const [open, setOpen] = React.useState(false);
-	const [data, setData] = React.useState([]);
-	const [data2, setData2] = React.useState(data);
+	
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [ok, setOK] = React.useState('')
 	const [val, setVal] = React.useState('')
+
 	const [cannedtype, setCannedType] = React.useState('all')
 
+	const [totalItems, setTotalItems] = React.useState(0)
+	const [currentParams, setCurrentParams] = React.useState({limit:5,page:0})
+	const [isLoading, setLoading] = React.useState(true)
+
+	const [dialogData, setDialogData] = React.useState({
+		enabled: true,
+		id: '',
+		username: '',
+		position: '',
+		email: '',
+		number: '',
+		roles: []
+	})
+
+	const [data, setData] = React.useState([]);
+	const [data2, setData2] = React.useState(data);
+	
+	React.useEffect(() => {
+		setLimit(currentParams.limit)
+	}, [cannedtype]);
+	
+
+	React.useEffect(() => {
+		getData()
+	  }, [currentParams]);
+	const setPage = (currentPage)=>{
+		setCurrentParams({limit:currentParams.limit,page:currentPage})
+	}
+	
+	const setLimit = (pageLimit)=>{
+		setCurrentParams({limit:pageLimit,page:0})
+	}
+
+	
+
 	const getData = ((loadData) => {
-		setData([])
-		setData2([])
+		// setData([])
+		setLoading(true)
+
 		loadData = () => {
 			return CoreHttpHandler.request('template', 'listing', {
-
-				limit: 10,
-				page: 0,
+				limit: currentParams.limit,
+				page: currentParams.page,
+				
 				columns: "*",
 				sortby: "DESC",
 				orderby: "id",
@@ -36,8 +92,12 @@ function ContactsApp() {
 		};
 		loadData().then((response) => {
 			const tableData = response.data.data.list.data
+			
 			setData(tableData)
 			setData2(tableData)
+			setTotalItems(response.data.data.list.totalItems)
+
+			setLoading(false)
 			setTimeout(() => {
 				setSnackBarMessage('')
 				setSnackBarOpen(false)
@@ -54,9 +114,7 @@ function ContactsApp() {
 
 
 	})
-	React.useEffect(() => {
-		getData()
-	}, [cannedtype]);
+
 	const valueReceived = (value) => {
 		if (value === "update") {
 			setSnackBarMessage("Updated Successfully")
@@ -78,7 +136,7 @@ function ContactsApp() {
 			setOK("success")
 			setSnackBarOpen(true)
 		}
-		else if (value !== ("update" || "delete" || "create" )) {
+		else if (value && value !== ("update" || "delete" || "create" )) {
 			setSnackBarMessage(value)
 			setOK("error")
 			setSnackBarOpen(true)
@@ -92,17 +150,39 @@ function ContactsApp() {
 
 	function search(val) {
 		setVal(val)
-		setData2(data.filter(n => n.message_name.toLowerCase().includes(val.toLowerCase())))
+		setData2(data.filter(n => n.template_name.toLowerCase().includes(val.toLowerCase())))
 	}
 	function closeDialog(val) {
 		setOpen(false);
 		getData()
 		valueReceived(val)
 	};
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
 	const handleCannedMessageType = (val) => {
 		setCannedType(val)
 	}
-
+	const getContent = ()=>{
+		return (
+			<React.Fragment>
+			<CannedList isLoading={isLoading} currentParams={currentParams} totalItems={totalItems} setPage={setPage} setLimit={setLimit} isSearched={val} data={data2} onDialogClose={closeDialog} ValueForSearch={val} displaySnack={valueReceived}  />
+			
+			<FuseAnimate animation="transition.expandIn" delay={300}>
+				<Fab
+					size="medium"
+					color="primary"
+					aria-label="add"
+					className={classes.addButton}
+					onClick={handleClickOpen}
+				>
+					<Icon>person_add</Icon>
+				</Fab>
+			</FuseAnimate>
+			{open ? <TemplateDialog data={dialogData} type="Add Template Message" snackbar={valueReceived} isOpen={open} closeDialog={closeDialog} />:null}
+			</React.Fragment>
+		)	
+	}
 	return (
 		<>
 			<Snackbar
@@ -123,7 +203,7 @@ function ContactsApp() {
 					wrapper: 'min-h-0'
 				}}
 				header={<CannedHeader pageLayout={pageLayout} SearchVal={search} />}
-				content={<CannedList isSearched={val} data={data2} onDialogClose={closeDialog} ValueForSearch={val} displaySnack={valueReceived} />}
+				content={getContent()}
 				leftSidebarContent={<CannedSideBar cannedType={handleCannedMessageType} />}
 				sidebarInner
 				ref={pageLayout}
@@ -132,4 +212,4 @@ function ContactsApp() {
 	);
 }
 
-export default ContactsApp;
+export default TemplateMessage;
