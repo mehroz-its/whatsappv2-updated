@@ -382,12 +382,12 @@ function CannedReplies(props) {
                         className="w-full border-b-1 px-100 text-center h-48 "
                         style={{ marginBottom: '8px' }}
                     >
-                        <Tab label="All Messages" {...a11yProps(0)} />
-                        <Tab label="text" {...a11yProps(1)} />
-                        <Tab label="image" {...a11yProps(2)} />
-                        <Tab label="Video" {...a11yProps(3)} />
-                        <Tab label="Audio" {...a11yProps(4)} />
-                        <Tab label="document" {...a11yProps(5)} />
+                        <Tab label="All Messages" style={{ fontSize: "11px" }} {...a11yProps(0)} />
+                        <Tab label="text" style={{ fontSize: "11px" }} {...a11yProps(1)} />
+                        <Tab label="image" style={{ fontSize: "11px" }} {...a11yProps(2)} />
+                        <Tab label="Video" style={{ fontSize: "11px" }} {...a11yProps(3)} />
+                        <Tab label="Audio" style={{ fontSize: "11px" }} {...a11yProps(4)} />
+                        <Tab label="document" style={{ fontSize: "11px" }} {...a11yProps(5)} />
                     </Tabs>
 
                     <SwipeableViews
@@ -445,7 +445,7 @@ function CannedReplies(props) {
                                                                 {n.message_name}
                                                             </TableCell>
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.message_text}
+                                                                {String(n.message_text).length > 20 ? String(n.message_text).substr(0, 20) + "..." : String(n.message_text)}
                                                             </TableCell>
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
                                                                 {n.message_type}
@@ -548,7 +548,7 @@ function CannedReplies(props) {
                                                                 {n.message_name}
                                                             </TableCell>
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
-                                                                {n.message_text}
+                                                                {String(n.message_text).length > 20 ? String(n.message_text).substr(0, 20) + "..." : String(n.message_text)}
                                                             </TableCell>
                                                             <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
                                                                 {n.message_type}

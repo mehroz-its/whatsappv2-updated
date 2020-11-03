@@ -17,6 +17,8 @@ import CoreHttpHandler from '../../../../../../../http/services/CoreHttpHandler'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AppBar from '@material-ui/core/AppBar';
 import { green, purple } from '@material-ui/core/colors';
+import CreateIcon from '@material-ui/icons/Create';
+import AttachmentIcon from '@material-ui/icons/Attachment';
 const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'absolute',
@@ -59,7 +61,7 @@ const CampaignDialog = (props) => {
 	const [open, setOpen] = React.useState(false);
 	const [description, setDescription] = React.useState('');
 	const [isLoading, setIsLoading] = React.useState(false);
-	const [uploadedFilePath, setUploadedFilePath] = React.useState(data.attachment_url);   
+	const [uploadedFilePath, setUploadedFilePath] = React.useState(data.attachment_url);
 	const [attachment_name, setAttachment_name] = React.useState(data.file_name)
 	const [attachment_params, setAttachment_params] = React.useState('')
 	const handleDialogClose = () => {
@@ -70,16 +72,16 @@ const CampaignDialog = (props) => {
 	const handleSubmit = () => {
 		let fileName
 		if (uploadedFilePath != '' && uploadedFilePath != undefined && uploadedFilePath !== null) {
-			fileName = uploadedFilePath.split('https://upload.its.com.pk/')   
+			fileName = uploadedFilePath.split('https://upload.its.com.pk/')
 		} else {
 			fileName = ''
 		}
 		let params = {}
-		if (data.client_id) {   
+		if (data.client_id) {
 			params = {
 				message_name: name,
 				message_text: text,
-				message_params: attachment_params,  
+				message_params: attachment_params,
 				attachment_url: uploadedFilePath,
 				attachment_name: fileName[1],
 				message_type: canned_type,
@@ -98,7 +100,7 @@ const CampaignDialog = (props) => {
 				enabled: enabled,
 			};
 		}
-		
+
 		if (props.type !== 'Update Canned Message') {
 			CoreHttpHandler.request('canned_messages', 'create_message', params, (response) => {
 				props.closeDialog('create')
@@ -153,7 +155,7 @@ const CampaignDialog = (props) => {
 		if (event.target.files.length > 0) {
 			const _data = new FormData();
 			let _name = event.target.files[0].name;
-			_name = _name.replace(/\s/g, "");      
+			_name = _name.replace(/\s/g, "");
 			_data.append(
 				"file",
 				event.target.files[0],
@@ -170,7 +172,7 @@ const CampaignDialog = (props) => {
 					setUploadedFilePath(response.data.data.link)
 					onInputChange({
 						target: {
-							name: 'msisdnUrl',    
+							name: 'msisdnUrl',
 							value: response.data.data.link
 						}
 					})
@@ -196,7 +198,8 @@ const CampaignDialog = (props) => {
 			<DialogContent classes={{ root: 'p-24' }} style={{ marginTop: '2%' }} >
 				<div className="flex">
 					<div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-						<Icon color="action">account_circle</Icon>
+						{/* <Icon color="action">account_circle</Icon> */}
+						<CreateIcon color="action" style={{ color: "#8b8b8b" }} />
 					</div>
 					<TextField
 						className="mb-24"
@@ -213,7 +216,8 @@ const CampaignDialog = (props) => {
 				</div>
 				<div className="flex" style={{ marginBottom: 20 }}>
 					<div className="min-w-48 pt-20" >
-						<Icon color="action">account_circle</Icon>
+						{/* <Icon color="action">account_circle</Icon> */}
+						<AttachmentIcon color="action" style={{ color: "#8b8b8b", marginTop: "10px" }} />
 					</div>
 					<FormControl className={classes.formControl}>
 						<InputLabel id="demo-simple-select-label" style={{ marginLeft: 10 }}>Type</InputLabel>
@@ -237,7 +241,8 @@ const CampaignDialog = (props) => {
 				</div>
 				{canned_type === 'text' ? (<div className="flex">
 					<div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-						<Icon color="action">account_circle</Icon>
+						{/* <Icon color="action">account_circle</Icon> */}
+						<CreateIcon color="action" style={{ color: "#8b8b8b" }} />
 					</div>
 					<TextField
 						className="mb-24"
@@ -249,14 +254,20 @@ const CampaignDialog = (props) => {
 						required
 						fullWidth
 						value={text}
+						multiline
 						onChange={onInputChange}
 						size="small"
+						inputProps={{
+							maxLength: 300,
+							disableUnderline: true
+						}}
+						helperText="You can't add more than 300 characters."
 					/>
 				</div>) : canned_type !== 'text' ? (
 					<div container >
 						<div className="flex" >
 							<div className="min-w-48 pt-20" style={{ marginTop: '10px' }}>
-								<Icon color="action">attach_file</Icon>
+								<Icon color="action" style={{ color: "#8b8b8b" }}>attach_file</Icon>
 							</div>
 							{isLoading === true ? <CircularProgress color="secondary" style={{ marginLeft: '40%' }} />
 								: <TextField size="small" className="mt-20 mb-20" id="outlined-basic-email" name={"url"} label="Url" variant="outlined" fullWidth disabled={true} onChange={onInputChange} value={uploadedFilePath} />
