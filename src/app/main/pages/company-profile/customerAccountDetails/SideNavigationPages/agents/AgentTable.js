@@ -22,7 +22,7 @@ import AgentDialog from './AgentDialog';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Fab from '@material-ui/core/Fab';
 import Icon from '@material-ui/core/Icon';
-
+import AgentTablePaginationActions from "./AgentTablePaginationActions"
 const useStyles = makeStyles(theme => ({
 	root: {
 		maxWidth: '100%',
@@ -497,11 +497,17 @@ function AgentTable(props) {
 								</Fab>
 							</FuseAnimate>
 							<TablePagination
+								colSpan={5}
+								SelectProps={{
+									inputProps: { 'aria-label': 'rows per page' },
+									native: false
+								}}
 								classes={{
 									root: 'overflow-hidden',
 									spacer: 'w-0 max-w-0',
 									actions: 'text-64',
-									select: 'text-12'
+									select: 'text-12 mt-4',
+									selectIcon: 'mt-4',
 								}}
 								className="overflow-hidden"
 								component="div"
@@ -512,6 +518,7 @@ function AgentTable(props) {
 								page={currentParams.page}
 								onChangePage={handleChangePage}
 								onChangeRowsPerPage={handleChangeRowsPerPage}
+								ActionsComponent={AgentTablePaginationActions}
 							/>
 							{open && (
 								<AgentDialog

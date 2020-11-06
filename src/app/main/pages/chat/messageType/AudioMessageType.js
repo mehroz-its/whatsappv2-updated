@@ -184,8 +184,8 @@ import React from 'react';
                             />
                     {
                     message.type === 'inbound' ?
-                        <p id="attachmentDate" style={{ width: "100%", paddingLeft:'12px',marginRight: '-19px',color:'black',margin: '-12px',marginTop:'-18px',fontSize: '10px', }}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status,message.mfms) : null}</p> :
-                        <p id="attachmentDate" style={{ paddingRight:'0px',color:'black',paddingBottom:'2px', margin: '-18px',display: 'flex', justifyContent: 'flex-end', width: "100%", fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status,message.mfms) : null}</p>
+                        <p id="attachmentDate" style={{ width: "100%", paddingLeft:'12px',marginRight: '-19px',color:'black',margin: '-12px',marginTop:'-18px',fontSize: '10px', }}>{moment(message.dt).format('MMM Do YY, h:mm A')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status,message.mfms) : null}</p> :
+                        <p id="attachmentDate" style={{ paddingRight:'0px',color:'black',paddingBottom:'2px', margin: '-18px',display: 'flex', justifyContent: 'flex-end', width: "100%", fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm A')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status,message.mfms) : null}</p>
                     } 
                     </div>
 

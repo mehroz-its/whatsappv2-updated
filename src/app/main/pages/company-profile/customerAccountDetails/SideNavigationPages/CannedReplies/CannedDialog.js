@@ -17,6 +17,8 @@ import CoreHttpHandler from '../../../../../../../http/services/CoreHttpHandler'
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import AppBar from '@material-ui/core/AppBar';
 import { green, purple } from '@material-ui/core/colors';
+import CreateIcon from '@material-ui/icons/Create';
+import AttachmentIcon from '@material-ui/icons/Attachment';
 const useStyles = makeStyles((theme) => ({
 	addButton: {
 		position: 'absolute',
@@ -65,7 +67,6 @@ const CampaignDialog = (props) => {
 	const handleDialogClose = () => {
 		props.closeDialog()
 		setopenDialog(false);
-		// props.getData();  /// zeeshan
 	};
 
 	const handleSubmit = () => {
@@ -99,7 +100,7 @@ const CampaignDialog = (props) => {
 				enabled: enabled,
 			};
 		}
-		// alert(type)
+
 		if (props.type !== 'Update Canned Message') {
 			CoreHttpHandler.request('canned_messages', 'create_message', params, (response) => {
 				props.closeDialog('create')
@@ -197,7 +198,8 @@ const CampaignDialog = (props) => {
 			<DialogContent classes={{ root: 'p-24' }} style={{ marginTop: '2%' }} >
 				<div className="flex">
 					<div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-						<Icon color="action">account_circle</Icon>
+						{/* <Icon color="action">account_circle</Icon> */}
+						<CreateIcon color="action" style={{ color: "#8b8b8b" }} />
 					</div>
 					<TextField
 						className="mb-24"
@@ -214,7 +216,8 @@ const CampaignDialog = (props) => {
 				</div>
 				<div className="flex" style={{ marginBottom: 20 }}>
 					<div className="min-w-48 pt-20" >
-						<Icon color="action">account_circle</Icon>
+						{/* <Icon color="action">account_circle</Icon> */}
+						<AttachmentIcon color="action" style={{ color: "#8b8b8b", marginTop: "10px" }} />
 					</div>
 					<FormControl className={classes.formControl}>
 						<InputLabel id="demo-simple-select-label" style={{ marginLeft: 10 }}>Type</InputLabel>
@@ -238,7 +241,8 @@ const CampaignDialog = (props) => {
 				</div>
 				{canned_type === 'text' ? (<div className="flex">
 					<div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-						<Icon color="action">account_circle</Icon>
+						{/* <Icon color="action">account_circle</Icon> */}
+						<CreateIcon color="action" style={{ color: "#8b8b8b" }} />
 					</div>
 					<TextField
 						className="mb-24"
@@ -250,14 +254,20 @@ const CampaignDialog = (props) => {
 						required
 						fullWidth
 						value={text}
+						multiline
 						onChange={onInputChange}
 						size="small"
+						inputProps={{
+							maxLength: 300,
+							disableUnderline: true
+						}}
+						helperText="You can't add more than 300 characters."
 					/>
 				</div>) : canned_type !== 'text' ? (
 					<div container >
 						<div className="flex" >
 							<div className="min-w-48 pt-20" style={{ marginTop: '10px' }}>
-								<Icon color="action">attach_file</Icon>
+								<Icon color="action" style={{ color: "#8b8b8b" }}>attach_file</Icon>
 							</div>
 							{isLoading === true ? <CircularProgress color="secondary" style={{ marginLeft: '40%' }} />
 								: <TextField size="small" className="mt-20 mb-20" id="outlined-basic-email" name={"url"} label="Url" variant="outlined" fullWidth disabled={true} onChange={onInputChange} value={uploadedFilePath} />

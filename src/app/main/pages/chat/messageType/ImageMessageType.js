@@ -44,7 +44,7 @@ const ImageMessageType = function (props) {
                     style={{ width: '100%', objectFit: 'cover' }}
                 />
                 {imageCaption !== '' ?   <p style={{ width: "100%", margin: '10px',fontWeight:'bold' }}>{imageCaption}</p> : null}
-                <p id="attachmentDate" style={{width: "97%",paddingBottom:'10px',paddingLeft:'10px',fontSize:'10px'}}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status,message.mfms) : null}</p>
+                <p id="attachmentDate" style={{width: "97%",paddingBottom:'10px',paddingLeft:'10px',fontSize:'10px'}}>{moment(message.dt).format('MMM Do YY, h:mm A')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status,message.mfms) : null}</p>
 
             </Card>
             {isOpen && (

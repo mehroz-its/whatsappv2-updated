@@ -51,14 +51,14 @@ const DeleteDialog = (props) => {
 
 			fullWidth
 			maxWidth="xs">
-			<DialogTitle id="form-dialog-title">{props.type} </DialogTitle>
+			<DialogTitle id="form-dialog-title" style={{ backgroundColor: "#fc2254", width: "100%", color: "white", display: "flex", justifyContent: "center" }}>{props.type} </DialogTitle>
 			<DialogContent classes={{ root: 'p-24' }}>
 				<div className="flex">
 					<div className="min-w-48" style={{ marginTop: '-3px' }}>
 						{/* <Icon color="action">block</Icon> */}
 						<DeleteIcon color="action" style={{ color: "#8b8b8b" }} />
 					</div>
-					<h3>{`Are you sure you want to delete?`}a</h3>
+					<h3>{`Are you sure you want to delete?`}</h3>
 				</div>
 			</DialogContent>
 			<DialogActions>
@@ -66,7 +66,7 @@ const DeleteDialog = (props) => {
 					Cancel
              </Button>
 				<Button onClick={handleSubmit} style={{ backgroundColor: "#4caf50", color: "white" }} variant="contained">
-					Confirm  
+					Confirm
          </Button>
 			</DialogActions>
 		</Dialog>

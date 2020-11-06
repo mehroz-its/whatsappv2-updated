@@ -26,8 +26,8 @@ module.exports = [
                 exact: true
 
             },
-           
-            
+
+
 
             {
                 id: 'Chat',
@@ -45,19 +45,19 @@ module.exports = [
                         url: '/apps/chat',
                         exact: true
 
-                        },
-                        {
-                            id: 'History',
-                            title: 'History',
-                            translate: 'History',
-                            type: 'item',
-                            url: '/apps/history',
-                            exact: true
+                    },
+                    {
+                        id: 'History',
+                        title: 'History',
+                        translate: 'History',
+                        type: 'item',
+                        url: '/apps/history',
+                        exact: true
 
                     },
                 ]
             },
-          
+
             {
                 id: 'Template',
                 title: 'Template',
@@ -90,7 +90,7 @@ module.exports = [
 
                 ]
             },
-          
+
             {
                 id: 'Contact Book',
                 title: 'Contact Book',
@@ -130,51 +130,53 @@ module.exports = [
                     },
 
 
-                    ]
-                },
-                {
-                    id: 'Settings',
-                    title: 'Settings',
-                    translate: 'Settings',
-                    type: 'collapse',
-                    icon: 'settings',
-                    children: [
-                        {
-                            id: 'Canned Replies',
-                            title: 'Canned Replies',
-                            type: 'item',
-                            url: '/apps/canned-messages',
-                            exact: true,
-                        },
-                        {
-                            id: 'Roles',
-                            title: 'Roles',
-                            type: 'item',
-                            url: '/apps/roles',
-                            exact: true
-                        },
-                        {
-                            id: 'Permissions',
-                            title: 'Permissions',
-                            type: 'item',
-                            url: '/apps/permissions',
-                            exact: true
-                        },
-                        {
-                            id: 'Users',
-                            title: 'Users',
-                            type: 'item',
-                            url: '/apps/users',
-                            exact: true
-                        },
+                ]
+            },
+            {
+                id: 'Settings',
+                title: 'Settings',
+                translate: 'Settings',
+                type: 'collapse',
+                icon: 'settings',
+                children: [
+                    {
+                        id: 'Canned Replies',
+                        title: 'Canned Replies',
+                        type: 'item',
+                        url: '/apps/canned-messages',
+                        exact: true,
+                    },
+                    {
+                        id: 'Roles',
+                        title: 'Roles',
+                        type: 'item',
+                        url: '/apps/roles',
+                        exact: true
+                    },
+                    {
+                        id: 'Permissions',
+                        title: 'Permissions',
+                        type: 'item',
+                        url: '/apps/permissions',
+                        exact: true
+                    },
+                    {
+                        id: 'Users',
+                        title: 'Users',
+                        type: 'item',
+                        url: '/apps/users',
+                        exact: true
+                    },
 
+                    
 
+ 
 
                 ]
             },
-           
-            
-           
+
+
+
         ]
     },
 ]

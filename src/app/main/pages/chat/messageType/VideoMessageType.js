@@ -42,7 +42,7 @@ const VideoMessageType = function (props) {
                     </div>
                     {message.type === 'inbound' ?
                         <p id="attachmentDate" style={{ width: "100%", margin: '10px', fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status,message.mfms) : null}</p> :
-                        <p id="attachmentDate" style={{ paddingRight:'28px' ,display: 'flex', justifyContent: 'flex-end', width: "100%", margin: '10px', fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm a')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status,message.mfms) : null}</p>
+                        <p id="attachmentDate" style={{ paddingRight:'28px' ,display: 'flex', justifyContent: 'flex-end', width: "100%", margin: '10px', fontSize: '10px' }}>{moment(message.dt).format('MMM Do YY, h:mm A')}{message.type === "outbound" ? MessageStateResolver.resolve(message.status,message.mfms) : null}</p>
                     }
 
                 </div>
