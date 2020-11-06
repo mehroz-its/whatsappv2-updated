@@ -878,7 +878,7 @@ function Chat(props) {
 													<div style={{ marginTop: '-5px', paddingBottom: '10px', marginLeft: '-3px', fontWeight: '300', fontSize: '12px' }}> {`${item.sender_name.charAt(0).toUpperCase()}${item.sender_name.substring(1)}:`}  </div> : null}
 												{item.message_body}
 												<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')}
-												{item.type === "outbound"  && !item.hideStatus ? MessageStateResolver.resolve(item.status) : null}
+												{item.type === "outbound" ? MessageStateResolver.resolve(item.status,item.mfms) : null}
 												</Typography>
 											</div>
 											: null}	{item.message_type === "audio" || item.message_type === "voice" ? <AudioMessageType index={index} classes={classes} message={item} /> : null}

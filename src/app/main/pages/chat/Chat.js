@@ -966,7 +966,7 @@ function Chat(props) {
 														max={1000}
 														readMoreText="Click Here to Read More" />
 													<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} 
-													{item.type === "outbound" && !item.hideStatus ? MessageStateResolver.resolve(item.status) : null}
+													{item.type === "outbound" ? MessageStateResolver.resolve(item.status,item.mfms) : null}
 													</Typography>
 												</div>
 											</React.Fragment>
@@ -975,7 +975,7 @@ function Chat(props) {
 												<div className="leading-tight whitespace-pre-wrap" style={{ fontSize: '12px', textAlign: 'justify', wordBreak: 'break-all' }}>
 													{item.message_body}
 													<Typography className="time w-full text-10" >{moment(item.dt).format('MMM Do YY, h:mm A')} 
-													{item.type === "outbound" && !item.hideStatus ? MessageStateResolver.resolve(item.status) : null}
+													{item.type === "outbound" ? MessageStateResolver.resolve(item.status,item.mfms) : null}
 													</Typography>
 												</div>
 											:
