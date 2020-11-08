@@ -27,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 const TemplateDialog = (props) => {
-	const classes = useStyles(props);
 	const { isOpen, data } = props
 	const [openDialog, setopenDialog] = React.useState(isOpen);
 	const [age, setAge] = React.useState('');

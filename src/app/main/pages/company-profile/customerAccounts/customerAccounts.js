@@ -64,25 +64,18 @@ function CustomerAccounts(props) {
 			title: 'Incoming Files',
 			children: [
 				{
-					title: 'Culture'
-				},
-				{
-					title: 'Encyclopedia',
-					type: 'text',
-					parameters: 'abc '
-				},
-				{
-					title: 'Retail',
+					title: 'Culture',
 					children: [
-						{ title: 'Node 01' },
-						{ title: 'Node 02' },
 						{
-							title: 'Node 03',
-							children: [{ title: 'Subnode 01' }, { title: 'Subnode 01' }, { title: 'Subnode 01' }]
-						},
-						{ title: 'Node 04' },
-						{ title: 'Node 05' }
+							title: 'Culture'
+						}
 					]
+				},
+				{
+					title: 'Encyclopedia'
+				},
+				{
+					title: 'Retail'
 				}
 			]
 		}
@@ -581,7 +574,12 @@ function CustomerAccounts(props) {
 		}
 		return result.filter(el => el);
 	}
-
+	const logTree = treeDatad => {
+		console.log('treeData :  ', treeDatad);
+		setTreeData(treeDatad);
+		let array = treeData.map(obj => Object.values(obj));
+		console.log('array', JSON.stringify(array));
+	};
 	return (
 		<FusePageSimple
 			classes={{
@@ -688,8 +686,9 @@ function CustomerAccounts(props) {
 								<Grid item md={12} sm={12} xs={12}>
 									<div style={{ height: 600 }}>
 										<SortableTree
+											maxDepth={3}
 											treeData={treeData}
-											scaffoldBlockPxWidth={16}
+											scaffoldBlockPxWidth={250}
 											generateNodeProps={rowInfo => ({
 												buttons: [
 													<div>
@@ -711,8 +710,7 @@ function CustomerAccounts(props) {
 												}
 											})}
 											onChange={treeData => {
-												console.log('treeData :  ', treeData);
-												setTreeData(treeData);
+												logTree(treeData);
 											}}
 											// generateNodeProps={add()}
 										/>
@@ -740,7 +738,8 @@ function CustomerAccounts(props) {
 										</span>
 									</Button>
 								</Grid>
-							</Grid> */}
+							</Grid>
+					 */}
 						</FuseAnimateGroup>
 					</div>
 				</>

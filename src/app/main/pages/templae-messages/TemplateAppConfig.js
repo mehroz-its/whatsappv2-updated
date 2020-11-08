@@ -9,7 +9,7 @@ const TemplateAppConfig = {
 		{
 			path: '/apps/whatsapp-template',
 			component: React.lazy(() => import('./TemplateMessage'))
-	}
+		}
 	]
 };
 

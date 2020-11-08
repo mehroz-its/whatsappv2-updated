@@ -8,10 +8,12 @@ const RuleListInDialog = function (props) {
     const { rules, checkedRules, classes, onInputChange } = props;
     return (
         <List dense className={classes.root}>
-            {rules.map(value => {
+        {rules?
+        
+            rules.map(value => {
                 const labelId = `checkbox-list-secondary-label-${value}`;
                 let lbl = value;
-                if (value.indexOf('_') !== -1) lbl = value.split('_').join(' ');
+                lbl = value.replaceAll('_'," ")
 
                 return (
                     <ListItem key={value} button>
@@ -28,7 +30,9 @@ const RuleListInDialog = function (props) {
                         </ListItemSecondaryAction>
                     </ListItem>
                 );
-            })}
+            }):null
+        
+        }
         </List>
     )
 };
