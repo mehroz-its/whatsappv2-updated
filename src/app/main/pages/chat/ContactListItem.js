@@ -61,7 +61,8 @@ function ContactListItem(props) {
 	// 	}
 
 	// }
-
+	const {selectedRecipient,contact} = props;
+	const showCount = selectedRecipient&&selectedRecipient.id==contact.id?false:true
 	return (
 		<ListItem
 			button
@@ -86,10 +87,10 @@ function ContactListItem(props) {
 				/>
 				{/* <div>{props.contact.agent_name} </div> */}
 			</FuseAnimate>
-
-			{props.contact.message_count && (
+			
+			
 				<div className="flex flex-col justify-center items-end">
-					{props.contact.message_count > 0 && (
+					{showCount&&props.contact.message_count > 0 && (
 						<div
 							className={clsx(
 								classes.unreadBadge,
@@ -105,7 +106,7 @@ function ContactListItem(props) {
 						</Typography>
 					)}
 				</div>
-			)}
+			
 		</ListItem>
 	);
 }

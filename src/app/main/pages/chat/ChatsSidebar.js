@@ -97,7 +97,7 @@ function a11yProps(index) {
 	};
 }
 function ChatsSidebar(props) {
-	const { numbers, lastMessage } = props
+	const { numbers, lastMessage, selectedRecipient } = props
 	const dispatch = useDispatch();
 	const [searchText, setSearchText] = useState('');
 	const [statusMenuEl, setStatusMenuEl] = useState(false);
@@ -183,6 +183,7 @@ function ChatsSidebar(props) {
 										)}
 										{filtered.map(contactt => (
 											<ContactListItem
+												selectedRecipient={selectedRecipient}
 												Channel={selectValue}
 												key={contactt.id}
 												contact={contactt}

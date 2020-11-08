@@ -33,6 +33,7 @@ import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import copy from 'copy-to-clipboard';
+import WebSocket from "../../../socket/WebSocket"
 
 const drawerWidth = 320;
 const headerHeight = 100;
@@ -190,56 +191,54 @@ function ChatApp(props) {
 	const [lastMessageTimestamp, setlastMessageTimestamp] = React.useState(null);
 	const [latestMessageSender, setlatestMessageSender] = React.useState(null);
 	const [numbers, setnumbers] = React.useState([]);
-	const [dummy, setDummy] = React.useState([]);
+	const [dummy, setDummy] = React.useState(null);
 	const [firstLoad, setFirstLoad] = React.useState(true);
 	const [numbersLength, setNumbersLength] = React.useState(0);
 	const [numbersdum, setnumbersdum] = React.useState([]);
 	const [lastmessage, setlastmessage] = React.useState([]);
 	const [messages, setmessages] = React.useState([]);
+	const [message, setmessage] = React.useState(null);
 	const [NewMessages, setNewMessages] = React.useState([]);
 	const [showLatestMessage, setshowLatestMessage] = React.useState(false);
 	const [userDrawer, setuserDrawer] = React.useState(false);
 	const [selectedRecipient, setselectedRecipient] = React.useState(null);
-	const [int_CustomerList, setint_CustomerList] = React.useState(null);
-	const [int_MessageLists, setint_MessageLists] = React.useState(null);
+
 	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
 	const selectedRecipientt = (e) => {
-		clearInterval(int_MessageLists);
+
+		let _numbers = numbers.map(el=>{
+			if(el.id==e.id){
+				el.message_count = 0
+			}
+			return el
+		})
+		setnumbers(_numbers)
+
+
 		setselectedRecipient(e)
+		readMessage()
 		setmobileChatsSidebarOpen(false)
 		getConversation(e);
-		setint_MessageLists(setInterval(() => {
-			getConversation(e);
-		}, 2000));
 	}
 
 	
-	React.useEffect(()=>{
-		
-		if(JSON.stringify(dummy)!==JSON.stringify(numbers)){
-			if(firstLoad){
-				setFirstLoad(false)
-			}
-			else if(dummy.length>numbers.length){
-				EventEmitter.dispatch('Message', true)
-			}	
-			setnumbers(dummy)
-		}
-
-	},[dummy])
 
 	const getNumbers = () => {
 		CoreHttpHandler.request('conversations', 'numbers', {}, (response) => {
 			const newData = response.data.data.customers;
 
-			setDummy(newData)
+			setnumbers(newData)
 
 		}, (response) => {
 		});
 	}
+
+	
+	const socket = WebSocket.getSocket()
+
 	const getConversation = (e) => {
 		let params = {
 			key: ':number',
@@ -254,9 +253,7 @@ function ChatApp(props) {
 				abc = response.data.data.chat
 				setshowLatestMessage(true)
 			}
-			CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: e.number }, (response) => {
-			}, (response) => {
-			})
+			
 		}, (response) => {
 		});
 	}
@@ -346,6 +343,13 @@ function ChatApp(props) {
 			limit: 0
 		}, null, null, true);
 	};
+	const conversationUpdate = (text) =>{
+		if(selectedRecipient){
+			let _numbers = [...numbers.filter(el=>selectedRecipient.id==el.id),...numbers.filter(el=>selectedRecipient.id!=el.id)];
+			setnumbers(_numbers)
+		}
+
+	}
 	const copyContent = () => {
 		copy(selectedRecipient.number);
 		setSnackBarMessage("Copied Successfully")
@@ -430,42 +434,82 @@ function ChatApp(props) {
 	};
 	useEffect(() => {
 		EventEmitter.subscribe('Online', (event) => checkOnline(event))
-		getNumbers()
+		// getNumbers()
 		return () => {
-			clearInterval(int_MessageLists);
+
 		}
 	}, [selectedRecipient]);
-
-	/////////////
+	
 	useEffect(() => {
-		return () => {
-			
-			if(int_CustomerList){
-				clearInterval(int_CustomerList)
-			}
 
-			if(int_MessageLists){
-				clearInterval(int_MessageLists)
-			}
+		getNumbers();
+
+		socket.on("newConversation",(data)=>{	
+			setDummy(data)
+		})
+		socket.on("newConversationMessage",data=>{
+			setmessage(data)
+		})
+		
+		return () => {
+			socket.removeListener("newConversation")
+			socket.removeListener("newConversationMessage")
 		}
 	}, [])
-		
+
+	
+	React.useEffect(()=>{
+
+		if(dummy){
+
+			let _numbers =[dummy,...numbers.filter(el=>el.id!=dummy.id)];
+			if(selectedRecipient){
+				_numbers = _numbers.map(number=>{
+					if(selectedRecipient.id==number.id){
+						number.message_count = 0
+					}
+					return number
+				})
+			}
+
+			setnumbers(_numbers)
+		}
+
+	},[dummy])
+
+	React.useEffect(()=>{
+		if(message&&message.length&&selectedRecipient&&selectedRecipient.id){
+			const _message = message[0];
+			if(selectedRecipient.id==_message.receiver_id){
+				let _messages =[...messages,...message];
+				setmessages(_messages)
+				if(_message.type=="inbound"){
+					readMessage()
+				}
+			}
+		}
+	},[message])
+	const readMessage = () =>{
+		if(selectedRecipient){
+
+			CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: selectedRecipient.number }, (response) => {
+			}, (response) => {
+				
+			})
+		}
+	}
 	const checkOnline = (online) => {
 		if (online === false) {
 			setselectedRecipient(null)
 			setmessages([])
-			clearInterval(int_MessageLists);
 		}
 		else {
-			clearInterval(int_MessageLists);
-			getNumbers();
+			readMessage()
 		}
-
 	}
 	const clearData = () => {
 		setselectedRecipient(null)
 		setmessages([])
-		clearInterval(this.int_MessageLists);
 	}
 	function handleMoreMenuClick(event) {
 		setMoreMenuEl(event.currentTarget);
@@ -676,16 +720,23 @@ function ChatApp(props) {
 		});
 	}
 	const endConversation = () => {
+
+		// 
+
+
 		CoreHttpHandler.request('conversations', 'end', { key: ':number', value: selectedRecipient.number }, (response) => {
+
+
+			let _numbers =numbers.filter(el=>el.id!=selectedRecipient.id);
+
+			setnumbers(_numbers)
 			setselectedRecipient(null)
 			setmessages([])
-			clearInterval(this.int_MessageLists);
 		}, (error) => {
 		});
 	}
-	if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
-		getNumbers();
-	}, 2000));
+	
+		
 	let userOnline = JSON.parse(localStorage.getItem('online'))
 	return (
 		<>
@@ -714,7 +765,7 @@ function ChatApp(props) {
 											paper: classes.drawerPaper
 										}}
 									>
-										<ChatsSidebar lastMessage={lastmessage} numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
+										<ChatsSidebar lastMessage={lastmessage} numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} selectedRecipient={selectedRecipient} />
 									</Drawer>
 								</Hidden> : null
 						}
@@ -740,7 +791,7 @@ function ChatApp(props) {
 										}
 									}}
 								>
-									<ChatsSidebar lastMessage={lastmessage} numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
+									<ChatsSidebar   selectedRecipient={selectedRecipient} lastMessage={lastmessage} numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
 								</Drawer>
 							</Hidden> : null
 						}
@@ -837,7 +888,7 @@ function ChatApp(props) {
 												</Toolbar>
 											</AppBar>
 											<div className={classes.content}>
-												<Chat className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} clearBlock={clearData} endConversation={endConversation} />
+												<Chat conversationUpdate={conversationUpdate} className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} clearBlock={clearData} endConversation={endConversation} />
 											</div>
 										</>
 									)}
