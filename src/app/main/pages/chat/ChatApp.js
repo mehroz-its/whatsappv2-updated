@@ -467,16 +467,17 @@ function ChatApp(props) {
 	React.useEffect(()=>{
 
 		if(messageStatus&&messageStatus.messageId&&messageStatus.stateId){
-
-			let _message = messages.map(message=>{
-				if(message.outbound_id==messageStatus.messageId){
-					message.status=messageStatus.stateId
+			let _messages  = messages.map(el=>el)
+		
+			for(let i=_messages.length-1;i>=0;i--){
+				if(_messages[i]&&_messages[i].outbound_id==messageStatus.messageId){
+					_messages[i].status=messageStatus.stateId
+					break;
+					
 				}
+			}
 
-				return message
-			})
-
-			setmessages(_message)
+			setmessages(_messages)
 		}
 
 	},[messageStatus])
