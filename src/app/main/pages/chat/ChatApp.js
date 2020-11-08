@@ -373,6 +373,8 @@ function ChatApp(props) {
 	const [blockReason, setblockReason] = React.useState('');
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
+	const [messageStatus, setMessageStatus] = React.useState(null)
+
 	const [ok, setOK] = React.useState('')
 	const [customerProfileData, setcustomerProfileData] = React.useState({
 		id: 0,
@@ -450,14 +452,34 @@ function ChatApp(props) {
 		socket.on("newConversationMessage",data=>{
 			setmessage(data)
 		})
+		socket.on("updateMessageStatus",data=>{
+			setMessageStatus(data)
+		})
 		
 		return () => {
 			socket.removeListener("newConversation")
 			socket.removeListener("newConversationMessage")
+			socket.removeListener("updateMessageStatus")
 		}
 	}, [])
 
 	
+	React.useEffect(()=>{
+
+		if(messageStatus&&messageStatus.messageId&&messageStatus.stateId){
+
+			let _message = messages.map(message=>{
+				if(message.outbound_id==messageStatus.messageId){
+					message.status=messageStatus.stateId
+				}
+
+				return message
+			})
+
+			setmessages(_message)
+		}
+
+	},[messageStatus])
 	React.useEffect(()=>{
 
 		if(dummy){
@@ -476,7 +498,7 @@ function ChatApp(props) {
 		}
 
 	},[dummy])
-
+	
 	React.useEffect(()=>{
 		if(message&&message.length&&selectedRecipient&&selectedRecipient.id){
 			const _message = message[0];
