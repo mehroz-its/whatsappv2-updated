@@ -23,10 +23,8 @@ const useStyles = makeStyles(theme => ({
 	},
 	listItemText2: {
 		fontSize: '11px', //Insert your required size
-		textAlign: 'right',
-		right: 0,
-		top: '11%',
-		position: 'absolute'
+
+		marginLeft: '4%'
 		// marginLeft: '4%'
 	},
 	unreadBadge: {
@@ -61,7 +59,7 @@ function ContactListItem(props) {
 	// 	}
 
 	// }
-
+	
 	return (
 		<ListItem
 			button
@@ -77,18 +75,24 @@ function ContactListItem(props) {
 				{showAvatar()}
 			</div>
 			<FuseAnimate animation="transition.slideDownIn" delay={300}>
+				<React.Fragment>
+
 				<ListItemText
 					classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
 					primary={props.contact.name}
 					secondary={
-						 props.contact.agent_name
+						props.contact.number!== props.contact.name?
+						props.contact.number
+
+						:null
 					}
 				/>
+				</React.Fragment>
 			</FuseAnimate>
+			<div className="flex flex-col justify-center items-end">
 			
-			{props.contact.message_count && (
-				<div className="flex flex-col justify-center items-end">
-					{props.contact.message_count > 0 && (
+				
+					{props.contact.message_count>0 && (
 						<div
 							className={clsx(
 								classes.unreadBadge,
@@ -99,19 +103,16 @@ function ContactListItem(props) {
 						</div>
 					)}
 					{
-						!props.contact.agent_name && props.contact.number!== props.contact.name?
-						props.contact.number
-
-						:null
+						
+						props.contact.agent_name
 					}
 					{props.contact.dtu && (
 						<Typography className="whitespace-no-wrap mb-1" style={{ fontSize: '10px' }}>
 							{moment(props.contact.dtu).format('ll')}
 						</Typography>
 					)}
-				</div>
-			)}
 
+			</div>
 			
 		</ListItem>
 	);
