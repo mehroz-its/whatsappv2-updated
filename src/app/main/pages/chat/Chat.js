@@ -525,6 +525,8 @@ function Chat(props) {
 				}
 			};
 			CoreHttpHandler.request('conversations', 'send_text', params, (response) => {
+				props.conversationUpdate(messageToSend)
+
 				setMessageText('')
 				setMessageTextNew('')
 				setTextLength(800)

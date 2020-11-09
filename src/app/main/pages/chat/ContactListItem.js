@@ -81,12 +81,11 @@ function ContactListItem(props) {
 					classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
 					primary={props.contact.name}
 					secondary={
-						props.contact.number === props.contact.name ? props.contact.agent_name : props.contact.number
+						 props.contact.agent_name
 					}
 				/>
-				{/* <div>{props.contact.agent_name} </div> */}
 			</FuseAnimate>
-
+			
 			{props.contact.message_count && (
 				<div className="flex flex-col justify-center items-end">
 					{props.contact.message_count > 0 && (
@@ -99,6 +98,12 @@ function ContactListItem(props) {
 							{props.contact.message_count}
 						</div>
 					)}
+					{
+						!props.contact.agent_name && props.contact.number!== props.contact.name?
+						props.contact.number
+
+						:null
+					}
 					{props.contact.dtu && (
 						<Typography className="whitespace-no-wrap mb-1" style={{ fontSize: '10px' }}>
 							{moment(props.contact.dtu).format('ll')}
@@ -106,6 +111,8 @@ function ContactListItem(props) {
 					)}
 				</div>
 			)}
+
+			
 		</ListItem>
 	);
 }

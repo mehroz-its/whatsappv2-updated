@@ -84,6 +84,13 @@ class APIS {
                 method: 'post',
                 path: '/list/agentlist'
             },
+            agent_admin_list: {
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'post',
+                path: '/list/agentadminlist'
+            },
             agent_list: {
                 headers: {
                     'xt-user-token': null

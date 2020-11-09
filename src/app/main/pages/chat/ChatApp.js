@@ -609,10 +609,18 @@ function ChatApp(props) {
 				reason: blockReason,
 			}
 		}, (response) => {
+			setSnackBarMessage("Blocked Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
 			setdialogOpenConfirmBlock(false)
 			setblockReason('')
 			setAnchorEl(false)
 			clearData()
+			
+			setSnackBarMessage("Blocked Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+
 		}, (error) => {
 			setAnchorEl(false)
 			setdialogOpenConfirmBlock(false)
@@ -670,8 +678,17 @@ function ChatApp(props) {
 			value: customerProfileData.id,
 			params: data
 		}, (response) => {
-			setselectedRecipient(selectedRecipient)
+			setSnackBarMessage("Updated Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+
+			setselectedRecipient({
+				...selectedRecipient,
+				name:data.assign_name,
+				attributes:data.attributes
+			})
 			setdialogOpenCmp(false)
+
 		}, (error) => {
 		});
 	}

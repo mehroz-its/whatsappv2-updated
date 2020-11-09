@@ -280,7 +280,7 @@ function ChatApp(props) {
 		});
 	}
 	const conversationShift = () => {
-		CoreHttpHandler.request('conversations', 'agents_list2', { role: 64, columns: 'id, username, email, number' }, (response) => {
+		CoreHttpHandler.request('conversations', 'agent_admin_list', {  columns: 'id, username, email, number' }, (response) => {
 			const data = response.data.data.agents.data;
 			setshiftAgentsList(data)
 			setdialogOpenShift(true)
@@ -957,7 +957,7 @@ function ChatApp(props) {
 					</Drawer>
 				</div>
 			</div>
-			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Admin`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
+			<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
 
 		</div>
 		</>
