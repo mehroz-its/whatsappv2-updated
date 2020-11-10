@@ -39,8 +39,11 @@ function AgentHeader(props) {
 	};
 
 	const getAgents = () => {
-		CoreHttpHandler.request('conversations', 'agents_list', {
-			columns: "USR.id, USR.username"
+		CoreHttpHandler.request('conversations', 'agent_list', {
+			columns: "USR.id, USR.username",
+			role: 64,
+			displayed:true,
+			enabled:true
 		}, (_response) => {
 			setagents(_response.data.data.agents.data)
 		}, (error) => {

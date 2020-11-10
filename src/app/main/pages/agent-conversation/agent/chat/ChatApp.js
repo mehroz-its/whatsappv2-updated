@@ -281,7 +281,8 @@ function ChatApp(props) {
 	}
 	const conversationShift = () => {
 		CoreHttpHandler.request('conversations', 'agent_admin_list', {  columns: 'id, username, email, number' }, (response) => {
-			const data = response.data.data.agents.data;
+			const data = response.data.data.agents.data.filter(el=>el.id!=selectedRecipient.a_id);
+
 			setshiftAgentsList(data)
 			setdialogOpenShift(true)
 

@@ -284,7 +284,11 @@ function ChatApp(props) {
 		});
 	}
 	const conversationShift = () => {
-		CoreHttpHandler.request('conversations', 'agent_list', { role: 64, columns: 'id, username, email, number' }, (response) => {
+		CoreHttpHandler.request('conversations', 'agent_list', { 
+			
+			displayed:true,
+			enabled:true,
+			role: 64, columns: 'id, username, email, number' }, (response) => {
 			const data = response.data.data.agents.data;
 			setshiftAgentsList(data)
 			setdialogOpenShift(true)
