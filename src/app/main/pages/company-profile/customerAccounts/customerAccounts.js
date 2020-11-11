@@ -16,7 +16,8 @@ import Paper from '@material-ui/core/Paper';
 import { useSelector } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 
-////tree
+import AutoRepliesDialog from './autoRepliesDialog';
+
 import SortableTree from 'react-sortable-tree';
 import 'react-sortable-tree/style.css'; // This only needs to be imported once in your app
 
@@ -94,7 +95,59 @@ function CustomerAccounts(props) {
 		type: 'dashboard',
 		apiType: 'listing'
 	};
+	const [open, setOpen] = React.useState(false);
+	const [type, setType] = React.useState('update');
+	const [dialogData, setDialogData] = React.useState({
+		id: 0,
+		name: '',
+		description: '',
+		begin_dt: null,
+		begin_time: null,
+		msisdnUrl: '',
+		state: false,
+		template_id: 0,
+		type: null,
+		activated: false
+	});
+	const [companyDetails, setCompanyDetails] = React.useState(props.data);
 
+	const handleClickOpen = () => {
+		setType('update');
+		setOpen(true);
+		// setDialogData(n);
+	};
+	function handleDialogClose(e) {
+		if (e == 'create') {
+			// setSnackBarMessage('Created Successfully');
+			// setOK('success');
+			// setSnackBarOpen(true);
+		} else if (e == 'update') {
+			// setSnackBarMessage('Update Successfully');
+			// setOK('success');
+			// setSnackBarOpen(true);
+		} else if (e == 'error') {
+			// setSnackBarMessage('Error! Please Try Again Later');
+			// setOK('error');
+			// setSnackBarOpen(true);
+			// setOpen(false);
+			return;
+		} else if (e == 'No Change') {
+			// setSnackBarMessage('You did not make any changes');
+			// setOK('error');
+			// setSnackBarOpen(true);
+			// return;
+		}
+		setDialogData({});
+		setOpen(false);
+	}
+	function showError(msg) {
+		// setSnackBarMessage(msg);
+		// setOK('error');
+		// setSnackBarOpen(true);
+	}
+	const handleClose = () => {
+		setOpen(false);
+	};
 	React.useEffect(() => {
 		fetchPagination();
 	}, [currentParams]);
@@ -682,13 +735,13 @@ function CustomerAccounts(props) {
 								</Grid>
 							</Grid>
 
-							{/* <Grid container spacing={3} style={{ marginTop: 10 }}>
+							<Grid container spacing={3} style={{ marginTop: 10 }}>
 								<Grid item md={12} sm={12} xs={12}>
 									<div style={{ height: 600 }}>
 										<SortableTree
 											maxDepth={3}
 											treeData={treeData}
-											scaffoldBlockPxWidth={250}
+											scaffoldBlockPxWidth={50}
 											generateNodeProps={rowInfo => ({
 												buttons: [
 													<div>
@@ -700,7 +753,7 @@ function CustomerAccounts(props) {
 														<button label="Add" onClick={event => addNewNode(rowInfo)}>
 															Add
 														</button>
-														<button label="Add" onClick={event => editNewNode(rowInfo)}>
+														<button label="Add" onClick={event => handleClickOpen()}>
 															Edit
 														</button>
 													</div>
@@ -739,7 +792,17 @@ function CustomerAccounts(props) {
 									</Button>
 								</Grid>
 							</Grid>
-					 */}
+
+							{open && (
+								<AutoRepliesDialog
+									isOpen={open}
+									type={type}
+									data={dialogData}
+									// clientId={companyDetails.id}
+									closeDialog={handleDialogClose}
+									showError={showError}
+								/>
+							)}
 						</FuseAnimateGroup>
 					</div>
 				</>
