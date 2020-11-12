@@ -13,6 +13,9 @@ import { useSelector } from 'react-redux';
 import CoreHttpHandler from 'http/services/CoreHttpHandler';
 import { EventEmitter } from '../../../../events';
 import PermissionResolver from '../../../common/PermissionResolver';
+import WebSocket from "./../../../socket/WebSocket";
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles(theme => ({
 	separator: {
@@ -28,6 +31,12 @@ function ToolbarLayout1(props) {
 	const [online, setOnline] = React.useState(JSON.parse(localStorage.getItem('online')));
 	const [toggleShow, setToggleShow] = React.useState(false);
 	const classes = useStyles(props);
+
+	const [snackbaropen, setSnackBarOpen] = React.useState(false)
+
+	const socket = WebSocket.getSocket()
+
+
 	const setAgentOnline = e => {
 		const isOnline = e.target.checked;
 		if (isOnline) {
@@ -58,10 +67,28 @@ function ToolbarLayout1(props) {
 	};
 	useEffect(() => {
 		setToggleShow(PermissionResolver.hasPermission('app', 'toggle'));
-		console.log('toggleShow : ', toggleShow);
+		// console.log('toggleShow : ', toggleShow);
+
+		socket.on("newMessage",(data)=>{
+			if(data&&data.newMessage){
+				setSnackBarOpen(true)
+			}
+		})
+
+		return () => {
+			socket.removeListener("newMessage")
+		}
+
 	}, []);
 	return (
 		<ThemeProvider theme={toolbarTheme}>
+		
+			<Snackbar onClose={()=>{setSnackBarOpen(false)}}  open={snackbaropen} autoHideDuration={2000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}  key={'bottom' + 'right'}
+						 >
+							<Alert severity="success">
+								You have a new message
+        					</Alert>
+						</Snackbar>
 			<AppBar
 				id="fuse-toolbar"
 				className="flex relative z-10"

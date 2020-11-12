@@ -8,7 +8,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import React, { useEffect } from 'react';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
 import { makeStyles } from '@material-ui/core/styles';
-import { EventEmitter } from '../../../../../events'
+import { EventEmitter } from '../../../../../events';
+import WebSocket from "./../../../../socket/WebSocket"
 const useStyles = makeStyles((theme) => ({
 	formControl: {
 		margin: theme.spacing(1),
@@ -31,9 +32,10 @@ function AgentHeader(props) {
 	const { total } = props
 	const [agentDropDownOpen, setagentDropDownOpen] = React.useState(false);
 	const [agents, setagents] = React.useState([]);
-	const [int_CustomerList, setint_CustomerList] = React.useState(null);
 	const [selectedAgent, setselectedAgent] = React.useState('All');
-	
+	const [agentOnline, setAgentOnline] = React.useState(null)
+	const socket = WebSocket.getSocket()
+
 	const handleCloseAgent = () => {
 		setagentDropDownOpen(false)
 	};
@@ -49,16 +51,27 @@ function AgentHeader(props) {
 		}, (error) => {
 		});
 	}
-	if (int_CustomerList === null) {
-		setint_CustomerList(setInterval(() => {
-			getAgents();
-		}, 3000));
-	}
+	React.useEffect(() => {
+		const data = agentOnline;
+		if (data) {
+			let tempAgent = agents.map(agent => {
+				if (agent.id == data.agentId) {
+					agent.active = data.active
+				}
+				return agent
+			});
+			setagents(tempAgent)
+		}
+	}, [agentOnline])
 	useEffect(() => {
 		getAgents()
 		EventEmitter.subscribe('GetAgentsAgain', (event) => getAgents())
+		
+		socket.on("agentsOnline", (data) => {
+			setAgentOnline(data)
+		})
 		return () => {
-			clearInterval(int_CustomerList);
+			socket.removeListener("agentsOnline")
 		}
 	}, []);
 	const handleOpenAgent = () => {

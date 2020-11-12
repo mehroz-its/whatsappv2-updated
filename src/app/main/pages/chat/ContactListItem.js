@@ -59,7 +59,8 @@ function ContactListItem(props) {
 	// 	}
 
 	// }
-	
+	const { selectedRecipient, contact } = props;
+	const showCount = selectedRecipient && selectedRecipient.id == contact.id ? false : true;
 	return (
 		<ListItem
 			button
@@ -76,44 +77,31 @@ function ContactListItem(props) {
 			</div>
 			<FuseAnimate animation="transition.slideDownIn" delay={300}>
 				<React.Fragment>
-
-				<ListItemText
-					classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
-					primary={props.contact.name}
-					secondary={
-						props.contact.number!== props.contact.name?
-						props.contact.number
-
-						:null
-					}
-				/>
+					<ListItemText
+						classes={{ primary: classes.listItemText, secondary: classes.listItemText2 }}
+						primary={props.contact.name}
+						secondary={props.contact.number !== props.contact.name ? props.contact.number : null}
+					/>
 				</React.Fragment>
 			</FuseAnimate>
 			<div className="flex flex-col justify-center items-end">
-			
-				
-					{props.contact.message_count>0 && (
-						<div
-							className={clsx(
-								classes.unreadBadge,
-								'flex items-center justify-center min-w-20 h-20 rounded-full text-10 text-center'
-							)}
-						>
-							{props.contact.message_count}
-						</div>
-					)}
-					{
-						
-						props.contact.agent_name
-					}
-					{props.contact.dtu && (
-						<Typography className="whitespace-no-wrap mb-1" style={{ fontSize: '10px' }}>
-							{moment(props.contact.dtu).format('ll')}
-						</Typography>
-					)}
-
+				{props.contact.message_count > 0 && (
+					<div
+						className={clsx(
+							classes.unreadBadge,
+							'flex items-center justify-center min-w-20 h-20 rounded-full text-10 text-center'
+						)}
+					>
+						{props.contact.message_count}
+					</div>
+				)}
+				{props.contact.agent_name}
+				{props.contact.dtu && (
+					<Typography className="whitespace-no-wrap mb-1" style={{ fontSize: '10px' }}>
+						{moment(props.contact.dtu).format('ll')}
+					</Typography>
+				)}
 			</div>
-			
 		</ListItem>
 	);
 }
