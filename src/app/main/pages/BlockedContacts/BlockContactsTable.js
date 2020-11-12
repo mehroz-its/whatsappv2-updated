@@ -85,7 +85,8 @@ const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref)
 	);
 });
 
-const EnhancedTable = ({ columns, data, onRowClick, getData, props, rowsPerPage, currentPage, setLimit, totalItems, setPage, }) => {
+const EnhancedTable = ({ columns, data, onRowClick, GiveVal, getData, props, rowsPerPage, currentPage, setLimit, totalItems, setPage, }) => {
+	
 	const classes = useStyles(props);
 	const [open, setOpen] = React.useState(false);
 	const handleClose = () => {
@@ -257,7 +258,7 @@ const EnhancedTable = ({ columns, data, onRowClick, getData, props, rowsPerPage,
 				</TableFooter>
 			</MaUTable>
 		</TableContainer>
-		{open && <BlockListDialog type="Unblock Number" data={dialogData} isOpen={open} closeDialog={handleClose} />}
+		{open && <BlockListDialog type="Unblock Number" data={dialogData} GiveVal={GiveVal} isOpen={open} closeDialog={handleClose} />}
 	</div>
 	);
 };

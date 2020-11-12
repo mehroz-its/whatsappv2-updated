@@ -436,13 +436,13 @@ function ChatApp() {
 						<Grid container spacing={3} style={{ paddingLeft: 12, paddingRight: 12 }}>
 							<Grid item md={6} sm={12} xs={12} >
 								<Paper className="w-full rounded-8 shadow-none border-1">
-									<Typography variant="h6" className="header-card text-center pt-8" >Conversation outgoing</Typography>
+									<Typography variant="h6" className="header-card text-center pt-8" >Incoming</Typography>
 									<div id="chartdivv" style={{ width: "100%", height: "300px" }}></div>
 								</Paper>
 							</Grid>
 							<Grid item md={6} sm={12} xs={12} >
 								<Paper className="w-full rounded-8 shadow-none border-1">
-									<Typography variant="h6" className="header-card text-center pt-8" >Conversation incoming</Typography>
+									<Typography variant="h6" className="header-card text-center pt-8" >Outgoing</Typography>
 									<div id="chartdiv" style={{ width: "100%", height: "300px" }}></div>
 								</Paper>
 							</Grid>

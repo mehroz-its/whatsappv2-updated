@@ -913,7 +913,7 @@ function ChatApp(props) {
 											 variant="contained"
 											 size="small"
 												>
-												 Take Over
+												 Shift
 												</Button>
 												<Menu
 													id="chats-more-menu"

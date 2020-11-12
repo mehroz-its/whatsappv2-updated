@@ -322,11 +322,12 @@ function ChatApp(props) {
 			const customer = response.data.data.customer;
 			loadCountries().then((response) => {
 				const countries = response.data.data.list.data;
+
 				setcustomerProfileData({
 					id: customer.id,
 					number: selectedRecipient.number,
 					attributes: customer.attributes,
-					assign_name: '',
+					assign_name: selectedRecipient.name==selectedRecipient.number?"":selectedRecipient.name,
 					countries,
 				})
 				setAnchorEl(false)
@@ -613,17 +614,16 @@ function ChatApp(props) {
 				reason: blockReason,
 			}
 		}, (response) => {
+			
 			setSnackBarMessage("Blocked Successfully")
 			setOK("success")
 			setSnackBarOpen(true)
+			
 			setdialogOpenConfirmBlock(false)
 			setblockReason('')
 			setAnchorEl(false)
 			clearData()
 			
-			setSnackBarMessage("Blocked Successfully")
-			setOK("success")
-			setSnackBarOpen(true)
 
 		}, (error) => {
 			setAnchorEl(false)
@@ -694,6 +694,13 @@ function ChatApp(props) {
 			setdialogOpenCmp(false)
 
 		}, (error) => {
+			if(error&&error.response&&error.response.data){
+				setSnackBarMessage(error.response.data.message)
+			}else{
+				setSnackBarMessage("Could not save record")
+			}
+			setOK("error")
+			setSnackBarOpen(true)
 		});
 	}
 	const endConversation = () => {

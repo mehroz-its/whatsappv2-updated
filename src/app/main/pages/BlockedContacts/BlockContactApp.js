@@ -14,7 +14,9 @@ function ContactsApp() {
 	const updateText = (search) => {
 		setVal(search)
 	}
+	
 	const valueReceived = (value) => {
+
 		if (value == "update") {
 			setSnackBarMessage("Updated Successfully")
 			setOK("success")
@@ -23,6 +25,10 @@ function ContactsApp() {
 		else if (value == "error") {
 			setSnackBarMessage("Error!Please Try Again Later")
 			setOK("error")
+			setSnackBarOpen(true)
+		}else if(value === "Unblock"){
+			setSnackBarMessage("Successfully Unblocked")
+			setOK("success")
 			setSnackBarOpen(true)
 		}
 	}

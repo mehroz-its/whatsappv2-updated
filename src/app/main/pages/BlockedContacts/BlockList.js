@@ -7,6 +7,7 @@ import CoreHttpHandler from '../../../../http/services/CoreHttpHandler'
 import { object } from 'prop-types';
 import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading'
 function ContactsList(props) {
+	
 	const [data, setData] = React.useState([])
 	const [data2, setData2] = useState([]);
 	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
@@ -165,7 +166,7 @@ function ContactsList(props) {
 		return (
 			// <FuseAnimate animation="transition.slideUpIn" delay={300}>
 				<BlockContactsTable
-					giveVal={props.GiveVal}
+					GiveVal={props.GiveVal}
 					columns={columns}
 					data={data}
 					getData={getData}
@@ -175,6 +176,7 @@ function ContactsList(props) {
 					setLimit={setLimit}
 					rowsPerPage={currentParams.limit}
 					currentPage={currentParams.page}
+					showSuccess={props.showSuccess}
 					onRowClick={(ev, row) => {
 					}}
 				/>

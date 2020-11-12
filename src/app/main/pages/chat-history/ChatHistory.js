@@ -303,7 +303,7 @@ function ChatApp(props) {
 					id: customer.id,
 					number: selectedRecipient.number,
 					attributes: customer.attributes,
-					assign_name: '',
+					assign_name: selectedRecipient.name==selectedRecipient.number?"":selectedRecipient.name,
 					countries,
 				})
 				setAnchorEl(false)
@@ -573,6 +573,12 @@ function ChatApp(props) {
 				reason: blockReason,
 			}
 		}, (response) => {
+			
+			
+			setSnackBarMessage("Blocked Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+			
 			setdialogOpenConfirmBlock(false)
 			setblockReason('')
 			setAnchorEl(false)
@@ -636,9 +642,26 @@ function ChatApp(props) {
 			value: customerProfileData.id,
 			params: data
 		}, (response) => {
-			setselectedRecipient(selectedRecipient)
+			setSnackBarMessage("Updated Successfully")
+			setOK("success")
+			setSnackBarOpen(true)
+
+			setselectedRecipient({
+				...selectedRecipient,
+				name:data.assign_name,
+				attributes:data.attributes
+			})
 			setdialogOpenCmp(false)
+
+
 		}, (error) => {
+			if(error&&error.response&&error.response.data){
+				setSnackBarMessage(error.response.data.message)
+			}else{
+				setSnackBarMessage("Could not save record")
+			}
+			setOK("error")
+			setSnackBarOpen(true)
 		});
 	}
 	const onSearchInput = (val) => {
