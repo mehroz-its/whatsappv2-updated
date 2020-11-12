@@ -488,7 +488,7 @@ function ChatApp(props) {
 				let _numbers = numbers.filter(el=>el.number!=number)
 				setnumbers(_numbers)
 
-				if(selectedRecipient.number==removeConversation.number){
+				if(selectedRecipient&&selectedRecipient.number==removeConversation.number){
 					setselectedRecipient(null)
 					setmessages([])
 				}
