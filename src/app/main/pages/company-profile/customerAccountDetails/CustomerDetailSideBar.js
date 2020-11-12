@@ -11,7 +11,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import PhoneAndroidIcon from '@material-ui/icons/PhoneAndroid';
 import GroupIcon from '@material-ui/icons/Group';
 import SpeakerNotesIcon from '@material-ui/icons/SpeakerNotes';
-
+import ReplyAllIcon from '@material-ui/icons/ReplyAll';
 
 
 const useStyles = makeStyles(theme => ({
@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 		height: 30
 	},
 	listItemText: {
-		fontSize: '100px',//Insert your required size
+		fontSize: '100px',
 
 	}
 }));
@@ -91,9 +91,7 @@ function CustomerDetailSideBar(props) {
 							className={classes.listItem}
 							onClick={() => { onTabChange('Profile') }}
 						>
-							{/* <Icon className="list-item-icon text-16" color="action">
-								rate_review
-							</Icon> */}
+							
 							<PersonIcon className="list-item-icon text-16" color="action" />
 							<ListItemText className="truncate" primary="Profile" disableTypography />
 						</ListItem>
@@ -105,9 +103,7 @@ function CustomerDetailSideBar(props) {
 							activeClassName="active"
 							className={classes.listItem}
 							onClick={() => { onTabChange('Contact') }}>
-							{/* <Icon className="list-item-icon text-16" color="action">
-								textsms
-							</Icon> */}
+							
 							<PhoneAndroidIcon className="list-item-icon text-16" color="action" />
 							<ListItemText
 								primary="Contacts" disableTypography />
@@ -120,9 +116,7 @@ function CustomerDetailSideBar(props) {
 							activeClassName="active"
 							className={classes.listItem}
 							onClick={() => { onTabChange("Agents") }}>
-							{/* <Icon className="list-item-icon text-16" color="action">
-								audiotrack
-							</Icon> */}
+							
 							<GroupIcon className="list-item-icon text-16" color="action" />
 							<ListItemText
 								primary="Users" disableTypography />
@@ -135,9 +129,7 @@ function CustomerDetailSideBar(props) {
 							activeClassName="active"
 							className={classes.listItem}
 							onClick={() => { onTabChange("CannedReplies") }}>
-							{/* <Icon className="list-item-icon text-16" color="action"> */}
-							{/* switch_video */}
-							{/* </Icon> */}
+							
 							<SpeakerNotesIcon className="list-item-icon text-16" color="action" />
 							<ListItemText
 								primary="Canned Replies" disableTypography />
@@ -156,24 +148,25 @@ function CustomerDetailSideBar(props) {
 							<ListItemText
 								primary="Configration" disableTypography />
 						</ListItem>
-						{/* <ListItem
+						<ListItem
 							exact
 							button
 							component={NavLinkAdapter}
-							to="/apps/company-details/CannedReplies"
+							to="/apps/company-details/autoReply"
 							activeClassName="active"
 							className={classes.listItem}
-							onClick={() => { onTabChange("CannedReplies") }}>
-							<Icon className="list-item-icon text-16" color="action">
-								switch_video
-						</Icon>
+							onClick={() => { onTabChange("AutoReply") }}>
+							
+							<ReplyAllIcon className="list-item-icon text-16" color="action" />
 							<ListItemText
-								primary="Canned Replies" disableTypography />
-						</ListItem> */}
+								primary="Auto Reply" disableTypography />
+						</ListItem>
+						
 					</List>
 				</Paper>
 			</FuseAnimate>
 		</div>
 	);
 }
+
 export default CustomerDetailSideBar;
