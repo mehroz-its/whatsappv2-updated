@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import { makeStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
+import CoreHttpHandler from '../../../../../../../http/services/CoreHttpHandler';
 import AppBar from '@material-ui/core/AppBar';
 import { green } from '@material-ui/core/colors';
 import Select from '@material-ui/core/Select';
@@ -93,6 +93,7 @@ const AutoRepliesDialog = props => {
 		props.closeDialog();
 		setopenDialog(false);
 	};
+
 	const handleEnable = event => {
 		setEnabled(event.target.checked);
 	};

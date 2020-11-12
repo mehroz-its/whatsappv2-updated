@@ -19,7 +19,7 @@ import TextField from '@material-ui/core/TextField';
 import AutoRepliesDialog from './autoRepliesDialog';
 
 import SortableTree from 'react-sortable-tree';
-import 'react-sortable-tree/style.css'; // This only needs to be imported once in your app
+import 'react-sortable-tree/style.css'; 
 
 import { ThemeProvider, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { add } from 'lodash';
@@ -114,36 +114,23 @@ function CustomerAccounts(props) {
 	const handleClickOpen = () => {
 		setType('update');
 		setOpen(true);
-		// setDialogData(n);
 	};
 	function handleDialogClose(e) {
 		if (e == 'create') {
-			// setSnackBarMessage('Created Successfully');
-			// setOK('success');
-			// setSnackBarOpen(true);
+		
 		} else if (e == 'update') {
-			// setSnackBarMessage('Update Successfully');
-			// setOK('success');
-			// setSnackBarOpen(true);
+			
 		} else if (e == 'error') {
-			// setSnackBarMessage('Error! Please Try Again Later');
-			// setOK('error');
-			// setSnackBarOpen(true);
-			// setOpen(false);
+			
 			return;
 		} else if (e == 'No Change') {
-			// setSnackBarMessage('You did not make any changes');
-			// setOK('error');
-			// setSnackBarOpen(true);
-			// return;
+			
 		}
 		setDialogData({});
 		setOpen(false);
 	}
 	function showError(msg) {
-		// setSnackBarMessage(msg);
-		// setOK('error');
-		// setSnackBarOpen(true);
+		
 	}
 	const handleClose = () => {
 		setOpen(false);
@@ -250,21 +237,10 @@ function CustomerAccounts(props) {
 		});
 		setTreeData(newTree.treeData);
 
-		// this.updateTreeData(newTree.treeData);
 	};
 	const editNewNode = rowInfo => {
 		console.log('row Edit', rowInfo);
-		// const NEW_NODE = { title: 'Another Node', isDirectory: true, expanded: true };
-		// const newTree = addNodeUnderParent({
-		// 	treeData: treeData,
-		// 	newNode: NEW_NODE,
-		// 	expandParent: true,
-		// 	parentKey: rowInfo ? rowInfo.treeIndex : undefined,
-		// 	getNodeKey: ({ treeIndex }) => treeIndex
-		// });
-		// setTreeData(newTree.treeData);
-
-		// this.updateTreeData(newTree.treeData);
+	
 	};
 
 	const removeNode = rowInfo => {
@@ -275,7 +251,6 @@ function CustomerAccounts(props) {
 			getNodeKey: ({ treeIndex }) => treeIndex
 		});
 		setTreeData(newTree);
-		// this.updateTreeData(newTree);
 	};
 	function getNodeAtPath({ treeData, path, getNodeKey, ignoreCollapsed = true }) {
 		let foundNodeInfo = null;
@@ -324,7 +299,6 @@ function CustomerAccounts(props) {
 			ignoreCollapsed,
 			callback: ({ node, treeIndex, path }) => {
 				const key = path ? path[path.length - 1] : null;
-				// Return nodes that are not the parent as-is
 				if (hasBeenAdded || key !== parentKey) {
 					return node;
 				}
@@ -338,7 +312,6 @@ function CustomerAccounts(props) {
 					parentNode.expanded = true;
 				}
 
-				// If no children exist yet, just add the single newNode
 				if (!parentNode.children) {
 					insertedTreeIndex = treeIndex + 1;
 					return {
@@ -384,7 +357,7 @@ function CustomerAccounts(props) {
 			path,
 			getNodeKey,
 			ignoreCollapsed,
-			newNode: null // Delete the node
+			newNode: null 
 		});
 	}
 
@@ -396,11 +369,9 @@ function CustomerAccounts(props) {
 			}
 
 			if (pathIndex >= path.length - 1) {
-				// If this is the final location in the path, return its changed form
 				return typeof newNode === 'function' ? newNode({ node, treeIndex: currentTreeIndex }) : newNode;
 			}
 			if (!node.children) {
-				// If this node is part of the path, but has no children, return the unchanged node
 				throw new Error('Path referenced children of node with no children.');
 			}
 
@@ -412,18 +383,14 @@ function CustomerAccounts(props) {
 					pathIndex: pathIndex + 1
 				});
 
-				// If the result went down the correct path
 				if (result !== RESULT_MISS) {
 					if (result) {
-						// If the result was truthy (in this case, an object),
-						//  pass it to the next level of recursion up
 						return {
 							...node,
 							children: [...node.children.slice(0, i), result, ...node.children.slice(i + 1)]
 						};
 					}
-					// If the result was falsy (returned from the newNode function), then
-					//  delete the node from the array.
+					
 					return {
 						...node,
 						children: [...node.children.slice(0, i), ...node.children.slice(i + 1)]
@@ -435,7 +402,6 @@ function CustomerAccounts(props) {
 
 			return;
 		};
-		// Use a pseudo-root node in the beginning traversal
 		const result = traverse({
 			node: { children: treeData },
 			currentTreeIndex: -1,
@@ -492,7 +458,6 @@ function CustomerAccounts(props) {
 	}) {
 		const nextNode = { ...node };
 
-		// The pseudo-root is not considered in the path
 		const selfPath = isPseudoRoot ? [] : [...path, getNodeKey({ node: nextNode, treeIndex: currentIndex })];
 		const selfInfo = {
 			node: nextNode,
@@ -502,14 +467,12 @@ function CustomerAccounts(props) {
 			treeIndex: currentIndex
 		};
 
-		// Return self on nodes with no children or hidden children
 		if (!nextNode.children || (nextNode.expanded !== true && ignoreCollapsed && !isPseudoRoot)) {
 			return {
 				treeIndex: currentIndex,
 				node: callback(selfInfo)
 			};
 		}
-		// Get all descendants
 		let childIndex = currentIndex;
 		const childCount = nextNode.children.length;
 		if (typeof nextNode.children !== 'function') {
@@ -546,10 +509,8 @@ function CustomerAccounts(props) {
 		ignoreCollapsed = true,
 		isPseudoRoot = false
 	}) {
-		// The pseudo-root is not considered in the path
 		const selfPath = !isPseudoRoot ? [...path, getNodeKey({ node, treeIndex: currentIndex })] : [];
 
-		// Return target node when found
 		if (currentIndex === targetIndex) {
 			return {
 				node,
@@ -558,13 +519,11 @@ function CustomerAccounts(props) {
 			};
 		}
 
-		// Add one and continue for nodes with no children or hidden children
 		if (!node.children || (ignoreCollapsed && node.expanded !== true)) {
 			return { nextIndex: currentIndex + 1 };
 		}
 
-		// Iterate over each child and their descendants and return the
-		// target node if childIndex reaches the targetIndex
+		
 		let childIndex = currentIndex + 1;
 		const childCount = node.children.length;
 		for (let i = 0; i < childCount; i += 1) {
@@ -585,7 +544,6 @@ function CustomerAccounts(props) {
 			childIndex = result.nextIndex;
 		}
 
-		// If the target node is not found, return the farthest traversed index
 		return { nextIndex: childIndex };
 	}
 	const createJson = () => {
@@ -595,8 +553,7 @@ function CustomerAccounts(props) {
 		let defaultt = [];
 		treeData.map((data, i) => {
 			createjs.defaultmsg = [data.title];
-			// defaultt = data.title;
-			// createjs.push(defaultt);
+		
 
 			if (data.children && data.children.length > 0) {
 				createjsChild = parseChildren(data.children);
@@ -617,7 +574,6 @@ function CustomerAccounts(props) {
 						item.children = item.children.filter(el => el);
 						if (item.children && item.children.length) {
 							return item.children;
-							// return item.children.map(el => el.title);
 						}
 					} else {
 						return item.title;
@@ -765,7 +721,6 @@ function CustomerAccounts(props) {
 											onChange={treeData => {
 												logTree(treeData);
 											}}
-											// generateNodeProps={add()}
 										/>
 									</div>
 									<Button
@@ -798,7 +753,6 @@ function CustomerAccounts(props) {
 									isOpen={open}
 									type={type}
 									data={dialogData}
-									// clientId={companyDetails.id}
 									closeDialog={handleDialogClose}
 									showError={showError}
 								/>

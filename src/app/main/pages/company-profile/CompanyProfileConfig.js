@@ -39,7 +39,17 @@ const CompanyProfileConfig = {
 			path: '/apps/company-details/CannedReplies',
 			component: React.lazy(() => import('./customerAccountDetails/SideNavigationPages/CannedReplies/Index.js'))
         },
-        
+        {
+			path: '/apps/company-details/autoReply',
+			component: React.lazy(() => import('./customerAccountDetails/SideNavigationPages/autoReply/autoReplyTable.js'))
+        },
+
+        {
+			path: '/apps/addAutoReply',
+			component: React.lazy(() => import('./customerAccountDetails/SideNavigationPages/autoReply/addAutoReply.js'))
+        },
+
+
     ]
 };
 

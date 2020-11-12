@@ -10,6 +10,7 @@ import Profile from './SideNavigationPages/Profile/Index'
 import ContactTable from './SideNavigationPages/contact/ContactTable'
 import TemplateMessage from './SideNavigationPages/TemplateMessage/Index'
 import AgentTable from './SideNavigationPages/agents/AgentTable'
+import AutoReplyTable from './SideNavigationPages/autoReply/autoReplyTable'
 import CannedReplies from './SideNavigationPages/CannedReplies/Index'
 import Dashboard from './SideNavigationPages/Intelligence/DashboardApp'
 import Config from './SideNavigationPages/configration/config'
@@ -77,11 +78,11 @@ function CustomerDetails(props) {
                     tab === 'Intelligence' ? <Dashboard data={companyDetails} />
                         : tab === 'Profile' ? <Profile data={companyDetails} />
                             : tab === 'Contact' ? <ContactTable data={companyDetails} />
-                                : tab === 'Configration' ? <Config data={companyDetails}/>
+                                : tab === 'Configration' ? <Config data={companyDetails} />
                                     : tab === 'Agents' ? <AgentTable data={companyDetails} />
-                                        : tab === 'CannedReplies' ? <CannedReplies  data={companyDetails} />
-                                        // : tab === 'CannedReplies' ? <CannedReplies />
-                                            : null
+                                        : tab === 'CannedReplies' ? <CannedReplies data={companyDetails} />
+                                            : tab === 'AutoReply' ? <AutoReplyTable data={companyDetails} />
+                                                : null
                 }
                 leftSidebarContent={<CustomerDetailSideBar onTabChange={handleTabChange} cannedType={handleCannedMessageType} />}
                 sidebarInner
