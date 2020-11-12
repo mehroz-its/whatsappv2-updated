@@ -202,7 +202,7 @@ function ChatApp(props) {
 	const [showLatestMessage, setshowLatestMessage] = React.useState(false);
 	const [userDrawer, setuserDrawer] = React.useState(false);
 	const [selectedRecipient, setselectedRecipient] = React.useState(null);
-
+	const [removeConversation,setRemoveConversation] = React.useState(null)
 	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const classes = useStyles(props);
@@ -216,7 +216,6 @@ function ChatApp(props) {
 			return el
 		})
 		setnumbers(_numbers)
-
 
 		setselectedRecipient(e)
 		readMessage()
@@ -232,7 +231,7 @@ function ChatApp(props) {
 
 			setnumbers(newData)
 
-		}, (response) => {
+		}, (error) => {
 		});
 	}
 
@@ -286,6 +285,7 @@ function ChatApp(props) {
 			displayed:true,
 			enabled:true,
 			role: 64, columns: 'id, username, email, number' }, (response) => {
+
 			const data = response.data.data.agents.data;
 			setshiftAgentsList(data)
 			setdialogOpenShift(true)
@@ -379,7 +379,8 @@ function ChatApp(props) {
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [messageStatus, setMessageStatus] = React.useState(null)
-
+	const [updateCustomerMessages, setUpdateCustomerMessages] = React.useState(null)
+	
 	const [ok, setOK] = React.useState('')
 	const [customerProfileData, setcustomerProfileData] = React.useState({
 		id: 0,
@@ -461,13 +462,73 @@ function ChatApp(props) {
 			setMessageStatus(data)
 		})
 		
+		socket.on("removeConversation",data=>{
+			setRemoveConversation(data)
+		})
+
+		socket.on("updateCustomerMessages",data=>{
+			setUpdateCustomerMessages(data)
+		})
+		
 		return () => {
 			socket.removeListener("newConversation")
 			socket.removeListener("newConversationMessage")
 			socket.removeListener("updateMessageStatus")
+			socket.removeListener("removeConversation")
+			socket.removeListener("updateCustomerMessages")
 		}
 	}, [])
 
+	React.useEffect(()=>{
+
+		if(removeConversation){
+
+			if(removeConversation.byNumber){
+				let number = removeConversation.number
+				let _numbers = numbers.filter(el=>el.number!=number)
+				setnumbers(_numbers)
+
+				if(selectedRecipient.number==removeConversation.number){
+					setselectedRecipient(null)
+					setmessages([])
+				}
+			}
+
+		}
+
+	},[removeConversation])
+	React.useEffect(()=>{
+
+		if(updateCustomerMessages){
+			
+			let _numbers = numbers.map(el=>{		
+				if(el.id==updateCustomerMessages.id){
+
+					updateCustomerMessages.name = updateCustomerMessages.assign_name
+					if(updateCustomerMessages.assign_name!=undefined)
+						delete updateCustomerMessages.assign_name
+
+					let _selectedRecipient = selectedRecipient
+
+					Object.keys(updateCustomerMessages).map(key=>{
+						if(el[key]!=updateCustomerMessages[key]){
+							
+							el[key]= updateCustomerMessages[key]
+							_selectedRecipient[key] = updateCustomerMessages[key]
+	
+						}
+						
+						
+					})
+					setselectedRecipient(_selectedRecipient)
+				}
+
+				return el
+			})
+			setnumbers(_numbers)
+		}
+
+	},[updateCustomerMessages])
 	
 	React.useEffect(()=>{
 
@@ -582,10 +643,10 @@ function ChatApp(props) {
 			params: {
 				customer: selectedRecipient.number
 			}
-		}, (response) => {
+		}, (response) => {		
 			setdialogOpenShift(false)
 			clearData()
-		}, (response) => {
+		}, (error) => {
 		});
 	}
 	const dialogOptionsShift = {
@@ -681,7 +742,7 @@ function ChatApp(props) {
 				reason: blockReason,
 			}
 		}, (response) => {
-			
+
 			setSnackBarMessage("Blocked Successfully")
 			setOK("success")
 			setSnackBarOpen(true)
@@ -741,6 +802,7 @@ function ChatApp(props) {
 	const XGlobalDialogCmpClose = () => {
 		setdialogOpenCmp(false)
 	}
+	
 	const profileUpdate = () => {
 		const data = { ...customerProfileData };
 		data['number'] = selectedRecipient.number;
@@ -753,11 +815,19 @@ function ChatApp(props) {
 			setOK("success")
 			setSnackBarOpen(true)
 
-			setselectedRecipient({
-				...selectedRecipient,
-				name:data.assign_name,
-				attributes:data.attributes
-			})
+			// setselectedRecipient({
+			// 	...selectedRecipient,
+			// 	name:data.assign_name,
+			// 	attributes:data.attributes
+			// })
+
+			// let _numbers = numbers.map(number=>{
+			// 	if(number.id==selectedRecipient.id){
+			// 		number.name = data.assign_name
+			// 	}
+			// 	return number
+			// })			
+			// setnumbers(_numbers)
 			setdialogOpenCmp(false)
 
 		}, (error) => {
@@ -778,9 +848,9 @@ function ChatApp(props) {
 		CoreHttpHandler.request('conversations', 'end', { key: ':number', value: selectedRecipient.number }, (response) => {
 
 
-			let _numbers =numbers.filter(el=>el.id!=selectedRecipient.id);
+			// let _numbers =numbers.filter(el=>el.id!=selectedRecipient.id);
 
-			setnumbers(_numbers)
+			// setnumbers(_numbers)
 			setselectedRecipient(null)
 			setmessages([])
 		}, (error) => {
