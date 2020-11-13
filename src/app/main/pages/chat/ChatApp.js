@@ -479,53 +479,64 @@ function ChatApp(props) {
 		}
 	}, [])
 
-	React.useEffect(()=>{
+    React.useEffect(()=>{
 
-		if(removeConversation){
+        if(removeConversation){
 
-			if(removeConversation.byNumber){
-				let number = removeConversation.number
-				let _numbers = numbers.filter(el=>el.number!=number)
-				setnumbers(_numbers)
+            if(removeConversation.byNumber){
+                let number = removeConversation.number
+                if(number){
 
-				if(selectedRecipient&&selectedRecipient.number==removeConversation.number){
-					setselectedRecipient(null)
-					setmessages([])
-				}
-			}
+					if(numbers&&numbers.length){
+						let _numbers = numbers.filter(el=>el&&el.number!=number)
+						setnumbers(_numbers)
+					}
+                    
+                    if(selectedRecipient&&selectedRecipient.number==number){
+                        setselectedRecipient(null)
+                        setmessages([])
+                    }
+                }
+            }
 
-		}
+        }
 
-	},[removeConversation])
+    },[removeConversation])
 	React.useEffect(()=>{
 
 		if(updateCustomerMessages){
-			
-			let _numbers = numbers.map(el=>{		
-				if(el.id==updateCustomerMessages.id){
 
-					updateCustomerMessages.name = updateCustomerMessages.assign_name
-					if(updateCustomerMessages.assign_name!=undefined)
-						delete updateCustomerMessages.assign_name
+			if(numbers&&numbers.length){
 
-					let _selectedRecipient = selectedRecipient
-
-					Object.keys(updateCustomerMessages).map(key=>{
-						if(el[key]!=updateCustomerMessages[key]){
-							
-							el[key]= updateCustomerMessages[key]
-							_selectedRecipient[key] = updateCustomerMessages[key]
+				let _numbers = numbers.map(el=>{		
+					if(el.id==updateCustomerMessages.id){
 	
-						}
-						
-						
-					})
-					setselectedRecipient(_selectedRecipient)
-				}
-
-				return el
-			})
-			setnumbers(_numbers)
+						updateCustomerMessages.name = updateCustomerMessages.assign_name
+						if(updateCustomerMessages.assign_name!=undefined)
+							delete updateCustomerMessages.assign_name
+	
+						let _selectedRecipient = selectedRecipient
+	
+						Object.keys(updateCustomerMessages).map(key=>{
+							if(el[key]!=updateCustomerMessages[key]){
+								
+								el[key]= updateCustomerMessages[key]
+								if(_selectedRecipient)
+									_selectedRecipient[key] = updateCustomerMessages[key]
+		
+							}
+							
+							
+						})
+						if(_selectedRecipient)
+						setselectedRecipient(_selectedRecipient)
+					}
+	
+					return el
+				})
+				setnumbers(_numbers)
+			}
+			
 		}
 
 	},[updateCustomerMessages])
@@ -533,17 +544,20 @@ function ChatApp(props) {
 	React.useEffect(()=>{
 
 		if(messageStatus&&messageStatus.messageId&&messageStatus.stateId){
-			let _messages  = messages.map(el=>el)
-		
-			for(let i=_messages.length-1;i>=0;i--){
-				if(_messages[i]&&_messages[i].outbound_id==messageStatus.messageId){
-					_messages[i].status=messageStatus.stateId
-					break;
-					
-				}
-			}
+			if(messages&&messages.length){
 
-			setmessages(_messages)
+				let _messages  = messages;
+		
+				for(let i=_messages.length-1;i>=0;i--){
+					if(_messages[i]&&_messages[i].outbound_id==messageStatus.messageId){
+						_messages[i].status=messageStatus.stateId
+						break;
+						
+					}
+				}
+	
+				setmessages(_messages)
+			}
 		}
 
 	},[messageStatus])
@@ -551,7 +565,11 @@ function ChatApp(props) {
 
 		if(dummy){
 
-			let _numbers =[dummy,...numbers.filter(el=>el.id!=dummy.id)];
+			let _tempNumbers = []
+			if(numbers&&numbers.length){
+				_tempNumbers = numbers
+			}
+			let _numbers =[dummy,..._tempNumbers.filter(el=>el.id!=dummy.id)];
 			if(selectedRecipient){
 				_numbers = _numbers.map(number=>{
 					if(selectedRecipient.id==number.id){

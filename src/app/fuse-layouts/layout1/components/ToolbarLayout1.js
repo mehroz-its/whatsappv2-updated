@@ -86,7 +86,7 @@ function ToolbarLayout1(props) {
 			<Snackbar onClose={()=>{setSnackBarOpen(false)}}  open={snackbaropen} autoHideDuration={2000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}  key={'bottom' + 'right'}
 						 >
 							<Alert severity="success">
-								You have a new message
+								You have a new conversation
         					</Alert>
 						</Snackbar>
 			<AppBar
