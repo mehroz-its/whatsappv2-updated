@@ -250,18 +250,16 @@ function ChatApp(props) {
 	React.useEffect(()=>{
 		
 		if(messageStatus&&messageStatus.messageId&&messageStatus.stateId){
+
 			if(messages&&messages.length){
 
-				let _messages  = messages;
-
-				for(let i=_messages.length-1;i>=0;i--){
-					if(_messages[i]&&_messages[i].message_id==messageStatus.messageId){
-						_messages[i].status=messageStatus.stateId
-						break;
-						
+				let _messages  = messages.map(el=>{
+					if(el&&el.message_id==messageStatus.messageId){
+						el.status=messageStatus.stateId
 					}
-				}
-	
+					return el
+				});
+
 				setmessages(_messages)
 			}
 		}
