@@ -46,7 +46,7 @@ function AgentContent(props) {
 	}, [updateOnGoingConversation]);
 	useEffect(() => {	
 		
-		if(ongoingNewConversation&&numbers&&numbers.length){
+		if(ongoingNewConversation&&numbers){
 
 			if(selectedAgent != "All" && selectedAgent!=ongoingNewConversation.a_id){
 				return
