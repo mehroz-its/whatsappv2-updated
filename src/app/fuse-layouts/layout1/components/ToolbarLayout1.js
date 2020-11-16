@@ -104,6 +104,7 @@ function ToolbarLayout1(props) {
 
 		return () => {
 			socket.removeListener("newMessage")
+			socket.removeListener("newMessageNotification")
 			socket.removeListener("iAmOnline")
 		}
 
