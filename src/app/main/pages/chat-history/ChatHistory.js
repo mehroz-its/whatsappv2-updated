@@ -34,6 +34,7 @@ import { CSVLink, CSVDownload } from 'react-csv';
 import copy from 'copy-to-clipboard';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
+import WebSocket from "../../../socket/WebSocket"
 
 const drawerWidth = 320;
 const headerHeight = 200;
@@ -163,6 +164,8 @@ const user = {
 const selectedContactId = "5725a680b3249760ea21de52";
 const chat = null
 function ChatApp(props) {
+	const socket = WebSocket.getSocket()
+
 	const dispatch = useDispatch();
 	const mobileChatsSidebarOpen = false;
 	const userSidebarOpen = false;
@@ -176,34 +179,127 @@ function ChatApp(props) {
 	const [NewMessages, setNewMessages] = React.useState([]);
 	const [showLatestMessage, setshowLatestMessage] = React.useState(false);
 	const [selectedRecipient, setselectedRecipient] = React.useState(null);
-	const [int_CustomerList, setint_CustomerList] = React.useState(null);
-	const [int_MessageLists, setint_MessageLists] = React.useState(null);
+	// const [int_CustomerList, setint_CustomerList] = React.useState(null);
+	// const [int_MessageLists, setint_MessageLists] = React.useState(null);
 	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [ok, setOK] = React.useState('')
 	const classes = useStyles(props);
+	const [conversationDummy,setConversationDummy] = React.useState(null)
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
+	const [updateCustomerMessages, setUpdateCustomerMessages] = React.useState(null)
+	const [historyOnTop, setHistoryOnTop] = React.useState(null)
+	
 	const selectedRecipientt = (e) => {
-		clearInterval(int_MessageLists);
+		// clearInterval(int_MessageLists);
 		setselectedRecipient(e)
 		getConversation(e);
-		setint_MessageLists(setInterval(() => {
-			getConversation(e);
-		}, 3000));
+		// setint_MessageLists(setInterval(() => {
+		// 	getConversation(e);
+		// }, 3000));
 	}
-	//////
-	useEffect(() => {
-		return () => {
-			
-			if(int_CustomerList){
-				clearInterval(int_CustomerList)
-			}
+	React.useEffect(()=>{
 
-			if(int_MessageLists){
-				clearInterval(int_MessageLists)
+		if(updateCustomerMessages){
+
+			if(numbers&&numbers.length){
+
+				let _numbers = numbers.map(el=>{		
+					if(el.id==updateCustomerMessages.id){
+	
+						updateCustomerMessages.name = updateCustomerMessages.assign_name
+						if(updateCustomerMessages.assign_name!=undefined)
+							delete updateCustomerMessages.assign_name
+	
+						let _selectedRecipient = selectedRecipient
+	
+						Object.keys(updateCustomerMessages).map(key=>{
+							if(el[key]!=updateCustomerMessages[key]){
+								
+								el[key]= updateCustomerMessages[key]
+								if(_selectedRecipient)
+									_selectedRecipient[key] = updateCustomerMessages[key]
+		
+							}
+							
+							
+						})
+						if(_selectedRecipient)
+						setselectedRecipient(_selectedRecipient)
+					}
+	
+					return el
+				})
+
+				setnumbers(_numbers)
 			}
+			
+		}
+
+	},[updateCustomerMessages])
+	useEffect(()=>{
+		if(conversationDummy){
+
+			let _numbers = []
+
+			if(numbers&&numbers.length){
+
+				if(selectedRecipient&&selectedRecipient.id==conversationDummy.id){
+					selectedRecipientt(conversationDummy)
+				}
+
+				_numbers = numbers.filter(el=>el&&el.id!=conversationDummy.id)
+				_numbers = _numbers.filter(el=>el)
+			}
+			_numbers = [conversationDummy,..._numbers]
+
+			setnumbers(_numbers)
+
+
+		}
+	},[conversationDummy])
+	useEffect(()=>{
+		if(historyOnTop&&historyOnTop.customerId&&numbers&&numbers.length){
+
+			let customerId = historyOnTop.customerId;
+
+			let _numbers = [...numbers.filter(el=>el.id==customerId),...numbers.filter(el=>el.id!=customerId)]
+			
+			setnumbers(_numbers)
+
+		}
+	},[historyOnTop])
+	
+	useEffect(() => {
+
+		socket.on("updateHistoryConversation",data=>{
+			setConversationDummy(data)
+		})
+
+		socket.on("updateCustomerMessages",data=>{
+			setUpdateCustomerMessages(data)
+		})
+		
+		socket.on("historyOnTop",data=>{
+			setHistoryOnTop(data)
+		})
+		
+		getNumbers();
+
+		return () => {
+			socket.removeListener("updateHistoryConversation")
+			socket.removeListener("updateCustomerMessages")
+			socket.removeListener("historyOnTop")
+			
+			// if(int_CustomerList){
+			// 	clearInterval(int_CustomerList)
+			// }
+
+			// if(int_MessageLists){
+			// 	clearInterval(int_MessageLists)
+			// }
 		}
 	}, [])
 	const getNumbers = () => {
@@ -417,15 +513,17 @@ function ChatApp(props) {
 		'aria-labelledby': "form-dialog-title",
 		'aria-describedby': "form-dialog-title"
 	};
-	useEffect(() => {
-		getNumbers()
-		return () => {
-			clearInterval(int_MessageLists);
-		}
-	}, [selectedRecipient]);
-	if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
-		getNumbers();
-	}, 2000));
+	
+	// useEffect(() => {
+	// 	getNumbers()
+	// 	return () => {
+	// 		// clearInterval(int_MessageLists);
+	// 	}
+	// }, [selectedRecipient]);
+
+	// if (int_CustomerList === null) setint_CustomerList(setInterval(() => {
+	// 	getNumbers();
+	// }, 2000));
 	const clearData = () => {
 		setselectedRecipient(null)
 		setmessages([])

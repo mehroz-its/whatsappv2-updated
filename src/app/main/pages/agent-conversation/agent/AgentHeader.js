@@ -34,6 +34,7 @@ function AgentHeader(props) {
 	const [agents, setagents] = React.useState([]);
 	const [selectedAgent, setselectedAgent] = React.useState('All');
 	const [agentOnline, setAgentOnline] = React.useState(null)
+	const [agentConversationCount, setAgentConversationCount] = React.useState(null)
 	const socket = WebSocket.getSocket()
 
 	const handleCloseAgent = () => {
@@ -63,15 +64,26 @@ function AgentHeader(props) {
 			setagents(tempAgent)
 		}
 	}, [agentOnline])
+	React.useEffect(() => {
+		const data = agentConversationCount;
+		
+		if (data) {
+			getAgents()
+		}
+	}, [agentConversationCount])
 	useEffect(() => {
 		getAgents()
-		EventEmitter.subscribe('GetAgentsAgain', (event) => getAgents())
+		// EventEmitter.subscribe('GetAgentsAgain', (event) => getAgents())
 		
 		socket.on("agentsOnline", (data) => {
 			setAgentOnline(data)
 		})
+		socket.on("newOnGoingConversationCount", (data) => {
+			setAgentConversationCount(data)
+		})
 		return () => {
 			socket.removeListener("agentsOnline")
+			socket.removeListener("newOnGoingConversationCount")
 		}
 	}, []);
 	const handleOpenAgent = () => {

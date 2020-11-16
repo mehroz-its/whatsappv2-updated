@@ -9,6 +9,7 @@ import { withRouter } from 'react-router-dom';
 import * as Actions from '../store/actions';
 import Chat from './chat/ChatApp'
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
+import WebSocket from "../../../../socket/WebSocket";
 
 function AgentContent(props) {
 	const {  selectedAgent } = props
@@ -16,41 +17,98 @@ function AgentContent(props) {
 	const [loading, setLoading] = React.useState('');
 	const [agentCustomerInterval, setAgentCustomerInterval] = React.useState(0);
 	const [numbers, setnumbers] = React.useState([]);
-	let intervalAgent = ""
+	const [ongoingNewConversation,setOngoingNewConversation] = React.useState(null)
+	const [updateOnGoingConversation,setUpdateOnGoingConversation] = React.useState(null)
+	const socket = WebSocket.getSocket()
+
+	// let intervalAgent = ""
 	
 	// useEffect(() => {
 	// 	dispatch(Actions.getProducts());
 	// }, [dispatch]);
 	
-
-
 	
+	useEffect(() => {	
+
+		if(updateOnGoingConversation&&numbers&&numbers.length){
+
+			let _numbers = numbers.map(el=>{
+				if(el.number==updateOnGoingConversation.number){
+					el = {...el,...updateOnGoingConversation}
+				}
+
+				return el
+			})
+			
+
+			setnumbers(_numbers)
+		}
+	}, [updateOnGoingConversation]);
+	useEffect(() => {	
+		
+		if(ongoingNewConversation&&numbers&&numbers.length){
+
+			if(selectedAgent != "All" && selectedAgent!=ongoingNewConversation.a_id){
+				return
+			}
+
+			if(ongoingNewConversation.addOrRemove){
+				delete ongoingNewConversation.addOrRemove
+				
+				let _numbers = [...numbers,ongoingNewConversation]
+				_numbers = _numbers.sort((a,b)=>a.id-b.id)
+				setnumbers(_numbers)
+
+
+
+					
+			}else{
+
+				let _numbers = numbers.filter(el=>el.number!=ongoingNewConversation.number)
+				setnumbers(_numbers)
+					
+			}
+			
+		}
+	}, [ongoingNewConversation]);
+	
+	useEffect(() => {	
+		socket.on("onGoingConversation",setOngoingNewConversation)
+		socket.on("updateOnGoingConversation",setUpdateOnGoingConversation)
+		
+		return () => {
+			socket.removeListener("onGoingConversation")
+			socket.removeListener("updateOnGoingConversation")			
+		}
+	}, []);
+
+
 	useEffect(() => {
 		setnumbers([])
-		if(intervalAgent){
-			clearInterval(intervalAgent)
-		}
+		// if(intervalAgent){
+		// 	clearInterval(intervalAgent)
+		// }
 		
 		if (selectedAgent === "All") {
 			getAllAgents()	
 
-			intervalAgent = setInterval(() => {
-				getAllAgents()	
-			}, 2000)
+			// intervalAgent = setInterval(() => {
+			// 	getAllAgents()	
+			// }, 2000)
 			
 		}else{
 			getAgentsCustomers();
 
-			intervalAgent = setInterval(() => {
-				getAgentsCustomers();
-			}, 2000)
+			// intervalAgent = setInterval(() => {
+			// 	getAgentsCustomers();
+			// }, 2000)
 		}
 	
 			
 		return () => {
-			if(intervalAgent){
-				clearInterval(intervalAgent)
-			}
+			// if(intervalAgent){
+			// 	clearInterval(intervalAgent)
+			// }
 		}
 		// return () => {
 		// 	console.log("CLEARING IT",agentCustomerInterval)
@@ -72,7 +130,7 @@ function AgentContent(props) {
 	}
 
 	const getAgentsCustomers = () => {
-		if(selectedAgent){
+		if(selectedAgent&&selectedAgent!="All"){
 			let params = {
 				agentId: selectedAgent
 			}
@@ -82,7 +140,7 @@ function AgentContent(props) {
 				const numbers = _response.data.data.customers;
 				setnumbers(numbers)
 			}, (error) => {
-				clearInterval(agentCustomerInterval)
+				// clearInterval(agentCustomerInterval)
 				console.log("================ERROR================")
 				console.log(error)
 			});
@@ -102,7 +160,7 @@ function AgentContent(props) {
 	}
 	return (
 		<div className="w-full flex flex-col" style={{}}>
-			<Chat numberr={numbers} Loading={loading} selectedAgent={selectedAgent} reloadNumber={(e) => getAgentsCustomersReload()} />
+			<Chat updateOnGoingConversation={updateOnGoingConversation} ongoingNewConversation={ongoingNewConversation} numberr={numbers} Loading={loading} selectedAgent={selectedAgent} reloadNumber={(e) => getAgentsCustomersReload()} />
 		</div>
 	);
 }

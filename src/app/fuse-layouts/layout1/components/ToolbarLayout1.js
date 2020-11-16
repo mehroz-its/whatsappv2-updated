@@ -30,13 +30,24 @@ function ToolbarLayout1(props) {
 	const toolbarTheme = useSelector(({ fuse }) => fuse.settings.toolbarTheme);
 	const [online, setOnline] = React.useState(JSON.parse(localStorage.getItem('online')));
 	const [toggleShow, setToggleShow] = React.useState(false);
+	const [message, setMessage] = React.useState(false);
 	const classes = useStyles(props);
 
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 
 	const socket = WebSocket.getSocket()
 
-
+	const updateAgentStatus = isOnline => {
+		if (isOnline) {
+			EventEmitter.dispatch('Online', true);
+			localStorage.setItem('online', true);
+			setOnline(true);
+		} else {
+			EventEmitter.dispatch('Online', false);
+			localStorage.setItem('online', false);
+			setOnline(false);
+		}
+	}
 	const setAgentOnline = e => {
 		const isOnline = e.target.checked;
 		if (isOnline) {
@@ -50,7 +61,7 @@ function ToolbarLayout1(props) {
 				response => {
 					localStorage.setItem('online', true);
 				},
-				response => {}
+				response => { }
 			);
 		} else {
 			EventEmitter.dispatch('Online', false);
@@ -60,8 +71,8 @@ function ToolbarLayout1(props) {
 				'core',
 				'offline',
 				{},
-				response => {},
-				response => {}
+				response => { },
+				response => { }
 			);
 		}
 	};
@@ -69,26 +80,48 @@ function ToolbarLayout1(props) {
 		setToggleShow(PermissionResolver.hasPermission('app', 'toggle'));
 		// console.log('toggleShow : ', toggleShow);
 
-		socket.on("newMessage",(data)=>{
-			if(data&&data.newMessage){
+		socket.on("newMessage", (data) => {
+			if (data && data.newMessage) {
 				setSnackBarOpen(true)
+				setMessage("You have a new conversation")
+			}
+		})
+		socket.on("newMessageNotification", (data) => {
+			if (data && data.newMessage) {
+				if(window&&window.location&&window.location.href){
+					if(!String(window.location.href||" ").includes("/apps/chat")){
+						setSnackBarOpen(true)
+						setMessage("You have a new message")
+					}
+				}
+			}
+		})
+		socket.on("iAmOnline", (data) => {
+			if (data) {
+				updateAgentStatus(data.isOnline)
 			}
 		})
 
 		return () => {
 			socket.removeListener("newMessage")
+			socket.removeListener("iAmOnline")
 		}
 
 	}, []);
 	return (
 		<ThemeProvider theme={toolbarTheme}>
-		
-			<Snackbar onClose={()=>{setSnackBarOpen(false)}}  open={snackbaropen} autoHideDuration={2000}  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}  key={'bottom' + 'right'}
-						 >
-							<Alert severity="success">
-								You have a new conversation
-        					</Alert>
-						</Snackbar>
+
+			{
+				message ?
+
+					<Snackbar onClose={() => { setSnackBarOpen(false) }} open={snackbaropen} autoHideDuration={2000} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} key={'bottom' + 'right'}
+					>
+						<Alert severity="success">
+						{message}
+						</Alert>
+					</Snackbar>
+					: null
+			}
 			<AppBar
 				id="fuse-toolbar"
 				className="flex relative z-10"

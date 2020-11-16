@@ -185,7 +185,7 @@ function ChatApp(props) {
 	const dispatch = useDispatch();
 	const userSidebarOpen = false;
 	const contactSidebarOpen = false;
-	var abc = []
+	
 	let numberDummy = []
 	const [mobileChatsSidebarOpen, setmobileChatsSidebarOpen] = React.useState(false);
 	const [lastMessageTimestamp, setlastMessageTimestamp] = React.useState(null);
@@ -247,11 +247,11 @@ function ChatApp(props) {
 
 		};
 		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
-			if (response.data.data.chat.length > abc.length) {
-				setmessages(response.data.data.chat)
-				abc = response.data.data.chat
-				setshowLatestMessage(true)
-			}
+
+			setmessages(response.data.data.chat)
+
+			setshowLatestMessage(true)
+				
 			
 		}, (response) => {
 		});
@@ -440,17 +440,12 @@ function ChatApp(props) {
 		'aria-labelledby': "form-dialog-title",
 		'aria-describedby': "form-dialog-title"
 	};
-	useEffect(() => {
-		EventEmitter.subscribe('Online', (event) => checkOnline(event))
-		// getNumbers()
-		return () => {
-
-		}
-	}, [selectedRecipient]);
+	
 	
 	useEffect(() => {
 
 		getNumbers();
+		EventEmitter.subscribe('Online', (event) => checkOnline(event))
 
 		socket.on("newConversation",(data)=>{	
 			setDummy(data)
@@ -547,9 +542,9 @@ function ChatApp(props) {
 			if(messages&&messages.length){
 
 				let _messages  = messages;
-		
+
 				for(let i=_messages.length-1;i>=0;i--){
-					if(_messages[i]&&_messages[i].outbound_id==messageStatus.messageId){
+					if(_messages[i]&&_messages[i].message_id==messageStatus.messageId){
 						_messages[i].status=messageStatus.stateId
 						break;
 						
@@ -585,6 +580,7 @@ function ChatApp(props) {
 	},[dummy])
 	
 	React.useEffect(()=>{
+
 		if(message&&message.length&&selectedRecipient&&selectedRecipient.id){
 			const _message = message[0];
 			if(selectedRecipient.id==_message.receiver_id){
@@ -611,7 +607,7 @@ function ChatApp(props) {
 			setmessages([])
 		}
 		else {
-			readMessage()
+			getNumbers()
 		}
 	}
 	const clearData = () => {

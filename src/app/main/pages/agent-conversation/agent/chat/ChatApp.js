@@ -32,6 +32,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import copy from 'copy-to-clipboard';
 import { EventEmitter } from '../../../../../../events'
+import WebSocket from "../../../../../socket/WebSocket"
 
 const drawerWidth = 320;
 const headerHeight = 200;
@@ -146,8 +147,31 @@ const selectedContactId = "5725a680b3249760ea21de52";
 const chat = null
 
 function ChatApp(props) {
+
+
+	const socket = WebSocket.getSocket()
+
 	const dispatch = useDispatch();
-	const { numberr, selectedAgent } = props
+	const { numberr, selectedAgent,ongoingNewConversation, updateOnGoingConversation } = props
+
+
+	React.useEffect(()=>{
+		if(updateOnGoingConversation&&selectedRecipient){
+			if(selectedRecipient.number==updateOnGoingConversation.number){
+				let _selectedRecipient = {...selectedRecipient,...updateOnGoingConversation}
+				setselectedRecipient(_selectedRecipient)
+			}
+		}
+	},[updateOnGoingConversation])
+
+	React.useEffect(()=>{
+		if(ongoingNewConversation&&selectedRecipient){
+			if(ongoingNewConversation.number==selectedRecipient.number){
+				clearData()
+			}
+		}
+	},[ongoingNewConversation])
+
 	// console.log(numberr, 'propssss')
 
 	// const chat = useSelector(({ chatApp }) => chatApp.chat);
@@ -166,34 +190,115 @@ function ChatApp(props) {
 	const [NewMessages, setNewMessages] = React.useState([]);
 	const [showLatestMessage, setshowLatestMessage] = React.useState(false);
 	const [selectedRecipient, setselectedRecipient] = React.useState(null);
-	const [int_CustomerList, setint_CustomerList] = React.useState(null);
-	const [int_MessageLists, setint_MessageLists] = React.useState(null);
+	// const [int_CustomerList, setint_CustomerList] = React.useState(null);
+	// const [int_MessageLists, setint_MessageLists] = React.useState(null);
+
 	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
 	const [anchorEl, setAnchorEl] = React.useState(null);
-	
+
+
+	const [messageListener, setMessageListener] = React.useState(null);
+	const [messageStatusListener, setMessageStatusListener] = React.useState(null);
+	const [updateMessages, setUpdateMessages] = React.useState(null);
+	const [message, setmessage] = React.useState(null);
+	const [messageStatus, setMessageStatus] = React.useState(null)
+
+
+
+	const removeListener = () =>{
+
+		if(messageListener){
+			socket.removeListener(messageListener)
+			setMessageListener(null)
+		}
+		if(messageStatusListener){
+			socket.removeListener(messageStatusListener)
+			setMessageStatusListener(null)
+		}
+	}
 	// console.log(NewAgent, 'iiiiii')
 	useEffect(() => {
 		return () => {
-			if(int_MessageLists){
-				clearInterval(int_MessageLists)
-			}
+			// if(int_MessageLists){
+			// 	clearInterval(int_MessageLists)
+			// }
+
+			removeListener()
+
 		}
 	}, [])
 
 	// const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
 
-		
+	React.useEffect(()=>{
+		if(message&&message.length&&selectedRecipient&&selectedRecipient.id){
+			const _message = message[0];
+			if(selectedRecipient.id==_message.receiver_id){
+				let _messages =[...messages,...message];
+				setmessages(_messages)
+				if(_message.type=="inbound"){
+					// readMessage()
+				}
+			}
+		}
+	},[message])
+	
+	
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
+
+	React.useEffect(()=>{
+		
+		if(messageStatus&&messageStatus.messageId&&messageStatus.stateId){
+			if(messages&&messages.length){
+
+				let _messages  = messages;
+
+				for(let i=_messages.length-1;i>=0;i--){
+					if(_messages[i]&&_messages[i].message_id==messageStatus.messageId){
+						_messages[i].status=messageStatus.stateId
+						break;
+						
+					}
+				}
+	
+				setmessages(_messages)
+			}
+		}
+
+	},[messageStatus])
+
 	const selectedRecipientt = (e) => {
 		// console.log("selectedRecipientt");
-		clearInterval(int_MessageLists);
+		// clearInterval(int_MessageLists);
+		
+
+		let {a_id,id} = e
+
+		if(a_id&&id){
+			removeListener()
+
+			let _messageListener = `newOngoingConversationMessage_${a_id}_${id}`
+			setMessageListener(_messageListener)
+			socket.on(_messageListener,(data)=>{	
+				setmessage(data)
+			})
+
+			let _messageStatusListener = `newOngoingConversationMessageStatus_${a_id}_${id}`
+			setMessageStatusListener(_messageStatusListener)
+			socket.on(_messageStatusListener,(data)=>{	
+				setMessageStatus(data)
+			})
+
+
+		}
+
 		setselectedRecipient(e)
 		getConversation(e);
 		// if (selectedRecipient !== null) {
-		setint_MessageLists(setInterval(() => {
-			getConversation(e);
-		}, 3000));
+		// setint_MessageLists(setInterval(() => {
+		// 	getConversation(e);
+		// }, 3000));
 		// }
 	}
 	// const getNumbers = () => {
@@ -332,7 +437,7 @@ function ChatApp(props) {
 					id: customer.id,
 					number: selectedRecipient.number,
 					attributes: customer.attributes,
-					assign_name: '',
+					assign_name: selectedRecipient.name==selectedRecipient.number?"":selectedRecipient.name,
 					countries,
 				})
 				// console.log("customer : ", customer);
@@ -474,7 +579,7 @@ function ChatApp(props) {
               setselectedRecipient(null)
 		}
 		return () => {
-			clearInterval(int_MessageLists);
+			// clearInterval(int_MessageLists);
 		}
 	}, [numberr, selectedRecipient]);
 
@@ -482,7 +587,7 @@ function ChatApp(props) {
 	const clearData = () => {
 		setselectedRecipient(null)
 		setmessages([])
-		clearInterval(this.int_MessageLists);
+		// clearInterval(this.int_MessageLists);
 		// clearInterval(this.int_CustomerList);
 		// 	getNumbers();
 		// setint_CustomerList = setInterval(() => {
@@ -536,23 +641,26 @@ function ChatApp(props) {
 		// console.log("selectedShiftAgent agent ", agent)
 		// console.log("selectedShiftAgent selectedRecipient ", selectedRecipient)
 
-		CoreHttpHandler.request('conversations', 'transfer', {
-			key: ':id',
-			value: agent.id,
-			params: {
-				customer: selectedRecipient.number
-			}
-		}, (response) => {
-		EventEmitter.dispatch('GetAgentsAgain',true)
-			
-			// alert("selectedShiftAgent ")
-			setdialogOpenShift(false)
-			clearData()
-			props.reloadNumber()
-		}, (response) => {
-			setdialogOpenShift(false)
-			props.reloadNumber()
-		});
+		if(selectedRecipient){
+
+			CoreHttpHandler.request('conversations', 'transfer', {
+				key: ':id',
+				value: agent.id,
+				params: {
+					customer: selectedRecipient.number
+				}
+			}, (response) => {
+			// EventEmitter.dispatch('GetAgentsAgain',true)
+				
+				// alert("selectedShiftAgent ")
+				setdialogOpenShift(false)
+				clearData()
+				// props.reloadNumber()
+			}, (response) => {
+				setdialogOpenShift(false)
+				// props.reloadNumber()
+			});
+		}
 	}
 	const dialogOptionsShift = {
 		onClose: function () {
@@ -756,7 +864,7 @@ function ChatApp(props) {
 	}
 	// console.log(valueofEvent,'open from state');
 	// console.log(props,'allllthepropsssssssss');
-	console.log(props.Loading,LoaderValue,'lossssssssssss');
+	// console.log(props.Loading,LoaderValue,'lossssssssssss');
 	return (
 		<>
 		<Snackbar
