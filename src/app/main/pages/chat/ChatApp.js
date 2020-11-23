@@ -474,6 +474,11 @@ function ChatApp(props) {
 		}
 	}, [])
 
+	React.useEffect(()=>{
+		if(selectedRecipient){
+			readMessage()
+		}
+	},[selectedRecipient])
     React.useEffect(()=>{
 
         if(removeConversation){

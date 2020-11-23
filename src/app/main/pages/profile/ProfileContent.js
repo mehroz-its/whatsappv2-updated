@@ -237,6 +237,8 @@ const Profile = function (props) {
 						}
 					});
 			}
+		}).catch(error=>{
+			
 		});
 		fetch(`https://glist.its.com.pk/v1/fetch/countries`)
 			.then(response => response.json())

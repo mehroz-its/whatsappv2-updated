@@ -196,7 +196,12 @@ function UserTable(props) {
 													)}
 											</TableCell>
 											<TableCell className="w-64 text-center" padding="none">
-												<Icon onClick={event => hadleDelete(event, n)} className="text-16">delete_outline</Icon>
+											{
+												n.enabled?
+														null
+													:
+														<Icon onClick={event => hadleDelete(event, n)} className="text-16">delete_outline</Icon>
+											}
 											</TableCell>
 										</TableRow>
 									);

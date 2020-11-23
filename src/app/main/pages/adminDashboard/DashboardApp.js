@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 });
 
 const rader_chart = list => {
-	console.log('list ', list);
+	// console.log('list ', list);
 	am4core.useTheme(am4themes_material);
 	am4core.useTheme(am4themes_animated);
 	let myEle = document.getElementById('chartdivv');
@@ -246,14 +246,14 @@ function DashboardApp(props) {
 	};
 	const dataSourceSuccess = response => {
 		const list = response.data.data.dashboardBoxInfo.boxes;
-		console.log('list :', list);
+		// console.log('list :', list);
 		setBox(list);
 	};
 
 	const dataSourceFailure = response => {};
 	const messagestateSuccess = response => {
 		const list = response.data.data.chartData;
-		console.log('list : ', list);
+		// console.log('list : ', list);
 		setRadarList(list);
 		rader_chart(list);
 	};

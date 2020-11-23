@@ -16,6 +16,8 @@ import { Auth } from './auth';
 import routes from './fuse-configs/routesConfig';
 import store from './store';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import { useIdleTimer } from 'react-idle-timer'
+import CoreHttpHandler from './../http/services/CoreHttpHandler';
 
 
 const jss = create({
@@ -45,6 +47,42 @@ const App = () => {
 		setDisplaySnack(true)
 
 	}, 4000);
+
+
+
+	const handleOnIdle = event => {
+
+		let userToken = localStorage.getItem("user_token")
+
+		if(userToken){
+			localStorage.setItem('online', false);
+
+			CoreHttpHandler.request(
+				'core',
+				'offline',
+				{},
+				response => { },
+				response => { }
+			);
+			CoreHttpHandler.request(
+				'core',
+				'userLogout',
+				{},
+				response => {
+					window.location.href = '/login';
+					localStorage.clear();
+				},
+				response => {}
+			);
+		}
+		
+	}
+	 
+	const { getRemainingTime, getLastActiveTime } = useIdleTimer({
+		timeout: 1000 * 60 * 15,
+		onIdle: handleOnIdle,
+		debounce: 500
+	})
 
 	return (
 		<AppContext.Provider

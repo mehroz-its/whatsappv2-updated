@@ -102,6 +102,25 @@ function ToolbarLayout1(props) {
 			}
 		})
 
+
+
+
+		const _online = localStorage.getItem('online');
+
+		if(_online){
+			CoreHttpHandler.request(
+				'core',
+				'online',
+				{},
+				response => {
+					localStorage.setItem('online', true);
+				},
+				response => { }
+			);
+		}
+
+		
+
 		return () => {
 			socket.removeListener("newMessage")
 			socket.removeListener("newMessageNotification")

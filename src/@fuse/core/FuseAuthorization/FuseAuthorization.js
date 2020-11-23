@@ -33,7 +33,7 @@ class FuseAuthorization extends Component {
 			this.redirectRoute();
 		} else {
 			this.setState({ user_routes: this.props.hasPermission })
-			console.log(this.state.user_routes, "state.user_routes")
+			// console.log(this.state.user_routes, "state.user_routes")
 		}
 
 

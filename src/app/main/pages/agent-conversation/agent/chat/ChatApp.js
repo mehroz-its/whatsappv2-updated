@@ -33,6 +33,7 @@ import Alert from '@material-ui/lab/Alert';
 import copy from 'copy-to-clipboard';
 import { EventEmitter } from '../../../../../../events'
 import WebSocket from "../../../../../socket/WebSocket"
+import TransferWithinAStationIcon from '@material-ui/icons/TransferWithinAStation';
 
 const drawerWidth = 320;
 const headerHeight = 200;
@@ -1013,14 +1014,18 @@ function ChatApp(props) {
 												</div>
 											</div>
 											<div style={{ position: 'absolute', right: 20,top:17 }}>
-												<Button
-											 onClick= {(e)=>conversationActionsCallback('shift')}
-											 fullWidth
-											 variant="contained"
+												{/* <Button
+											
 											 size="small"
 												>
 												 Shift
-												</Button>
+												</Button> */}
+												<TransferWithinAStationIcon 
+													style={{ fontSize: 30, cursor:"pointer" }} 
+														onClick= {(e)=>conversationActionsCallback('shift')}
+														fullWidth
+														variant="contained"
+												/>
 												<Menu
 													id="chats-more-menu"
 													anchorEl={moreMenuEl}

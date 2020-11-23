@@ -35,7 +35,7 @@ const CustomerProfileDialog = function (props) {
     const { id, number, assign_name, attributes } = data;
 
     const [customerAttributes, setCustomerAttributes] = React.useState(attributes);
-    console.log("attributes : ", attributes);
+    // console.log("attributes : ", attributes);
     const onInputChange = e => {
         let id = (e.target.id) ? e.target.id : e.target.name;
 

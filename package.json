@@ -68,6 +68,7 @@
         "react-frame-component": "4.1.1",
         "react-hook-form": "^6.8.1",
         "react-i18next": "11.3.4",
+        "react-idle-timer": "^4.5.0",
         "react-iframe": "^1.8.0",
         "react-image-lightbox": "^5.1.1",
         "react-lazy-load-image-component": "^1.5.0",

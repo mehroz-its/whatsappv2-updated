@@ -19,6 +19,7 @@ function AgentContent(props) {
 	const [numbers, setnumbers] = React.useState([]);
 	const [ongoingNewConversation,setOngoingNewConversation] = React.useState(null)
 	const [updateOnGoingConversation,setUpdateOnGoingConversation] = React.useState(null)
+	const [newMessageForOngoing,setNewMessageForOngoing] = React.useState(null)
 	const socket = WebSocket.getSocket()
 
 	// let intervalAgent = ""
@@ -45,6 +46,24 @@ function AgentContent(props) {
 		}
 	}, [updateOnGoingConversation]);
 	useEffect(() => {	
+
+		if(newMessageForOngoing&&numbers&&numbers.length){
+
+			if(selectedAgent != "All" && selectedAgent!=newMessageForOngoing.a_id){
+				return
+			}
+			let _temp = numbers.filter(el=>el.id==newMessageForOngoing.customerId)
+			if(_temp&&_temp.length){
+
+				let _numbers = [..._temp,...numbers.filter(el=>el.id!=newMessageForOngoing.customerId)]
+				setnumbers(_numbers)
+			}
+		}
+	}, [newMessageForOngoing]);
+
+
+	
+	useEffect(() => {	
 		
 		if(ongoingNewConversation&&numbers){
 
@@ -53,13 +72,12 @@ function AgentContent(props) {
 			}
 
 			if(ongoingNewConversation.addOrRemove){
+
 				delete ongoingNewConversation.addOrRemove
-				
-				let _numbers = [...numbers,ongoingNewConversation]
-				_numbers = _numbers.sort((a,b)=>a.id-b.id)
+				let _numbers = [ongoingNewConversation,...numbers.filter(el=>el.number!=ongoingNewConversation.number)]
+
+				// _numbers = _numbers.sort((a,b)=>a.id-b.id)
 				setnumbers(_numbers)
-
-
 
 					
 			}else{
@@ -75,10 +93,13 @@ function AgentContent(props) {
 	useEffect(() => {	
 		socket.on("onGoingConversation",setOngoingNewConversation)
 		socket.on("updateOnGoingConversation",setUpdateOnGoingConversation)
-		
+		socket.on("newMessageForOngoing",setNewMessageForOngoing)
+
+
 		return () => {
 			socket.removeListener("onGoingConversation")
 			socket.removeListener("updateOnGoingConversation")			
+			socket.removeListener("newMessageForOngoing")			
 		}
 	}, []);
 
