@@ -28,6 +28,13 @@ class APIS {
                 },
                 method: 'post',
                 path: '/backend/client/toggle'
+            },
+            deleteClient: {
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'post',
+                path: '/backend/client/delete'
             }
         }
     }

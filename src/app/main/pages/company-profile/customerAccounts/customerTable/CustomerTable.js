@@ -18,6 +18,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Icon from '@material-ui/core/Icon';
+import DeleteDialogue from "./DeleteDialogue";
+
 const PaginationStyle = createMuiTheme({
 	overrides: {
 		MuiTypography: {
@@ -38,7 +43,9 @@ function CampaignTable(props) {
 	const [searchVal, setSearchVal] = useState(props.ValueForSearch)
 
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
-	const [snackbarmessage, setSnackBarMessage] = React.useState('')
+	const [snackbarmessage, setSnackBarMessage] = React.useState('')		
+	const [clientData, setClientData] = React.useState(null);
+
 	const [ok, setOK] = React.useState('')
 	const [order, setOrder] = useState({
 		direction: 'asc',
@@ -110,6 +117,15 @@ function CampaignTable(props) {
 	function handleDialogClose() {
 		setOpen(false)
 	}
+
+	function openDeleteDialogue(n){
+		setClientData(n)
+	}
+	function closeDeleteDialogue(n){
+		setClientData(null)
+		if(deleteClient)
+			deleteClient(n)
+	}
 	
 	const toggleChecked = (event, id) => {
 		console.log("event :,", event.target.checked, "id :", id);
@@ -121,7 +137,7 @@ function CampaignTable(props) {
 		event.stopPropagation()
 		// setChecked((prev) => !prev);
 	};
-	const {clients,  rowsPerPage, currentPage, setLimit, totalItems, setPage,isLoading} = props;
+	const {clients,  rowsPerPage, currentPage, setLimit, totalItems, setPage,isLoading, deleteClient} = props;
 
 	if(isLoading){
 
@@ -153,6 +169,7 @@ function CampaignTable(props) {
 						{snackbarmessage}
 					</Alert>
 				</Snackbar>
+				
 				{props.clients.filter((item) => {
 					return item.id.includes(props.searchValue) || item.comapny.toLowerCase().includes(props.searchValue.toLowerCase()) || item.number.includes(props.searchValue) || item.email.toLowerCase().includes(props.searchValue.toLowerCase()) || item.phone.includes(props.searchValue) || item.dt.includes(props.searchValue)
 				}).length ?
@@ -228,6 +245,20 @@ function CampaignTable(props) {
 															}
 														/>
 													</TableCell>
+													<TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
+														
+													{
+														!n.enabled?
+															
+														<ListItemIcon className="min-w-40" onClick={()=>{openDeleteDialogue(n)}}>
+															<Icon>delete</Icon>
+														</ListItemIcon>
+															
+															:null
+
+													}
+														
+													</TableCell>
 												</TableRow>
 											);
 										})}
@@ -261,6 +292,11 @@ function CampaignTable(props) {
 							/>
 						</MuiThemeProvider>
 						{open && <CampaignDialog isOpen={open} type='Update Campaign' data={dialogData} closeDialog={handleDialogClose} />}
+						{
+							clientData && <DeleteDialogue isOpen={true} type="Delete Company" data={clientData} closeDialog={closeDeleteDialogue} />
+						}
+
+		
 					</div> : <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}><h1 style={{ color: "gray" }}>Data Not Found</h1></div>
 				}
 

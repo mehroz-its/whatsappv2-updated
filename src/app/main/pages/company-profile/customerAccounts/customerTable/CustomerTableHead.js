@@ -55,6 +55,13 @@ const rows = [
 		label: 'Active',
 		sort: true
 	},
+	{
+		id: 'progress',
+		align: 'center',
+		disablePadding: false,
+		label: 'Delete',
+		sort: true
+	},
 
 ];
 const useStyles = makeStyles(theme => ({

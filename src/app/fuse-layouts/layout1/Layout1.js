@@ -107,9 +107,11 @@ function Layout1(props) {
 	};
 	React.useEffect(() => {
 		EventEmitter.subscribe('Message', (e) => setOpenn(true))
+
+		return ()=>{
+			EventEmitter.unsubscribe("Message")
+		}
 	}, [])
-
-
 
 	switch (config.scroll) {
 		case 'body': {

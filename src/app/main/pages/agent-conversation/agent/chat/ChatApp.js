@@ -579,6 +579,8 @@ function ChatApp(props) {
 		}
 		return () => {
 			// clearInterval(int_MessageLists);
+			EventEmitter.unsubscribe("ShowHideLoader")
+
 		}
 	}, [numberr, selectedRecipient]);
 

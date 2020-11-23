@@ -127,12 +127,11 @@ const UserMenu = props => {
 
 	const handleLogOut = () => {
 		let onlineStatus = JSON.parse(localStorage.getItem('online'));
+		const user = JSON.parse(localStorage.getItem('user_data'));
+
 		onlineStatus = onlineStatus === null ? false : onlineStatus;
-		if (onlineStatus === true) {
-			// console.log("onlineStatus", onlineStatus);
-			handleClick();
-		} else {
-			// console.log('i am logout')
+
+		if(user.client_id=="0"){
 			CoreHttpHandler.request(
 				'core',
 				'userLogout',
@@ -143,6 +142,22 @@ const UserMenu = props => {
 				},
 				response => {}
 			);
+		}else{
+			if (onlineStatus === true ) {
+				handleClick();
+			} else {
+				CoreHttpHandler.request(
+					'core',
+					'userLogout',
+					{},
+					response => {
+						window.location.href = '/login';
+						localStorage.clear();
+					},
+					response => {}
+				);
+				
+			}
 		}
 	};
 	const classes = useStyles(props);

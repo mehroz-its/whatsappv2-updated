@@ -16,6 +16,11 @@ import { makeStyles, ThemeProvider, createMuiTheme, withStyles, MuiThemeProvider
 import { HOME_URL } from "./../../../../common/parameters.js";
 import { useSelector, useDispatch } from "react-redux";
 
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
+
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 const useStyles = makeStyles(theme => ({
 
@@ -113,7 +118,8 @@ const Login2Page = (props) => {
     const [ok, setOK] = React.useState('')
     const [hit, setHitFalse] = React.useState(true)
     const [isLoading, setIsLoading] = React.useState(false);
-
+    const [showPassword, setShowPassword] = React.useState(false);
+    
 
     let snackbarClose = (event) => {
         setSnackBarOpen(false)
@@ -313,7 +319,7 @@ const Login2Page = (props) => {
                             <TextField
                                 className="mb-16 sm:mb-4"
                                 label="Password"
-                                type="password"
+                                type={showPassword?"text":"password"}
                                 name="password"
                                 size="small"
                                 onChange={handlePassordInput}
@@ -323,9 +329,24 @@ const Login2Page = (props) => {
                                 style={formItem}
                                 fullWidth
                                 onKeyDown={_handleKeyDown}
+                                
+                                InputProps={{ // <-- This is where the toggle button is added.
+                                    endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={()=>{setShowPassword(!showPassword)}}
+                                        onMouseDown={()=>{}}
+                                        >
+                                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                    )
+                                }}
+
+
+
                             />
-
-
                             <div className="flex items-center justify-between mt-16 mb-32">
                                 <Link className="font-large" to="/pages/auth/forgot-password" style={{ fontSize: "14px" }}>
                                     Forgot Password?

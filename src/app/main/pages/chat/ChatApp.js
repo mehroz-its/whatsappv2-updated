@@ -465,12 +465,14 @@ function ChatApp(props) {
 			setUpdateCustomerMessages(data)
 		})
 		
+
 		return () => {
 			socket.removeListener("newConversation")
 			socket.removeListener("newConversationMessage")
 			socket.removeListener("updateMessageStatus")
 			socket.removeListener("removeConversation")
 			socket.removeListener("updateCustomerMessages")
+			EventEmitter.unsubscribe("Online")
 		}
 	}, [])
 

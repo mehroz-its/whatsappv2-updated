@@ -86,6 +86,11 @@ function UserNavbarHeader(props) {
 	useEffect(() => {
 		EventEmitter.subscribe('ProfileUpdate', event => checkUpdate());
 		checkUpdate();
+
+		
+		return ()=>{
+			EventEmitter.unsubscribe("ProfileUpdate")
+		}
 	}, []);
 
 	return (

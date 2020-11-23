@@ -42,7 +42,6 @@ function Campaign(props) {
 		setOpen(true);
 	};
 	const handleDialogClose = (val) => {
-		console.log(val, 'valuee');
 		setOpen(false)
 	};
 	const handleClose = () => {
@@ -50,7 +49,6 @@ function Campaign(props) {
 	};
 	const updateText = (search) => {
 		setVal(search)
-		console.log(val)
 	}
 	return (
 		<>
