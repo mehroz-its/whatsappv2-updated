@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 function ToolbarLayout1(props) {
 	const config = useSelector(({ fuse }) => fuse.settings.current.layout.config);
 	const toolbarTheme = useSelector(({ fuse }) => fuse.settings.toolbarTheme);
-	const [online, setOnline] = React.useState(JSON.parse(localStorage.getItem('online')));
+	const [online, setOnline] = React.useState(false);
 	const [toggleShow, setToggleShow] = React.useState(false);
 	const [message, setMessage] = React.useState(false);
 	const classes = useStyles(props);
@@ -79,6 +79,9 @@ function ToolbarLayout1(props) {
 	useEffect(() => {
 		setToggleShow(PermissionResolver.hasPermission('app', 'toggle'));
 		// console.log('toggleShow : ', toggleShow);
+		const _online = localStorage.getItem('online');
+
+		setOnline(_online)
 
 		socket.on("newMessage", (data) => {
 			if (data && data.newMessage) {
@@ -105,7 +108,6 @@ function ToolbarLayout1(props) {
 
 
 
-		const _online = localStorage.getItem('online');
 
 		if(_online){
 			CoreHttpHandler.request(
