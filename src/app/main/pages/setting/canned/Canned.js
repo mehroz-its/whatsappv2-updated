@@ -134,7 +134,7 @@ function ContactsApp() {
 			setSnackBarMessage('Deleted Successfully');
 			setOK('success');
 			setSnackBarOpen(true);
-		} else if (value !== ('update' || 'delete' || 'create')) {
+		} else if (value !== ('update' || 'delete' || 'create')&&value) {
 			setSnackBarMessage(value);
 			setOK('error');
 			setSnackBarOpen(true);
