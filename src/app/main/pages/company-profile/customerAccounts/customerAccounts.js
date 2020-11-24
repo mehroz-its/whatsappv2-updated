@@ -743,7 +743,7 @@ function CustomerAccounts(props) {
 									</Grid>
 								</Grid>
 
-								<Grid container spacing={3} style={{ marginTop: 10 }}>
+								{/* <Grid container spacing={3} style={{ marginTop: 10 }}>
 									<Grid item md={12} sm={12} xs={12}>
 										<div style={{ height: 600 }}>
 											<SortableTree
@@ -798,7 +798,7 @@ function CustomerAccounts(props) {
 										</span>
 										</Button>
 									</Grid>
-								</Grid>
+								</Grid> */}
 
 								{open && (
 									<AutoRepliesDialog
