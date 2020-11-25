@@ -51,30 +51,30 @@ const App = () => {
 
 
 	const handleOnIdle = event => {
+		
+		// let userToken = localStorage.getItem("user_token")
 
-		let userToken = localStorage.getItem("user_token")
+		// if(userToken){
+		// 	localStorage.setItem('online', false);
 
-		if(userToken){
-			localStorage.setItem('online', false);
-
-			CoreHttpHandler.request(
-				'core',
-				'offline',
-				{},
-				response => { },
-				response => { }
-			);
-			CoreHttpHandler.request(
-				'core',
-				'userLogout',
-				{},
-				response => {
-					window.location.href = '/login';
-					localStorage.clear();
-				},
-				response => {}
-			);
-		}
+		// 	CoreHttpHandler.request(
+		// 		'core',
+		// 		'offline',
+		// 		{},
+		// 		response => { },
+		// 		response => { }
+		// 	);
+		// 	CoreHttpHandler.request(
+		// 		'core',
+		// 		'userLogout',
+		// 		{},
+		// 		response => {
+		// 			window.location.href = '/login';
+		// 			localStorage.clear();
+		// 		},
+		// 		response => {}
+		// 	);
+		// }
 		
 	}
 	 

@@ -35,7 +35,11 @@ import copy from 'copy-to-clipboard';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import WebSocket from "../../../socket/WebSocket"
+import DateRangePickerVal from './DatePicker';
+import moment from "moment";
 
+var Start = '';
+var End = '';
 const drawerWidth = 320;
 const headerHeight = 200;
 const useStyles = makeStyles(theme => ({
@@ -166,6 +170,9 @@ const chat = null
 function ChatApp(props) {
 	const socket = WebSocket.getSocket()
 
+
+
+
 	const dispatch = useDispatch();
 	const mobileChatsSidebarOpen = false;
 	const userSidebarOpen = false;
@@ -187,112 +194,161 @@ function ChatApp(props) {
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [ok, setOK] = React.useState('')
 	const classes = useStyles(props);
-	const [conversationDummy,setConversationDummy] = React.useState(null)
+	const [conversationDummy, setConversationDummy] = React.useState(null)
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
 	const [updateCustomerMessages, setUpdateCustomerMessages] = React.useState(null)
 	const [historyOnTop, setHistoryOnTop] = React.useState(null)
-	
+
 	const selectedRecipientt = (e) => {
 		// clearInterval(int_MessageLists);
 		setselectedRecipient(e)
 		getConversation(e);
+		setOpenSearch(false)
 		// setint_MessageLists(setInterval(() => {
 		// 	getConversation(e);
 		// }, 3000));
 	}
-	React.useEffect(()=>{
 
-		if(updateCustomerMessages){
 
-			if(numbers&&numbers.length){
+	const SelectedDates = ({ startDate, endDate }) => {
+		if (openSearch) {
 
-				let _numbers = numbers.map(el=>{		
-					if(el.id==updateCustomerMessages.id){
-	
+			var tzoffset = (new Date()).getTimezoneOffset() * 60000;
+			var localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+
+			let input = { startDate: null, endDate: null }
+			if (startDate) {
+				input.startDate = startDate.startOf('day').toDate()
+				var tzoffset = (input.startDate).getTimezoneOffset() * 60000;
+				input.startDate = (new Date(input.startDate - tzoffset)).toISOString();
+			}
+			if (endDate) {
+				input.endDate = endDate.endOf("day").toDate()
+				var tzoffset = (input.endDate).getTimezoneOffset() * 60000;
+				input.endDate = (new Date(input.endDate - tzoffset)).toISOString();
+			}
+
+			getFilterMessages(input)
+		}
+	}
+
+	const getFilterMessages = ({ startDate, endDate }) => {
+
+		let params = {
+			key: ':number',
+			value: selectedRecipient.number,
+			
+			key2: ':start_date',
+			value2: startDate?startDate:null,
+
+			
+			key3: ':last_closed',
+			value3: endDate?endDate:null
+		};
+
+		CoreHttpHandler.request('conversations', 'historyConversationsPagination', params, (response) => {
+			setmessages(response.data.data.chat)
+			abc = response.data.data.chat
+			setshowLatestMessage(true)
+			
+		}, (response) => {
+		});
+
+	}
+
+	React.useEffect(() => {
+
+		if (updateCustomerMessages) {
+
+			if (numbers && numbers.length) {
+
+				let _numbers = numbers.map(el => {
+					if (el.id == updateCustomerMessages.id) {
+
 						updateCustomerMessages.name = updateCustomerMessages.assign_name
-						if(updateCustomerMessages.assign_name!=undefined)
+						if (updateCustomerMessages.assign_name != undefined)
 							delete updateCustomerMessages.assign_name
-	
+
 						let _selectedRecipient = selectedRecipient
-	
-						Object.keys(updateCustomerMessages).map(key=>{
-							if(el[key]!=updateCustomerMessages[key]){
-								
-								el[key]= updateCustomerMessages[key]
-								if(_selectedRecipient)
+
+						Object.keys(updateCustomerMessages).map(key => {
+							if (el[key] != updateCustomerMessages[key]) {
+
+								el[key] = updateCustomerMessages[key]
+								if (_selectedRecipient)
 									_selectedRecipient[key] = updateCustomerMessages[key]
-		
+
 							}
-							
-							
+
+
 						})
-						if(_selectedRecipient)
-						setselectedRecipient(_selectedRecipient)
+						if (_selectedRecipient)
+							setselectedRecipient(_selectedRecipient)
 					}
-	
+
 					return el
 				})
 
 				setnumbers(_numbers)
 			}
-			
+
 		}
 
-	},[updateCustomerMessages])
-	useEffect(()=>{
-		if(conversationDummy){
+	}, [updateCustomerMessages])
+	useEffect(() => {
+		if (conversationDummy) {
 
 			let _numbers = []
 
-			if(numbers&&numbers.length){
+			if (numbers && numbers.length) {
 
-				if(selectedRecipient&&selectedRecipient.id==conversationDummy.id){
+				if (selectedRecipient && selectedRecipient.id == conversationDummy.id) {
 					selectedRecipientt(conversationDummy)
 				}
 
-				_numbers = numbers.filter(el=>el&&el.id!=conversationDummy.id)
-				_numbers = _numbers.filter(el=>el)
+				_numbers = numbers.filter(el => el && el.id != conversationDummy.id)
+				_numbers = _numbers.filter(el => el)
 			}
-			_numbers = [conversationDummy,..._numbers]
+			_numbers = [conversationDummy, ..._numbers]
 
 			setnumbers(_numbers)
 
 
 		}
-	},[conversationDummy])
-	useEffect(()=>{
-		if(historyOnTop&&historyOnTop.customerId&&numbers&&numbers.length){
+	}, [conversationDummy])
+	useEffect(() => {
+		if (historyOnTop && historyOnTop.customerId && numbers && numbers.length) {
 
 			let customerId = historyOnTop.customerId;
 
-			let _numbers = [...numbers.filter(el=>el.id==customerId),...numbers.filter(el=>el.id!=customerId)]
-			
+			let _numbers = [...numbers.filter(el => el.id == customerId), ...numbers.filter(el => el.id != customerId)]
+
 			setnumbers(_numbers)
 
 		}
-	},[historyOnTop])
-	
+	}, [historyOnTop])
+
 	useEffect(() => {
 
-		socket.on("updateHistoryConversation",data=>{
+		socket.on("updateHistoryConversation", data => {
 			setConversationDummy(data)
 		})
 
-		socket.on("updateCustomerMessages",data=>{
+		socket.on("updateCustomerMessages", data => {
 			setUpdateCustomerMessages(data)
 		})
-		
-		socket.on("historyOnTop",data=>{
+
+		socket.on("historyOnTop", data => {
 			setHistoryOnTop(data)
 		})
-		
+
 		getNumbers();
 
 		return () => {
 			socket.removeListener("updateHistoryConversation")
 			socket.removeListener("updateCustomerMessages")
 			socket.removeListener("historyOnTop")
-			
+
 			// if(int_CustomerList){
 			// 	clearInterval(int_CustomerList)
 			// }
@@ -320,13 +376,20 @@ function ChatApp(props) {
 		});
 	}
 	const getConversation = (e) => {
+
 		let params = {
 			key: ':number',
 			value: e.number,
-			key2: ':last_closed',
-			value2: e.last_closed
+			
+			key2: ':start_date',
+			value2: null,
+
+			
+			key3: ':last_closed',
+			value3: e.last_closed
 		};
-		CoreHttpHandler.request('conversations', 'historyConversations', params, (response) => {
+
+		CoreHttpHandler.request('conversations', 'historyConversationsPagination', params, (response) => {
 			if (response.data.data.chat.length > abc.length) {
 				setmessages(response.data.data.chat)
 				abc = response.data.data.chat
@@ -399,7 +462,7 @@ function ChatApp(props) {
 					id: customer.id,
 					number: selectedRecipient.number,
 					attributes: customer.attributes,
-					assign_name: selectedRecipient.name==selectedRecipient.number?"":selectedRecipient.name,
+					assign_name: selectedRecipient.name == selectedRecipient.number ? "" : selectedRecipient.name,
 					countries,
 				})
 				setAnchorEl(false)
@@ -452,6 +515,20 @@ function ChatApp(props) {
 		countries: [],
 	});
 	const [dialogOpenCmp, setdialogOpenCmp] = React.useState(false);
+
+
+
+	const [openSearch, setOpenSearch] = React.useState(false);
+	const openSearchMenu = (e) => {
+		
+
+		if(openSearch&&selectedRecipient){
+			getConversation(selectedRecipient)
+		}
+		
+		setOpenSearch(!openSearch)
+
+	}
 
 	const sendDialogActions = [
 		{
@@ -513,7 +590,7 @@ function ChatApp(props) {
 		'aria-labelledby': "form-dialog-title",
 		'aria-describedby': "form-dialog-title"
 	};
-	
+
 	// useEffect(() => {
 	// 	getNumbers()
 	// 	return () => {
@@ -671,12 +748,12 @@ function ChatApp(props) {
 				reason: blockReason,
 			}
 		}, (response) => {
-			
-			
+
+
 			setSnackBarMessage("Blocked Successfully")
 			setOK("success")
 			setSnackBarOpen(true)
-			
+
 			setdialogOpenConfirmBlock(false)
 			setblockReason('')
 			setAnchorEl(false)
@@ -746,16 +823,16 @@ function ChatApp(props) {
 
 			setselectedRecipient({
 				...selectedRecipient,
-				name:data.assign_name,
-				attributes:data.attributes
+				name: data.assign_name,
+				attributes: data.attributes
 			})
 			setdialogOpenCmp(false)
 
 
 		}, (error) => {
-			if(error&&error.response&&error.response.data){
+			if (error && error.response && error.response.data) {
 				setSnackBarMessage(error.response.data.message)
-			}else{
+			} else {
 				setSnackBarMessage("Could not save record")
 			}
 			setOK("error")
@@ -898,6 +975,23 @@ function ChatApp(props) {
 													</Typography>
 												</div>
 												<div style={{ position: 'absolute', right: 1 }}>
+
+													{
+														openSearch && selectedRecipient ?
+															<DateRangePickerVal SelectedDates={SelectedDates} selectedRecipient={selectedRecipient} />
+
+															:
+
+															null
+													}
+													<IconButton
+														aria-owns={'Filter Records'}
+														aria-haspopup="true"
+														onClick={openSearchMenu}
+														style={{ color: 'white' }}
+													>
+														<Icon>{openSearch ? "close_sharp" : "filter_list_sharp"}</Icon>
+													</IconButton>
 													<IconButton
 														aria-owns={moreMenuEl ? 'chats-more-menu' : null}
 														aria-haspopup="true"
