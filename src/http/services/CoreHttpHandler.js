@@ -63,6 +63,7 @@ class CoreHttpHandler {
         if (params.key !== undefined && apiCall.method === 'get') {
             apiPath = apiPath.replace(params.key, params.value);
             apiPath = apiPath.replace(params.key2, params.value2);
+            apiPath = apiPath.replace(params.key3, params.value3);
         }
         if (
             params.key !== undefined &&
