@@ -1023,7 +1023,7 @@ function ChatApp(props) {
 												>
 												 Shift
 												</Button> */}
-												<Tooltip title="SHIFT" arrow>
+												<Tooltip title="Shift" arrow>
 												<TransferWithinAStationIcon 
 													style={{ fontSize: 30, cursor:"pointer" }} 
 														onClick= {(e)=>conversationActionsCallback('shift')}
