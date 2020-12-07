@@ -23,8 +23,9 @@ import Fab from '@material-ui/core/Fab';
 import Icon from '@material-ui/core/Icon';
 import { Redirect } from 'react-router'
 import { useHistory } from "react-router-dom";
-
-
+import AddAutoReply from "./addAutoReply";
+import moment from "moment"
+import ConfirmationDialogue from './confirmationDialogue';
 const useStyles = makeStyles(theme => ({
     root: {
         maxWidth: '100%',
@@ -83,7 +84,8 @@ function AutoReplyTable(props) {
 
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const [type, setType] = React.useState('update');
+    const [chatBotData, setChatBotData] = React.useState(null);
+
     const [selected, setSelected] = useState([]);
     const [companyDetails, setCompanyDetails] = React.useState(props.data);
     const [data, setData] = useState([]);
@@ -121,6 +123,8 @@ function AutoReplyTable(props) {
     const [totalItems, setTotalItems] = React.useState(0);
     const [currentParams, setCurrentParams] = React.useState({ limit: 10, page: 0 });
     const [isLoading, setLoading] = React.useState(true);
+    const [confirmation, setConfirmationType] = React.useState(null);
+    const [confirmationData, setConfirmationData] = React.useState(null);
 
     const getData = loadData => {
         loadData = () => {
@@ -161,23 +165,20 @@ function AutoReplyTable(props) {
             setLoading(true);
 
             let update_params = {
-                client_id: companyDetails.id,
-                ...currentParams
+                key: ':id',
+                value: companyDetails.id
             };
             CoreHttpHandler.request(
                 'CompanyAgent',
-                'get_paginated',
+                'get_chatbot',
                 update_params,
                 response => {
-                    setAgent(response.data.data.agentList);
-                    setData(response.data.data.agentList);
-                    setTotalItems(response.data.data.totalItems);
-
                     setLoading(false);
-
-                    console.log('Agent=>', response);
+                    setData(response.data.data.autoreply)
                 },
-                dataSourceFailureCompanyAgent
+                error=>{
+                    
+                }
             );
         }
     };
@@ -222,19 +223,36 @@ function AutoReplyTable(props) {
 
     const handleClick = (e) => {
         props.history.push({ pathname: '/apps/addAutoReply' });
-        
+
     }
 
 
     const handleClickAdd = () => {
         setOpen(true);
-        setType('Create');
     };
+    const updateChatBot = n =>{
+        setOpen(true)
+        setChatBotData(n)
+    }
     function showError(msg) {
         setSnackBarMessage(msg);
         setOK('error');
         setSnackBarOpen(true);
     }
+    function showMessage ({msg,success}){
+
+        if (msg) {
+            setSnackBarMessage(msg);
+            setOK(success ? "success" : "error");
+            setSnackBarOpen(true);
+        }
+    }
+    function closeHandler({ msg, success }) {
+        setOpen(false)
+        setChatBotData(null)
+        showMessage({ msg, success})
+    }
+
     function handleDialogClose(e) {
         if (e == 'create') {
             setSnackBarMessage('Created Successfully');
@@ -303,18 +321,89 @@ function AutoReplyTable(props) {
     const handleChangeRowsPerPage = event => {
         setLimit(Number(event.target.value));
     };
+    const saveHandler = ({ treeData, name }) => {
+        if (companyDetails) {
+            let update_params = {
+                treeData,
+                clientId: companyDetails.id,
+                name
+            };
+            CoreHttpHandler.request(
+                'CompanyAgent',
+                'add_chatbot',
+                update_params,
+                response => {
+                    closeHandler({ msg: "Successfully Saved", success: true })
+                    getPaginatedData()
+                },
+            );
+        }
+    }
+    const updateHandler = ({ treeData, name }) => {
+        if (companyDetails&&chatBotData) {
+            let update_params = {
+                treeData,
+                clientId: companyDetails.id,
+                name,
+                id:chatBotData.id
+            }
+            CoreHttpHandler.request(
+                'CompanyAgent',
+                'update_chatbot',
+                update_params,
+                response => {
+                    closeHandler({ msg: "Successfully Updated", success: true })
+                    getPaginatedData()
+                },
+            );
+        }
+    }
+    const handleConfirmationDialogClose = e =>{
+        setConfirmationData(null)
+        setConfirmationType(null)
+    }
+    const openConfirmationDialogue = (type,data)=>{
 
+        setConfirmationData(data)
+        setConfirmationType(type)
+    }
+    const handleConfirmationSubmit = value =>{
+        if (confirmationData&&confirmation) {
+            let update_params = {
+                attributeType: confirmation,
+                value,
+                id:confirmationData.id,
+                
+                clientId: companyDetails.id,
+            }
+            CoreHttpHandler.request(
+                'CompanyAgent',
+                'update_chatbot_attribute',
+                update_params,
+                response => {
+                    showMessage({ msg:"Successfully Updated", success:true})
+                    handleConfirmationDialogClose()
+                    getPaginatedData()
+                },
+            );
+        }
+        
+    }
     return (
         <>
             <Card className={classes.root}>
                 <CardContent className={classes.content} style={{ width: '100%' }}>
-                    <Typography
-                        variant="h2"
-                        className="companyDetailHeader"
-                        style={{ backgroundColor: '#e73859', color: 'white' }}
-                    >
-                        AutoReply
-					</Typography>
+                    {
+                        !open ?
+
+                            <Typography
+                                variant="h2"
+                                className="companyDetailHeader"
+                                style={{ backgroundColor: '#e73859', color: 'white' }}
+                            >
+                                Auto Reply
+					</Typography> : null
+                    }
                     <Snackbar
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                         open={snackbaropen}
@@ -324,165 +413,222 @@ function AutoReplyTable(props) {
                             {snackbarmessage}
                         </Alert>
                     </Snackbar>
-                    {isLoading ? (
-                        <div className="flex flex-1 items-center justify-center h-full">
-                            <FuseLoading />
-                        </div>
-                    ) : data.length ? (
-                        <div className="w-full flex flex-col">
-                            <FuseScrollbars className="flex-grow overflow-x-auto">
-                                <Table className="min-w-xl" aria-labelledby="tableTitle">
-                                    <AutoReplyTableHeader
-                                        numSelected={selected.length}
-                                        order={order}
-                                        onSelectAllClick={handleSelectAllClick}
-                                        onRequestSort={handleRequestSort}
-                                        rowCount={data.length}
-                                    />
-                                    <TableBody>
-                                        {_.orderBy(
-                                            data,
-                                            [
-                                                o => {
-                                                    switch (order.id) {
-                                                        case 'categories': {
-                                                            return o.categories[0];
-                                                        }
-                                                        default: {
-                                                            return o[order.id];
-                                                        }
-                                                    }
-                                                }
-                                            ],
-                                            [order.direction]
-                                        )
-                                            .filter(a => {
-                                                return props.val
-                                                    ? a.username.toLowerCase().includes(props.val.toLowerCase())
-                                                    : true;
-                                            })
-                                            .map((n, i) => {
-                                                const isSelected = selected.indexOf(n.id) !== -1;
-                                                return (
-                                                    <TableRow
-                                                        className="h-10 cursor-pointer"
-                                                        hover
-                                                        role="checkbox"
-                                                        aria-checked={isSelected}
-                                                        tabIndex={-1}
-                                                        key={n.id}
-                                                        selected={isSelected}
-                                                    onClick={()=>{handleClick(n)}}
+                    {
+                        open ?
+                        <div style={{backgroundColor:"white"}}>
 
+                        <AddAutoReply
+                                data={chatBotData}
+                                closeHandler={closeHandler}
+                                saveHandler={saveHandler}
+                                updateHandler={updateHandler}
+                            /> 
+                        </div>:
+                            (
+                                isLoading ? (
+                                    <div className="flex flex-1 items-center justify-center h-full">
+                                        <FuseLoading />
+                                    </div>
+                                ) : data.length ? (
+                                    <div className="w-full flex flex-col">
+                                        <FuseScrollbars className="flex-grow overflow-x-auto">
+                                            <Table className="min-w-xl" aria-labelledby="tableTitle">
+                                                <AutoReplyTableHeader
+                                                    numSelected={selected.length}
+                                                    order={order}
+                                                    onSelectAllClick={handleSelectAllClick}
+                                                    onRequestSort={handleRequestSort}
+                                                    rowCount={data.length}
+                                                />
+                                                <TableBody>
+                                                    {_.orderBy(
+                                                        data,
+                                                        [
+                                                            o => {
+                                                                switch (order.id) {
+                                                                    case 'categories': {
+                                                                        return o.categories[0];
+                                                                    }
+                                                                    default: {
+                                                                        return o[order.id];
+                                                                    }
+                                                                }
+                                                            }
+                                                        ],
+                                                        [order.direction]
+                                                    )
+
+                                                        .map((n, i) => {
+                                                            const isSelected = selected.indexOf(n.id) !== -1;
+                                                            return (
+                                                                <TableRow
+                                                                    className="h-10 cursor-pointer"
+                                                                    hover
+                                                                    role="checkbox"
+                                                                    aria-checked={isSelected}
+                                                                    tabIndex={-1}
+                                                                    key={n.id}
+                                                                    selected={isSelected}
+
+                                                                >
+
+                                                                    <TableCell
+                                                                        component="th"
+                                                                        scope="row"
+                                                                        align="center"
+                                                                        style={{ fontSize: '11px', padding: '10px' }}
+                                                                    >
+                                                                        {n.name}
+                                                                    </TableCell>
+
+
+
+
+                                                                    <TableCell
+                                                                        component="th"
+                                                                        scope="row"
+                                                                        align="center"
+                                                                        style={{ fontSize: '11px', padding: '10px' }}
+                                                                        onClick={(e)=>{openConfirmationDialogue("enabled",n)}}
+                                                                    >
+                                                                        <div>
+                                                                            {
+                                                                                n.enabled === true ?
+
+                                                                                    <Icon name="lock" color="primary">
+                                                                                        check_circle
+                                                                            </Icon>
+                                                                                    :
+                                                                                    <Icon name="lock">radio_button_unchecked</Icon>
+                                                                            }
+                                                                        </div>
+                                                                    </TableCell>
+
+                                                                    <TableCell
+                                                                        component="th"
+                                                                        scope="row"
+                                                                        align="center"
+                                                                        style={{ fontSize: '11px', padding: '10px' }}
+                                                                        onClick={
+                                                                            (e)=>{
+                                                                                if(n.enabled&&!n.is_deleted&&!n.is_default)
+                                                                                openConfirmationDialogue("default",n)
+                                                                                
+                                                                                }
+                                                                        
+                                                                        }
+                                                                    
+                                                                    >
+                                                                        <div>
+                                                                            {
+                                                                                n.is_default === true ?
+
+                                                                                    <Icon name="lock" color="primary">
+                                                                                        check_circle
+                                                                            </Icon>
+                                                                                    :
+                                                                                    <Icon name="lock">radio_button_unchecked</Icon>
+                                                                            }
+                                                                        </div>
+                                                                    </TableCell>
+
+
+                                                                    <TableCell
+                                                                        component="th"
+                                                                        scope="row"
+                                                                        align="center"
+                                                                        style={{ fontSize: '11px', padding: '10px' }}
+                                                                        onClick={(e)=>{openConfirmationDialogue("delete",n)}}
+
+                                                                    >
+                                                                        <div>
+                                                                            {
+                                                                                n.is_deleted === true ?
+
+                                                                                    <Icon name="lock" color="primary">
+                                                                                        restore
+                                                                                    </Icon>
+                                                                                    :
+                                                                                    <Icon name="lock">delete</Icon>
+                                                                            }
+                                                                        </div>
+                                                                    </TableCell>
+
+
+                                                                    <TableCell
+                                                                        component="th"
+                                                                        scope="row"
+                                                                        align="center"
+                                                                        style={{ fontSize: '11px', padding: '10px' }}
+                                                                    >
+                                                                        {moment(n.dt).format("YYYY-MM-DD hh:mm")}
+                                                                    </TableCell>
+
+
+                                                                    
+
+                                                                    <TableCell
+                                                                        component="th"
+                                                                        scope="row"
+                                                                        align="center"
+                                                                        style={{ fontSize: '11px', padding: '10px' }}
+                                                                            onClick={e=>{updateChatBot(n)}}
+                                                                    >
+                                                                        <Icon name="lock" color="primary">
+                                                                                        edit
+                                                                                    </Icon>
+                                                                    </TableCell>
+
+                                                                </TableRow>
+                                                            );
+                                                        })}
+                                                </TableBody>
+                                            </Table>
+                                            {
+                                                confirmation&&confirmationData?
+                                                    <ConfirmationDialogue
+                                                        type={confirmation}
+                                                        data={confirmationData}
+                                                        handleDialogClose={handleConfirmationDialogClose}
+                                                        handleSubmit={handleConfirmationSubmit}
+                                                    />
+
+                                                :null
+                                            }
+                                        </FuseScrollbars>
+                                        <FuseAnimate animation="transition.expandIn" delay={300}>
+                                            <Fab
+                                                color="primary"
+                                                aria-label="add"
+                                                size="medium"
+                                                className={classes.addButton}
+                                                onClick={handleClickAdd}
+                                            >
+                                                <Icon>person_add</Icon>
+                                            </Fab>
+                                        </FuseAnimate>
+                                    </div>
+                                ) : (
+                                            <div className="flex flex-1 items-center justify-center h-full mt-2">
+                                                <Typography color="textSecondary" variant="h5">
+                                                    No Data Found!
+                                                </Typography>
+                                                <FuseAnimate animation="transition.expandIn" delay={300}>
+                                                    <Fab
+                                                        color="primary"
+                                                        aria-label="add"
+                                                        size="medium"
+                                                        className={classes.addButton}
+                                                        onClick={handleClickAdd}
                                                     >
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            align="center"
-                                                            style={{ fontSize: '11px', padding: '10px' }}
-                                                        >
-                                                            {n.id}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            align="center"
-                                                            style={{ fontSize: '11px', padding: '10px' }}
-                                                        >
-                                                            {n.username}
-                                                        </TableCell>
+                                                        <Icon>person_add</Icon>
+                                                    </Fab>
+                                                </FuseAnimate>
 
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            align="center"
-                                                            style={{ fontSize: '11px', padding: '10px' }}
-                                                        >
-                                                            {n.number}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            align="center"
-                                                            style={{ fontSize: '11px', padding: '10px' }}
-                                                        >
-                                                            {n.email}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            align="center"
-                                                            style={{ fontSize: '11px', padding: '10px' }}
-                                                        >
-                                                            {n.position}
-                                                        </TableCell>
+                                            </div>
+                                        ))
 
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            align="center"
-                                                            style={{ fontSize: '11px', padding: '10px' }}
-                                                        >
-                                                            {n.max_token_count === 1 ? 'Agent' : 'Admin'}
-                                                        </TableCell>
-                                                        <TableCell
-                                                            component="th"
-                                                            scope="row"
-                                                            align="center"
-                                                            style={{ fontSize: '11px', padding: '10px' }}
-                                                        >
-                                                            {n.enabled === true ? (
-                                                                <div>
-                                                                    {' '}
-                                                                    <Icon name="lock" color="primary">
-                                                                        check_circle
-																	</Icon>
-                                                                </div>
-                                                            ) : (
-                                                                    <div>
-                                                                        {' '}
-                                                                        <Icon name="lock">radio_button_unchecked</Icon>
-                                                                    </div>
-                                                                )}
-                                          
-                                                        </TableCell>
-                                                    </TableRow>
-                                                );
-                                            })}
-                                    </TableBody>
-                                </Table>
-                            </FuseScrollbars>
-                            <FuseAnimate animation="transition.expandIn" delay={300}>
-                                <Fab
-                                    color="primary"
-                                    aria-label="add"
-                                    size="medium"
-                                    className={classes.addButton}
-                                    onClick={handleClickAdd}
-                                >
-                                    <Icon>person_add</Icon>
-                                </Fab>
-                            </FuseAnimate>
-                        </div>
-                    ) : (
-                                <div className="flex flex-1 items-center justify-center h-full mt-2">
-                                    <Typography color="textSecondary" variant="h5">
-                                        No Data Found!
- 							</Typography>
-                                    <FuseAnimate animation="transition.expandIn" delay={300}>
-                                        <Fab
-                                            color="primary"
-                                            aria-label="add"
-                                            size="medium"
-                                            className={classes.addButton}
-                                            onClick={handleClickAdd}
-                                        >
-                                            <Icon>person_add</Icon>
-                                        </Fab>
-                                    </FuseAnimate>
-
-                                </div>
-                            )}
+                    }
                 </CardContent>
             </Card>
         </>
@@ -490,3 +636,5 @@ function AutoReplyTable(props) {
 }
 
 export default withRouter(AutoReplyTable);
+
+

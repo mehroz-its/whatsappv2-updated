@@ -1,3 +1,11 @@
+import Checkbox from '@material-ui/core/Checkbox';
+import Icon from '@material-ui/core/Icon';
+import IconButton from '@material-ui/core/IconButton';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
 import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
@@ -6,7 +14,6 @@ import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
 import clsx from 'clsx';
 import React, { useState } from 'react';
-
 
 const rows = [
 	{
@@ -31,17 +38,17 @@ const rows = [
 		sort: true
 	},
 	{
-		id: 'is_deleted',
-		align: 'center',
-		disablePadding: false,
-		label: 'Deleted',
-		sort: true
-	},
-	{
 		id: 'dt',
 		align: 'center',
 		disablePadding: false,
 		label: 'Date Created',
+		sort: true
+	},
+	{
+		id: 'delete',
+		align: 'center',
+		disablePadding: false,
+		label: 'Delete',
 		sort: true
 	},
 	{
@@ -53,12 +60,16 @@ const rows = [
 	},
 
 ];
+
 const useStyles = makeStyles(theme => ({
 	actionsButtonWrapper: {
 		background: theme.palette.background.paper
 	}
 }));
-function CampaignTableHead(props) {
+
+function UserTableHead(props) {
+	const classes = useStyles(props);
+	const [selectedProductsMenu, setSelectedProductsMenu] = useState(null);
 	const createSortHandler = property => event => {
 		props.onRequestSort(event, property);
 	};
@@ -70,7 +81,7 @@ function CampaignTableHead(props) {
 				{rows.map(row => {
 					return (
 						<TableCell
-							style={{ fontSize: '11px', padding: '10px 0px 10px 20px' }}
+							style={{ fontSize: '12px', padding: '10px 0px 10px 20px' }}
 							key={row.id}
 							align={row.align}
 							padding={row.disablePadding ? 'none' : 'default'}
@@ -98,4 +109,5 @@ function CampaignTableHead(props) {
 		</TableHead>
 	);
 }
-export default CampaignTableHead;
+
+export default UserTableHead;

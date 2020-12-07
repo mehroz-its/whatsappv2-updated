@@ -79,7 +79,7 @@ function ToolbarLayout1(props) {
 	useEffect(() => {
 		setToggleShow(PermissionResolver.hasPermission('app', 'toggle'));
 		// console.log('toggleShow : ', toggleShow);
-		const _online = (localStorage.getItem('online')==true);
+		const _online = (localStorage.getItem('online')==true||localStorage.getItem('online')=="true");
 
 		setOnline(_online)
 

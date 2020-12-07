@@ -278,3 +278,16 @@ input:-webkit-autofill {
     background: #cccccc;
 }
 .text-message-w-control { width: auto; margin-left: '2px'; }
+
+.autoReplyHeader{
+    min-height: 50px!important;
+    height: 70px!important;
+    background-color: rgb(231, 56, 89);
+}
+.autoReplyHeaderButton{
+    color:white;
+
+}
+.autoReplyHeaderButton:hover{
+    cursor: pointer;
+}
