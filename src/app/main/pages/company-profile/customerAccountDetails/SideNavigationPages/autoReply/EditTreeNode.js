@@ -66,7 +66,6 @@ const EditTreeNode = props => {
 
 	const [type, setType] = React.useState(node.type ? node.type : "text")
 	const [title, setTitle] = React.useState(node.title ? node.title : "")
-	const [attributes, setAttributes] = React.useState(node.attributes ? node.attributes : [])
 	const [repeatPreviousMessage, setRepeatPreviousMessage] = React.useState(node.repeatPreviousMessage!=undefined ? node.repeatPreviousMessage : true)
 	const [invalidResponse, setInvalidResponse] = React.useState(node.invalidResponse ? node.invalidResponse : "")
 
@@ -81,10 +80,6 @@ const EditTreeNode = props => {
 	const iCRef = React.useRef();
 	const testApiRef = React.useRef();
 
-	
-	React.useEffect(()=>{
-		console.log("TYPE=======>",type)
-	},[type])
 	const handleResponseChange = (e) => {
 		setRepeatPreviousMessage(e.target.checked)
 	}
@@ -95,13 +90,31 @@ const EditTreeNode = props => {
 
 		let data = {
 			type,
-			title,
-			attributes,
-			repeatPreviousMessage,
+			title
 		}
 
-		if (invalidResponse) {
-			data.invalidResponse = invalidResponse
+		if(children && children.length && type!="action"&& type!="ic"&& type!="testApi"){
+			data = {
+				...data,
+				repeatPreviousMessage
+			}
+			if(!repeatPreviousMessage&&invalidResponse){
+				data = {
+					...data,
+					invalidResponse
+				}
+			}else if(!repeatPreviousMessage){
+				_errors.invalidResponse = "Response Message is required"
+			}
+			
+			if(next){
+				data.__next = next;
+			}else{
+				data.__next = undefined;
+			}
+		}else{
+			data.__ref = undefined;
+			data.__next = undefined
 		}
 
 		if (type === "text") {
@@ -113,7 +126,10 @@ const EditTreeNode = props => {
 			}
 
 			data = { ...data, ...messageData }
+		}else{
+			data = { ...data, messages:undefined }
 		}
+		
 		if (type === "image") {
 
 			const [imageErrors, images] = imageRef.current.getResult();
@@ -123,7 +139,10 @@ const EditTreeNode = props => {
 			}
 
 			data = { ...data, ...images }
+		}else{
+			data = { ...data, images:undefined }
 		}
+
 		if (type === "audio") {
 
 			const [audioErrors, audios] = audioRef.current.getResult();
@@ -133,6 +152,8 @@ const EditTreeNode = props => {
 			}
 
 			data = { ...data, ...audios }
+		}else{
+			data = { ...data, audio:undefined }
 		}
 
 		if (type === "video") {
@@ -144,6 +165,8 @@ const EditTreeNode = props => {
 			}
 
 			data = { ...data, ...videos }
+		}else{
+			data = { ...data, video:undefined }
 		}
 
 		if (type === "document") {
@@ -155,6 +178,8 @@ const EditTreeNode = props => {
 			}
 
 			data = { ...data, ...documents }
+		}else{
+			data = { ...data, document:undefined }
 		}
 
 		if (type === "action") {
@@ -166,7 +191,10 @@ const EditTreeNode = props => {
 			}
 
 			data = { ...data, ...actions }
+		}else{
+			data = { ...data, actionType:undefined,steps:undefined, }
 		}
+
 		if (type === "ic") {
 
 			const [icErrors, questions] = iCRef.current.getResult();
@@ -176,6 +204,15 @@ const EditTreeNode = props => {
 			}
 
 			data = { ...data, ...questions }
+		}else{
+			data = { 
+				...data, 
+				questions:undefined,
+				storeDataInCache:undefined,
+				cacheKeyIsId:undefined,
+				oneTimeCollection:undefined,
+				onCompleteNext:undefined,
+			}
 		}
 
 		if (type === "testApi") {
@@ -187,6 +224,19 @@ const EditTreeNode = props => {
 			}
 
 			data = { ...data, ...questions }
+		}else{
+			data = {
+				...data,
+				response:undefined,
+				url:undefined,
+			}
+			if(type!=="ic"){
+				data = {
+					...data,
+					questions:undefined,
+					onCompleteNext:undefined
+				}
+			}
 		}
 
 
@@ -198,16 +248,6 @@ const EditTreeNode = props => {
 
 		if (!data.type) {
 			_errors.type = "Type is required"
-		}
-
-		if (!data.repeatPreviousMessage && !data.invalidResponse) {
-			_errors.invalidResponse = "Response Message is required"
-		}
-		if(next){
-			data.__next = next;
-		}else{
-			data.__next = undefined;
-
 		}
 
 		if (!Object.keys(_errors).length) {

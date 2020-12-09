@@ -79,7 +79,9 @@ export default class ChildrenTreeNode extends Component {
 	
 				if (dataCheck && dataCheck.length) {
 					for (let j = 0; j < dataCheck.length; j++) {
-						errors[dataCheck[j].id] = "Duplicate Key"
+						if(dataCheck[j].key){
+							errors[dataCheck[j].id] = "Duplicate Key"
+						}
 					}
 				}
 			}	
