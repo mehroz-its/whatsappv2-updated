@@ -41,6 +41,7 @@ export default class DialogueText extends Component {
         messages: [""],
         messageRequired: null,
         chosenEmoji: {},
+        carrPos:0,
     }
 
     updateMessages = (e, i) => {
@@ -92,18 +93,38 @@ export default class DialogueText extends Component {
 
     }
     setChosenEmoji = (data, i) => {
-        const { chosenEmoji } = this.state;
+        const { chosenEmoji,carrPos } = this.state;
+        let temp_carrPos = carrPos;
+
         if(data&&data.currentTarget){
             chosenEmoji[i] = data.currentTarget
         }else{
             chosenEmoji[i] = null
+            temp_carrPos = 0
         }
-        this.setState({ chosenEmoji })
+        this.setState({ chosenEmoji,carrPos:temp_carrPos })
     }
+    
     onEmojiClick = (event, emojiObject, i) => {
-        const { messages } = this.state;
-        messages[i] += emojiObject.emoji;
-        this.setState({ messages })
+        const { messages,carrPos } = this.state;
+        let temp_carrPos = carrPos;
+
+        let elem = document.getElementById('messages_'+i);
+
+        if(messages[i]&&elem&&elem.selectionStart>=0){
+            let textToInsert = emojiObject.emoji
+            let cursorPosition = temp_carrPos?temp_carrPos: elem.selectionStart
+            let textBeforeCursorPosition = messages[i].substring(0, cursorPosition)
+            let textAfterCursorPosition = messages[i].substring(cursorPosition, messages[i].length)
+            messages[i] = textBeforeCursorPosition + textToInsert + textAfterCursorPosition
+            temp_carrPos = cursorPosition + textToInsert.length
+        }else{
+            messages[i] = emojiObject.emoji;
+        }
+        this.setState({carrPos:temp_carrPos},()=>{
+            this.setState({ messages })
+        })
+        
     };
     render() {
         const { messages, chosenEmoji } = this.state;
