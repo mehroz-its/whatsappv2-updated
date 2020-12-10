@@ -170,6 +170,11 @@ function ChatBotTable(props) {
 	}
 	let data2 = props.dataa
 
+	React.useEffect(()=>{
+		if(props.removeSearchBar){
+			props.removeSearchBar(open)
+		}
+	},[open])
 
 
 	const handleChangePage = (event, newPage) => {
@@ -180,10 +185,12 @@ function ChatBotTable(props) {
 		setLimit(Number(event.target.value));
 	};
 
-    const saveHandler = ({ treeData, name }) => {
+    const saveHandler = ({ treeData, name, startMessage, endMessage }) => {
 		let update_params = {
 			treeData,
-			name
+			name,
+			startMessage, 
+			endMessage
 		};
 		CoreHttpHandler.request(
 			'CompanyAgent',
@@ -198,12 +205,14 @@ function ChatBotTable(props) {
 		);
         
     }
-    const updateHandler = ({ treeData, name }) => {
+    const updateHandler = ({ treeData, name, startMessage, endMessage }) => {
         if (chatBotData) {
             let update_params = {
                 treeData,
                 name,
-                id:chatBotData.id
+				id:chatBotData.id,
+				startMessage,
+				endMessage
             }
             CoreHttpHandler.request(
                 'CompanyAgent',
@@ -241,7 +250,8 @@ function ChatBotTable(props) {
 		setChatBotData(null)
 		if(props.showMessage)
         props.showMessage({ msg, success})
-    }
+	}
+	
 
 	return (
 		open ?

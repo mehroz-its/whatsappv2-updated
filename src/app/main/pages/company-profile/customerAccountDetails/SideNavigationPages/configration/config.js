@@ -8,6 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import CoreHttpHandler from '../../../../../../../http/services/CoreHttpHandler'
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
+import FuseLoading from '../.././../../../../../@fuse/core/FuseLoading/FuseLoading';
 import Alert from '@material-ui/lab/Alert';
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -26,7 +27,10 @@ function Config(props) {
     const classes = useStyles();
     const [companyDetails, setCompanyDetails] = React.useState(props.data);
     const [subjectId, setSubjectId] = React.useState("");
+    const [subjectIdCopy, setSubjectIdCopy] = React.useState("");
     const [snackbaropen, setSnackBarOpen] = React.useState(false)
+    const [isLoading, setIsLoading] = React.useState(true)
+    
     const [snackbarmessage, setSnackBarMessage] = React.useState('')
     const [ok, setOK] = React.useState('')
 
@@ -39,8 +43,12 @@ function Config(props) {
         CoreHttpHandler.request('customerOnBoard', 'getSubject', data, (response) => {
             console.log("response : ", response);
             setSubjectId(response.data.data.clients[0].subject_id)
+            setSubjectIdCopy(response.data.data.clients[0].subject_id)
+            setIsLoading(false)
         }, (error) => {
             console.log("error : ", error);
+            setIsLoading(false)
+
         });
     }, [])
 
@@ -51,6 +59,8 @@ function Config(props) {
         }
         CoreHttpHandler.request('customerOnBoard', 'updateSubject', params, (response) => {
             console.log("response : ", response);
+            setSubjectIdCopy(subjectId)
+
             setSnackBarOpen(true)
             setOK('success')
             setSnackBarMessage('Updated successfully')
@@ -58,10 +68,22 @@ function Config(props) {
                 setSnackBarOpen(false)
             }, 1000);
         }, (error) => {
-            console.log("error : ", error);
+            setSnackBarOpen(true)
+            setOK('error')
+            setSnackBarMessage(`${error.response.data.message}`)
+            setTimeout(() => {
+                setSnackBarOpen(false)
+            }, 3000);
         });
     }
     return (
+        isLoading?
+
+        <div className="flex flex-1 items-center justify-center h-full">
+				<FuseLoading />
+			</div>
+
+            :
         <Card className={classes.root}>
             <CardContent className={classes.content} style={{ width: '100%' }}>
                 <Typography variant='h2' className='companyDetailHeader' style={{ backgroundColor: "#e73859", color: "white" }} >Configration</Typography>
@@ -85,6 +107,7 @@ function Config(props) {
                             color="primary"
                             className=" mx-auto"
                             aria-label="Register"
+                            disabled={subjectIdCopy===subjectId}
                             onClick={() => submit()}>
                             Update
 								</Button>

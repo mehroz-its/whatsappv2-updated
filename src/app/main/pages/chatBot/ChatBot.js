@@ -45,6 +45,7 @@ function ChatBot(props) {
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')
 	const [ok, setOK] = React.useState('')
+	const [treeMode, setTreeMode] = React.useState(false)
 
 	const [isLoading, setLoading] = React.useState(true)
 	React.useEffect(()=>{
@@ -91,9 +92,10 @@ function ChatBot(props) {
             );
 		};
 		loadData().then((response) => {
-			setLoading(false)
 			setData(response.data.data.autoreply)
 			setData2(response.data.data.autoreply)
+			setLoading(false)
+
 		})
 			.catch((error) => {
 				setLoading(false)
@@ -113,6 +115,10 @@ function ChatBot(props) {
 	function search(value) {
 		setVal(value)
 		setData2(data.filter(n => n.name.toLowerCase().includes(value.toLowerCase())))
+	}
+	function reseatSearch() {
+		setVal("")
+		setData2(data)
 	}
 
 	const snackbar = (snackmsg) => {
@@ -164,8 +170,8 @@ function ChatBot(props) {
 					content: 'flex',
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 				}}
-				header={<ChatBotHeader SearchVal={search} />}
-				content={<ChatBotTable  showError={showError} snackbar={snackbar} ValueForSearch={val} dataa={data2} onClose={closeDialog} refreshTable={getData} showMessage={showMessage}/>}
+				header={<ChatBotHeader inTreeMode={treeMode} SearchVal={search} />}
+				content={<ChatBotTable removeSearchBar={(bool)=>{setTreeMode(bool);reseatSearch()}} showError={showError} snackbar={snackbar} ValueForSearch={val} dataa={data2} onClose={closeDialog} refreshTable={getData} showMessage={showMessage}/>}
 			/>
 			
 		</>

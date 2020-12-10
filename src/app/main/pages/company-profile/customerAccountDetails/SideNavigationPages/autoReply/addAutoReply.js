@@ -74,15 +74,15 @@ function AddAutoReply(props) {
     const [treeData, setTreeData] = React.useState(
         [
             {
-              "id":  uuidv4(),
-              "title": "Welcome",
-              "type": "text",
-              "expanded": true,
-              "repeatPreviousMessage": true,
-              "messages": [
-                "Welcome!"
-              ],
-              "children": []
+                "id": uuidv4(),
+                "title": "Welcome",
+                "type": "text",
+                "expanded": true,
+                "repeatPreviousMessage": true,
+                "messages": [
+                    "Welcome!"
+                ],
+                "children": []
             }
         ]
     );
@@ -93,6 +93,8 @@ function AddAutoReply(props) {
     const [openEditModal, setOpenEditModal] = React.useState(null);
     const [openDeleteModal, setOpenDeleteModal] = React.useState(null);
     const [openChildrenModal, setOpenChildrenModal] = React.useState(null);
+    const [endMessage, setEndMessage] = React.useState("");
+    const [startMessage, setStartMessage] = React.useState("");
 
     const [chatBotName, setChatBotName] = React.useState("")
 
@@ -110,7 +112,15 @@ function AddAutoReply(props) {
             }
 
             if (body) {
-                setTreeData([body])
+                if(body.__default){
+                    setTreeData([body.__default])
+                }
+                if(body.__startMessageConversationMessage&&body.__startMessageConversationMessage.messages&&body.__startMessageConversationMessage.messages.length){
+                    setStartMessage(body.__startMessageConversationMessage.messages[0])
+                }
+                if(body.__endMessageConversationMessage&&body.__endMessageConversationMessage.messages&&body.__endMessageConversationMessage.messages.length){
+                    setEndMessage(body.__endMessageConversationMessage.messages[0])
+                }
             }
         }
 
@@ -307,21 +317,34 @@ function AddAutoReply(props) {
     }
 
     React.useEffect(() => {
-        console.log("=========TREE UPDATED==========")
-        if (treeData) {
-            console.log(JSON.stringify(treeData, null, 2))
-        }
-        console.log("=================")
+        // console.log("=========TREE UPDATED==========")
+        // if (treeData) {
+        //     console.log(JSON.stringify(treeData, null, 2))
+        // }
+        // console.log("=================")
     }, [treeData])
 
     function closeHandler() {
         props.closeHandler({})
     }
     function saveHandler() {
+        
+        let _startMessage   = startMessage  ? { "id": uuidv4(), "title": "Start Conversation Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ startMessage ], "children": [] } : undefined; 
+        let _endMessage     = endMessage    ? { "id": uuidv4(), "title": "End Conversation Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ endMessage ], "children": [] }: undefined;
+
         if (data) {
-            props.updateHandler({ treeData: treeData[0], name: chatBotName })
+            if(startMessage&&data.__startMessageConversationMessage&&data.__startMessageConversationMessage.messages&&data.__startMessageConversationMessage.messages.length){
+                _startMessage = data.__startMessageConversationMessage;
+                _startMessage.__startMessageConversationMessage.messages[0] = startMessage
+            }
+            if(endMessage&&data.__endMessageConversationMessage&&data.__endMessageConversationMessage.messages&&data.__endMessageConversationMessage.messages.length){
+                _endMessage = data.__endMessageConversationMessage;
+                _endMessage.__endMessageConversationMessage.messages[0] = startMessage
+            }
+            
+            props.updateHandler({ treeData: treeData[0], name: chatBotName,startMessage:_startMessage,endMessage:_endMessage })
         } else {
-            props.saveHandler({ treeData: treeData[0], name: chatBotName })
+            props.saveHandler({ treeData: treeData[0], name: chatBotName,startMessage:_startMessage,endMessage:_endMessage })
         }
     }
 
@@ -376,20 +399,78 @@ function AddAutoReply(props) {
                 </div>
             }
             content={
-                <div style={{ backgroundColor: "white", paddingTop: "20px" }}>
-                    <div className="flex ml-20" >
-                        <TextField
-                            label="Chat Bot Name"
-                            autoFocus
-                            id={"name_chat_both"}
-                            name="chatBotName"
-                            variant="outlined"
-                            value={chatBotName}
-                            onChange={updateChatBotName}
-                            size="small"
-                            inputProps={{ maxLength: 30 }}
-                        />
-                    </div>
+                <div style={{ backgroundColor: "white", paddingTop: "20px" }} className="w-75">
+                    <Grid
+                        container
+                        direction="row"
+                        justify="center"
+                        align="center"
+                        className={"p-20"}
+                    >
+
+                        <Grid container className={"mb-20"}>
+                            <Grid item md={3} sm={12} xs={12}>
+                                <div className="flex" >
+                                    <TextField
+                                        fullWidth
+                                        label="Chat Bot Name"
+                                        autoFocus
+                                        id={"name_chat_both"}
+                                        name="chatBotName"
+                                        variant="outlined"
+                                        value={chatBotName}
+                                        onChange={updateChatBotName}
+                                        size="small"
+                                        inputProps={{ maxLength: 30 }}
+                                    />
+                                </div>
+                            </Grid>
+                        </Grid>
+
+                        <Grid container className={"mb-20"}>
+                            <Grid item md={6} sm={12} xs={12}>
+                                <div className="flex" >
+                                    <TextField
+                                        label="Agent Conversation Start Message"
+                                        fullWidth
+                                        id={"agent_conversation_start_message"}
+                                        name="chatBotName"
+                                        variant="outlined"
+                                        multiline
+                                        rows={1}
+                                        value={startMessage}
+                                        onChange={e=>{setStartMessage(e.target.value)}}
+                                        size="small"
+                                        inputProps={{ maxLength: 800 }}
+                                        rowsMax={6}
+                                    />
+                                </div>
+                            </Grid>
+                        </Grid>
+
+                        <Grid container>
+                            <Grid item md={6} sm={12} xs={12}>
+                                <div className="flex" >
+                                    <TextField
+                                        label="Agent Conversation End Message"
+
+                                        fullWidth
+                                        id={"agent_conversation_end_message"}
+                                        name="chatBotName"
+                                        multiline
+                                        rows={1}
+                                        variant="outlined"
+                                        value={endMessage}
+                                        onChange={e=>{setEndMessage(e.target.value)}}
+                                        size="small"
+                                        inputProps={{ maxLength: 800 }}
+                                        rowsMax={6}
+                                    />
+                                </div>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
                     <div className="p-24" style={{ scrollX: false, paddingTop: "0px" }}>
                         <FuseAnimateGroup
                             className="flex flex-wrap"
@@ -437,7 +518,7 @@ function AddAutoReply(props) {
 
                                             generateNodeProps={rowInfo => ({
                                                 buttons: [
-                                                    
+
                                                     <div className="chatBotContainer">
                                                         <div className="chatBotIconContainer">
                                                             {/* <TextField hintText="" multiLine={true} rows={1} rowsMax={4} /> */}
@@ -481,18 +562,18 @@ function AddAutoReply(props) {
 
 
                                                         {
-                                                            rowInfo.path.length > 1?
+                                                            rowInfo.path.length > 1 ?
                                                                 (
 
                                                                     <React.Fragment>
                                                                         {
-                                                                            rowInfo.parentNode&&rowInfo.parentNode.__ref && rowInfo.parentNode.__ref.length && rowInfo.parentNode.__ref.some(el => (el.id === rowInfo.node.id) && el.key) ?
+                                                                            rowInfo.parentNode && rowInfo.parentNode.__ref && rowInfo.parentNode.__ref.length && rowInfo.parentNode.__ref.some(el => (el.id === rowInfo.node.id) && el.key) ?
                                                                                 <div className="chatBotKey">
-                                                                                
-                                                                                {
-                                                                                    rowInfo.linked_node=true
-                                                                                }
-                                                                                <span className={"chatBotTreeKey"}>
+
+                                                                                    {
+                                                                                        rowInfo.linked_node = true
+                                                                                    }
+                                                                                    <span className={"chatBotTreeKey"}>
                                                                                         {
                                                                                             rowInfo.parentNode.__ref.filter(el => el.id === rowInfo.node.id)[0].key
                                                                                         }
@@ -502,11 +583,11 @@ function AddAutoReply(props) {
                                                                         }
 
                                                                         {
-                                                                            rowInfo.parentNode&&rowInfo.parentNode.__next && rowInfo.node.id === rowInfo.parentNode.__next ?
+                                                                            rowInfo.parentNode && rowInfo.parentNode.__next && rowInfo.node.id === rowInfo.parentNode.__next ?
                                                                                 <div className="chatBotKey">
-                                                                                {
-                                                                                    rowInfo.linked_node=true
-                                                                                }
+                                                                                    {
+                                                                                        rowInfo.linked_node = true
+                                                                                    }
                                                                                     <Tooltip title="Called Immediately After Parent" arrow className={"chatBotTreeKey"}>
                                                                                         <Icon>fast_forward</Icon>
                                                                                     </Tooltip>
@@ -515,11 +596,11 @@ function AddAutoReply(props) {
                                                                         }
                                                                         {
 
-                                                                            rowInfo.parentNode&&rowInfo.parentNode.onCompleteNext && rowInfo.node.id === rowInfo.parentNode.onCompleteNext ?
+                                                                            rowInfo.parentNode && rowInfo.parentNode.onCompleteNext && rowInfo.node.id === rowInfo.parentNode.onCompleteNext ?
                                                                                 <div className="chatBotKey">
-                                                                                {
-                                                                                    rowInfo.linked_node=true
-                                                                                }
+                                                                                    {
+                                                                                        rowInfo.linked_node = true
+                                                                                    }
                                                                                     <Tooltip title="Called After Parent Completion" arrow className={"chatBotTreeKey"}>
                                                                                         <Icon>exit_to_app</Icon>
                                                                                     </Tooltip>
@@ -531,15 +612,15 @@ function AddAutoReply(props) {
                                                                         }
 
                                                                         {
-                                                                            !rowInfo.linked_node?
+                                                                            !rowInfo.linked_node ?
 
-                                                                            <div className="chatBotKey chatBotKeyBad">
-                                                                                <Tooltip title="Unconnected Node" arrow className={"chatBotTreeKey"}>
-                                                                                    <Icon>link_off</Icon>
-                                                                                </Tooltip>
-                                                                            </div>
+                                                                                <div className="chatBotKey chatBotKeyBad">
+                                                                                    <Tooltip title="Unconnected Node" arrow className={"chatBotTreeKey"}>
+                                                                                        <Icon>link_off</Icon>
+                                                                                    </Tooltip>
+                                                                                </div>
 
-                                                                            :null
+                                                                                : null
                                                                         }
 
                                                                     </React.Fragment>
@@ -552,7 +633,7 @@ function AddAutoReply(props) {
                                                 style: {
                                                     // height: '50px'
                                                 },
-                                                className:"chatBotTree-base-icon chatBotTree-"+rowInfo.node.type
+                                                className: "chatBotTree-base-icon chatBotTree-" + rowInfo.node.type
                                             })}
                                             onChange={treeData => {
                                                 setTreeData(treeData)
@@ -610,7 +691,7 @@ function AddAutoReply(props) {
 
                         </FuseAnimateGroup>
                     </div>
-                </ div>
+                </div>
             }
         />
     );

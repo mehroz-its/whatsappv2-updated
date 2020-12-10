@@ -40,6 +40,10 @@ function ChatBotHeader(props) {
 			</div>
 			<div className="flex flex-1 items-center justify-center px-12">
 				<ThemeProvider theme={mainTheme}>
+				{
+					props.inTreeMode?
+
+					null:
 					<FuseAnimate animation="transition.slideDownIn" delay={300}>
 						<Paper className="flex items-center w-full max-w-sm px-8 py-4" elevation={1}>
 						<Icon color="action" fontSize="small">search</Icon>
@@ -59,6 +63,8 @@ function ChatBotHeader(props) {
 							</MuiThemeProvider>
 						</Paper>
 					</FuseAnimate>
+				}
+					
 				</ThemeProvider>
 			</div>
 		</div>
