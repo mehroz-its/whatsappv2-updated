@@ -21,7 +21,7 @@ import WorkIcon from '@material-ui/icons/Work';
 import Grid from '@material-ui/core/Grid';
 import CoreHttpHandler from "../../../../../../../../http/services/CoreHttpHandler"
 import Avatar from '@material-ui/core/Avatar';
-
+import DotLoader from "react-spinners/DotLoader";
 
 export default class DialogueImages extends Component {
     constructor(props) {
@@ -38,7 +38,8 @@ export default class DialogueImages extends Component {
 
     }
     state = {
-        images: []
+        images: [],
+        isLoading:false
     }
 
     getResult = () => {
@@ -78,8 +79,10 @@ export default class DialogueImages extends Component {
 
 			_data.append('file', event.target.files[0], `${new Date().getTime()}_${_name}`);
             this.setState({
-                imagesRequired:false
+                imagesRequired:false,
+                isLoading:true
             })
+            
 			CoreHttpHandler.request(
 				'content',
 				'upload',
@@ -90,9 +93,12 @@ export default class DialogueImages extends Component {
                         URL:response.data.data.link,
                         caption:""
                     })
-                    this.setState({images})
+                    this.setState({images,isLoading:false})
                 },
-				error => {}
+				error => {
+                    this.setState({isLoading:false})
+
+                }
 			);
 		}
     };
@@ -111,8 +117,19 @@ export default class DialogueImages extends Component {
                     {/* <div className="flex justify-between items-start"> */}
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                         <div className="image-grid" style={{ marginTop: '10px', margin:"auto" }}>
+                            {
+                                this.state.isLoading?
+                                <div className="sweet-loading">
+                                    <DotLoader
+                                    color={"#E84855"}
+                                    size={50}
+                                    loading={this.state.isLoading}
+                                    />
+                                </div>
 
-                            <span>
+                                :
+
+                                <span>
                                 <input
                                     id="contained-button-file"
                                     type="file"
@@ -125,20 +142,22 @@ export default class DialogueImages extends Component {
                                     <Icon
                                         color="action"
                                         fontSize="large"
+                                        className={"onHoverPointer"}
                                     >
                                         linked_camera
 									</Icon>
                                     
-                {
-                    imagesRequired?
+                                    {
+                                        imagesRequired?
 
-                    <em style={{color:'red',textAlign:"center"}}>{ "Upload At least 1 image"}</em>
+                                        <em style={{color:'red',textAlign:"center"}}>{ "Upload At least 1 image"}</em>
 
-                   :
-                   null
-                }
+                                    :
+                                    null
+                                    }
                                 </label>
                             </span>
+                            }
                         </div>
                         
                     </div>

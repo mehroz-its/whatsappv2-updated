@@ -21,7 +21,7 @@ import WorkIcon from '@material-ui/icons/Work';
 import Grid from '@material-ui/core/Grid';
 import CoreHttpHandler from "../../../../../../../../http/services/CoreHttpHandler"
 import Avatar from '@material-ui/core/Avatar';
-
+import DotLoader from "react-spinners/DotLoader";
 
 export default class DialogueDocument extends Component {
     constructor(props) {
@@ -37,7 +37,8 @@ export default class DialogueDocument extends Component {
 
     }
     state = {
-        document: []
+        document: [],
+        isLoading: false
     }
 
     getResult = () => {
@@ -66,38 +67,41 @@ export default class DialogueDocument extends Component {
 
 
     }
-    
-	onChangeHandler = event => {
-		if (event.target.files.length > 0) {
-			const _data = new FormData();
 
-			let _name = event.target.files[0].name;
+    onChangeHandler = event => {
+        if (event.target.files.length > 0) {
+            const _data = new FormData();
 
-			_name = _name.replace(/\s/g, '');
+            let _name = event.target.files[0].name;
 
-			_data.append('file', event.target.files[0], `${new Date().getTime()}_${_name}`);
+            _name = _name.replace(/\s/g, '');
+
+            _data.append('file', event.target.files[0], `${new Date().getTime()}_${_name}`);
             this.setState({
-                documentRequired:false
+                documentRequired: false,
+                isLoading: true
             })
-			CoreHttpHandler.request(
-				'content',
-				'upload',
-				{ params: _data },
-				response => {
+            CoreHttpHandler.request(
+                'content',
+                'upload',
+                { params: _data },
+                response => {
                     let document = this.state.document;
                     document.push(
-                       { URL:response.data.data.link,caption:""}
+                        { URL: response.data.data.link, caption: "" }
                     )
-                    this.setState({document})
+                    this.setState({ document, isLoading: false })
                 },
-				error => {}
-			);
-		}
+                error => {
+                    this.setState({ isLoading: false })
+                }
+            );
+        }
     };
-    updateCaption = (e,i)=>{
-        let {document} = this.state;
+    updateCaption = (e, i) => {
+        let { document } = this.state;
         document[i].caption = e.target.value;
-        this.setState({document})
+        this.setState({ document })
     }
     render() {
         const { document, documentRequired } = this.state;
@@ -108,39 +112,50 @@ export default class DialogueDocument extends Component {
                 <div className="flex flex-col justify-between flex-1 px-24 pt-12">
                     {/* <div className="flex justify-between items-start"> */}
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
-                        <div className="image-grid" style={{ marginTop: '10px', margin:"auto" }}>
+                        <div className="image-grid" style={{ marginTop: '10px', margin: "auto" }}>
+                            {
+                                this.state.isLoading ?
+                                    <div className="sweet-loading">
+                                        <DotLoader
+                                            color={"#E84855"}
+                                            size={50}
+                                            loading={this.state.isLoading}
+                                        />
+                                    </div>
 
-                            <span>
-                                <input
-                                    id="contained-button-file"
-                                    type="file"
-                                    name="url"
-                                    style={{ cursor: 'pointer', display: 'none', marginBottom: '0px' }}
-                                    onChange={this.onChangeHandler}
-                                    accept="document/*"
-                                />
-                                <label htmlFor="contained-button-file">
-                                    <Icon
-                                        color="action"
-                                        fontSize="large"
-
-                                    >
-                                        note_add
+                                    :
+                                    <span>
+                                        <input
+                                            id="contained-button-file"
+                                            type="file"
+                                            name="url"
+                                            style={{ cursor: 'pointer', display: 'none', marginBottom: '0px' }}
+                                            onChange={this.onChangeHandler}
+                                            accept="document/*"
+                                        />
+                                        <label htmlFor="contained-button-file">
+                                            <Icon
+                                                color="action"
+                                                fontSize="large"
+                                                className={"onHoverPointer"}
+                                            >
+                                                note_add
 									</Icon>
-                                    
-                                    
-                {
-                    documentRequired?
 
-                    <em style={{color:'red',textAlign:"center"}}>{ "Upload At least 1 document file"}</em>
 
-                   :
-                   null
-                }
-                                </label>
-                            </span>
+                                            {
+                                                documentRequired ?
+
+                                                    <em style={{ color: 'red', textAlign: "center" }}>{"Upload At least 1 document file"}</em>
+
+                                                    :
+                                                    null
+                                            }
+                                        </label>
+                                    </span>
+                            }
                         </div>
-                        
+
                     </div>
                     {/* </div> */}
                 </div>
@@ -150,8 +165,8 @@ export default class DialogueDocument extends Component {
                 {document.map((el, i) => {
                     return (
                         <React.Fragment>
-                        
-                        <div className="flex">
+
+                            <div className="flex">
                                 <TextField
                                     label="URL"
                                     className={"mb-10"}
@@ -177,13 +192,13 @@ export default class DialogueDocument extends Component {
                                     fullWidth
 
                                     value={el.caption}
-                                    onChange={(e)=>{this.updateCaption(e,i)}}
+                                    onChange={(e) => { this.updateCaption(e, i) }}
                                     size="small"
                                 />
 
                             </div>
                         </React.Fragment>
-                        
+
                     )
                 })
 

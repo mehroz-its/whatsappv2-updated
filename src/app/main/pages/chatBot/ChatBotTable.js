@@ -271,7 +271,7 @@ function ChatBotTable(props) {
 							</div>
 						)
 						: (
-							!data2.length ?
+							!(data2&&data2.length) ?
 								(
 									<div className="flex flex-1 items-center justify-center h-full">
 										<Typography color="textSecondary" variant="h5">

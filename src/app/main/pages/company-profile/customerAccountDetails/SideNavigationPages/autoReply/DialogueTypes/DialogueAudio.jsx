@@ -21,7 +21,7 @@ import WorkIcon from '@material-ui/icons/Work';
 import Grid from '@material-ui/core/Grid';
 import CoreHttpHandler from "../../../../../../../../http/services/CoreHttpHandler"
 import Avatar from '@material-ui/core/Avatar';
-
+import DotLoader from "react-spinners/DotLoader";
 
 export default class DialogueAudio extends Component {
     constructor(props) {
@@ -37,7 +37,8 @@ export default class DialogueAudio extends Component {
 
     }
     state = {
-        audio: []
+        audio: [],
+        isLoading:false
     }
 
     getResult = () => {
@@ -66,39 +67,43 @@ export default class DialogueAudio extends Component {
 
 
     }
-    
-	onChangeHandler = event => {
-		if (event.target.files.length > 0) {
-			const _data = new FormData();
 
-			let _name = event.target.files[0].name;
+    onChangeHandler = event => {
+        if (event.target.files.length > 0) {
+            const _data = new FormData();
 
-			_name = _name.replace(/\s/g, '');
+            let _name = event.target.files[0].name;
 
-			_data.append('file', event.target.files[0], `${new Date().getTime()}_${_name}`);
+            _name = _name.replace(/\s/g, '');
+
+            _data.append('file', event.target.files[0], `${new Date().getTime()}_${_name}`);
             this.setState({
-                audioRequired:false
+                audioRequired: false,
+                isLoading:true
             })
-			CoreHttpHandler.request(
-				'content',
-				'upload',
-				{ params: _data },
-				response => {
+            CoreHttpHandler.request(
+                'content',
+                'upload',
+                { params: _data },
+                response => {
                     let audio = this.state.audio;
                     audio.push({
-                        URL:response.data.data.link,
-                        caption:""
+                        URL: response.data.data.link,
+                        caption: ""
                     })
-                    this.setState({audio})
+                    this.setState({ audio,isLoading:false })
                 },
-				error => {}
-			);
-		}
+                error => {
+                    this.setState({isLoading:false})
+
+                 }
+            );
+        }
     };
-    updateCaption = (e,i)=>{
-        let {audio} = this.state;
+    updateCaption = (e, i) => {
+        let { audio } = this.state;
         audio[i].caption = e.target.value;
-        this.setState({audio})
+        this.setState({ audio })
     }
     render() {
         const { audio, audioRequired } = this.state;
@@ -109,39 +114,53 @@ export default class DialogueAudio extends Component {
                 <div className="flex flex-col justify-between flex-1 px-24 pt-12">
                     {/* <div className="flex justify-between items-start"> */}
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
-                        <div className="image-grid" style={{ marginTop: '10px', margin:"auto" }}>
+                        <div className="image-grid" style={{ marginTop: '10px', margin: "auto" }}>
+                            {
+                                this.state.isLoading ?
+                                    <div className="sweet-loading">
+                                        <DotLoader
+                                            color={"#E84855"}
+                                            size={50}
+                                            loading={this.state.isLoading}
+                                        />
+                                    </div>
 
-                            <span>
-                                <input
-                                    id="contained-button-file"
-                                    type="file"
-                                    name="url"
-                                    style={{ cursor: 'pointer', display: 'none', marginBottom: '0px' }}
-                                    onChange={this.onChangeHandler}
-                                    accept="audio/*"
-                                />
-                                <label htmlFor="contained-button-file">
-                                    <Icon
-                                        color="action"
-                                        fontSize="large"
+                                    :
 
-                                    >
-                                        graphic_eq
-									</Icon>
-                                    
-                                    
-                {
-                    audioRequired?
+                                    <span>
+                                        <input
+                                            id="contained-button-file"
+                                            type="file"
+                                            name="url"
+                                            style={{ cursor: 'pointer', display: 'none', marginBottom: '0px' }}
+                                            onChange={this.onChangeHandler}
+                                            accept="audio/*"
+                                        />
+                                        <label htmlFor="contained-button-file">
+                                            <Icon
+                                                color="action"
+                                                fontSize="large"
+                                                className={"onHoverPointer"}
+                                            >
+                                                graphic_eq
+									        </Icon>
 
-                    <em style={{color:'red',textAlign:"center"}}>{ "Upload At least 1 audio file"}</em>
 
-                   :
-                   null
-                }
-                                </label>
-                            </span>
+                                            {
+                                                audioRequired ?
+
+                                                    <em style={{ color: 'red', textAlign: "center" }}>{"Upload At least 1 audio file"}</em>
+
+                                                    :
+                                                    null
+                                            }
+                                        </label>
+                                    </span>
+
+
+                            }
                         </div>
-                        
+
                     </div>
                     {/* </div> */}
                 </div>
@@ -151,8 +170,8 @@ export default class DialogueAudio extends Component {
                 {audio.map((el, i) => {
                     return (
                         <React.Fragment>
-                        
-                        <div className="flex">
+
+                            <div className="flex">
                                 <TextField
                                     label="URL"
                                     className={"mb-5"}
@@ -168,23 +187,8 @@ export default class DialogueAudio extends Component {
                                 />
 
                             </div>
-                            <div className="flex">
-                                <TextField
-                                    label="Caption"
-                                    className={"mb-10"}
-                                    id={"Caption" + i}
-                                    name="Caption"
-                                    variant="outlined"
-                                    fullWidth
-
-                                    value={el.caption}
-                                    onChange={(e)=>{this.updateCaption(e,i)}}
-                                    size="small"
-                                />
-
-                            </div>
                         </React.Fragment>
-                        
+
                     )
                 })
 

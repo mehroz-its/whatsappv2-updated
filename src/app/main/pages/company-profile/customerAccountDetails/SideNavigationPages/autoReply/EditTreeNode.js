@@ -288,6 +288,7 @@ const EditTreeNode = props => {
 			style={{ marginTop: '2%' }}
 			fullWidth
 			maxWidth="xs"
+			disableBackdropClick
 		>
 			<AppBar position="static" elevation={1}>
 				<div

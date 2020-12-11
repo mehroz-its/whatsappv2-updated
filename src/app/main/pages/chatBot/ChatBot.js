@@ -92,8 +92,11 @@ function ChatBot(props) {
             );
 		};
 		loadData().then((response) => {
-			setData(response.data.data.autoreply)
-			setData2(response.data.data.autoreply)
+			if(response.data.data.autoreply&&response.data.data.autoreply){
+				setData(response.data.data.autoreply)
+				setData2(response.data.data.autoreply)
+			}
+
 			setLoading(false)
 
 		})
