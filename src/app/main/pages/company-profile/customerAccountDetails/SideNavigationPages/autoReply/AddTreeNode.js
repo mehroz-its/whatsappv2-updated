@@ -67,6 +67,7 @@ const AddTreeNode = props => {
 	const [title, setTitle] = React.useState("")
 	const [attributes, setAttributes] = React.useState([])
 	const [errors, setError] = React.useState({})
+	const [checked, setChecked] = React.useState(false);
 
 
 	//text
@@ -160,9 +161,13 @@ const AddTreeNode = props => {
 
 			const [icErrors, questions] = iCRef.current.getResult();
 
+			
+
 			if (icErrors) {
 				_errors.icErrors = true
 			}
+
+			questions.oneTimeCollection = checked;
 
 			data = { ...data, ...questions }
 		}
@@ -208,6 +213,10 @@ const AddTreeNode = props => {
 				break;
 		}
 	}
+
+	const toggleChecked = () => {
+		setChecked((prev) => !prev);
+	  };
 
 	return (
 		<Dialog
@@ -489,6 +498,17 @@ const AddTreeNode = props => {
 				</div> */}
 			</DialogContent>
 			<DialogActions>
+			{
+					type === "ic" ?
+
+					<FormControl>
+					<FormControlLabel
+							control={<Switch checked={checked} onChange={toggleChecked} />}
+							label="One Time Save"
+						/>
+					</FormControl>
+					: null
+				}
 				<div className="px-16 my-10">
 					<Button variant="contained" onClick={handleDialogClose} color="primary" size="small">
 						Cancel

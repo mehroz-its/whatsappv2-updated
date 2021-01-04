@@ -64,10 +64,13 @@ const EditTreeNode = props => {
 	const { node, path } = editTreeNode;
 	const { children } = node;
 
+	console.log('type----------------------------------------------------------------', node);
+
 	const [type, setType] = React.useState(node.type ? node.type : "text")
 	const [title, setTitle] = React.useState(node.title ? node.title : "")
 	const [repeatPreviousMessage, setRepeatPreviousMessage] = React.useState(node.repeatPreviousMessage!=undefined ? node.repeatPreviousMessage : true)
 	const [invalidResponse, setInvalidResponse] = React.useState(node.invalidResponse ? node.invalidResponse : "")
+	const [checked, setChecked] = React.useState(node.oneTimeCollection ? node.oneTimeCollection : false);
 
 	const [next, setNext] = React.useState(node.__next ? node.__next : "")
 
@@ -203,6 +206,8 @@ const EditTreeNode = props => {
 				_errors.icErrors = true
 			}
 
+			questions.oneTimeCollection = checked;
+
 			data = { ...data, ...questions }
 		}else{
 			data = { 
@@ -277,6 +282,11 @@ const EditTreeNode = props => {
 
 		}
 	}
+
+	const toggleChecked = () => {
+		setChecked((prev) => !prev);
+	  };
+
 	return (
 		<Dialog
 			open={true}
@@ -529,6 +539,17 @@ const EditTreeNode = props => {
 
 			</DialogContent>
 			<DialogActions>
+			{
+					type === "ic" ?
+
+					<FormControl>
+					<FormControlLabel
+							control={<Switch checked={checked} onChange={toggleChecked} />}
+							label="One Time Save"
+						/>
+					</FormControl>
+					: null
+				}
 				<div className="px-16 my-10">
 					<Button variant="contained" onClick={handleDialogClose} color="primary" size="small">
 						Cancel

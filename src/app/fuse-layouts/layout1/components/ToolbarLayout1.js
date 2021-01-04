@@ -81,6 +81,9 @@ function ToolbarLayout1(props) {
 		// console.log('toggleShow : ', toggleShow);
 		const _online = (localStorage.getItem('online')==true||localStorage.getItem('online')=="true");
 
+		console.log("====== THIS =========")
+		console.log(localStorage.getItem('online'))
+		console.log(localStorage.getItem('online')==true)
 		setOnline(_online)
 
 		socket.on("newMessage", (data) => {

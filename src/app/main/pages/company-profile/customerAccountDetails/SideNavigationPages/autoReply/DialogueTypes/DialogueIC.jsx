@@ -48,8 +48,14 @@ export default class DialogueIC extends Component {
         questions: [{}],
         questionRequired: null,
         children: [],
-        onCompleteNext: ""
+        onCompleteNext: "",
+        oneTime: false
     }
+
+    handleResponseChange = (e) => {
+		
+        this.setState({oneTime: !this.state.oneTime});
+	}
 
 
     getResult = () => {
@@ -78,7 +84,8 @@ export default class DialogueIC extends Component {
         } else {
 
             this.setState({
-                questionRequired: true
+                questionRequired: true,
+
             })
             return [true, { questions: [] }]
         }
@@ -120,7 +127,7 @@ export default class DialogueIC extends Component {
             <React.Fragment>
                 {questions.map((el, i) => {
                     return (
-
+                    
                         <div className="flex">
                             <TextField
                                 className={"mb-10"}
@@ -150,7 +157,10 @@ export default class DialogueIC extends Component {
                                     </div>
                                     : null
                             }
+                            
+                            
                         </div>
+                    
                     )
                 })
 
