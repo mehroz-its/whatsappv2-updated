@@ -37,6 +37,7 @@ import Alert from '@material-ui/lab/Alert';
 import WebSocket from "../../../socket/WebSocket"
 import DateRangePickerVal from './DatePicker';
 import moment from "moment";
+import Tooltip from '@material-ui/core/Tooltip';
 
 var Start = '';
 var End = '';
@@ -245,12 +246,11 @@ function ChatApp(props) {
 			key3: ':last_closed',
 			value3: endDate?endDate:null
 		};
-
 		CoreHttpHandler.request('conversations', 'historyConversationsPagination', params, (response) => {
 			setmessages(response.data.data.chat)
 			abc = response.data.data.chat
 			setshowLatestMessage(true)
-			
+
 		}, (response) => {
 		});
 
@@ -529,7 +529,6 @@ function ChatApp(props) {
 		setOpenSearch(!openSearch)
 
 	}
-
 	const sendDialogActions = [
 		{
 			handler: (event, index) => {
@@ -984,14 +983,20 @@ function ChatApp(props) {
 
 															null
 													}
-													<IconButton
-														aria-owns={'Filter Records'}
-														aria-haspopup="true"
-														onClick={openSearchMenu}
-														style={{ color: 'white' }}
-													>
-														<Icon>{openSearch ? "close_sharp" : "filter_list_sharp"}</Icon>
-													</IconButton>
+
+
+													<Tooltip title={openSearch ? "Close" : "Filter"} arrow>
+
+														<IconButton
+															aria-owns={'Filter Records'}
+															aria-haspopup="true"
+															onClick={openSearchMenu}
+															style={{ color: 'white' }}
+														>
+															<Icon>{openSearch ? "close_sharp" : "filter_list_sharp"}</Icon>
+														</IconButton>
+													</Tooltip>
+
 													<IconButton
 														aria-owns={moreMenuEl ? 'chats-more-menu' : null}
 														aria-haspopup="true"

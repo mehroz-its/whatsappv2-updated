@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 import React from 'react';
-const URL = 'http://localhost:3001'
+const URL = 'http://wentterminus.intellexalsolutions.com'
 
 const getToken = () => {
     return localStorage.getItem("user_token")

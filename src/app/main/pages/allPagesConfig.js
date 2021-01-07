@@ -17,7 +17,7 @@ import PermissionConfig from './setting/permission/PermissionConfig';
 import RolesConfig from './setting/roles/RolesConfig';
 import UserConfig from './setting/users/UserConfig';
 import TemplateAppConfig from './templae-messages/TemplateAppConfig';
-import ReportsAppConfig from './Reports/ReportsAppConfig';
+import ReportsAppConfig from './reports/ReportsAppConfig';
 import AdminDashboardAppConfig from './adminDashboard/AdminDashboardAppConfig';
 import AgentConfig from './agent-conversation/AgentConfig';
 import BlockListConfig from './blocklist/BlockListConfig';
@@ -29,6 +29,7 @@ import ProfileAppConfig from './profile/ProfileAppConfig';
 import ChatHistoryConfig from './chat-history/ChatHistoryConfig';
 import CompanyProfileConfig from './company-profile/CompanyProfileConfig';
 import Error404LoggedOutPageConfig from './errors/404-logged-out/Error404LoggedOutPageConfig';
+import chatBotConfig from "./chatBot/chatBotConfig";
 
 let allPagesConfig = [
 	CompanyProfileConfig,
@@ -61,7 +62,8 @@ let allPagesConfig = [
 	AdminDashboardAppConfig,
 	AgentConfig,
 	TokenConfig,
-	Error404LoggedOutPageConfig
+	Error404LoggedOutPageConfig,
+	chatBotConfig
 ];
 
 export default allPagesConfig;
