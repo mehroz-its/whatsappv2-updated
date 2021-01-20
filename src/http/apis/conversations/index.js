@@ -49,6 +49,15 @@ class APIS {
                 // path: '/agent/history/chat/:number/:last_closed'
                 // path: '/messages/conversations/:number'
             },
+            historyConversationsPagination: {
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'get',
+                path: '/agent/history/chat/:number/:start_date/:last_closed'
+                // path: '/agent/history/chat/:number/:last_closed'
+                // path: '/messages/conversations/:number'
+            },
             send_text: {
                 headers: {
                     'xt-user-token': null

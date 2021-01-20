@@ -34,6 +34,7 @@ import copy from 'copy-to-clipboard';
 import { EventEmitter } from '../../../../../../events'
 import WebSocket from "../../../../../socket/WebSocket"
 import TransferWithinAStationIcon from '@material-ui/icons/TransferWithinAStation';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const drawerWidth = 320;
 const headerHeight = 200;
@@ -1022,12 +1023,14 @@ function ChatApp(props) {
 												>
 												 Shift
 												</Button> */}
+												<Tooltip title="Shift" arrow>
 												<TransferWithinAStationIcon 
 													style={{ fontSize: 30, cursor:"pointer" }} 
 														onClick= {(e)=>conversationActionsCallback('shift')}
 														fullWidth
 														variant="contained"
 												/>
+												</Tooltip>
 												<Menu
 													id="chats-more-menu"
 													anchorEl={moreMenuEl}

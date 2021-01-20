@@ -35,7 +35,74 @@ class APIS {
                 },
                 method: 'post',
                 path: '/backend/users/create'
-            }
+            },
+
+
+            
+            get_chatbot: {
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'get',
+                path: '/get/autoreply/:id'
+            },
+
+
+            add_chatbot:{
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'post',
+                path: '/create/autoreply'
+            },
+            update_chatbot:{
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'post',
+                path: '/update/autoreply'
+            },
+
+            update_chatbot_attribute:{
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'post',
+                path: '/update/attribute/autoreply'
+            },
+
+
+            get_self_chatbot:{
+                
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'get',
+                path: '/get/autoreply'
+            },
+
+            update_self_chatbot_attribute:{
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'post',
+                path: '/update/attribute/self/autoreply'
+            },
+            add_self_chatbot:{
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'post',
+                path: '/create/self/autoreply'
+            },
+
+            update_self_chatbot:{
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'post',
+                path: '/update/self/autoreply'
+            },
         }
     }
 }

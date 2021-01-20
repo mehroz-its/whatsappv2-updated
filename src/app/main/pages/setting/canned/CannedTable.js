@@ -26,7 +26,12 @@ const BodyStyle = createMuiTheme({
 				paddingTop: 4,
 				fontSize: '12px',
 				paddingBottom: 4,
-			}
+				whiteSpace: "nowrap",
+				textOverflow: "ellipsis",
+				maxWidth: "200px",
+				overflow: "hidden"
+			},
+			
 		}
 	}
 });

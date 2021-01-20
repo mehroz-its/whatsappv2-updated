@@ -1,77 +1,36 @@
-import { makeStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Tooltip from '@material-ui/core/Tooltip';
-import clsx from 'clsx';
-import React, { useState } from 'react';
-
-
+import React from 'react';
 const rows = [
 	{
-		id: 'Id',
-		align: 'center',
+		id: 'Child Title',
+		align: 'left',
 		disablePadding: false,
-		label: 'Name',
+		label: 'Child Title',
 		sort: true
 	},
 	{
-		id: 'is_enabled',
-		align: 'center',
+		id: 'Key',
+		align: 'left',
 		disablePadding: false,
-		label: 'Enabled',
+		label: 'Key',
 		sort: true
-	},
-	{
-		id: 'is_default',
-		align: 'center',
-		disablePadding: false,
-		label: 'Default',
-		sort: true
-	},
-	{
-		id: 'is_deleted',
-		align: 'center',
-		disablePadding: false,
-		label: 'Deleted',
-		sort: true
-	},
-	{
-		id: 'dt',
-		align: 'center',
-		disablePadding: false,
-		label: 'Date Created',
-		sort: true
-	},
-	{
-		id: 'edit',
-		align: 'center',
-		disablePadding: false,
-		label: 'Edit',
-		sort: true
-	},
-
-];
-const useStyles = makeStyles(theme => ({
-	actionsButtonWrapper: {
-		background: theme.palette.background.paper
 	}
-}));
-function CampaignTableHead(props) {
+];
+function ChildrenTableHead(props) {
 	const createSortHandler = property => event => {
 		props.onRequestSort(event, property);
 	};
-
-
 	return (
 		<TableHead>
-			<TableRow className="h-10">
-				{rows.map(row => {
+			<TableRow className="h-64">
+				{rows.map((row,i) => {
 					return (
 						<TableCell
-							style={{ fontSize: '11px', padding: '10px 0px 10px 20px' }}
-							key={row.id}
+							key={i}
 							align={row.align}
 							padding={row.disablePadding ? 'none' : 'default'}
 							sortDirection={props.order.id === row.id ? props.order.direction : false}
@@ -79,7 +38,7 @@ function CampaignTableHead(props) {
 							{row.sort && (
 								<Tooltip
 									title="Sort"
-									placement={row.align === 'center' ? 'bottom-end' : 'bottom-start'}
+									placement={row.align === 'right' ? 'bottom-end' : 'bottom-start'}
 									enterDelay={300}
 								>
 									<TableSortLabel
@@ -98,4 +57,4 @@ function CampaignTableHead(props) {
 		</TableHead>
 	);
 }
-export default CampaignTableHead;
+export default ChildrenTableHead;

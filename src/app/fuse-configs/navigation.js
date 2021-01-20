@@ -168,6 +168,13 @@ module.exports = [
                         exact: true
                     },
 
+                    {
+                        id: 'ChatBot',
+                        title: 'Chat Bot',
+                        type: 'item',
+                        url: '/apps/chatbot',
+                        exact: true
+                    },
                     
 
  

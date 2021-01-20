@@ -14,13 +14,21 @@ import Paper from '@material-ui/core/Paper';
 import { useSelector } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 
-import AutoRepliesDialog from "./autoRepliesDialog"
+import AddTreeNode from "./AddTreeNode"
+import EditTreeNode from "./EditTreeNode"
+import DeleteTreeNode from "./DeleteTreeNode"
+import ChildrenTreeNode from "./ChildrenTreeNode";
 
-import SortableTree from 'react-sortable-tree';
+import SortableTree, { changeNodeAtPath, removeNodeAtPath, getNodeAtPath } from 'react-sortable-tree';
+import { addNodeUnderParent, getParentIndex } from "./helperfunctions"
+
 import 'react-sortable-tree/style.css';
+import { green } from '@material-ui/core/colors';
 
 import { ThemeProvider, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { add } from 'lodash';
+import { v4 as uuidv4 } from 'uuid';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const SearchStyle = createMuiTheme({
     overrides: {
@@ -44,585 +52,346 @@ const useStyles = makeStyles({
         '& canvas': {
             maxHeight: '80%'
         }
-    }
+    },
+
+    margin: {
+        color: 'white',
+        paddingLeft: '14px',
+        paddingRight: '14px',
+        paddingTop: '5px',
+        paddingBottom: '5px',
+        fontSize: '1.3rem',
+    },
 });
 function AddAutoReply(props) {
     const mainTheme = useSelector(({ fuse }) => fuse.settings.mainTheme);
 
+    const { data } = props;
+
+
     const classes = useStyles();
-    const [clients, setClient] = React.useState([]);
-    const [activeClients, setActiveClients] = React.useState('');
-    const [inactiveClients, setInactiveClients] = React.useState('');
-    const [value, setValue] = React.useState('');
 
-    const [totalItems, setTotalItems] = React.useState(0);
-    const [currentParams, setCurrentParams] = React.useState({ limit: 10, page: 0 });
-    const [isLoading, setLoading] = React.useState(true);
-    const [treeData, setTreeData] = React.useState([
-        {
-            title: 'Incoming Files',
-            children: [
-                {
-                    title: 'Culture',
-                    children: [
-                        {
-                            title: 'Culture'
-                        }
-                    ]
-                },
-                {
-                    title: 'Encyclopedia'
-                },
-                {
-                    title: 'Retail'
-                }
-            ]
-        }
-    ]);
-
-    const dataSourceOptions = {
-        params: {
-            columns: '*',
-            sortby: 'ASC',
-            page: 1,
-            limit: 1,
-            orderby: 'id',
-            where: 'id != $1 AND displayed = false order by id',
-            values: 0
-        },
-        type: 'dashboard',
-        apiType: 'listing'
-    };
-    const [open, setOpen] = React.useState(false);
-    const [type, setType] = React.useState('update');
-    const [dialogData, setDialogData] = React.useState({
-        id: 0,
-        name: '',
-        description: '',
-        begin_dt: null,
-        begin_time: null,
-        msisdnUrl: '',
-        state: false,
-        template_id: 0,
-        type: null,
-        activated: false
-    });
-    const [companyDetails, setCompanyDetails] = React.useState(props.data);
-
-    const handleClickOpen = () => {
-        setType('update');
-        setOpen(true);
-    };
-    function handleDialogClose(e) {
-        if (e == 'create') {
-
-        } else if (e == 'update') {
-
-        } else if (e == 'error') {
-
-            return;
-        } else if (e == 'No Change') {
-
-        }
-        setDialogData({});
-        setOpen(false);
-    }
-    function showError(msg) {
-
-    }
-    const handleClose = () => {
-        setOpen(false);
-    };
-    React.useEffect(() => {
-        fetchPagination();
-    }, [currentParams]);
-
-    React.useEffect(() => {
-        fetchMeta();
-    }, []);
-    console.log('treeData : ', treeData);
-    const dataSourceSuccessBusiness = response => {
-        setClient(response.data.data.clients.clients);
-        setActiveClients(response.data.data.clients.active_clients.active);
-        setInactiveClients(response.data.data.clients.inactive_clients.inactive);
-    };
-    const dataSourceFailureBusiness = response => { };
-    const changeStatus = params => {
-        CoreHttpHandler.request(
-            'Business',
-            'changeStatus',
-            params,
-            response => {
-                fetchPagination(false);
-                fetchMeta();
-            },
-            dataSourceFailureChangeStatus
-        );
-    };
-    const dataSourceSuccessChangeStatus = response => {
-    };
-    const dataSourceFailureChangeStatus = response => {
-        console.log('dataSourceFailureChangeStatus response : ', response);
-    };
-
-    const fetchMeta = () => {
-        CoreHttpHandler.request(
-            'Business',
-            'get_meta',
-            {},
-            response => {
-                setActiveClients(response.data.data.clients.active_clients.active);
-                setInactiveClients(response.data.data.clients.inactive_clients.inactive);
-            },
-            error => {
-                console.log(error);
-            }
-        );
-    };
-
-    const setPage = currentPage => {
-        setCurrentParams({ limit: currentParams.limit, page: currentPage });
-    };
-
-    const setLimit = pageLimit => {
-        setCurrentParams({ limit: pageLimit, page: 0 });
-    };
-
-    const fetchPagination = (bool = true) => {
-        console.trace();
-        if (bool) setLoading(true);
-
-        CoreHttpHandler.request(
-            'Business',
-            'get_pagination',
+    const [treeData, setTreeData] = React.useState(
+        [
             {
-                ...currentParams,
-                columns: '*',
-                sortby: 'ASC',
-                orderby: 'id',
-                where: 'id != $1 AND displayed = false order by id',
-                values: 0
-            },
-            response => {
-                setLoading(false);
-                setTotalItems(response.data.data.clients.totalItems);
-
-                setClient(response.data.data.clients.clients);
-            },
-            error => {
-                console.log(error);
+                "id": uuidv4(),
+                "title": "Welcome",
+                "type": "text",
+                "expanded": true,
+                "repeatPreviousMessage": true,
+                "messages": [
+                    "Welcome!"
+                ],
+                "children": []
             }
-        );
+        ]
+    );
+    const [value, setValue] = React.useState('');
+    const [open, setOpen] = React.useState(false);
+    const [header, setHeader] = React.useState("Chat Bot")
+    const [openAddModal, setOpenAddModal] = React.useState(null);
+    const [openEditModal, setOpenEditModal] = React.useState(null);
+    const [openDeleteModal, setOpenDeleteModal] = React.useState(null);
+    const [openChildrenModal, setOpenChildrenModal] = React.useState(null);
+    const [endMessage, setEndMessage] = React.useState("");
+    const [startMessage, setStartMessage] = React.useState("");
+
+    const [chatBotName, setChatBotName] = React.useState("")
+
+    const updateChatBotName = (e) => {
+        setChatBotName(e.target.value)
+    }
+
+    React.useEffect(() => {
+
+        if (data) {
+            const { name, body } = data;
+
+            if (name) {
+                setChatBotName(name)
+            }
+
+            if (body) {
+                if(body.__default){
+                    setTreeData([body.__default])
+                }
+                if(body.__startMessageConversationMessage&&body.__startMessageConversationMessage.messages&&body.__startMessageConversationMessage.messages.length){
+                    setStartMessage(body.__startMessageConversationMessage.messages[0])
+                }
+                if(body.__endMessageConversationMessage&&body.__endMessageConversationMessage.messages&&body.__endMessageConversationMessage.messages.length){
+                    setEndMessage(body.__endMessageConversationMessage.messages[0])
+                }
+            }
+        }
+
+
+
+    }, [])
+    const openChildrenModalDialogue = (row) => {
+        setOpenChildrenModal(row)
+    }
+    const openDeleteModalDialogue = (row) => {
+        setOpenDeleteModal(row)
+    }
+
+    const handleChildrenDialogClose = () => {
+        setOpenChildrenModal(null)
+    }
+    const handleDeleteDialogClose = () => {
+        setOpenDeleteModal(null)
+    }
+    const handleEditDialogClose = () => {
+        setOpenEditModal(null)
+    }
+    const handleAddDialogClose = () => {
+        setOpenAddModal(null)
+    }
+    const openAddModalDialogue = (row) => {
+        setOpenAddModal(row)
+    }
+    const openEditModalDialogue = (row) => {
+        setOpenEditModal(row)
+    }
+    const asyncForEach = async (array, callback) => {
+        for (let index = 0; index < array.length; index++) {
+            await callback(array[index], index, array);
+        }
+    }
+    const getNodeKey = ({ node: object, treeIndex: number }) => {
+        return number;
     };
 
-    const addTree = () => {
-        alert();
-        let newTree = {
-            title: 'New Incoming Files'
-        };
-        setTreeData(oldArray => [...oldArray, newTree]);
-        console.log(treeData);
-    };
-    const addNewNode = rowInfo => {
-        const NEW_NODE = { title: 'Another Node', isDirectory: true, expanded: true };
-        const newTree = addNodeUnderParent({
-            treeData: treeData,
-            newNode: NEW_NODE,
+    const addNode = (newNode) => {
+
+        let parentKey = getNodeKey(openAddModal);
+
+        if (parentKey == -1) {
+            parentKey = null;
+        }
+        let newTree = addNodeUnderParent({
+            treeData,
+            newNode: { ...newNode, id: uuidv4() },
             expandParent: true,
-            parentKey: rowInfo ? rowInfo.treeIndex : undefined,
+            parentKey: parentKey,
             getNodeKey: ({ treeIndex }) => treeIndex
         });
-        setTreeData(newTree.treeData);
-
-    };
-    const editNewNode = rowInfo => {
-        console.log('row Edit', rowInfo);
-
-    };
-
-    const removeNode = rowInfo => {
-        const { path } = rowInfo;
-        const newTree = removeNodeAtPath({
-            treeData: treeData,
-            path,
-            getNodeKey: ({ treeIndex }) => treeIndex
-        });
-        setTreeData(newTree);
-    };
-    function getNodeAtPath({ treeData, path, getNodeKey, ignoreCollapsed = true }) {
-        let foundNodeInfo = null;
-
-        try {
-            changeNodeAtPath({
-                treeData,
-                path,
-                getNodeKey,
-                ignoreCollapsed,
-                newNode: ({ node, treeIndex }) => {
-                    foundNodeInfo = { node, treeIndex };
-                    return node;
-                }
-            });
-        } catch (err) { }
-
-        return foundNodeInfo;
+        setTreeData(newTree.treeData)
+        setOpenAddModal(false)
     }
-    function addNodeUnderParent({
-        treeData,
-        newNode,
-        parentKey = null,
-        getNodeKey,
-        ignoreCollapsed = true,
-        expandParent = false,
-        addAsFirstChild = false
-    }) {
-        if (parentKey === null) {
-            return addAsFirstChild
-                ? {
-                    treeData: [newNode, ...(treeData || [])],
-                    treeIndex: 0
-                }
-                : {
-                    treeData: [...(treeData || []), newNode],
-                    treeIndex: (treeData || []).length
-                };
-        }
-
-        let insertedTreeIndex = null;
-        let hasBeenAdded = false;
-        const changedTreeData = map({
+    const childrenNode = (data) => {
+        const { path, node } = openChildrenModal;
+        let changeNodeObject = {
             treeData,
-            getNodeKey,
-            ignoreCollapsed,
-            callback: ({ node, treeIndex, path }) => {
-                const key = path ? path[path.length - 1] : null;
-                if (hasBeenAdded || key !== parentKey) {
-                    return node;
-                }
-                hasBeenAdded = true;
+            path: path,
+            newNode: { ...node, __ref: data },
+            getNodeKey: ({ treeIndex }) => treeIndex,
+            ignoreCollapsed: true
 
-                const parentNode = {
-                    ...node
-                };
+        };
+        let newTree = changeNodeAtPath(changeNodeObject);
+        setTreeData(newTree)
+        setOpenChildrenModal(false)
+    }
 
-                if (expandParent) {
-                    parentNode.expanded = true;
-                }
+    const editNode = (data) => {
+        const { path, node } = openEditModal;
+        let newTree = updateNodeData(data, path, node)
+        setTreeData(newTree)
+        setOpenEditModal(false)
+    }
 
-                if (!parentNode.children) {
-                    insertedTreeIndex = treeIndex + 1;
-                    return {
-                        ...parentNode,
-                        children: [newNode]
-                    };
-                }
+    const updateNodeData = (data, path, node, treeDataUpdate) => {
 
-                if (typeof parentNode.children === 'function') {
-                    throw new Error('Cannot add to children defined by a function');
-                }
+        let changeNodeObject = {
+            treeData: treeDataUpdate ? treeDataUpdate : treeData,
+            path: path,
+            newNode: { ...node, ...data },
+            getNodeKey: ({ treeIndex }) => treeIndex,
+            ignoreCollapsed: true
 
-                let nextTreeIndex = treeIndex + 1;
-                for (let i = 0; i < parentNode.children.length; i += 1) {
-                    nextTreeIndex += 1 + getDescendantCount({ node: parentNode.children[i], ignoreCollapsed });
-                }
+        };
+        let newTree = changeNodeAtPath(changeNodeObject);
+        return newTree
+    }
+    const deleteNode = () => {
+        const { path, node, parentNode } = openDeleteModal;
 
-                insertedTreeIndex = nextTreeIndex;
+        let _newTree = null
+        let _newTree2 = null
+        //remove ref from parent
 
-                const children = addAsFirstChild
-                    ? [newNode, ...parentNode.children]
-                    : [...parentNode.children, newNode];
-
-                return {
-                    ...parentNode,
-                    children
-                };
-            }
-        });
-
-        if (!hasBeenAdded) {
-            throw new Error('No node found with the given key.');
+        if (parentNode && parentNode.__ref && parentNode.__ref.length) {
+            let data = parentNode.__ref.filter(el => el.id != node.id)
+            let parentPath = path.map(el => el)
+            parentPath.pop()
+            _newTree2 = updateNodeData({ __ref: data }, parentPath, parentNode)
         }
 
-        return {
-            treeData: changedTreeData,
-            treeIndex: insertedTreeIndex
-        };
-    }
-    function removeNodeAtPath({ treeData, path, getNodeKey, ignoreCollapsed = true }) {
-        return changeNodeAtPath({
-            treeData,
-            path,
-            getNodeKey,
-            ignoreCollapsed,
-            newNode: null
-        });
-    }
+        if (parentNode && parentNode.__next && parentNode.__next == node.id) {
+            let parentPath = path.map(el => el)
+            parentPath.pop()
+            _newTree2 = updateNodeData({ __next: undefined }, parentPath, parentNode, _newTree2 ? _newTree2 : treeData)
+        }
 
-    function changeNodeAtPath({ treeData, path, newNode, getNodeKey, ignoreCollapsed = true }) {
-        const RESULT_MISS = 'RESULT_MISS';
-        const traverse = ({ isPseudoRoot = false, node, currentTreeIndex, pathIndex }) => {
-            if (!isPseudoRoot && getNodeKey({ node, treeIndex: currentTreeIndex }) !== path[pathIndex]) {
-                return RESULT_MISS;
+        //find children and move them up
+
+        if (node.children && node.children.length) {
+
+            let _path = path.map(el => el)
+            _path.pop()
+            let parentNode = getNodeAtPath({
+                treeData: _newTree2 ? _newTree2 : treeData,
+                path: _path,
+                getNodeKey: ({ treeIndex }) => treeIndex,
+                ignoreCollapsed: true
+            });
+            let parentKey = getNodeKey(parentNode);
+
+            if (parentKey == -1) {
+                parentKey = null;
             }
 
-            if (pathIndex >= path.length - 1) {
-                return typeof newNode === 'function' ? newNode({ node, treeIndex: currentTreeIndex }) : newNode;
-            }
-            if (!node.children) {
-                throw new Error('Path referenced children of node with no children.');
-            }
+            const _length = node.children.length
 
-            let nextTreeIndex = currentTreeIndex + 1;
-            for (let i = 0; i < node.children.length; i += 1) {
-                const result = traverse({
-                    node: node.children[i],
-                    currentTreeIndex: nextTreeIndex,
-                    pathIndex: pathIndex + 1
+            const parentIndex = getParentIndex(node.id, openDeleteModal.parentNode)
+            for (let i = 0; i < _length; i++) {
+                let el = node.children[i]
+                _newTree = addNodeUnderParent({
+                    treeData: _newTree ? _newTree.treeData : (_newTree2 ? _newTree2 : treeData),
+                    newNode: el,
+                    expandParent: true,
+                    parentKey: parentKey,
+                    getNodeKey: ({ treeIndex }) => treeIndex,
+                    insetAtIndex: i + parentIndex + 1
                 });
-
-                if (result !== RESULT_MISS) {
-                    if (result) {
-
-                        return {
-                            ...node,
-                            children: [...node.children.slice(0, i), result, ...node.children.slice(i + 1)]
-                        };
-                    }
-
-                    return {
-                        ...node,
-                        children: [...node.children.slice(0, i), ...node.children.slice(i + 1)]
-                    };
-                }
-
-                nextTreeIndex += 1 + getDescendantCount({ node: node.children[i], ignoreCollapsed });
             }
 
-            return;
-        };
-        const result = traverse({
-            node: { children: treeData },
-            currentTreeIndex: -1,
-            pathIndex: -1,
-            isPseudoRoot: true
-        });
+            setTreeData(_newTree.treeData)
 
-        if (result === RESULT_MISS) {
-            throw new Error('No node found at the given path.');
         }
 
-        return result.children;
+        let newTree = removeNodeAtPath({
+            treeData: _newTree ? _newTree.treeData : (_newTree2 ? _newTree2 : treeData),
+            path: path,
+            getNodeKey: ({ treeIndex }) => treeIndex,
+            ignoreCollapsed: true,
+        })
+
+        setTreeData(newTree)
+        handleDeleteDialogClose(false)
+
     }
 
-    function map({ treeData, getNodeKey, callback, ignoreCollapsed = true }) {
-        if (!treeData || treeData.length < 1) {
-            return [];
-        }
-
-        return mapDescendants({
-            callback,
-            getNodeKey,
-            ignoreCollapsed,
-            isPseudoRoot: true,
-            node: { children: treeData },
-            currentIndex: -1,
-            path: [],
-            lowerSiblingCounts: []
-        }).node.children;
+    const canNodeHaveChildren = (event) => {
+        return true
     }
 
-    function getDescendantCount({ node, ignoreCollapsed = true }) {
-        return (
-            getNodeDataAtTreeIndexOrNextIndex({
-                getNodeKey: () => { },
-                ignoreCollapsed,
-                node,
-                currentIndex: 0,
-                targetIndex: -1
-            }).nextIndex - 1
-        );
-    }
+    const nodeMove = ({ nextParentNode, nextPath, nextTreeIndex, node, path, prevPath, treeData, treeIndex }) => {
+        prevPath.pop()
+        if (prevPath && prevPath.length) {
+            let parentNode = getNodeAtPath({
+                treeData: treeData,
+                path: prevPath,
+                getNodeKey: ({ treeIndex }) => treeIndex,
+                ignoreCollapsed: true
+            })
+            let newTree = null
+            if (parentNode && parentNode.node && parentNode.node.__ref && parentNode.node.__ref.length) {
+                let data = parentNode.node.__ref.filter(el => el.id != node.id)
+                newTree = updateNodeData({ __ref: data }, prevPath, parentNode.node)
 
-    function mapDescendants({
-        callback,
-        getNodeKey,
-        ignoreCollapsed,
-        isPseudoRoot = false,
-        node,
-        parentNode = null,
-        currentIndex,
-        path = [],
-        lowerSiblingCounts = []
-    }) {
-        const nextNode = { ...node };
-
-        const selfPath = isPseudoRoot ? [] : [...path, getNodeKey({ node: nextNode, treeIndex: currentIndex })];
-        const selfInfo = {
-            node: nextNode,
-            parentNode,
-            path: selfPath,
-            lowerSiblingCounts,
-            treeIndex: currentIndex
-        };
-
-        if (!nextNode.children || (nextNode.expanded !== true && ignoreCollapsed && !isPseudoRoot)) {
-            return {
-                treeIndex: currentIndex,
-                node: callback(selfInfo)
-            };
-        }
-        let childIndex = currentIndex;
-        const childCount = nextNode.children.length;
-        if (typeof nextNode.children !== 'function') {
-            nextNode.children = nextNode.children.map((child, i) => {
-                const mapResult = mapDescendants({
-                    callback,
-                    getNodeKey,
-                    ignoreCollapsed,
-                    node: child,
-                    parentNode: isPseudoRoot ? null : nextNode,
-                    currentIndex: childIndex + 1,
-                    lowerSiblingCounts: [...lowerSiblingCounts, childCount - i - 1],
-                    path: selfPath
-                });
-                childIndex = mapResult.treeIndex;
-
-                return mapResult.node;
-            });
-        }
-
-        return {
-            node: callback(selfInfo),
-            treeIndex: childIndex
-        };
-    }
-
-    function getNodeDataAtTreeIndexOrNextIndex({
-        targetIndex,
-        node,
-        currentIndex,
-        getNodeKey,
-        path = [],
-        lowerSiblingCounts = [],
-        ignoreCollapsed = true,
-        isPseudoRoot = false
-    }) {
-        const selfPath = !isPseudoRoot ? [...path, getNodeKey({ node, treeIndex: currentIndex })] : [];
-
-        if (currentIndex === targetIndex) {
-            return {
-                node,
-                lowerSiblingCounts,
-                path: selfPath
-            };
-        }
-
-        if (!node.children || (ignoreCollapsed && node.expanded !== true)) {
-            return { nextIndex: currentIndex + 1 };
-        }
-
-
-        let childIndex = currentIndex + 1;
-        const childCount = node.children.length;
-        for (let i = 0; i < childCount; i += 1) {
-            const result = getNodeDataAtTreeIndexOrNextIndex({
-                ignoreCollapsed,
-                getNodeKey,
-                targetIndex,
-                node: node.children[i],
-                currentIndex: childIndex,
-                lowerSiblingCounts: [...lowerSiblingCounts, childCount - i - 1],
-                path: selfPath
-            });
-
-            if (result.node) {
-                return result;
+            }
+            if (parentNode && parentNode.node && parentNode.node.__next && parentNode.node.__next == node.id) {
+                newTree = updateNodeData({ __next: undefined }, prevPath, parentNode.node, newTree ? newTree : treeData)
+            }
+            if (parentNode && parentNode.node && parentNode.node.onCompleteNext && parentNode.node.onCompleteNext == node.id) {
+                newTree = updateNodeData({ onCompleteNext: undefined }, prevPath, parentNode.node, newTree ? newTree : treeData)
             }
 
-            childIndex = result.nextIndex;
-        }
+            if (newTree) {
+                setTreeData(newTree)
 
-        return { nextIndex: childIndex };
-    }
-    const createJson = () => {
-        console.log('treedata', treeData);
-        let createjs = [];
-        let createjsChild = [];
-        let defaultt = [];
-        treeData.map((data, i) => {
-            createjs.defaultmsg = [data.title];
-
-            if (data.children && data.children.length > 0) {
-                createjsChild = parseChildren(data.children);
-                console.log('createjsChild befor push', createjsChild);
-                createjs.push(createjsChild);
             }
-        });
-        console.log('createjs : ', createjs);
-    };
-
-    function parseChildren(child) {
-        let result = [];
-        if (child && child.length) {
-            result = child.map((item, i) => {
-                if (item) {
-                    if (item.children && item.children.length) {
-                        item.children = parseChildren(item.children);
-                        item.children = item.children.filter(el => el);
-                        if (item.children && item.children.length) {
-                            return item.children;
-                        }
-                    } else {
-                        return item.title;
-                    }
-                }
-            });
         }
-        return result.filter(el => el);
+
     }
-    const logTree = treeDatad => {
-        console.log('treeData :  ', treeDatad);
-        setTreeData(treeDatad);
-        let array = treeData.map(obj => Object.values(obj));
-        console.log('array', JSON.stringify(array));
-    };
+
+    React.useEffect(() => {
+        // console.log("=========TREE UPDATED==========")
+        // if (treeData) {
+        //     console.log(JSON.stringify(treeData, null, 2))
+        // }
+        // console.log("=================")
+    }, [treeData])
+
+    function closeHandler() {
+        props.closeHandler({})
+    }
+    function saveHandler() {
+        
+        let _startMessage   = startMessage  ? { "id": uuidv4(), "title": "Start Conversation Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ startMessage ], "children": [] } : undefined; 
+        let _endMessage     = endMessage    ? { "id": uuidv4(), "title": "End Conversation Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ endMessage ], "children": [] }: undefined;
+
+        if (data) {
+            if(startMessage&&data.__startMessageConversationMessage&&data.__startMessageConversationMessage.messages&&data.__startMessageConversationMessage.messages.length){
+                _startMessage = data.__startMessageConversationMessage;
+                _startMessage.__startMessageConversationMessage.messages[0] = startMessage
+            }
+            if(endMessage&&data.__endMessageConversationMessage&&data.__endMessageConversationMessage.messages&&data.__endMessageConversationMessage.messages.length){
+                _endMessage = data.__endMessageConversationMessage;
+                _endMessage.__endMessageConversationMessage.messages[0] = startMessage
+            }
+            
+            props.updateHandler({ treeData: treeData[0], name: chatBotName,startMessage:_startMessage,endMessage:_endMessage })
+        } else {
+            props.saveHandler({ treeData: treeData[0], name: chatBotName,startMessage:_startMessage,endMessage:_endMessage })
+        }
+    }
+
+
+    const theme = createMuiTheme({
+        palette: {
+            primary: green,
+        },
+    });
+
     return (
+
         <FusePageSimple
             classes={{
-                header: 'min-h-150 h-150 sm:h-150 sm:min-h-150',
+                header: 'min-h-50 h-50 sm:h-50 sm:min-h-50 autoReplyHeader',
+
                 content: classes.content
             }}
             header={
-                <div className="flex flex-col justify-between flex-1 px-20 pt-20 ">
-                    <div className="flex items-center pt-30">
+                <div className="flex flex-col justify-between flex-1 pl-20">
+                    <div className="flex items-center">
                         <FuseAnimate animation="transition.expandIn" delay={300}>
                             <Icon className="text-26">dashboard</Icon>
                         </FuseAnimate>
                         <FuseAnimate animation="transition.slideLeftIn" delay={300}>
                             <Typography className=" py-0 sm:py-24 hidden sm:flex mx-0 sm:mx-12 text-20" variant="h6">
-                                Business Accounts
-							</Typography>
+                                {header}
+                            </Typography>
                         </FuseAnimate>
-                        <div className="flex flex-1 items-center justify-center px-12">
+
+                        <div className="flex flex-1 items-end justify-end px-12">
                             <ThemeProvider theme={mainTheme}>
                                 <FuseAnimate animation="transition.slideDownIn" delay={300}>
-                                    <Paper className="flex items-center w-full max-w-sm px-8 py-4" elevation={1}>
-                                        <Icon color="action" fontSize="small">
-                                            search
-										</Icon>
-                                        <MuiThemeProvider theme={SearchStyle}>
-                                            <Input
-                                                style={{ border: 'none' }}
-                                                rows={1}
-                                                placeholder="Search"
-                                                className="flex flex-1 mx-8 "
-                                                disableUnderline
-                                                onChange={e => {
-                                                    setValue(e.target.value);
-                                                }}
-                                            />
-                                        </MuiThemeProvider>
-                                    </Paper>
+                                    <React.Fragment>
+
+                                        <Button onClick={closeHandler} color="primary" size="small" variant="contained" style={{ marginRight: "10px" }}>
+                                            Cancel
+                                    </Button>
+                                        <ThemeProvider theme={theme}>
+                                            <Button variant="contained" onClick={saveHandler} color="primary" size="small" className={classes.margin}>
+                                                {data ? "UPDATE" : "SAVE"}
+                                            </Button>
+                                        </ThemeProvider>
+
+
+                                    </React.Fragment>
+
                                 </FuseAnimate>
                             </ThemeProvider>
                         </div>
@@ -630,15 +399,86 @@ function AddAutoReply(props) {
                 </div>
             }
             content={
-                <>
-                    <div className="p-24" style={{ scrollX: false }}>
+                <div style={{ backgroundColor: "white", paddingTop: "20px" }} className="w-75">
+                    <Grid
+                        container
+                        direction="row"
+                        justify="center"
+                        align="center"
+                        className={"p-20"}
+                    >
+
+                        <Grid container className={"mb-20"}>
+                            <Grid item md={3} sm={12} xs={12}>
+                                <div className="flex" >
+                                    <TextField
+                                        fullWidth
+                                        label="Chat Bot Name"
+                                        autoFocus
+                                        id={"name_chat_both"}
+                                        name="chatBotName"
+                                        variant="outlined"
+                                        value={chatBotName}
+                                        onChange={updateChatBotName}
+                                        size="small"
+                                        inputProps={{ maxLength: 30 }}
+                                    />
+                                </div>
+                            </Grid>
+                        </Grid>
+
+                        <Grid container className={"mb-20"}>
+                            <Grid item md={6} sm={12} xs={12}>
+                                <div className="flex" >
+                                    <TextField
+                                        label="Agent Conversation Start Message"
+                                        fullWidth
+                                        id={"agent_conversation_start_message"}
+                                        name="chatBotName"
+                                        variant="outlined"
+                                        multiline
+                                        rows={1}
+                                        value={startMessage}
+                                        onChange={e=>{setStartMessage(e.target.value)}}
+                                        size="small"
+                                        inputProps={{ maxLength: 800 }}
+                                        rowsMax={6}
+                                    />
+                                </div>
+                            </Grid>
+                        </Grid>
+
+                        <Grid container>
+                            <Grid item md={6} sm={12} xs={12}>
+                                <div className="flex" >
+                                    <TextField
+                                        label="Agent Conversation End Message"
+
+                                        fullWidth
+                                        id={"agent_conversation_end_message"}
+                                        name="chatBotName"
+                                        multiline
+                                        rows={1}
+                                        variant="outlined"
+                                        value={endMessage}
+                                        onChange={e=>{setEndMessage(e.target.value)}}
+                                        size="small"
+                                        inputProps={{ maxLength: 800 }}
+                                        rowsMax={6}
+                                    />
+                                </div>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+
+                    <div className="p-24" style={{ scrollX: false, paddingTop: "0px" }}>
                         <FuseAnimateGroup
                             className="flex flex-wrap"
                             enter={{
                                 animation: 'transition.slideUpBigIn'
                             }}
                         >
-                            <Grid container spacing={4}>
+                            {/* <Grid container spacing={4}>
                                 <Grid item md={12} sm={12} xs={12}>
                                     <Grid
                                         container
@@ -663,60 +503,195 @@ function AddAutoReply(props) {
 
                                     </Grid>
                                 </Grid>
-                            </Grid>
-                            <Grid container spacing={3} style={{ marginTop: 10 }}>
-                                <Grid item md={12} sm={12} xs={12}>
-
-                                </Grid>
-                            </Grid>
+                            </Grid> */}
 
                             <Grid container spacing={3} style={{ marginTop: 10 }}>
                                 <Grid item md={12} sm={12} xs={12}>
-                                    <div style={{ height: 600 }}>
+                                    <div style={{}}>
+
                                         <SortableTree
-                                            maxDepth={3}
+                                            // maxDepth={3}
                                             treeData={treeData}
+                                            isVirtualized={false}
                                             scaffoldBlockPxWidth={50}
+                                            // canNodeHaveChildren={canNodeHaveChildren}
+
                                             generateNodeProps={rowInfo => ({
                                                 buttons: [
-                                                    <div>
-                                                        <TextField hintText="" multiLine={true} rows={1} rowsMax={4} />
-                                                        <br />
-                                                        <button label="Delete" onClick={event => removeNode(rowInfo)}>
-                                                            Remove
-														</button>
-                                                        <button label="Add" onClick={event => addNewNode(rowInfo)}>
-                                                            Add
-														</button>
-                                                        <button label="Add" onClick={event => handleClickOpen()}>
-                                                            Edit
-														</button>
+
+                                                    <div className="chatBotContainer">
+                                                        <div className="chatBotIconContainer">
+                                                            {/* <TextField hintText="" multiLine={true} rows={1} rowsMax={4} /> */}
+                                                            {/* <br /> */}
+                                                            {/* <button label="Delete" onClick={event => removeNode(rowInfo)}>
+                                                                Remove
+                                                            </button> */}
+
+
+                                                            <Tooltip title="Add Child Node" arrow >
+                                                                <Icon className={"chatBotButtons"} onClick={event => openAddModalDialogue(rowInfo)}>add</Icon>
+                                                            </Tooltip>
+                                                            <Tooltip title="Edit Node" arrow >
+                                                                <Icon className={"chatBotButtons"} onClick={event => openEditModalDialogue(rowInfo)}>edit</Icon>
+                                                            </Tooltip>
+
+
+
+                                                            {
+                                                                rowInfo.path.length > 1 ?
+
+                                                                    <Tooltip title="Delete Node" arrow >
+                                                                        <Icon className={"chatBotButtons"} onClick={event => openDeleteModalDialogue(rowInfo)}>delete</Icon>
+                                                                    </Tooltip>
+                                                                    : null
+                                                            }
+                                                            {
+                                                                rowInfo.node.children && rowInfo.node.children.length && rowInfo.node.type != "ic" && rowInfo.node.type != "action" && rowInfo.node.type != "testApi" ?
+
+                                                                    <Tooltip title="Link Children" arrow >
+                                                                        <Icon className={"chatBotButtons"} onClick={event => openChildrenModalDialogue(rowInfo)}>leak_add</Icon>
+                                                                    </Tooltip>
+                                                                    : null
+                                                            }
+
+                                                            {/* <button label="Add" onClick={event => handleClickOpen()}>
+                                                                Edit
+                                                            </button> */}
+
+                                                        </div>
+
+
+                                                        {
+                                                            rowInfo.path.length > 1 ?
+                                                                (
+
+                                                                    <React.Fragment>
+                                                                        {
+                                                                            rowInfo.parentNode && rowInfo.parentNode.__ref && rowInfo.parentNode.__ref.length && rowInfo.parentNode.__ref.some(el => (el.id === rowInfo.node.id) && el.key) ?
+                                                                                <div className="chatBotKey">
+
+                                                                                    {
+                                                                                        rowInfo.linked_node = true
+                                                                                    }
+                                                                                    <span className={"chatBotTreeKey"}>
+                                                                                        {
+                                                                                            rowInfo.parentNode.__ref.filter(el => el.id === rowInfo.node.id)[0].key
+                                                                                        }
+                                                                                    </span>
+                                                                                </div>
+                                                                                : null
+                                                                        }
+
+                                                                        {
+                                                                            rowInfo.parentNode && rowInfo.parentNode.__next && rowInfo.node.id === rowInfo.parentNode.__next ?
+                                                                                <div className="chatBotKey">
+                                                                                    {
+                                                                                        rowInfo.linked_node = true
+                                                                                    }
+                                                                                    <Tooltip title="Called Immediately After Parent" arrow className={"chatBotTreeKey"}>
+                                                                                        <Icon>fast_forward</Icon>
+                                                                                    </Tooltip>
+                                                                                </div>
+                                                                                : null
+                                                                        }
+                                                                        {
+
+                                                                            rowInfo.parentNode && rowInfo.parentNode.onCompleteNext && rowInfo.node.id === rowInfo.parentNode.onCompleteNext ?
+                                                                                <div className="chatBotKey">
+                                                                                    {
+                                                                                        rowInfo.linked_node = true
+                                                                                    }
+                                                                                    <Tooltip title="Called After Parent Completion" arrow className={"chatBotTreeKey"}>
+                                                                                        <Icon>exit_to_app</Icon>
+                                                                                    </Tooltip>
+                                                                                </div>
+
+                                                                                : null
+
+
+                                                                        }
+
+                                                                        {
+                                                                            !rowInfo.linked_node ?
+
+                                                                                <div className="chatBotKey chatBotKeyBad">
+                                                                                    <Tooltip title="Unconnected Node" arrow className={"chatBotTreeKey"}>
+                                                                                        <Icon>link_off</Icon>
+                                                                                    </Tooltip>
+                                                                                </div>
+
+                                                                                : null
+                                                                        }
+
+                                                                    </React.Fragment>
+
+                                                                )
+                                                                : null
+                                                        }
                                                     </div>
                                                 ],
                                                 style: {
-                                                    height: '50px'
-                                                }
+                                                    // height: '50px'
+                                                },
+                                                className: "chatBotTree-base-icon chatBotTree-" + rowInfo.node.type
                                             })}
                                             onChange={treeData => {
-                                                logTree(treeData);
+                                                setTreeData(treeData)
                                             }}
+                                            canDrop={({ nextParent, nextPath }) => (!nextParent || !nextParent.noChildren) && nextPath.length > 1}
+                                            onMoveNode={nodeMove}
                                         />
+
+
                                     </div>
-                                    
+
                                 </Grid>
                             </Grid>
-                            {open && (
-                                <AutoRepliesDialog
-                                    isOpen={open}
-                                    type={type}
-                                    data={dialogData}
-                                    closeDialog={handleDialogClose}
-                                    showError={showError}
+
+                            {openAddModal && (
+                                <AddTreeNode
+                                    addTreeNode={openAddModal}
+                                    closeDialog={handleAddDialogClose}
+                                    isOpen={openAddModal ? true : false}
+                                    submitNode={addNode}
+
                                 />
                             )}
+                            {openEditModal && (
+                                <EditTreeNode
+                                    editTreeNode={openEditModal}
+                                    closeDialog={handleEditDialogClose}
+                                    isOpen={openEditModal ? true : false}
+                                    submitNode={editNode}
+
+                                />
+                            )}
+                            {
+                                openDeleteModal && (
+                                    <DeleteTreeNode
+                                        deleteTreeNode={openDeleteModal}
+                                        closeDialog={handleDeleteDialogClose}
+                                        isOpen={openDeleteModal ? true : false}
+                                        submitNode={deleteNode}
+
+                                    />
+                                )
+                            }
+                            {
+                                openChildrenModal && (
+                                    <ChildrenTreeNode
+                                        childrenTreeNode={openChildrenModal}
+                                        closeDialog={handleChildrenDialogClose}
+                                        isOpen={openChildrenModal ? true : false}
+                                        submitNode={childrenNode}
+
+                                    />
+                                )
+                            }
+
                         </FuseAnimateGroup>
                     </div>
-                </>
+                </div>
             }
         />
     );

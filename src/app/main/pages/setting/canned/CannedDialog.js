@@ -76,7 +76,7 @@ const CampaignDialog = (props) => {
 
 	const handleSubmit = () => {
 		let fileName
-		if (uploadedFilePath != '') {
+		if (uploadedFilePath != '' && uploadedFilePath) {
 			fileName = uploadedFilePath.split('https://upload.its.com.pk/')
 		} else {
 			fileName = ''
@@ -227,45 +227,49 @@ const CampaignDialog = (props) => {
 						</Select>
 					</FormControl>
 				</div>
-				{canned_type === 'text' ? (<div className="flex">
-					<div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
-						<Icon color="action" >account_circle</Icon>
-					</div>
-					<TextField
-						className="mb-24"
-						label="Text"
-						autoFocus
-						id="text"
-						name="text"
-						variant="outlined"
-						required
-						fullWidth
-						value={text}
-						onChange={onInputChange}
-						size="small"
-					/>
-				</div>) : canned_type !== 'text' ? (
-					<div container >
-						<div className="flex" >
-							<div className="min-w-48 pt-20" style={{ marginTop: '10px' }}>
-								<Icon color="action" style={{ color: "#8b8b8b" }}>attach_file</Icon>
+				{canned_type === 'text' ? (
+					<div className="flex">
+						<div className="min-w-48 pt-20" style={{ marginTop: '-12px' }}>
+							<Icon color="action" >account_circle</Icon>
+						</div>
+						<TextField
+							className="mb-24"
+							label="Text"
+							autoFocus
+							id="text"
+							name="text"
+							variant="outlined"
+							required
+							fullWidth
+
+							multiline
+							rowsMax={6}
+							value={text}
+							onChange={onInputChange}
+							size="small"
+						/>
+					</div>) : canned_type !== 'text' ? (
+						<div container >
+							<div className="flex" >
+								<div className="min-w-48 pt-20" style={{ marginTop: '10px' }}>
+									<Icon color="action" style={{ color: "#8b8b8b" }}>attach_file</Icon>
+								</div>
+								{isLoading === true ? <CircularProgress color="secondary" style={{ marginLeft: '40%' }} />
+									: <TextField size="small" className="mt-20 mb-20" id="outlined-basic-email" name={"url"} label="Url" variant="outlined" fullWidth disabled={true} onChange={onInputChange} value={uploadedFilePath} />
+								}
 							</div>
-							{isLoading === true ? <CircularProgress color="secondary" style={{ marginLeft: '40%' }} />
-								: <TextField size="small" className="mt-20 mb-20" id="outlined-basic-email" name={"url"} label="Url" variant="outlined" fullWidth disabled={true} onChange={onInputChange} value={uploadedFilePath} />
-							}
-						</div>
-						<div item xs={12} >
-							<input accept={canned_type !== 'document' ? `${canned_type}/*` : "application/pdf, application/vnd.ms-excel"} style={{ paddingTop: '10px' }} id="contained-button-file" type="file" name="url" filename={uploadedFilePath} style={{ display: "none" }} onChange={onChangeHandler} />
-							<label htmlFor="contained-button-file">
-								<Button
-									style={{ marginLeft: '12%' }}
-									size="small" variant="contained" id="content-upload-button" variant="contained" color="primary" component="span"                            >
-									Upload
+							<div item xs={12} >
+								<input accept={canned_type !== 'document' ? `${canned_type}/*` : "application/pdf, application/vnd.ms-excel"} style={{ paddingTop: '10px' }} id="contained-button-file" type="file" name="url" filename={uploadedFilePath} style={{ display: "none" }} onChange={onChangeHandler} />
+								<label htmlFor="contained-button-file">
+									<Button
+										style={{ marginLeft: '12%' }}
+										size="small" variant="contained" id="content-upload-button" variant="contained" color="primary" component="span"                            >
+										Upload
  							</Button>
-							</label>
+								</label>
+							</div>
 						</div>
-					</div>
-				) : null}
+					) : null}
 				<FormControlLabel
 					control={
 						<Checkbox

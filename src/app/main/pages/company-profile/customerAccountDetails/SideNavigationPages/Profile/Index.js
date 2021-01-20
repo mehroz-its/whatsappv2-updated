@@ -401,7 +401,13 @@ function Profile(props) {
                                 autoComplete="off"
                                 onChange={(e) => { setwebsite(e.target.value) }} />
                         </Grid>
+
+                        <Grid container justify="flex-end" item md={12} sm={12} xs={12}>
+                            <Button style={{ alignItems: 'center', alignSelf: 'center', alignContent: 'center', justifyContent: 'center' }} variant="contained" color="primary" aria-label="Register" onClick={() => submit()} disabled={(address !== "" && first_name !== "" && last_name !== "" && number !== "" && phone !== "" && email !== "" && countryy !== "" && statee !== "" && cityy !== "" && website !== "" && email !== "") ? false : true} >   Update	</Button>
+                        </Grid>
+
                     </Grid>
+
                     <Snackbar
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                         open={snackbaropen}
@@ -412,13 +418,13 @@ function Profile(props) {
                         </Alert>
                     </Snackbar>
                 </CardContent>
-            </Card >
-            <div style={{ width: '100%', height: 64, marginTop: 24, position: "relative", backgroundColor: 'white', boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)', borderRadius: 3 }}>
-                <div style={{ width: '9%', position: "absolute", top: '18%', right: '3%' }}>
-                    <Button style={{ alignItems: 'center', alignSelf: 'center', alignContent: 'center', justifyContent: 'center' }} variant="contained" color="primary" aria-label="Register" onClick={() => submit()} disabled={(address !== "" && first_name !== "" && last_name !== "" && number !== "" && phone !== "" && email !== "" && countryy !== "" && statee !== "" && cityy !== "" && website !== "" && email !== "") ? false : true} >   Update	</Button>
-                </div>
 
-            </div>
+
+            </Card>
+            {/* <div style={{ width: '100%', height: 64, marginTop: 24, position: "relative", backgroundColor: 'white', boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)', borderRadius: 3 }}>
+                
+
+            </div> */}
 
             {/* <Card className={classes.root} style={{ marginTop: 20 }}>
                 <CardContent className={classes.content} >

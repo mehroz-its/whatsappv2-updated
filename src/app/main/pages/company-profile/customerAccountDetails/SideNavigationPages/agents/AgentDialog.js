@@ -73,7 +73,7 @@ const AgentDialog = (props) => {
         email: data.email,
         number: data.number,
         enabled: data.enabled,
-        role: data.max_token_count === -1 ? "61" : "64",
+        role: data.roles && data.roles.length > 0 ? data.roles : (data.max_token_count === -1 ? "61" : "64"),
         position: data.position,
         max_token_count: data.max_token_count,
         default_receiver: data.max_token_count === -1 ? true : false,
