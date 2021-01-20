@@ -15,7 +15,7 @@ import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading';
 import Button from '@material-ui/core/Button';
-import DateRangePickerVal from '../Chat/DatePicker';
+import DateRangePickerVal from '../chat/DatePicker';
 import { CSVLink, CSVDownload } from 'react-csv';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
@@ -181,11 +181,6 @@ function AgentApp() {
 	};
 
 	React.useEffect(() => {
-		// CoreHttpHandler.request('reports', 'agentChart', {
-		// 	role_id: 64
-		// }, dataSourceSuccess, dataSourceFailure)
-		// engagments()
-
 		getData();
 		return () => {
 			am4core.disposeAllCharts();
@@ -193,7 +188,6 @@ function AgentApp() {
 			End = '';
 		};
 	}, []);
-
 	if (tableData.length > 0) {
 		let chart_display_objects = tableData.map((val, i) => {
 			return {
@@ -212,9 +206,7 @@ function AgentApp() {
 		incomingAndOutGoingCount(stats);
 	}
 
-	const dataSourceSuccess = response => {};
-
-	const dataSourceFailure = response => {};
+	
 
 	const searchContact = value => {
 		setVal(value);
