@@ -51,6 +51,7 @@ function Profile(props) {
     const [statee, setstatee] = React.useState('');
     const [cityy, setcityy] = React.useState('');
     const [website, setwebsite] = React.useState('');
+    const [max_agent, setmax_agent] = React.useState('');
     const [isLoading, setIsLoading] = React.useState(false)
     const [profileImage, setProfileImage] = React.useState('')
     const [snackbaropen, setSnackBarOpen] = React.useState(false)
@@ -121,6 +122,7 @@ function Profile(props) {
         setcityy(response.data.data.clients[0].city)
         setProfileImage(response.data.data.clients[0].logo)
         setwebsite(response.data.data.clients[0].website)
+        setmax_agent(response.data.data.clients[0].max_agents)
         console.log("response.data.data.clients[0].country :", response.data.data.clients[0]);
         if (response.data.data.clients[0].country !== "" && response.data.data.clients[0].country !== null) {
             fetch(`https://glist.its.com.pk/v1/fetch/states/${response.data.data.clients[0].country}`)
@@ -158,6 +160,7 @@ function Profile(props) {
         profileData['state'] = statee
         profileData['address'] = address
         profileData['website'] = website
+        profileData['max_agents'] = max_agent
         let params = profileData
         console.log("updateed", profileData);
         CoreHttpHandler.request('customerOnBoard', 'updateProfile', params, (response) => {
@@ -400,6 +403,19 @@ function Profile(props) {
                                 fullWidth
                                 autoComplete="off"
                                 onChange={(e) => { setwebsite(e.target.value) }} />
+                        </Grid>
+                        <Grid item md={6} sm={12} xs={12} >
+                            <TextField required
+                                size="small"
+                                value={max_agent}
+                                name='max_agent'
+                                autoFocus
+                                label='Max Agents'
+                                type='text'
+                                variant="outlined"
+                                fullWidth
+                                autoComplete="off"
+                                onChange={(e) => { setmax_agent(e.target.value) }} />
                         </Grid>
 
                         <Grid container justify="flex-end" item md={12} sm={12} xs={12}>
