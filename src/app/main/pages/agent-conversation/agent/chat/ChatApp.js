@@ -362,7 +362,7 @@ function ChatApp(props) {
 			'agent_admin_list',
 			{ columns: 'id, username, email, number' },
 			response => {
-				const data = response.data.data.agents.data.filter(el => el.id != selectedRecipient.a_id);
+				const data = response.data.data.agents.data;
 				let abc = {
 					agentList: data,
 					totalChats: numberr
@@ -621,7 +621,8 @@ function ChatApp(props) {
 		setShiftChatsToAgent(data)
 	};
 	const selectedShiftAgentList = () => {
-		if (selectedRecipient) {
+		
+		if (shiftChatsToAgent.agentId !== null && shiftChatsToAgent.chats.length > 0) {
 			CoreHttpHandler.request(
 				'conversations',
 				'transfer',
@@ -641,6 +642,9 @@ function ChatApp(props) {
 					setdialogOpenShift(false);
 				}
 			);
+		}
+		else{
+			alert("Please Select Agent or Chat")
 		}
 	};
 	const dialogOptionsShift = {

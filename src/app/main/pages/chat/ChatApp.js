@@ -695,6 +695,7 @@ function ChatApp(props) {
 	};
 	const selectedShiftAgentList = () => {
 		console.log("shiftChatsToAgenttt :" , shiftChatsToAgent);
+		if (shiftChatsToAgent.agentId !== null && shiftChatsToAgent.chats.length > 0) {
 		CoreHttpHandler.request(
 			'conversations',
 			'transfer',
@@ -712,6 +713,10 @@ function ChatApp(props) {
 			},
 			error => {}
 		);
+		}
+		else{
+			alert("Please Select Agent or Chat")
+		}
 	};
 	
 	const dialogOptionsShift = {

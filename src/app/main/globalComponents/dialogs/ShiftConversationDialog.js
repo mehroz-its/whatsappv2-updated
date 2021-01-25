@@ -57,12 +57,12 @@ useEffect(() => {
 	return (
 		<DialogContent>
 			<div style={{ width: '100%' }}>
-				<InputLabel id="demo-simple-select-label">Age</InputLabel>
+				<InputLabel id="demo-simple-select-label">Select Agent</InputLabel>
 				<Select
 					required
 					labelId="demo-simple-select-outlined-label"
 					id="demo-simple-select-outlined"
-					value={'role'}
+					value={agentID}
 					onChange={handleTypeChange}
 					fullWidth
 				>
@@ -77,7 +77,7 @@ useEffect(() => {
 					{/* <MenuItem value={-1}>Admin</MenuItem>
 						<MenuItem value={1}>Agent</MenuItem> */}
 				</Select>
-				<div style={{ height: 400, width: '100%' }}>
+				<div style={{  height: 350, width: '100%',marginTop:20}}>
 					<DataGrid
 						rows={data.totalChats}
 						columns={columns}

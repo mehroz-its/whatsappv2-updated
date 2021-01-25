@@ -29,8 +29,6 @@ const ShiftConversationDialog = function (props) {
 								return <MenuItem value={role.id}>{role.username}</MenuItem>;
 						  })
 						: null}
-					{/* <MenuItem value={-1}>Admin</MenuItem>
-						<MenuItem value={1}>Agent</MenuItem> */}
 				</Select>
 				{/* <List>
                     {data.map((item, i) => (
