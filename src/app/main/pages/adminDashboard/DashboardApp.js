@@ -358,12 +358,14 @@ function DashboardApp(props) {
 									<Grid item md={6} sm={12} xs={12}>
 										<Grid container spacing={1}>
 											{box.map((value, index) => {
+												console.log('value :', value);
 												return (
 													<Grid item md={4} sm={12} xs={12}>
 														<Widget2
-															title={value.subtitle}
-															count={value.value}
-															bottom_title={`${value.subtitle} ${value.title}`}
+															value={value}
+															// title={value.subtitle}
+															// count={value.value}
+															// bottom_title={`${value.subtitle} ${value.title}`}
 														/>
 													</Grid>
 												);
