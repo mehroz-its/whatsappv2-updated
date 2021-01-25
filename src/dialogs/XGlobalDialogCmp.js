@@ -35,10 +35,10 @@ const useStyles = makeStyles((theme) => ({
 const XGlobalDialog = function XGlobalDialog(props) {
 
     
-	setTimeout(() => {
-		setSnackBarMessage('')
-	setSnackBarOpen(false)
-	}, 6000);
+	// setTimeout(() => {
+	// 	setSnackBarMessage('')
+	// setSnackBarOpen(false)
+	// }, 6000);
 
     const [snackbaropen, setSnackBarOpen] = React.useState(false)
 	const [snackbarmessage, setSnackBarMessage] = React.useState('')

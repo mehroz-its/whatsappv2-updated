@@ -26,14 +26,14 @@ import CustomerProfileDialog from '../../globalComponents/dialogs/CustomerProfil
 import XGlobalDialogCmp from '../../../../dialogs/XGlobalDialogCmp';
 import ShiftConversationDialog from '../../globalComponents/dialogs/ShiftConversationDialog';
 import { CSVLink } from 'react-csv';
-import Fade from '@material-ui/core/Fade'
+import Fade from '@material-ui/core/Fade';
 import Tooltip from '@material-ui/core/Tooltip';
-import { EventEmitter } from '../../../../events'
+import { EventEmitter } from '../../../../events';
 import { makeStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 import copy from 'copy-to-clipboard';
-import WebSocket from "../../../socket/WebSocket"
+import WebSocket from '../../../socket/WebSocket';
 
 const drawerWidth = 320;
 const headerHeight = 100;
@@ -44,7 +44,7 @@ const AvatarStyle = createMuiTheme({
 				fontSize: '15px',
 				height: '35px',
 				width: '35px',
-				paddingBottom: 4,
+				paddingBottom: 4
 			}
 		}
 	}
@@ -132,65 +132,63 @@ const useStyles = makeStyles(theme => ({
 }));
 const contacts = [
 	{
-		avatar: "assets/images/avatars/alice.jpg",
-		id: "5725a680b3249760ea21de52",
-		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-		name: "Alice Freeman",
-		status: "online",
-		unread: "2",
+		avatar: 'assets/images/avatars/alice.jpg',
+		id: '5725a680b3249760ea21de52',
+		mood: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
+		name: 'Alice Freeman',
+		status: 'online',
+		unread: '2'
 	},
 	{
-		avatar: "assets/images/avatars/Arnold.jpg",
-		id: "5725a680606588342058356d",
-		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-		name: "Arnold",
-		status: "do-not-disturb",
-		unread: "3"
+		avatar: 'assets/images/avatars/Arnold.jpg',
+		id: '5725a680606588342058356d',
+		mood: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
+		name: 'Arnold',
+		status: 'do-not-disturb',
+		unread: '3'
 	},
 	{
-		avatar: "assets/images/avatars/Barrera.jpg",
-		id: "5725a68009e20d0a9e9acf2a",
-		mood: "Lorem ipsum dolor sit amet, consectetur adipiscing elit...",
-		name: "Arnold",
-		status: "do-not-disturb",
-		unread: "3"
-	},
-
-
-]
+		avatar: 'assets/images/avatars/Barrera.jpg',
+		id: '5725a68009e20d0a9e9acf2a',
+		mood: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
+		name: 'Arnold',
+		status: 'do-not-disturb',
+		unread: '3'
+	}
+];
 const user = {
-	avatar: "assets/images/avatars/profile.jpg",
+	avatar: 'assets/images/avatars/profile.jpg',
 	chatList: [
 		{
-			chatId: "1725a680b3249760ea21de52",
-			contactId: "5725a680b3249760ea21de52",
-			lastMessageTime: "2017-06-12T02:10:18.931Z"
+			chatId: '1725a680b3249760ea21de52',
+			contactId: '5725a680b3249760ea21de52',
+			lastMessageTime: '2017-06-12T02:10:18.931Z'
 		},
 		{
-			chatId: "2725a680b8d240c011dd2243",
-			contactId: "5725a680606588342058356d",
-			lastMessageTime: "2017-02-18T10:30:18.931Z"
-		},
-
+			chatId: '2725a680b8d240c011dd2243',
+			contactId: '5725a680606588342058356d',
+			lastMessageTime: '2017-02-18T10:30:18.931Z'
+		}
 	],
-	id: "5725a6802d10e277a0f35724",
+	id: '5725a6802d10e277a0f35724',
 	mood: "it's a status....not your diary...",
-	name: "John Doe",
-	status: "online"
-}
-const selectedContactId = "5725a680b3249760ea21de52";
-const chat = null
+	name: 'John Doe',
+	status: 'online'
+};
+const selectedContactId = '5725a680b3249760ea21de52';
+const chat = null;
 
 function ChatApp(props) {
 	const dispatch = useDispatch();
 	const userSidebarOpen = false;
 	const contactSidebarOpen = false;
-	
-	let numberDummy = []
+
+	let numberDummy = [];
 	const [mobileChatsSidebarOpen, setmobileChatsSidebarOpen] = React.useState(false);
 	const [lastMessageTimestamp, setlastMessageTimestamp] = React.useState(null);
 	const [latestMessageSender, setlatestMessageSender] = React.useState(null);
 	const [numbers, setnumbers] = React.useState([]);
+	const [numberss, setnumberss] = React.useState([]);
 	const [dummy, setDummy] = React.useState(null);
 	const [firstLoad, setFirstLoad] = React.useState(true);
 	const [numbersLength, setNumbersLength] = React.useState(0);
@@ -202,65 +200,68 @@ function ChatApp(props) {
 	const [showLatestMessage, setshowLatestMessage] = React.useState(false);
 	const [userDrawer, setuserDrawer] = React.useState(false);
 	const [selectedRecipient, setselectedRecipient] = React.useState(null);
-	const [removeConversation,setRemoveConversation] = React.useState(null)
+	const [removeConversation, setRemoveConversation] = React.useState(null);
 	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
-	const selectedRecipientt = (e) => {
-
-		let _numbers = numbers.map(el=>{
-			if(el.id==e.id){
-				el.message_count = 0
+	const selectedRecipientt = e => {
+		let _numbers = numbers.map(el => {
+			if (el.id == e.id) {
+				el.message_count = 0;
 			}
-			return el
-		})
-		setnumbers(_numbers)
+			return el;
+		});
+		setnumbers(_numbers);
 
-		setselectedRecipient(e)
-		readMessage()
-		setmobileChatsSidebarOpen(false)
+		setselectedRecipient(e);
+		readMessage();
+		setmobileChatsSidebarOpen(false);
 		getConversation(e);
-	}
-
-	
+	};
 
 	const getNumbers = () => {
-		CoreHttpHandler.request('conversations', 'numbers', {}, (response) => {
-			const newData = response.data.data.customers;
+		CoreHttpHandler.request(
+			'conversations',
+			'numbers',
+			{},
+			response => {
+				const newData = response.data.data.customers;
+				console.log('newData', newData);
 
-			setnumbers(newData)
+				setnumbers(newData);
+				setnumberss(newData);
+			},
+			error => {}
+		);
+	};
 
-		}, (error) => {
-		});
-	}
+	const socket = WebSocket.getSocket();
 
-	
-	const socket = WebSocket.getSocket()
-
-	const getConversation = (e) => {
+	const getConversation = e => {
 		let params = {
 			key: ':number',
 			value: e.number,
 			key2: ':last_closed',
 			value2: e.last_closed
-
 		};
-		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
+		CoreHttpHandler.request(
+			'conversations',
+			'conversations',
+			params,
+			response => {
+				setmessages(response.data.data.chat);
 
-			setmessages(response.data.data.chat)
+				setshowLatestMessage(true);
+			},
+			response => {}
+		);
+	};
 
-			setshowLatestMessage(true)
-				
-			
-		}, (response) => {
-		});
-	}
-
-	const conversationActionsCallback = (action) => {
+	const conversationActionsCallback = action => {
 		if (action === 'export') conversationExport();
 		if (action === 'shift') conversationShift();
-	}
+	};
 	const conversationExport = () => {
 		let params = {
 			key: ':number',
@@ -268,103 +269,137 @@ function ChatApp(props) {
 			key2: ':last_closed',
 			value2: selectedRecipient.last_closed
 		};
-		CoreHttpHandler.request('conversations', 'conversations', params, (response) => {
-			const messages = response.data.data.chat;
-			const csvLink = (<CSVLink filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`} data={messages}><span style={{ color: 'white' }}>Your exported chat is ready for download</span></CSVLink>);
-			setSnackBarMessage(csvLink)
-			setOK("success")
-			setSnackBarOpen(true)
-			setMoreMenuEl(null);
-		}, (response) => {
-
-		});
-	}
+		CoreHttpHandler.request(
+			'conversations',
+			'conversations',
+			params,
+			response => {
+				const messages = response.data.data.chat;
+				const csvLink = (
+					<CSVLink
+						filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`}
+						data={messages}
+					>
+						<span style={{ color: 'white' }}>Your exported chat is ready for download</span>
+					</CSVLink>
+				);
+				setSnackBarMessage(csvLink);
+				setOK('success');
+				setSnackBarOpen(true);
+				setMoreMenuEl(null);
+			},
+			response => {}
+		);
+	};
 	const conversationShift = () => {
-		CoreHttpHandler.request('conversations', 'agent_list', { 
-			
-			displayed:true,
-			enabled:true,
-			role: 64, columns: 'id, username, email, number' }, (response) => {
-
-			const data = response.data.data.agents.data;
-			setshiftAgentsList(data)
-			setdialogOpenShift(true)
-			setMoreMenuEl(null);
-		}, (response) => {
-		});
-	}
-	const conversationContextMenuCallback = (item) => {
+		CoreHttpHandler.request(
+			'conversations',
+			'agent_list',
+			{
+				displayed: true,
+				enabled: true,
+				role: 64,
+				columns: 'id, username, email, number'
+			},
+			response => {
+				const data = response.data.data.agents.data;
+				let abc = {
+					agentList: data,
+					totalChats: numbers
+				};
+				setshiftAgentsList(abc);
+				setdialogOpenShift(true);
+				setMoreMenuEl(null);
+			},
+			response => {}
+		);
+	};
+	const conversationContextMenuCallback = item => {
 		if (item === 'customer_profile') {
 			profileDialog();
 			setMoreMenuEl(null);
 		}
 		if (item === 'canned_messages') {
-			cannedMessagesDialog()
+			cannedMessagesDialog();
 			setMoreMenuEl(null);
 		}
 		if (item === 'block') {
-			setdialogOpenConfirmBlock(true)
+			setdialogOpenConfirmBlock(true);
 			setMoreMenuEl(null);
 		}
 		if (item === 'copy') {
 			copyContent();
 			setMoreMenuEl(null);
 		}
-	}
-	const profileDialog = () => {
-		CoreHttpHandler.request('contact_book', 'fetch', {
-			key: ':number',
-			value: selectedRecipient.number
-		}, (response) => {
-			const customer = response.data.data.customer;
-			loadCountries().then((response) => {
-				const countries = response.data.data.list.data;
-
-				setcustomerProfileData({
-					id: customer.id,
-					number: selectedRecipient.number,
-					attributes: customer.attributes,
-					assign_name: selectedRecipient.name==selectedRecipient.number?"":selectedRecipient.name,
-					countries,
-				})
-				setAnchorEl(false)
-				setdialogOpenCmp(true)
-			})
-
-		}, (error) => {
-			setAnchorEl(false)
-			setdialogOpenCmp(false)
-			// this.setSnackBarMessage('Failed to customer profile, please try again later', 'error');
-		});
-	}
-	const loadCountries = () => {
-		return CoreHttpHandler.request('locations', 'get_countries', {
-			columns: "id, name",
-			sortby: "ASC",
-			orderby: "id",
-			where: "enabled = $1",
-			values: true,
-			page: 0,
-			limit: 0
-		}, null, null, true);
 	};
-	const conversationUpdate = (text) =>{
-		if(selectedRecipient){
-			let _numbers = [...numbers.filter(el=>selectedRecipient.id==el.id),...numbers.filter(el=>selectedRecipient.id!=el.id)];
-			setnumbers(_numbers)
-		}
+	const profileDialog = () => {
+		CoreHttpHandler.request(
+			'contact_book',
+			'fetch',
+			{
+				key: ':number',
+				value: selectedRecipient.number
+			},
+			response => {
+				const customer = response.data.data.customer;
+				loadCountries().then(response => {
+					const countries = response.data.data.list.data;
 
-	}
+					setcustomerProfileData({
+						id: customer.id,
+						number: selectedRecipient.number,
+						attributes: customer.attributes,
+						assign_name: selectedRecipient.name == selectedRecipient.number ? '' : selectedRecipient.name,
+						countries
+					});
+					setAnchorEl(false);
+					setdialogOpenCmp(true);
+				});
+			},
+			error => {
+				setAnchorEl(false);
+				setdialogOpenCmp(false);
+				// this.setSnackBarMessage('Failed to customer profile, please try again later', 'error');
+			}
+		);
+	};
+	const loadCountries = () => {
+		return CoreHttpHandler.request(
+			'locations',
+			'get_countries',
+			{
+				columns: 'id, name',
+				sortby: 'ASC',
+				orderby: 'id',
+				where: 'enabled = $1',
+				values: true,
+				page: 0,
+				limit: 0
+			},
+			null,
+			null,
+			true
+		);
+	};
+	const conversationUpdate = text => {
+		if (selectedRecipient) {
+			let _numbers = [
+				...numbers.filter(el => selectedRecipient.id == el.id),
+				...numbers.filter(el => selectedRecipient.id != el.id)
+			];
+			setnumbers(_numbers);
+		}
+	};
 	const copyContent = () => {
 		copy(selectedRecipient.number);
-		setSnackBarMessage("Copied Successfully")
-		setOK("success")
-		setSnackBarOpen(true)
-	}
+		setSnackBarMessage('Copied Successfully');
+		setOK('success');
+		setSnackBarOpen(true);
+	};
 	const [sendDialogData, setsendDialogData] = React.useState({
 		url: '',
 		caption: '',
-		attributes: null,
+		attributes: null
 	});
 	const [dialogOpen, setdialogOpen] = React.useState(false);
 	const [shiftAgentsList, setshiftAgentsList] = React.useState([]);
@@ -376,36 +411,37 @@ function ChatApp(props) {
 	const [dialogOpenCanned, setdialogOpenCanned] = React.useState(false);
 	const [cannedMessagesList, setcannedMessagesList] = React.useState([]);
 	const [blockReason, setblockReason] = React.useState('');
-	const [snackbaropen, setSnackBarOpen] = React.useState(false)
-	const [snackbarmessage, setSnackBarMessage] = React.useState('')
-	const [messageStatus, setMessageStatus] = React.useState(null)
-	const [updateCustomerMessages, setUpdateCustomerMessages] = React.useState(null)
-	
-	const [ok, setOK] = React.useState('')
+	const [snackbaropen, setSnackBarOpen] = React.useState(false);
+	const [snackbarmessage, setSnackBarMessage] = React.useState('');
+	const [messageStatus, setMessageStatus] = React.useState(null);
+	const [updateCustomerMessages, setUpdateCustomerMessages] = React.useState(null);
+	const [shiftChatsToAgent, setShiftChatsToAgent] = React.useState({});
+
+	const [ok, setOK] = React.useState('');
 	const [customerProfileData, setcustomerProfileData] = React.useState({
 		id: 0,
 		number: null,
 		assign_name: '',
 		attributes: [],
-		countries: [],
+		countries: []
 	});
 	const [dialogOpenCmp, setdialogOpenCmp] = React.useState(false);
 	const sendDialogActions = [
 		{
 			handler: (event, index) => {
-				setsendActionType(null)
-				setsendDialogTitle('')
-				setsendDialogOpen(false)
+				setsendActionType(null);
+				setsendDialogTitle('');
+				setsendDialogOpen(false);
 			},
 			options: {},
-			label: "Cancel",
+			label: 'Cancel'
 		},
 		{
 			handler: (event, index) => {
 				sendDialogActionCb();
 			},
 			options: {},
-			label: "Send",
+			label: 'Send'
 		}
 	];
 	const sendDialogActionCb = () => {
@@ -421,202 +457,181 @@ function ChatApp(props) {
 			});
 		}
 		delete args[sendActionType][sendActionType].message.attributes;
-		CoreHttpHandler.request('conversations', 'send', { key: ':type', value: sendActionType, params: args[sendActionType] }, (response) => {
-			setsendActionType(null)
-			setsendDialogTitle('')
-			setsendDialogOpen(false)
-			setsendDialogData({
-				url: '',
-				caption: '',
-				attributes: null,
-			})
-		}, (response) => {
-		})
+		CoreHttpHandler.request(
+			'conversations',
+			'send',
+			{ key: ':type', value: sendActionType, params: args[sendActionType] },
+			response => {
+				setsendActionType(null);
+				setsendDialogTitle('');
+				setsendDialogOpen(false);
+				setsendDialogData({
+					url: '',
+					caption: '',
+					attributes: null
+				});
+			},
+			response => {}
+		);
 	};
 	const dialogOptionsConfirmBlock = {
 		onClose: function () {
-			setdialogOpenConfirmBlock(false)
+			setdialogOpenConfirmBlock(false);
 		},
-		'aria-labelledby': "form-dialog-title",
-		'aria-describedby': "form-dialog-title"
+		'aria-labelledby': 'form-dialog-title',
+		'aria-describedby': 'form-dialog-title'
 	};
-	
-	
+
 	useEffect(() => {
-
 		getNumbers();
-		EventEmitter.subscribe('Online', (event) => checkOnline(event))
+		EventEmitter.subscribe('Online', event => checkOnline(event));
 
-		socket.on("newConversation",(data)=>{	
-			setDummy(data)
-		})
-		socket.on("newConversationMessage",data=>{
-			setmessage(data)
-		})
-		socket.on("updateMessageStatus",data=>{
-			setMessageStatus(data)
-		})
-		
-		socket.on("removeConversation",data=>{
-			setRemoveConversation(data)
-		})
+		socket.on('newConversation', data => {
+			setDummy(data);
+		});
+		socket.on('newConversationMessage', data => {
+			setmessage(data);
+		});
+		socket.on('updateMessageStatus', data => {
+			setMessageStatus(data);
+		});
 
-		socket.on("updateCustomerMessages",data=>{
-			setUpdateCustomerMessages(data)
-		})
-		
+		socket.on('removeConversation', data => {
+			setRemoveConversation(data);
+		});
+
+		socket.on('updateCustomerMessages', data => {
+			setUpdateCustomerMessages(data);
+		});
 
 		return () => {
-			socket.removeListener("newConversation")
-			socket.removeListener("newConversationMessage")
-			socket.removeListener("updateMessageStatus")
-			socket.removeListener("removeConversation")
-			socket.removeListener("updateCustomerMessages")
-			EventEmitter.unsubscribe("Online")
+			socket.removeListener('newConversation');
+			socket.removeListener('newConversationMessage');
+			socket.removeListener('updateMessageStatus');
+			socket.removeListener('removeConversation');
+			socket.removeListener('updateCustomerMessages');
+			EventEmitter.unsubscribe('Online');
+		};
+	}, []);
+
+	React.useEffect(() => {
+		if (selectedRecipient) {
+			readMessage();
 		}
-	}, [])
-
-	React.useEffect(()=>{
-		if(selectedRecipient){
-			readMessage()
-		}
-	},[selectedRecipient])
-    React.useEffect(()=>{
-
-        if(removeConversation){
-
-            if(removeConversation.byNumber){
-                let number = removeConversation.number
-                if(number){
-
-					if(numbers&&numbers.length){
-						let _numbers = numbers.filter(el=>el&&el.number!=number)
-						setnumbers(_numbers)
+	}, [selectedRecipient]);
+	React.useEffect(() => {
+		if (removeConversation) {
+			if (removeConversation.byNumber) {
+				let number = removeConversation.number;
+				if (number) {
+					if (numbers && numbers.length) {
+						let _numbers = numbers.filter(el => el && el.number != number);
+						setnumbers(_numbers);
 					}
-                    
-                    if(selectedRecipient&&selectedRecipient.number==number){
-                        setselectedRecipient(null)
-                        setmessages([])
-                    }
-                }
-            }
 
-        }
-
-    },[removeConversation])
-	React.useEffect(()=>{
-
-		if(updateCustomerMessages){
-
-			if(numbers&&numbers.length){
-
-				let _numbers = numbers.map(el=>{		
-					if(el.id==updateCustomerMessages.id){
-	
-						updateCustomerMessages.name = updateCustomerMessages.assign_name
-						if(updateCustomerMessages.assign_name!=undefined)
-							delete updateCustomerMessages.assign_name
-	
-						let _selectedRecipient = selectedRecipient
-	
-						Object.keys(updateCustomerMessages).map(key=>{
-							if(el[key]!=updateCustomerMessages[key]){
-								
-								el[key]= updateCustomerMessages[key]
-								if(_selectedRecipient)
-									_selectedRecipient[key] = updateCustomerMessages[key]
-		
-							}
-							
-							
-						})
-						if(_selectedRecipient)
-						setselectedRecipient(_selectedRecipient)
+					if (selectedRecipient && selectedRecipient.number == number) {
+						setselectedRecipient(null);
+						setmessages([]);
 					}
-	
-					return el
-				})
-				setnumbers(_numbers)
-			}
-			
-		}
-
-	},[updateCustomerMessages])
-	
-	React.useEffect(()=>{
-
-		if(messageStatus&&messageStatus.messageId&&messageStatus.stateId){
-			if(messages&&messages.length){
-				let _messages  = messages.map(el=>{
-					if(el&&el.message_id==messageStatus.messageId){
-						el.status=messageStatus.stateId
-					}
-					return el
-				});
-
-				setmessages(_messages)
-			}
-		}
-
-	},[messageStatus])
-	React.useEffect(()=>{
-
-		if(dummy){
-
-			let _tempNumbers = []
-			if(numbers&&numbers.length){
-				_tempNumbers = numbers
-			}
-			let _numbers =[dummy,..._tempNumbers.filter(el=>el.id!=dummy.id)];
-			if(selectedRecipient){
-				_numbers = _numbers.map(number=>{
-					if(selectedRecipient.id==number.id){
-						number.message_count = 0
-					}
-					return number
-				})
-			}
-
-			setnumbers(_numbers)
-		}
-
-	},[dummy])
-	
-	React.useEffect(()=>{
-
-		if(message&&message.length&&selectedRecipient&&selectedRecipient.id){
-			const _message = message[0];
-			if(selectedRecipient.id==_message.receiver_id){
-				let _messages =[...messages,...message];
-				setmessages(_messages)
-				if(_message.type=="inbound"){
-					readMessage()
 				}
 			}
 		}
-	},[message])
-	const readMessage = () =>{
-		if(selectedRecipient){
+	}, [removeConversation]);
+	React.useEffect(() => {
+		if (updateCustomerMessages) {
+			if (numbers && numbers.length) {
+				let _numbers = numbers.map(el => {
+					if (el.id == updateCustomerMessages.id) {
+						updateCustomerMessages.name = updateCustomerMessages.assign_name;
+						if (updateCustomerMessages.assign_name != undefined) delete updateCustomerMessages.assign_name;
 
-			CoreHttpHandler.request('conversations', 'reset_message_count', { key: ':number', value: selectedRecipient.number }, (response) => {
-			}, (response) => {
-				
-			})
+						let _selectedRecipient = selectedRecipient;
+
+						Object.keys(updateCustomerMessages).map(key => {
+							if (el[key] != updateCustomerMessages[key]) {
+								el[key] = updateCustomerMessages[key];
+								if (_selectedRecipient) _selectedRecipient[key] = updateCustomerMessages[key];
+							}
+						});
+						if (_selectedRecipient) setselectedRecipient(_selectedRecipient);
+					}
+
+					return el;
+				});
+				setnumbers(_numbers);
+			}
 		}
-	}
-	const checkOnline = (online) => {
+	}, [updateCustomerMessages]);
+
+	React.useEffect(() => {
+		if (messageStatus && messageStatus.messageId && messageStatus.stateId) {
+			if (messages && messages.length) {
+				let _messages = messages.map(el => {
+					if (el && el.message_id == messageStatus.messageId) {
+						el.status = messageStatus.stateId;
+					}
+					return el;
+				});
+
+				setmessages(_messages);
+			}
+		}
+	}, [messageStatus]);
+	React.useEffect(() => {
+		if (dummy) {
+			let _tempNumbers = [];
+			if (numbers && numbers.length) {
+				_tempNumbers = numbers;
+			}
+			let _numbers = [dummy, ..._tempNumbers.filter(el => el.id != dummy.id)];
+			if (selectedRecipient) {
+				_numbers = _numbers.map(number => {
+					if (selectedRecipient.id == number.id) {
+						number.message_count = 0;
+					}
+					return number;
+				});
+			}
+
+			setnumbers(_numbers);
+		}
+	}, [dummy]);
+
+	React.useEffect(() => {
+		if (message && message.length && selectedRecipient && selectedRecipient.id) {
+			const _message = message[0];
+			if (selectedRecipient.id == _message.receiver_id) {
+				let _messages = [...messages, ...message];
+				setmessages(_messages);
+				if (_message.type == 'inbound') {
+					readMessage();
+				}
+			}
+		}
+	}, [message]);
+	const readMessage = () => {
+		if (selectedRecipient) {
+			CoreHttpHandler.request(
+				'conversations',
+				'reset_message_count',
+				{ key: ':number', value: selectedRecipient.number },
+				response => {},
+				response => {}
+			);
+		}
+	};
+	const checkOnline = online => {
 		if (online === false) {
-			setselectedRecipient(null)
-			setmessages([])
+			setselectedRecipient(null);
+			setmessages([]);
+		} else {
+			getNumbers();
 		}
-		else {
-			getNumbers()
-		}
-	}
+	};
 	const clearData = () => {
-		setselectedRecipient(null)
-		setmessages([])
-	}
+		setselectedRecipient(null);
+		setmessages([]);
+	};
 	function handleMoreMenuClick(event) {
 		setMoreMenuEl(event.currentTarget);
 	}
@@ -624,23 +639,28 @@ function ChatApp(props) {
 		setMoreMenuEl(null);
 	}
 	const cannedMessagesDialog = () => {
-		CoreHttpHandler.request('canned_messages', 'listing', {
-			columns: "*",
-			sortby: "ASC",
-			orderby: "id",
-			where: "enabled = $1",
-			values: true,
-			page: 0,
-			limit: 0,
-		}, (response) => {
-			const data = response.data.data.list.data;
-			setcannedMessagesList(data)
-			setdialogOpenCanned(true)
-			setMoreMenuEl(null);
-		}, (error) => {
-		});
-	}
-	const sendDialogInputHandler = (e) => {
+		CoreHttpHandler.request(
+			'canned_messages',
+			'listing',
+			{
+				columns: '*',
+				sortby: 'ASC',
+				orderby: 'id',
+				where: 'enabled = $1',
+				values: true,
+				page: 0,
+				limit: 0
+			},
+			response => {
+				const data = response.data.data.list.data;
+				setcannedMessagesList(data);
+				setdialogOpenCanned(true);
+				setMoreMenuEl(null);
+			},
+			error => {}
+		);
+	};
+	const sendDialogInputHandler = e => {
 		const data = { ...sendDialogData };
 		if (e.caption) {
 			data['caption'] = e.caption;
@@ -651,45 +671,80 @@ function ChatApp(props) {
 		if (e.attributes) {
 			data['attributes'] = e.attributes;
 		}
-		setsendDialogData(data)
+		setsendDialogData(data);
 	};
-	const selectedShiftAgent = (agent) => {
-		CoreHttpHandler.request('conversations', 'transfer', {
-			key: ':id',
-			value: agent.id,
-			params: {
-				customer: selectedRecipient.number
-			}
-		}, (response) => {		
-			setdialogOpenShift(false)
-			clearData()
-		}, (error) => {
-		});
-	}
+	const selectedShiftAgent = data => {
+		console.log("selectedShiftAgent data" , data);
+		setShiftChatsToAgent(data)
+		// CoreHttpHandler.request(
+		// 	'conversations',
+		// 	'transfer',
+		// 	{
+		// 		key: ':id',
+		// 		value: agent.id,
+		// 		params: {
+		// 			customer: selectedRecipient.number
+		// 		}
+		// 	},
+		// 	response => {
+		// 		setdialogOpenShift(false);
+		// 		clearData();
+		// 	},
+		// 	error => {}
+		// );
+	};
+	const selectedShiftAgentList = () => {
+		console.log("shiftChatsToAgenttt :" , shiftChatsToAgent);
+		CoreHttpHandler.request(
+			'conversations',
+			'transfer',
+			{
+				key: ':id',
+				value: shiftChatsToAgent.agentId,
+				params: {
+					customer: shiftChatsToAgent.chats
+				}
+			},
+			response => {
+				setdialogOpenShift(false);
+				clearData();
+				getNumbers();
+			},
+			error => {}
+		);
+	};
+	
 	const dialogOptionsShift = {
 		onClose: function () {
-			setdialogOpenShift(false)
+			setdialogOpenShift(false);
 		},
-		'aria-labelledby': "form-dialog-title",
-		'aria-describedby': "form-dialog-title"
-	}
+		'aria-labelledby': 'form-dialog-title',
+		'aria-describedby': 'form-dialog-title'
+	};
 	const dialogActionsShift = [
 		{
 			handler: (event, index) => {
-				XGlobalDialogShiftClose()
+				XGlobalDialogShiftClose();
 			},
 			options: {},
-			label: "Cancel",
+			label: 'Cancel'
 		},
+		{
+			handler: (event, index) => {
+				selectedShiftAgentList();
+			},
+			options: {},
+			label: 'Shift'
+		}
 	];
 	const XGlobalDialogShiftClose = () => {
-		setdialogOpenShift(false)
-	}
-	const selectedCannedMessage = (props) => {
+		setdialogOpenShift(false);
+	};
+	const selectedCannedMessage = props => {
 		const { message_text, message_type, attachment_url, attachment_name, attachment_type } = props;
 		if (message_type !== 'text') {
 			let params = {
-				type: message_type,
+				type: message_type
 			};
 			params[message_type] = {
 				to: [selectedRecipient.number],
@@ -697,185 +752,192 @@ function ChatApp(props) {
 					filname: attachment_name,
 					mime_type: attachment_type,
 					url: attachment_url,
-					caption: (message_text) ? message_text : `You Shared A ${message_type.charAt(0).toUpperCase()}${message_type.slice(1)}`,
+					caption: message_text
+						? message_text
+						: `You Shared A ${message_type.charAt(0).toUpperCase()}${message_type.slice(1)}`
 				}
-			}
-			CoreHttpHandler.request('conversations', 'send', {
-				key: ':type',
-				value: message_type,
-				params,
-			}, (response) => {
-				setdialogOpenCanned(false)
-			}, (error) => {
-			});
+			};
+			CoreHttpHandler.request(
+				'conversations',
+				'send',
+				{
+					key: ':type',
+					value: message_type,
+					params
+				},
+				response => {
+					setdialogOpenCanned(false);
+				},
+				error => {}
+			);
 		} else {
-			setdialogOpenCanned(false)
+			setdialogOpenCanned(false);
 		}
-	}
+	};
 	const dialogOptionsCanned = {
 		onClose: function () {
-			setdialogOpenCanned(false)
+			setdialogOpenCanned(false);
 		},
-		'aria-labelledby': "form-dialog-title",
-		'aria-describedby': "form-dialog-title"
+		'aria-labelledby': 'form-dialog-title',
+		'aria-describedby': 'form-dialog-title'
 	};
 	const dialogActionsCanned = [
 		{
 			handler: (event, index) => {
-				XGlobalDialogCannedClose()
+				XGlobalDialogCannedClose();
 			},
 			options: {},
-			label: "Cancel",
+			label: 'Cancel'
 		}
 	];
-	const blockCustomerInputHandler = (props) => {
-		const {
-			key,
-			value,
-			event,
-			dataKey,
-		} = props;
-		setblockReason(value)
-	}
+	const blockCustomerInputHandler = props => {
+		const { key, value, event, dataKey } = props;
+		setblockReason(value);
+	};
 	const dialogActionsConfirmBlock = [
 		{
 			handler: (event, index) => {
-				XGlobalDialogConfirmBlock()
+				XGlobalDialogConfirmBlock();
 			},
 			options: {},
-			label: "Cancel",
+			label: 'Cancel'
 		},
 		{
 			handler: (event, index) => {
-				blockNumber()
+				blockNumber();
 			},
 			options: {},
-			label: "Yes",
+			label: 'Yes'
 		}
 	];
 	const blockNumber = () => {
-		CoreHttpHandler.request('conversations', 'block', {
-			key: ':number', value: selectedRecipient.number, params: {
-				reason: blockReason,
+		CoreHttpHandler.request(
+			'conversations',
+			'block',
+			{
+				key: ':number',
+				value: selectedRecipient.number,
+				params: {
+					reason: blockReason
+				}
+			},
+			response => {
+				setSnackBarMessage('Blocked Successfully');
+				setOK('success');
+				setSnackBarOpen(true);
+
+				setdialogOpenConfirmBlock(false);
+				setblockReason('');
+				setAnchorEl(false);
+				clearData();
+			},
+			error => {
+				setAnchorEl(false);
+				setdialogOpenConfirmBlock(false);
 			}
-		}, (response) => {
-
-			setSnackBarMessage("Blocked Successfully")
-			setOK("success")
-			setSnackBarOpen(true)
-			
-			setdialogOpenConfirmBlock(false)
-			setblockReason('')
-			setAnchorEl(false)
-			clearData()
-			
-
-		}, (error) => {
-			setAnchorEl(false)
-			setdialogOpenConfirmBlock(false)
-		});
-	}
-	const customerProfileInputHandler = (props) => {
-		const {
-			key,
-			value,
-			event,
-			dataKey,
-		} = props;
+		);
+	};
+	const customerProfileInputHandler = props => {
+		const { key, value, event, dataKey } = props;
 		const data = { ...customerProfileData };
 		data[key] = value.attrs;
 		data['assign_name'] = value.assigned_name;
-		setcustomerProfileData(data)
-	}
+		setcustomerProfileData(data);
+	};
 	const dialogOptionsCmp = {
 		onClose: function () {
-			setdialogOpenCmp(false)
+			setdialogOpenCmp(false);
 		},
-		'aria-labelledby': "form-dialog-title",
-		'aria-describedby': "form-dialog-title"
+		'aria-labelledby': 'form-dialog-title',
+		'aria-describedby': 'form-dialog-title'
 	};
 	const XGlobalDialogCannedClose = () => {
-		setdialogOpenCanned(false)
-	}
+		setdialogOpenCanned(false);
+	};
 	const XGlobalDialogConfirmBlock = () => {
-		setdialogOpenConfirmBlock(false)
-	}
+		setdialogOpenConfirmBlock(false);
+	};
 	const dialogActionsCmp = [
 		{
 			handler: (event, index) => {
-				XGlobalDialogCmpClose()
+				XGlobalDialogCmpClose();
 			},
 			options: {},
-			label: "Close",
+			label: 'Close'
 		},
 		{
 			handler: (event, index) => {
 				profileUpdate();
 			},
 			options: {},
-			label: "Update",
-		},
+			label: 'Update'
+		}
 	];
 	const XGlobalDialogCmpClose = () => {
-		setdialogOpenCmp(false)
-	}
-	
+		setdialogOpenCmp(false);
+	};
+
 	const profileUpdate = () => {
 		const data = { ...customerProfileData };
 		data['number'] = selectedRecipient.number;
-		CoreHttpHandler.request('contact_book', 'update', {
-			key: ':id',
-			value: customerProfileData.id,
-			params: data
-		}, (response) => {
-			setSnackBarMessage("Updated Successfully")
-			setOK("success")
-			setSnackBarOpen(true)
+		CoreHttpHandler.request(
+			'contact_book',
+			'update',
+			{
+				key: ':id',
+				value: customerProfileData.id,
+				params: data
+			},
+			response => {
+				setSnackBarMessage('Updated Successfully');
+				setOK('success');
+				setSnackBarOpen(true);
 
-			// setselectedRecipient({
-			// 	...selectedRecipient,
-			// 	name:data.assign_name,
-			// 	attributes:data.attributes
-			// })
+				// setselectedRecipient({
+				// 	...selectedRecipient,
+				// 	name:data.assign_name,
+				// 	attributes:data.attributes
+				// })
 
-			// let _numbers = numbers.map(number=>{
-			// 	if(number.id==selectedRecipient.id){
-			// 		number.name = data.assign_name
-			// 	}
-			// 	return number
-			// })			
-			// setnumbers(_numbers)
-			setdialogOpenCmp(false)
-
-		}, (error) => {
-			if(error&&error.response&&error.response.data){
-				setSnackBarMessage(error.response.data.message)
-			}else{
-				setSnackBarMessage("Could not save record")
+				// let _numbers = numbers.map(number=>{
+				// 	if(number.id==selectedRecipient.id){
+				// 		number.name = data.assign_name
+				// 	}
+				// 	return number
+				// })
+				// setnumbers(_numbers)
+				setdialogOpenCmp(false);
+			},
+			error => {
+				if (error && error.response && error.response.data) {
+					setSnackBarMessage(error.response.data.message);
+				} else {
+					setSnackBarMessage('Could not save record');
+				}
+				setOK('error');
+				setSnackBarOpen(true);
 			}
-			setOK("error")
-			setSnackBarOpen(true)
-		});
-	}
+		);
+	};
 	const endConversation = () => {
+		//
 
-		// 
+		CoreHttpHandler.request(
+			'conversations',
+			'end',
+			{ key: ':number', value: selectedRecipient.number },
+			response => {
+				// let _numbers =numbers.filter(el=>el.id!=selectedRecipient.id);
 
+				// setnumbers(_numbers)
+				setselectedRecipient(null);
+				setmessages([]);
+			},
+			error => {}
+		);
+	};
 
-		CoreHttpHandler.request('conversations', 'end', { key: ':number', value: selectedRecipient.number }, (response) => {
-
-
-			// let _numbers =numbers.filter(el=>el.id!=selectedRecipient.id);
-
-			// setnumbers(_numbers)
-			setselectedRecipient(null)
-			setmessages([])
-		}, (error) => {
-		});
-	}
-	
-		
-	let userOnline = JSON.parse(localStorage.getItem('online'))
+	let userOnline = JSON.parse(localStorage.getItem('online'));
 	return (
 		<>
 			<Snackbar
@@ -892,23 +954,29 @@ function ChatApp(props) {
 				<div className={classes.topBg} />
 				<div className={clsx(classes.contentCardWrapper, 'container')}>
 					<div className={classes.contentCard}>
-						{
-							userOnline ?
-								<Hidden smDown>
-									<Drawer
-										className="h-full z-15"
-										variant="permanent"
-										open
-										classes={{
-											paper: classes.drawerPaper
+						{userOnline ? (
+							<Hidden smDown>
+								<Drawer
+									className="h-full z-15"
+									variant="permanent"
+									open
+									classes={{
+										paper: classes.drawerPaper
+									}}
+								>
+									<ChatsSidebar
+										lastMessage={lastmessage}
+										numbers={numbers}
+										onContactClick={e => {
+											selectedRecipientt(e);
 										}}
-									>
-										<ChatsSidebar lastMessage={lastmessage} numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} selectedRecipient={selectedRecipient} />
-									</Drawer>
-								</Hidden> : null
-						}
-						{
-							userOnline ? <Hidden mdUp>
+										selectedRecipient={selectedRecipient}
+									/>
+								</Drawer>
+							</Hidden>
+						) : null}
+						{userOnline ? (
+							<Hidden mdUp>
 								<Drawer
 									className="h-full absolute z-20"
 									variant="temporary"
@@ -929,27 +997,35 @@ function ChatApp(props) {
 										}
 									}}
 								>
-									<ChatsSidebar   selectedRecipient={selectedRecipient} lastMessage={lastmessage} numbers={numbers} onContactClick={(e) => { selectedRecipientt(e) }} />
+									<ChatsSidebar
+										selectedRecipient={selectedRecipient}
+										lastMessage={lastmessage}
+										numbers={numbers}
+										onContactClick={e => {
+											selectedRecipientt(e);
+										}}
+									/>
 								</Drawer>
-							</Hidden> : null
-						}
-						{userOnline ?
+							</Hidden>
+						) : null}
+						{userOnline ? (
 							<main className={clsx(classes.contentWrapper, 'z-10')}>
 								{!selectedRecipient ? (
 									<div className="flex flex-col flex-1 items-center justify-center p-24">
 										<Paper className="rounded-full p-48">
 											<Icon className="block text-64" color="secondary">
 												chat
-									</Icon>
+											</Icon>
 										</Paper>
 										<Typography variant="h6" style={{ fontSize: '18px', paddingTop: '14px' }}>
 											Chat App
-								</Typography>
+										</Typography>
 										<Typography
 											className="hidden md:flex px-16 pb-24 mt-10 text-center"
-											color="textSecondary">
+											color="textSecondary"
+										>
 											Select a contact to start a conversation!
-								</Typography>
+										</Typography>
 										<Button
 											variant="outlined"
 											color="primary"
@@ -957,87 +1033,165 @@ function ChatApp(props) {
 											onClick={() => setmobileChatsSidebarOpen(true)}
 										>
 											Select a contact to start a conversation!
-								</Button>
+										</Button>
 									</div>
 								) : (
-										<>
-											<AppBar className="w-full" position="static" elevation={1} style={{ height: '66px' }}>
-												<Toolbar className="px-16">
-													<IconButton
-														color="inherit"
-														aria-label="Open drawer"
-														onClick={() => setmobileChatsSidebarOpen(true)}
-														className="flex md:hidden"
-
-													>
-														<Icon>chat</Icon>
-													</IconButton>
+									<>
+										<AppBar
+											className="w-full"
+											position="static"
+											elevation={1}
+											style={{ height: '66px' }}
+										>
+											<Toolbar className="px-16">
+												<IconButton
+													color="inherit"
+													aria-label="Open drawer"
+													onClick={() => setmobileChatsSidebarOpen(true)}
+													className="flex md:hidden"
+												>
+													<Icon>chat</Icon>
+												</IconButton>
+												<div className="flex items-center cursor-pointer">
 													<div
-														className="flex items-center cursor-pointer"
+														className="relative mx-6 w-32 h-32"
+														style={{ marginTop: '30px', marginLeft: '10px' }}
 													>
-														<div className="relative mx-6 w-32 h-32" style={{ marginTop: '30px', marginLeft: '10px' }}>
-															<MuiThemeProvider theme={AvatarStyle}>
-																<Avatar
-																	src={selectedRecipient.avatar} alt={selectedRecipient.name} className={classes.avatar}>
-																	{!selectedRecipient.avatar || selectedRecipient.avatar === ''
-																		? selectedRecipient.name[0]
-																		: ''}
-																</Avatar>
-															</MuiThemeProvider>
-														</div>
-														<Typography color="inherit" className="text-14 font-600 px-4" style={{ marginTop: '5px' }}>
-															{selectedRecipient.name}
-														</Typography>
+														<MuiThemeProvider theme={AvatarStyle}>
+															<Avatar
+																src={selectedRecipient.avatar}
+																alt={selectedRecipient.name}
+																className={classes.avatar}
+															>
+																{!selectedRecipient.avatar ||
+																selectedRecipient.avatar === ''
+																	? selectedRecipient.name[0]
+																	: ''}
+															</Avatar>
+														</MuiThemeProvider>
 													</div>
-													<div style={{ position: 'absolute', right: 1, top: 11 }} >
+													<Typography
+														color="inherit"
+														className="text-14 font-600 px-4"
+														style={{ marginTop: '5px' }}
+													>
+														{selectedRecipient.name}
+													</Typography>
+												</div>
+												<div style={{ position: 'absolute', right: 1, top: 11 }}>
+													<IconButton
+														aria-owns={moreMenuEl ? 'chats-more-menu' : null}
+														aria-haspopup="true"
+														onClick={handleMoreMenuClick}
+														style={{ color: 'white' }}
+													>
+														<Icon fontSize="small">more_vert</Icon>
+													</IconButton>
+													<Menu
+														id="chats-more-menu"
+														anchorEl={moreMenuEl}
+														open={Boolean(moreMenuEl)}
+														onClose={handleMoreMenuClose}
+													>
+														<MenuItem onClick={e => conversationActionsCallback('export')}>
+															Export Chat
+														</MenuItem>
+														<MenuItem onClick={e => conversationActionsCallback('shift')}>
+															Shift
+														</MenuItem>
+														<MenuItem
+															onClick={e => conversationContextMenuCallback('block')}
+														>
+															Block{' '}
+														</MenuItem>
+														<MenuItem
+															onClick={e =>
+																conversationContextMenuCallback('customer_profile')
+															}
+														>
+															Customer Profile{' '}
+														</MenuItem>
+														<MenuItem
+															onClick={e => conversationContextMenuCallback('copy')}
+														>
+															Copy Number{' '}
+														</MenuItem>
+													</Menu>
+												</div>
+												<div style={{ position: 'absolute', right: 40, top: 11 }}>
+													<Tooltip title="End Conversation">
 														<IconButton
-															aria-owns={moreMenuEl ? 'chats-more-menu' : null}
 															aria-haspopup="true"
-															onClick={handleMoreMenuClick}
+															onClick={endConversation}
 															style={{ color: 'white' }}
 														>
-															<Icon fontSize="small" >more_vert</Icon>
+															<Icon fontSize="small">settings_power</Icon>
 														</IconButton>
-														<Menu
-															id="chats-more-menu"
-															anchorEl={moreMenuEl}
-															open={Boolean(moreMenuEl)}
-															onClose={handleMoreMenuClose}
-														>
-															<MenuItem onClick={(e) => conversationActionsCallback('export')}>Export Chat</MenuItem>
-															<MenuItem onClick={(e) => conversationActionsCallback('shift')}>Shift</MenuItem>
-															<MenuItem onClick={(e) => conversationContextMenuCallback('block')}>Block </MenuItem>
-															<MenuItem onClick={(e) => conversationContextMenuCallback('customer_profile')}>Customer Profile </MenuItem>
-															<MenuItem onClick={(e) => conversationContextMenuCallback('copy')}>Copy Number </MenuItem>
-														</Menu>
-													</div>
-													<div style={{ position: 'absolute', right: 40, top: 11 }}>
-														<Tooltip title="End Conversation">
-															<IconButton
-																aria-haspopup="true"
-																onClick={endConversation}
-																style={{ color: 'white' }}
-															>
-																<Icon fontSize="small" >settings_power</Icon>
-															</IconButton>
-														</Tooltip>
-
-													</div>
-												</Toolbar>
-											</AppBar>
-											<div className={classes.content}>
-												<Chat conversationUpdate={conversationUpdate} className="flex flex-1 z-10" messages={messages} selectedRecipient={selectedRecipient} clearBlock={clearData} endConversation={endConversation} />
-											</div>
-										</>
-									)}
-							</main> : null}
+													</Tooltip>
+												</div>
+											</Toolbar>
+										</AppBar>
+										<div className={classes.content}>
+											<Chat
+												conversationUpdate={conversationUpdate}
+												className="flex flex-1 z-10"
+												messages={messages}
+												selectedRecipient={selectedRecipient}
+												clearBlock={clearData}
+												endConversation={endConversation}
+											/>
+										</div>
+									</>
+								)}
+							</main>
+						) : null}
 					</div>
 				</div>
-				<XGlobalDialogCmp onDialogPropsChange={sendDialogInputHandler} data={{ dialogType: sendActionType, attachment: sendDialogData }} dialogTitle={sendDialogTitle} options={dialogOptionsConfirmBlock} content={AttachmentDialogV2} defaultState={sendDialogOpen} actions={sendDialogActions} />
-				<XGlobalDialogCmp onDialogPropsChange={selectedShiftAgent} data={shiftAgentsList} dialogTitle={`Shift Conversation To Another Agent`} options={dialogOptionsShift} content={ShiftConversationDialog} defaultState={dialogOpenShift} actions={dialogActionsShift} />
-				<XGlobalDialogCmp onDialogPropsChange={selectedCannedMessage} data={cannedMessagesList} dialogTitle={`Canned Replies`} options={dialogOptionsCanned} content={CannedMessagesDialog} defaultState={dialogOpenCanned} actions={dialogActionsCanned} />
-				<XGlobalDialogCmp onDialogPropsChange={blockCustomerInputHandler} data={selectedRecipient} dialogTitle={`Confirm Block`} options={dialogOptionsConfirmBlock} content={BlockConfirmDialog} defaultState={dialogOpenConfirmBlock} actions={dialogActionsConfirmBlock} />
-				<XGlobalDialogCmp onDialogPropsChange={customerProfileInputHandler} data={customerProfileData} dialogTitle={`Customer Profile`} options={dialogOptionsCmp} content={CustomerProfileDialog} defaultState={dialogOpenCmp} actions={dialogActionsCmp} />
+				<XGlobalDialogCmp
+					onDialogPropsChange={sendDialogInputHandler}
+					data={{ dialogType: sendActionType, attachment: sendDialogData }}
+					dialogTitle={sendDialogTitle}
+					options={dialogOptionsConfirmBlock}
+					content={AttachmentDialogV2}
+					defaultState={sendDialogOpen}
+					actions={sendDialogActions}
+				/>
+				<XGlobalDialogCmp
+					onDialogPropsChange={selectedShiftAgent}
+					data={shiftAgentsList}
+					dialogTitle={`Shift Conversation To Another Agent`}
+					options={dialogOptionsShift}
+					content={ShiftConversationDialog}
+					defaultState={dialogOpenShift}
+					actions={dialogActionsShift}
+				/>
+				<XGlobalDialogCmp
+					onDialogPropsChange={selectedCannedMessage}
+					data={cannedMessagesList}
+					dialogTitle={`Canned Replies`}
+					options={dialogOptionsCanned}
+					content={CannedMessagesDialog}
+					defaultState={dialogOpenCanned}
+					actions={dialogActionsCanned}
+				/>
+				<XGlobalDialogCmp
+					onDialogPropsChange={blockCustomerInputHandler}
+					data={selectedRecipient}
+					dialogTitle={`Confirm Block`}
+					options={dialogOptionsConfirmBlock}
+					content={BlockConfirmDialog}
+					defaultState={dialogOpenConfirmBlock}
+					actions={dialogActionsConfirmBlock}
+				/>
+				<XGlobalDialogCmp
+					onDialogPropsChange={customerProfileInputHandler}
+					data={customerProfileData}
+					dialogTitle={`Customer Profile`}
+					options={dialogOptionsCmp}
+					content={CustomerProfileDialog}
+					defaultState={dialogOpenCmp}
+					actions={dialogActionsCmp}
+				/>
 			</div>
 		</>
 	);

@@ -577,7 +577,7 @@ function Chat(props) {
 			key: ':id',
 			value: agent.id,
 			params: {
-				customer: selectedRecipient.number
+				customer: [selectedRecipient.number]
 			}
 		}, (response) => {
 			setdialogOpenShift(false)

@@ -181,7 +181,7 @@ function AgentContent(props) {
 	}
 	return (
 		<div className="w-full flex flex-col" style={{}}>
-			<Chat updateOnGoingConversation={updateOnGoingConversation} ongoingNewConversation={ongoingNewConversation} numberr={numbers} Loading={loading} selectedAgent={selectedAgent} reloadNumber={(e) => getAgentsCustomersReload()} />
+			<Chat updateOnGoingConversation={updateOnGoingConversation} ongoingNewConversation={ongoingNewConversation} numberr={numbers} Loading={loading} selectedAgent={selectedAgent} reloadNumber={(e) => getAllAgents()} />
 		</div>
 	);
 }
