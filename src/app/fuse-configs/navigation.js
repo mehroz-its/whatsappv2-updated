@@ -101,6 +101,15 @@ module.exports = [
                 exact: true
             },
             {
+                id: 'Info Collection',
+                title: 'Info Collection',
+                translate: 'Info Collection',
+                type: 'item',
+                icon: 'contact_phone',
+                url: '/ContactInformationCollection',
+                exact: true
+            },
+            {
                 id: 'Reports',
                 title: 'Reports',
                 translate: 'Reports',

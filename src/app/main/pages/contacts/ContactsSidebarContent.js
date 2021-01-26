@@ -12,7 +12,6 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-
 const useStyles = makeStyles(theme => ({
 	listItem: {
 		color: 'inherit!important',
@@ -36,22 +35,20 @@ const useStyles = makeStyles(theme => ({
 		}
 	},
 	avatar: {
-
 		padding: 0,
 		width: 30,
 		height: 30
 	},
 	listItemText: {
-		fontSize: '100px',//Insert your required size
-
+		fontSize: '100px' //Insert your required size
 	}
 }));
 
 function ContactsSidebarContent(props) {
 	const user = null;
-	let data = null
-	data = JSON.parse(localStorage.getItem('user_data'))
-	let value = null
+	let data = null;
+	data = JSON.parse(localStorage.getItem('user_data'));
+	let value = null;
 	if (data !== null) {
 		function titleCase(str) {
 			str = str.toLowerCase().split(' ');
@@ -60,9 +57,8 @@ function ContactsSidebarContent(props) {
 			}
 			return str.join(' ');
 		}
-		console.log(data)
+		console.log(data);
 		value = titleCase(data.username);
-
 	}
 	const classes = useStyles(props);
 	return (
@@ -70,10 +66,10 @@ function ContactsSidebarContent(props) {
 			<FuseAnimate animation="transition.slideLeftIn" delay={200}>
 				<Paper className="rounded-0 shadow-none lg:rounded-8 lg:shadow-1">
 					<div className="p-24 flex items-center">
-						<Avatar alt={value.charAt(0)} src="../../../"
-							className={classes.avatar}
-						/>
-						<Typography className="mx-12" style={{ fontSize: '12px', marginTop: '1px' }}>{value}</Typography>
+						<Avatar alt={value.charAt(0)} src="../../../" className={classes.avatar} />
+						<Typography className="mx-12" style={{ fontSize: '12px', marginTop: '1px' }}>
+							{value}
+						</Typography>
 					</div>
 					<Divider />
 					<List>
@@ -90,8 +86,6 @@ function ContactsSidebarContent(props) {
 							<ListItemText className="truncate" primary="All Contacts" disableTypography />
 						</ListItem>
 						<ListItem
-
-
 							button
 							component={NavLinkAdapter}
 							to="/apps/blocklist"
@@ -101,13 +95,9 @@ function ContactsSidebarContent(props) {
 							<Icon className="list-item-icon text-16" color="action">
 								block
 							</Icon>
-							<ListItemText
-									style={{fontSize:"12px"}}
-								primary="Blocked Contacts" disableTypography />
+							<ListItemText style={{ fontSize: '12px' }} primary="Blocked Contacts" disableTypography />
 						</ListItem>
 						<ListItem
-
-
 							button
 							component={NavLinkAdapter}
 							to="/apps/contact-groups"
@@ -117,9 +107,20 @@ function ContactsSidebarContent(props) {
 							<Icon className="list-item-icon text-16" color="action">
 								people
 							</Icon>
-							<ListItemText
+							<ListItemText primary="Contact Groups" disableTypography />
+						</ListItem>
 
-								primary="Contact Groups" disableTypography />
+						<ListItem
+							button
+							component={NavLinkAdapter}
+							to="/apps/contact-groups"
+							activeClassName="active"
+							className={classes.listItem}
+						>
+							<Icon className="list-item-icon text-16" color="action">
+								people
+							</Icon>
+							<ListItemText primary="Contact Address" disableTypography />
 						</ListItem>
 					</List>
 				</Paper>

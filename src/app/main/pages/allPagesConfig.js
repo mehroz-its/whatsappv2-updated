@@ -6,6 +6,7 @@ import RegisterPageConfig from './auth/register/RegisterPageConfig';
 import ResetPasswordPageConfig from './auth/reset-password/ResetPasswordPageConfig';
 import Error404PageConfig from './errors/404/Error404PageConfig';
 import IntelligenceConfig from './Intelligence/IntelligenceConfig';
+import ContactInformationCollectionConfig from './contactInformationCollection/contactInformationCollectionConfig';
 import ChatAppConfig from './chat/ChatAppConfig';
 import GroupChatAppConfig from './group-chat/GroupChatAppConfig';
 import GroupConfig from './groups/GroupConfig';
@@ -47,6 +48,7 @@ let allPagesConfig = [
 	ResetPassword2PageConfig,
 	Error404PageConfig,
 	IntelligenceConfig,
+	ContactInformationCollectionConfig,
 	ChatAppConfig,
 	ReportsAppConfig,
 	GroupChatAppConfig,
