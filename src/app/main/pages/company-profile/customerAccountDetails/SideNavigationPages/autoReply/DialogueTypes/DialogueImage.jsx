@@ -68,7 +68,15 @@ export default class DialogueImages extends Component {
 
 
     }
-    
+    removeQuestion = (i) => {
+        // alert(i)
+
+        // if (i) {
+            let images = this.state.images;
+            images.splice(i, 1)
+            this.setState({ images })
+        // }
+    }
 	onChangeHandler = event => {
 		if (event.target.files.length > 0) {
 			const _data = new FormData();
@@ -170,7 +178,7 @@ export default class DialogueImages extends Component {
                     return (
                         <React.Fragment>
                         
-                        <div className="flex">
+                        <div className="flex"  style={{marginTop:15}}>
                                 <TextField
                                     label="URL"
                                     className={"mb-5"}
@@ -179,14 +187,14 @@ export default class DialogueImages extends Component {
                                     name="URL"
                                     variant="outlined"
                                     fullWidth
-
+                                    
                                     value={el.URL}
 
                                     size="small"
                                 />
 
                             </div>
-                            <div className="flex">
+                            <div className="flex" style={{marginTop:15}}>   
                                 <TextField
                                     label="Caption"
                                     className={"mb-10"}
@@ -194,13 +202,22 @@ export default class DialogueImages extends Component {
                                     name="Caption"
                                     variant="outlined"
                                     fullWidth
-
+                                    multiline
+                                    rowsMax={6}
                                     value={el.caption}
                                     onChange={(e)=>{this.updateCaption(e,i)}}
                                     size="small"
                                 />
 
                             </div>
+                            {
+                                // i ?
+                                    <div className={"flex justify-center items-center"}>
+                                        <Icon style={{ cursor: "pointer" }} onClick={() => { this.removeQuestion(i) }}>delete</Icon>
+
+                                    </div>
+                                    // : null
+                            }
                         </React.Fragment>
                         
                     )

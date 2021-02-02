@@ -104,6 +104,15 @@ export default class DialogueVideo extends Component {
         video[i].caption = e.target.value;
         this.setState({ video })
     }
+    removeQuestion = (i) => {
+        // alert(i)
+
+        // if (i) {
+            let video = this.state.video;
+            video.splice(i, 1)
+            this.setState({ video })
+        // }
+    }
     render() {
         const { video, videoRequired } = this.state;
 
@@ -159,6 +168,7 @@ export default class DialogueVideo extends Component {
                             }
 
                         </div>
+                       
 
                     </div>
                     {/* </div> */}
@@ -170,7 +180,7 @@ export default class DialogueVideo extends Component {
                     return (
                         <React.Fragment>
 
-                            <div className="flex">
+                            <div className="flex" style={{marginTop:15}}>
                                 <TextField
                                     label="URL"
                                     className={"mb-5"}
@@ -186,7 +196,7 @@ export default class DialogueVideo extends Component {
                                 />
 
                             </div>
-                            <div className="flex">
+                            <div className="flex" style={{marginTop:15}}>
                                 <TextField
                                     label="Caption"
                                     className={"mb-10"}
@@ -194,13 +204,18 @@ export default class DialogueVideo extends Component {
                                     name="Caption"
                                     variant="outlined"
                                     fullWidth
-
+                                    multiline
+                                    rowsMax={6}
                                     value={el.caption}
                                     onChange={(e) => { this.updateCaption(e, i) }}
                                     size="small"
                                 />
 
                             </div>
+                            <div className={"flex justify-center items-center"}>
+                                        <Icon style={{ cursor: "pointer" }} onClick={() => { this.removeQuestion(i) }}>delete</Icon>
+
+                                    </div>
                         </React.Fragment>
 
                     )

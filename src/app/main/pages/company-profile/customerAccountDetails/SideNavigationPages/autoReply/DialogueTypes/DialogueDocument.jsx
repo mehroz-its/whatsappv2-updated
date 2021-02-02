@@ -103,6 +103,15 @@ export default class DialogueDocument extends Component {
         document[i].caption = e.target.value;
         this.setState({ document })
     }
+    removeQuestion = (i) => {
+        // alert(i)
+
+        // if (i) {
+            let document = this.state.document;
+            document.splice(i, 1)
+            this.setState({ document })
+        // }
+    }
     render() {
         const { document, documentRequired } = this.state;
 
@@ -166,7 +175,7 @@ export default class DialogueDocument extends Component {
                     return (
                         <React.Fragment>
 
-                            <div className="flex">
+                            <div className="flex" style={{marginTop:15}}>
                                 <TextField
                                     label="URL"
                                     className={"mb-10"}
@@ -182,7 +191,7 @@ export default class DialogueDocument extends Component {
                                 />
 
                             </div>
-                            <div className="flex">
+                            <div className="flex" style={{marginTop:15}}>
                                 <TextField
                                     label="Caption"
                                     className={"mb-10"}
@@ -190,13 +199,18 @@ export default class DialogueDocument extends Component {
                                     name="Caption"
                                     variant="outlined"
                                     fullWidth
-
+                                    multiline
+                                    rowsMax={6}
                                     value={el.caption}
                                     onChange={(e) => { this.updateCaption(e, i) }}
                                     size="small"
                                 />
 
                             </div>
+                            <div className={"flex justify-center items-center"}>
+                                        <Icon style={{ cursor: "pointer" }} onClick={() => { this.removeQuestion(i) }}>delete</Icon>
+
+                                    </div>
                         </React.Fragment>
 
                     )

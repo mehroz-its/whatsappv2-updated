@@ -219,15 +219,19 @@ function ChatApp(props) {
 
 			let input = { startDate: null, endDate: null }
 			if (startDate) {
+				console.log("SelectedDates if startDate" , startDate);
 				input.startDate = startDate.startOf('day').toDate()
 				var tzoffset = (input.startDate).getTimezoneOffset() * 60000;
 				input.startDate = (new Date(input.startDate - tzoffset)).toISOString();
 			}
 			if (endDate) {
+				console.log(" SelectedDates if endDate" , endDate);
 				input.endDate = endDate.endOf("day").toDate()
 				var tzoffset = (input.endDate).getTimezoneOffset() * 60000;
 				input.endDate = (new Date(input.endDate - tzoffset)).toISOString();
 			}
+			console.log("SelectedDates input" , input);
+
 
 			getFilterMessages(input)
 		}
