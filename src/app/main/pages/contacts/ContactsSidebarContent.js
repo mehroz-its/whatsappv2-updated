@@ -110,7 +110,7 @@ function ContactsSidebarContent(props) {
 							<ListItemText primary="Contact Groups" disableTypography />
 						</ListItem>
 
-						<ListItem
+						{/* <ListItem
 							button
 							component={NavLinkAdapter}
 							to="/apps/contact-groups"
@@ -121,7 +121,7 @@ function ContactsSidebarContent(props) {
 								people
 							</Icon>
 							<ListItemText primary="Contact Address" disableTypography />
-						</ListItem>
+						</ListItem> */}
 					</List>
 				</Paper>
 			</FuseAnimate>
