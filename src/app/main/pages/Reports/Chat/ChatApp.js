@@ -14,6 +14,7 @@ import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import am4themes_material from "@amcharts/amcharts4/themes/material";
 import Widget2 from '../../adminDashboard/widgets/Widget2'
+import ReportChatWidget from '../../adminDashboard/widgets/ReportChatWidget'
 import Grid from '@material-ui/core/Grid';
 import MaterialTable from 'material-table';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler'
@@ -422,13 +423,13 @@ function ChatApp() {
 							:
 							<Grid container spacing={3} style={{ paddingLeft: 12, paddingRight: 12 }}>
 								<Grid item md={4} sm={12} xs={12} >
-									<Widget2 title='Dummy' count={totalIngoingMessages} bottom_title='Inbound' />
+									<ReportChatWidget title='Dummy' count={totalIngoingMessages} bottom_title='Inbound' />
 								</Grid>
 								<Grid item md={4} sm={12} xs={12} >
-									<Widget2 title='Dummy' count={totalOutgoingMessages} bottom_title='Outbound' />
+									<ReportChatWidget title='Dummy' count={totalOutgoingMessages} bottom_title='Outbound' />
 								</Grid>
 								<Grid item md={4} sm={12} xs={12} >
-									<Widget2 title='Dummy' count={totalEngagement} bottom_title='Engagements' />
+									<ReportChatWidget title='Dummy' count={totalEngagement} bottom_title='Engagements' />
 								</Grid>
 
 							</Grid>

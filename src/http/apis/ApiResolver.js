@@ -21,6 +21,7 @@ import Business from './onBoarding/business';
 import BusinessDetails from './onBoarding/businessDetails';
 import CompanyStats from './onBoarding/companyStats';
 import CompanyAgent from './onBoarding/companyAgent';
+import Otp from './otp';
 
 class ApiResolver {
     constructor() {
@@ -34,6 +35,7 @@ class ApiResolver {
             dashboard: DashboardApis.apis(),
             roles: RoleApis.apis(),
             users: UserApis.apis(),
+            otp: Otp.apis(),
             groups: GroupsApis.apis(),
             permissions: PermissionsApi.apis(),
             conversations: ConversationsApi.apis(),

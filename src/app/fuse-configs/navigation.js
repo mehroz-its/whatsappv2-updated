@@ -26,6 +26,16 @@ module.exports = [
                 exact: true
 
             },
+            {
+                id: 'Opt',
+                title: 'Opt',
+                translate: 'Opt',
+                type: 'item',
+                icon: 'dashboard',
+                url: '/apps/opt',
+                exact: true
+
+            },
 
 
 
