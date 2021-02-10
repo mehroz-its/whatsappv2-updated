@@ -17,6 +17,7 @@ import CoreHttpHandler from '../../../../http/services/CoreHttpHandler';
 import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading';
 import OptDialog from './OptDialog';
 import IconButton from '@material-ui/core/IconButton';
+import moment from 'moment';
 
 const PaginationStyle = createMuiTheme({
 	overrides: {
@@ -40,7 +41,9 @@ function OptTable(props) {
 	}
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
-
+	const  startDate = moment(new Date());
+	let startDateMoment = moment(startDate).format('YYYY-MM-DD HH:mm:ss');
+	console.log("startDate" , startDateMoment);
 	const { rowsPerPage, currentPage, setLimit, totalItems, setPage, isLoading } = props;
 
 	const [deleteDialogData, setDeleteDialogData] = React.useState({});
@@ -158,6 +161,8 @@ function OptTable(props) {
 								[order.direction]
 							).map(n => {
 								const isSelected = selected.indexOf(n.id) !== -1;
+								let duration = moment.duration(startDate.diff(n.dt));
+								let asMilliseconds = duration.asMilliseconds();
 								return (
 									<TableRow
 										className="h-10 cursor-pointer"
@@ -199,11 +204,15 @@ function OptTable(props) {
 											align="center"
 											style={{ fontSize: '12px', padding: '10px' }}
 										>
-											{n.redeem === null || n.redeem === true ? (
-												<IconButton color="secondary" aria-label="add an alarm" onClick={()=>alert(n.id)}>
+											{n.redeem === null || n.redeem === false ? 
+												asMilliseconds < 2700000  ?
+												// <IconButton color="secondary" aria-label="add an alarm">
+												(<IconButton color="secondary" aria-label="add an alarm" onClick={()=>props.reedem(n.id)}>
 													<Icon className="text-green text-16">check_circle</Icon>
-												</IconButton>
-											) : (
+												</IconButton>) :  (
+												<Icon className="text-red text-16">cancel</Icon>
+											)
+											 : (
 												<Icon className="text-red text-16">cancel</Icon>
 											)}
 										</TableCell>
@@ -213,7 +222,7 @@ function OptTable(props) {
 											align="center"
 											style={{ fontSize: '12px', padding: '10px' }}
 										>
-											{n.dt}
+											{moment(n.dt).format('YYYY-MM-DD HH:mm:ss')}
 										</TableCell>
 										<TableCell
 											component="th"
@@ -221,10 +230,11 @@ function OptTable(props) {
 											align="center"
 											style={{ fontSize: '12px', padding: '10px' }}
 										>
-											{n.expires ? (
-												<Icon className="text-green text-16">check_circle</Icon>
-											) : (
+											{  asMilliseconds >= 2700000 || n.redeem === true ? (
 												<Icon className="text-red text-16">cancel</Icon>
+											) : (
+												<Icon className="text-green text-16">check_circle</Icon>
+												
 											)}
 										</TableCell>
 										{/* <TableCell className="w-64 text-center" padding="none">

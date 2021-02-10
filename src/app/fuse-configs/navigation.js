@@ -28,7 +28,7 @@ module.exports = [
             },
             {
                 id: 'Opt',
-                title: 'Opt',
+                title: 'OPT',
                 translate: 'Opt',
                 type: 'item',
                 icon: 'dashboard',
@@ -36,9 +36,16 @@ module.exports = [
                 exact: true
 
             },
+            {
+                id: 'OptReport',
+                title: 'OPT Report',
+                translate: 'Opt Report',
+                type: 'item',
+                icon: 'dashboard',
+                url: '/apps/optReport',
+                exact: true
 
-
-
+            },
             {
                 id: 'Chat',
                 title: 'Chat',

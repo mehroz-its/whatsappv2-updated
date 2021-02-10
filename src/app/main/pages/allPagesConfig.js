@@ -32,6 +32,7 @@ import CompanyProfileConfig from './company-profile/CompanyProfileConfig';
 import Error404LoggedOutPageConfig from './errors/404-logged-out/Error404LoggedOutPageConfig';
 import chatBotConfig from "./chatBot/chatBotConfig";
 import OptConfig from "./opt/OptConfig";
+import OptReportAppConfig from "./optReport/OptReportAppConfig";
 
 let allPagesConfig = [
 	CompanyProfileConfig,
@@ -67,7 +68,8 @@ let allPagesConfig = [
 	TokenConfig,
 	Error404LoggedOutPageConfig,
 	chatBotConfig,
-	OptConfig
+	OptConfig,
+	OptReportAppConfig
 ];
 
 export default allPagesConfig;
