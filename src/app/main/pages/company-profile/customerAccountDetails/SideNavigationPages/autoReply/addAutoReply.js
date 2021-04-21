@@ -29,6 +29,8 @@ import { ThemeProvider, createMuiTheme, MuiThemeProvider } from '@material-ui/co
 import { add } from 'lodash';
 import { v4 as uuidv4 } from 'uuid';
 import Tooltip from '@material-ui/core/Tooltip';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 
 const SearchStyle = createMuiTheme({
     overrides: {
@@ -95,8 +97,10 @@ function AddAutoReply(props) {
     const [openChildrenModal, setOpenChildrenModal] = React.useState(null);
     const [endMessage, setEndMessage] = React.useState("");
     const [startMessage, setStartMessage] = React.useState("");
+    const [surveyMessage, setSurveyMessage] = React.useState("");
+    const [chatBotName, setChatBotName] = React.useState("");
+    const [status, setStatus] = React.useState(false);
 
-    const [chatBotName, setChatBotName] = React.useState("")
 
     const updateChatBotName = (e) => {
         setChatBotName(e.target.value)
@@ -112,6 +116,7 @@ function AddAutoReply(props) {
             }
 
             if (body) {
+                console.log('body ', body)
                 if(body.__default){
                     setTreeData([body.__default])
                 }
@@ -120,6 +125,10 @@ function AddAutoReply(props) {
                 }
                 if(body.__endMessageConversationMessage&&body.__endMessageConversationMessage.messages&&body.__endMessageConversationMessage.messages.length){
                     setEndMessage(body.__endMessageConversationMessage.messages[0])
+                }
+                if(body.__surveyMessage&&body.__surveyMessage.messages&&body.__surveyMessage.messages.length){
+                    setSurveyMessage(body.__surveyMessage.messages[0]);
+                    setStatus(true);
                 }
             }
         }
@@ -199,6 +208,11 @@ function AddAutoReply(props) {
         setTreeData(newTree)
         setOpenEditModal(false)
     }
+
+    const toggleChecked = e => {
+		console.log('ToggleChecked e', e.target.checked);
+		setStatus(e.target.checked);
+	};
 
     const updateNodeData = (data, path, node, treeDataUpdate) => {
 
@@ -328,11 +342,12 @@ function AddAutoReply(props) {
         props.closeHandler({})
     }
     function saveHandler() {
-        
+        console.log('start message end message and tree ')
         let _startMessage   = startMessage  ? { "id": uuidv4(), "title": "Start Conversation Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ startMessage ], "children": [] } : undefined; 
         let _endMessage     = endMessage    ? { "id": uuidv4(), "title": "End Conversation Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ endMessage ], "children": [] }: undefined;
-
+        let _surveyMessage = surveyMessage  ? { "id": uuidv4(), "title": "Survey Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ surveyMessage ], "children": [] }: undefined;
         if (data) {
+            
             if(startMessage&&data.__startMessageConversationMessage&&data.__startMessageConversationMessage.messages&&data.__startMessageConversationMessage.messages.length){
                 _startMessage = data.__startMessageConversationMessage;
                 _startMessage.__startMessageConversationMessage.messages[0] = startMessage
@@ -341,10 +356,14 @@ function AddAutoReply(props) {
                 _endMessage = data.__endMessageConversationMessage;
                 _endMessage.__endMessageConversationMessage.messages[0] = startMessage
             }
+            if(surveyMessage&&data.__surveyMessage&&data.__surveyMessage.messages&&data.__surveyMessage.messages.length){
+                _surveyMessage = data.__surveyMessage;
+                _surveyMessage.__surveyMessage.messages[0] = surveyMessage
+            }
             
-            props.updateHandler({ treeData: treeData[0], name: chatBotName,startMessage:_startMessage,endMessage:_endMessage })
+            props.updateHandler({ treeData: treeData[0], name: chatBotName,startMessage:_startMessage,endMessage:_endMessage, surveyMessage:_surveyMessage })
         } else {
-            props.saveHandler({ treeData: treeData[0], name: chatBotName,startMessage:_startMessage,endMessage:_endMessage })
+            props.saveHandler({ treeData: treeData[0], name: chatBotName,startMessage:_startMessage,endMessage:_endMessage, surveyMessage:_surveyMessage })
         }
     }
 
@@ -407,7 +426,21 @@ function AddAutoReply(props) {
                         align="center"
                         className={"p-20"}
                     >
-
+                        <FormControlLabel
+						style={{ marginLeft: '2px' }}
+						control={
+							<Switch
+								checked={status}
+								onChange={toggleChecked}
+								name="status"
+								color="primary"
+								size="small"
+                                
+							/>
+                            
+						}
+                        label= "Survey Question?"
+					/>
                         <Grid container className={"mb-20"}>
                             <Grid item md={3} sm={12} xs={12}>
                                 <div className="flex" >
@@ -447,6 +480,28 @@ function AddAutoReply(props) {
                                 </div>
                             </Grid>
                         </Grid>
+                        {status === true && (
+                        <Grid container className={"mb-20"}>
+                            <Grid item md={6} sm={12} xs={12}>
+                                <div className="flex" >
+                                    <TextField
+                                        label="Survey Message"
+                                        fullWidth
+                                        id={"survey_message"}
+                                        name="chatBotName"
+                                        variant="outlined"
+                                        multiline
+                                        rows={1}
+                                        value={surveyMessage}
+                                        onChange={e=>{setSurveyMessage(e.target.value)}}
+                                        size="small"
+                                        inputProps={{ maxLength: 800 }}
+                                        rowsMax={6}
+                                    />
+                                </div>
+                            </Grid>
+                        </Grid>
+                        )}
 
                         <Grid container>
                             <Grid item md={6} sm={12} xs={12}>

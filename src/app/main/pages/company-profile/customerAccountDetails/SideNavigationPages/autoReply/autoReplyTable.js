@@ -321,14 +321,15 @@ function AutoReplyTable(props) {
     const handleChangeRowsPerPage = event => {
         setLimit(Number(event.target.value));
     };
-    const saveHandler = ({ treeData, name, startMessage, endMessage }) => {
+    const saveHandler = ({ treeData, name, startMessage, endMessage, surveyMessage }) => {
         if (companyDetails) {
             let update_params = {
                 treeData,
                 clientId: companyDetails.id,
                 name,
                 startMessage, 
-                endMessage
+                endMessage,
+                surveyMessage
             };
             CoreHttpHandler.request(
                 'CompanyAgent',
@@ -341,7 +342,8 @@ function AutoReplyTable(props) {
             );
         }
     }
-    const updateHandler = ({ treeData, name, startMessage, endMessage }) => {
+    const updateHandler = ({ treeData, name, startMessage, endMessage, surveyMessage }) => {
+        console.log('inside update handler-----', surveyMessage, startMessage);
         if (companyDetails&&chatBotData) {
             let update_params = {
                 treeData,
@@ -349,6 +351,7 @@ function AutoReplyTable(props) {
                 name,
                 startMessage, 
                 endMessage,
+                surveyMessage,
                 id:chatBotData.id
             }
             CoreHttpHandler.request(
