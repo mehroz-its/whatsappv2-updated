@@ -98,6 +98,7 @@ function AddAutoReply(props) {
     const [endMessage, setEndMessage] = React.useState("");
     const [startMessage, setStartMessage] = React.useState("");
     const [surveyMessage, setSurveyMessage] = React.useState("");
+    const [surveyAnswers, setSurveyAnswers] = React.useState("");
     const [chatBotName, setChatBotName] = React.useState("");
     const [status, setStatus] = React.useState(false);
 
@@ -127,8 +128,12 @@ function AddAutoReply(props) {
                     setEndMessage(body.__endMessageConversationMessage.messages[0])
                 }
                 if(body.__surveyMessage&&body.__surveyMessage.messages&&body.__surveyMessage.messages.length){
+                    console.log("body and survey message ", body.__surveyMessage)
                     setSurveyMessage(body.__surveyMessage.messages[0]);
                     setStatus(true);
+                    if(body.__surveyMessage.answers && body.__surveyMessage.answers.length) {
+                        setSurveyAnswers(body.__surveyMessage.answers)
+                    }
                 }
             }
         }
@@ -342,10 +347,14 @@ function AddAutoReply(props) {
         props.closeHandler({})
     }
     function saveHandler() {
-        console.log('start message end message and tree ')
+
         let _startMessage   = startMessage  ? { "id": uuidv4(), "title": "Start Conversation Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ startMessage ], "children": [] } : undefined; 
         let _endMessage     = endMessage    ? { "id": uuidv4(), "title": "End Conversation Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ endMessage ], "children": [] }: undefined;
         let _surveyMessage = surveyMessage  ? { "id": uuidv4(), "title": "Survey Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ surveyMessage ], "children": [] }: undefined;
+        if (surveyAnswers && surveyAnswers != null ) {
+            _surveyMessage = surveyMessage  ? { "id": uuidv4(), "title": "Survey Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ surveyMessage ], "children": [], "answers": [surveyAnswers] }: undefined;
+        }
+
         if (data) {
             
             if(startMessage&&data.__startMessageConversationMessage&&data.__startMessageConversationMessage.messages&&data.__startMessageConversationMessage.messages.length){
@@ -502,6 +511,29 @@ function AddAutoReply(props) {
                             </Grid>
                         </Grid>
                         )}
+                        {status === true && (
+                        <Grid container className={"mb-20"}>
+                        <Grid item md={6} sm={12} xs={12}>
+                            <div className="flex" >
+                                <TextField
+                                    label="Survey Answers"
+                                    fullWidth
+                                    id={"survey_Answers"}
+                                    name="chatBotName"
+                                    variant="outlined"
+                                    multiline
+                                    rows={1}
+                                    value={surveyAnswers}
+                                    onChange={e=>{setSurveyAnswers(e.target.value)}}
+                                    size="small"
+                                    inputProps={{ maxLength: 800 }}
+                                    rowsMax={6}
+                                />
+                            </div>
+                        </Grid>
+                        </Grid>
+                        )}
+                        
 
                         <Grid container>
                             <Grid item md={6} sm={12} xs={12}>
