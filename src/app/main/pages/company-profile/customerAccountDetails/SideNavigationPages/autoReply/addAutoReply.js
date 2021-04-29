@@ -100,6 +100,7 @@ function AddAutoReply(props) {
     const [surveyMessage, setSurveyMessage] = React.useState("");
     const [surveyAnswers, setSurveyAnswers] = React.useState("");
     const [chatBotName, setChatBotName] = React.useState("");
+    const [invalidResponse, setInvalidMessage] = React.useState("");
     const [status, setStatus] = React.useState(false);
 
 
@@ -132,7 +133,10 @@ function AddAutoReply(props) {
                     setSurveyMessage(body.__surveyMessage.messages[0]);
                     setStatus(true);
                     if(body.__surveyMessage.answers && body.__surveyMessage.answers.length) {
-                        setSurveyAnswers(body.__surveyMessage.answers)
+                        setSurveyAnswers(body.__surveyMessage.answers[0])
+                    }
+                    if(body.__surveyMessage.invalidMessage && body.__surveyMessage.invalidMessage.length) {
+                        setInvalidMessage(body.__surveyMessage.invalidMessage[0])
                     }
                 }
             }
@@ -352,7 +356,7 @@ function AddAutoReply(props) {
         let _endMessage     = endMessage    ? { "id": uuidv4(), "title": "End Conversation Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ endMessage ], "children": [] }: undefined;
         let _surveyMessage = surveyMessage  ? { "id": uuidv4(), "title": "Survey Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ surveyMessage ], "children": [] }: undefined;
         if (surveyAnswers && surveyAnswers != null ) {
-            _surveyMessage = surveyMessage  ? { "id": uuidv4(), "title": "Survey Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ surveyMessage ], "children": [], "answers": [surveyAnswers] }: undefined;
+            _surveyMessage = surveyMessage  ? { "id": uuidv4(), "title": "Survey Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ surveyMessage ], "children": [], "answers": [surveyAnswers], "invalidMessage": [invalidResponse] }: undefined;
         }
 
         if (data) {
@@ -525,6 +529,28 @@ function AddAutoReply(props) {
                                     rows={1}
                                     value={surveyAnswers}
                                     onChange={e=>{setSurveyAnswers(e.target.value)}}
+                                    size="small"
+                                    inputProps={{ maxLength: 800 }}
+                                    rowsMax={6}
+                                />
+                            </div>
+                        </Grid>
+                        </Grid>
+                        )}
+                        {status === true && (
+                        <Grid container className={"mb-20"}>
+                        <Grid item md={6} sm={12} xs={12}>
+                            <div className="flex" >
+                                <TextField
+                                    label="Invalid Message"
+                                    fullWidth
+                                    id={"invlaid_message"}
+                                    name="chatBotName"
+                                    variant="outlined"
+                                    multiline
+                                    rows={1}
+                                    value={invalidResponse}
+                                    onChange={e=>{setInvalidMessage(e.target.value)}}
                                     size="small"
                                     inputProps={{ maxLength: 800 }}
                                     rowsMax={6}
