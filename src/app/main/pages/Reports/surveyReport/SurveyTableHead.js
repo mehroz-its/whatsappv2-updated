@@ -27,35 +27,35 @@ const rows = [
 		id: 'wt_num',
 		align: 'center',
 		disablePadding: false,
-		label: 'Number',
+		label: 'Excellent',
 		sort: true
 	},
 	{
 		id: 'short_code',
 		align: 'center',
 		disablePadding: false,
-		label: 'Code',
+		label: 'Very Good',
 		sort: true
 	},
 	{
 		id: 'redeem',
 		align: 'center',
 		disablePadding: false,
-		label: 'Redeem',
+		label: 'Good',
 		sort: true
 	},
 	{
 		id: 'dt',
 		align: 'center',
 		disablePadding: false,
-		label: 'Created Date',
+		label: 'Poor',
 		sort: true
 	},
 	{
 		id: 'expires',
 		align: 'center',
 		disablePadding: false,
-		label: 'Expires',
+		label: 'Very Poor',
 		sort: true
 	}
 	// {

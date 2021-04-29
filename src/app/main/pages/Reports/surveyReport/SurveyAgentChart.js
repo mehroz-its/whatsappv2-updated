@@ -5,7 +5,7 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 
 am4core.useTheme(am4themes_animated);
 
-const SurveyAgentChart = () => {
+const SurveyAgentChart = props => {
 	useLayoutEffect(() => {
 		let chart = am4core.create('chartdiv', am4charts.XYChart);
 		chart.colors.step = 2;
@@ -47,31 +47,41 @@ const SurveyAgentChart = () => {
 				category: 'Agent #1',
 				first: 40,
 				second: 55,
-				third: 60
+				third: 60,
+				fourth: 20,
+				fifth: 35
 			},
 			{
 				category: 'Agent #2',
 				first: 30,
 				second: 78,
-				third: 69
+				third: 69,
+				fourth: 20,
+				fifth: 35
 			},
 			{
 				category: 'Agent #3',
 				first: 27,
 				second: 40,
-				third: 45
+				third: 45,
+				fourth: 20,
+				fifth: 35
 			},
 			{
 				category: 'Agent #4',
 				first: 50,
 				second: 33,
-				third: 22
+				third: 22,
+				fourth: 20,
+				fifth: 35
 			}
 		];
 
 		createSeries('first', 'The First');
 		createSeries('second', 'The Second');
 		createSeries('third', 'The Third');
+		createSeries('fourth', 'The Fourth');
+		createSeries('fifth', 'The Fifth');
 
 		function arrangeColumns() {
 			let series = chart.series.getIndex(0);
@@ -119,7 +129,7 @@ const SurveyAgentChart = () => {
 		// var noding = document.querySelector('div#chartdiv g').childNodes[1].childNodes[1];
 	});
 
-	return <div id="chartdiv" style={{ width: '100%', height: '300px' }}></div>;
+	return <div id="chartdiv" style={{ width: '100%', height: '400px' }}></div>;
 };
 
 export default SurveyAgentChart;

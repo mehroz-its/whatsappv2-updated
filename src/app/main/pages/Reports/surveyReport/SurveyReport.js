@@ -2,30 +2,18 @@ import FusePageSimple from '@fuse/core/FusePageSimple';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useRef } from 'react';
 import Typography from '@material-ui/core/Typography';
-import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import * as am4core from '@amcharts/amcharts4/core';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Widget2 from '../../adminDashboard/widgets/Widget2';
-import ReportChatWidget from '../../adminDashboard/widgets/ReportChatWidget';
-import MaterialTable from 'material-table';
 import CoreHttpHandler from '../../../../../http/services/CoreHttpHandler';
-// import ChartHeader from './ChartHeader';
-// import ChartTable from './ChartTable';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Icon from '@material-ui/core/Icon';
 import moment from 'moment';
 import DateRangePickerVal from './DatePicker';
-import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading';
-import { object } from 'prop-types';
 import { CSVLink, CSVDownload } from 'react-csv';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
-import { Star } from '@material-ui/icons';
-import CircularProgress from '@material-ui/core/CircularProgress';
+// import CircularProgress from '@material-ui/core/CircularProgress';
 import SurveyTable from './SurveyTable';
 import SurveyAgentChart from './SurveyAgentChart';
 import { Grid, Paper } from '@material-ui/core';
@@ -52,23 +40,14 @@ function SurveyReport() {
 	const pageLayout = useRef(null);
 	const [val, setVal] = React.useState('');
 	const [open, setOpen] = React.useState(false);
-	const [snackbarmessage, setSnackBarMessage] = React.useState('');
 	const [name, setName] = React.useState('');
-	const [ok, setOK] = React.useState('');
-	const [snackbaropen, setSnackBarOpen] = React.useState(false);
-	const [totalIngoingMessages, setTotalIngoingMessages] = React.useState(0);
-	const [totalOutgoingMessages, setTotalOutgoingMessages] = React.useState(0);
-	const [totalEngagement, setTotalEngagement] = React.useState(0);
 	const [age, setAge] = React.useState('days');
 	const [selectOPen, setSelectOPen] = React.useState(false);
 	const [isLoading, setisLoading] = React.useState(true);
-	const toggle = () => setOpen(!open);
-	const [dateDisplay, setDateDisplay] = React.useState(false);
 	const [dateRange, setdateRange] = React.useState({
 		startDate: null,
 		endDate: null
 	});
-	const [focus, setFocus] = React.useState(null);
 	const { startDate, endDate } = dateRange;
 	const [data2, setData2] = React.useState([]);
 	const [chartdata, setchartdata] = React.useState(null);
@@ -95,11 +74,12 @@ function SurveyReport() {
 		data.push(filtered);
 	});
 	const getData = loadData => {
+		const adminToken = localStorage.getItem('user_token');
 		setisLoading(true);
 		loadData = () => {
 			return CoreHttpHandler.request(
-				'reports',
-				'chatChartInOutCC',
+				'surveyReport',
+				'survey',
 				{
 					limit: 100,
 					page: 0,
@@ -117,6 +97,7 @@ function SurveyReport() {
 		};
 		loadData().then(response => {
 			let data = response.data;
+			console.log(data, 'dataaaaaaaaaaaa');
 			let dataagain = Object.values(data);
 			let finaldata = dataagain[1].report.finalbox[0].conversations;
 			let finaldata2 = dataagain[1].report.finalbox[0].engagements;
@@ -303,9 +284,11 @@ function SurveyReport() {
 								header: 'min-h-72 h-72 sm:h-100 sm:min-h-100',
 								wrapper: 'min-h-0'
 							}}
+							// header={<SurveyTableSearch SearchVal="" SearchVal={searchContact}  />}
 							header={<SurveyTableSearch SearchVal="" />}
 							content={
 								<>
+									{/* <SurveyTable data={data2} val={val} /> */}
 									<SurveyTable />
 								</>
 							}

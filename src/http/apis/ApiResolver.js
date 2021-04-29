@@ -22,46 +22,46 @@ import BusinessDetails from './onBoarding/businessDetails';
 import CompanyStats from './onBoarding/companyStats';
 import CompanyAgent from './onBoarding/companyAgent';
 import Otp from './otp';
+import surveyReport from './surveyReport/index';
 
 class ApiResolver {
-    constructor() {
-        this.apis = {
-            CompanyAgent:CompanyAgent.apis(),
-            CompanyStats:CompanyStats.apis(),
-            Business:Business.apis(),
-            BusinessDetails:BusinessDetails.apis(),
-            customerOnBoard:CustomerOnBoard.apis(),
-            core: CoreApis.apis(),
-            dashboard: DashboardApis.apis(),
-            roles: RoleApis.apis(),
-            users: UserApis.apis(),
-            otp: Otp.apis(),
-            groups: GroupsApis.apis(),
-            permissions: PermissionsApi.apis(),
-            conversations: ConversationsApi.apis(),
-            attachments: AttachmentApis.apis(),
-            canned_messages: CannedMessagesApi.apis(),
-            contact_book : ContactBookApis.apis(),
-            contact_group : ContactGroupApis.apis(),
-            template: Template.apis(),
-            content: ContentApis.apis(),
-            campaigns: CampaignApis.apis(),
-            forgetpassword: ForgetPasswordApi.apis(),
-            reports: Reports.apis(),
-            profile: ProfileApis.apis(),
-            locations: LocationApis.apis(),
-        };
-    }
+	constructor() {
+		this.apis = {
+			CompanyAgent: CompanyAgent.apis(),
+			CompanyStats: CompanyStats.apis(),
+			Business: Business.apis(),
+			BusinessDetails: BusinessDetails.apis(),
+			customerOnBoard: CustomerOnBoard.apis(),
+			core: CoreApis.apis(),
+			dashboard: DashboardApis.apis(),
+			roles: RoleApis.apis(),
+			users: UserApis.apis(),
+			otp: Otp.apis(),
+			groups: GroupsApis.apis(),
+			permissions: PermissionsApi.apis(),
+			conversations: ConversationsApi.apis(),
+			attachments: AttachmentApis.apis(),
+			canned_messages: CannedMessagesApi.apis(),
+			contact_book: ContactBookApis.apis(),
+			contact_group: ContactGroupApis.apis(),
+			template: Template.apis(),
+			content: ContentApis.apis(),
+			campaigns: CampaignApis.apis(),
+			forgetpassword: ForgetPasswordApi.apis(),
+			reports: Reports.apis(),
+			profile: ProfileApis.apis(),
+			locations: LocationApis.apis(),
+			surveyReport: surveyReport.apis()
+		};
+	}
 
-    resolve(name, apiCall) {
-        if (!this.apis[name])
-            throw new Error(`Failed to resolve api [${name}]`);
+	resolve(name, apiCall) {
+		if (!this.apis[name]) throw new Error(`Failed to resolve api [${name}]`);
 
-        if (!this.apis[name][apiCall])
-            throw new Error(`Failed to resolve api call [${apiCall}]`);
+		if (!this.apis[name][apiCall]) throw new Error(`Failed to resolve api call [${apiCall}]`);
 
-        return this.apis[name][apiCall];
-    }
+		return this.apis[name][apiCall];
+	}
 }
 
 export default new ApiResolver();
