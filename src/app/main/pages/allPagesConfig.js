@@ -18,7 +18,7 @@ import PermissionConfig from './setting/permission/PermissionConfig';
 import RolesConfig from './setting/roles/RolesConfig';
 import UserConfig from './setting/users/UserConfig';
 import TemplateAppConfig from './templae-messages/TemplateAppConfig';
-import ReportsAppConfig from './reports/ReportsAppConfig';
+import ReportsAppConfig from './Reports/reportsAppConfig';
 import AdminDashboardAppConfig from './adminDashboard/AdminDashboardAppConfig';
 import AgentConfig from './agent-conversation/AgentConfig';
 import BlockListConfig from './blocklist/BlockListConfig';
@@ -30,9 +30,10 @@ import ProfileAppConfig from './profile/ProfileAppConfig';
 import ChatHistoryConfig from './chat-history/ChatHistoryConfig';
 import CompanyProfileConfig from './company-profile/CompanyProfileConfig';
 import Error404LoggedOutPageConfig from './errors/404-logged-out/Error404LoggedOutPageConfig';
-import chatBotConfig from "./chatBot/chatBotConfig";
-import OptConfig from "./opt/OptConfig";
-import OptReportAppConfig from "./optReport/OptReportAppConfig";
+import chatBotConfig from './chatBot/chatBotConfig';
+import OptConfig from './opt/OptConfig';
+import OptReportAppConfig from './optReport/OptReportAppConfig';
+import SurveyCOnfig from './Reports/surveyReport/SurveyConfig';
 
 let allPagesConfig = [
 	CompanyProfileConfig,
@@ -69,7 +70,8 @@ let allPagesConfig = [
 	Error404LoggedOutPageConfig,
 	chatBotConfig,
 	OptConfig,
-	OptReportAppConfig
+	OptReportAppConfig,
+	SurveyCOnfig
 ];
 
 export default allPagesConfig;
