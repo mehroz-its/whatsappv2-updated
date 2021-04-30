@@ -5,7 +5,7 @@ class APIS {
 				headers: {
 					'xt-user-token': null
 				},
-				method: 'get',
+				method: 'post',
 				path: '/customer/survey'
 			}
 		};

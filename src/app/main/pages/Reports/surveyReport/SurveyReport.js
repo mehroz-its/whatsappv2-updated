@@ -33,6 +33,24 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
+const boxData = [
+	{
+		bottomTitle: 'Excellent'
+	},
+	{
+		bottomTitle: 'Very Good'
+	},
+	{
+		bottomTitle: 'Good'
+	},
+	{
+		bottomTitle: 'Poor'
+	},
+	{
+		bottomTitle: 'Very Poor'
+	}
+];
+
 var Start = '';
 var End = '';
 function SurveyReport() {
@@ -41,7 +59,9 @@ function SurveyReport() {
 	const [val, setVal] = React.useState('');
 	const [open, setOpen] = React.useState(false);
 	const [name, setName] = React.useState('');
-	const [age, setAge] = React.useState('days');
+	const [days, setDays] = React.useState('days');
+	const [agentSatisfactionSurvey, setAgentSatisfactionSurvey] = React.useState([]);
+	const [satisfactionSurvey, setSatisfactionSurvey] = React.useState([]);
 	const [selectOPen, setSelectOPen] = React.useState(false);
 	const [isLoading, setisLoading] = React.useState(true);
 	const [dateRange, setdateRange] = React.useState({
@@ -73,8 +93,8 @@ function SurveyReport() {
 		};
 		data.push(filtered);
 	});
+
 	const getData = loadData => {
-		const adminToken = localStorage.getItem('user_token');
 		setisLoading(true);
 		loadData = () => {
 			return CoreHttpHandler.request(
@@ -85,7 +105,7 @@ function SurveyReport() {
 					page: 0,
 					startingDate: Start.substr(0, Start.indexOf('T')),
 					endingDate: End.substr(0, End.indexOf('T')),
-					filter: age,
+					filter: days,
 					columns: '*',
 					sortby: 'ASC',
 					orderby: 'id'
@@ -95,18 +115,19 @@ function SurveyReport() {
 				true
 			);
 		};
-		loadData().then(response => {
-			let data = response.data;
-			console.log(data, 'dataaaaaaaaaaaa');
-			let dataagain = Object.values(data);
-			let finaldata = dataagain[1].report.finalbox[0].conversations;
-			let finaldata2 = dataagain[1].report.finalbox[0].engagements;
+		loadData().then(res => {
+			console.log(res, 'dataaaaaaaaaaaa');
+			setAgentSatisfactionSurvey(res?.data?.data?.survey?.agent_satisfaction);
+			setSatisfactionSurvey(res.data?.data?.survey?.satisfaction);
+			// let dataagain = Object.values(data);
+			// let finaldata = dataagain[1].report.finalbox[0].conversations;
+			// let finaldata2 = dataagain[1].report.finalbox[0].engagements;
 			// incomingAndOutGoingCount(finaldata);
 			// engagments(finaldata);
 			// engagmentss(finaldata2);
 			// totalCountConversation(finaldata);
 			// totalEngagements(finaldata2);
-			tableRender(finaldata, finaldata2);
+			// tableRender(finaldata, finaldata2);
 			setisLoading(false);
 		});
 	};
@@ -116,19 +137,19 @@ function SurveyReport() {
 			am4core.disposeAllCharts();
 		};
 	}, []);
-	const tableRender = (conversation, engagements) => {
-		let chartData = [];
-		for (var i = 0; i < conversation.length; i++) {
-			chartData.push({
-				id: i + 1,
-				date: conversation[i][2].date,
-				inbound: conversation[i][1].count,
-				outbound: conversation[i][0].count,
-				engagements: engagements[i][0].count
-			});
-		}
-		setData2(chartData);
-	};
+	// const tableRender = (conversation, engagements) => {
+	// 	let chartData = [];
+	// 	for (var i = 0; i < conversation.length; i++) {
+	// 		chartData.push({
+	// 			id: i + 1,
+	// 			date: conversation[i][2].date,
+	// 			inbound: conversation[i][1].count,
+	// 			outbound: conversation[i][0].count,
+	// 			engagements: engagements[i][0].count
+	// 		});
+	// 	}
+	// 	setData2(chartData);
+	// };
 	const exportData = () => {
 		if (Start === '') setName(moment(new Date().toISOString()).format('DD/MM/YYYY'));
 		else setName(moment(Start).format('DD/MM/YYYY') + '-' + moment(End).format('DD/MM/YYYY'));
@@ -138,7 +159,7 @@ function SurveyReport() {
 	};
 
 	const handleChange = event => {
-		setAge(event.target.value);
+		setDays(event.target.value);
 	};
 	const handleClose = () => {
 		setSelectOPen(false);
@@ -184,7 +205,7 @@ function SurveyReport() {
 								open={selectOPen}
 								onClose={handleClose}
 								onOpen={handleOpen}
-								value={age}
+								value={days}
 								onChange={handleChange}
 								fullwidth
 								defaultValue={'DAY'}
@@ -248,30 +269,35 @@ function SurveyReport() {
 							</Alert>
 						</Snackbar> */}
 
-						<Grid container style={{ paddingLeft: 12, paddingRight: 12 }}>
+						<Grid container spacing={1} style={{ paddingLeft: 12, paddingRight: 12 }}>
 							<Grid item md={6} sm={12} xs={12}>
-								{/* <Grid container spacing={1}>
-									{box.map((value, index) => {
-										console.log('value :', value);
+								<Grid container spacing={1}>
+									{satisfactionSurvey?.map((value, index) => {
+										console.log('eeeeeeeeeeeeeeeeeeeeeee', value);
 										return (
 											<Grid item md={4} sm={12} xs={12}>
 												<SurveyWidgets2
-													value={value}
+													value={value.response}
 													// title={value.subtitle}
-													// count={value.value}
+													title={boxData}
+													index={index}
+													count={value.count}
 													// bottom_title={`${value.subtitle} ${value.title}`}
 												/>
 											</Grid>
 										);
 									})}
-								</Grid> */}
+								</Grid>
 							</Grid>
 							<Grid item xs={12} md={6}>
 								<Paper className="w-full rounded-8 shadow-none border-1">
 									{/* <Typography variant="h6" className="header-card text-center pt-8">
 										Survery Report
 									</Typography> */}
-									<SurveyAgentChart />
+									<SurveyAgentChart
+										agentSatisfactionSurvey={agentSatisfactionSurvey}
+										chartTitle={boxData}
+									/>
 								</Paper>
 							</Grid>
 						</Grid>

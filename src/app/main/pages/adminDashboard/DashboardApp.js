@@ -19,6 +19,8 @@ import Widget2 from './widgets/Widget2';
 import WidgetNow from './widgets/WidgetNow';
 import WidgetWeather from './widgets/WidgetWeather';
 import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading';
+import AgentWidgets from './widgets/AgentWidgets';
+import { KeyboardReturn } from '@material-ui/icons';
 am4core.useTheme(am4themes_material);
 am4core.useTheme(am4themes_animated);
 const useStyles = makeStyles({
@@ -114,9 +116,10 @@ const newMessageList = [
 ];
 function DashboardApp(props) {
 	const classes = useStyles();
-	const [box, setBox] = React.useState([]);
-	const [radarList, setRadarList] = React.useState([]);
+	const [box, setBox] = useState([]);
+	const [radarList, setRadarList] = useState([]);
 	const [tabValue, setTabValue] = useState(0);
+	const [agents, setAgents] = useState([]);
 	const dataSourceOptions = {
 		params: {
 			columns: '*',
@@ -155,6 +158,23 @@ function DashboardApp(props) {
 			dataSourceSuccesss,
 			dataSourceFailuree
 		);
+
+		CoreHttpHandler.request(
+			'conversations',
+			'agent_list',
+			{
+				columns: 'USR.id, USR.username',
+				role: 64,
+				displayed: true,
+				enabled: true
+			},
+			_response => {
+				console.log(_response, 'ressssssssssssssssssss');
+				setAgents(_response.data.data.agents.data);
+			},
+			error => {}
+		);
+
 		return () => {
 			am4core.disposeAllCharts();
 		};
@@ -311,6 +331,33 @@ function DashboardApp(props) {
 			lastName = titleCase(data.lastName);
 		}
 	}
+
+	// const countAgents = agents.filter(Boolean).length;
+
+	let onlineAgents = agents.filter(el => {
+		return el.active == true;
+	});
+	let offlineAgents = agents.filter(el => {
+		return el.active == false;
+	});
+	console.log(onlineAgents.length, 'trueeeeValuesss');
+	console.log(offlineAgents.length, 'falseValuesssssss');
+
+	const agentData = [
+		{
+			title: 'Total Agent',
+			totalAgent: agents.length
+		},
+		{
+			title: 'Online Agent',
+			totalAgent: onlineAgents.length
+		},
+		{
+			title: 'Offline Agent',
+			totalAgent: offlineAgents.length
+		}
+	];
+
 	return (
 		<FusePageSimple
 			classes={{
@@ -365,6 +412,20 @@ function DashboardApp(props) {
 															value={value}
 															// title={value.subtitle}
 															// count={value.value}
+															// bottom_title={`${value.subtitle} ${value.title}`}
+														/>
+													</Grid>
+												);
+											})}
+										</Grid>
+										<Grid container spacing={1}>
+											{agentData.map((value, index) => {
+												console.log('value :', value);
+												return (
+													<Grid item md={4} sm={12} xs={12}>
+														<AgentWidgets
+															agents={value.totalAgent}
+															title={value.title}
 															// bottom_title={`${value.subtitle} ${value.title}`}
 														/>
 													</Grid>

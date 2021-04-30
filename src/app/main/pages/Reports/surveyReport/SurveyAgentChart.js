@@ -5,7 +5,7 @@ import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 
 am4core.useTheme(am4themes_animated);
 
-const SurveyAgentChart = props => {
+const SurveyAgentChart = ({ agentSatisfactionSurvey, chartTitle }) => {
 	useLayoutEffect(() => {
 		let chart = am4core.create('chartdiv', am4charts.XYChart);
 		chart.colors.step = 2;
@@ -42,46 +42,66 @@ const SurveyAgentChart = props => {
 			return series;
 		}
 
-		chart.data = [
-			{
-				category: 'Agent #1',
-				first: 40,
-				second: 55,
-				third: 60,
-				fourth: 20,
-				fifth: 35
-			},
-			{
-				category: 'Agent #2',
-				first: 30,
-				second: 78,
-				third: 69,
-				fourth: 20,
-				fifth: 35
-			},
-			{
-				category: 'Agent #3',
-				first: 27,
-				second: 40,
-				third: 45,
-				fourth: 20,
-				fifth: 35
-			},
-			{
-				category: 'Agent #4',
-				first: 50,
-				second: 33,
-				third: 22,
-				fourth: 20,
-				fifth: 35
-			}
-		];
+		chart.data = generateChartData();
 
-		createSeries('first', 'The First');
-		createSeries('second', 'The Second');
-		createSeries('third', 'The Third');
-		createSeries('fourth', 'The Fourth');
-		createSeries('fifth', 'The Fifth');
+		function generateChartData() {
+			console.log(agentSatisfactionSurvey, 'chartDataaaaaaaaaaaa');
+			let chartData = [];
+			for (var i = 0; i < agentSatisfactionSurvey.length; i++) {
+				chartData.push({
+					// date: data[i][1].date,
+					// visits: data[i][0].count
+					category: agentSatisfactionSurvey[i].user_id,
+					excellent: agentSatisfactionSurvey[i].count,
+					veryGood: 55,
+					good: 60,
+					poor: 20,
+					veryPoor: 35
+				});
+			}
+			return chartData;
+		}
+
+		// chart.data = [
+		// 	{
+		// 		category: 'Agent #1',
+		// 		first: 40,
+		// 		second: 55,
+		// 		third: 60,
+		// 		fourth: 20,
+		// 		fifth: 35
+		// 	},
+		// 	{
+		// 		category: 'Agent #2',
+		// 		first: 30,
+		// 		second: 78,
+		// 		third: 69,
+		// 		fourth: 20,
+		// 		fifth: 35
+		// 	},
+		// 	{
+		// 		category: 'Agent #3',
+		// 		first: 27,
+		// 		second: 40,
+		// 		third: 45,
+		// 		fourth: 20,
+		// 		fifth: 35
+		// 	},
+		// 	{
+		// 		category: 'Agent #4',
+		// 		first: 50,
+		// 		second: 33,
+		// 		third: 22,
+		// 		fourth: 20,
+		// 		fifth: 35
+		// 	}
+		// ];
+
+		createSeries('excellent', 'Excellent');
+		createSeries('veryGood', 'Very Good');
+		createSeries('good', 'Good');
+		createSeries('poor', 'Poor');
+		createSeries('veryPoor', 'Very Poor');
 
 		function arrangeColumns() {
 			let series = chart.series.getIndex(0);
