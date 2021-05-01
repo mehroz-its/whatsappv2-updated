@@ -120,6 +120,7 @@ function DashboardApp(props) {
 	const [radarList, setRadarList] = useState([]);
 	const [tabValue, setTabValue] = useState(0);
 	const [agents, setAgents] = useState([]);
+	const [chatCounts, setChatCounts] = useState([]);
 	const dataSourceOptions = {
 		params: {
 			columns: '*',
@@ -171,6 +172,22 @@ function DashboardApp(props) {
 			_response => {
 				console.log(_response, 'ressssssssssssssssssss');
 				setAgents(_response.data.data.agents.data);
+			},
+			error => {}
+		);
+
+		CoreHttpHandler.request(
+			'chatsCount',
+			'conversation',
+			{
+				columns: 'USR.id, USR.username',
+				role: 64,
+				displayed: true,
+				enabled: true
+			},
+			_response => {
+				console.log(_response, 'chatCountssss');
+				setChatCounts(_response.data.data.conversations);
 			},
 			error => {}
 		);
@@ -340,8 +357,8 @@ function DashboardApp(props) {
 	let offlineAgents = agents.filter(el => {
 		return el.active == false;
 	});
-	console.log(onlineAgents.length, 'trueeeeValuesss');
-	console.log(offlineAgents.length, 'falseValuesssssss');
+	// console.log(onlineAgents.length, 'trueeeeValuesss');
+	// console.log(offlineAgents.length, 'falseValuesssssss');
 
 	const agentData = [
 		{
@@ -357,6 +374,23 @@ function DashboardApp(props) {
 			totalAgent: offlineAgents.length
 		}
 	];
+
+	const chatsData = [
+		{
+			title: 'Total Chats',
+			chats: chatCounts[0]?.total
+		},
+		{
+			title: 'Resolved Chat',
+			chats: chatCounts[0]?.resolved
+		},
+		{
+			title: 'Pending Chats',
+			chats: chatCounts[0]?.pending
+		}
+	];
+
+	console.log(chatCounts, 'countsChaaa');
 
 	return (
 		<FusePageSimple
@@ -425,6 +459,32 @@ function DashboardApp(props) {
 													<Grid item md={4} sm={12} xs={12}>
 														<AgentWidgets
 															agents={value.totalAgent}
+															title={value.title}
+															// bottom_title={`${value.subtitle} ${value.title}`}
+														/>
+													</Grid>
+												);
+											})}
+										</Grid>
+										<Grid container spacing={1}>
+											{agentData.map((value, index) => {
+												return (
+													<Grid item md={4} sm={12} xs={12}>
+														<AgentWidgets
+															agents={value.totalAgent}
+															title={value.title}
+															// bottom_title={`${value.subtitle} ${value.title}`}
+														/>
+													</Grid>
+												);
+											})}
+										</Grid>
+										<Grid container spacing={1}>
+											{chatsData.map((value, index) => {
+												return (
+													<Grid item md={4} sm={12} xs={12}>
+														<AgentWidgets
+															agents={value.chats}
 															title={value.title}
 															// bottom_title={`${value.subtitle} ${value.title}`}
 														/>

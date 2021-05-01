@@ -23,6 +23,7 @@ import CompanyStats from './onBoarding/companyStats';
 import CompanyAgent from './onBoarding/companyAgent';
 import Otp from './otp';
 import surveyReport from './surveyReport/index';
+import counts from './chatCounts';
 
 class ApiResolver {
 	constructor() {
@@ -51,7 +52,8 @@ class ApiResolver {
 			reports: Reports.apis(),
 			profile: ProfileApis.apis(),
 			locations: LocationApis.apis(),
-			surveyReport: surveyReport.apis()
+			surveyReport: surveyReport.apis(),
+			chatsCount: counts.apis()
 		};
 	}
 

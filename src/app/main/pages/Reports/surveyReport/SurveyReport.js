@@ -270,7 +270,7 @@ function SurveyReport() {
 						</Snackbar> */}
 
 						<Grid container spacing={1} style={{ paddingLeft: 12, paddingRight: 12 }}>
-							<Grid item md={6} sm={12} xs={12}>
+							{/* <Grid item md={6} sm={12} xs={12}>
 								<Grid container spacing={1}>
 									{satisfactionSurvey?.map((value, index) => {
 										console.log('eeeeeeeeeeeeeeeeeeeeeee', value);
@@ -288,8 +288,8 @@ function SurveyReport() {
 										);
 									})}
 								</Grid>
-							</Grid>
-							<Grid item xs={12} md={6}>
+							</Grid> */}
+							<Grid item xs={12}>
 								<Paper className="w-full rounded-8 shadow-none border-1">
 									{/* <Typography variant="h6" className="header-card text-center pt-8">
 										Survery Report
