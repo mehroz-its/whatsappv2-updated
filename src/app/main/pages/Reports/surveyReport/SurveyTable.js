@@ -45,7 +45,7 @@ function SurveyTable(props) {
 	const startDate = moment(new Date());
 	let startDateMoment = moment(startDate).format('YYYY-MM-DD HH:mm:ss');
 	console.log('startDate', startDateMoment);
-	const { rowsPerPage, currentPage, setLimit, totalItems, setPage, isLoading } = props;
+	const { rowsPerPage, currentPage, setLimit, totalItems, setPage, isLoading, agentSatisfactionSurvey } = props;
 
 	const [deleteDialogData, setDeleteDialogData] = React.useState({});
 	const [deleteDialog, setDeleteDialog] = React.useState(false);
@@ -88,24 +88,24 @@ function SurveyTable(props) {
 	}
 	// let data2 = props.dataa;
 
-	let data2 = [
-		{
-			id: 1221,
-			wt_num: 29131321331,
-			short_code: 'dbsal3',
-			redeem: '',
-			created_date: '223420-2942-22',
-			expires: ''
-		},
-		{
-			id: 12222,
-			wt_num: 29131321333232,
-			short_code: 'dbs223dd',
-			redeem: '',
-			created_date: '223420-2942-22',
-			expires: ''
-		}
-	];
+	// let satisfactionSurvey = [
+	// 	{
+	// 		id: 1221,
+	// 		wt_num: 29131321331,
+	// 		short_code: 'dbsal3',
+	// 		redeem: '',
+	// 		created_date: '223420-2942-22',
+	// 		expires: ''
+	// 	},
+	// 	{
+	// 		id: 12222,
+	// 		wt_num: 29131321333232,
+	// 		short_code: 'dbs223dd',
+	// 		redeem: '',
+	// 		created_date: '223420-2942-22',
+	// 		expires: ''
+	// 	}
+	// ];
 
 	const handleChangePage = (event, newPage) => {
 		setPage(newPage);
@@ -142,7 +142,7 @@ function SurveyTable(props) {
 				<FuseLoading />
 			</div>
 		);
-	} else if (data2.length === 0) {
+	} else if (agentSatisfactionSurvey.length === 0) {
 		return (
 			<div className="flex flex-1 items-center justify-center h-full">
 				<Typography color="textSecondary" variant="h5">
@@ -160,12 +160,12 @@ function SurveyTable(props) {
 							order={order}
 							// onSelectAllClick={handleSelectAllClick}
 							onRequestSort={handleRequestSort}
-							rowCount={data2.length}
+							rowCount={agentSatisfactionSurvey.length}
 						/>
 
 						<TableBody>
 							{_.orderBy(
-								data2,
+								agentSatisfactionSurvey,
 								[
 									o => {
 										switch (order.id) {
@@ -180,6 +180,7 @@ function SurveyTable(props) {
 								],
 								[order.direction]
 							).map(n => {
+								console.log(n, "nnnnnnnnnnnnnn");
 								const isSelected = selected.indexOf(n.id) !== -1;
 								let duration = moment.duration(startDate.diff(n.dt));
 								let asMilliseconds = duration.asMilliseconds();
@@ -200,7 +201,7 @@ function SurveyTable(props) {
 											align="center"
 											style={{ fontSize: '12px', padding: '10px' }}
 										>
-											{n.id}
+											{n.user_id ? n.user_id : 0}
 										</TableCell>
 										<TableCell
 											component="th"
@@ -208,7 +209,7 @@ function SurveyTable(props) {
 											align="center"
 											style={{ fontSize: '12px', padding: '10px' }}
 										>
-											{n.wt_num}
+											{n.agent_name ? n.agent_name : 'Agent Name'}
 										</TableCell>
 										<TableCell
 											component="th"
@@ -216,9 +217,49 @@ function SurveyTable(props) {
 											align="center"
 											style={{ fontSize: '12px', padding: '10px' }}
 										>
-											{n.short_code}
+											{n.response === "5" ? n.count : 0}
 										</TableCell>
 										<TableCell
+											component="th"
+											scope="row"
+											align="center"
+											style={{ fontSize: '12px', padding: '10px' }}
+										>
+											{n.response === "4" ? n.count : 0}
+										</TableCell>
+										<TableCell
+											component="th"
+											scope="row"
+											align="center"
+											style={{ fontSize: '12px', padding: '10px' }}
+										>
+											{n.response === "3" ? n.count : 0}
+										</TableCell>
+										<TableCell
+											component="th"
+											scope="row"
+											align="center"
+											style={{ fontSize: '12px', padding: '10px' }}
+										>
+											{n.response === "2" ? n.count : 0}
+										</TableCell>
+										<TableCell
+											component="th"
+											scope="row"
+											align="center"
+											style={{ fontSize: '12px', padding: '10px' }}
+										>
+											{n.response === "1" ? n.count : 0}
+										</TableCell>
+										<TableCell
+											component="th"
+											scope="row"
+											align="center"
+											style={{ fontSize: '12px', padding: '10px' }}
+										>
+											{n.response === "other" ? n.count : 0}
+										</TableCell>
+										{/* <TableCell
 											component="th"
 											scope="row"
 											align="center"
@@ -240,16 +281,16 @@ function SurveyTable(props) {
 											) : (
 												<Icon className="text-red text-16">cancel</Icon>
 											)}
-										</TableCell>
-										<TableCell
+										</TableCell> */}
+										{/* <TableCell
 											component="th"
 											scope="row"
 											align="center"
 											style={{ fontSize: '12px', padding: '10px' }}
 										>
 											{moment(n.dt).format('YYYY-MM-DD HH:mm:ss')}
-										</TableCell>
-										<TableCell
+										</TableCell> */}
+										{/* <TableCell
 											component="th"
 											scope="row"
 											align="center"
@@ -260,7 +301,7 @@ function SurveyTable(props) {
 											) : (
 												<Icon className="text-green text-16">check_circle</Icon>
 											)}
-										</TableCell>
+										</TableCell> */}
 										{/* <TableCell className="w-64 text-center" padding="none">
 											{
 												n.enabled?
@@ -288,7 +329,7 @@ function SurveyTable(props) {
 						className="overflow-hidden"
 						component="div"
 						rowsPerPageOptions={[10, 25, 50, { label: 'All', value: totalItems }]}
-						count={totalItems}
+						count={agentSatisfactionSurvey.length}
 						rowsPerPage={rowsPerPage}
 						page={currentPage}
 						onChangePage={handleChangePage}

@@ -16,7 +16,8 @@ const SurveyAgentChart = ({ agentSatisfactionSurvey, chartTitle }) => {
 		chart.legend.labels.template.maxWidth = 95;
 
 		let xAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-		xAxis.dataFields.category = 'category';
+		// xAxis.dataFields.category = 'category';
+		xAxis.dataFields.category = 'user_id';
 		xAxis.renderer.cellStartLocation = 0.1;
 		xAxis.renderer.cellEndLocation = 0.9;
 		xAxis.renderer.grid.template.location = 0;
@@ -25,9 +26,11 @@ const SurveyAgentChart = ({ agentSatisfactionSurvey, chartTitle }) => {
 		yAxis.min = 0;
 
 		function createSeries(value, name) {
+			console.log(value, "valueeeeeee", name, "nameeeeeeeeeeeeee");
 			let series = chart.series.push(new am4charts.ColumnSeries());
 			series.dataFields.valueY = value;
-			series.dataFields.categoryX = 'category';
+			// series.dataFields.categoryX = 'category';
+			series.dataFields.categoryX = 'user_id';
 			series.name = name;
 
 			series.events.on('hidden', arrangeColumns);
@@ -51,13 +54,14 @@ const SurveyAgentChart = ({ agentSatisfactionSurvey, chartTitle }) => {
 				chartData.push({
 					// date: data[i][1].date,
 					// visits: data[i][0].count
-					category: agentSatisfactionSurvey[i].user_id,
+					user_id: agentSatisfactionSurvey[i].user_id,
 					excellent: agentSatisfactionSurvey[i].count,
 					veryGood: 55,
 					good: 60,
 					poor: 20,
 					veryPoor: 35
 				});
+				console.log(chartData, "chrrsfasdasfsaf");
 			}
 			return chartData;
 		}
@@ -102,6 +106,12 @@ const SurveyAgentChart = ({ agentSatisfactionSurvey, chartTitle }) => {
 		createSeries('good', 'Good');
 		createSeries('poor', 'Poor');
 		createSeries('veryPoor', 'Very Poor');
+
+		// createSeries('Agent#1', 'Agent#1');
+		// createSeries('Agent#2', 'Agent#2');
+		// createSeries('Agent#3', 'Agent#3');
+		// createSeries('Agent#4', 'Agent#4');
+		// // createSeries('veryPoor', 'Very Poor');
 
 		function arrangeColumns() {
 			let series = chart.series.getIndex(0);

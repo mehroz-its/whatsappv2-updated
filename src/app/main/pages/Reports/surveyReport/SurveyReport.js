@@ -19,6 +19,7 @@ import SurveyAgentChart from './SurveyAgentChart';
 import { Grid, Paper } from '@material-ui/core';
 import SurveyTableSearch from './SurveyTableSearch';
 import SurveyWidgets2 from './Widgets/SurveyWidgets2';
+import SatisfactionChart from './SatisfactionChart';
 
 const useStyles = makeStyles(theme => ({
 	layoutRoot: {},
@@ -300,6 +301,8 @@ function SurveyReport() {
 									/>
 								</Paper>
 							</Grid>
+
+							<SatisfactionChart satisfactionSurvey={satisfactionSurvey} />
 						</Grid>
 
 						<FusePageSimple
@@ -315,7 +318,7 @@ function SurveyReport() {
 							content={
 								<>
 									{/* <SurveyTable data={data2} val={val} /> */}
-									<SurveyTable />
+									<SurveyTable agentSatisfactionSurvey={agentSatisfactionSurvey} />
 								</>
 							}
 						/>

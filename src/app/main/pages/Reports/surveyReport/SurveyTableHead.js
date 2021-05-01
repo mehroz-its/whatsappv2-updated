@@ -24,40 +24,54 @@ const rows = [
 		sort: true
 	},
 	{
-		id: 'wt_num',
+		id: 'agentName',
+		align: 'center',
+		disablePadding: false,
+		label: 'Agent Name',
+		sort: true
+	},
+	{
+		id: 'excellent',
 		align: 'center',
 		disablePadding: false,
 		label: 'Excellent',
 		sort: true
 	},
 	{
-		id: 'short_code',
+		id: 'vGood',
 		align: 'center',
 		disablePadding: false,
 		label: 'Very Good',
 		sort: true
 	},
 	{
-		id: 'redeem',
+		id: 'good',
 		align: 'center',
 		disablePadding: false,
 		label: 'Good',
 		sort: true
 	},
 	{
-		id: 'dt',
+		id: 'poor',
 		align: 'center',
 		disablePadding: false,
 		label: 'Poor',
 		sort: true
 	},
 	{
-		id: 'expires',
+		id: 'vPoor',
 		align: 'center',
 		disablePadding: false,
 		label: 'Very Poor',
 		sort: true
-	}
+	},
+	{
+		id: 'other',
+		align: 'center',
+		disablePadding: false,
+		label: 'Other',
+		sort: true
+	},
 	// {
 	// 	id: 'delete',
 	// 	align: 'center',
