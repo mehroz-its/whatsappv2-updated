@@ -43,9 +43,11 @@ function SurveyTable(props) {
 	const [open, setOpen] = React.useState(false);
 	const [selected, setSelected] = useState([]);
 	const startDate = moment(new Date());
+	const [rowsPerPage, setRowsPerPage] = useState(10);
+	const [page, setPage] = useState(0);
 	let startDateMoment = moment(startDate).format('YYYY-MM-DD HH:mm:ss');
 	console.log('startDate', startDateMoment);
-	const { rowsPerPage, currentPage, setLimit, totalItems, setPage, isLoading, agentSatisfactionSurvey } = props;
+	const { setLimit, totalItems, isLoading, agentSatisfactionSurvey } = props;
 
 	const [deleteDialogData, setDeleteDialogData] = React.useState({});
 	const [deleteDialog, setDeleteDialog] = React.useState(false);
@@ -112,7 +114,7 @@ function SurveyTable(props) {
 	};
 
 	const handleChangeRowsPerPage = event => {
-		setLimit(Number(event.target.value));
+		setRowsPerPage(Number(event.target.value));
 	};
 
 	const hadleDelete = (event, n) => {
@@ -136,130 +138,143 @@ function SurveyTable(props) {
 		);
 	};
 
-	if (isLoading) {
-		return (
-			<div className="flex flex-1 items-center justify-center h-full">
-				<FuseLoading />
-			</div>
-		);
-	} else if (agentSatisfactionSurvey.length === 0) {
-		return (
-			<div className="flex flex-1 items-center justify-center h-full">
-				<Typography color="textSecondary" variant="h5">
-					No Data Found
-				</Typography>
-			</div>
-		);
-	} else {
-		return (
-			<div className="w-full flex flex-col">
-				<FuseScrollbars className="flex-grow overflow-x-auto">
-					<Table className="min-w-xl" aria-labelledby="tableTitle">
-						<SurveyTableHead
-							numSelected={selected.length}
-							order={order}
-							// onSelectAllClick={handleSelectAllClick}
-							onRequestSort={handleRequestSort}
-							rowCount={agentSatisfactionSurvey.length}
-						/>
+	if (agentSatisfactionSurvey.length === 0) {
+		if (props.val !== '') {
+			return (
+				<div
+					style={{ alignItems: 'flex-end', flex: 1, marginTop: '30%' }}
+					className="flex flex-1 items-center justify-center h-full"
+				>
+					<Typography color="textSecondary" variant="h5">
+						No Data Found
+					</Typography>
+				</div>
+			);
+		} else {
+			return (
+				<div
+					style={{ alignItems: 'flex-end', flex: 1, marginTop: '30%' }}
+					className="flex flex-1 items-center justify-center h-full"
+				>
+					<FuseLoading />
+				</div>
+			);
+		}
+	}
+	return (
+		<>
+			{agentSatisfactionSurvey.filter(item => {
+				console.log(item, 'itemmmmmmmmmm');
+				return item.user_id.toLowerCase().includes(props.val.toLowerCase());
+			}).length ? (
+				<div className="w-full flex flex-col">
+					<FuseScrollbars className="flex-grow overflow-x-auto">
+						<Table className="min-w-xl" aria-labelledby="tableTitle">
+							<SurveyTableHead
+								numSelected={selected.length}
+								order={order}
+								// onSelectAllClick={handleSelectAllClick}
+								onRequestSort={handleRequestSort}
+								rowCount={agentSatisfactionSurvey.length}
+							/>
 
-						<TableBody>
-							{_.orderBy(
-								agentSatisfactionSurvey,
-								[
-									o => {
-										switch (order.id) {
-											case 'categories': {
-												return o.categories[0];
-											}
-											default: {
-												return o[order.id];
+							<TableBody>
+								{_.orderBy(
+									agentSatisfactionSurvey,
+									[
+										o => {
+											switch (order.id) {
+												case 'categories': {
+													return o.categories[0];
+												}
+												default: {
+													return o[order.id];
+												}
 											}
 										}
-									}
-								],
-								[order.direction]
-							).map(n => {
-								console.log(n, "nnnnnnnnnnnnnn");
-								const isSelected = selected.indexOf(n.id) !== -1;
-								let duration = moment.duration(startDate.diff(n.dt));
-								let asMilliseconds = duration.asMilliseconds();
-								return (
-									<TableRow
-										className="h-10 cursor-pointer"
-										hover
-										role="checkbox"
-										aria-checked={isSelected}
-										tabIndex={-1}
-										key={n.id}
-										selected={isSelected}
-										// onClick={event => handleClick(n)}
-									>
-										<TableCell
-											component="th"
-											scope="row"
-											align="center"
-											style={{ fontSize: '12px', padding: '10px' }}
+									],
+									[order.direction]
+								).map(n => {
+									console.log(n, 'nnnnnnnnnnnnnn');
+									const isSelected = selected.indexOf(n.id) !== -1;
+									let duration = moment.duration(startDate.diff(n.dt));
+									let asMilliseconds = duration.asMilliseconds();
+									return (
+										<TableRow
+											className="h-10 cursor-pointer"
+											hover
+											role="checkbox"
+											aria-checked={isSelected}
+											tabIndex={-1}
+											key={n.id}
+											selected={isSelected}
+											// onClick={event => handleClick(n)}
 										>
-											{n.user_id ? n.user_id : 0}
-										</TableCell>
-										<TableCell
-											component="th"
-											scope="row"
-											align="center"
-											style={{ fontSize: '12px', padding: '10px' }}
-										>
-											{n.agent_name ? n.agent_name : 'Agent Name'}
-										</TableCell>
-										<TableCell
-											component="th"
-											scope="row"
-											align="center"
-											style={{ fontSize: '12px', padding: '10px' }}
-										>
-											{n.response === "5" ? n.count : 0}
-										</TableCell>
-										<TableCell
-											component="th"
-											scope="row"
-											align="center"
-											style={{ fontSize: '12px', padding: '10px' }}
-										>
-											{n.response === "4" ? n.count : 0}
-										</TableCell>
-										<TableCell
-											component="th"
-											scope="row"
-											align="center"
-											style={{ fontSize: '12px', padding: '10px' }}
-										>
-											{n.response === "3" ? n.count : 0}
-										</TableCell>
-										<TableCell
-											component="th"
-											scope="row"
-											align="center"
-											style={{ fontSize: '12px', padding: '10px' }}
-										>
-											{n.response === "2" ? n.count : 0}
-										</TableCell>
-										<TableCell
-											component="th"
-											scope="row"
-											align="center"
-											style={{ fontSize: '12px', padding: '10px' }}
-										>
-											{n.response === "1" ? n.count : 0}
-										</TableCell>
-										<TableCell
-											component="th"
-											scope="row"
-											align="center"
-											style={{ fontSize: '12px', padding: '10px' }}
-										>
-											{n.response === "other" ? n.count : 0}
-										</TableCell>
-										{/* <TableCell
+											<TableCell
+												component="th"
+												scope="row"
+												align="center"
+												style={{ fontSize: '12px', padding: '10px' }}
+											>
+												{n.user_id ? n.user_id : 0}
+											</TableCell>
+											<TableCell
+												component="th"
+												scope="row"
+												align="center"
+												style={{ fontSize: '12px', padding: '10px' }}
+											>
+												{n.agent_name ? n.agent_name : 'Agent Name'}
+											</TableCell>
+											<TableCell
+												component="th"
+												scope="row"
+												align="center"
+												style={{ fontSize: '12px', padding: '10px' }}
+											>
+												{n.response === '5' ? n.count : 0}
+											</TableCell>
+											<TableCell
+												component="th"
+												scope="row"
+												align="center"
+												style={{ fontSize: '12px', padding: '10px' }}
+											>
+												{n.response === '4' ? n.count : 0}
+											</TableCell>
+											<TableCell
+												component="th"
+												scope="row"
+												align="center"
+												style={{ fontSize: '12px', padding: '10px' }}
+											>
+												{n.response === '3' ? n.count : 0}
+											</TableCell>
+											<TableCell
+												component="th"
+												scope="row"
+												align="center"
+												style={{ fontSize: '12px', padding: '10px' }}
+											>
+												{n.response === '2' ? n.count : 0}
+											</TableCell>
+											<TableCell
+												component="th"
+												scope="row"
+												align="center"
+												style={{ fontSize: '12px', padding: '10px' }}
+											>
+												{n.response === '1' ? n.count : 0}
+											</TableCell>
+											<TableCell
+												component="th"
+												scope="row"
+												align="center"
+												style={{ fontSize: '12px', padding: '10px' }}
+											>
+												{n.response === 'other' ? n.count : 0}
+											</TableCell>
+											{/* <TableCell
 											component="th"
 											scope="row"
 											align="center"
@@ -282,7 +297,7 @@ function SurveyTable(props) {
 												<Icon className="text-red text-16">cancel</Icon>
 											)}
 										</TableCell> */}
-										{/* <TableCell
+											{/* <TableCell
 											component="th"
 											scope="row"
 											align="center"
@@ -290,7 +305,7 @@ function SurveyTable(props) {
 										>
 											{moment(n.dt).format('YYYY-MM-DD HH:mm:ss')}
 										</TableCell> */}
-										{/* <TableCell
+											{/* <TableCell
 											component="th"
 											scope="row"
 											align="center"
@@ -302,7 +317,7 @@ function SurveyTable(props) {
 												<Icon className="text-green text-16">check_circle</Icon>
 											)}
 										</TableCell> */}
-										{/* <TableCell className="w-64 text-center" padding="none">
+											{/* <TableCell className="w-64 text-center" padding="none">
 											{
 												n.enabled?
 														null
@@ -310,34 +325,34 @@ function SurveyTable(props) {
 														<Icon onClick={event => hadleDelete(event, n)} className="text-16">delete_outline</Icon>
 											}
 											</TableCell> */}
-									</TableRow>
-								);
-							})}
-						</TableBody>
-					</Table>
-				</FuseScrollbars>
-				<MuiThemeProvider theme={PaginationStyle}>
-					<TablePagination
-						style={{ fontSize: '12px' }}
-						classes={{
-							root: 'overflow-hidden',
-							spacer: 'w-0 max-w-0',
-							actions: 'text-64',
-							select: 'text-12 mt-4',
-							selectIcon: 'mt-4'
-						}}
-						className="overflow-hidden"
-						component="div"
-						rowsPerPageOptions={[10, 25, 50, { label: 'All', value: totalItems }]}
-						count={agentSatisfactionSurvey.length}
-						rowsPerPage={rowsPerPage}
-						page={currentPage}
-						onChangePage={handleChangePage}
-						onChangeRowsPerPage={handleChangeRowsPerPage}
-						ActionsComponent={ContactsTablePaginationActions}
-					/>
-				</MuiThemeProvider>
-				{/* {open ? (
+										</TableRow>
+									);
+								})}
+							</TableBody>
+						</Table>
+					</FuseScrollbars>
+					<MuiThemeProvider theme={PaginationStyle}>
+						<TablePagination
+							style={{ fontSize: '12px' }}
+							classes={{
+								root: 'overflow-hidden',
+								spacer: 'w-0 max-w-0',
+								actions: 'text-64',
+								select: 'text-12 mt-4',
+								selectIcon: 'mt-4'
+							}}
+							className="overflow-hidden"
+							component="div"
+							rowsPerPageOptions={[10, 25, 50, { label: 'All', value: totalItems }]}
+							count={agentSatisfactionSurvey.length}
+							rowsPerPage={rowsPerPage}
+							page={page}
+							onChangePage={handleChangePage}
+							onChangeRowsPerPage={handleChangeRowsPerPage}
+							ActionsComponent={ContactsTablePaginationActions}
+						/>
+					</MuiThemeProvider>
+					{/* {open ? (
 					<OptDialog
 						isOpen={open}
 						closeDialog={closeDialog}
@@ -356,9 +371,16 @@ function SurveyTable(props) {
 						data={deleteDialogData}
 					/>
 				)} */}
-			</div>
-		);
-	}
+				</div>
+			) : (
+				<div
+					style={{ display: 'flex', alignItems: 'center', alignContent: 'center', justifyContent: 'center' }}
+				>
+					<h1>Data Not Found</h1>
+				</div>
+			)}
+		</>
+	);
 }
 
 export default withRouter(SurveyTable);

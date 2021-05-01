@@ -16,6 +16,7 @@ const SurveyAgentChart = ({ agentSatisfactionSurvey, chartTitle }) => {
 		chart.legend.labels.template.maxWidth = 95;
 
 		let xAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+		console.log(xAxis.dataFields, "xxxxxxxxxxxxxx");
 		// xAxis.dataFields.category = 'category';
 		xAxis.dataFields.category = 'user_id';
 		xAxis.renderer.cellStartLocation = 0.1;
@@ -24,26 +25,6 @@ const SurveyAgentChart = ({ agentSatisfactionSurvey, chartTitle }) => {
 
 		let yAxis = chart.yAxes.push(new am4charts.ValueAxis());
 		yAxis.min = 0;
-
-		function createSeries(value, name) {
-			console.log(value, "valueeeeeee", name, "nameeeeeeeeeeeeee");
-			let series = chart.series.push(new am4charts.ColumnSeries());
-			series.dataFields.valueY = value;
-			// series.dataFields.categoryX = 'category';
-			series.dataFields.categoryX = 'user_id';
-			series.name = name;
-
-			series.events.on('hidden', arrangeColumns);
-			series.events.on('shown', arrangeColumns);
-
-			let bullet = series.bullets.push(new am4charts.LabelBullet());
-			bullet.interactionsEnabled = false;
-			bullet.dy = 30;
-			bullet.label.text = '{valueY}';
-			bullet.label.fill = am4core.color('#ffffff');
-
-			return series;
-		}
 
 		chart.data = generateChartData();
 
@@ -61,9 +42,29 @@ const SurveyAgentChart = ({ agentSatisfactionSurvey, chartTitle }) => {
 					poor: 20,
 					veryPoor: 35
 				});
-				console.log(chartData, "chrrsfasdasfsaf");
+				console.log(chartData, 'chrrsfasdasfsaf');
 			}
 			return chartData;
+		}
+
+		function createSeries(value, name) {
+			console.log(value, 'valueeeeeee', name, 'nameeeeeeeeeeeeee');
+			let series = chart.series.push(new am4charts.ColumnSeries());
+			series.dataFields.valueY = value;
+			// series.dataFields.categoryX = 'category';
+			series.dataFields.categoryX = 'user_id';
+			series.name = name;
+
+			series.events.on('hidden', arrangeColumns);
+			series.events.on('shown', arrangeColumns);
+
+			let bullet = series.bullets.push(new am4charts.LabelBullet());
+			bullet.interactionsEnabled = false;
+			bullet.dy = 30;
+			bullet.label.text = '{valueY}';
+			bullet.label.fill = am4core.color('#ffffff');
+
+			return series;
 		}
 
 		// chart.data = [

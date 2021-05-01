@@ -11,18 +11,20 @@ am4core.useTheme(am4themes_animated);
 
 const SatisfactionReport = props => {
 	useLayoutEffect(() => {
-		// console.log('list ', list);
+		console.log('satadffafdaf ', props.satisfactionSurvey);
 
 		am4core.useTheme(am4themes_material);
 		am4core.useTheme(am4themes_animated);
 		let myEle = document.getElementById('chartdivv');
 		let chart = am4core.create('chartdivv', am4charts.PieChart);
+
 		chart.data = props.satisfactionSurvey;
+		console.log(chart.data, "charttDaaaa");
 		if (myEle) {
 			// Add and configure Series
 			let pieSeries = chart.series.push(new am4charts.PieSeries());
-			pieSeries.dataFields.value = 'value';
-			pieSeries.dataFields.category = 'category';
+			pieSeries.dataFields.value = 'count';
+			pieSeries.dataFields.category = 'response';
 			pieSeries.slices.template.stroke = am4core.color('#fff');
 			pieSeries.slices.template.strokeOpacity = 1;
 

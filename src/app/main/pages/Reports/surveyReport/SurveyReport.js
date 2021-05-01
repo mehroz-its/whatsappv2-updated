@@ -54,6 +54,7 @@ const boxData = [
 
 var Start = '';
 var End = '';
+
 function SurveyReport() {
 	const classes = useStyles();
 	const pageLayout = useRef(null);
@@ -73,27 +74,27 @@ function SurveyReport() {
 	const [data2, setData2] = React.useState([]);
 	const [chartdata, setchartdata] = React.useState(null);
 	const csvLinkK = useRef(); // setup the ref that we'll use for the hidden CsvLink click once we've updated the data
-	const [state, setState] = React.useState({
-		columns: [
-			{ title: 'Number', field: 'number' },
-			{ title: 'Incoming DateTime', field: 'incoming' },
-			{ title: 'Outgoing DateTime', field: 'outgoing' },
-			{ title: 'Incoming Messages Count', field: 'incoming_count' },
-			{ title: 'Outgoing Messages Count', field: 'outgoing_count' }
-		]
-	});
-	const [tableData, setTableData] = React.useState([]);
-	let data = [];
-	tableData.map((i, val) => {
-		let filtered = {
-			incoming: new Date(i.incoming).toISOString(),
-			outgoing: new Date(i.outgoing).toISOString(),
-			incoming_count: i.incoming_count,
-			outgoing_count: i.outgoing_count,
-			number: i.number
-		};
-		data.push(filtered);
-	});
+	// const [state, setState] = React.useState({
+	// 	columns: [
+	// 		{ title: 'Number', field: 'number' },
+	// 		{ title: 'Incoming DateTime', field: 'incoming' },
+	// 		{ title: 'Outgoing DateTime', field: 'outgoing' },
+	// 		{ title: 'Incoming Messages Count', field: 'incoming_count' },
+	// 		{ title: 'Outgoing Messages Count', field: 'outgoing_count' }
+	// 	]
+	// });
+	// const [tableData, setTableData] = React.useState([]);
+	// let data = [];
+	// tableData.map((i, val) => {
+	// 	let filtered = {
+	// 		incoming: new Date(i.incoming).toISOString(),
+	// 		outgoing: new Date(i.outgoing).toISOString(),
+	// 		incoming_count: i.incoming_count,
+	// 		outgoing_count: i.outgoing_count,
+	// 		number: i.number
+	// 	};
+	// 	data.push(filtered);
+	// });
 
 	const getData = loadData => {
 		setisLoading(true);
@@ -172,6 +173,12 @@ function SurveyReport() {
 		setOpen(!open);
 		alert(open);
 	};
+
+	const searchContact = value => {
+		setVal(value);
+		// setData2(data.filter(n => n.number.toLowerCase().includes(value.toLowerCase())))
+	};
+
 	const handleOnDateChange = (startDate, endDate) => {
 		setdateRange(startDate, endDate);
 	};
@@ -247,7 +254,7 @@ function SurveyReport() {
 							Export
 						</Button>
 						<CSVLink
-							data={data2}
+							data={agentSatisfactionSurvey}
 							filename={`chat_${name}.csv`}
 							className="hidden"
 							ref={csvLinkK}
@@ -314,11 +321,11 @@ function SurveyReport() {
 								wrapper: 'min-h-0'
 							}}
 							// header={<SurveyTableSearch SearchVal="" SearchVal={searchContact}  />}
-							header={<SurveyTableSearch SearchVal="" />}
+							header={<SurveyTableSearch SearchVal={searchContact} />}
 							content={
 								<>
 									{/* <SurveyTable data={data2} val={val} /> */}
-									<SurveyTable agentSatisfactionSurvey={agentSatisfactionSurvey} />
+									<SurveyTable agentSatisfactionSurvey={agentSatisfactionSurvey} val={val} />
 								</>
 							}
 						/>
