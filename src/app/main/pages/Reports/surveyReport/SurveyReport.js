@@ -119,6 +119,26 @@ function SurveyReport() {
 		};
 		loadData().then(res => {
 			console.log(res, 'dataaaaaaaaaaaa');
+			let tempArr = [];
+			res.data.data.survey.agent_satisfaction.map((res, ind) => {
+				// if (tempArr.length == 0) {
+				// tempArr.push({});
+				// }
+				let index = tempArr.findIndex(x => x.user_id == res.user_id);
+				let indxxxx = tempArr.findIndex(x => console.log(x, 'xxxxxxxxxxxxxxxx'));
+				console.log(index, 'INDASDSDSADSDAD');
+				if (index != -1) {
+					// tempArr[index].push(res);
+					let data = [tempArr[index]];
+					console.log(data, 'DAAAAAAAAAAAAAAAAAA');
+					data = [...data, res];
+					console.log(data, 'DAAAAAAAAAAAAAAAAAA_NEXTTTTTTTTTT');
+					tempArr[index] = data;
+				} else {
+					tempArr.push(res);
+				}
+				console.log(tempArr, 'TEMP_ARRRRRRRRRRRRRR');
+			});
 			// setAgentSatisfactionSurvey(res?.data?.data?.survey?.agent_satisfaction);
 			// setSatisfactionSurvey(res.data?.data?.survey?.satisfaction);
 			// let tempArr = [];
@@ -136,7 +156,7 @@ function SurveyReport() {
 			// 		}
 			// 	});
 			// });
-			// console.log(tempArr, 'tFempArrtempArrtempArr');
+			console.log(tempArr, 'tFempArrtempArrtempArr');
 
 			// let dataagain = Object.values(data);
 			// let finaldata = dataagain[1].report.finalbox[0].conversations;
