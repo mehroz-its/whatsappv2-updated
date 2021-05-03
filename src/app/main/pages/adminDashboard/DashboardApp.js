@@ -467,19 +467,6 @@ function DashboardApp(props) {
 											})}
 										</Grid>
 										<Grid container spacing={1}>
-											{agentData.map((value, index) => {
-												return (
-													<Grid item md={4} sm={12} xs={12}>
-														<AgentWidgets
-															agents={value.totalAgent}
-															title={value.title}
-															// bottom_title={`${value.subtitle} ${value.title}`}
-														/>
-													</Grid>
-												);
-											})}
-										</Grid>
-										<Grid container spacing={1}>
 											{chatsData.map((value, index) => {
 												return (
 													<Grid item md={4} sm={12} xs={12}>

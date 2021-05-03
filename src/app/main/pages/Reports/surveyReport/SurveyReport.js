@@ -119,8 +119,25 @@ function SurveyReport() {
 		};
 		loadData().then(res => {
 			console.log(res, 'dataaaaaaaaaaaa');
-			setAgentSatisfactionSurvey(res?.data?.data?.survey?.agent_satisfaction);
-			setSatisfactionSurvey(res.data?.data?.survey?.satisfaction);
+			// setAgentSatisfactionSurvey(res?.data?.data?.survey?.agent_satisfaction);
+			// setSatisfactionSurvey(res.data?.data?.survey?.satisfaction);
+			// let tempArr = [];
+			// let tempArr = res.data.data.survey.agent_satisfaction.map((res, index) => {
+			// 	// for (let i = 0; i < res.data.data.survey.agent_satisfaction.length; i++){
+			// 	// 	console.log(res[i],"RESSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+			// 	// }
+			// 	// return { user_id: res.user_id, response: res.response, count: res.count };
+			// 	tempArr.map((response, index) => {
+			// 		// console.log(response, 'tempressss');
+			// 		if (response.user_id != res.user_id) {
+			// 			tempArr.push(res);
+			// 		} else {
+			// 			// alert('Else');
+			// 		}
+			// 	});
+			// });
+			// console.log(tempArr, 'tFempArrtempArrtempArr');
+
 			// let dataagain = Object.values(data);
 			// let finaldata = dataagain[1].report.finalbox[0].conversations;
 			// let finaldata2 = dataagain[1].report.finalbox[0].engagements;

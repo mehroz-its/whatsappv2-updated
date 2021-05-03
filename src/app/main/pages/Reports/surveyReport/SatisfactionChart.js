@@ -9,20 +9,43 @@ import Grid from '@material-ui/core/Grid';
 am4core.useTheme(am4themes_material);
 am4core.useTheme(am4themes_animated);
 
-const SatisfactionReport = props => {
+const SatisfactionReport = ({ satisfactionSurvey }) => {
 	useLayoutEffect(() => {
-		console.log('satadffafdaf ', props.satisfactionSurvey);
+		console.log('satadffafdaf ', satisfactionSurvey);
 
 		am4core.useTheme(am4themes_material);
 		am4core.useTheme(am4themes_animated);
 		let myEle = document.getElementById('chartdivv');
 		let chart = am4core.create('chartdivv', am4charts.PieChart);
 
-		chart.data = props.satisfactionSurvey;
-		console.log(chart.data, "charttDaaaa");
+		chart.data = satisfactionSurvey;
+		// chart.data = generateChartData();
+
+		// function generateChartData() {
+		// 	console.log(satisfactionSurvey, 'chartDataaaaaaaaaaaa');
+		// 	let chartData = [];
+		// 	for (var i = 0; i < satisfactionSurvey.length; i++) {
+		// 		chartData.push({
+		// 			// date: data[i][1].date,
+		// 			// visits: data[i][0].count
+		// 			user_id: satisfactionSurvey[i].user_id,
+		// 			excellent: satisfactionSurvey[i].response === '5' ? satisfactionSurvey[i].count : 0,
+		// 			veryGood: satisfactionSurvey[i].response === '4' ? satisfactionSurvey[i].count : 0,
+		// 			good: satisfactionSurvey[i].response === '3' ? satisfactionSurvey[i].count : 0,
+		// 			poor: satisfactionSurvey[i].response === '2' ? satisfactionSurvey[i].count : 0,
+		// 			veryPoor: satisfactionSurvey[i].response === '1' ? satisfactionSurvey[i].count : 0,
+		// 			other: satisfactionSurvey[i].response === 'other' ? satisfactionSurvey[i].count : 0
+		// 		});
+		// 		console.log(chartData, 'chrrsfasdasfsaf');
+		// 	}
+		// 	return chartData;
+		// }
+
 		if (myEle) {
 			// Add and configure Series
 			let pieSeries = chart.series.push(new am4charts.PieSeries());
+
+			console.log(pieSeries, 'pieeee');
 			pieSeries.dataFields.value = 'count';
 			pieSeries.dataFields.category = 'response';
 			pieSeries.slices.template.stroke = am4core.color('#fff');
