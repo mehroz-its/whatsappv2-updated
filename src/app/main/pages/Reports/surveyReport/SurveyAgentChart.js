@@ -16,7 +16,7 @@ const SurveyAgentChart = ({ agentSatisfactionSurvey, chartTitle }) => {
 		chart.legend.labels.template.maxWidth = 95;
 
 		let xAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-		console.log(xAxis.dataFields, "xxxxxxxxxxxxxx");
+		console.log(xAxis.dataFields, 'xxxxxxxxxxxxxx');
 		// xAxis.dataFields.category = 'category';
 		xAxis.dataFields.category = 'user_id';
 		xAxis.renderer.cellStartLocation = 0.1;
@@ -36,11 +36,12 @@ const SurveyAgentChart = ({ agentSatisfactionSurvey, chartTitle }) => {
 					// date: data[i][1].date,
 					// visits: data[i][0].count
 					user_id: agentSatisfactionSurvey[i].user_id,
-					excellent: agentSatisfactionSurvey[i].count,
-					veryGood: 55,
-					good: 60,
-					poor: 20,
-					veryPoor: 35
+					excellent: agentSatisfactionSurvey[i].response === '5' ? agentSatisfactionSurvey[i].count : 0,
+					veryGood: agentSatisfactionSurvey[i].response === '4' ? agentSatisfactionSurvey[i].count : 0,
+					good: agentSatisfactionSurvey[i].response === '3' ? agentSatisfactionSurvey[i].count : 0,
+					poor: agentSatisfactionSurvey[i].response === '2' ? agentSatisfactionSurvey[i].count : 0,
+					veryPoor: agentSatisfactionSurvey[i].response === '1' ? agentSatisfactionSurvey[i].count : 0,
+					other: agentSatisfactionSurvey[i].response === 'other' ? agentSatisfactionSurvey[i].count : 0
 				});
 				console.log(chartData, 'chrrsfasdasfsaf');
 			}
@@ -107,6 +108,7 @@ const SurveyAgentChart = ({ agentSatisfactionSurvey, chartTitle }) => {
 		createSeries('good', 'Good');
 		createSeries('poor', 'Poor');
 		createSeries('veryPoor', 'Very Poor');
+		createSeries('other', 'Other');
 
 		// createSeries('Agent#1', 'Agent#1');
 		// createSeries('Agent#2', 'Agent#2');
