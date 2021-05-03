@@ -121,9 +121,17 @@ function SurveyReport() {
 			console.log(res, 'dataaaaaaaaaaaa');
 			let tempArr = [];
 			res.data.data.survey.agent_satisfaction.map((res, ind) => {
-				// if (tempArr.length == 0) {
-				// tempArr.push({});
-				// }
+
+
+				// tempArr.map((result, index) => {
+				// 	if (res.user_id == result.user_id) {
+				// 		console.log(res, 'IFFFFFFFFFFF');
+				// 	} else {
+				// 		tempArr.push(res);
+				// 		console.log(res, 'IFFFFFFFFFFF');
+				// 	}
+				// });
+
 				let index = tempArr.findIndex(x => x.user_id == res.user_id);
 				let indxxxx = tempArr.findIndex(x => console.log(x, 'xxxxxxxxxxxxxxxx'));
 				console.log(index, 'INDASDSDSADSDAD');
@@ -138,7 +146,9 @@ function SurveyReport() {
 					tempArr.push(res);
 				}
 				console.log(tempArr, 'TEMP_ARRRRRRRRRRRRRR');
+				// setAgentSatisfactionSurvey()
 			});
+
 			// setAgentSatisfactionSurvey(res?.data?.data?.survey?.agent_satisfaction);
 			// setSatisfactionSurvey(res.data?.data?.survey?.satisfaction);
 			// let tempArr = [];
