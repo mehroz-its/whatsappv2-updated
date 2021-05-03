@@ -12,13 +12,33 @@ am4core.useTheme(am4themes_animated);
 const SatisfactionReport = ({ satisfactionSurvey }) => {
 	useLayoutEffect(() => {
 		console.log('satadffafdaf ', satisfactionSurvey);
+		let newOBJ = []
+		satisfactionSurvey.map(val => {
+			let label = val.response == 1 ? 'Very Poor' :
+				val.response == 2 ? 'Poor' :
+					val.response == 3 ? 'Good' :
+						val.response == 4 ? 'Very Good' :
+							val.response == 5 ? 'Excellent'
+								: val.response
+
+			newOBJ.push({ category: label, value: val.count, full: '100' }
+			)
+		})
+		const newMessageList = [
+			{ category: 'My-Locations', value: '0', full: '100' },
+			{ category: 'My-Contacts', value: '0', full: '100' },
+			{ category: 'My-Text', value: '0', full: '100' },
+			{ category: 'My-Audio', value: '0', full: '100' },
+			{ category: 'My-Photos', value: '0', full: '100' },
+			{ category: 'My-MYDocuments', value: '0', full: '100' }
+		];
 
 		am4core.useTheme(am4themes_material);
 		am4core.useTheme(am4themes_animated);
 		let myEle = document.getElementById('chartdivv');
 		let chart = am4core.create('chartdivv', am4charts.PieChart);
 
-		chart.data = satisfactionSurvey;
+		chart.data = newOBJ;
 		// chart.data = generateChartData();
 
 		// function generateChartData() {
@@ -46,8 +66,8 @@ const SatisfactionReport = ({ satisfactionSurvey }) => {
 			let pieSeries = chart.series.push(new am4charts.PieSeries());
 
 			console.log(pieSeries, 'pieeee');
-			pieSeries.dataFields.value = 'count';
-			pieSeries.dataFields.category = 'response';
+			pieSeries.dataFields.value = 'value';
+			pieSeries.dataFields.category = 'category';
 			pieSeries.slices.template.stroke = am4core.color('#fff');
 			pieSeries.slices.template.strokeOpacity = 1;
 

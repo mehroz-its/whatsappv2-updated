@@ -20,7 +20,7 @@ import WidgetNow from './widgets/WidgetNow';
 import WidgetWeather from './widgets/WidgetWeather';
 import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading';
 import AgentWidgets from './widgets/AgentWidgets';
-import { KeyboardReturn } from '@material-ui/icons';
+import { FormatListNumberedRtlOutlined, KeyboardReturn } from '@material-ui/icons';
 am4core.useTheme(am4themes_material);
 am4core.useTheme(am4themes_animated);
 const useStyles = makeStyles({
@@ -121,6 +121,8 @@ function DashboardApp(props) {
 	const [tabValue, setTabValue] = useState(0);
 	const [agents, setAgents] = useState([]);
 	const [chatCounts, setChatCounts] = useState([]);
+	let agentPermissions = JSON.parse(localStorage.getItem('user_acl'))
+	console.log(agentPermissions['FRONT:/all/stats'], 'agentPermissionsagentPermissions')
 	const dataSourceOptions = {
 		params: {
 			columns: '*',
@@ -173,7 +175,7 @@ function DashboardApp(props) {
 				console.log(_response, 'ressssssssssssssssssss');
 				setAgents(_response.data.data.agents.data);
 			},
-			error => {}
+			error => { }
 		);
 
 		CoreHttpHandler.request(
@@ -189,7 +191,7 @@ function DashboardApp(props) {
 				console.log(_response, 'chatCountssss');
 				setChatCounts(_response.data.data.conversations);
 			},
-			error => {}
+			error => { }
 		);
 
 		return () => {
@@ -219,7 +221,7 @@ function DashboardApp(props) {
 		campaign_report_chart(data);
 	};
 
-	const dataSourceFailuree = response => {};
+	const dataSourceFailuree = response => { };
 	const campaign_report_chart = dataa => {
 		let data = dataa;
 		let chart = am4core.create('chartdivcampaign', am4charts.XYChart);
@@ -287,14 +289,14 @@ function DashboardApp(props) {
 		setBox(list);
 	};
 
-	const dataSourceFailure = response => {};
+	const dataSourceFailure = response => { };
 	const messagestateSuccess = response => {
 		const list = response.data.data.chartData;
-		// console.log('list : ', list);
+		console.log('list : ', list);
 		setRadarList(list);
 		rader_chart(list);
 	};
-	const messagestateFailure = response => {};
+	const messagestateFailure = response => { };
 	function handleChangeTab(event, value) {
 		setTabValue(value);
 		if (value === 0) {
@@ -444,40 +446,44 @@ function DashboardApp(props) {
 													<Grid item md={4} sm={12} xs={12}>
 														<Widget2
 															value={value}
-															// title={value.subtitle}
-															// count={value.value}
-															// bottom_title={`${value.subtitle} ${value.title}`}
+														// title={value.subtitle}
+														// count={value.value}
+														// bottom_title={`${value.subtitle} ${value.title}`}
 														/>
 													</Grid>
 												);
 											})}
 										</Grid>
 										<Grid container spacing={1}>
-											{agentData.map((value, index) => {
-												console.log('value :', value);
-												return (
-													<Grid item md={4} sm={12} xs={12}>
-														<AgentWidgets
-															agents={value.totalAgent}
-															title={value.title}
+											{agentPermissions['FRONT:/all/stats'] == 1 ?
+												agentData.map((value, index) => {
+													console.log('value :', value);
+													return (
+														<Grid item md={4} sm={12} xs={12}>
+															<AgentWidgets
+																agents={value.totalAgent}
+																title={value.title}
 															// bottom_title={`${value.subtitle} ${value.title}`}
-														/>
-													</Grid>
-												);
-											})}
+															/>
+														</Grid>
+													);
+												}) : null
+											}
 										</Grid>
 										<Grid container spacing={1}>
-											{chatsData.map((value, index) => {
+											{agentPermissions['FRONT:/all/stats'] == 1 ? chatsData.map((value, index) => {
 												return (
 													<Grid item md={4} sm={12} xs={12}>
 														<AgentWidgets
 															agents={value.chats}
 															title={value.title}
-															// bottom_title={`${value.subtitle} ${value.title}`}
+														// bottom_title={`${value.subtitle} ${value.title}`}
 														/>
 													</Grid>
 												);
-											})}
+											})
+										: null
+										}
 										</Grid>
 									</Grid>
 									<Grid item md={6} sm={12} xs={12}>

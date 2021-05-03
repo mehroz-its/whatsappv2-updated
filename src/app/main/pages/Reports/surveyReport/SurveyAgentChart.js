@@ -36,12 +36,12 @@ const SurveyAgentChart = ({ agentSatisfactionSurvey, chartTitle }) => {
 					// date: data[i][1].date,
 					// visits: data[i][0].count
 					user_id: agentSatisfactionSurvey[i].user_id,
-					excellent: agentSatisfactionSurvey[i].response === '5' ? agentSatisfactionSurvey[i].count : 0,
-					veryGood: agentSatisfactionSurvey[i].response === '4' ? agentSatisfactionSurvey[i].count : 0,
-					good: agentSatisfactionSurvey[i].response === '3' ? agentSatisfactionSurvey[i].count : 0,
-					poor: agentSatisfactionSurvey[i].response === '2' ? agentSatisfactionSurvey[i].count : 0,
-					veryPoor: agentSatisfactionSurvey[i].response === '1' ? agentSatisfactionSurvey[i].count : 0,
-					other: agentSatisfactionSurvey[i].response === 'other' ? agentSatisfactionSurvey[i].count : 0
+					excellent: agentSatisfactionSurvey[i].excellent,
+					veryGood: agentSatisfactionSurvey[i].veryGood,
+					good: agentSatisfactionSurvey[i].good,
+					poor: agentSatisfactionSurvey[i].poor,
+					veryPoor: agentSatisfactionSurvey[i].veryPoor,
+					other: agentSatisfactionSurvey[i].other
 				});
 				console.log(chartData, 'chrrsfasdasfsaf');
 			}

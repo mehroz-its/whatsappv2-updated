@@ -232,7 +232,7 @@ function SurveyTable(props) {
 												align="center"
 												style={{ fontSize: '12px', padding: '10px' }}
 											>
-												{n.response === '5' ? n.count : 0}
+												{n.excellent}
 											</TableCell>
 											<TableCell
 												component="th"
@@ -240,7 +240,7 @@ function SurveyTable(props) {
 												align="center"
 												style={{ fontSize: '12px', padding: '10px' }}
 											>
-												{n.response === '4' ? n.count : 0}
+												{n.veryGood}
 											</TableCell>
 											<TableCell
 												component="th"
@@ -248,7 +248,7 @@ function SurveyTable(props) {
 												align="center"
 												style={{ fontSize: '12px', padding: '10px' }}
 											>
-												{n.response === '3' ? n.count : 0}
+												{n.good}
 											</TableCell>
 											<TableCell
 												component="th"
@@ -256,7 +256,7 @@ function SurveyTable(props) {
 												align="center"
 												style={{ fontSize: '12px', padding: '10px' }}
 											>
-												{n.response === '2' ? n.count : 0}
+												{n.poor}
 											</TableCell>
 											<TableCell
 												component="th"
@@ -264,7 +264,7 @@ function SurveyTable(props) {
 												align="center"
 												style={{ fontSize: '12px', padding: '10px' }}
 											>
-												{n.response === '1' ? n.count : 0}
+												{n.veryPoor}
 											</TableCell>
 											<TableCell
 												component="th"
@@ -272,7 +272,7 @@ function SurveyTable(props) {
 												align="center"
 												style={{ fontSize: '12px', padding: '10px' }}
 											>
-												{n.response === 'other' ? n.count : 0}
+												{n.other}
 											</TableCell>
 											{/* <TableCell
 											component="th"
