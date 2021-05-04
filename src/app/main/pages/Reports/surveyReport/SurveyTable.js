@@ -224,7 +224,7 @@ function SurveyTable(props) {
 												align="center"
 												style={{ fontSize: '12px', padding: '10px' }}
 											>
-												{n.agent_name ? n.agent_name : 'Agent Name'}
+												{n.agentName ? n.agentName : 'Agent Name'}
 											</TableCell>
 											<TableCell
 												component="th"

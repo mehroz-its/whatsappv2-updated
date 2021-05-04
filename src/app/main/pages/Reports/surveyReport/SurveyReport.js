@@ -120,7 +120,7 @@ function SurveyReport() {
 		loadData().then(res => {
 			console.log(res, 'dataaaaaaaaaaaa');
 			let tempArr = [];
-			let newobj = { user_id: null, excellent: 0, veryGood: 0, good: 0, poor: 0, veryPoor: 0, other: 0 }
+			let newobj = { agentName:'',user_id: null, excellent: 0, veryGood: 0, good: 0, poor: 0, veryPoor: 0, other: 0 }
 			res.data.data.survey.agent_satisfaction.map((res, ind) => {
 				console.log(res, 'resresresres')
 				let isIncluded = tempArr.findIndex(x => x.user_id == res.user_id)
@@ -166,7 +166,7 @@ function SurveyReport() {
 							newobj.other = res.count
 							break;
 					}
-					tempArr.push({ ...newobj, user_id: res.user_id })
+					tempArr.push({ ...newobj, user_id: res.user_id , agentName:res.username })
 				}
 				// tempArr.map((result, index) => {
 				// 	if (res.user_id == result.user_id) {
