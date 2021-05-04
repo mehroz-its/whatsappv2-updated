@@ -122,7 +122,6 @@ function SurveyReport() {
 			let tempArr = [];
 			let newobj = { agentName:'',user_id: null, excellent: 0, veryGood: 0, good: 0, poor: 0, veryPoor: 0, other: 0 }
 			res.data.data.survey.agent_satisfaction.map((res, ind) => {
-				console.log(res, 'resresresres')
 				let isIncluded = tempArr.findIndex(x => x.user_id == res.user_id)
 				if (isIncluded != -1) {
 					switch (res.response) {

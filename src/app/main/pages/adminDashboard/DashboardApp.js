@@ -37,7 +37,9 @@ const rader_chart = list => {
 	am4core.useTheme(am4themes_material);
 	am4core.useTheme(am4themes_animated);
 	let myEle = document.getElementById('chartdivv');
+
 	let chart = am4core.create('chartdivv', am4charts.PieChart);
+	
 	chart.data = list;
 	if (myEle) {
 		// Add and configure Series
@@ -54,6 +56,8 @@ const rader_chart = list => {
 
 		chart.hiddenState.properties.radius = am4core.percent(0);
 	}
+	let nodes =  document.querySelector("div #chartdivv g").childNodes[1].childNodes[1]
+	nodes.remove()
 };
 // const rader_chart = (list) => {
 // 	am4core.useTheme(am4themes_material);
@@ -140,6 +144,7 @@ function DashboardApp(props) {
 		}
 	};
 	React.useEffect(() => {
+	
 		CoreHttpHandler.request(
 			'dashboard',
 			'listing',
@@ -198,6 +203,7 @@ function DashboardApp(props) {
 			am4core.disposeAllCharts();
 		};
 	}, []);
+
 	const dataSourceSuccesss = response => {
 		const list = response.data.data.report;
 		const data = list.map((item, i) => {
@@ -220,6 +226,7 @@ function DashboardApp(props) {
 		});
 		campaign_report_chart(data);
 	};
+
 
 	const dataSourceFailuree = response => { };
 	const campaign_report_chart = dataa => {
@@ -482,8 +489,8 @@ function DashboardApp(props) {
 													</Grid>
 												);
 											})
-										: null
-										}
+												: null
+											}
 										</Grid>
 									</Grid>
 									<Grid item md={6} sm={12} xs={12}>

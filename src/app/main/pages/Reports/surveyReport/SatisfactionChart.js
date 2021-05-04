@@ -24,14 +24,6 @@ const SatisfactionReport = ({ satisfactionSurvey }) => {
 			newOBJ.push({ category: label, value: val.count, full: '100' }
 			)
 		})
-		const newMessageList = [
-			{ category: 'My-Locations', value: '0', full: '100' },
-			{ category: 'My-Contacts', value: '0', full: '100' },
-			{ category: 'My-Text', value: '0', full: '100' },
-			{ category: 'My-Audio', value: '0', full: '100' },
-			{ category: 'My-Photos', value: '0', full: '100' },
-			{ category: 'My-MYDocuments', value: '0', full: '100' }
-		];
 
 		am4core.useTheme(am4themes_material);
 		am4core.useTheme(am4themes_animated);
@@ -78,6 +70,9 @@ const SatisfactionReport = ({ satisfactionSurvey }) => {
 
 			chart.hiddenState.properties.radius = am4core.percent(0);
 		}
+		// CODE FOR REMOVING AM4CHARTS LABEL
+		let nodes =  document.querySelector("div #chartdivv g").childNodes[1].childNodes[1]
+		nodes.remove()
 	});
 
 	return (

@@ -18,7 +18,7 @@ const SurveyAgentChart = ({ agentSatisfactionSurvey, chartTitle }) => {
 		let xAxis = chart.xAxes.push(new am4charts.CategoryAxis());
 		console.log(xAxis.dataFields, 'xxxxxxxxxxxxxx');
 		// xAxis.dataFields.category = 'category';
-		xAxis.dataFields.category = 'user_id';
+		xAxis.dataFields.category = 'agentName';
 		xAxis.renderer.cellStartLocation = 0.1;
 		xAxis.renderer.cellEndLocation = 0.9;
 		xAxis.renderer.grid.template.location = 0;
@@ -35,7 +35,7 @@ const SurveyAgentChart = ({ agentSatisfactionSurvey, chartTitle }) => {
 				chartData.push({
 					// date: data[i][1].date,
 					// visits: data[i][0].count
-					user_id: agentSatisfactionSurvey[i].user_id,
+					agentName: agentSatisfactionSurvey[i].agentName,
 					excellent: agentSatisfactionSurvey[i].excellent,
 					veryGood: agentSatisfactionSurvey[i].veryGood,
 					good: agentSatisfactionSurvey[i].good,
@@ -53,7 +53,7 @@ const SurveyAgentChart = ({ agentSatisfactionSurvey, chartTitle }) => {
 			let series = chart.series.push(new am4charts.ColumnSeries());
 			series.dataFields.valueY = value;
 			// series.dataFields.categoryX = 'category';
-			series.dataFields.categoryX = 'user_id';
+			series.dataFields.categoryX = 'agentName';
 			series.name = name;
 
 			series.events.on('hidden', arrangeColumns);
@@ -159,7 +159,8 @@ const SurveyAgentChart = ({ agentSatisfactionSurvey, chartTitle }) => {
 				}
 			}
 		}
-		// var noding = document.querySelector('div#chartdiv g').childNodes[1].childNodes[1];
+		let nodes =  document.querySelector("div #chartdiv g").childNodes[1].childNodes[1]
+	nodes.remove()
 	});
 
 	return <div id="chartdiv" style={{ width: '100%', height: '400px' }}></div>;
