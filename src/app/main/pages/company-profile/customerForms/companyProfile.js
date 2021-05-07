@@ -359,7 +359,7 @@ function ComapnyProfile(props) {
 										<TextField onChange={handleChange} size='small' name="website" type="website" value={form.website} required id="outlined-basic-email" label="Website" variant="outlined" fullWidth autoComplete="off" />
 									</Grid>
 									<Grid item md={4} sm={12} xs={12} >
-										<TextField onChange={handleChange} size='small' name="max_agent" type="number" value={form.max_agents} required id="outlined-basic-email" label="Max Agents" variant="outlined" fullWidth autoComplete="off" />
+										<TextField onChange={handleChange} size='small' name="max_agents" type="number" value={form.max_agents} required id="outlined-basic-email" label="Max Agents" variant="outlined" fullWidth autoComplete="off" />
 									</Grid>
 								</Grid>
 

@@ -21,6 +21,8 @@ import WidgetWeather from './widgets/WidgetWeather';
 import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading';
 import AgentWidgets from './widgets/AgentWidgets';
 import { FormatListNumberedRtlOutlined, KeyboardReturn } from '@material-ui/icons';
+import WebSocket from "../../../socket/WebSocket"
+
 am4core.useTheme(am4themes_material);
 am4core.useTheme(am4themes_animated);
 const useStyles = makeStyles({
@@ -32,6 +34,8 @@ const useStyles = makeStyles({
 	}
 });
 
+
+
 const rader_chart = list => {
 	// console.log('list ', list);
 	am4core.useTheme(am4themes_material);
@@ -39,7 +43,7 @@ const rader_chart = list => {
 	let myEle = document.getElementById('chartdivv');
 
 	let chart = am4core.create('chartdivv', am4charts.PieChart);
-	
+
 	chart.data = list;
 	if (myEle) {
 		// Add and configure Series
@@ -56,7 +60,7 @@ const rader_chart = list => {
 
 		chart.hiddenState.properties.radius = am4core.percent(0);
 	}
-	let nodes =  document.querySelector("div #chartdivv g").childNodes[1].childNodes[1]
+	let nodes = document.querySelector("div #chartdivv g").childNodes[1].childNodes[1]
 	nodes.remove()
 };
 // const rader_chart = (list) => {
@@ -126,7 +130,40 @@ function DashboardApp(props) {
 	const [agents, setAgents] = useState([]);
 	const [chatCounts, setChatCounts] = useState([]);
 	let agentPermissions = JSON.parse(localStorage.getItem('user_acl'))
-	console.log(agentPermissions['FRONT:/all/stats'], 'agentPermissionsagentPermissions')
+	const socket = WebSocket.getSocket()
+
+
+	React.useEffect(() => {
+		// EventEmitter.subscribe('GetAgentsAgain', (event) => getAgents())
+
+		socket.on("agentsOnline", (data) => {
+			CoreHttpHandler.request(
+				'conversations',
+				'agent_list',
+				{
+					columns: 'USR.id, USR.username',
+					role: 64,
+					displayed: true,
+					enabled: true
+				},
+				_response => {
+					console.log(_response, 'ressssssssssssssssssss');
+					setAgents(_response.data.data.agents.data);
+				},
+				error => { }
+			);
+
+		})
+		// socket.on("newOnGoingConversationCount", (data) => {
+		// 	setAgentConversationCount(data)
+		// })
+		return () => {
+			socket.removeListener("agentsOnline")
+			// socket.removeListener("newOnGoingConversationCount")
+		}
+	}, []);
+
+
 	const dataSourceOptions = {
 		params: {
 			columns: '*',
@@ -144,7 +181,7 @@ function DashboardApp(props) {
 		}
 	};
 	React.useEffect(() => {
-	
+
 		CoreHttpHandler.request(
 			'dashboard',
 			'listing',
