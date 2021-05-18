@@ -68,7 +68,15 @@ module.exports = [
 					}
 				]
 			},
-
+			{
+				id: 'Agent Handling Time',
+				title: 'Agent Handling Time',
+				translate: 'Agent Handling Time',
+				type: 'item',
+				icon: 'dashboard',
+				url: '/aht',
+				exact: true
+			},
 			{
 				id: 'Template',
 				title: 'Template',

@@ -24,6 +24,7 @@ import CompanyAgent from './onBoarding/companyAgent';
 import Otp from './otp';
 import surveyReport from './surveyReport/index';
 import counts from './chatCounts';
+import agentHandlingTime from './agentHandlingTime';
 
 class ApiResolver {
 	constructor() {
@@ -53,7 +54,8 @@ class ApiResolver {
 			profile: ProfileApis.apis(),
 			locations: LocationApis.apis(),
 			surveyReport: surveyReport.apis(),
-			chatsCount: counts.apis()
+			chatsCount: counts.apis(),
+			agentHandlingTime:agentHandlingTime.apis()
 		};
 	}
 

@@ -119,7 +119,7 @@ const Login2Page = (props) => {
     const [hit, setHitFalse] = React.useState(true)
     const [isLoading, setIsLoading] = React.useState(false);
     const [showPassword, setShowPassword] = React.useState(false);
-    
+
 
     let snackbarClose = (event) => {
         setSnackBarOpen(false)
@@ -205,6 +205,7 @@ const Login2Page = (props) => {
         } else localStorage.setItem('user_data', JSON.stringify({}));
 
         if (acl) {
+   
             localStorage.setItem('user_acl', JSON.stringify(acl));
         } else localStorage.setItem('user_acl', JSON.stringify({}));
 
@@ -319,7 +320,7 @@ const Login2Page = (props) => {
                             <TextField
                                 className="mb-16 sm:mb-4"
                                 label="Password"
-                                type={showPassword?"text":"password"}
+                                type={showPassword ? "text" : "password"}
                                 name="password"
                                 size="small"
                                 onChange={handlePassordInput}
@@ -329,18 +330,18 @@ const Login2Page = (props) => {
                                 style={formItem}
                                 fullWidth
                                 onKeyDown={_handleKeyDown}
-                                
+
                                 InputProps={{ // <-- This is where the toggle button is added.
                                     endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                        aria-label="toggle password visibility"
-                                        onClick={()=>{setShowPassword(!showPassword)}}
-                                        onMouseDown={()=>{}}
-                                        >
-                                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                    </InputAdornment>
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={() => { setShowPassword(!showPassword) }}
+                                                onMouseDown={() => { }}
+                                            >
+                                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                                            </IconButton>
+                                        </InputAdornment>
                                     )
                                 }}
 

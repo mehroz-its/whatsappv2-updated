@@ -17,6 +17,7 @@ import CannedAppConfig from './setting/canned/CannedAppConfig';
 import PermissionConfig from './setting/permission/PermissionConfig';
 import RolesConfig from './setting/roles/RolesConfig';
 import UserConfig from './setting/users/UserConfig';
+import AgentHandlingTimeConfig from './AgentHandlingTime/AgentHandlingTimeConfig.js';
 import TemplateAppConfig from './templae-messages/TemplateAppConfig';
 import ReportsAppConfig from './Reports/ReportsAppConfig';
 import AdminDashboardAppConfig from './adminDashboard/AdminDashboardAppConfig';
@@ -63,6 +64,7 @@ let allPagesConfig = [
 	PermissionConfig,
 	RolesConfig,
 	UserConfig,
+	AgentHandlingTimeConfig,
 	TemplateAppConfig,
 	AdminDashboardAppConfig,
 	AgentConfig,
