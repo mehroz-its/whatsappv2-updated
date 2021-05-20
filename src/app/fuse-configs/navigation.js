@@ -73,8 +73,17 @@ module.exports = [
 				title: 'Agent Handling Time',
 				translate: 'Agent Handling Time',
 				type: 'item',
-				icon: 'dashboard',
-				url: '/aht',
+				icon: 'groups',
+				url: '/apps/aht',
+				exact: true
+			},
+			{
+				id: 'Service Levels',
+				title: 'Service Levels',
+				translate: 'Service Levels',
+				type: 'item',
+				icon: 'compare_arrows',
+				url: '/apps/serviceLevel',
 				exact: true
 			},
 			{

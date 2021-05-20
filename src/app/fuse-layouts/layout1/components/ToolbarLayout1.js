@@ -29,6 +29,7 @@ function ToolbarLayout1(props) {
 	const config = useSelector(({ fuse }) => fuse.settings.current.layout.config);
 	const toolbarTheme = useSelector(({ fuse }) => fuse.settings.toolbarTheme);
 	const [online, setOnline] = React.useState(false);
+	const [enableRingtone, setEnableRingtone] = React.useState(false);
 	const [toggleShow, setToggleShow] = React.useState(false);
 	const [message, setMessage] = React.useState(false);
 	const classes = useStyles(props);
@@ -46,6 +47,20 @@ function ToolbarLayout1(props) {
 			EventEmitter.dispatch('Online', false);
 			localStorage.setItem('online', false);
 			setOnline(false);
+		}
+	}
+
+	const handleRingtone = () => {
+		if (enableRingtone) {
+			setEnableRingtone(false)
+			localStorage.setItem('EnableNotificationTone', true);
+			EventEmitter.dispatch('EnableNotificationTone', true);
+		} else {
+			setEnableRingtone(true)
+			EventEmitter.dispatch('EnableNotificationTone', false);
+			localStorage.setItem('EnableNotificationTone', false);
+
+
 		}
 	}
 	const setAgentOnline = e => {
@@ -79,23 +94,26 @@ function ToolbarLayout1(props) {
 	useEffect(() => {
 		setToggleShow(PermissionResolver.hasPermission('app', 'toggle'));
 		// console.log('toggleShow : ', toggleShow);
-		const _online = (localStorage.getItem('online')==true||localStorage.getItem('online')=="true");
+		const _online = (localStorage.getItem('online') == true || localStorage.getItem('online') == "true");
 
 		console.log("====== THIS =========")
 		console.log(localStorage.getItem('online'))
-		console.log(localStorage.getItem('online')==true)
+		console.log(localStorage.getItem('online') == true)
 		setOnline(_online)
 
 		socket.on("newMessage", (data) => {
+			alert('caleed 1')
+
 			if (data && data.newMessage) {
 				setSnackBarOpen(true)
 				setMessage("You have a new conversation")
 			}
 		})
 		socket.on("newMessageNotification", (data) => {
+			alert('caleed')
 			if (data && data.newMessage) {
-				if(window&&window.location&&window.location.href){
-					if(!String(window.location.href||" ").includes("/apps/chat")){
+				if (window && window.location && window.location.href) {
+					if (!String(window.location.href || " ").includes("/apps/chat")) {
 						setSnackBarOpen(true)
 						setMessage("You have a new message")
 					}
@@ -112,7 +130,7 @@ function ToolbarLayout1(props) {
 
 
 
-		if(_online){
+		if (_online) {
 			CoreHttpHandler.request(
 				'core',
 				'online',
@@ -124,7 +142,7 @@ function ToolbarLayout1(props) {
 			);
 		}
 
-		
+
 
 		return () => {
 			socket.removeListener("newMessage")
@@ -142,11 +160,17 @@ function ToolbarLayout1(props) {
 					<Snackbar onClose={() => { setSnackBarOpen(false) }} open={snackbaropen} autoHideDuration={2000} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} key={'bottom' + 'right'}
 					>
 						<Alert severity="success">
-						{message}
+							{message}
 						</Alert>
 					</Snackbar>
 					: null
 			}
+			<Snackbar onClose={() => { setSnackBarOpen(false) }} open={snackbaropen} autoHideDuration={2000} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }} key={'bottom' + 'right'}
+			>
+				<Alert severity="success">
+					{message}
+				</Alert>
+			</Snackbar>
 			<AppBar
 				id="fuse-toolbar"
 				className="flex relative z-10"
@@ -181,6 +205,21 @@ function ToolbarLayout1(props) {
 											/>
 										}
 										label={online ? 'Go Offline' : 'Go Online'}
+									/>
+								</div>
+							) : null}
+							{toggleShow === true ? (
+								<div style={{ marginTop: '2.3%' }}>
+									<FormControlLabel
+										control={
+											<Switch
+												checked={enableRingtone}
+												onChange={handleRingtone}
+												name="online"
+												color="primary"
+											/>
+										}
+										label={'Notification Sound'}
 									/>
 								</div>
 							) : null}

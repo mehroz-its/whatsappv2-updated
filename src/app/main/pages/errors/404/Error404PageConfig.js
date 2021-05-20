@@ -9,7 +9,7 @@ const Error404PageConfig = {
 	routes: [
 		{
 			path: '/pages/errors/error-404',
-			component: React.lazy(() => import('../../AgentHandlingTime/AgentHandlingTime.js'))
+			component: React.lazy(() => import('./Error404Page'))
 		}
 	]
 };

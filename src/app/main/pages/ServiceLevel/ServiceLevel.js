@@ -10,6 +10,8 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
+import AgentWidgets from '../adminDashboard/widgets/AgentWidgets';
+
 import * as am4charts from '@amcharts/amcharts4/charts';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import am4themes_material from '@amcharts/amcharts4/themes/material';
@@ -53,11 +55,11 @@ const incomingAndOutGoingCount = data => {
 	// Add data
 	let formatedData = []
 	data.map(val => {
-		formatedData.push({ country: val.username, litres: val.average_time.seconds })
+		formatedData.push({ country: val.username, litres: val.count })
 	})
 	chart.data = formatedData
 	// Set inner radius
-	chart.innerRadius = am4core.percent(35);
+	chart.innerRadius = am4core.percent(50);
 
 	// Add and configure Series
 	let pieSeries = chart.series.push(new am4charts.PieSeries());
@@ -71,6 +73,7 @@ const incomingAndOutGoingCount = data => {
 	pieSeries.hiddenState.properties.opacity = 1;
 	pieSeries.hiddenState.properties.endAngle = -90;
 	pieSeries.hiddenState.properties.startAngle = -90;
+
 	let nodes = document.querySelector("div #chartdivv g").childNodes[1].childNodes[1]
 	nodes.remove()
 
@@ -106,6 +109,8 @@ function ChatApp() {
 	const [focus, setFocus] = React.useState(null);
 	const { startDate, endDate } = dateRange;
 	const [data2, setData2] = React.useState([]);
+	const [totalChatIn20sec, setTotalChatIn20Sec] = React.useState('');
+	const [totalAgentChats, setTotalAgenChats] = React.useState('');
 	const [data, setData] = React.useState([]);
 	const [chartdata, setchartdata] = React.useState(null);
 	const csvLinkK = useRef(); // setup the ref that we'll use for the hidden CsvLink click once we've updated the data
@@ -127,19 +132,21 @@ function ChatApp() {
 		setData([])
 		setData2([])
 		loadData = () => {
-			return CoreHttpHandler.request('agentHandlingTime', 'listing',
+			return CoreHttpHandler.request('agentHandlingTime', 'serviceLevel',
 				{
-					starting_date: Start == '' ? dateWithStartingHour(new Date(), -2): Start.substr(0, Start.indexOf('T')),
-					ending_date: Start == '' ? dateWithEndingHour(new Date(), -2): End.substr(0, End.indexOf('T')),
-				
+					starting_date: Start == '' ? dateWithStartingHour(new Date(), -2) : Start.substr(0, Start.indexOf('T')),
+					ending_date: Start == '' ? dateWithEndingHour(new Date(), -2) : End.substr(0, End.indexOf('T')),
+
 				}
 				, null, null, true);
 		};
 		loadData().then((response) => {
 			setisLoading(false)
 			// setTotalItems(response.data.data.list.totalItems)
-			console.log(response.data.data.average_time, 'response.data.data.list.data')
-			const tableData = response.data.data.average_time
+			console.log(response.data.data, 'response.data.data.list.data')
+			const tableData = response.data.data.serviceLevel
+			setTotalAgenChats(response.data.data.total_chats)
+			setTotalChatIn20Sec(response.data.data.within20seconds)
 			setData(tableData)
 			setData2(tableData)
 			setTimeout(() => {
@@ -272,7 +279,7 @@ function ChatApp() {
 		result.setSeconds(59)
 		return result;
 	}
-	console.log(searchText,'searchTextsearchText')
+	console.log(searchText, 'searchTextsearchText')
 	return (
 		<FusePageSimple
 			header={
@@ -283,12 +290,12 @@ function ChatApp() {
 						</FuseAnimate>
 						<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 							<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-								<span style={{ fontSize: '15px' }}>Agenty Handling Time</span>
+								<span style={{ fontSize: '15px' }}>Service Level</span>
 							</Typography>
 						</FuseAnimate>
 					</div>
 					<div style={{ justifyContent: 'space-around', marginLeft: '20%' }}>
-						<FormControl className={classes.formControl}>
+						{/* <FormControl className={classes.formControl}>
 							<Select
 								labelId="demo-controlled-open-select-label"
 								id="demo-controlled-open-select"
@@ -311,7 +318,7 @@ function ChatApp() {
 									Year
 								</MenuItem>
 							</Select>
-						</FormControl>
+						</FormControl> */}
 						<DateRangePickerVal SelectedDates={SelectedDates} />
 						<Button
 							onClick={getDataAgain}
@@ -370,40 +377,44 @@ function ChatApp() {
 								</Grid>
 								<Grid item md={4} sm={12} xs={12}>
 
+
 								</Grid>
 							</Grid>
 						)}
 						<Grid container spacing={3} style={{ paddingLeft: 12, paddingRight: 12 }}>
 							<Grid item md={8} sm={12} xs={12}>
-								<Paper className="w-full rounded-8 shadow-none border-1 flex" style={{ display: 'flex', flexDirection: 'column', height: '285px' }}>
-									{/* <div style={{display:'flex',flexDirection:'roe'}}>
+								<Grid container spacing={2} style={{ paddingLeft: 12, paddingRight: 12 }}>
+									<Grid item md={6} sm={12} xs={12}>
 
-									<p style={{marginTop:'10px',fontSize:'15px'}}>Search !!!</p>
-									<Input
-										style={{ border: '1px solid #80808042', borderRadius: '5px', width: '25%' }}
-										rows={1}
-										placeholder="username"
-										className="flex mx-8 my-8 px-4"
-										disableUnderline
-										onChange={e => {
+										<AgentWidgets
+											agents={totalChatIn20sec}
+											title={'Total Chats in 20 seconds'}
+										/>
+									</Grid>
+									<Grid item md={6} sm={12} xs={12}>
 
-											setSearchText(e.target.value)
+										<AgentWidgets
+											agents={totalAgentChats}
+											title={'Total Chats'}
 
-										}}
-									/>
-									</div> */}
+										/>
+									</Grid>
+									<Grid item md={12} sm={12} xs={12}>
+									<Paper className="w-full rounded-8 shadow-none border-1" style={{ display: 'flex', flexDirection: 'column' ,height:'175px'}}>
 
-									<UserTable
-										totalItems={totalItems} setPage={setPage} setLimit={setLimit} rowsPerPage={currentParams.limit} currentPage={currentParams.page} isLoading={isLoading}
-										ValueForSearch={searchText} dataa={data2} />
-								</Paper>
+										<UserTable
+											totalItems={totalItems} setPage={setPage} setLimit={setLimit} rowsPerPage={currentParams.limit} currentPage={currentParams.page} isLoading={isLoading}
+											ValueForSearch={searchText} dataa={data2} />
+											</Paper>
+									</Grid>
+								</Grid>
 							</Grid>
 							<Grid item md={4} sm={12} xs={12}>
 								<Paper className="w-full rounded-8 shadow-none border-1">
 									<Typography variant="h6" className="header-card text-center pt-8" style={{ fontSize: '16px' }}>
-										Agent Handling Time
+										Service Level
 									</Typography>
-									<div id="chartdivv" style={{ width: '98%', height: '250px', marginLeft: '10px' }}></div>
+									<div id="chartdivv" style={{ width: '98%', height: '264px', marginLeft: '10px' }}></div>
 								</Paper>
 							</Grid>
 						</Grid>

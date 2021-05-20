@@ -124,7 +124,7 @@ function UserTable(props) {
 	} else if (data2.length === 0) {
 
 		return (
-			<div className="flex flex-1 items-center justify-center h-full">
+			<div className="flex flex-1 items-center justify-center h-full" style={{height:'175px'}}>
 				<Typography color="textSecondary" variant="h5">
 					No Data Found
 				</Typography>
@@ -182,7 +182,10 @@ function UserTable(props) {
 													{n.username}
 												</TableCell>
 												<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
-													{`${n.average_time.seconds}seconds ${n.average_time.milliseconds} ms`}
+													{n.count}
+												</TableCell>
+												<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
+													{n.total}
 												</TableCell>
 												{/* <TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 												{n.email}

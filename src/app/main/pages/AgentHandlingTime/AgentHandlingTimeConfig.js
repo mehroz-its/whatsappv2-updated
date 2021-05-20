@@ -6,8 +6,8 @@ const AgentHandlingTimeConfig = {
 	},
 	routes: [
 		{
-			path: '/apps/chat',
-			component: React.lazy(() => import('./Test'))
+			path: '/apps/aht',
+			component: React.lazy(() => import('./AgentHandlingTime.js'))
 		}
 	]
 };

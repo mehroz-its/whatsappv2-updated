@@ -8,6 +8,13 @@ class APIS {
                 method: 'post',
                 path: '/conversation/aht'
             },
+            serviceLevel: {
+                headers: {
+                    'xt-user-token': null
+                },
+                method: 'post',
+                path: '/service/level'
+            },
           
         }
     }

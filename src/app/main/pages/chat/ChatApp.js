@@ -11,7 +11,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import withReducer from 'app/store/withReducer';
 import clsx from 'clsx';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import Chat from './Chat';
 import ChatsSidebar from './ChatsSidebar';
@@ -203,6 +203,11 @@ function ChatApp(props) {
 	const [removeConversation, setRemoveConversation] = React.useState(null);
 	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
 	const [anchorEl, setAnchorEl] = React.useState(null);
+	const [enableAudioNotification, setEnableAudioNotification] = useState(false)
+	const [notificationTone, setNotificationTone] = useState(new Audio('https://upload.its.com.pk/v1/fetch/file/66961b75-3fef-406e-8923-277793adae4e.mp3'))
+
+
+
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
 	const selectedRecipientt = e => {
@@ -216,9 +221,23 @@ function ChatApp(props) {
 
 		setselectedRecipient(e);
 		readMessage();
+
+
 		setmobileChatsSidebarOpen(false);
 		getConversation(e);
 	};
+
+	React.useEffect(() => {
+		EventEmitter.subscribe('EnableNotificationTone', event => checkNotificationTone(event));
+
+		let enableTone = localStorage.getItem('EnableNotificationTone')
+		// alert(enableTone, 'enableToneenableTone')
+	}, [])
+	React.useEffect(() => {
+	
+		// enableAudioNotification && notificationTone.play()
+		// alert(enableTone, 'enableToneenableTone')
+	}, [enableAudioNotification])
 
 	const getNumbers = () => {
 		CoreHttpHandler.request(
@@ -232,7 +251,7 @@ function ChatApp(props) {
 				setnumbers(newData);
 				setnumberss(newData);
 			},
-			error => {}
+			error => { }
 		);
 	};
 
@@ -254,7 +273,7 @@ function ChatApp(props) {
 
 				setshowLatestMessage(true);
 			},
-			response => {}
+			response => { }
 		);
 	};
 
@@ -288,7 +307,7 @@ function ChatApp(props) {
 				setSnackBarOpen(true);
 				setMoreMenuEl(null);
 			},
-			response => {}
+			response => { }
 		);
 	};
 	const conversationShift = () => {
@@ -311,7 +330,7 @@ function ChatApp(props) {
 				setdialogOpenShift(true);
 				setMoreMenuEl(null);
 			},
-			response => {}
+			response => { }
 		);
 	};
 	const conversationContextMenuCallback = item => {
@@ -471,7 +490,7 @@ function ChatApp(props) {
 					attributes: null
 				});
 			},
-			response => {}
+			response => { }
 		);
 	};
 	const dialogOptionsConfirmBlock = {
@@ -491,9 +510,19 @@ function ChatApp(props) {
 		});
 		socket.on('newConversationMessage', data => {
 			setmessage(data);
+			if(enableAudioNotification){
+				notificationTone.play()
+			}
+			// enableAudioNotification && notificationTone.play()
+
 		});
 		socket.on('updateMessageStatus', data => {
 			setMessageStatus(data);
+			// if(enableAudioNotification){
+			// 	notificationTone.play()
+			// }
+			// enableAudioNotification == true ?  notificationTone.play():null
+
 		});
 
 		socket.on('removeConversation', data => {
@@ -513,6 +542,10 @@ function ChatApp(props) {
 			EventEmitter.unsubscribe('Online');
 		};
 	}, []);
+
+	// React.useEffect(() => {
+	// 	enableAudioNotification && notificationTone.play()
+	// }, [enableAudioNotification])
 
 	React.useEffect(() => {
 		if (selectedRecipient) {
@@ -615,8 +648,8 @@ function ChatApp(props) {
 				'conversations',
 				'reset_message_count',
 				{ key: ':number', value: selectedRecipient.number },
-				response => {},
-				response => {}
+				response => { },
+				response => { }
 			);
 		}
 	};
@@ -628,6 +661,16 @@ function ChatApp(props) {
 			getNumbers();
 		}
 	};
+	const checkNotificationTone = enable => {
+		if (enable) {
+			setEnableAudioNotification(false)
+		} else {
+			setEnableAudioNotification(true)
+
+		}
+	};
+
+
 	const clearData = () => {
 		setselectedRecipient(null);
 		setmessages([]);
@@ -657,7 +700,7 @@ function ChatApp(props) {
 				setdialogOpenCanned(true);
 				setMoreMenuEl(null);
 			},
-			error => {}
+			error => { }
 		);
 	};
 	const sendDialogInputHandler = e => {
@@ -674,7 +717,7 @@ function ChatApp(props) {
 		setsendDialogData(data);
 	};
 	const selectedShiftAgent = data => {
-		console.log("selectedShiftAgent data" , data);
+		console.log("selectedShiftAgent data", data);
 		setShiftChatsToAgent(data)
 		// CoreHttpHandler.request(
 		// 	'conversations',
@@ -694,31 +737,31 @@ function ChatApp(props) {
 		// );
 	};
 	const selectedShiftAgentList = () => {
-		console.log("shiftChatsToAgenttt :" , shiftChatsToAgent);
+		console.log("shiftChatsToAgenttt :", shiftChatsToAgent);
 		if (shiftChatsToAgent.agentId !== null && shiftChatsToAgent.chats.length > 0) {
-		CoreHttpHandler.request(
-			'conversations',
-			'transfer',
-			{
-				key: ':id',
-				value: shiftChatsToAgent.agentId,
-				params: {
-					customer: shiftChatsToAgent.chats
-				}
-			},
-			response => {
-				setdialogOpenShift(false);
-				clearData();
-				getNumbers();
-			},
-			error => {}
-		);
+			CoreHttpHandler.request(
+				'conversations',
+				'transfer',
+				{
+					key: ':id',
+					value: shiftChatsToAgent.agentId,
+					params: {
+						customer: shiftChatsToAgent.chats
+					}
+				},
+				response => {
+					setdialogOpenShift(false);
+					clearData();
+					getNumbers();
+				},
+				error => { }
+			);
 		}
-		else{
+		else {
 			alert("Please Select Agent or Chat")
 		}
 	};
-	
+
 	const dialogOptionsShift = {
 		onClose: function () {
 			setdialogOpenShift(false);
@@ -773,7 +816,7 @@ function ChatApp(props) {
 				response => {
 					setdialogOpenCanned(false);
 				},
-				error => {}
+				error => { }
 			);
 		} else {
 			setdialogOpenCanned(false);
@@ -938,7 +981,7 @@ function ChatApp(props) {
 				setselectedRecipient(null);
 				setmessages([]);
 			},
-			error => {}
+			error => { }
 		);
 	};
 
@@ -1069,7 +1112,7 @@ function ChatApp(props) {
 																className={classes.avatar}
 															>
 																{!selectedRecipient.avatar ||
-																selectedRecipient.avatar === ''
+																	selectedRecipient.avatar === ''
 																	? selectedRecipient.name[0]
 																	: ''}
 															</Avatar>
