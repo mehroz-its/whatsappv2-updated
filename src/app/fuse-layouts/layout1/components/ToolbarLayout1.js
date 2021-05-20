@@ -102,7 +102,7 @@ function ToolbarLayout1(props) {
 		setOnline(_online)
 
 		socket.on("newMessage", (data) => {
-			alert('caleed 1')
+			// alert('caleed 1')
 
 			if (data && data.newMessage) {
 				setSnackBarOpen(true)
@@ -110,7 +110,7 @@ function ToolbarLayout1(props) {
 			}
 		})
 		socket.on("newMessageNotification", (data) => {
-			alert('caleed')
+			// alert('caleed')
 			if (data && data.newMessage) {
 				if (window && window.location && window.location.href) {
 					if (!String(window.location.href || " ").includes("/apps/chat")) {
