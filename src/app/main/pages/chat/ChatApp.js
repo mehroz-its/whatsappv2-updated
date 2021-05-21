@@ -188,7 +188,6 @@ function ChatApp(props) {
 	const [lastMessageTimestamp, setlastMessageTimestamp] = React.useState(null);
 	const [latestMessageSender, setlatestMessageSender] = React.useState(null);
 	const [numbers, setnumbers] = React.useState([]);
-	const [numberss, setnumberss] = React.useState([]);
 	const [dummy, setDummy] = React.useState(null);
 	const [firstLoad, setFirstLoad] = React.useState(true);
 	const [numbersLength, setNumbersLength] = React.useState(0);
@@ -203,6 +202,8 @@ function ChatApp(props) {
 	const [removeConversation, setRemoveConversation] = React.useState(null);
 	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
 	const [anchorEl, setAnchorEl] = React.useState(null);
+	const [listPage, setListPage] = React.useState(0);
+	const [chatsLoading, setChatsLoading] = React.useState(false);
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
 	const selectedRecipientt = e => {
@@ -221,16 +222,61 @@ function ChatApp(props) {
 	};
 
 	const getNumbers = () => {
+		setChatsLoading(true);
+		setListPage(listPage + 1);
 		CoreHttpHandler.request(
 			'conversations',
 			'numbers',
-			{},
-			response => {
-				const newData = response.data.data.customers;
-				console.log('newData', newData);
+			{
+				page: listPage ? listPage : 0,
+				limit: 10
+			},
 
-				setnumbers(newData);
-				setnumberss(newData);
+			response => {
+				console.log(response, 'ressssssssssssssssssssssss');
+				const numberrrrrr = response.data.data.customers;
+				console.log('newData', numberrrrrr);
+
+				setnumbers(numberrrrrr);
+
+				setChatsLoading(false);
+				console.log(numberrrrrr, 'nummmmmmmmmmm');
+				// let tempArr = [];
+				// let newObj = {
+				// 	limit: 10,
+				// 	page: listPage ? listPage : 1,
+				// 	totalItems: numberrrrrr?.totalItems,
+				// 	totalPages: numberrrrrr?.totalPages
+				// };
+				let newObj = {
+					limit: 10,
+					page: listPage ? listPage : 1,
+					totalItems: numberrrrrr?.totalItems,
+					totalPages: numberrrrrr?.totalPages
+				};
+				setnumbers([...numbers, ...numberrrrrr.customers]);
+				// numbers['rest'] = newObj;
+				// let newObj = {
+				// 	customers: numbers.customers ? numbers.customers : [],
+				// 	limit: 10,
+				// 	page: listPage ? listPage : 1,
+				// 	totalItems: numberrrrrr?.totalItems,
+				// 	totalPages: numberrrrrr?.totalPages
+				// };
+				// let tempArr = newObj;
+				// console.log(tempArr, 'TEMPPPPPPPPPPPPPPPPPPPp');
+				// tempArr.customers.push(numberrrrrr.customers);
+				// console.log(tempArr, 'TEMPPPPPPPPPPPPPPPPPPPp_AFTERRRRRRRRRRRRRR');
+				// setnumbers([...numbers, ...tempArr.customers	]);
+
+				// tempArr.push({ ...newObj, customers: numberrrrrr?.customers });
+				// tempArr.customers.push(numberrrrrr?.customers);
+				// console.log(tempArr, 'trempppppppppp');
+				// if (numbers.length < 10) {
+				// 	setnumbers(numberrrrrr);
+				// } else {
+				// 	setnumbers(...numberrrrrr, numberrrrrr.customers);
+				// }
 			},
 			error => {}
 		);
@@ -674,8 +720,8 @@ function ChatApp(props) {
 		setsendDialogData(data);
 	};
 	const selectedShiftAgent = data => {
-		console.log("selectedShiftAgent data" , data);
-		setShiftChatsToAgent(data)
+		console.log('selectedShiftAgent data', data);
+		setShiftChatsToAgent(data);
 		// CoreHttpHandler.request(
 		// 	'conversations',
 		// 	'transfer',
@@ -694,31 +740,30 @@ function ChatApp(props) {
 		// );
 	};
 	const selectedShiftAgentList = () => {
-		console.log("shiftChatsToAgenttt :" , shiftChatsToAgent);
+		console.log('shiftChatsToAgenttt :', shiftChatsToAgent);
 		if (shiftChatsToAgent.agentId !== null && shiftChatsToAgent.chats.length > 0) {
-		CoreHttpHandler.request(
-			'conversations',
-			'transfer',
-			{
-				key: ':id',
-				value: shiftChatsToAgent.agentId,
-				params: {
-					customer: shiftChatsToAgent.chats
-				}
-			},
-			response => {
-				setdialogOpenShift(false);
-				clearData();
-				getNumbers();
-			},
-			error => {}
-		);
-		}
-		else{
-			alert("Please Select Agent or Chat")
+			CoreHttpHandler.request(
+				'conversations',
+				'transfer',
+				{
+					key: ':id',
+					value: shiftChatsToAgent.agentId,
+					params: {
+						customer: shiftChatsToAgent.chats
+					}
+				},
+				response => {
+					setdialogOpenShift(false);
+					clearData();
+					getNumbers();
+				},
+				error => {}
+			);
+		} else {
+			alert('Please Select Agent or Chat');
 		}
 	};
-	
+
 	const dialogOptionsShift = {
 		onClose: function () {
 			setdialogOpenShift(false);
@@ -969,14 +1014,17 @@ function ChatApp(props) {
 										paper: classes.drawerPaper
 									}}
 								>
-									{/* <ChatsSidebar
+									{/* getNumbers={getNumbers} */}
+									<ChatsSidebar
 										lastMessage={lastmessage}
 										numbers={numbers}
+										getNumbers={getNumbers}
+										chatsLoading={chatsLoading}
 										onContactClick={e => {
 											selectedRecipientt(e);
 										}}
 										selectedRecipient={selectedRecipient}
-									/> */}
+									/>
 								</Drawer>
 							</Hidden>
 						) : null}
@@ -1006,6 +1054,8 @@ function ChatApp(props) {
 										selectedRecipient={selectedRecipient}
 										lastMessage={lastmessage}
 										numbers={numbers}
+										chatsLoading={chatsLoading}
+										getNumbers={getNumbers}
 										onContactClick={e => {
 											selectedRecipientt(e);
 										}}
