@@ -500,11 +500,16 @@ function ChatApp(props) {
 	useEffect(() => {
 		getNumbers();
 		EventEmitter.subscribe('Online', event => checkOnline(event));
+		let value = false
 
 		socket.on('newConversation', data => {
 			setDummy(data);
+			value && notificationTone.play()
+			EventEmitter.subscribe('EnableNotificationTone', event => {
+				value = event
+			})
 		});
-		let value = false
+		// let value = false
 		socket.on('newConversationMessage', data => {
 			setmessage(data);
 			value && notificationTone.play()
