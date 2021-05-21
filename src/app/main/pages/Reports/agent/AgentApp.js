@@ -118,7 +118,8 @@ function AgentApp() {
 				// bullet.dy = 30;
 				// bullet.label.text = '{valueY}'
 				// bullet.label.fill = am4core.color('#ffffff')
-
+		
+			
 				return series;
 			}
 
@@ -166,6 +167,8 @@ function AgentApp() {
 				}
 			}
 		}
+		let nodes = document.querySelector("div #chartdivv g").childNodes[1].childNodes[1]
+		nodes.remove()
 	};
 
 	React.useEffect(() => {

@@ -227,17 +227,13 @@ function ChatApp(props) {
 		getConversation(e);
 	};
 
-	React.useEffect(() => {
-		EventEmitter.subscribe('EnableNotificationTone', event => checkNotificationTone(event));
 
-		let enableTone = localStorage.getItem('EnableNotificationTone')
-		// alert(enableTone, 'enableToneenableTone')
-	}, [])
-	React.useEffect(() => {
-	
-		// enableAudioNotification && notificationTone.play()
-		// alert(enableTone, 'enableToneenableTone')
-	}, [enableAudioNotification])
+
+	// React.useEffect(() => {
+
+	// 	// enableAudioNotification && notificationTone.play()
+	// 	// alert(enableTone, 'enableToneenableTone')
+	// }, [enableAudioNotification])
 
 	const getNumbers = () => {
 		CoreHttpHandler.request(
@@ -508,11 +504,14 @@ function ChatApp(props) {
 		socket.on('newConversation', data => {
 			setDummy(data);
 		});
+		let value = false
 		socket.on('newConversationMessage', data => {
 			setmessage(data);
-			if(enableAudioNotification){
-				notificationTone.play()
-			}
+			value && notificationTone.play()
+			EventEmitter.subscribe('EnableNotificationTone', event => {
+				value = event
+			})
+
 			// enableAudioNotification && notificationTone.play()
 
 		});
@@ -663,10 +662,10 @@ function ChatApp(props) {
 	};
 	const checkNotificationTone = enable => {
 		if (enable) {
-			setEnableAudioNotification(false)
-		} else {
 			setEnableAudioNotification(true)
+		} else {
 
+			setEnableAudioNotification(false)
 		}
 	};
 

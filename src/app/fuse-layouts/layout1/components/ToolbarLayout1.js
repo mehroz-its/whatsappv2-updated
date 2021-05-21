@@ -54,13 +54,11 @@ function ToolbarLayout1(props) {
 		if (enableRingtone) {
 			setEnableRingtone(false)
 			localStorage.setItem('EnableNotificationTone', true);
-			EventEmitter.dispatch('EnableNotificationTone', true);
+			EventEmitter.dispatch('EnableNotificationTone', false);
 		} else {
 			setEnableRingtone(true)
-			EventEmitter.dispatch('EnableNotificationTone', false);
-			localStorage.setItem('EnableNotificationTone', false);
-
-
+			EventEmitter.dispatch('EnableNotificationTone', true);
+			localStorage.setItem('EnableNotificationTone', true);
 		}
 	}
 	const setAgentOnline = e => {

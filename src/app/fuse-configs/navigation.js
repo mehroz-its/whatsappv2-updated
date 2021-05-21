@@ -68,24 +68,7 @@ module.exports = [
 					}
 				]
 			},
-			{
-				id: 'Agent Handling Time',
-				title: 'Agent Handling Time',
-				translate: 'Agent Handling Time',
-				type: 'item',
-				icon: 'groups',
-				url: '/apps/aht',
-				exact: true
-			},
-			{
-				id: 'Service Levels',
-				title: 'Service Levels',
-				translate: 'Service Levels',
-				type: 'item',
-				icon: 'compare_arrows',
-				url: '/apps/serviceLevel',
-				exact: true
-			},
+			
 			{
 				id: 'Template',
 				title: 'Template',
@@ -170,7 +153,23 @@ module.exports = [
 						type: 'item',
 						url: '/report/surveyReport',
 						exact: true
-					}
+					},
+					{
+						id: 'Agent Handling Time',
+						title: 'Agent Handling Time',
+						translate: 'Agent Handling Time',
+						type: 'item',
+						url: '/apps/aht',
+						exact: true
+					},
+					{
+						id: 'Service Levels',
+						title: 'Service Levels',
+						translate: 'Service Levels',
+						type: 'item',
+						url: '/apps/serviceLevel',
+						exact: true
+					},
 				]
 			},
 			{

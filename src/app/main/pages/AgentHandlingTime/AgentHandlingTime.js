@@ -53,7 +53,7 @@ const incomingAndOutGoingCount = data => {
 	// Add data
 	let formatedData = []
 	data.map(val => {
-		formatedData.push({ country: val.username, litres: val.average_time.seconds })
+		formatedData.push({ country: val.username, litres: val.response_time })
 	})
 	chart.data = formatedData
 	// Set inner radius
@@ -129,9 +129,9 @@ function ChatApp() {
 		loadData = () => {
 			return CoreHttpHandler.request('agentHandlingTime', 'listing',
 				{
-					starting_date: Start == '' ? dateWithStartingHour(new Date(), -2): Start.substr(0, Start.indexOf('T')),
-					ending_date: Start == '' ? dateWithEndingHour(new Date(), -2): End.substr(0, End.indexOf('T')),
-				
+					starting_date: Start == '' ? dateWithStartingHour(new Date(), -2) : Start.substr(0, Start.indexOf('T')),
+					ending_date: Start == '' ? dateWithEndingHour(new Date(), -2) : End.substr(0, End.indexOf('T')),
+
 				}
 				, null, null, true);
 		};
@@ -139,7 +139,10 @@ function ChatApp() {
 			setisLoading(false)
 			// setTotalItems(response.data.data.list.totalItems)
 			console.log(response.data.data.average_time, 'response.data.data.list.data')
-			const tableData = response.data.data.average_time
+			const tableData = []
+			response.data.data.average_time.map(val => {
+				tableData.push({ user_id: val.user_id, username: val.username, response_time: `${val.average_time.seconds} seconds ${val.average_time.milliseconds} ms` })
+			})
 			setData(tableData)
 			setData2(tableData)
 			setTimeout(() => {
@@ -272,7 +275,7 @@ function ChatApp() {
 		result.setSeconds(59)
 		return result;
 	}
-	console.log(searchText,'searchTextsearchText')
+	console.log(searchText, 'searchTextsearchText')
 	return (
 		<FusePageSimple
 			header={
@@ -288,30 +291,7 @@ function ChatApp() {
 						</FuseAnimate>
 					</div>
 					<div style={{ justifyContent: 'space-around', marginLeft: '20%' }}>
-						<FormControl className={classes.formControl}>
-							<Select
-								labelId="demo-controlled-open-select-label"
-								id="demo-controlled-open-select"
-								open={selectOPen}
-								onClose={handleClose}
-								onOpen={handleOpen}
-								value={age}
-								onChange={handleChange}
-								fullwidth
-								defaultValue={'DAY'}
-								style={{ fontSize: '12px', marginTop: '-5px' }}
-							>
-								<MenuItem style={{ fontSize: '12px' }} value="days">
-									Day
-								</MenuItem>
-								<MenuItem style={{ fontSize: '12px' }} value="month">
-									Month
-								</MenuItem>
-								<MenuItem style={{ fontSize: '12px' }} value="year">
-									Year
-								</MenuItem>
-							</Select>
-						</FormControl>
+
 						<DateRangePickerVal SelectedDates={SelectedDates} />
 						<Button
 							onClick={getDataAgain}

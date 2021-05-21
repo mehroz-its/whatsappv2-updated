@@ -96,6 +96,8 @@ const incomingAndOutGoingCount = data => {
 			return chartData;
 		}
 	}
+	let nodes = document.querySelector("div #chartdivv g")?.childNodes[1]?.childNodes[1]
+	nodes.remove()
 };
 
 
@@ -149,6 +151,8 @@ const engagments = data => {
 			return chartData;
 		}
 	}
+	let nodes = document.querySelector("div #chartdiv g")?.childNodes[1]?.childNodes[1]
+	nodes.remove()
 };
 const engagmentss = data => {
 	let myEle = document.getElementById('chartdivvv');
@@ -188,6 +192,8 @@ const engagmentss = data => {
 			return chartData;
 		}
 	}
+	let nodes = document.querySelector("div #chartdivvv g")?.childNodes[1]?.childNodes[1]
+	nodes.remove()
 };
 var Start = '';
 var End = '';

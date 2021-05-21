@@ -55,7 +55,7 @@ const incomingAndOutGoingCount = data => {
 	// Add data
 	let formatedData = []
 	data.map(val => {
-		formatedData.push({ country: val.username, litres: val.count })
+		formatedData.push({ country: val.username, litres: val.chat_in_20_seconds })
 	})
 	chart.data = formatedData
 	// Set inner radius
@@ -147,8 +147,13 @@ function ChatApp() {
 			const tableData = response.data.data.serviceLevel
 			setTotalAgenChats(response.data.data.total_chats)
 			setTotalChatIn20Sec(response.data.data.within20seconds)
-			setData(tableData)
-			setData2(tableData)
+			let array = []
+			tableData.map(val => {
+				console.log(val, 'valaaaaa')
+				array.push({ user_id: val.user_id, username: val.username, chat_in_20_seconds: val.count, total_chats: val.total })
+			})
+			setData(array)
+			setData2(array)
 			setTimeout(() => {
 				setSnackBarMessage('')
 				setSnackBarOpen(false)
@@ -400,12 +405,12 @@ function ChatApp() {
 										/>
 									</Grid>
 									<Grid item md={12} sm={12} xs={12}>
-									<Paper className="w-full rounded-8 shadow-none border-1" style={{ display: 'flex', flexDirection: 'column' ,height:'175px'}}>
+										<Paper className="w-full rounded-8 shadow-none border-1" style={{ display: 'flex', flexDirection: 'column', height: '175px' }}>
 
-										<UserTable
-											totalItems={totalItems} setPage={setPage} setLimit={setLimit} rowsPerPage={currentParams.limit} currentPage={currentParams.page} isLoading={isLoading}
-											ValueForSearch={searchText} dataa={data2} />
-											</Paper>
+											<UserTable
+												totalItems={totalItems} setPage={setPage} setLimit={setLimit} rowsPerPage={currentParams.limit} currentPage={currentParams.page} isLoading={isLoading}
+												ValueForSearch={searchText} dataa={data2} />
+										</Paper>
 									</Grid>
 								</Grid>
 							</Grid>

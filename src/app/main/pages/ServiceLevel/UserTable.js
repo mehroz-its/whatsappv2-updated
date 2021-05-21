@@ -182,10 +182,10 @@ function UserTable(props) {
 													{n.username}
 												</TableCell>
 												<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
-													{n.count}
+													{n.chat_in_20_seconds}
 												</TableCell>
 												<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
-													{n.total}
+													{n.total_chats}
 												</TableCell>
 												{/* <TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 												{n.email}

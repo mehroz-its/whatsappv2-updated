@@ -182,7 +182,7 @@ function UserTable(props) {
 													{n.username}
 												</TableCell>
 												<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
-													{`${n.average_time.seconds}seconds ${n.average_time.milliseconds} ms`}
+													{n.response_time}
 												</TableCell>
 												{/* <TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
 												{n.email}
