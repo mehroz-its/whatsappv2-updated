@@ -969,14 +969,14 @@ function ChatApp(props) {
 										paper: classes.drawerPaper
 									}}
 								>
-									<ChatsSidebar
+									{/* <ChatsSidebar
 										lastMessage={lastmessage}
 										numbers={numbers}
 										onContactClick={e => {
 											selectedRecipientt(e);
 										}}
 										selectedRecipient={selectedRecipient}
-									/>
+									/> */}
 								</Drawer>
 							</Hidden>
 						) : null}
