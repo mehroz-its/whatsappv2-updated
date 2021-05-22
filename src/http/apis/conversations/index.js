@@ -42,8 +42,8 @@ class APIS {
 				headers: {
 					'xt-user-token': null
 				},
-				method: 'get',
-				path: '/agent/get/chat/:number/:last_closed'
+				method: 'post',
+				path: '/agent/get/chat'
 				// path: '/agent/history/chat/:number/:last_closed'
 				// path: '/messages/conversations/:number'
 			},
@@ -60,8 +60,9 @@ class APIS {
 				headers: {
 					'xt-user-token': null
 				},
-				method: 'get',
-				path: '/agent/history/chat/:number/:start_date/:last_closed'
+				method: 'post',
+				path: '/agent/history/chat'
+				// path: '/agent/history/chat/:number/:start_date/:last_closed'
 				// path: '/agent/history/chat/:number/:last_closed'
 				// path: '/messages/conversations/:number'
 			},

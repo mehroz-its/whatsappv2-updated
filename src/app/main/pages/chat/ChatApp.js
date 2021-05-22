@@ -203,7 +203,9 @@ function ChatApp(props) {
 	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const [listPage, setListPage] = React.useState(0);
+	const [msgPage, setMsgPage] = React.useState(0);
 	const [chatsLoading, setChatsLoading] = React.useState(false);
+	const [msgsLoading, setMsgsLoading] = React.useState(false);
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
 	const selectedRecipientt = e => {
@@ -236,8 +238,8 @@ function ChatApp(props) {
 				console.log(response, 'ressssssssssssssssssssssss');
 				const numberrrrrr = response.data.data.customers;
 				console.log('newData', numberrrrrr);
-
-				setnumbers(numberrrrrr);
+				let data = [...numbers];
+				setnumbers([...data, ...numberrrrrr]);
 
 				setChatsLoading(false);
 				console.log(numberrrrrr, 'nummmmmmmmmmm');
@@ -248,13 +250,13 @@ function ChatApp(props) {
 				// 	totalItems: numberrrrrr?.totalItems,
 				// 	totalPages: numberrrrrr?.totalPages
 				// };
-				let newObj = {
-					limit: 10,
-					page: listPage ? listPage : 1,
-					totalItems: numberrrrrr?.totalItems,
-					totalPages: numberrrrrr?.totalPages
-				};
-				setnumbers([...numbers, ...numberrrrrr.customers]);
+				// let newObj = {
+				// 	limit: 10,
+				// 	page: listPage ? listPage : 1,
+				// 	totalItems: numberrrrrr?.totalItems,
+				// 	totalPages: numberrrrrr?.totalPages
+				// };
+				// setnumbers([...numbers, ...numberrrrrr.customers]);
 				// numbers['rest'] = newObj;
 				// let newObj = {
 				// 	customers: numbers.customers ? numbers.customers : [],
@@ -285,20 +287,41 @@ function ChatApp(props) {
 	const socket = WebSocket.getSocket();
 
 	const getConversation = e => {
+		setMsgPage(msgPage + 1);
+		setMsgsLoading(true);
 		let params = {
-			key: ':number',
-			value: e.number,
-			key2: ':last_closed',
-			value2: e.last_closed
+			// key: ':number',
+			number: e.number,
+			// key2: ':last_closed',
+			last_closed: e.last_closed,
+			limit: '100',
+			page: '0'
 		};
 		CoreHttpHandler.request(
 			'conversations',
 			'conversations',
 			params,
 			response => {
+				const messagesssss = response.data.data.chat;
 				setmessages(response.data.data.chat);
+				console.log(...messages, 'msggggggggg');
+				let tempArr = []
+				if(tempArr.length == 0){
+					tempArr = messagesssss
+				}else{
+					tempArr.unshift(...messagesssss)
+				}
+				console.log(tempArr,'tempArr')
+				messages.unshift(...messagesssss);
+				// console.log(newmsgs, 'newwwwwmsssdsfsfs');
+				// let newmsgs = [...messages];
+
+				setmessages([...messages, messagesssss]);
+				console.log(messages.length,'mesaaagesss')
+				// setmessages([...messages, ...messagesssss]);
 
 				setshowLatestMessage(true);
+				setMsgsLoading(false);
 			},
 			response => {}
 		);
@@ -1191,6 +1214,8 @@ function ChatApp(props) {
 												conversationUpdate={conversationUpdate}
 												className="flex flex-1 z-10"
 												messages={messages}
+												getConversation={getConversation}
+												msgsLoading={msgsLoading}
 												selectedRecipient={selectedRecipient}
 												clearBlock={clearData}
 												endConversation={endConversation}

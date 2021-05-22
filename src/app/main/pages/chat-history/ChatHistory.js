@@ -195,6 +195,8 @@ function ChatApp(props) {
 	const [updateCustomerMessages, setUpdateCustomerMessages] = React.useState(null);
 	const [historyOnTop, setHistoryOnTop] = React.useState(null);
 	const [listPage, setListPage] = useState(1);
+	const [totalPages, setTotalPages] = useState(0);
+	const [msgsLoading, setMsgsLoading] = useState(false);
 
 	const selectedRecipientt = e => {
 		// clearInterval(int_MessageLists);
@@ -241,6 +243,7 @@ function ChatApp(props) {
 			key3: ':last_closed',
 			value3: endDate ? endDate : null
 		};
+
 		CoreHttpHandler.request(
 			'conversations',
 			'historyConversationsPagination',
@@ -401,27 +404,42 @@ function ChatApp(props) {
 	};
 
 	console.log(numbers, 'NUMBERRRRRRRRRRRRRSSSSSS');
-	const getConversation = e => {
+	const getConversation = (e, msgPage) => {
+		console.log(msgPage, "msssssssssssssssssssssssssssssssss");
+		// return
+		alert(msgPage)
+		setMsgsLoading(true);
 		let params = {
-			key: ':number',
-			value: e.number,
+			// key: ':number',
+			// value: e.number,
 
-			key2: ':start_date',
-			value2: null,
+			// key2: ':start_date',
+			// value2: null,
 
-			key3: ':last_closed',
-			value3: e.last_closed
+			// key3: ':last_closed',
+			// value3: e.last_closed
+
+			number: e.number,
+			start_date: null,
+			last_closed: e.last_closed || 20,
+			page: msgPage ? msgPage : 0,
+			limit: 100,
 		};
+		
 
 		CoreHttpHandler.request(
 			'conversations',
 			'historyConversationsPagination',
 			params,
 			response => {
+				let msgsssss = response.data.data.chat;
 				if (response.data.data.chat.length > abc.length) {
-					setmessages(response.data.data.chat);
+					setmessages([...messages, ...msgsssss]);
+					// setmessages(response.data.data.chat);
 					abc = response.data.data.chat;
 					setshowLatestMessage(true);
+					setMsgsLoading(false);
+					setTotalPages(response.data.data.totalPages);
 				}
 				CoreHttpHandler.request(
 					'conversations',
@@ -1131,6 +1149,9 @@ function ChatApp(props) {
 										<Chat
 											className="flex flex-1 z-10"
 											messages={messages}
+											getConversation={getConversation}
+											msgsLoading={msgsLoading}
+											totalPages={totalPages}
 											selectedRecipient={selectedRecipient}
 											clearBlock={clearData}
 										/>
