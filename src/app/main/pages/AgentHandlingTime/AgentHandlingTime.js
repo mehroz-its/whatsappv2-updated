@@ -129,8 +129,8 @@ function ChatApp() {
 		loadData = () => {
 			return CoreHttpHandler.request('agentHandlingTime', 'listing',
 				{
-					starting_date: Start == '' ? dateWithStartingHour(new Date(), -2) : Start.substr(0, Start.indexOf('T')),
-					ending_date: Start == '' ? dateWithEndingHour(new Date(), -2) : End.substr(0, End.indexOf('T')),
+					starting_date: Start == '' ? dateWithStartingHour(new Date(), -1) : Start.substr(0, Start.indexOf('T')),
+					ending_date: Start == '' ? dateWithEndingHour(new Date(), -1) : End.substr(0, End.indexOf('T')),
 
 				}
 				, null, null, true);
@@ -261,18 +261,23 @@ function ChatApp() {
 
 	function dateWithStartingHour(date, days) {
 		var result = new Date(date);
-		result.setDate(result.getDate() + days)
-		result.setHours('17')
-		result.setMinutes('00')
-		result.setSeconds('00')
+		result.setDate(result.getDate())
+		result.setHours("00", "00", "00")
+		// result.setHours('00')
+		// result.setMinutes('00')
+		// result.setSeconds('00')
+		// result = `${result.getFullYear()}-${result.getMonth()}-${result.getDate()}T00:00:00.000Z`
+
 		return result;
 	}
 	function dateWithEndingHour(date, days) {
 		var result = new Date(date);
-		result.setDate(result.getDate() + days)
-		result.setHours(40)
-		result.setMinutes(59)
-		result.setSeconds(59)
+		result.setDate(result.getDate())
+		result.setHours("23", "59", "59");
+		// result.setMinutes(59)
+		// result.setSeconds(59)
+		// result = `${result.getFullYear()}-${result.getMonth()}-${result.getDate()}T23:59:59.000Z`
+
 		return result;
 	}
 	console.log(searchText, 'searchTextsearchText')
