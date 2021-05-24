@@ -207,7 +207,7 @@ function ChatsSidebar(props) {
 				</List>
 				{props.chatsLoading ? (
 					<div style={{ width: '100%', textAlign: 'center' }}>
-						<CircularProgress color="secondary" size={0} />
+						<CircularProgress color="secondary" size={30} />
 					</div>
 				) : (
 					<div style={{ textAlign: 'center', margin: '5px 0' }}>

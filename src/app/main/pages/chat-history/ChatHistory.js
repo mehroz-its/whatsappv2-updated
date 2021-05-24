@@ -405,9 +405,7 @@ function ChatApp(props) {
 
 	console.log(numbers, 'NUMBERRRRRRRRRRRRRSSSSSS');
 	const getConversation = (e, msgPage) => {
-		console.log(msgPage, "msssssssssssssssssssssssssssssssss");
-		// return
-		alert(msgPage)
+		// console.log(msgPage, 'msssssssssssssssssssssssssssssssss');
 		setMsgsLoading(true);
 		let params = {
 			// key: ':number',
@@ -421,11 +419,10 @@ function ChatApp(props) {
 
 			number: e.number,
 			start_date: null,
-			last_closed: e.last_closed || 20,
+			last_closed: e.last_closed,
 			page: msgPage ? msgPage : 0,
-			limit: 100,
+			limit: 100
 		};
-		
 
 		CoreHttpHandler.request(
 			'conversations',
