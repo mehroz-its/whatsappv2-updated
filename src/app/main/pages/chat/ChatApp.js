@@ -188,7 +188,6 @@ function ChatApp(props) {
 	const [lastMessageTimestamp, setlastMessageTimestamp] = React.useState(null);
 	const [latestMessageSender, setlatestMessageSender] = React.useState(null);
 	const [numbers, setnumbers] = React.useState([]);
-	const [numberss, setnumberss] = React.useState([]);
 	const [dummy, setDummy] = React.useState(null);
 	const [firstLoad, setFirstLoad] = React.useState(true);
 	const [numbersLength, setNumbersLength] = React.useState(0);
@@ -208,6 +207,10 @@ function ChatApp(props) {
 
 
 
+	const [listPage, setListPage] = React.useState(0);
+	const [msgPage, setMsgPage] = React.useState(0);
+	const [chatsLoading, setChatsLoading] = React.useState(false);
+	const [msgsLoading, setMsgsLoading] = React.useState(false);
 	const classes = useStyles(props);
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
 	const selectedRecipientt = e => {
@@ -236,16 +239,61 @@ function ChatApp(props) {
 	// }, [enableAudioNotification])
 
 	const getNumbers = () => {
+		setChatsLoading(true);
+		setListPage(listPage + 1);
 		CoreHttpHandler.request(
 			'conversations',
 			'numbers',
-			{},
-			response => {
-				const newData = response.data.data.customers;
-				console.log('newData', newData);
+			{
+				page: listPage ? listPage : 0,
+				limit: 10
+			},
 
-				setnumbers(newData);
-				setnumberss(newData);
+			response => {
+				console.log(response, 'ressssssssssssssssssssssss');
+				const numberrrrrr = response.data.data.customers;
+				console.log('newData', numberrrrrr);
+				let data = [...numbers];
+				setnumbers([...data, ...numberrrrrr]);
+
+				setChatsLoading(false);
+				console.log(numberrrrrr, 'nummmmmmmmmmm');
+				// let tempArr = [];
+				// let newObj = {
+				// 	limit: 10,
+				// 	page: listPage ? listPage : 1,
+				// 	totalItems: numberrrrrr?.totalItems,
+				// 	totalPages: numberrrrrr?.totalPages
+				// };
+				// let newObj = {
+				// 	limit: 10,
+				// 	page: listPage ? listPage : 1,
+				// 	totalItems: numberrrrrr?.totalItems,
+				// 	totalPages: numberrrrrr?.totalPages
+				// };
+				// setnumbers([...numbers, ...numberrrrrr.customers]);
+				// numbers['rest'] = newObj;
+				// let newObj = {
+				// 	customers: numbers.customers ? numbers.customers : [],
+				// 	limit: 10,
+				// 	page: listPage ? listPage : 1,
+				// 	totalItems: numberrrrrr?.totalItems,
+				// 	totalPages: numberrrrrr?.totalPages
+				// };
+				// let tempArr = newObj;
+				// console.log(tempArr, 'TEMPPPPPPPPPPPPPPPPPPPp');
+				// tempArr.customers.push(numberrrrrr.customers);
+				// console.log(tempArr, 'TEMPPPPPPPPPPPPPPPPPPPp_AFTERRRRRRRRRRRRRR');
+				// setnumbers([...numbers, ...tempArr.customers	]);
+
+				// tempArr.push({ ...newObj, customers: numberrrrrr?.customers });
+				// tempArr.customers.push(numberrrrrr?.customers);
+				// console.log(tempArr, 'trempppppppppp');
+				// if (numbers.length < 10) {
+				// 	setnumbers(numberrrrrr);
+				// } else {
+				// 	setnumbers(...numberrrrrr, numberrrrrr.customers);
+				// }
 			},
 			error => { }
 		);
@@ -254,20 +302,41 @@ function ChatApp(props) {
 	const socket = WebSocket.getSocket();
 
 	const getConversation = e => {
+		setMsgPage(msgPage + 1);
+		setMsgsLoading(true);
 		let params = {
-			key: ':number',
-			value: e.number,
-			key2: ':last_closed',
-			value2: e.last_closed
+			// key: ':number',
+			number: e.number,
+			// key2: ':last_closed',
+			last_closed: e.last_closed,
+			limit: '100',
+			page: '0'
 		};
 		CoreHttpHandler.request(
 			'conversations',
 			'conversations',
 			params,
 			response => {
+				const messagesssss = response.data.data.chat;
 				setmessages(response.data.data.chat);
+				console.log(...messages, 'msggggggggg');
+				let tempArr = []
+				if(tempArr.length == 0){
+					tempArr = messagesssss
+				}else{
+					tempArr.unshift(...messagesssss)
+				}
+				console.log(tempArr,'tempArr')
+				messages.unshift(...messagesssss);
+				// console.log(newmsgs, 'newwwwwmsssdsfsfs');
+				// let newmsgs = [...messages];
+
+				setmessages([...messages, messagesssss]);
+				console.log(messages.length,'mesaaagesss')
+				// setmessages([...messages, ...messagesssss]);
 
 				setshowLatestMessage(true);
+				setMsgsLoading(false);
 			},
 			response => { }
 		);
@@ -721,8 +790,8 @@ function ChatApp(props) {
 		setsendDialogData(data);
 	};
 	const selectedShiftAgent = data => {
-		console.log("selectedShiftAgent data", data);
-		setShiftChatsToAgent(data)
+		console.log('selectedShiftAgent data', data);
+		setShiftChatsToAgent(data);
 		// CoreHttpHandler.request(
 		// 	'conversations',
 		// 	'transfer',
@@ -741,7 +810,7 @@ function ChatApp(props) {
 		// );
 	};
 	const selectedShiftAgentList = () => {
-		console.log("shiftChatsToAgenttt :", shiftChatsToAgent);
+		console.log('shiftChatsToAgenttt :', shiftChatsToAgent);
 		if (shiftChatsToAgent.agentId !== null && shiftChatsToAgent.chats.length > 0) {
 			CoreHttpHandler.request(
 				'conversations',
@@ -758,11 +827,10 @@ function ChatApp(props) {
 					clearData();
 					getNumbers();
 				},
-				error => { }
+				error => {}
 			);
-		}
-		else {
-			alert("Please Select Agent or Chat")
+		} else {
+			alert('Please Select Agent or Chat');
 		}
 	};
 
@@ -1016,9 +1084,12 @@ function ChatApp(props) {
 										paper: classes.drawerPaper
 									}}
 								>
+									{/* getNumbers={getNumbers} */}
 									<ChatsSidebar
 										lastMessage={lastmessage}
 										numbers={numbers}
+										getNumbers={getNumbers}
+										chatsLoading={chatsLoading}
 										onContactClick={e => {
 											selectedRecipientt(e);
 										}}
@@ -1053,8 +1124,11 @@ function ChatApp(props) {
 										selectedRecipient={selectedRecipient}
 										lastMessage={lastmessage}
 										numbers={numbers}
+										chatsLoading={chatsLoading}
+										getNumbers={getNumbers}
 										onContactClick={e => {
 											selectedRecipientt(e);
+											
 										}}
 									/>
 								</Drawer>
@@ -1188,6 +1262,8 @@ function ChatApp(props) {
 												conversationUpdate={conversationUpdate}
 												className="flex flex-1 z-10"
 												messages={messages}
+												getConversation={getConversation}
+												msgsLoading={msgsLoading}
 												selectedRecipient={selectedRecipient}
 												clearBlock={clearData}
 												endConversation={endConversation}

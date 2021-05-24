@@ -150,7 +150,7 @@ function ChatApp(props) {
 	const socket = WebSocket.getSocket();
 
 	const dispatch = useDispatch();
-	const { numberr, selectedAgent, ongoingNewConversation, updateOnGoingConversation ,reloadNumber } = props;
+	const { numberr, selectedAgent, ongoingNewConversation, updateOnGoingConversation, reloadNumber } = props;
 
 	React.useEffect(() => {
 		if (updateOnGoingConversation && selectedRecipient) {
@@ -596,8 +596,7 @@ function ChatApp(props) {
 				setdialogOpenCanned(true);
 				setMoreMenuEl(null);
 			},
-			error => {
-			}
+			error => {}
 		);
 	};
 	const sendDialogInputHandler = e => {
@@ -617,11 +616,10 @@ function ChatApp(props) {
 		setsendDialogData(data);
 	};
 	const selectedShiftAgent = data => {
-		console.log("selectedShiftAgent data" , data);
-		setShiftChatsToAgent(data)
+		console.log('selectedShiftAgent data', data);
+		setShiftChatsToAgent(data);
 	};
 	const selectedShiftAgentList = () => {
-		
 		if (shiftChatsToAgent.agentId !== null && shiftChatsToAgent.chats.length > 0) {
 			CoreHttpHandler.request(
 				'conversations',
@@ -636,15 +634,14 @@ function ChatApp(props) {
 				response => {
 					setdialogOpenShift(false);
 					clearData();
-					reloadNumber()
+					reloadNumber();
 				},
 				response => {
 					setdialogOpenShift(false);
 				}
 			);
-		}
-		else{
-			alert("Please Select Agent or Chat")
+		} else {
+			alert('Please Select Agent or Chat');
 		}
 	};
 	const dialogOptionsShift = {
@@ -896,6 +893,8 @@ function ChatApp(props) {
 							>
 								<ChatsSidebar
 									numbers={numberr}
+									getNumbers={props.getNumbers}
+									chatsLoading={props.chatsLoading}
 									onContactClick={e => {
 										selectedRecipientt(e);
 									}}
@@ -915,13 +914,15 @@ function ChatApp(props) {
 			<div style={{flex:1,display:'flex',justifyContent:'center',alignItems:'center'}}>
 			<CircularProgress color="secondary" />
 			</div>
-	
-		:
+			
+			:
 			<ChatsSidebar numbers={numberr} onContactClick={(e) => { selectedRecipientt(e) }} Loading={props.Loading} />  
-
-} */}
+			
+		} */}
 								<ChatsSidebar
 									numbers={numberr}
+									getNumbers={props.getNumbers}
+									chatsLoading={props.chatsLoading}
 									onContactClick={e => {
 										selectedRecipientt(e);
 									}}

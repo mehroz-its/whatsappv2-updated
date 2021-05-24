@@ -25,6 +25,7 @@ import Otp from './otp';
 import surveyReport from './surveyReport/index';
 import counts from './chatCounts';
 import agentHandlingTime from './agentHandlingTime';
+import historyNumbers from './conversations';
 
 class ApiResolver {
 	constructor() {
@@ -55,7 +56,8 @@ class ApiResolver {
 			locations: LocationApis.apis(),
 			surveyReport: surveyReport.apis(),
 			chatsCount: counts.apis(),
-			agentHandlingTime:agentHandlingTime.apis()
+			agentHandlingTime: agentHandlingTime.apis(),
+			historyNumbers: historyNumbers.apis()
 		};
 	}
 
