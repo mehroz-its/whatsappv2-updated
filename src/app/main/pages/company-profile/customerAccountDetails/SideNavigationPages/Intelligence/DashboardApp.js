@@ -62,6 +62,8 @@ const rader_chart = list => {
 
 		chart.hiddenState.properties.radius = am4core.percent(0);
 	}
+	let nodes = document.querySelector("div #chartdivv g").childNodes[1].childNodes[1]
+	nodes.remove()
 };
 const newMessageList = [
 	{ category: 'My-Locations', value: '0', full: '100' },

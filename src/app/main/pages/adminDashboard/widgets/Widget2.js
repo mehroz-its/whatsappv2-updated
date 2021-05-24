@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 
 function Widget2({ value }) {
+	console.log(value,'valuevalue11')
 	return (
 		<Paper className="w-full rounded-8 shadow-none border-1">
 			<div className="text-center pt-24 ">
