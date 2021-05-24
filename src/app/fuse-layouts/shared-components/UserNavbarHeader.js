@@ -48,7 +48,6 @@ function UserNavbarHeader(props) {
 	const classes = useStyles();
 
 	const checkUpdate = () => {
-		// alert("update")
 		let data = null;
 		data = JSON.parse(localStorage.getItem('user_data'));
 		// console.log("user_data user",data)
