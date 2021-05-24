@@ -620,7 +620,8 @@ function ChatApp(props) {
 		setShiftChatsToAgent(data);
 	};
 	const selectedShiftAgentList = () => {
-		if (shiftChatsToAgent.agentId !== null && shiftChatsToAgent.chats.length > 0) {
+		console.log(shiftChatsToAgent,'live debug**')
+		if (shiftChatsToAgent.agentId !== null) {
 			CoreHttpHandler.request(
 				'conversations',
 				'transfer',

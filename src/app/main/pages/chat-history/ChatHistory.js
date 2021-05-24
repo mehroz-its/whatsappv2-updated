@@ -403,7 +403,6 @@ function ChatApp(props) {
 		);
 	};
 
-	console.log(numbers, 'NUMBERRRRRRRRRRRRRSSSSSS');
 	const getConversation = (e, msgPage, isLoadMore) => {
 		// console.log(msgPage, 'msssssssssssssssssssssssssssssssss');
 		setMsgsLoading(true);

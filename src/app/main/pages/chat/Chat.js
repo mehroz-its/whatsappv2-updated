@@ -622,6 +622,7 @@ function Chat(props) {
 		);
 	};
 	const conversationShift = () => {
+		return
 		CoreHttpHandler.request(
 			'conversations',
 			'agent_list',
