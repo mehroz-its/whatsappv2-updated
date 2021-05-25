@@ -253,7 +253,7 @@ function ChatApp(props) {
 				abc = response.data.data.chat;
 				setshowLatestMessage(true);
 			},
-			response => { }
+			response => {}
 		);
 	};
 
@@ -399,7 +399,7 @@ function ChatApp(props) {
 				// 	setnumbers(...numberrrrrr, numberrrrrr.customers);
 				// }
 			},
-			response => { }
+			response => {}
 		);
 	};
 
@@ -407,7 +407,7 @@ function ChatApp(props) {
 		// console.log(msgPage, 'msssssssssssssssssssssssssssssssss');
 		setMsgsLoading(true);
 		let params = {
-				number: e.number,
+			number: e.number,
 			start_date: null,
 			last_closed: e.last_closed,
 			page: msgPage ? msgPage : 0,
@@ -423,29 +423,27 @@ function ChatApp(props) {
 				if (response.data.data.chat.length > abc.length) {
 					if (isLoadMore) {
 						setmessages([...msgsssss, ...messages]);
-
 					} else {
 						setmessages([...msgsssss]);
-
 					}
 					// setmessages(response.data.data.chat);
 					abc = response.data.data.chat;
 					setshowLatestMessage(true);
 					setMsgsLoading(false);
 					setTotalPages(response.data.data.totalPages);
-					setChatsLoading(false)
+					setChatsLoading(false);
 				}
 				CoreHttpHandler.request(
 					'conversations',
 					'reset_message_count',
 					{ key: ':number', value: e.number },
 					response => {
-						setChatsLoading(false)
+						setChatsLoading(false);
 					},
-					response => { }
+					response => {}
 				);
 			},
-			response => { }
+			response => {}
 		);
 	};
 
@@ -479,7 +477,7 @@ function ChatApp(props) {
 				setSnackBarOpen(true);
 				setMoreMenuEl(null);
 			},
-			response => { }
+			response => {}
 		);
 	};
 	const conversationShift = () => {
@@ -493,7 +491,7 @@ function ChatApp(props) {
 				setdialogOpenShift(true);
 				setMoreMenuEl(null);
 			},
-			response => { }
+			response => {}
 		);
 	};
 	const conversationContextMenuCallback = item => {
@@ -653,7 +651,7 @@ function ChatApp(props) {
 					attributes: null
 				});
 			},
-			response => { }
+			response => {}
 		);
 	};
 	const dialogOptionsConfirmBlock = {
@@ -704,7 +702,7 @@ function ChatApp(props) {
 				setdialogOpenCanned(true);
 				setMoreMenuEl(null);
 			},
-			error => { }
+			error => {}
 		);
 	};
 	const sendDialogInputHandler = e => {
@@ -735,7 +733,7 @@ function ChatApp(props) {
 				setdialogOpenShift(false);
 				clearData();
 			},
-			response => { }
+			response => {}
 		);
 	};
 	const dialogOptionsShift = {
@@ -785,7 +783,7 @@ function ChatApp(props) {
 				response => {
 					setdialogOpenCanned(false);
 				},
-				error => { }
+				error => {}
 			);
 		} else {
 			setdialogOpenCanned(false);
@@ -979,6 +977,8 @@ function ChatApp(props) {
 								<ChatsSidebar
 									numbers={filtered}
 									getNumbers={getNumbers}
+									totalPages={totalPages}
+									sideBarPage={listPage}
 									chatsLoading={chatsLoading}
 									onContactClick={e => {
 										selectedRecipientt(e);
@@ -1001,8 +1001,7 @@ function ChatApp(props) {
 									chatsLoading={chatsLoading}
 									numbers={filtered}
 									onContactClick={e => {
-
-										setmessages([])
+										setmessages([]);
 										selectedRecipientt(e);
 									}}
 								/>

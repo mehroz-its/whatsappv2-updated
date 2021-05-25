@@ -98,7 +98,7 @@ function a11yProps(index) {
 	};
 }
 function ChatsSidebar(props) {
-	console.log(props, 'ppppppppppppppp');
+	console.log(props.sideBarPage, props.totalPages, 'ppppppppppppppp');
 
 	const { numbers, lastMessage, selectedRecipient } = props;
 	const dispatch = useDispatch();
@@ -210,7 +210,15 @@ function ChatsSidebar(props) {
 						<CircularProgress color="secondary" size={30} />
 					</div>
 				) : (
-					<div style={{ textAlign: 'center', margin: '5px 0' }}>
+					<div
+						style={{
+							textAlign: 'center',
+							margin: '5px 0',
+							// display: props.sideBarPage === props.totalPages ? 'none' : 'block'
+							display: props.numbers.length < 10 ? 'none' : 'block'
+						}}
+					>
+						{console.log(props.numbers.length, 'propslength')}
 						<Button
 							variant="contained"
 							size="small"

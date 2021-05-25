@@ -187,6 +187,8 @@ function ChatApp(props) {
 	const [messageStatusListener, setMessageStatusListener] = React.useState(null);
 	const [updateMessages, setUpdateMessages] = React.useState(null);
 	const [message, setmessage] = React.useState(null);
+	const [sideBarPage, setSideBarPage] = React.useState(0);
+	const [totalPages, setTotalPages] = React.useState(0);
 	const [messageStatus, setMessageStatus] = React.useState(null);
 
 	const removeListener = () => {
@@ -286,12 +288,18 @@ function ChatApp(props) {
 	// }
 	const getConversation = e => {
 		// console.log("getConversation selectedRecipient :", e);
+		// let params = {
+		// 	key: ':number',
+		// 	value: e.number,
+		// 	params: {
+		// 		agentId: selectedAgent
+		// 	}
+		// };
+
 		let params = {
-			key: ':number',
-			value: e.number,
-			params: {
-				agentId: selectedAgent
-			}
+			number: e.number,
+			page: sideBarPage,
+			limit: '100'
 		};
 
 		// console.log("params : ", params);
@@ -300,7 +308,8 @@ function ChatApp(props) {
 			'agents_customer_conversations',
 			params,
 			response => {
-				// console.log("response :", response);
+				console.log('response :', response);
+				console.log('response :', response.data.data.totalPages);
 				if (response.data.data.conversation.length > NewMessagess.length) {
 					//   console.log("response if");
 					const messagess = response.data.data.conversation;
@@ -309,6 +318,8 @@ function ChatApp(props) {
 					// setNewMessages(response.data.data.conversation)
 					setmessages(messagess);
 					setshowLatestMessage(true);
+					setTotalPages(response.data.data.totalPages);
+					setSideBarPage(response.data.data.page);
 					// setselectedRecipient(e)
 				} else {
 					// console.log('response else ');
@@ -620,7 +631,7 @@ function ChatApp(props) {
 		setShiftChatsToAgent(data);
 	};
 	const selectedShiftAgentList = () => {
-		console.log(shiftChatsToAgent,'live debug**')
+		console.log(shiftChatsToAgent, 'live debug**');
 		if (shiftChatsToAgent.agentId !== null) {
 			CoreHttpHandler.request(
 				'conversations',
@@ -896,6 +907,8 @@ function ChatApp(props) {
 									numbers={numberr}
 									getNumbers={props.getNumbers}
 									chatsLoading={props.chatsLoading}
+									sideBarPage={sideBarPage}
+									totalPages={totalPages}
 									onContactClick={e => {
 										selectedRecipientt(e);
 									}}
@@ -924,6 +937,8 @@ function ChatApp(props) {
 									numbers={numberr}
 									getNumbers={props.getNumbers}
 									chatsLoading={props.chatsLoading}
+									sideBarPage={sideBarPage}
+									totalPages={totalPages}
 									onContactClick={e => {
 										selectedRecipientt(e);
 									}}
