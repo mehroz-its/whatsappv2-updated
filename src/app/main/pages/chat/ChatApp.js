@@ -202,10 +202,11 @@ function ChatApp(props) {
 	const [removeConversation, setRemoveConversation] = React.useState(null);
 	const [moreMenuEl, setMoreMenuEl] = React.useState(null);
 	const [anchorEl, setAnchorEl] = React.useState(null);
-	const [enableAudioNotification, setEnableAudioNotification] = useState(false)
-	const [notificationTone, setNotificationTone] = useState(new Audio('https://upload.its.com.pk/v1/fetch/file/66961b75-3fef-406e-8923-277793adae4e.mp3'))
-
-
+	const [enableAudioNotification, setEnableAudioNotification] = useState(false);
+	const [totalItemsNum, setTotalItemsNum] = useState(0);
+	const [notificationTone, setNotificationTone] = useState(
+		new Audio('https://upload.its.com.pk/v1/fetch/file/66961b75-3fef-406e-8923-277793adae4e.mp3')
+	);
 
 	const [listPage, setListPage] = React.useState(0);
 	const [msgPage, setMsgPage] = React.useState(0);
@@ -225,12 +226,9 @@ function ChatApp(props) {
 		setselectedRecipient(e);
 		readMessage();
 
-
 		setmobileChatsSidebarOpen(false);
 		getConversation(e);
 	};
-
-
 
 	// React.useEffect(() => {
 
@@ -250,11 +248,12 @@ function ChatApp(props) {
 			},
 
 			response => {
-				console.log(response, 'ressssssssssssssssssssssss');
+				console.log(response.data.data.customers.totalItems, 'resssssstotttllllllll');
 				const numberrrrrr = response.data.data.customers;
 				console.log('newData', numberrrrrr);
 				let data = [...numbers];
 				setnumbers([...data, ...numberrrrrr]);
+				setTotalItemsNum(response.data.data.customers.totalItems);
 
 				setChatsLoading(false);
 				console.log(numberrrrrr, 'nummmmmmmmmmm');
@@ -295,7 +294,7 @@ function ChatApp(props) {
 				// 	setnumbers(...numberrrrrr, numberrrrrr.customers);
 				// }
 			},
-			error => { }
+			error => {}
 		);
 	};
 
@@ -320,25 +319,25 @@ function ChatApp(props) {
 				const messagesssss = response.data.data.chat;
 				setmessages(response.data.data.chat);
 				console.log(...messages, 'msggggggggg');
-				let tempArr = []
-				if(tempArr.length == 0){
-					tempArr = messagesssss
-				}else{
-					tempArr.unshift(...messagesssss)
+				let tempArr = [];
+				if (tempArr.length == 0) {
+					tempArr = messagesssss;
+				} else {
+					tempArr.unshift(...messagesssss);
 				}
-				console.log(tempArr,'tempArr')
+				console.log(tempArr, 'tempArr');
 				messages.unshift(...messagesssss);
 				// console.log(newmsgs, 'newwwwwmsssdsfsfs');
 				// let newmsgs = [...messages];
 
 				setmessages([...messages, messagesssss]);
-				console.log(messages.length,'mesaaagesss')
+				console.log(messages.length, 'mesaaagesss');
 				// setmessages([...messages, ...messagesssss]);
 
 				setshowLatestMessage(true);
 				setMsgsLoading(false);
 			},
-			response => { }
+			response => {}
 		);
 	};
 
@@ -372,7 +371,7 @@ function ChatApp(props) {
 				setSnackBarOpen(true);
 				setMoreMenuEl(null);
 			},
-			response => { }
+			response => {}
 		);
 	};
 	const conversationShift = () => {
@@ -395,7 +394,7 @@ function ChatApp(props) {
 				setdialogOpenShift(true);
 				setMoreMenuEl(null);
 			},
-			response => { }
+			response => {}
 		);
 	};
 	const conversationContextMenuCallback = item => {
@@ -555,7 +554,7 @@ function ChatApp(props) {
 					attributes: null
 				});
 			},
-			response => { }
+			response => {}
 		);
 	};
 	const dialogOptionsConfirmBlock = {
@@ -569,25 +568,24 @@ function ChatApp(props) {
 	useEffect(() => {
 		getNumbers();
 		EventEmitter.subscribe('Online', event => checkOnline(event));
-		let value = false
+		let value = false;
 
 		socket.on('newConversation', data => {
 			setDummy(data);
-			value && notificationTone.play()
+			value && notificationTone.play();
 			EventEmitter.subscribe('EnableNotificationTone', event => {
-				value = event
-			})
+				value = event;
+			});
 		});
 		// let value = false
 		socket.on('newConversationMessage', data => {
 			setmessage(data);
-			value && notificationTone.play()
+			value && notificationTone.play();
 			EventEmitter.subscribe('EnableNotificationTone', event => {
-				value = event
-			})
+				value = event;
+			});
 
 			// enableAudioNotification && notificationTone.play()
-
 		});
 		socket.on('updateMessageStatus', data => {
 			setMessageStatus(data);
@@ -595,7 +593,6 @@ function ChatApp(props) {
 			// 	notificationTone.play()
 			// }
 			// enableAudioNotification == true ?  notificationTone.play():null
-
 		});
 
 		socket.on('removeConversation', data => {
@@ -721,8 +718,8 @@ function ChatApp(props) {
 				'conversations',
 				'reset_message_count',
 				{ key: ':number', value: selectedRecipient.number },
-				response => { },
-				response => { }
+				response => {},
+				response => {}
 			);
 		}
 	};
@@ -736,13 +733,11 @@ function ChatApp(props) {
 	};
 	const checkNotificationTone = enable => {
 		if (enable) {
-			setEnableAudioNotification(true)
+			setEnableAudioNotification(true);
 		} else {
-
-			setEnableAudioNotification(false)
+			setEnableAudioNotification(false);
 		}
 	};
-
 
 	const clearData = () => {
 		setselectedRecipient(null);
@@ -773,7 +768,7 @@ function ChatApp(props) {
 				setdialogOpenCanned(true);
 				setMoreMenuEl(null);
 			},
-			error => { }
+			error => {}
 		);
 	};
 	const sendDialogInputHandler = e => {
@@ -810,7 +805,7 @@ function ChatApp(props) {
 		// );
 	};
 	const selectedShiftAgentList = () => {
-		console.log(shiftChatsToAgent,'live debug**')
+		console.log(shiftChatsToAgent, 'live debug**');
 		if (shiftChatsToAgent.agentId !== null) {
 			CoreHttpHandler.request(
 				'conversations',
@@ -888,7 +883,7 @@ function ChatApp(props) {
 				response => {
 					setdialogOpenCanned(false);
 				},
-				error => { }
+				error => {}
 			);
 		} else {
 			setdialogOpenCanned(false);
@@ -1053,7 +1048,7 @@ function ChatApp(props) {
 				setselectedRecipient(null);
 				setmessages([]);
 			},
-			error => { }
+			error => {}
 		);
 	};
 
@@ -1089,6 +1084,7 @@ function ChatApp(props) {
 										lastMessage={lastmessage}
 										numbers={numbers}
 										getNumbers={getNumbers}
+										totalItemsNum={totalItemsNum}
 										chatsLoading={chatsLoading}
 										onContactClick={e => {
 											selectedRecipientt(e);
@@ -1125,10 +1121,10 @@ function ChatApp(props) {
 										lastMessage={lastmessage}
 										numbers={numbers}
 										chatsLoading={chatsLoading}
+										totalItemsNum={totalItemsNum}
 										getNumbers={getNumbers}
 										onContactClick={e => {
 											selectedRecipientt(e);
-											
 										}}
 									/>
 								</Drawer>
@@ -1190,7 +1186,7 @@ function ChatApp(props) {
 																className={classes.avatar}
 															>
 																{!selectedRecipient.avatar ||
-																	selectedRecipient.avatar === ''
+																selectedRecipient.avatar === ''
 																	? selectedRecipient.name[0]
 																	: ''}
 															</Avatar>

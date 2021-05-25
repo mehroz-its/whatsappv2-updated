@@ -196,6 +196,8 @@ function ChatApp(props) {
 	const [historyOnTop, setHistoryOnTop] = React.useState(null);
 	const [listPage, setListPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(0);
+	const [totalItemsssssssss, setTotalItemssssssss] = useState(0);
+	const [totalItemsNum, setTotalItemsNum] = useState(0);
 	const [msgsLoading, setMsgsLoading] = useState(false);
 
 	const selectedRecipientt = e => {
@@ -352,6 +354,8 @@ function ChatApp(props) {
 			response => {
 				const numberrrrrr = response.data.data.customers;
 				const lastMessage = response.data.data.lastMessage;
+				console.log(response.data.data, "totiietttttttttttt");
+				setTotalItemsNum(response.data.data.customers.totalItems);
 				if (lastMessage) {
 					const lastMessageDtu = new Date(lastMessage.dtu);
 					if (lastMessageTimestamp === null) setlastMessageTimestamp(new Date(lastMessage.dtu));
@@ -369,12 +373,12 @@ function ChatApp(props) {
 				// 	totalItems: numberrrrrr?.totalItems,
 				// 	totalPages: numberrrrrr?.totalPages
 				// };
-				let newObj = {
-					limit: 10,
-					page: listPage ? listPage : 1,
-					totalItems: numberrrrrr?.totalItems,
-					totalPages: numberrrrrr?.totalPages
-				};
+				// let newObj = {
+				// 	limit: 10,
+				// 	page: listPage ? listPage : 1,
+				// 	totalItems: numberrrrrr?.totalItems,
+				// 	totalPages: numberrrrrr?.totalPages
+				// };
 				setnumbers([...numbers, ...numberrrrrr.customers]);
 				// numbers['rest'] = newObj;
 				// let newObj = {
@@ -432,6 +436,7 @@ function ChatApp(props) {
 					setMsgsLoading(false);
 					setTotalPages(response.data.data.totalPages);
 					setChatsLoading(false);
+					setTotalItemssssssss(response.data.data.totalItems);
 				}
 				CoreHttpHandler.request(
 					'conversations',
@@ -979,6 +984,7 @@ function ChatApp(props) {
 									getNumbers={getNumbers}
 									totalPages={totalPages}
 									sideBarPage={listPage}
+									totalItemsNum={totalItemsNum}
 									chatsLoading={chatsLoading}
 									onContactClick={e => {
 										selectedRecipientt(e);
@@ -999,6 +1005,7 @@ function ChatApp(props) {
 									getNumbers={getNumbers}
 									searchedContact={onSearchInput}
 									chatsLoading={chatsLoading}
+									totalItemsNum={totalItemsNum}
 									numbers={filtered}
 									onContactClick={e => {
 										setmessages([]);
@@ -1149,6 +1156,7 @@ function ChatApp(props) {
 											messages={messages}
 											getConversation={getConversation}
 											msgsLoading={msgsLoading}
+											totalItemsssssssss={totalItemsssssssss}
 											totalPages={totalPages}
 											selectedRecipient={selectedRecipient}
 											clearBlock={clearData}

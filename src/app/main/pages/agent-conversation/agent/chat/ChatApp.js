@@ -907,6 +907,7 @@ function ChatApp(props) {
 									numbers={numberr}
 									getNumbers={props.getNumbers}
 									chatsLoading={props.chatsLoading}
+									totalItemsNum={props.totalItemsNum}
 									sideBarPage={sideBarPage}
 									totalPages={totalPages}
 									onContactClick={e => {
@@ -938,6 +939,7 @@ function ChatApp(props) {
 									getNumbers={props.getNumbers}
 									chatsLoading={props.chatsLoading}
 									sideBarPage={sideBarPage}
+									totalItemsNum={props.totalItemsNum}
 									totalPages={totalPages}
 									onContactClick={e => {
 										selectedRecipientt(e);

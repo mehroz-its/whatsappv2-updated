@@ -899,7 +899,7 @@ function Chat(props) {
 	return (
 		<div className={clsx('flex flex-col relative', props.className)}>
 			<FuseScrollbars ref={chatRef} className="flex flex-1 flex-col overflow-y-auto">
-				{console.log(props.totalPages, 'totalPagessss')}
+				{console.log(props.totalItemsssssssss, 'totalITemsss')}
 				{props.msgsLoading ? (
 					<div style={{ textAlign: 'center' }}>
 						<CircularProgress color="secondary" size={30} style={{ marginTop: 10 }} />
@@ -907,8 +907,8 @@ function Chat(props) {
 				) : (
 					<div
 						style={{
-							textAlign: 'center'
-							// display: messages && messages.length >= 100 ? 'block' : 'none'
+							textAlign: 'center',
+							display: messages && messages.length >= 100 && messages.lentgth != props.totalItemsssssssss ? 'block' : 'none'
 						}}
 					>
 						<Button

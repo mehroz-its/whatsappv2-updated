@@ -20,6 +20,7 @@ function AgentContent(props) {
 	const [updateOnGoingConversation, setUpdateOnGoingConversation] = React.useState(null);
 	const [newMessageForOngoing, setNewMessageForOngoing] = React.useState(null);
 	const [listPage, setListPage] = useState(0);
+	const [totalItemsNum, setTotalItemsNum] = useState(0);
 	const socket = WebSocket.getSocket();
 
 	// let intervalAgent = ""
@@ -132,6 +133,7 @@ function AgentContent(props) {
 			_response => {
 				console.log(_response.data.data.list, 'Ressssssssssssssssss');
 				const numberrrrrr = _response.data.data.list.data;
+				setTotalItemsNum(_response.data.data.list.totalItems);
 				props.Total(numbers.length);
 				// setnumbers(numbers);
 				setLoading(false);
@@ -227,6 +229,7 @@ function AgentContent(props) {
 				Loading={loading}
 				chatsLoading={loading}
 				getNumbers={getAllAgents}
+				totalItemsNum={totalItemsNum}
 				selectedAgent={selectedAgent}
 				reloadNumber={e => getAllAgents()}
 			/>

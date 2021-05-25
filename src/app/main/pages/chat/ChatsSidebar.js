@@ -151,6 +151,8 @@ function ChatsSidebar(props) {
 	};
 	return (
 		<div className="flex flex-col flex-auto h-full">
+			{console.log(props.totalItemsNum, 'propstottiiiii')}
+			{console.log(props.numbers.length, 'propssnumbssss')}
 			<AppBar position="static" color="default" elevation={1} className="pt-16">
 				{useMemo(
 					() => (
@@ -215,7 +217,10 @@ function ChatsSidebar(props) {
 							textAlign: 'center',
 							margin: '5px 0',
 							// display: props.sideBarPage === props.totalPages ? 'none' : 'block'
-							display: props.numbers.length < 10 ? 'none' : 'block'
+							display:
+								props.numbers.length < 10 || props.numbers.length === props.totalItemsNum
+									? 'none'
+									: 'block'
 						}}
 					>
 						{console.log(props.numbers.length, 'propslength')}
