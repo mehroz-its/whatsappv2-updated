@@ -462,7 +462,7 @@ function Chat(props) {
 			scrollToBottom();
 		}
 	}, [messages]);
-	console.log(messages,'messagesmessages')
+	console.log(messages, 'messagesmessages');
 
 	function scrollToBottom() {
 		setTimeout(() => {
@@ -902,26 +902,26 @@ function Chat(props) {
 				{console.log(props.totalPages, 'totalPagessss')}
 				{props.msgsLoading ? (
 					<div style={{ textAlign: 'center' }}>
-						<CircularProgress color="secondary" size={30} />
+						<CircularProgress color="secondary" size={30} style={{ marginTop: 10 }} />
 					</div>
 				) : (
 					<div
 						style={{
-							textAlign: 'center',
+							textAlign: 'center'
 							// display: messages && messages.length >= 100 ? 'block' : 'none'
 						}}
 					>
 						<Button
 							variant="contained"
-							size="Small"
-							onClick={(e) => {
+							size="small"
+							onClick={e => {
 								if (msgPage != props.totalPages) {
 									setMsgPage(msgPage + 1);
 								}
-								props.getConversation(props.selectedRecipient, msgPage,true);
+								props.getConversation(props.selectedRecipient, msgPage, true);
 							}}
 							style={{
-								width: '20%',
+								width: '10%',
 								textTransform: 'capitalize',
 								background: '#e73859',
 								marginTop: 8,
