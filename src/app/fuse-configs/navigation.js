@@ -149,15 +149,15 @@ module.exports = [
 					},
 					{
 						id: 'Survey_Report',
-						title: 'Survey Report',
+						title: 'Customer Report',
 						type: 'item',
 						url: '/report/surveyReport',
 						exact: true
 					},
 					{
-						id: 'Agent Handling Time',
-						title: 'Agent Handling Time',
-						translate: 'Agent Handling Time',
+						id: 'Average Handling Time',
+						title: 'Average Handling Time',
+						translate: 'Average Handling Time',
 						type: 'item',
 						url: '/apps/aht',
 						exact: true

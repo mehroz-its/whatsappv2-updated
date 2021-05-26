@@ -291,7 +291,7 @@ function ChatApp() {
 						</FuseAnimate>
 						<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 							<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-								<span style={{ fontSize: '15px' }}>Agenty Handling Time</span>
+								<span style={{ fontSize: '15px' }}>Average Handling Time</span>
 							</Typography>
 						</FuseAnimate>
 					</div>
@@ -386,7 +386,7 @@ function ChatApp() {
 							<Grid item md={4} sm={12} xs={12}>
 								<Paper className="w-full rounded-8 shadow-none border-1">
 									<Typography variant="h6" className="header-card text-center pt-8" style={{ fontSize: '16px' }}>
-										Agent Handling Time
+										Average Handling Time
 									</Typography>
 									<div id="chartdivv" style={{ width: '98%', height: '250px', marginLeft: '10px' }}></div>
 								</Paper>
