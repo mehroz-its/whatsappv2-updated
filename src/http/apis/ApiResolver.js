@@ -26,6 +26,7 @@ import surveyReport from './surveyReport/index';
 import counts from './chatCounts';
 import agentHandlingTime from './agentHandlingTime';
 import historyNumbers from './conversations';
+import clientInfo from './onBoarding/companyStats';
 
 class ApiResolver {
 	constructor() {
@@ -57,7 +58,8 @@ class ApiResolver {
 			surveyReport: surveyReport.apis(),
 			chatsCount: counts.apis(),
 			agentHandlingTime: agentHandlingTime.apis(),
-			historyNumbers: historyNumbers.apis()
+			historyNumbers: historyNumbers.apis(),
+			clientInfo: clientInfo.apis()
 		};
 	}
 

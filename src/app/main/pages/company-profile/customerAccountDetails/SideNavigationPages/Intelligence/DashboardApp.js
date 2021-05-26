@@ -62,8 +62,8 @@ const rader_chart = list => {
 
 		chart.hiddenState.properties.radius = am4core.percent(0);
 	}
-	let nodes = document.querySelector("div #chartdivv g").childNodes[1].childNodes[1]
-	nodes.remove()
+	let nodes = document.querySelector('div #chartdivv g').childNodes[1].childNodes[1];
+	nodes.remove();
 };
 const newMessageList = [
 	{ category: 'My-Locations', value: '0', full: '100' },
@@ -76,6 +76,7 @@ const newMessageList = [
 var Start = '';
 var End = '';
 function DashboardApp(props) {
+	// console.log(props.data.id, 'propppppppppppppp');
 	const classes = useStyles();
 	const pageLayout = useRef(null);
 	const [rader, setrader] = React.useState(newMessageList);
@@ -86,6 +87,7 @@ function DashboardApp(props) {
 	const [totalIngoingMessages, setTotalIngoingMessages] = React.useState(0);
 	const [totalOutgoingMessages, setTotalOutgoingMessages] = React.useState(0);
 	const [totalEngagement, setTotalEngagement] = React.useState(0);
+	const [clientInfoData, setClientInfoData] = useState([]);
 
 	const [state, setState] = React.useState({
 		columns: [
@@ -142,6 +144,27 @@ function DashboardApp(props) {
 				messagestateFailure
 			);
 		}
+
+		if (props.data.id) {
+			let update_params = {
+				key: ':client_id',
+				value: props.data.id,
+				params: {}
+			};
+			CoreHttpHandler.request(
+				'clientInfo',
+				'info_client',
+				update_params,
+				response => {
+					const data = response.data.data.boxes;
+					console.log(data, 'clientInffooooooooooo');
+					setClientInfoData(data);
+				},
+				error => {
+					console.log(error);
+				}
+			);
+		}
 	}, []);
 	const dataSourceSuccesss = response => {
 		const list = response.data.data.report;
@@ -167,7 +190,7 @@ function DashboardApp(props) {
 		});
 		campaign_report_chart(data);
 	};
-	const dataSourceFailuree = response => { };
+	const dataSourceFailuree = response => {};
 	const campaign_report_chart = dataa => {
 		let data = dataa;
 		let chart = am4core.create('chartdivcampaign', am4charts.XYChart);
@@ -228,7 +251,7 @@ function DashboardApp(props) {
 		const list = response.data.data.dashboardBoxInfo.boxes;
 		setBox(list);
 	};
-	const dataSourceFailure = response => { };
+	const dataSourceFailure = response => {};
 	const messagestateSuccess = response => {
 		const list = response.data.data.report.finalbox[0].chart;
 		setRadarList(list);
@@ -236,7 +259,7 @@ function DashboardApp(props) {
 		totalCountConversation(response.data.data.report.finalbox[0].conversations);
 		totalEngagements(response.data.data.report.finalbox[0].engagements);
 	};
-	const messagestateFailure = response => { };
+	const messagestateFailure = response => {};
 	const totalCountConversation = response => {
 		const data = response;
 		console.log('data totalCountConversation : ', data);
@@ -348,7 +371,12 @@ function DashboardApp(props) {
 												// color="primary"
 												// style={{ backgroundColor: "#e73859" }}
 												size="small"
-												style={{ fontSize: 10, marginTop: -1, backgroundColor: "#e73859", color: "white" }}
+												style={{
+													fontSize: 10,
+													marginTop: -1,
+													backgroundColor: '#e73859',
+													color: 'white'
+												}}
 												aria-label="Generte"
 												onClick={() => submit()}
 											>
@@ -358,18 +386,29 @@ function DashboardApp(props) {
 
 										{/* <Grid item md={2} sm={12} xs={12}>
 										
-								<Grid item md={5} sm={12} xs={12}></Grid>
-
-										</Grid> */}
+										<Grid item md={5} sm={12} xs={12}></Grid>
+										
+									</Grid> */}
 										<Grid item md={6} sm={12} xs={12}>
 											<Grid container spacing={1}>
-
-												<Grid item md={4} sm={12} xs={12}  >
+												{clientInfoData &&
+													clientInfoData.map(data => {
+														return (
+															<Grid item md={4} sm={12} xs={12}>
+																<Widget2
+																	title="Dummy"
+																	count={data.value}
+																	bottom_title={`${data.subtitle} ${data.title}`}
+																/>
+															</Grid>
+														);
+													})}
+												<Grid item md={4} sm={12} xs={12}>
 													<Widget2
 														title="Dummy"
 														count={totalIngoingMessages}
 														bottom_title="Inbound"
-													// style={{ fontSize: "10px", color: "red" }}
+														// style={{ fontSize: "10px", color: "red" }}
 													/>
 												</Grid>
 												<Grid item md={4} sm={12} xs={12}>
