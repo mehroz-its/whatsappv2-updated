@@ -217,10 +217,7 @@ function ChatsSidebar(props) {
 							textAlign: 'center',
 							margin: '5px 0',
 							// display: props.sideBarPage === props.totalPages ? 'none' : 'block'
-							display:
-								props.numbers.length < 10 || props.numbers.length === props.totalItemsNum
-									? 'none'
-									: 'block'
+							display: props.numbers.length < 10 ? 'none' : 'block'
 						}}
 					>
 						{console.log(props.numbers.length, 'propslength')}
@@ -233,7 +230,8 @@ function ChatsSidebar(props) {
 								background: '#e73859',
 								color: '#fff',
 								fontSize: '10px',
-								borderRadius: '10px'
+								borderRadius: '10px',
+								display: props.numbers.length >= props.totalItemsNum ? 'none' : 'inline-block'
 							}}
 						>
 							Load More

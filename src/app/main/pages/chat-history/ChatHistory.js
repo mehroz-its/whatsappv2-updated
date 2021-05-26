@@ -194,7 +194,7 @@ function ChatApp(props) {
 	const selectedContact = contacts.find(_contact => _contact.id === selectedContactId);
 	const [updateCustomerMessages, setUpdateCustomerMessages] = React.useState(null);
 	const [historyOnTop, setHistoryOnTop] = React.useState(null);
-	const [listPage, setListPage] = useState(1);
+	const [listPage, setListPage] = useState(0);
 	const [totalPages, setTotalPages] = useState(0);
 	const [totalItemsssssssss, setTotalItemssssssss] = useState(0);
 	const [totalItemsNum, setTotalItemsNum] = useState(0);
@@ -348,7 +348,7 @@ function ChatApp(props) {
 			'conversations',
 			'historyNumbers',
 			{
-				page: listPage ? listPage : 1,
+				page: listPage ? listPage : 0,
 				limit: 10
 			},
 			response => {
