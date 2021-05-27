@@ -291,13 +291,13 @@ function ChatApp() {
 	const SelectedDates = (start, end) => {
 		console.log(start.toISOString(), end.toISOString(), 'received successfully');
 		Start = start.toISOString();
-		console.log(Start, 'startttttt selecteddd');
+		// console.log(Start, 'startttttt selecteddd');
 		dateWithStartingHour(Start);
 		End = end.toISOString();
 		dateWithEndingHour(End);
 
-		console.log(Start, 'Enddddddd selecteddd');
-		console.log(Start, End, 'Coverted_Datesss');
+		// console.log(Start, 'Enddddddd selecteddd');
+		// console.log(Start, End, 'Coverted_Datesss');
 	};
 	const getDataAgain = () => {
 		getData('', Start, End);
