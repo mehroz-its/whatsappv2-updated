@@ -37,7 +37,13 @@ const rows = [
 		label: 'Response Time',
 		sort: true
 	},
-
+	{
+		id: 'Count',
+		align: 'center',
+		disablePadding: false,
+		label: 'Count',
+		sort: true
+	}
 ];
 
 const useStyles = makeStyles(theme => ({
@@ -52,7 +58,6 @@ function UserTableHead(props) {
 	const createSortHandler = property => event => {
 		props.onRequestSort(event, property);
 	};
-
 
 	return (
 		<TableHead>

@@ -195,7 +195,7 @@ function SurveyTable(props) {
 									],
 									[order.direction]
 								).map(n => {
-									console.log(n, 'nnnnnnnnnnnnnn');
+									// console.log(n, 'nnnnnnnnnnnnnn');
 									const isSelected = selected.indexOf(n.id) !== -1;
 									let duration = moment.duration(startDate.diff(n.dt));
 									let asMilliseconds = duration.asMilliseconds();
@@ -273,6 +273,20 @@ function SurveyTable(props) {
 												style={{ fontSize: '12px', padding: '10px' }}
 											>
 												{n.other}
+											</TableCell>
+											<TableCell
+												component="th"
+												scope="row"
+												align="center"
+												style={{ fontSize: '12px', padding: '10px' }}
+											>
+												{/* {parseInt(n.excellent) +
+													parseInt(n.veryGood) +
+													parseInt(n.good) +
+													parseInt(n.poor) +
+													parseInt(n.veryPoor) +
+													parseInt(n.other)} */}
+													{n.total}
 											</TableCell>
 											{/* <TableCell
 											component="th"

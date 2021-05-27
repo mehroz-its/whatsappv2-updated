@@ -31,7 +31,6 @@ import { Star } from '@material-ui/icons';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Input from '@material-ui/core/Input';
 
-
 am4core.useTheme(am4themes_material);
 const useStyles = makeStyles(theme => ({
 	layoutRoot: {},
@@ -48,22 +47,22 @@ const useStyles = makeStyles(theme => ({
 
 const incomingAndOutGoingCount = data => {
 	am4core.useTheme(am4themes_animated);
-	let chart = am4core.create("chartdivv", am4charts.PieChart);
-	console.log(data, 'dataaAAA')
+	let chart = am4core.create('chartdivv', am4charts.PieChart);
+	console.log(data, 'dataaAAA');
 	// Add data
-	let formatedData = []
+	let formatedData = [];
 	data.map(val => {
-		formatedData.push({ country: val.username, litres: val.response_time })
-	})
-	chart.data = formatedData
+		formatedData.push({ country: val.username, litres: val.response_time });
+	});
+	chart.data = formatedData;
 	// Set inner radius
 	chart.innerRadius = am4core.percent(35);
 
 	// Add and configure Series
 	let pieSeries = chart.series.push(new am4charts.PieSeries());
-	pieSeries.dataFields.value = "litres";
-	pieSeries.dataFields.category = "country";
-	pieSeries.slices.template.stroke = am4core.color("#fff");
+	pieSeries.dataFields.value = 'litres';
+	pieSeries.dataFields.category = 'country';
+	pieSeries.slices.template.stroke = am4core.color('#fff');
 	pieSeries.slices.template.strokeWidth = 2;
 	pieSeries.slices.template.strokeOpacity = 1;
 
@@ -71,12 +70,9 @@ const incomingAndOutGoingCount = data => {
 	pieSeries.hiddenState.properties.opacity = 1;
 	pieSeries.hiddenState.properties.endAngle = -90;
 	pieSeries.hiddenState.properties.startAngle = -90;
-	let nodes = document.querySelector("div #chartdivv g").childNodes[1].childNodes[1]
-	nodes.remove()
-
-
+	let nodes = document.querySelector('div #chartdivv g').childNodes[1].childNodes[1];
+	nodes.remove();
 };
-
 
 var Start = '';
 var End = '';
@@ -95,10 +91,10 @@ function ChatApp() {
 	const [selectOPen, setSelectOPen] = React.useState(false);
 	const [isLoading, setisLoading] = React.useState(true);
 	const toggle = () => setOpen(!open);
-	const [ok, setOK] = React.useState('')
-	const [totalItems, setTotalItems] = React.useState(0)
-	const [currentParams, setCurrentParams] = React.useState({ limit: 10, page: 0 })
-	const [searchText, setSearchText] = React.useState('')
+	const [ok, setOK] = React.useState('');
+	const [totalItems, setTotalItems] = React.useState(0);
+	const [currentParams, setCurrentParams] = React.useState({ limit: 10, page: 0 });
+	const [searchText, setSearchText] = React.useState('');
 	const [dateRange, setdateRange] = React.useState({
 		startDate: null,
 		endDate: null
@@ -120,77 +116,120 @@ function ChatApp() {
 	});
 	const [tableData, setTableData] = React.useState([]);
 
+	React.useEffect(() => {
+		dateWithStartingHour();
+		dateWithEndingHour();
+	}, []);
+	function dateWithStartingHour(newDateeeee) {
+		console.log(newDateeeee, 'startdateeeeeeeeeeeeee');
+		let date = new Date(newDateeeee);
+		console.log(date, 'eeeeeeeeeeeeeeeeeeeeee');
+		let start = moment().month(date.getMonth()).date(date.getDate()).hours(0).minutes(0).seconds(0).milliseconds(0);
+		let format = moment(start).format();
+		return format.substr(0, 19);
+	}
+	function dateWithEndingHour(newDateeeee) {
+		console.log(newDateeeee, 'enddateeeeeee');
+		let date = new Date(newDateeeee);
+		console.log(date, 'eeeeeeeeeeeeeeeeeeeeee22222222222');
+		let end = moment()
+			.month(date.getMonth())
+			.date(date.getDate())
+			.hours(23)
+			.minutes(59)
+			.seconds(59)
+			.milliseconds(59);
+		let format = moment(end).format();
+		console.log(format.substr(0, 19), 'formattttttt');
+		return format.substr(0, 19);
+	}
 
-
-	const getData = ((loadData) => {
-		setisLoading(true)
-		setData([])
-		setData2([])
+	const getData = (loadData, endDate) => {
+		console.log(dateWithStartingHour(Start), 'loaddataaaaaaaaaa');
+		console.log(End, 'enddateeeeeeeeeeee');
+		let initialStartDate = new Date();
+		console.log(initialStartDate.getDate(), 'initialStartDateinitialStartDateinitialStartDate');
+		let initialEndDate = new Date();
+		setisLoading(true);
+		setData([]);
+		setData2([]);
 		loadData = () => {
-			return CoreHttpHandler.request('agentHandlingTime', 'listing',
+			return CoreHttpHandler.request(
+				'agentHandlingTime',
+				'listing',
 				{
-					starting_date: Start == '' ? dateWithStartingHour(new Date(), -1) : Start.substr(0, Start.indexOf('T')),
-					ending_date: Start == '' ? dateWithEndingHour(new Date(), -1) : End.substr(0, End.indexOf('T')),
-
-				}
-				, null, null, true);
+					starting_date:
+						Start == ''
+							? dateWithStartingHour(initialStartDate.setDate(initialStartDate.getDate() - 1))
+							: dateWithStartingHour(Start),
+					ending_date:
+						Start == ''
+							? dateWithEndingHour(initialEndDate.setDate(initialEndDate.getDate() - 1))
+							: dateWithEndingHour(End)
+				},
+				null,
+				null,
+				true
+			);
 		};
-		loadData().then((response) => {
-			setisLoading(false)
-			// setTotalItems(response.data.data.list.totalItems)
-			console.log(response.data.data.average_time, 'response.data.data.list.data')
-			const tableData = []
-			response.data.data.average_time.map(val => {
-				tableData.push({ user_id: val.user_id, username: val.username, response_time: `${val.average_time.seconds} seconds ${val.average_time.milliseconds} ms` })
+		loadData()
+			.then(response => {
+				setisLoading(false);
+				// setTotalItems(response.data.data.list.totalItems)
+				console.log(response.data.data.average_time, 'response.data.data.list.data');
+				const tableData = [];
+				response.data.data.average_time.map(val => {
+					tableData.push({
+						user_id: val.user_id,
+						count: val.count,
+						username: val.username,
+						response_time: `${val?.average_time?.minutes} minutes ${val?.average_time?.seconds} seconds ${val?.average_time?.milliseconds} ms`
+					});
+				});
+				setData(tableData);
+				setData2(tableData);
+				setTimeout(() => {
+					setSnackBarMessage('');
+					setSnackBarOpen(false);
+				}, 3000);
 			})
-			setData(tableData)
-			setData2(tableData)
-			setTimeout(() => {
-				setSnackBarMessage('')
-				setSnackBarOpen(false)
-			}, 3000);
-
-		})
-			.catch((error) => {
-				setisLoading(false)
+			.catch(error => {
+				setisLoading(false);
 
 				setTimeout(() => {
-					setSnackBarMessage('')
-					setSnackBarOpen(false)
+					setSnackBarMessage('');
+					setSnackBarOpen(false);
 				}, 3000);
-
-			})
-	})
+			});
+	};
 	React.useEffect(() => {
 		getData();
-		incomingAndOutGoingCount(data)
+		incomingAndOutGoingCount(data);
 		return () => {
 			am4core.disposeAllCharts();
+			Start = '';
+			End = '';
 		};
 	}, []);
 	React.useEffect(() => {
-		incomingAndOutGoingCount(data)
-
-	}, [data])
+		incomingAndOutGoingCount(data);
+	}, [data]);
 
 	React.useEffect(() => {
-		search(searchText)
-
-	}, [searchText])
+		search(searchText);
+	}, [searchText]);
 
 	function search(value) {
-		setData2(data.filter(n => n.username.toLowerCase().includes(value.toLowerCase())))
+		setData2(data.filter(n => n.username.toLowerCase().includes(value.toLowerCase())));
 	}
 
-	const setPage = (currentPage) => {
-		setCurrentParams({ limit: currentParams.limit, page: currentPage })
-	}
+	const setPage = currentPage => {
+		setCurrentParams({ limit: currentParams.limit, page: currentPage });
+	};
 
-	const setLimit = (pageLimit) => {
-		setCurrentParams({ limit: pageLimit, page: 0 })
-	}
-
-
+	const setLimit = pageLimit => {
+		setCurrentParams({ limit: pageLimit, page: 0 });
+	};
 
 	const tableRender = (conversation, engagements) => {
 		let chartData = [];
@@ -252,35 +291,20 @@ function ChatApp() {
 	const SelectedDates = (start, end) => {
 		console.log(start.toISOString(), end.toISOString(), 'received successfully');
 		Start = start.toISOString();
+		console.log(Start, 'startttttt selecteddd');
+		dateWithStartingHour(Start);
 		End = end.toISOString();
+		dateWithEndingHour(End);
+
+		console.log(Start, 'Enddddddd selecteddd');
 		console.log(Start, End, 'Coverted_Datesss');
 	};
 	const getDataAgain = () => {
 		getData('', Start, End);
+		// getData(Start, End);
 	};
 
-	function dateWithStartingHour(date, days) {
-		var result = new Date(date);
-		result.setDate(result.getDate())
-		result.setHours("00", "00", "00")
-		// result.setHours('00')
-		// result.setMinutes('00')
-		// result.setSeconds('00')
-		// result = `${result.getFullYear()}-${result.getMonth()}-${result.getDate()}T00:00:00.000Z`
-
-		return result;
-	}
-	function dateWithEndingHour(date, days) {
-		var result = new Date(date);
-		result.setDate(result.getDate())
-		result.setHours("23", "59", "59");
-		// result.setMinutes(59)
-		// result.setSeconds(59)
-		// result = `${result.getFullYear()}-${result.getMonth()}-${result.getDate()}T23:59:59.000Z`
-
-		return result;
-	}
-	console.log(searchText, 'searchTextsearchText')
+	console.log(searchText, 'searchTextsearchText');
 	return (
 		<FusePageSimple
 			header={
@@ -296,7 +320,6 @@ function ChatApp() {
 						</FuseAnimate>
 					</div>
 					<div style={{ justifyContent: 'space-around', marginLeft: '20%' }}>
-
 						<DateRangePickerVal SelectedDates={SelectedDates} />
 						<Button
 							onClick={getDataAgain}
@@ -347,20 +370,17 @@ function ChatApp() {
 							</div>
 						) : (
 							<Grid container spacing={3} style={{ paddingLeft: 12, paddingRight: 12 }}>
-								<Grid item md={4} sm={12} xs={12}>
-
-								</Grid>
-								<Grid item md={4} sm={12} xs={12}>
-
-								</Grid>
-								<Grid item md={4} sm={12} xs={12}>
-
-								</Grid>
+								<Grid item md={4} sm={12} xs={12}></Grid>
+								<Grid item md={4} sm={12} xs={12}></Grid>
+								<Grid item md={4} sm={12} xs={12}></Grid>
 							</Grid>
 						)}
 						<Grid container spacing={3} style={{ paddingLeft: 12, paddingRight: 12 }}>
 							<Grid item md={8} sm={12} xs={12}>
-								<Paper className="w-full rounded-8 shadow-none border-1 flex" style={{ display: 'flex', flexDirection: 'column', height: '285px' }}>
+								<Paper
+									className="w-full rounded-8 shadow-none border-1 flex"
+									style={{ display: 'flex', flexDirection: 'column', height: '285px' }}
+								>
 									{/* <div style={{display:'flex',flexDirection:'roe'}}>
 
 									<p style={{marginTop:'10px',fontSize:'15px'}}>Search !!!</p>
@@ -379,16 +399,30 @@ function ChatApp() {
 									</div> */}
 
 									<UserTable
-										totalItems={totalItems} setPage={setPage} setLimit={setLimit} rowsPerPage={currentParams.limit} currentPage={currentParams.page} isLoading={isLoading}
-										ValueForSearch={searchText} dataa={data2} />
+										totalItems={totalItems}
+										setPage={setPage}
+										setLimit={setLimit}
+										rowsPerPage={currentParams.limit}
+										currentPage={currentParams.page}
+										isLoading={isLoading}
+										ValueForSearch={searchText}
+										dataa={data2}
+									/>
 								</Paper>
 							</Grid>
 							<Grid item md={4} sm={12} xs={12}>
 								<Paper className="w-full rounded-8 shadow-none border-1">
-									<Typography variant="h6" className="header-card text-center pt-8" style={{ fontSize: '16px' }}>
+									<Typography
+										variant="h6"
+										className="header-card text-center pt-8"
+										style={{ fontSize: '16px' }}
+									>
 										Average Handling Time
 									</Typography>
-									<div id="chartdivv" style={{ width: '98%', height: '250px', marginLeft: '10px' }}></div>
+									<div
+										id="chartdivv"
+										style={{ width: '98%', height: '250px', marginLeft: '10px' }}
+									></div>
 								</Paper>
 							</Grid>
 						</Grid>

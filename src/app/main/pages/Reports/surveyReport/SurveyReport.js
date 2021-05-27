@@ -120,53 +120,96 @@ function SurveyReport() {
 		loadData().then(res => {
 			console.log(res, 'dataaaaaaaaaaaa');
 			let tempArr = [];
-			let newobj = { agentName:'',user_id: null, excellent: 0, veryGood: 0, good: 0, poor: 0, veryPoor: 0, other: 0 }
+		
 			res.data.data.survey.agent_satisfaction.map((res, ind) => {
-				let isIncluded = tempArr.findIndex(x => x.user_id == res.user_id)
+				let newobj = {
+					agentName: '',
+					user_id: null,
+					excellent: 0,
+					veryGood: 0,
+					good: 0,
+					poor: 0,
+					veryPoor: 0,
+					other: 0,
+					total: 0
+				};	
+				let isIncluded = tempArr.findIndex(x => x.user_id == res.user_id);
+
 				if (isIncluded != -1) {
+					tempArr[isIncluded].total = parseInt(tempArr[isIncluded].total) + parseInt(res.count);
 					switch (res.response) {
 						case '1' || 1:
-							tempArr[isIncluded].veryPoor = res.count
+							tempArr[isIncluded].veryPoor = res.count;
+							// tempArr[isIncluded].total = parseInt(tempArr[isIncluded].total) + parseInt(res.count);
 							break;
 						case '2' || 2:
-							tempArr[isIncluded].poor = res.count
+							tempArr[isIncluded].poor = res.count;
+							// tempArr[isIncluded].total = parseInt(tempArr[isIncluded].total) + parseInt(res.count);
 							break;
 						case '3' || 3:
-							tempArr[isIncluded].good = res.count
+							tempArr[isIncluded].good = res.count;
+							// tempArr[isIncluded].total = parseInt(tempArr[isIncluded].total) + parseInt(res.count);
 							break;
 						case '4' || 4:
-							tempArr[isIncluded].veryGood = res.count
+							tempArr[isIncluded].veryGood = res.count;
+							// tempArr[isIncluded].total = parseInt(tempArr[isIncluded].total) + parseInt(res.count);
 							break;
 						case '5' || 5:
-							tempArr[isIncluded].excellent = res.count
+							tempArr[isIncluded].excellent = res.count;
+							// tempArr[isIncluded].total = parseInt(tempArr[isIncluded].total) + parseInt(res.count);
 							break;
 						case 'other':
-							tempArr[isIncluded].other = res.count
+							tempArr[isIncluded].other = res.count;
+							// tempArr[isIncluded].total = parseInt(tempArr[isIncluded].total) + parseInt(res.count);
 							break;
 					}
 				} else {
+					newobj.total = parseInt(newobj.total)+ parseInt(res.count);
+
 					switch (res.response) {
 						case '1' || 1:
-							newobj.veryPoor = res.count
+							newobj.veryPoor = res.count;
+							// newobj.total = parseInt(newobj.total) + parseInt(res.count);
 							break;
 						case '2' || 2:
-							newobj.poor = res.count
+							newobj.poor = res.count;
+							// newobj.total = parseInt(newobj.total) + parseInt(res.count);
 							break;
 						case '3' || 3:
-							newobj.good = res.count
+							newobj.good = res.count;
+							// newobj.total = parseInt(newobj.total) + parseInt(res.count);
 							break;
 						case '4' || 4:
-							newobj.veryGood = res.count
+							newobj.veryGood = res.count;
+							// newobj.total = parseInt(newobj.total) + parseInt(res.count);
 							break;
 						case '5' || 5:
-							newobj.excellent = res.count
+							newobj.excellent = res.count;
+							// newobj.total = parseInt(newobj.total) + parseInt(res.count);
 							break;
 						case 'other':
-							newobj.other = res.count
+							newobj.other = res.count;
+							// newobj.total = parseInt(newobj.total) + parseInt(res.count);
 							break;
 					}
-					tempArr.push({ ...newobj, user_id: res.user_id , agentName:res.username })
+
+					let { excellent, veryGood, good, poor, veryPoor, other } = newobj;
+
+					let totalCount =
+						parseInt(excellent) +
+						parseInt(veryGood) +
+						parseInt(good) +
+						parseInt(poor) +
+						parseInt(veryPoor) +
+						parseInt(other);
+					tempArr.push({
+						...newobj,
+						user_id: res.user_id,
+						// total: `${excellent + good}`,
+						agentName: res.username
+					});
 				}
+
 				// tempArr.map((result, index) => {
 				// 	if (res.user_id == result.user_id) {
 				// 		console.log(res, 'IFFFFFFFFFFF');
@@ -191,7 +234,7 @@ function SurveyReport() {
 				// }
 				// console.log(tempArr, 'TEMP_ARRRRRRRRRRRRRR');
 				// setAgentSatisfactionSurvey()
-				console.log(tempArr, 'tempArrtempArrtempArr')
+				console.log(tempArr, 'tempArrtempArrtempArr');
 			});
 
 			// setAgentSatisfactionSurvey(res?.data?.data?.survey?.agent_satisfaction);
@@ -212,8 +255,8 @@ function SurveyReport() {
 			// 	});
 			// });
 			console.log(tempArr, 'tFempArrtempArrtempArr');
-			setAgentSatisfactionSurvey(tempArr)
-			setSatisfactionSurvey(res.data.data.survey.satisfaction)
+			setAgentSatisfactionSurvey(tempArr);
+			setSatisfactionSurvey(res.data.data.survey.satisfaction);
 
 			// let dataagain = Object.values(data);
 			// let finaldata = dataagain[1].report.finalbox[0].conversations;

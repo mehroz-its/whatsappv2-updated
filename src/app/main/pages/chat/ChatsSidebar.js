@@ -151,8 +151,8 @@ function ChatsSidebar(props) {
 	};
 	return (
 		<div className="flex flex-col flex-auto h-full">
-			{console.log(props.totalItemsNum, 'propstottiiiii')}
-			{console.log(props.numbers.length, 'propssnumbssss')}
+			{/* {console.log(props.totalItemsNum, 'propstottiiiii')}
+			{console.log(props.numbers.length, 'propssnumbssss')} */}
 			<AppBar position="static" color="default" elevation={1} className="pt-16">
 				{useMemo(
 					() => (

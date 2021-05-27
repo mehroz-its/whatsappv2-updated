@@ -72,6 +72,13 @@ const rows = [
 		label: 'Other',
 		sort: true
 	},
+	{
+		id: 'total',
+		align: 'center',
+		disablePadding: false,
+		label: 'Total',
+		sort: true
+	}
 	// {
 	// 	id: 'delete',
 	// 	align: 'center',
