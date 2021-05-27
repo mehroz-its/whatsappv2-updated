@@ -291,9 +291,9 @@ function ChatApp() {
 	const SelectedDates = (start, end) => {
 		console.log(start.toISOString(), end.toISOString(), 'received successfully');
 		Start = start.toISOString();
+		End = end.toISOString();
 		// console.log(Start, 'startttttt selecteddd');
 		dateWithStartingHour(Start);
-		End = end.toISOString();
 		dateWithEndingHour(End);
 
 		// console.log(Start, 'Enddddddd selecteddd');

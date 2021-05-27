@@ -56,7 +56,42 @@ function AgentApp() {
 	const [totalItems, setTotalItems] = React.useState(0);
 	const [currentParams, setCurrentParams] = React.useState({ limit: 10, page: 0 });
 
+
+	React.useEffect(() => {
+		dateWithStartingHour();
+		dateWithEndingHour();
+	}, []);
+	function dateWithStartingHour(newDateeeee) {
+		console.log(newDateeeee, 'startdateeeeeeeeeeeeee');
+		let date = new Date(newDateeeee);
+		console.log(date, 'eeeeeeeeeeeeeeeeeeeeee');
+		let start = moment().month(date.getMonth()).date(date.getDate()).hours(0).minutes(0).seconds(0).milliseconds(0);
+		let format = moment(start).format();
+		return format.substr(0, 19);
+	}
+	function dateWithEndingHour(newDateeeee) {
+		console.log(newDateeeee, 'enddateeeeeee');
+		let date = new Date(newDateeeee);
+		console.log(date, 'eeeeeeeeeeeeeeeeeeeeee22222222222');
+		let end = moment()
+			.month(date.getMonth())
+			.date(date.getDate())
+			.hours(23)
+			.minutes(59)
+			.seconds(59)
+			.milliseconds(59);
+		let format = moment(end).format();
+		console.log(format.substr(0, 19), 'formattttttt');
+		return format.substr(0, 19);
+	}
+
+
 	const getData = loadData => {
+		let initialStartDate = new Date();
+		console.log(initialStartDate.getDate(), 'initialStartDateinitialStartDateinitialStartDate');
+		let initialEndDate = new Date();
+
+
 		setisLoading(true);
 
 		loadData = () => {
@@ -66,8 +101,14 @@ function AgentApp() {
 				{
 					...currentParams,
 					role_id: 64,
-					start_date: Start,
-					end_date: End
+					start_date:
+						Start == ''
+							? dateWithStartingHour(initialStartDate.setDate(initialStartDate.getDate() - 1))
+							: dateWithStartingHour(Start),
+					end_date:
+						Start == ''
+							? dateWithEndingHour(initialEndDate.setDate(initialEndDate.getDate() - 1))
+							: dateWithEndingHour(End)
 				},
 				null,
 				null,
@@ -223,6 +264,9 @@ function AgentApp() {
 	const SelectedDates = (start, end) => {
 		Start = start.toISOString();
 		End = end.toISOString();
+
+		dateWithStartingHour(Start);
+		dateWithEndingHour(End);
 	};
 
 	const getDataAgain = () => {

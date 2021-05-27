@@ -96,7 +96,42 @@ function SurveyReport() {
 	// 	data.push(filtered);
 	// });
 
+	React.useEffect(() => {
+		dateWithStartingHour();
+		dateWithEndingHour();
+	}, []);
+
+
+	function dateWithStartingHour(newDateeeee) {
+		console.log(newDateeeee, 'startdateeeeeeeeeeeeee');
+		let date = new Date(newDateeeee);
+		console.log(date, 'eeeeeeeeeeeeeeeeeeeeee');
+		let start = moment().month(date.getMonth()).date(date.getDate()).hours(0).minutes(0).seconds(0).milliseconds(0);
+		let format = moment(start).format();
+		return format.substr(0, 19);
+	}
+	function dateWithEndingHour(newDateeeee) {
+		console.log(newDateeeee, 'enddateeeeeee');
+		let date = new Date(newDateeeee);
+		console.log(date, 'eeeeeeeeeeeeeeeeeeeeee22222222222');
+		let end = moment()
+			.month(date.getMonth())
+			.date(date.getDate())
+			.hours(23)
+			.minutes(59)
+			.seconds(59)
+			.milliseconds(59);
+		let format = moment(end).format();
+		console.log(format.substr(0, 19), 'formattttttt');
+		return format.substr(0, 19);
+	}
+
+
 	const getData = loadData => {
+		let initialStartDate = new Date();
+		console.log(initialStartDate.getDate(), 'initialStartDateinitialStartDateinitialStartDate');
+		let initialEndDate = new Date();
+
 		setisLoading(true);
 		loadData = () => {
 			return CoreHttpHandler.request(
@@ -105,8 +140,14 @@ function SurveyReport() {
 				{
 					limit: 100,
 					page: 0,
-					startingDate: Start.substr(0, Start.indexOf('T')),
-					endingDate: End.substr(0, End.indexOf('T')),
+					startingDate:
+						Start == ''
+							? dateWithStartingHour(initialStartDate.setDate(initialStartDate.getDate() - 1))
+							: dateWithStartingHour(Start),
+					endingDate:
+						Start == ''
+							? dateWithEndingHour(initialEndDate.setDate(initialEndDate.getDate() - 1))
+							: dateWithEndingHour(End),
 					filter: days,
 					columns: '*',
 					sortby: 'ASC',
@@ -120,7 +161,7 @@ function SurveyReport() {
 		loadData().then(res => {
 			console.log(res, 'dataaaaaaaaaaaa');
 			let tempArr = [];
-		
+
 			res.data.data.survey.agent_satisfaction.map((res, ind) => {
 				let newobj = {
 					agentName: '',
@@ -132,7 +173,7 @@ function SurveyReport() {
 					veryPoor: 0,
 					other: 0,
 					total: 0
-				};	
+				};
 				let isIncluded = tempArr.findIndex(x => x.user_id == res.user_id);
 
 				if (isIncluded != -1) {
@@ -164,7 +205,7 @@ function SurveyReport() {
 							break;
 					}
 				} else {
-					newobj.total = parseInt(newobj.total)+ parseInt(res.count);
+					newobj.total = parseInt(newobj.total) + parseInt(res.count);
 
 					switch (res.response) {
 						case '1' || 1:
@@ -274,6 +315,8 @@ function SurveyReport() {
 		getData();
 		return () => {
 			am4core.disposeAllCharts();
+			Start = '';
+			End = '';
 		};
 	}, []);
 	// const tableRender = (conversation, engagements) => {
@@ -323,6 +366,8 @@ function SurveyReport() {
 		console.log(start.toISOString(), end.toISOString(), 'received successfully');
 		Start = start.toISOString();
 		End = end.toISOString();
+		dateWithStartingHour(Start);
+		dateWithEndingHour(End);
 		console.log(Start, End, 'Coverted_Datesss');
 	};
 	const getDataAgain = () => {

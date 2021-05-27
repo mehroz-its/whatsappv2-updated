@@ -215,6 +215,8 @@ function ChatApp() {
 		incomingAndOutGoingCount(data);
 		return () => {
 			am4core.disposeAllCharts();
+			Start = '';
+			End = '';
 		};
 	}, []);
 	React.useEffect(() => {
