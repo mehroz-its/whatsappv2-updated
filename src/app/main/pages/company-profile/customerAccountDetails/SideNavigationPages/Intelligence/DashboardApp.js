@@ -23,6 +23,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import DatePicker from './DatePicker';
 import Button from '@material-ui/core/Button';
+import moment from 'moment';
 
 am4core.useTheme(am4themes_material);
 am4core.useTheme(am4themes_animated);
@@ -127,12 +128,50 @@ function DashboardApp(props) {
 			columns: '*'
 		}
 	};
+
+	React.useEffect(() => {
+		dateWithStartingHour();
+		dateWithEndingHour();
+	}, []);
+	function dateWithStartingHour(newDateeeee) {
+		console.log(newDateeeee, 'startdateeeeeeeeeeeeee');
+		let date = new Date(newDateeeee);
+		console.log(date, 'eeeeeeeeeeeeeeeeeeeeee');
+		let start = moment().month(date.getMonth()).date(date.getDate()).hours(0).minutes(0).seconds(0).milliseconds(0);
+		let format = moment(start).format();
+		return format.substr(0, 19);
+	}
+	function dateWithEndingHour(newDateeeee) {
+		console.log(newDateeeee, 'enddateeeeeee');
+		let date = new Date(newDateeeee);
+		console.log(date, 'eeeeeeeeeeeeeeeeeeeeee22222222222');
+		let end = moment()
+			.month(date.getMonth())
+			.date(date.getDate())
+			.hours(23)
+			.minutes(59)
+			.seconds(59)
+			.milliseconds(59);
+		let format = moment(end).format();
+		console.log(format.substr(0, 19), 'formattttttt');
+		return format.substr(0, 19);
+	}
+
 	React.useEffect(() => {
 		if (companyDetails) {
+			let initialStartDate = new Date();
+			console.log(initialStartDate.getDate(), 'initialStartDateinitialStartDateinitialStartDate');
+			let initialEndDate = new Date();
 			let update_params = {
 				params: {
-					startingDate: '',
-					endingDate: '',
+					startingDate:
+						Start == ''
+							? dateWithStartingHour(initialStartDate.setDate(initialStartDate.getDate() - 1))
+							: dateWithStartingHour(Start),
+					endingDate:
+						Start == ''
+							? dateWithEndingHour(initialEndDate.setDate(initialEndDate.getDate() - 1))
+							: dateWithEndingHour(End),
 					client_id: companyDetails.id
 				}
 			};
@@ -328,12 +367,23 @@ function DashboardApp(props) {
 	const SelectedDates = (start, end) => {
 		Start = start.toISOString();
 		End = end.toISOString();
+		dateWithStartingHour(Start);
+		dateWithEndingHour(End);
 	};
 	const submit = () => {
+		let initialStartDate = new Date();
+		console.log(initialStartDate.getDate(), 'initialStartDateinitialStartDateinitialStartDate');
+		let initialEndDate = new Date();
 		let update_params = {
 			params: {
-				startingDate: Start,
-				endingDate: End,
+				startingDate:
+					Start == ''
+						? dateWithStartingHour(initialStartDate.setDate(initialStartDate.getDate() - 1))
+						: dateWithStartingHour(Start),
+				endingDate:
+					Start == ''
+						? dateWithEndingHour(initialEndDate.setDate(initialEndDate.getDate() - 1))
+						: dateWithEndingHour(End),
 				client_id: companyDetails.id
 			}
 		};
