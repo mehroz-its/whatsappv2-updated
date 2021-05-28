@@ -64,7 +64,8 @@ useEffect(() => {
 					labelId="demo-simple-select-outlined-label"
 					id="demo-simple-select-outlined"
 					value={agentID}
-					onChange={handleTypeChange}
+					onChange={()=>alert("onChange  selected")}
+					// onChange={handleTypeChange}
 					fullWidth
 				>
 					<MenuItem value="">
