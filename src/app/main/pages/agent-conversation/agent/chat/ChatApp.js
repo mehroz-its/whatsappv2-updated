@@ -299,7 +299,8 @@ function ChatApp(props) {
 		let params = {
 			number: e.number,
 			page: sideBarPage,
-			limit: '100'
+			limit: '100',
+			last_closed: e.last_closed
 		};
 
 		// console.log("params : ", params);

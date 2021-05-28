@@ -205,6 +205,7 @@ function ChatApp(props) {
 		setselectedRecipient(e);
 		getConversation(e);
 		setOpenSearch(false);
+		console.log(e)
 		// setint_MessageLists(setInterval(() => {
 		// 	getConversation(e);
 		// }, 3000));
@@ -230,20 +231,26 @@ function ChatApp(props) {
 			}
 			console.log('SelectedDates input', input);
 
-			// getFilterMessages(input);
+			getFilterMessages(input);
 		}
 	};
 
 	const getFilterMessages = ({ startDate, endDate }) => {
+		// let params = {
+		// 	key: ':number',
+		// 	value: selectedRecipient.number,
+
+		// 	key2: ':start_date',
+		// 	value2: startDate ? startDate : null,
+
+		// 	key3: ':last_closed',
+		// 	value3: endDate ? endDate : null
+		// };
+
 		let params = {
-			key: ':number',
-			value: selectedRecipient.number,
-
-			key2: ':start_date',
-			value2: startDate ? startDate : null,
-
-			key3: ':last_closed',
-			value3: endDate ? endDate : null
+			number: selectedRecipient.number,
+			start_date: startDate ? startDate: null,
+			last_closed: endDate ? endDate : null,
 		};
 
 		CoreHttpHandler.request(
@@ -254,8 +261,7 @@ function ChatApp(props) {
 				setmessages(response.data.data.chat);
 				abc = response.data.data.chat;
 				setshowLatestMessage(true);
-			},
-			response => {}
+			}
 		);
 	};
 
@@ -349,7 +355,7 @@ function ChatApp(props) {
 			'historyNumbers',
 			{
 				page: listPage ? listPage : 0,
-				limit: 10
+				limit: 50
 			},
 			response => {
 				const numberrrrrr = response.data.data.customers;

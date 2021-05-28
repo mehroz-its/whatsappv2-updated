@@ -34,6 +34,7 @@ useEffect(() => {
 
 	const selectedAgent = selectedRow => {
 		let numbers = [];
+		console.log('checking selected row ---------------------------------', selectedRow)
 		selectedRow.rowIds.filter(e => {
 			data.totalChats.filter(result => {
 				if (e === result.id) {

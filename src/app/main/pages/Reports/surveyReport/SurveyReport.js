@@ -108,7 +108,9 @@ function SurveyReport() {
 		console.log(date, 'eeeeeeeeeeeeeeeeeeeeee');
 		let start = moment().month(date.getMonth()).date(date.getDate()).hours(0).minutes(0).seconds(0).milliseconds(0);
 		let format = moment(start).format();
-		return format.substr(0, 19);
+		let finalFormat = format.substr(0, 19) + '.000Z'
+		console.log(format.substr(0, 19), 'formattttttt');
+		return finalFormat;
 	}
 	function dateWithEndingHour(newDateeeee) {
 		console.log(newDateeeee, 'enddateeeeeee');
@@ -122,8 +124,9 @@ function SurveyReport() {
 			.seconds(59)
 			.milliseconds(59);
 		let format = moment(end).format();
+		let finalFormat = format.substr(0, 19) + '.999Z'
 		console.log(format.substr(0, 19), 'formattttttt');
-		return format.substr(0, 19);
+		return finalFormat;
 	}
 
 
