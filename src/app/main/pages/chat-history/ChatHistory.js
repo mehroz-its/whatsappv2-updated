@@ -251,6 +251,8 @@ function ChatApp(props) {
 			number: selectedRecipient.number,
 			start_date: startDate ? startDate: null,
 			last_closed: endDate ? endDate : null,
+			page: 0,
+			limit: 0
 		};
 
 		CoreHttpHandler.request(
