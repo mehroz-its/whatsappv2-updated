@@ -84,7 +84,7 @@ useEffect(() => {
 						rows={data.totalChats}
 						columns={columns}
 						checkboxSelection
-						onSelectionChange={e => selectedAgent(e)}
+						onSelectionChange={e => alert("onSelectionChange")}
 					/>
 				</div>
 				{/* <List>
