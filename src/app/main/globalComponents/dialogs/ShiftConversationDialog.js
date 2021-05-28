@@ -45,6 +45,7 @@ useEffect(() => {
        
 	};
 	const handleTypeChange = selectedAgent => {
+		console.log("handleTypeChange selectedAgent " , selectedAgent);
         setAgentID(selectedAgent.target.value);
 	};
 	// const finalData = () => {

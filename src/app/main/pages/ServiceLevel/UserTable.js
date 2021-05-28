@@ -199,7 +199,8 @@ function UserTable(props) {
 											align="center"
 											style={{ fontSize: '12px', padding: '10px' }}
 										>
-											{`${((n.chat_in_20_seconds / n.total_chats) * 100).toFixed()} %`}
+											{/* {`${((n.chat_in_20_seconds / n.total_chats) * 100).toFixed()} %`} */}
+											{n.chat_in_20_seconds_in_percentage}
 										</TableCell>
 										<TableCell
 											component="th"

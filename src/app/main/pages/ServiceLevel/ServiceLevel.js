@@ -54,6 +54,7 @@ const incomingAndOutGoingCount = data => {
 	// Add data
 	let formatedData = [];
 	data.map(val => {
+		console.log(val, "chartvalllllllllll");
 		formatedData.push({ country: val.username, litres: val.chat_in_20_seconds });
 	});
 	chart.data = formatedData;
@@ -191,7 +192,8 @@ function ChatApp() {
 						user_id: val.user_id,
 						username: val.username,
 						chat_in_20_seconds: val.count,
-						total_chats: val.total
+						total_chats: val.total,
+						chat_in_20_seconds_in_percentage: `${((val.count / val.total) * 100).toFixed()} %`
 					});
 				});
 				setData(array);

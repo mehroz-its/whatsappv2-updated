@@ -308,7 +308,7 @@ function ChatApp(props) {
 			'agents_customer_conversations',
 			params,
 			response => {
-				console.log('response :', response);
+				console.log('responseagentttconversationsssssssssssss', response);
 				console.log('response :', response.data.data.totalPages);
 				if (response.data.data.conversation.length > NewMessagess.length) {
 					//   console.log("response if");
@@ -328,36 +328,37 @@ function ChatApp(props) {
 					// setshowLatestMessage(false)
 				}
 				// if (int_MessageLists === null) setint_MessageLists(setInterval(() => {
-				// 	getConversation(e);
-				// }, 6000));
-			},
-			response => {}
-		);
-	};
-
-	const conversationActionsCallback = action => {
-		// setAnchorEl(null);
-		if (action === 'export') conversationExport();
-		if (action === 'shift') conversationShift();
-	};
-	const conversationExport = () => {
-		let params = {
-			key: ':number',
-			value: selectedRecipient.number,
-			key2: ':last_closed',
-			value2: selectedRecipient.last_closed
-		};
-		CoreHttpHandler.request(
-			'conversations',
-			'conversations',
-			params,
-			response => {
-				const messages = response.data.data.chat;
-				const csvLink = (
-					<CSVLink
-						filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`}
-						data={messages}
-					>
+					// 	getConversation(e);
+					// }, 6000));
+				},
+				response => {}
+				);
+			};
+			
+			const conversationActionsCallback = action => {
+				// setAnchorEl(null);
+				if (action === 'export') conversationExport();
+				if (action === 'shift') conversationShift();
+			};
+			const conversationExport = () => {
+				let params = {
+					key: ':number',
+					value: selectedRecipient.number,
+					key2: ':last_closed',
+					value2: selectedRecipient.last_closed
+				};
+				CoreHttpHandler.request(
+					'conversations',
+					'conversations',
+					params,
+					response => {
+						console.log('conversationsssresssssssss', response);
+						const messages = response.data.data.chat;
+						const csvLink = (
+							<CSVLink
+							filename={`chat_${selectedRecipient.number}_${new Date().toISOString()}.csv`}
+							data={messages}
+							>
 						Your exported chat is ready for download
 					</CSVLink>
 				);
@@ -365,178 +366,181 @@ function ChatApp(props) {
 				setMoreMenuEl(null);
 			},
 			response => {}
-		);
-	};
-	const conversationShift = () => {
-		CoreHttpHandler.request(
-			'conversations',
-			'agent_admin_list',
-			{ columns: 'id, username, email, number' },
-			response => {
-				const data = response.data.data.agents.data;
-				let abc = {
-					agentList: data,
-					totalChats: numberr
+			);
+		};
+		const conversationShift = () => {
+			CoreHttpHandler.request(
+				'conversations',
+				'agent_admin_list',
+				{ columns: 'id, username, email, number' },
+				response => {
+					console.log('agentadminlisttttttttttttttt', response);
+					const data = response.data.data.agents.data;
+					let abc = {
+						agentList: data,
+						totalChats: numberr
+					};
+					console.log('abc', abc);
+					setshiftAgentsList(abc);
+					setdialogOpenShift(true);
+					
+					setMoreMenuEl(null);
+				},
+				response => {}
+				);
+			};
+			const conversationContextMenuCallback = item => {
+				if (item === 'customer_profile') {
+					profileDialog();
+					setMoreMenuEl(null);
+				}
+				
+				if (item === 'canned_messages') {
+					cannedMessagesDialog();
+					setMoreMenuEl(null);
+				}
+				
+				if (item === 'block') {
+					setdialogOpenConfirmBlock(true);
+					setMoreMenuEl(null);
+				}
+				if (item === 'copy') {
+					copyContent();
+					setMoreMenuEl(null);
+				}
+			};
+			const profileDialog = () => {
+				CoreHttpHandler.request(
+					'contact_book',
+					'fetch',
+					{
+						key: ':number',
+						value: selectedRecipient.number
+					},
+					response => {
+						console.log('fetchcontactboooooook', response);
+						const customer = response.data.data.customer;
+						
+						loadCountries().then(response => {
+							const countries = response.data.data.list.data;
+							
+							setcustomerProfileData({
+								id: customer.id,
+								number: selectedRecipient.number,
+								attributes: customer.attributes,
+								assign_name: selectedRecipient.name == selectedRecipient.number ? '' : selectedRecipient.name,
+								countries
+							});
+							// console.log("customer : ", customer);
+							setAnchorEl(false);
+							setdialogOpenCmp(true);
+						});
+					},
+					error => {
+						setAnchorEl(false);
+						setdialogOpenCmp(false);
+						// this.setSnackBarMessage('Failed to customer profile, please try again later', 'error');
+					}
+					);
 				};
-				console.log('abc', abc);
-				setshiftAgentsList(abc);
-				setdialogOpenShift(true);
-
-				setMoreMenuEl(null);
-			},
-			response => {}
-		);
-	};
-	const conversationContextMenuCallback = item => {
-		if (item === 'customer_profile') {
-			profileDialog();
-			setMoreMenuEl(null);
-		}
-
-		if (item === 'canned_messages') {
-			cannedMessagesDialog();
-			setMoreMenuEl(null);
-		}
-
-		if (item === 'block') {
-			setdialogOpenConfirmBlock(true);
-			setMoreMenuEl(null);
-		}
-		if (item === 'copy') {
-			copyContent();
-			setMoreMenuEl(null);
-		}
-	};
-	const profileDialog = () => {
-		CoreHttpHandler.request(
-			'contact_book',
-			'fetch',
-			{
-				key: ':number',
-				value: selectedRecipient.number
-			},
-			response => {
-				const customer = response.data.data.customer;
-
-				loadCountries().then(response => {
-					const countries = response.data.data.list.data;
-
-					setcustomerProfileData({
-						id: customer.id,
-						number: selectedRecipient.number,
-						attributes: customer.attributes,
-						assign_name: selectedRecipient.name == selectedRecipient.number ? '' : selectedRecipient.name,
-						countries
+				const loadCountries = () => {
+					return CoreHttpHandler.request(
+						'locations',
+						'get_countries',
+						{
+							columns: 'id, name',
+							sortby: 'ASC',
+							orderby: 'id',
+							where: 'enabled = $1',
+							values: true,
+							page: 0,
+							limit: 0
+						},
+						null,
+						null,
+						true
+						);
+					};
+					const copyContent = () => {
+						copy(selectedRecipient.number);
+						alert('copy');
+						// this.setSnackBarMessage('Copied', 'success', null);
+					};
+					
+					const [sendDialogData, setsendDialogData] = React.useState({
+						url: '',
+						caption: '',
+						attributes: null
 					});
-					// console.log("customer : ", customer);
-					setAnchorEl(false);
-					setdialogOpenCmp(true);
-				});
-			},
-			error => {
-				setAnchorEl(false);
-				setdialogOpenCmp(false);
-				// this.setSnackBarMessage('Failed to customer profile, please try again later', 'error');
-			}
-		);
-	};
-	const loadCountries = () => {
-		return CoreHttpHandler.request(
-			'locations',
-			'get_countries',
-			{
-				columns: 'id, name',
-				sortby: 'ASC',
-				orderby: 'id',
-				where: 'enabled = $1',
-				values: true,
-				page: 0,
-				limit: 0
-			},
-			null,
-			null,
-			true
-		);
-	};
-	const copyContent = () => {
-		copy(selectedRecipient.number);
-		alert('copy');
-		// this.setSnackBarMessage('Copied', 'success', null);
-	};
-
-	const [sendDialogData, setsendDialogData] = React.useState({
-		url: '',
-		caption: '',
-		attributes: null
-	});
-	const [dialogOpen, setdialogOpen] = React.useState(false);
-	const [shiftAgentsList, setshiftAgentsList] = React.useState([]);
-	const [dialogOpenShift, setdialogOpenShift] = React.useState(false);
-	const [sendActionType, setsendActionType] = React.useState(null);
-	const [sendDialogOpen, setsendDialogOpen] = React.useState(false);
-	const [sendDialogTitle, setsendDialogTitle] = React.useState(false);
-	const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
-	const [dialogOpenCanned, setdialogOpenCanned] = React.useState(false);
-	const [cannedMessagesList, setcannedMessagesList] = React.useState([]);
-	const [shiftChatsToAgent, setShiftChatsToAgent] = React.useState({});
-
-	const [blockReason, setblockReason] = React.useState('');
-	const { open } = props;
-	const [opened, setOpened] = React.useState(open);
-	const [customerProfileData, setcustomerProfileData] = React.useState({
-		id: 0,
-		number: null,
-		assign_name: '',
-		attributes: [],
-		countries: []
-	});
-	const [dialogOpenCmp, setdialogOpenCmp] = React.useState(false);
-
-	const sendDialogActions = [
-		{
-			handler: (event, index) => {
-				setsendActionType(null);
-				setsendDialogTitle('');
-				setsendDialogOpen(false);
-			},
-			options: {},
-			label: 'Cancel'
-		},
-		{
-			handler: (event, index) => {
-				sendDialogActionCb();
-			},
-			options: {},
-			label: 'Send'
-		}
-	];
-
-	const sendDialogActionCb = () => {
-		const args = {};
-
-		args[sendActionType] = {};
-
-		args[sendActionType]['type'] = sendActionType;
-
-		args[sendActionType][sendActionType] = {};
-
-		args[sendActionType][sendActionType]['message'] = sendDialogData;
-
-		args[sendActionType][sendActionType]['to'] = [selectedRecipient.number];
-
-		if (sendDialogData.attributes) {
-			Object.keys(sendDialogData.attributes).forEach(attr => {
-				args[sendActionType][sendActionType].message[attr] = sendDialogData.attributes[attr];
+					const [dialogOpen, setdialogOpen] = React.useState(false);
+					const [shiftAgentsList, setshiftAgentsList] = React.useState([]);
+					const [dialogOpenShift, setdialogOpenShift] = React.useState(false);
+					const [sendActionType, setsendActionType] = React.useState(null);
+					const [sendDialogOpen, setsendDialogOpen] = React.useState(false);
+					const [sendDialogTitle, setsendDialogTitle] = React.useState(false);
+					const [dialogOpenConfirmBlock, setdialogOpenConfirmBlock] = React.useState(false);
+					const [dialogOpenCanned, setdialogOpenCanned] = React.useState(false);
+					const [cannedMessagesList, setcannedMessagesList] = React.useState([]);
+					const [shiftChatsToAgent, setShiftChatsToAgent] = React.useState({});
+					
+					const [blockReason, setblockReason] = React.useState('');
+					const { open } = props;
+					const [opened, setOpened] = React.useState(open);
+					const [customerProfileData, setcustomerProfileData] = React.useState({
+						id: 0,
+						number: null,
+						assign_name: '',
+						attributes: [],
+						countries: []
+					});
+					const [dialogOpenCmp, setdialogOpenCmp] = React.useState(false);
+					
+					const sendDialogActions = [
+						{
+							handler: (event, index) => {
+								setsendActionType(null);
+								setsendDialogTitle('');
+								setsendDialogOpen(false);
+							},
+							options: {},
+							label: 'Cancel'
+						},
+						{
+							handler: (event, index) => {
+								sendDialogActionCb();
+							},
+							options: {},
+							label: 'Send'
+						}
+					];
+					
+					const sendDialogActionCb = () => {
+						const args = {};
+						
+						args[sendActionType] = {};
+						
+						args[sendActionType]['type'] = sendActionType;
+						
+						args[sendActionType][sendActionType] = {};
+						
+						args[sendActionType][sendActionType]['message'] = sendDialogData;
+						
+						args[sendActionType][sendActionType]['to'] = [selectedRecipient.number];
+						
+						if (sendDialogData.attributes) {
+							Object.keys(sendDialogData.attributes).forEach(attr => {
+								args[sendActionType][sendActionType].message[attr] = sendDialogData.attributes[attr];
 			});
 		}
 
 		delete args[sendActionType][sendActionType].message.attributes;
-
+		
 		CoreHttpHandler.request(
 			'conversations',
 			'send',
 			{ key: ':type', value: sendActionType, params: args[sendActionType] },
 			response => {
+				console.log('sendConversat', response);
 				setsendActionType(null);
 				setsendDialogTitle('');
 				setsendDialogOpen(false);
@@ -547,50 +551,50 @@ function ChatApp(props) {
 				});
 			},
 			response => {}
-		);
-	};
-	// const dialogOptionsConfirmBlock = {
-	// 	onClose: function () {
-	// 		setdialogOpenConfirmBlock(false)
-
-	// 	},
-	// 	'aria-labelledby': "form-dialog-title",
-	// 	'aria-describedby': "form-dialog-title"
-	// };
-
-	const getLoadingVal = e => {
-		setLoaderValue(e);
-	};
-
-	setTimeout(() => {
-		setLoaderValue(false);
-	}, 5000);
-
-	useEffect(() => {
-		EventEmitter.subscribe('ShowHideLoader', e => getLoadingVal(e));
-		setNewAgent(selectedAgent);
-		if (NewAgent != selectedAgent) {
-			setselectedRecipient(null);
-		}
-		return () => {
-			EventEmitter.unsubscribe('ShowHideLoader');
+			);
 		};
-	}, [numberr, selectedRecipient]);
-
-	const clearData = () => {
-		setselectedRecipient(null);
-		setmessages([]);
-	};
-
-	function handleMoreMenuClick(event) {
-		setMoreMenuEl(event.currentTarget);
-	}
-	function handleMoreMenuClose(event) {
-		setMoreMenuEl(null);
-	}
-	const cannedMessagesDialog = () => {
-		CoreHttpHandler.request(
-			'canned_messages',
+		// const dialogOptionsConfirmBlock = {
+			// 	onClose: function () {
+				// 		setdialogOpenConfirmBlock(false)
+				
+				// 	},
+				// 	'aria-labelledby': "form-dialog-title",
+				// 	'aria-describedby': "form-dialog-title"
+				// };
+				
+				const getLoadingVal = e => {
+					setLoaderValue(e);
+				};
+				
+				setTimeout(() => {
+					setLoaderValue(false);
+				}, 5000);
+				
+				useEffect(() => {
+					EventEmitter.subscribe('ShowHideLoader', e => getLoadingVal(e));
+					setNewAgent(selectedAgent);
+					if (NewAgent != selectedAgent) {
+						setselectedRecipient(null);
+					}
+					return () => {
+						EventEmitter.unsubscribe('ShowHideLoader');
+					};
+				}, [numberr, selectedRecipient]);
+				
+				const clearData = () => {
+					setselectedRecipient(null);
+					setmessages([]);
+				};
+				
+				function handleMoreMenuClick(event) {
+					setMoreMenuEl(event.currentTarget);
+				}
+				function handleMoreMenuClose(event) {
+					setMoreMenuEl(null);
+				}
+				const cannedMessagesDialog = () => {
+					CoreHttpHandler.request(
+						'canned_messages',
 			'listing',
 			{
 				columns: '*',
@@ -602,65 +606,67 @@ function ChatApp(props) {
 				limit: 0
 			},
 			response => {
+				console.log('listingggggchatappppp', response);
 				const data = response.data.data.list.data;
 				setcannedMessagesList(data);
 				setdialogOpenCanned(true);
 				setMoreMenuEl(null);
 			},
 			error => {}
-		);
-	};
-	const sendDialogInputHandler = e => {
-		const data = { ...sendDialogData };
-
-		if (e.caption) {
-			data['caption'] = e.caption;
-		}
-
-		if (e.url) {
-			data['url'] = e.url;
-		}
-
-		if (e.attributes) {
-			data['attributes'] = e.attributes;
-		}
-		setsendDialogData(data);
-	};
-	const selectedShiftAgent = data => {
-		console.log('selectedShiftAgent data', data);
-		setShiftChatsToAgent(data);
-	};
-	const selectedShiftAgentList = () => {
-		console.log(shiftChatsToAgent, 'live debug**');
-		if (shiftChatsToAgent.agentId !== null) {
-			CoreHttpHandler.request(
-				'conversations',
-				'transfer',
-				{
-					key: ':id',
-					value: shiftChatsToAgent.agentId,
-					params: {
-						customer: shiftChatsToAgent.chats
-					}
-				},
-				response => {
-					setdialogOpenShift(false);
-					clearData();
-					reloadNumber();
-				},
-				response => {
-					setdialogOpenShift(false);
-				}
 			);
-		} else {
-			alert('Please Select Agent or Chat');
-		}
-	};
-	const dialogOptionsShift = {
-		onClose: function () {
-			setdialogOpenShift(false);
-		},
-		'aria-labelledby': 'form-dialog-title',
+		};
+		const sendDialogInputHandler = e => {
+			const data = { ...sendDialogData };
+			
+			if (e.caption) {
+				data['caption'] = e.caption;
+			}
+			
+			if (e.url) {
+				data['url'] = e.url;
+			}
+			
+			if (e.attributes) {
+				data['attributes'] = e.attributes;
+			}
+			setsendDialogData(data);
+		};
+		const selectedShiftAgent = data => {
+			console.log('selectedShiftAgentdata', data);
+			setShiftChatsToAgent(data);
+		};
+		const selectedShiftAgentList = () => {
+			// alert("selectedShiftAgentList")
+			console.log(shiftChatsToAgent, 'live debug**');
+			if (shiftChatsToAgent.agentId !== null) {
+				CoreHttpHandler.request(
+					'conversations',
+					'transfer',
+					{
+						key: ':id',
+						value: shiftChatsToAgent.agentId,
+						params: {
+							customer: shiftChatsToAgent.chats
+						}
+					},
+					response => {
+						setdialogOpenShift(false);
+						clearData();
+						reloadNumber();
+					},
+					response => {
+						setdialogOpenShift(false);
+					}
+					);
+				} else {
+					alert('Please Select Agent or Chat');
+				}
+			};
+			const dialogOptionsShift = {
+				onClose: function () {
+					setdialogOpenShift(false);
+				},
+				'aria-labelledby': 'form-dialog-title',
 		'aria-describedby': 'form-dialog-title'
 	};
 	const dialogActionsShift = [
@@ -686,12 +692,12 @@ function ChatApp(props) {
 	};
 	const selectedCannedMessage = props => {
 		const { message_text, message_type, attachment_url, attachment_name, attachment_type } = props;
-
+		
 		if (message_type !== 'text') {
 			let params = {
 				type: message_type
 			};
-
+			
 			params[message_type] = {
 				to: [selectedRecipient.number],
 				message: {
@@ -699,11 +705,11 @@ function ChatApp(props) {
 					mime_type: attachment_type,
 					url: attachment_url,
 					caption: message_text
-						? message_text
-						: `You Shared A ${message_type.charAt(0).toUpperCase()}${message_type.slice(1)}`
+					? message_text
+					: `You Shared A ${message_type.charAt(0).toUpperCase()}${message_type.slice(1)}`
 				}
 			};
-
+			
 			CoreHttpHandler.request(
 				'conversations',
 				'send',
@@ -713,162 +719,165 @@ function ChatApp(props) {
 					params
 				},
 				response => {
+					console.log('conversationsssenddddchat', response);
 					// setMessageText("")
 					setdialogOpenCanned(false);
 				},
 				error => {}
-			);
-		} else {
-			// setMessageText(message_text)
-			setdialogOpenCanned(false);
-		}
-	};
-	const dialogOptionsCanned = {
-		onClose: function () {
-			setdialogOpenCanned(false);
-		},
-		'aria-labelledby': 'form-dialog-title',
-		'aria-describedby': 'form-dialog-title'
-	};
-	const dialogActionsCanned = [
-		{
-			handler: (event, index) => {
-				XGlobalDialogCannedClose();
+				);
+			} else {
+				// setMessageText(message_text)
+				setdialogOpenCanned(false);
+			}
+		};
+		const dialogOptionsCanned = {
+			onClose: function () {
+				setdialogOpenCanned(false);
 			},
-			options: {},
-			label: 'Cancel'
-		}
-	];
-	const blockCustomerInputHandler = props => {
-		const { key, value, event, dataKey } = props;
-		setblockReason(value);
-	};
-	const dialogActionsConfirmBlock = [
-		{
-			handler: (event, index) => {
-				XGlobalDialogConfirmBlock();
-			},
-			options: {},
-			label: 'Cancel'
-		},
-		{
-			handler: (event, index) => {
-				blockNumber();
-			},
-			options: {},
-			label: 'Yes'
-		}
-	];
-	const blockNumber = () => {
-		// console.log('blockNumber');
-
-		CoreHttpHandler.request(
-			'conversations',
-			'block',
+			'aria-labelledby': 'form-dialog-title',
+			'aria-describedby': 'form-dialog-title'
+		};
+		const dialogActionsCanned = [
 			{
-				key: ':number',
-				value: selectedRecipient.number,
-				params: {
-					reason: blockReason
+				handler: (event, index) => {
+					XGlobalDialogCannedClose();
+				},
+				options: {},
+				label: 'Cancel'
+			}
+		];
+		const blockCustomerInputHandler = props => {
+			const { key, value, event, dataKey } = props;
+			setblockReason(value);
+		};
+		const dialogActionsConfirmBlock = [
+			{
+				handler: (event, index) => {
+					XGlobalDialogConfirmBlock();
+				},
+				options: {},
+				label: 'Cancel'
+			},
+			{
+				handler: (event, index) => {
+					blockNumber();
+				},
+				options: {},
+				label: 'Yes'
+			}
+		];
+		const blockNumber = () => {
+			// console.log('blockNumber');
+			
+			CoreHttpHandler.request(
+				'conversations',
+				'block',
+				{
+					key: ':number',
+					value: selectedRecipient.number,
+					params: {
+						reason: blockReason
+					}
+				},
+				response => {
+					console.log('conversationsssenddddchatblockkkkkkkk', response);
+					setdialogOpenConfirmBlock(false);
+					setblockReason('');
+					setAnchorEl(false);
+					clearData();
+					// props.agentShift()
+					// setselectedRecipient(null)
+					// setmessages([])
+					// clearInterval(this.int_MessageLists);
+				},
+				error => {
+					setAnchorEl(false);
+					
+					setdialogOpenConfirmBlock(false);
 				}
-			},
-			response => {
+				);
+			};
+			const customerProfileInputHandler = props => {
+				const { key, value, event, dataKey } = props;
+				
+				const data = { ...customerProfileData };
+				
+				data[key] = value.attrs;
+				data['assign_name'] = value.assigned_name;
+				setcustomerProfileData(data);
+			};
+			const dialogOptionsCmp = {
+				onClose: function () {
+					setdialogOpenCmp(false);
+				},
+				'aria-labelledby': 'form-dialog-title',
+				'aria-describedby': 'form-dialog-title'
+			};
+			const XGlobalDialogCannedClose = () => {
+				setdialogOpenCanned(false);
+			};
+			const XGlobalDialogConfirmBlock = () => {
 				setdialogOpenConfirmBlock(false);
-				setblockReason('');
-				setAnchorEl(false);
-				clearData();
-				// props.agentShift()
-				// setselectedRecipient(null)
-				// setmessages([])
-				// clearInterval(this.int_MessageLists);
-			},
-			error => {
-				setAnchorEl(false);
-
-				setdialogOpenConfirmBlock(false);
-			}
-		);
-	};
-	const customerProfileInputHandler = props => {
-		const { key, value, event, dataKey } = props;
-
-		const data = { ...customerProfileData };
-
-		data[key] = value.attrs;
-		data['assign_name'] = value.assigned_name;
-		setcustomerProfileData(data);
-	};
-	const dialogOptionsCmp = {
-		onClose: function () {
-			setdialogOpenCmp(false);
-		},
-		'aria-labelledby': 'form-dialog-title',
-		'aria-describedby': 'form-dialog-title'
-	};
-	const XGlobalDialogCannedClose = () => {
-		setdialogOpenCanned(false);
-	};
-	const XGlobalDialogConfirmBlock = () => {
-		setdialogOpenConfirmBlock(false);
-	};
-	const dialogActionsCmp = [
-		{
-			handler: (event, index) => {
-				XGlobalDialogCmpClose();
-			},
-			options: {},
-			label: 'Close'
-		},
-		{
-			handler: (event, index) => {
-				profileUpdate();
-			},
-			options: {},
-			label: 'Update'
-		}
-	];
-	const XGlobalDialogCmpClose = () => {
-		setdialogOpenCmp(false);
-	};
-	const profileUpdate = () => {
-		const data = { ...customerProfileData };
-
-		data['number'] = selectedRecipient.number;
-
-		CoreHttpHandler.request(
-			'contact_book',
-			'update',
-			{
-				key: ':id',
-				value: customerProfileData.id,
-				params: data
-			},
-			response => {
-				setselectedRecipient(selectedRecipient);
-				// const clearData2 = () => {
+			};
+			const dialogActionsCmp = [
+				{
+					handler: (event, index) => {
+						XGlobalDialogCmpClose();
+					},
+					options: {},
+					label: 'Close'
+				},
+				{
+					handler: (event, index) => {
+						profileUpdate();
+					},
+					options: {},
+					label: 'Update'
+				}
+			];
+			const XGlobalDialogCmpClose = () => {
 				setdialogOpenCmp(false);
-				// clearInterval(this.int_MessageLists);
-				// clearInterval(this.int_CustomerList);
-				// 	getNumbers();
-				// setint_CustomerList = setInterval(() => {
-				// 	getNumbers();
-				// }, 1000);
-				// }
-			},
-			error => {
-				// if (error.hasOwnProperty('response')) {
-				//     if (error.response.hasOwnProperty('data')) {
-				//         this.setSnackBarMessage(error.response.data.message, 'error');
-				//     }
-				// } else this.setSnackBarMessage('Failed to update profile, please try again later', 'error');
-			}
-		);
-	};
-	// console.log(valueofEvent,'open from state');
-	// console.log(props,'allllthepropsssssssss');
-	// console.log(props.Loading,LoaderValue,'lossssssssssss');
-	return (
-		<>
+			};
+			const profileUpdate = () => {
+				const data = { ...customerProfileData };
+				
+				data['number'] = selectedRecipient.number;
+				
+				CoreHttpHandler.request(
+					'contact_book',
+					'update',
+					{
+						key: ':id',
+						value: customerProfileData.id,
+						params: data
+					},
+					response => {
+						console.log('updateaacontacttttboook', response);
+						setselectedRecipient(selectedRecipient);
+						// const clearData2 = () => {
+							setdialogOpenCmp(false);
+							// clearInterval(this.int_MessageLists);
+							// clearInterval(this.int_CustomerList);
+							// 	getNumbers();
+							// setint_CustomerList = setInterval(() => {
+								// 	getNumbers();
+								// }, 1000);
+								// }
+							},
+							error => {
+								// if (error.hasOwnProperty('response')) {
+									//     if (error.response.hasOwnProperty('data')) {
+										//         this.setSnackBarMessage(error.response.data.message, 'error');
+										//     }
+										// } else this.setSnackBarMessage('Failed to update profile, please try again later', 'error');
+									}
+									);
+								};
+								// console.log(valueofEvent,'open from state');
+								// console.log(props,'allllthepropsssssssss');
+								// console.log(props.Loading,LoaderValue,'lossssssssssss');
+								return (
+									<>
 			<Snackbar
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
 				open={props.open}
@@ -902,7 +911,7 @@ function ChatApp(props) {
 										}
 									}
 								}}
-							>
+								>
 								<ChatsSidebar
 									numbers={numberr}
 									getNumbers={props.getNumbers}
@@ -913,7 +922,7 @@ function ChatApp(props) {
 									onContactClick={e => {
 										selectedRecipientt(e);
 									}}
-								/>
+									/>
 							</Drawer>
 						</Hidden>
 						<Hidden smDown>

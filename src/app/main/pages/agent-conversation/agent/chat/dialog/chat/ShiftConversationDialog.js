@@ -27,7 +27,7 @@ useEffect(() => {
         agentId : agentID,
         chats: shiftChatsNumber
     }
-    console.log(" handleTypeChange data" , combineData);
+    console.log(" handleTypeChange datadddddd" , combineData);
     onDialogPropsChange(combineData)
 }, [agentID,shiftChatsNumber])
 
@@ -44,6 +44,8 @@ useEffect(() => {
        
 	};
 	const handleTypeChange = selectedAgent => {
+		console.log("handleTypeChange selectedAgent " , selectedAgent);
+
         setAgentID(selectedAgent.target.value);
 	};
 	// const finalData = () => {
