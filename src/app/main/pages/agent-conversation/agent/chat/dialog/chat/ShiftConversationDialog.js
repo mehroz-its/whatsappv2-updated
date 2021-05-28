@@ -27,11 +27,12 @@ useEffect(() => {
         agentId : agentID,
         chats: shiftChatsNumber
     }
-    console.log(" handleTypeChange datadddddd" , combineData);
+    console.log(" handleTypeChange data" , combineData);
     onDialogPropsChange(combineData)
 }, [agentID,shiftChatsNumber])
 
 	const selectedAgent = selectedRow => {
+		console.log("selectedAgent shift convo dailog:" ,selectedRow );
 		let numbers = [];
 		selectedRow.rowIds.filter(e => {
 			data.totalChats.filter(result => {
@@ -40,12 +41,12 @@ useEffect(() => {
 				}
 			});
 		});
+		console.log("numbers shift convo dailog:" ,numbers );
+
         setShiftChatsNumber(numbers);
        
 	};
 	const handleTypeChange = selectedAgent => {
-		console.log("handleTypeChange selectedAgent " , selectedAgent);
-
         setAgentID(selectedAgent.target.value);
 	};
 	// const finalData = () => {
@@ -64,8 +65,7 @@ useEffect(() => {
 					labelId="demo-simple-select-outlined-label"
 					id="demo-simple-select-outlined"
 					value={agentID}
-					onChange={()=>alert("onChange  selected")}
-					// onChange={handleTypeChange}
+					onChange={handleTypeChange}
 					fullWidth
 				>
 					<MenuItem value="">

@@ -1106,7 +1106,8 @@ function ChatApp(props) {
 					</div>
 				</div>
 				<XGlobalDialogCmp
-					onDialogPropsChange={selectedShiftAgent}
+					onDialogPropsChange={(e)=>selectedShiftAgent(e)}
+					// onDialogPropsChange={selectedShiftAgent}
 					data={shiftAgentsList}
 					dialogTitle={`Shift Conversation To Another Agent`}
 					options={dialogOptionsShift}

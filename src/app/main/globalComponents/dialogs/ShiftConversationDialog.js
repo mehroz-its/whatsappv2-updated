@@ -65,6 +65,7 @@ useEffect(() => {
 					id="demo-simple-select-outlined"
 					value={agentID}
 					onChange={handleTypeChange}
+					// onChange={handleTypeChange}
 					fullWidth
 				>
 					<MenuItem value="">
@@ -84,6 +85,7 @@ useEffect(() => {
 						columns={columns}
 						checkboxSelection
 						onSelectionChange={e => selectedAgent(e)}
+						// onSelectionChange={e => selectedAgent(e)}
 					/>
 				</div>
 				{/* <List>
