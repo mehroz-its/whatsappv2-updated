@@ -149,7 +149,7 @@ module.exports = [
 					},
 					{
 						id: 'Survey_Report',
-						title: 'Customer Report',
+						title: 'Customer Feedback',
 						type: 'item',
 						url: '/report/surveyReport',
 						exact: true

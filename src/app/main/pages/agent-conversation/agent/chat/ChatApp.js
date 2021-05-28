@@ -651,12 +651,10 @@ function ChatApp(props) {
 						}
 					},
 					response => {
+						console.log('inside response-lol-----------------------------------------');
 						setdialogOpenShift(false);
 						clearData();
 						reloadNumber();
-					},
-					response => {
-						setdialogOpenShift(false);
 					}
 					);
 				} else {
