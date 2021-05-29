@@ -48,6 +48,10 @@ const CompanyProfileConfig = {
 			path: '/apps/addAutoReply',
 			component: React.lazy(() => import('./customerAccountDetails/SideNavigationPages/autoReply/addAutoReply.js'))
         },
+        {
+			path: '/apps/company-details/custom_api',
+			component: React.lazy(() => import('./customerAccountDetails/SideNavigationPages/CustomApi/customApi.js'))
+        },
 
 
     ]
