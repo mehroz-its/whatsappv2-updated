@@ -381,7 +381,7 @@ function ChatApp(props) {
 						agentList: data,
 						totalChats: numberr
 					};
-					console.log('abc', abc);
+					
 					setshiftAgentsList(abc);
 					setdialogOpenShift(true);
 					

@@ -318,7 +318,6 @@ function ChatApp(props) {
 			response => {
 				const messagesssss = response.data.data.chat;
 				setmessages(response.data.data.chat);
-				console.log(...messages, 'msggggggggg');
 				let tempArr = [];
 				if (tempArr.length == 0) {
 					tempArr = messagesssss;
@@ -330,7 +329,7 @@ function ChatApp(props) {
 				// console.log(newmsgs, 'newwwwwmsssdsfsfs');
 				// let newmsgs = [...messages];
 
-				setmessages([...messages, messagesssss]);
+				// setmessages([...messages]);
 				console.log(messages.length, 'mesaaagesss');
 				// setmessages([...messages, ...messagesssss]);
 
