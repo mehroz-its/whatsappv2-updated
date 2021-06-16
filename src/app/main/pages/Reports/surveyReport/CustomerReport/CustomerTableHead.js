@@ -20,7 +20,7 @@ const rows = [
 		id: 'id',
 		align: 'center',
 		disablePadding: false,
-		label: 'ID',
+		label: 'User Id',
 		sort: true
 	},
 	{
@@ -31,59 +31,45 @@ const rows = [
 		sort: true
 	},
 	{
-		id: 'excellent',
+		id: 'number',
 		align: 'center',
 		disablePadding: false,
-		label: 'Excellent',
-		sort: true
-	},
-	{
-		id: 'vGood',
-		align: 'center',
-		disablePadding: false,
-		label: 'Very Good',
-		sort: true
-	},
-	{
-		id: 'good',
-		align: 'center',
-		disablePadding: false,
-		label: 'Good',
-		sort: true
-	},
-	{
-		id: 'poor',
-		align: 'center',
-		disablePadding: false,
-		label: 'Poor',
-		sort: true
-	},
-	{
-		id: 'vPoor',
-		align: 'center',
-		disablePadding: false,
-		label: 'Very Poor',
-		sort: true
-	},
-	{
-		id: 'other',
-		align: 'center',
-		disablePadding: false,
-		label: 'Other',
-		sort: true
-	},
-	{
-		id: 'total',
-		align: 'center',
-		disablePadding: false,
-		label: 'Total',
+		label: 'Number',
 		sort: true
 	}
 	// {
-	// 	id: 'delete',
+	// 	id: 'vGood',
 	// 	align: 'center',
 	// 	disablePadding: false,
-	// 	label: 'Delete',
+	// 	label: 'Very Good',
+	// 	sort: true
+	// },
+	// {
+	// 	id: 'good',
+	// 	align: 'center',
+	// 	disablePadding: false,
+	// 	label: 'Good',
+	// 	sort: true
+	// },
+	// {
+	// 	id: 'poor',
+	// 	align: 'center',
+	// 	disablePadding: false,
+	// 	label: 'Poor',
+	// 	sort: true
+	// },
+	// {
+	// 	id: 'vPoor',
+	// 	align: 'center',
+	// 	disablePadding: false,
+	// 	label: 'Very Poor',
+	// 	sort: true
+	// },
+	// {
+	// 	id: 'other',
+	// 	align: 'center',
+	// 	disablePadding: false,
+	// 	label: 'Other',
 	// 	sort: true
 	// }
 ];
@@ -107,7 +93,7 @@ function CustomerTableHead(props) {
 				{rows.map(row => {
 					return (
 						<TableCell
-							style={{ fontSize: '12px', padding: '10px 0px 10px 20px' }}
+							style={{ fontSize: '12px' }}
 							key={row.id}
 							align={row.align}
 							padding={row.disablePadding ? 'none' : 'default'}

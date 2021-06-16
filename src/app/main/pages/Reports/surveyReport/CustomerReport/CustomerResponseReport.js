@@ -3,7 +3,7 @@ import { Grid } from '@material-ui/core';
 import CustomerReportSidebar from './CustomerReportSidebar';
 import CustomerReportTable from './CustomerReportTable';
 
-const CustomerResponseReport = ({ customerFeedback, getData, setFeedbackValue }) => {
+const CustomerResponseReport = ({ customerFeedback, getData, setFeedbackValue, isLoading }) => {
 	return (
 		<div>
 			<Grid container spacing={3}>
@@ -11,7 +11,7 @@ const CustomerResponseReport = ({ customerFeedback, getData, setFeedbackValue })
 					<CustomerReportSidebar getData={getData} setFeedbackValue={setFeedbackValue} />
 				</Grid>
 				<Grid item xs={12} sm={9}>
-					<CustomerReportTable customerFeedback={customerFeedback} />
+					<CustomerReportTable customerFeedback={customerFeedback} isLoading={isLoading} />
 				</Grid>
 			</Grid>
 		</div>

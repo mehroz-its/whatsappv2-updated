@@ -132,8 +132,6 @@ function SurveyReport() {
 	}
 
 	const getData = (loadData, value) => {
-		console.log(value, 'loadcontent');
-
 		let initialStartDate = new Date();
 		console.log(initialStartDate.getDate(), 'initialStartDateinitialStartDateinitialStartDate');
 		let initialEndDate = new Date();
@@ -165,7 +163,6 @@ function SurveyReport() {
 			);
 		};
 		loadData().then(res => {
-			console.log(res, 'dataaaaaaaaaaaacustomersjak');
 			let tempArr = [];
 
 			res.data.data.survey.agent_satisfaction.map((res, ind) => {
@@ -281,9 +278,13 @@ function SurveyReport() {
 				// }
 				// console.log(tempArr, 'TEMP_ARRRRRRRRRRRRRR');
 				// setAgentSatisfactionSurvey()
-				console.log(tempArr, 'tempArrtempArrtempArr');
 			});
 
+			let tempArrFeedback = res.data.data.survey.customer_feedback.filter(item => {
+				if (item.response === value) {
+					return item;
+				} else return item;
+			});
 			// setAgentSatisfactionSurvey(res?.data?.data?.survey?.agent_satisfaction);
 			// setSatisfactionSurvey(res.data?.data?.survey?.satisfaction);
 			// let tempArr = [];
@@ -304,7 +305,7 @@ function SurveyReport() {
 
 			setAgentSatisfactionSurvey(tempArr);
 			setSatisfactionSurvey(res.data.data.survey.satisfaction);
-			setCustomerFeedback(res.data.data.survey.customer_feedback);
+			setCustomerFeedback(tempArrFeedback);
 			// let dataagain = Object.values(data);
 			// let finaldata = dataagain[1].report.finalbox[0].conversations;
 			// let finaldata2 = dataagain[1].report.finalbox[0].engagements;
@@ -535,6 +536,7 @@ function SurveyReport() {
 											customerFeedback={customerFeedback}
 											getData={getData}
 											setFeedbackValue={setFeedbackValue}
+											isLoading={isLoading}
 										/>
 									</Paper>
 								</>

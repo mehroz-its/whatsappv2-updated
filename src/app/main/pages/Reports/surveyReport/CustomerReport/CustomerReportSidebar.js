@@ -9,7 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 const useStyles = makeStyles(theme => ({
 	listItem: {
@@ -50,6 +50,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function CustomerReportSidebar(props) {
+	const [activeColor, setActiveColor] = useState('all');
+
 	const user = null;
 	let data = null;
 	data = JSON.parse(localStorage.getItem('user_data'));
@@ -90,15 +92,20 @@ function CustomerReportSidebar(props) {
 								button
 								to="/apps/canned-messages"
 								activeClassName="active"
-								className={classes.listItem + (cannedtype === 'all' ? ' active' : '')}
+								className={classes.listItem + (activeColor === 'all' ? ' active' : '')}
 								onClick={e => {
 									e.preventDefault();
 									handleClick('*');
+									setActiveColor('all');
 								}}
 							>
-								{/* <Icon className="list-item-icon text-16" color="action">
-								rate_review
-							</Icon> */}
+								<Icon
+									className="list-item-icon text-16"
+									color="action"
+									style={{ color: '#fff', fontSize: '25px' }}
+								>
+									all_inclusive
+								</Icon>
 								<ListItemText
 									className="truncate"
 									primary="All"
@@ -111,15 +118,20 @@ function CustomerReportSidebar(props) {
 								button
 								to="/apps/canned-messages"
 								activeClassName="active"
-								className={classes.listItem + (cannedtype === 'all' ? ' active' : '')}
+								className={classes.listItem + (activeColor === '5' ? ' active' : '')}
 								onClick={e => {
 									e.preventDefault();
 									handleClick('5');
+									setActiveColor('5');
 								}}
 							>
-								{/* <Icon className="list-item-icon text-16" color="action">
-								rate_review
-							</Icon> */}
+								<Icon
+									className="list-item-icon text-16"
+									color="action"
+									style={{ color: '#fff', fontSize: '25px' }}
+								>
+									sentiment_very_satisfied
+								</Icon>
 								<ListItemText
 									className="truncate"
 									primary="Excellent"
@@ -131,75 +143,100 @@ function CustomerReportSidebar(props) {
 								exact
 								button
 								activeClassName="active"
-								className={classes.listItem + (cannedtype === 'text' ? ' active' : '')}
+								className={classes.listItem + (activeColor === '4' ? ' active' : '')}
 								onClick={e => {
 									e.preventDefault();
 									handleClick('4');
+									setActiveColor('4');
 								}}
 							>
-								{/* <Icon className="list-item-icon text-16" color="action">
-								textsms
-							</Icon> */}
+								<Icon
+									className="list-item-icon text-16"
+									color="action"
+									style={{ color: '#fff', fontSize: '25px' }}
+								>
+									tag_faces
+								</Icon>
 								<ListItemText primary="Very Good" disableTypography className={classes.text} />
 							</ListItem>
 							<ListItem
 								exact
 								button
 								activeClassName="active"
-								className={classes.listItem + (cannedtype === 'audio' ? ' active' : '')}
+								className={classes.listItem + (activeColor === '3' ? ' active' : '')}
 								onClick={e => {
 									e.preventDefault();
 									handleClick('3');
+									setActiveColor('3');
 								}}
 							>
-								{/* <Icon className="list-item-icon text-16" color="action">
-								audiotrack
-							</Icon> */}
+								<Icon
+									className="list-item-icon text-16"
+									color="action"
+									style={{ color: '#fff', fontSize: '25px' }}
+								>
+									sentiment_satisfied
+								</Icon>
 								<ListItemText primary="Good" disableTypography className={classes.text} />
 							</ListItem>
 							<ListItem
 								exact
 								button
 								activeClassName="active"
-								className={classes.listItem + (cannedtype === 'image' ? ' active' : '')}
+								className={classes.listItem + (activeColor === '2' ? ' active' : '')}
 								onClick={e => {
 									e.preventDefault();
 									handleClick('2');
+									setActiveColor('2');
 								}}
 							>
-								{/* <Icon className="list-item-icon text-16" color="action">
-								image
-							</Icon> */}
+								<Icon
+									className="list-item-icon text-16"
+									color="action"
+									style={{ color: '#fff', fontSize: '25px' }}
+								>
+									sentiment_dissatisfied
+								</Icon>
 								<ListItemText primary="Poor" disableTypography className={classes.text} />
 							</ListItem>
 							<ListItem
 								exact
 								button
 								activeClassName="active"
-								className={classes.listItem + (cannedtype === 'video' ? ' active' : '')}
+								className={classes.listItem + (activeColor === '1' ? ' active' : '')}
 								onClick={e => {
 									e.preventDefault();
 									handleClick('1');
+									setActiveColor('1');
 								}}
 							>
-								{/* <Icon className="list-item-icon text-16" color="action">
-								switch_video
-							</Icon> */}
+								<Icon
+									className="list-item-icon text-16"
+									color="action"
+									style={{ color: '#fff', fontSize: '25px' }}
+								>
+									sentiment_very_dissatisfied
+								</Icon>
 								<ListItemText primary="Very Poor" disableTypography className={classes.text} />
 							</ListItem>
 							<ListItem
 								exact
 								button
 								activeClassName="active"
-								className={classes.listItem + (cannedtype === 'document' ? ' active' : '')}
+								className={classes.listItem + (activeColor === 'other' ? ' active' : '')}
 								onClick={e => {
 									e.preventDefault();
 									handleClick('other');
+									setActiveColor('other');
 								}}
 							>
-								{/* <Icon className="list-item-icon text-16" color="action">
-								picture_as_pdf
-							</Icon> */}
+								<Icon
+									className="list-item-icon text-16"
+									color="action"
+									style={{ color: '#fff', fontSize: '25px' }}
+								>
+									face
+								</Icon>
 								<ListItemText primary="Others" disableTypography className={classes.text} />
 							</ListItem>
 						</List>
