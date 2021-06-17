@@ -347,10 +347,14 @@ function ChatApp(props) {
 	};
 	const conversationExport = () => {
 		let params = {
-			key: ':number',
-			value: selectedRecipient.number,
-			key2: ':last_closed',
-			value2: selectedRecipient.last_closed
+			// key: ':number',
+			// value: selectedRecipient.number,
+			// key2: ':last_closed',
+			// value2: selectedRecipient.last_closed
+			last_closed: selectedRecipient.last_closed,
+			limit: '100',
+			number: selectedRecipient.number,
+			page: '0'
 		};
 		CoreHttpHandler.request(
 			'conversations',

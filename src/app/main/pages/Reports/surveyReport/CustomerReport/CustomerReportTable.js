@@ -7,7 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import { Button } from '@material-ui/core';
+import { Button, Snackbar } from '@material-ui/core';
 import React, { useState, useRef } from 'react';
 import { CSVLink, CSVDownload } from 'react-csv';
 import { withRouter } from 'react-router-dom';
@@ -19,8 +19,10 @@ import FuseLoading from './../../../../../../@fuse/core/FuseLoading/FuseLoading'
 import IconButton from '@material-ui/core/IconButton';
 import moment from 'moment';
 import CustomerTableHead from './CustomerTableHead';
+import { Save as SaveIcon } from '@material-ui/icons';
 import CoreHttpHandler from 'http/services/CoreHttpHandler';
 import ContactsTablePaginationActions from './../../../setting/canned/ContactsTablePaginationActions';
+import Alert from '@material-ui/lab/Alert';
 
 const PaginationStyle = createMuiTheme({
 	overrides: {
@@ -67,10 +69,13 @@ function CustomerReportTable(props) {
 	const startDate = moment(new Date());
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [page, setPage] = useState(0);
+	const [snackbarMessage, setSnackbarMessage] = useState(false);
+	const [snackbarOpen, setSnackbarOpen] = useState(false);
 	let startDateMoment = moment(startDate).format('YYYY-MM-DD HH:mm:ss');
+	const [ok, setOK] = React.useState('');
 	console.log('startDate', startDateMoment);
 	const [name, setName] = React.useState('');
-	const { setLimit, totalItems, isLoading, customerFeedback } = props;
+	const { setLimit, totalItems, isLoading, customerFeedback, setCustomerFeedback } = props;
 	const csvLinkK = useRef(); // setup the ref that we'll use for the hidden CsvLink click once we've updated the data
 
 	const [deleteDialogData, setDeleteDialogData] = React.useState({});
@@ -89,17 +94,60 @@ function CustomerReportTable(props) {
 		number: '',
 		roles: []
 	});
+	// function handleRequestSort(event, property) {
+	// 	const id = property;
+	// 	let direction = 'desc';
+	// 	if (order.id === property && order.direction === 'desc') {
+	// 		direction = 'asc';
+	// 	}
+	// 	setOrder({
+	// 		direction,
+	// 		id
+	// 	});
+	// }
+
 	function handleRequestSort(event, property) {
 		const id = property;
 		let direction = 'desc';
+		if (direction == 'desc') {
+			let sorted = customerFeedback;
+			setCustomerFeedback(sorted.reverse());
+		}
 		if (order.id === property && order.direction === 'desc') {
 			direction = 'asc';
+			let sorrted = customerFeedback.sort(function (a, b) {
+				var dateA = new Date(a.user_id),
+					dateB = new Date(b.user_id);
+				return dateA - dateB;
+			});
+			setCustomerFeedback(sorrted);
 		}
 		setOrder({
 			direction,
 			id
 		});
 	}
+
+	function handleRequestSortID(event, property) {
+		const id = property;
+		let direction = 'desc';
+		if (direction == 'desc') {
+			let sorted = customerFeedback;
+			setCustomerFeedback(sorted.reverse());
+		}
+		if (order.id === property && order.direction === 'desc') {
+			direction = 'asc';
+			let sorrted = customerFeedback.sort(function (a, b) {
+				return a.user_id - b.user_id || a.username.localeCompare(b.username);
+			});
+			setCustomerFeedback(sorrted);
+		}
+		setOrder({
+			direction,
+			id
+		});
+	}
+
 	function handleClick(n) {
 		setOpen(true);
 		setDialogData({
@@ -144,10 +192,19 @@ function CustomerReportTable(props) {
 	const exportData = () => {
 		if (Start === '') setName(moment(new Date().toISOString()).format('DD/MM/YYYY'));
 		else setName(moment(Start).format('DD/MM/YYYY') + '-' + moment(End).format('DD/MM/YYYY'));
-		setTimeout(() => {
-			csvLinkK.current.link.click();
-		}, 1000);
+		// setTimeout(() => {
+		// 	csvLinkK.current.link.click();
+		// }, 1000);
 	};
+
+	let newExportData = customerFeedback.filter(item => {
+		delete item.id;
+		delete item.response;
+
+		item.dt = item.dt.replace('T', '').replace('Z', '');
+
+		return item;
+	});
 
 	// if (agentSatisfactionSurvey.length === 0) {
 	// 	if (props.val !== '') {
@@ -190,33 +247,47 @@ function CustomerReportTable(props) {
 	} else {
 		return (
 			<>
-				<div className="w-full flex flex-col">
-					<div style={{ height: '350px', overflowY: 'auto', overflowX: 'auto' }}>
-						<Table className="min-w-xl" aria-labelledby="tableTitle">
+				<div
+					className="w-full flex flex-col"
+					style={{
+						boxShadow:
+							'0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
+						borderRadius: '10px'
+					}}
+				>
+					<div
+						style={{
+							height: '350px',
+							overflowY: 'auto',
+							overflowX: 'auto'
+						}}
+					>
+						<Table className="min-w-xs" stickyHeader aria-labelledby="tableTitle">
 							<CustomerTableHead
 								numSelected={selected.length}
 								order={order}
 								// onSelectAllClick={handleSelectAllClick}
 								onRequestSort={handleRequestSort}
+								onSortID={handleRequestSortID}
 								rowCount={customerFeedback.length}
 							/>
 
 							<TableBody style={{ height: '350px' }}>
 								{_.orderBy(
-									customerFeedback,
-									[
-										o => {
-											switch (order.id) {
-												case 'categories': {
-													return o.categories[0];
-												}
-												default: {
-													return o[order.id];
-												}
-											}
-										}
-									],
-									[order.direction]
+									customerFeedback
+									// [
+									// 	o => {
+									// 		switch (order.id) {
+									// 			case 'categories': {
+									// 				return o.categories[0];
+									// 			}
+									// 			default: {
+									// 				return o[order.id];
+									// 			}
+									// 		}
+									// 	}
+									// ],
+									// [order.direction]
 								).map(n => {
 									console.log(n, 'nnnnnnnnnnnnnnppppppppp');
 									const isSelected = selected.indexOf(n.id) !== -1;
@@ -354,15 +425,35 @@ function CustomerReportTable(props) {
 							</TableBody>
 						</Table>
 					</div>
-					<CSVLink
-						data={customerFeedback}
-						filename={`customer_${name}.csv`}
-						className="hidden"
-						ref={csvLinkK}
-						target="_blank"
-					/>
+
+					<Snackbar
+						anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+						open={snackbarOpen}
+						autoHideDuration={3000}
+						onClose={() => setSnackbarOpen(false)}
+					>
+						<Alert variant="filled" severity={ok} onClick={exportData}>
+							<CSVLink
+								data={newExportData}
+								filename={`customer_${name}.csv`}
+								ref={csvLinkK}
+								target="_blank"
+								style={{ color: '#fff' }}
+							>
+								Your exported Logs report is ready for download
+							</CSVLink>
+						</Alert>
+					</Snackbar>
 					<MuiThemeProvider theme={PaginationStyle}>
-						<Button variant="outlined" className={classes.exportButton} onClick={exportData}>
+						<Button
+							variant="outlined"
+							startIcon={<SaveIcon />}
+							className={classes.exportButton}
+							onClick={() => {
+								setSnackbarOpen(true);
+								setOK('success');
+							}}
+						>
 							Export
 						</Button>
 						<TablePagination

@@ -34,7 +34,7 @@ const rows = [
 		id: 'number',
 		align: 'center',
 		disablePadding: false,
-		label: 'Number',
+		label: 'User Number',
 		sort: true
 	}
 	// {
@@ -86,6 +86,9 @@ function CustomerTableHead(props) {
 	const createSortHandler = property => event => {
 		props.onRequestSort(event, property);
 	};
+	const createSortHandlerID = property => event => {
+		props.onSortID(event, property);
+	};
 
 	return (
 		<TableHead>
@@ -100,19 +103,61 @@ function CustomerTableHead(props) {
 							sortDirection={props.order.id === row.id ? props.order.direction : false}
 						>
 							{row.sort && (
-								<Tooltip
-									title="Sort"
-									placement={row.align === 'center' ? 'bottom-end' : 'bottom-start'}
-									enterDelay={300}
-								>
-									<TableSortLabel
-										active={props.order.id === row.id}
-										direction={props.order.direction}
-										onClick={createSortHandler(row.id)}
-									>
-										{row.label}
-									</TableSortLabel>
-								</Tooltip>
+								// <Tooltip
+								// 	title="Sort"
+								// 	placement={row.align === 'center' ? 'bottom-end' : 'bottom-start'}
+								// 	enterDelay={300}
+								// >
+								// 	<TableSortLabel
+								// 		active={props.order.id === row.id}
+								// 		direction={props.order.direction}
+								// 		onClick={createSortHandler(row.id)}
+								// 	>
+								// 		{row.label}
+								// 	</TableSortLabel>
+								// </Tooltip>
+
+								<>
+									{row.label == 'User Id' ? (
+										<Tooltip
+											title="Sort"
+											placement={row.align === 'right' ? 'bottom-end' : 'bottom-start'}
+											enterDelay={300}
+										>
+											<TableSortLabel
+												active={props.order.id === row.id}
+												direction={props.order.direction}
+												onClick={
+													row.label == 'User Id'
+														? createSortHandlerID(row.id)
+														: createSortHandler(row.id)
+												}
+											>
+												{row.label}
+											</TableSortLabel>
+										</Tooltip>
+									) : row.label == 'Created Date' ? (
+										<Tooltip
+											title="Sort"
+											placement={row.align === 'right' ? 'bottom-end' : 'bottom-start'}
+											enterDelay={300}
+										>
+											<TableSortLabel
+												active={props.order.id === row.id}
+												direction={props.order.direction}
+												onClick={
+													row.label == 'User Id'
+														? createSortHandlerID(row.id)
+														: createSortHandler(row.id)
+												}
+											>
+												{row.label}
+											</TableSortLabel>
+										</Tooltip>
+									) : (
+										<TableSortLabel hideSortIcon={true}>{row.label}</TableSortLabel>
+									)}
+								</>
 							)}
 						</TableCell>
 					);

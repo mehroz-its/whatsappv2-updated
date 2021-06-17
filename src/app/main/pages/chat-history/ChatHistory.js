@@ -205,7 +205,7 @@ function ChatApp(props) {
 		setselectedRecipient(e);
 		getConversation(e);
 		setOpenSearch(false);
-		console.log(e)
+		console.log(e);
 		// setint_MessageLists(setInterval(() => {
 		// 	getConversation(e);
 		// }, 3000));
@@ -249,22 +249,17 @@ function ChatApp(props) {
 
 		let params = {
 			number: selectedRecipient.number,
-			start_date: startDate ? startDate: null,
+			start_date: startDate ? startDate : null,
 			last_closed: endDate ? endDate : null,
 			page: 0,
 			limit: 0
 		};
 
-		CoreHttpHandler.request(
-			'conversations',
-			'historyConversationsPagination',
-			params,
-			response => {
-				setmessages(response.data.data.chat);
-				abc = response.data.data.chat;
-				setshowLatestMessage(true);
-			}
-		);
+		CoreHttpHandler.request('conversations', 'historyConversationsPagination', params, response => {
+			setmessages(response.data.data.chat);
+			abc = response.data.data.chat;
+			setshowLatestMessage(true);
+		});
 	};
 
 	React.useEffect(() => {
@@ -362,7 +357,7 @@ function ChatApp(props) {
 			response => {
 				const numberrrrrr = response.data.data.customers;
 				const lastMessage = response.data.data.lastMessage;
-				console.log(response.data.data, "totiietttttttttttt");
+				console.log(response.data.data, 'totiietttttttttttt');
 				setTotalItemsNum(response.data.data.customers.totalItems);
 				if (lastMessage) {
 					const lastMessageDtu = new Date(lastMessage.dtu);
@@ -466,10 +461,15 @@ function ChatApp(props) {
 	};
 	const conversationExport = () => {
 		let params = {
-			key: ':number',
-			value: selectedRecipient.number,
-			key2: ':last_closed',
-			value2: selectedRecipient.last_closed
+			// key: ':number',
+			// value: selectedRecipient.number,
+			// key2: ':last_closed',
+			// value2: selectedRecipient.last_closed
+			last_closed: selectedRecipient.last_closed,
+			limit: 100,
+			number: selectedRecipient.number,
+			page: 0,
+			start_date: null
 		};
 		CoreHttpHandler.request(
 			'conversations',

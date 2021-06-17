@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
 		fontSize: '100px' //Insert your required size
 	},
 	text: {
-		color: '#fff !important'
+		// color: '#fff !important'
 		// '&.MuiListItemText-root .MuiListItmeText-primary': {
 		// 	color: '#fff'
 		// }
@@ -69,18 +69,19 @@ function CustomerReportSidebar(props) {
 	const classes = useStyles(props);
 	const handleClick = val => {
 		props.getData('', val);
+		props.setFeedbackValue(val);
 	};
 	const { cannedtype } = props;
 	return (
 		<div className="p-0 lg:p-24 lg:ltr:pr-4 lg:rtl:pl-4">
 			<FuseAnimate animation="transition.slideLeftIn" delay={200}>
 				<div>
-					<Paper className="rounded-0 shadow-none lg:rounded-8 lg:shadow-1" style={{ background: 'grey' }}>
+					<Paper className="rounded-0 shadow-none lg:rounded-8 lg:shadow-1">
 						<div className="p-24 flex items-center">
 							{/* <Avatar alt={value.charAt(0)} src="../../../" className={classes.avatar} /> */}
 							<Typography
 								className="mx-12"
-								style={{ fontSize: '12px', marginTop: '1px', color: '#fff', fontWeight: 600 }}
+								style={{ fontSize: '12px', marginTop: '1px', fontWeight: 600 }}
 							>
 								Customer Feedback Logs
 							</Typography>
@@ -99,11 +100,7 @@ function CustomerReportSidebar(props) {
 									setActiveColor('all');
 								}}
 							>
-								<Icon
-									className="list-item-icon text-16"
-									color="action"
-									style={{ color: '#fff', fontSize: '25px' }}
-								>
+								<Icon className="list-item-icon text-16" color="action" style={{ fontSize: '25px' }}>
 									all_inclusive
 								</Icon>
 								<ListItemText
@@ -125,11 +122,7 @@ function CustomerReportSidebar(props) {
 									setActiveColor('5');
 								}}
 							>
-								<Icon
-									className="list-item-icon text-16"
-									color="action"
-									style={{ color: '#fff', fontSize: '25px' }}
-								>
+								<Icon className="list-item-icon text-16" color="action" style={{ fontSize: '25px' }}>
 									sentiment_very_satisfied
 								</Icon>
 								<ListItemText
@@ -150,11 +143,7 @@ function CustomerReportSidebar(props) {
 									setActiveColor('4');
 								}}
 							>
-								<Icon
-									className="list-item-icon text-16"
-									color="action"
-									style={{ color: '#fff', fontSize: '25px' }}
-								>
+								<Icon className="list-item-icon text-16" color="action" style={{ fontSize: '25px' }}>
 									tag_faces
 								</Icon>
 								<ListItemText primary="Very Good" disableTypography className={classes.text} />
@@ -170,11 +159,7 @@ function CustomerReportSidebar(props) {
 									setActiveColor('3');
 								}}
 							>
-								<Icon
-									className="list-item-icon text-16"
-									color="action"
-									style={{ color: '#fff', fontSize: '25px' }}
-								>
+								<Icon className="list-item-icon text-16" color="action" style={{ fontSize: '25px' }}>
 									sentiment_satisfied
 								</Icon>
 								<ListItemText primary="Good" disableTypography className={classes.text} />
@@ -190,11 +175,7 @@ function CustomerReportSidebar(props) {
 									setActiveColor('2');
 								}}
 							>
-								<Icon
-									className="list-item-icon text-16"
-									color="action"
-									style={{ color: '#fff', fontSize: '25px' }}
-								>
+								<Icon className="list-item-icon text-16" color="action" style={{ fontSize: '25px' }}>
 									sentiment_dissatisfied
 								</Icon>
 								<ListItemText primary="Poor" disableTypography className={classes.text} />
@@ -210,11 +191,7 @@ function CustomerReportSidebar(props) {
 									setActiveColor('1');
 								}}
 							>
-								<Icon
-									className="list-item-icon text-16"
-									color="action"
-									style={{ color: '#fff', fontSize: '25px' }}
-								>
+								<Icon className="list-item-icon text-16" color="action" style={{ fontSize: '25px' }}>
 									sentiment_very_dissatisfied
 								</Icon>
 								<ListItemText primary="Very Poor" disableTypography className={classes.text} />
@@ -230,12 +207,8 @@ function CustomerReportSidebar(props) {
 									setActiveColor('other');
 								}}
 							>
-								<Icon
-									className="list-item-icon text-16"
-									color="action"
-									style={{ color: '#fff', fontSize: '25px' }}
-								>
-									face
+								<Icon className="list-item-icon text-16" color="action" style={{ fontSize: '25px' }}>
+									mood_bad
 								</Icon>
 								<ListItemText primary="Others" disableTypography className={classes.text} />
 							</ListItem>
