@@ -61,8 +61,8 @@ function Config(props) {
 
     const submit = async () => {
         try {
-            console.log(baseUrl,'pathpathpath')
             let res = await customApimethod(baseUrl, paramValues, headerValues);
+            console.log('resposne --------------------------------------------------------', res.data.data);
             let chatbot = [{
                 id: uuidv4(),
                 title: "Engro",
@@ -487,7 +487,7 @@ function Config(props) {
                         chatbot[0].children[0].__ref.push({ key: "4", id: provinceId })
                         chatbot[0].children[0].children.push({
                             id: provinceId,
-                            title: 'province',
+                            title: 'dealer',
                             type: "text",
                             messages: ["Please select one of the following options.\n"],
                             children: [],
@@ -809,9 +809,9 @@ function Config(props) {
             }
             if (res && res.data && res.data.data.ur && res.data.data.ur.length > 0) {
                 res.data.data.ur.forEach((text) => {
-                    go_back_message = '\n\n????? ???? ??? ???? ???? ?? ??? 0 ???? ????'
-                    language_change_message = '\n\n???? ?? ????? ???? ?? ??? 00 ???? ?????'
-                    main_menu = "\n\n??? ???? ?? ???? ???? ????? # ???? ?????"
+                    go_back_message = '\n\nپچھلے مینو پر واپس جانے کے لئے# جواب دیں'
+                    language_change_message = '\n\nزبان تبدیل کرنے کے لئے 00 جواب دیں'
+                    main_menu = "\n\nمین مینو پر واپس جانے کے لئے 0 کا جواب دیں"
                     let crops = text.crops;
                     let products = text.products;
                     let problems = text.problems;
@@ -822,7 +822,7 @@ function Config(props) {
                         id: engId,
                         title: "Ur",
                         type: "text",
-                        messages: ["?????? ??????? ??? ??? ????? ? ???? ??? ?????? ??? ???????? ????? ?????\n\n1. ?????\n2. ???????\n3. ?????\n4. ????" + go_back_message],
+                        messages: ["اینگرو فرٹیلاءز میں خوش آمدید\n\n1. براہ کرم زمرہ منتخب کرنے کے لئے ذیل میں ذکر \n2. کردہ سابقہ کے ساتھ جواب دیں\n3." + go_back_message],
                         children: [],
                         repeatPreviousMessage: true,
                         __ref: []
@@ -835,7 +835,7 @@ function Config(props) {
                             id: cropsId,
                             title: 'crops',
                             type: "text",
-                            messages: ["???? ??? ??? ??? ????? ??? ?? ?????? ?????\n"],
+                            messages: ["براہ کرم خواہش کی فصل کو منتخب کرنے کے لئے نیچے دیئے گئے ماقبل کے ساتھ جواب دیں\n"],
                             children: [],
                             repeatPreviousMessage: true,
                             __ref: []
@@ -863,7 +863,7 @@ function Config(props) {
                                         crop_path.title = "img";
                                         delete crop_path.messages
                                     } else if (attachment.attachment_type === '3') {
-                                        crop_path.messages = [crop_path.messages[0] + '\n???? ??? ???? ????? ?? ??? ????? ???????\n\n' + attachment.url]
+                                        crop_path.messages = [crop_path.messages[0] + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url]
                                     } else if (attachment.attachment_type === '2') {
                                         let audioAttachemt = uuidv4();
                                         crop_path.__next = audioAttachemt;
@@ -944,7 +944,7 @@ function Config(props) {
                             id: productId,
                             title: 'product',
                             type: "text",
-                            messages: ["???? ??? ?????? ??? ??????? ??? ?? ?????? ?????\n"],
+                            messages: ["براہ کرم خواہش کی مصنوعات کو منتخب کرنے کے لئے نیچے دیئے گئے ماقبل کے ساتھ جواب دیں\n"],
                             children: [],
                             repeatPreviousMessage: true,
                             __ref: []
@@ -957,7 +957,7 @@ function Config(props) {
                                 id: producstId,
                                 title: product.product_category.name,
                                 type: "text",
-                                messages: ["???? ??? ???? ?? ???? ????? ????:\n"],
+                                messages: ["براہ کرم خواہش کی مصنوعات کو منتخب کرنے کے لئے نیچے دیئے گئے ماقبل کے ساتھ جواب دیں\n"],
                                 children: [],
                                 repeatPreviousMessage: true,
                                 __ref: []
@@ -987,7 +987,7 @@ function Config(props) {
                                                 path_of_attachment.title = "img";
                                                 delete path_of_attachment.messages
                                             } else if (attachment.attachment_type === '3') {
-                                                path_of_attachment.messages = [path_of_attachment.messages[0] + '\n???? ??? ???? ????? ?? ??? ????? ???????\n\n' + attachment.url]
+                                                path_of_attachment.messages = [path_of_attachment.messages[0] + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url]
                                             } else if (attachment.attachment_type === '2') {
                                                 let audioAttachemt = uuidv4()
                                                 path_of_attachment.__next = audioAttachemt;
@@ -1109,7 +1109,7 @@ function Config(props) {
                             id: problemsId,
                             title: 'problems',
                             type: "text",
-                            messages: ["???? ??? ??? ??? ????????? ??? ?? ?????? ?????\n"],
+                            messages: ["براہ کرم خواہش کے مسئلے کو منتخب کرنے کے لئے نیچے دیئے گئے ماقبل کے ساتھ جواب دیں\n"],
                             children: [],
                             repeatPreviousMessage: true,
                             __ref: []
@@ -1137,7 +1137,7 @@ function Config(props) {
                                         crop_path.title = "img";
                                         delete crop_path.messages
                                     } else if (attachment.attachment_type === '3') {
-                                        crop_path.messages = [crop_path.messages[0] + '\n???? ??? ???? ????? ?? ??? ????? ???????\n\n' + attachment.url]
+                                        crop_path.messages = [crop_path.messages[0] + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url]
                                     } else if (attachment.attachment_type === '2') {
                                         let audioAttachemt = uuidv4()
                                         crop_path.__next = audioAttachemt;
@@ -1217,7 +1217,7 @@ function Config(props) {
                             id: provinceId,
                             title: 'province',
                             type: "text",
-                            messages: ["???? ??? ??? ??? ??? ?? ??? ???? ????? ?????\n"],
+                            messages: ["مطلوبہ صوبہ منتخب کرنے کے لئے براہ کرم ذیل میں دیئے گئے ماقبل کے ساتھ جواب دیں\n"],
                             children: [],
                             repeatPreviousMessage: true,
                             __ref: []
@@ -1230,7 +1230,7 @@ function Config(props) {
                                 id: provincesId,
                                 title: province.province.name,
                                 type: "text",
-                                messages: ["???? ??? ???? ???? ???????? ??? ?? ?????? ?????\n"],
+                                messages: ["مطلوبہ ضلع کو منتخب کرنے کے لئے براہ کرم ذیل میں ذکر کردہ سابقے کے ساتھ جواب دیں\n"],
                                 children: [],
                                 repeatPreviousMessage: true,
                                 __ref: []
@@ -1246,7 +1246,7 @@ function Config(props) {
                                         id: innerId,
                                         title: district.name,
                                         type: "text",
-                                        messages: ["???? ??? ?????? ?? ??? ?????? ??? ??? ?? ??? ???? ????? ????:"],
+                                        messages: ["مطلوبہ علاقہ منتخب کرنے کے لئے براہ کرم ذیل میں ذکر کردہ سابقے کے ساتھ جواب دیں"],
                                         children: [],
                                         repeatPreviousMessage: true,
                                         __ref: []
@@ -1266,7 +1266,7 @@ function Config(props) {
                                                 id: innerterri,
                                                 title: territorie.name,
                                                 type: "text",
-                                                messages: ["???? ??? ???????? ??? ?? ??? ??? ???????? ??? ?? ??? ????? ?????\n"],
+                                                messages: ["مطلوبہ ڈیلر کو منتخب کرنے کے لئے براہ کرم ذیل میں ذکر کردہ سابقے کے ساتھ جواب دیں\n"],
                                                 children: [],
                                                 repeatPreviousMessage: true,
                                                 __ref: []
