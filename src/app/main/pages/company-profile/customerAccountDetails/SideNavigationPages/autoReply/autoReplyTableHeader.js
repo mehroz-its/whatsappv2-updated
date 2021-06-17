@@ -51,6 +51,13 @@ const rows = [
 		label: 'Edit',
 		sort: true
 	},
+	{
+		id: 'clone',
+		align: 'center',
+		disablePadding: false,
+		label: 'Clone',
+		sort: true
+	},
 
 ];
 const useStyles = makeStyles(theme => ({

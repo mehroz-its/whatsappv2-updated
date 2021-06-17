@@ -234,6 +234,13 @@ function AutoReplyTable(props) {
         setOpen(true)
         setChatBotData(n)
     }
+    const cloneChatBot = (n,i) =>{
+        let tempData = [...data]
+        tempData.splice(i+1, 0,{...n,name:`${n.name}_copy`});
+        setData(tempData)
+        console.log(data,'nnnnnnn')
+        // setChatBotData(n)
+    }
     function showError(msg) {
         setSnackBarMessage(msg);
         setOK('error');
@@ -583,6 +590,17 @@ function AutoReplyTable(props) {
                                                                     >
                                                                         <Icon name="lock" color="primary">
                                                                                         edit
+                                                                                    </Icon>
+                                                                    </TableCell>
+                                                                    <TableCell
+                                                                        component="th"
+                                                                        scope="row"
+                                                                        align="center"
+                                                                        style={{ fontSize: '11px', padding: '10px' }}
+                                                                            onClick={e=>{cloneChatBot(n,i)}}
+                                                                    >
+                                                                        <Icon name="lock" color="primary">
+                                                                        arrow_downward
                                                                                     </Icon>
                                                                     </TableCell>
 
