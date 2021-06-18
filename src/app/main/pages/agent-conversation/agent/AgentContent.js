@@ -91,33 +91,11 @@ function AgentContent(props) {
 
 	useEffect(() => {
 		setnumbers([]);
-		// if(intervalAgent){
-		// 	clearInterval(intervalAgent)
-		// }
-
 		if (selectedAgent === 'All') {
-			getAllAgents();
-
-			// intervalAgent = setInterval(() => {
-			// 	getAllAgents()
-			// }, 2000)
+			getAllAgentsForShift();
 		} else {
 			getAgentsCustomers();
-
-			// intervalAgent = setInterval(() => {
-			// 	getAgentsCustomers();
-			// }, 2000)
 		}
-
-		return () => {
-			// if(intervalAgent){
-			// 	clearInterval(intervalAgent)
-			// }
-		};
-		// return () => {
-		// 	console.log("CLEARING IT",agentCustomerInterval)
-		// 	clearInterval(agentCustomerInterval)
-		// }
 	}, [selectedAgent]);
 
 	const getAllAgents = () => {
@@ -135,94 +113,91 @@ function AgentContent(props) {
 				const numberrrrrr = _response.data.data.list.data;
 				setTotalItemsNum(_response.data.data.list.totalItems);
 				props.Total(numbers.length);
-				// setnumbers(numbers);
 				setLoading(false);
-				
-				console.log(numberrrrrr, 'nummmmmmmmmmm');
-				// let tempArr = [];
-				// let newObj = {
-					// 	limit: 10,
-					// 	page: listPage ? listPage : 1,
-					// 	totalItems: numberrrrrr?.totalItems,
-					// 	totalPages: numberrrrrr?.totalPages
-					// };
-					let newObj = {
+				let newObj = {
 					limit: 10,
 					page: listPage ? listPage : 1,
 					totalItems: numberrrrrr?.totalItems,
 					totalPages: numberrrrrr?.totalPages
 				};
 				setnumbers([...numbers, ...numberrrrrr]);
-				// numbers['rest'] = newObj;
-				// let newObj = {
-					// 	customers: numbers.customers ? numbers.customers : [],
-					// 	limit: 10,
-					// 	page: listPage ? listPage : 1,
-					// 	totalItems: numberrrrrr?.totalItems,
-					// 	totalPages: numberrrrrr?.totalPages
-					// };
-					// let tempArr = newObj;
-					// console.log(tempArr, 'TEMPPPPPPPPPPPPPPPPPPPp');
-					// tempArr.customers.push(numberrrrrr.customers);
-					// console.log(tempArr, 'TEMPPPPPPPPPPPPPPPPPPPp_AFTERRRRRRRRRRRRRR');
-					// setnumbers([...numbers, ...tempArr.customers	]);
-
-				// tempArr.push({ ...newObj, customers: numberrrrrr?.customers });
-				// tempArr.customers.push(numberrrrrr?.customers);
-				// console.log(tempArr, 'trempppppppppp');
-				// if (numbers.length < 10) {
-					// 	setnumbers(numberrrrrr);
-					// } else {
-						// 	setnumbers(...numberrrrrr, numberrrrrr.customers);
-						// }
-					},
-					error => {}
-					);
-				};
 				
-				const getAgentsCustomers = () => {
-					if (selectedAgent && selectedAgent != 'All') {
-						let params = {
-							agentId: selectedAgent
-						};
-						CoreHttpHandler.request(
-							'conversations',
-							'agents_customer_list',
-							{
-								params
-							},
-							_response => {
-								console.log(_response, 'numberssssssssssss');
-								const numbers = _response.data.data.customers;
-								setnumbers(numbers);
-							},
-							error => {
-								// clearInterval(agentCustomerInterval)
-								console.log('================ERROR================');
-								console.log(error);
-							}
-							);
-						}
-					};
-					const getAgentsCustomersReload = () => {
-						let params = {
-							agentId: selectedAgent
-						};
-						CoreHttpHandler.request(
-							'conversations',
-							'agents_customer_list',
-							{
-								params
-							},
-							_response => {
-								const numbers = _response.data.data.customers;
-								setnumbers(numbers);
-							},
-							error => {}
-							);
-						};
-						return (
-							<div className="w-full flex flex-col" style={{}}>
+			},
+			error => { }
+			);
+		};
+		const getAllAgentsForShift = () => {
+			setLoading(true);
+		// setListPage(-1 + 1);
+		CoreHttpHandler.request(
+			'conversations',
+			'allAgents',
+			{
+				limit: 10,
+				page: 0
+			},
+			_response => {
+				console.log(_response, 'alllagetnsssss');
+				const numberrrrrr = _response.data.data.list.data;
+				setTotalItemsNum(_response.data.data.list.totalItems);
+				props.Total(numbers.length);
+				setLoading(false);
+				let newObj = {
+					limit: 10,
+					page: listPage ? listPage : 1,
+					totalItems: numberrrrrr?.totalItems,
+					totalPages: numberrrrrr?.totalPages
+				};
+				setnumbers([...numbers, ...numberrrrrr]);
+
+			},
+			error => { }
+		);
+	};
+
+	const getAgentsCustomers = () => {
+		if (selectedAgent && selectedAgent != 'All') {
+			let params = {
+				agentId: selectedAgent
+			};
+			CoreHttpHandler.request(
+				'conversations',
+				'agents_customer_list',
+				{
+					params
+				},
+				_response => {
+					console.log(_response, 'numberssssssssssss');
+					const numbers = _response.data.data.customers;
+					setnumbers(numbers);
+				},
+				error => {
+					// clearInterval(agentCustomerInterval)
+					console.log('================ERROR================');
+					console.log(error);
+				}
+			);
+		}
+	};
+	const getAgentsCustomersReload = () => {
+		let params = {
+			agentId: selectedAgent
+		};
+		CoreHttpHandler.request(
+			'conversations',
+			'agents_customer_list',
+			{
+				params
+			},
+			_response => {
+				const numbers = _response.data.data.customers;
+				setnumbers(numbers);
+			},
+			error => { }
+		);
+	};
+	return (
+		<div className="w-full flex flex-col" style={{}}>
 			<Chat
 				updateOnGoingConversation={updateOnGoingConversation}
 				ongoingNewConversation={ongoingNewConversation}
@@ -230,10 +205,11 @@ function AgentContent(props) {
 				Loading={loading}
 				chatsLoading={loading}
 				getNumbers={getAllAgents}
+				getNumbersAfterExport={getAllAgentsForShift}
 				totalItemsNum={totalItemsNum}
 				selectedAgent={selectedAgent}
-				reloadNumber={e => getAllAgents()}
-				/>
+				reloadNumber={e => getAllAgentsForShift()}
+			/>
 		</div>
 	);
 }

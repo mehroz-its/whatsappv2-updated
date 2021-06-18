@@ -318,7 +318,6 @@ function ChatApp(props) {
 			response => {
 				const messagesssss = response.data.data.chat;
 				setmessages(response.data.data.chat);
-				console.log(...messages, 'msggggggggg');
 				let tempArr = [];
 				if (tempArr.length == 0) {
 					tempArr = messagesssss;
@@ -330,7 +329,7 @@ function ChatApp(props) {
 				// console.log(newmsgs, 'newwwwwmsssdsfsfs');
 				// let newmsgs = [...messages];
 
-				setmessages([...messages, messagesssss]);
+				// setmessages([...messages]);
 				console.log(messages.length, 'mesaaagesss');
 				// setmessages([...messages, ...messagesssss]);
 
@@ -347,10 +346,14 @@ function ChatApp(props) {
 	};
 	const conversationExport = () => {
 		let params = {
-			key: ':number',
-			value: selectedRecipient.number,
-			key2: ':last_closed',
-			value2: selectedRecipient.last_closed
+			// key: ':number',
+			// value: selectedRecipient.number,
+			// key2: ':last_closed',
+			// value2: selectedRecipient.last_closed
+			last_closed: selectedRecipient.last_closed,
+			limit: '100',
+			number: selectedRecipient.number,
+			page: '0'
 		};
 		CoreHttpHandler.request(
 			'conversations',
@@ -818,6 +821,7 @@ function ChatApp(props) {
 					}
 				},
 				response => {
+					console.log('inside response------------------------------------------');
 					setdialogOpenShift(false);
 					clearData();
 					getNumbers();

@@ -935,6 +935,8 @@ function Chat(props) {
 		if (prevCount !== ev.target.value) {
 			if (ev.target.value.length < 801) {
 				setMessageText(ev.target.value);
+				setMessageTextNew(ev.target.value);
+
 				setTextLength(800 - ev.target.value.length);
 			}
 		}
@@ -962,7 +964,7 @@ function Chat(props) {
 		if (messages) {
 			scrollToBottom();
 		}
-	}, [messages, emo, messageText, chatRef]);
+	}, [emo, messageText, chatRef]);
 	return (
 		<div className={clsx('flex flex-col relative', props.className)}>
 			<FuseScrollbars ref={chatRef} className="flex flex-1 flex-col overflow-y-auto">
@@ -1145,6 +1147,7 @@ function Chat(props) {
 							value={messageTextNew}
 							onKeyPress={handleKeyPress}
 						/>
+						
 						<Menu
 							id="fade-menu"
 							anchorEl={anchorEl}
@@ -1153,6 +1156,8 @@ function Chat(props) {
 							onClose={handleClose}
 							TransitionComponent={Fade}
 							style={{ marginTop: -20 }}
+							multiline={true}
+							rows="2"
 						>
 							<MenuItem onClick={e => conversationActionsCallback('image')}>Image</MenuItem>
 							<MenuItem onClick={e => conversationActionsCallback('video')}>Video</MenuItem>

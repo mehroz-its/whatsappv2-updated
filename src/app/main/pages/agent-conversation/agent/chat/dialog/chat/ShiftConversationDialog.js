@@ -34,7 +34,7 @@ useEffect(() => {
 	const selectedAgent = selectedRow => {
 		console.log("selectedAgent shift convo dailog:" ,selectedRow );
 		let numbers = [];
-		selectedRow.rowIds.filter(e => {
+		selectedRow.selectionModel.filter(e => {
 			data.totalChats.filter(result => {
 				if (e === result.id) {
 					numbers.push(result.number);
@@ -84,7 +84,9 @@ useEffect(() => {
 						rows={data.totalChats}
 						columns={columns}
 						checkboxSelection
-						onSelectionChange={e => alert("onSelectionChange")}
+						onSelectionModelChange={(newSelection) => {
+							selectedAgent(newSelection);
+						}}
 					/>
 				</div>
 				{/* <List>

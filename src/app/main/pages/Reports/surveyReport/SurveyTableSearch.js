@@ -35,7 +35,7 @@ function SurveyTableSearch(props) {
 					</FuseAnimate>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 						<Typography variant="h6" className="mx-12 hidden sm:flex">
-							<span style={{ fontSize: '15px' }}>Customer Report</span>
+							<span style={{ fontSize: '15px' }}>Customer Feedback</span>
 						</Typography>
 					</FuseAnimate>
 				</div>

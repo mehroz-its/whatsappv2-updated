@@ -7,7 +7,7 @@ function Widget2({ value }) {
 	return (
 		<Paper className="w-full rounded-8 shadow-none border-1">
 			<div className="text-center pt-24 ">
-				<Typography className="text-24 px-12 leading-none text-red" style={{fontSize:'20px'}}>
+				<Typography className="text-24 px-12 leading-none text-red" style={{fontSize:'14px'}}>
 					{' '}
 					{value.value} {value.value2 ? '/' : null} {value.value2 ? value.value2 : null}
 				</Typography>

@@ -61,13 +61,13 @@ function Config(props) {
 
     const submit = async () => {
         try {
-            console.log(baseUrl,'pathpathpath')
             let res = await customApimethod(baseUrl, paramValues, headerValues);
+            console.log('resposne --------------------------------------------------------', res.data.data);
             let chatbot = [{
                 id: uuidv4(),
                 title: "Engro",
                 type: "text",
-                messages: ["Welcome to engro pakistan, kindly select your language.\n\n?????? ??????? ??? ??? ????? ? ???? ??? ?????? ??? ???????? ????? ?????\n\n1.English\n\n2.Urdu"],
+                messages: ["Welcome to engro pakistan, kindly select your language.\n\nاینگرو پاکستان میں خوش آمدید ، برائے مہربانی اپنی زبان کا انتخاب کریں۔\n\n1.English\n\n2.Urdu"],
                 children: [],
                 expanded: true,
                 repeatPreviousMessage: true,
@@ -133,7 +133,12 @@ function Config(props) {
                                         crop_path.title = "img";
                                         delete crop_path.messages
                                     } else if (attachment.attachment_type === '3') {
-                                        crop_path.messages = [crop_path.messages[0] + '\nKindly check the video for better understanding.\n\n' + attachment.url]
+                                        if (crop_path.messages && crop_path.messages[0]) {
+                                            crop_path.messages = [crop_path.messages[0] + '\nKindly check the video for better understanding.\n\n' + attachment.url]
+                                        } else {
+                                            crop_path.images[0].caption = crop_path.images[0].caption + '\nKindly check the video for better understanding.\n\n' + attachment.url
+                                        }
+                                        
                                     } else if (attachment.attachment_type === '2') {
                                         let audioAttachemt = uuidv4();
                                         crop_path.__next = audioAttachemt;
@@ -148,7 +153,12 @@ function Config(props) {
                                     }
                                 })
                             }
-                            chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].messages = [chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].messages[0] + go_back_message + language_change_message + main_menu]
+                            if (chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].messages && chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].messages[0]) {
+                                chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].messages = [chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].messages[0] + go_back_message + language_change_message + main_menu]
+                            } else {
+                                chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].images[0].caption = chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].images[0].caption + go_back_message + language_change_message + main_menu
+                            }
+                                
                             let gobackId = uuidv4()
                             chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].children.push({
                                 actionType: "goBack",
@@ -258,7 +268,12 @@ function Config(props) {
                                                 path_of_attachment.title = "img";
                                                 delete path_of_attachment.messages
                                             } else if (attachment.attachment_type === '3') {
-                                                path_of_attachment.messages = [path_of_attachment.messages[0] + '\nKindly check the video for better understanding.\n\n' + attachment.url]
+                                                if ( path_of_attachment && path_of_attachment.messages && path_of_attachment.messages) {
+                                                    path_of_attachment.messages = [path_of_attachment.messages[0] + '\nKindly check the video for better understanding.\n\n' + attachment.url]
+                                                } else {
+                                                    path_of_attachment.images[0].caption = path_of_attachment.images[0].caption + '\nKindly check the video for better understanding.\n\n' + attachment.url
+                                                }
+                                                
                                             } else if (attachment.attachment_type === '2') {
                                                 let audioAttachemt = uuidv4()
                                                 path_of_attachment.__next = audioAttachemt;
@@ -302,11 +317,17 @@ function Config(props) {
                                             repeatPreviousMessage: true,
                                             steps: 3
                                         })
-                                        path_of_attachment.messages = [path_of_attachment.messages[0] + go_back_message + language_change_message + main_menu];
+                                        if (path_of_attachment.messages && path_of_attachment.messages[0]){
+                                            path_of_attachment.messages = [path_of_attachment.messages[0] + go_back_message + language_change_message + main_menu];
+                                        } else {
+                                            path_of_attachment.images[0].caption = path_of_attachment.images[0].caption + go_back_message + language_change_message + main_menu
+                                        }
+                                        
                                         path_of_attachment.__ref.push({ key: "0", id: upperKey });
                                         path_of_attachment.__ref.push({ key: "00", id: upperKey1 });
                                         path_of_attachment.__ref.push({ key: "#", id: upperKey2 });
                                     }
+
                                     chatbot[0].children[0].children[1].children[chatbot[0].children[0].children[1].children.length - 1].messages = [chatbot[0].children[0].children[1].children[chatbot[0].children[0].children[1].children.length - 1].messages[0] + `\n${innerinc}. ` + productList.name]
                                     innerinc = innerinc + 1;
                                 })
@@ -409,7 +430,12 @@ function Config(props) {
                                         crop_path.title = "img";
                                         delete crop_path.messages
                                     } else if (attachment.attachment_type === '3') {
-                                        crop_path.messages = [crop_path.messages[0] + '\nKindly check the video for better understanding.\n\n' + attachment.url]
+                                        if (crop_path && crop_path.messages && crop_path.messages[0].messages[0] ){
+                                            crop_path.messages = [crop_path.messages[0] + '\nKindly check the video for better understanding.\n\n' + attachment.url]
+                                        } else {
+                                            crop_path.images[0].caption = crop_path.images[0].caption + '\nKindly check the video for better understanding.\n\n' + attachment.url
+                                        }
+                                        
                                     } else if (attachment.attachment_type === '2') {
                                         let audioAttachemt = uuidv4()
                                         crop_path.__next = audioAttachemt;
@@ -424,7 +450,12 @@ function Config(props) {
                                     }
                                 })
                             }
-                            chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].messages = [chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].messages[0] + go_back_message + language_change_message + main_menu]
+                            if (chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].messages && chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].messages[0]) {
+                                chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].messages = [chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].messages[0] + go_back_message + language_change_message + main_menu]
+                            } else {
+                                chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].images[0].caption = chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].images[0].caption + go_back_message + language_change_message + main_menu
+                            }
+                            
                             let gobackId = uuidv4()
                             chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].children.push({
                                 actionType: "goBack",
@@ -487,7 +518,7 @@ function Config(props) {
                         chatbot[0].children[0].__ref.push({ key: "4", id: provinceId })
                         chatbot[0].children[0].children.push({
                             id: provinceId,
-                            title: 'province',
+                            title: 'dealer',
                             type: "text",
                             messages: ["Please select one of the following options.\n"],
                             children: [],
@@ -572,7 +603,7 @@ function Config(props) {
                                                                 id: dealerId,
                                                                 title: dealer_list.name,
                                                                 type: "image",
-                                                                images: [{ URL: dealer_list.image, caption: `Name: ${dealer_list.name}\nAddress: ${dealer_list.address}\nMobile Number: ${dealer_list.mobile_number}` }],
+                                                                images: [{ URL: dealer_list.image, caption: `Name: ${dealer_list.name}\nAddress: ${dealer_list.address}\nMobile Number: ${dealer_list.mobile_number}\nLocation: https://maps.google.com/?q=${dealer_list.location.y}, ${dealer_list.location.x}` }],
                                                                 children: [],
                                                                 repeatPreviousMessage: true,
                                                                 __ref: []
@@ -809,9 +840,9 @@ function Config(props) {
             }
             if (res && res.data && res.data.data.ur && res.data.data.ur.length > 0) {
                 res.data.data.ur.forEach((text) => {
-                    go_back_message = '\n\n????? ???? ??? ???? ???? ?? ??? 0 ???? ????'
-                    language_change_message = '\n\n???? ?? ????? ???? ?? ??? 00 ???? ?????'
-                    main_menu = "\n\n??? ???? ?? ???? ???? ????? # ???? ?????"
+                    go_back_message = '\n\nپچھلے مینو پر واپس جانے کے لئے# جواب دیں'
+                    language_change_message = '\n\nزبان تبدیل کرنے کے لئے 00 جواب دیں'
+                    main_menu = "\n\nمین مینو پر واپس جانے کے لئے 0 کا جواب دیں"
                     let crops = text.crops;
                     let products = text.products;
                     let problems = text.problems;
@@ -822,7 +853,7 @@ function Config(props) {
                         id: engId,
                         title: "Ur",
                         type: "text",
-                        messages: ["?????? ??????? ??? ??? ????? ? ???? ??? ?????? ??? ???????? ????? ?????\n\n1. ?????\n2. ???????\n3. ?????\n4. ????" + go_back_message],
+                        messages: ["اینگرو فرٹیلاءز میں خوش آمدید\n\n1. براہ کرم زمرہ منتخب کرنے کے لئے ذیل میں ذکر \n2. کردہ سابقہ کے ساتھ جواب دیں\n3." + go_back_message],
                         children: [],
                         repeatPreviousMessage: true,
                         __ref: []
@@ -835,7 +866,7 @@ function Config(props) {
                             id: cropsId,
                             title: 'crops',
                             type: "text",
-                            messages: ["???? ??? ??? ??? ????? ??? ?? ?????? ?????\n"],
+                            messages: ["براہ کرم خواہش کی فصل کو منتخب کرنے کے لئے نیچے دیئے گئے ماقبل کے ساتھ جواب دیں\n"],
                             children: [],
                             repeatPreviousMessage: true,
                             __ref: []
@@ -863,7 +894,12 @@ function Config(props) {
                                         crop_path.title = "img";
                                         delete crop_path.messages
                                     } else if (attachment.attachment_type === '3') {
-                                        crop_path.messages = [crop_path.messages[0] + '\n???? ??? ???? ????? ?? ??? ????? ???????\n\n' + attachment.url]
+                                        if ( crop_path.messages && crop.messages[0]) {
+                                            crop_path.messages = [crop_path.messages[0] + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url]
+                                        } else {
+                                            crop_path.images[0].caption = crop_path.images[0].caption + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url
+                                        }
+                                       
                                     } else if (attachment.attachment_type === '2') {
                                         let audioAttachemt = uuidv4();
                                         crop_path.__next = audioAttachemt;
@@ -878,7 +914,11 @@ function Config(props) {
                                     }
                                 })
                             }
-                            chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].messages = [chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].messages[0] + go_back_message + language_change_message + main_menu]
+                            if(chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].messages && chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].messages[0]) {
+                                chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].messages = [chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].messages[0] + go_back_message + language_change_message + main_menu]
+                            } else {
+                                chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].images[0].caption = chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].images[0].caption + go_back_message + language_change_message + main_menu
+                            }
                             let gobackId = uuidv4()
                             chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].children.push({
                                 actionType: "goBack",
@@ -944,7 +984,7 @@ function Config(props) {
                             id: productId,
                             title: 'product',
                             type: "text",
-                            messages: ["???? ??? ?????? ??? ??????? ??? ?? ?????? ?????\n"],
+                            messages: ["براہ کرم خواہش کی مصنوعات کو منتخب کرنے کے لئے نیچے دیئے گئے ماقبل کے ساتھ جواب دیں\n"],
                             children: [],
                             repeatPreviousMessage: true,
                             __ref: []
@@ -957,7 +997,7 @@ function Config(props) {
                                 id: producstId,
                                 title: product.product_category.name,
                                 type: "text",
-                                messages: ["???? ??? ???? ?? ???? ????? ????:\n"],
+                                messages: ["براہ کرم خواہش کی مصنوعات کو منتخب کرنے کے لئے نیچے دیئے گئے ماقبل کے ساتھ جواب دیں\n"],
                                 children: [],
                                 repeatPreviousMessage: true,
                                 __ref: []
@@ -987,7 +1027,12 @@ function Config(props) {
                                                 path_of_attachment.title = "img";
                                                 delete path_of_attachment.messages
                                             } else if (attachment.attachment_type === '3') {
-                                                path_of_attachment.messages = [path_of_attachment.messages[0] + '\n???? ??? ???? ????? ?? ??? ????? ???????\n\n' + attachment.url]
+                                                if(path_of_attachment && path_of_attachment.messages && path_of_attachment.messages[0] ){
+                                                    path_of_attachment.messages = [path_of_attachment.messages[0] + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url]
+                                                } else {
+                                                    path_of_attachment.images[0].caption = path_of_attachment.images[0].caption + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url
+                                                }
+                                                
                                             } else if (attachment.attachment_type === '2') {
                                                 let audioAttachemt = uuidv4()
                                                 path_of_attachment.__next = audioAttachemt;
@@ -1030,7 +1075,12 @@ function Config(props) {
                                             repeatPreviousMessage: true,
                                             steps: 3
                                         })
-                                        path_of_attachment.messages = [path_of_attachment.messages[0] + go_back_message + language_change_message + main_menu];
+                                        if(path_of_attachment.messages && path_of_attachment.messages[0]) {
+                                            path_of_attachment.messages = [path_of_attachment.messages[0] + go_back_message + language_change_message + main_menu];
+                                        } else {
+                                            path_of_attachment.images[0].caption = path_of_attachment.images[0].caption + go_back_message + language_change_message + main_menu;
+                                        }
+                                        
                                         path_of_attachment.__ref.push({ key: "0", id: upperKey });
                                         path_of_attachment.__ref.push({ key: "00", id: upperKey1 });
                                         path_of_attachment.__ref.push({ key: "#", id: upperKey2 });
@@ -1109,7 +1159,7 @@ function Config(props) {
                             id: problemsId,
                             title: 'problems',
                             type: "text",
-                            messages: ["???? ??? ??? ??? ????????? ??? ?? ?????? ?????\n"],
+                            messages: ["براہ کرم خواہش کے مسئلے کو منتخب کرنے کے لئے نیچے دیئے گئے ماقبل کے ساتھ جواب دیں\n"],
                             children: [],
                             repeatPreviousMessage: true,
                             __ref: []
@@ -1137,7 +1187,11 @@ function Config(props) {
                                         crop_path.title = "img";
                                         delete crop_path.messages
                                     } else if (attachment.attachment_type === '3') {
-                                        crop_path.messages = [crop_path.messages[0] + '\n???? ??? ???? ????? ?? ??? ????? ???????\n\n' + attachment.url]
+                                        if ( crop_path.messages && crop_path.messages[0]) {
+                                            crop_path.messages = [crop_path.messages[0] + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url]
+                                        } else {
+                                            crop_path.images[0].caption = crop_path.images[0].caption + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url
+                                        }
                                     } else if (attachment.attachment_type === '2') {
                                         let audioAttachemt = uuidv4()
                                         crop_path.__next = audioAttachemt;
@@ -1152,7 +1206,12 @@ function Config(props) {
                                     }
                                 })
                             }
-                            chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].messages = [chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].messages[0] + go_back_message + language_change_message + main_menu]
+                            if(chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].messages && chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].messages[0]) {
+                                chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].messages = [chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].messages[0] + go_back_message + language_change_message + main_menu]
+                            } else {
+                                chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].images[0].caption = chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].images[0].caption + go_back_message + language_change_message + main_menu
+                            }
+                            
                             let gobackId = uuidv4()
                             chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].children.push({
                                 actionType: "goBack",
@@ -1217,7 +1276,7 @@ function Config(props) {
                             id: provinceId,
                             title: 'province',
                             type: "text",
-                            messages: ["???? ??? ??? ??? ??? ?? ??? ???? ????? ?????\n"],
+                            messages: ["مطلوبہ صوبہ منتخب کرنے کے لئے براہ کرم ذیل میں دیئے گئے ماقبل کے ساتھ جواب دیں\n"],
                             children: [],
                             repeatPreviousMessage: true,
                             __ref: []
@@ -1230,7 +1289,7 @@ function Config(props) {
                                 id: provincesId,
                                 title: province.province.name,
                                 type: "text",
-                                messages: ["???? ??? ???? ???? ???????? ??? ?? ?????? ?????\n"],
+                                messages: ["مطلوبہ ضلع کو منتخب کرنے کے لئے براہ کرم ذیل میں ذکر کردہ سابقے کے ساتھ جواب دیں\n"],
                                 children: [],
                                 repeatPreviousMessage: true,
                                 __ref: []
@@ -1246,7 +1305,7 @@ function Config(props) {
                                         id: innerId,
                                         title: district.name,
                                         type: "text",
-                                        messages: ["???? ??? ?????? ?? ??? ?????? ??? ??? ?? ??? ???? ????? ????:"],
+                                        messages: ["مطلوبہ علاقہ منتخب کرنے کے لئے براہ کرم ذیل میں ذکر کردہ سابقے کے ساتھ جواب دیں"],
                                         children: [],
                                         repeatPreviousMessage: true,
                                         __ref: []
@@ -1266,7 +1325,7 @@ function Config(props) {
                                                 id: innerterri,
                                                 title: territorie.name,
                                                 type: "text",
-                                                messages: ["???? ??? ???????? ??? ?? ??? ??? ???????? ??? ?? ??? ????? ?????\n"],
+                                                messages: ["مطلوبہ ڈیلر کو منتخب کرنے کے لئے براہ کرم ذیل میں ذکر کردہ سابقے کے ساتھ جواب دیں\n"],
                                                 children: [],
                                                 repeatPreviousMessage: true,
                                                 __ref: []
@@ -1292,7 +1351,7 @@ function Config(props) {
                                                     if (business_category && business_category.dealer_list && business_category.dealer_list.length > 0) {
                                                         let dealers_list = business_category.dealer_list;
                                                         let dealer_list_inc = 1;
-                                                        path.children[path.children.length - 1].messages = [path.children[path.children.length - 1].messages[0] + "\n???? ??? ??? ??? ??? ?? ??? ???? ?? ????? ?????\n"]
+                                                        path.children[path.children.length - 1].messages = [path.children[path.children.length - 1].messages[0] + "\nبراہ کرم درج ذیل میں سے ایک ڈیلر کو منتخب کریں۔\n"]
                                                         dealers_list.forEach((dealer_list) => {
                                                             let dealerId = uuidv4();
                                                             path.children[path.children.length - 1].__ref.push({ key: `${dealer_list_inc}`, id: dealerId });
@@ -1300,7 +1359,7 @@ function Config(props) {
                                                                 id: dealerId,
                                                                 title: dealer_list.name,
                                                                 type: "image",
-                                                                images: [{ URL: dealer_list.image, caption: `???: ${dealer_list.name}\n???: ${dealer_list.address}\n?????? ????: ${dealer_list.mobile_number}` }],
+                                                                images: [{ URL: dealer_list.image, caption: `نام: ${dealer_list.name}\nپتہ: ${dealer_list.address}\nموبائل نمبر: ${dealer_list.mobile_number}\nمقام: https://maps.google.com/?q=${dealer_list.location.y}, ${dealer_list.location.x}` }],
                                                                 children: [],
                                                                 repeatPreviousMessage: true,
                                                                 __ref: []
@@ -1557,7 +1616,12 @@ function Config(props) {
                 'update_chatbot',
                 update_params,
                 response => {
-                    console.log('succeed')
+                    setSnackBarOpen(true)
+                    setOK('success')
+                    setSnackBarMessage('Chatbot updated successfully!')
+                    setTimeout(() => {
+                        setSnackBarOpen(false)
+                    }, 7000);
                 },
             );
         } catch (err) {

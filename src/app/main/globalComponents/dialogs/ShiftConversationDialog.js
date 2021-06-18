@@ -35,7 +35,7 @@ useEffect(() => {
 	const selectedAgent = selectedRow => {
 		let numbers = [];
 		console.log('checking selected row ---------------------------------', selectedRow)
-		selectedRow.rowIds.filter(e => {
+		selectedRow.selectionModel.filter(e => {
 			data.totalChats.filter(result => {
 				if (e === result.id) {
 					numbers.push(result.number);
@@ -85,7 +85,9 @@ useEffect(() => {
 						rows={data.totalChats}
 						columns={columns}
 						checkboxSelection
-						onSelectionChange={e => selectedAgent(e)}
+						onSelectionModelChange={(newSelection) => {
+							selectedAgent(newSelection);
+						}}
 						// onSelectionChange={e => selectedAgent(e)}
 					/>
 				</div>
