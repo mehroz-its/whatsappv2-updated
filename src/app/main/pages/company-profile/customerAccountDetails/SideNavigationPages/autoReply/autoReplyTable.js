@@ -176,8 +176,8 @@ function AutoReplyTable(props) {
                     setLoading(false);
                     setData(response.data.data.autoreply)
                 },
-                error=>{
-                    
+                error => {
+
                 }
             );
         }
@@ -230,23 +230,51 @@ function AutoReplyTable(props) {
     const handleClickAdd = () => {
         setOpen(true);
     };
-    const updateChatBot = n =>{
+    const updateChatBot = n => {
+        console.log(n,'nnnn')
         setOpen(true)
         setChatBotData(n)
     }
-    const cloneChatBot = (n,i) =>{
-        let tempData = [...data]
-        tempData.splice(i+1, 0,{...n,name:`${n.name}_copy`});
-        setData(tempData)
-        console.log(data,'nnnnnnn')
-        // setChatBotData(n)
+    const cloneChatBot = (n, i) => {
+        console.log(n, 'nnnnnnnn')
+        let update_params = {
+            treeData: [],
+            clientId: companyDetails.id,
+            name: `${n.name}_copy`,
+            startMessage: null,
+            endMessage:null,
+            surveyMessage:null
+        };
+        if (n.body) {
+            if (n.body.__default) {
+                update_params.treeData = [n.body.__default]
+            }
+            if (n.body.__startMessageConversationMessage && n.body.__startMessageConversationMessage.messages && n.body.__startMessageConversationMessage.messages.length) {
+                update_params.startMessage = n.body.__startMessageConversationMessage.messages[0]
+            }
+            if (n.body.__endMessageConversationMessage && n.body.__endMessageConversationMessage.messages && n.body.__endMessageConversationMessage.messages.length) {
+                update_params.endMessage = n.body.__endMessageConversationMessage.messages[0]
+            }
+            if (n.body.__surveyMessage && n.body.__surveyMessage.messages && n.body.__surveyMessage.messages.length) {
+                update_params.surveyMessage = n.body.__surveyMessage.messages[0]
+            }
+        }
+        CoreHttpHandler.request(
+            'CompanyAgent',
+            'add_chatbot',
+            update_params,
+            response => {
+                closeHandler({ msg: "Successfully Saved", success: true })
+                getPaginatedData()
+            },
+        );
     }
     function showError(msg) {
         setSnackBarMessage(msg);
         setOK('error');
         setSnackBarOpen(true);
     }
-    function showMessage ({msg,success}){
+    function showMessage({ msg, success }) {
 
         if (msg) {
             setSnackBarMessage(msg);
@@ -257,7 +285,7 @@ function AutoReplyTable(props) {
     function closeHandler({ msg, success }) {
         setOpen(false)
         setChatBotData(null)
-        showMessage({ msg, success})
+        showMessage({ msg, success })
     }
 
     function handleDialogClose(e) {
@@ -334,7 +362,7 @@ function AutoReplyTable(props) {
                 treeData,
                 clientId: companyDetails.id,
                 name,
-                startMessage, 
+                startMessage,
                 endMessage,
                 surveyMessage
             };
@@ -351,15 +379,15 @@ function AutoReplyTable(props) {
     }
     const updateHandler = ({ treeData, name, startMessage, endMessage, surveyMessage }) => {
         console.log('inside update handler-----', surveyMessage, startMessage);
-        if (companyDetails&&chatBotData) {
+        if (companyDetails && chatBotData) {
             let update_params = {
                 treeData,
                 clientId: companyDetails.id,
                 name,
-                startMessage, 
+                startMessage,
                 endMessage,
                 surveyMessage,
-                id:chatBotData.id
+                id: chatBotData.id
             }
             CoreHttpHandler.request(
                 'CompanyAgent',
@@ -372,22 +400,22 @@ function AutoReplyTable(props) {
             );
         }
     }
-    const handleConfirmationDialogClose = e =>{
+    const handleConfirmationDialogClose = e => {
         setConfirmationData(null)
         setConfirmationType(null)
     }
-    const openConfirmationDialogue = (type,data)=>{
+    const openConfirmationDialogue = (type, data) => {
 
         setConfirmationData(data)
         setConfirmationType(type)
     }
-    const handleConfirmationSubmit = value =>{
-        if (confirmationData&&confirmation) {
+    const handleConfirmationSubmit = value => {
+        if (confirmationData && confirmation) {
             let update_params = {
                 attributeType: confirmation,
                 value,
-                id:confirmationData.id,
-                
+                id: confirmationData.id,
+
                 clientId: companyDetails.id,
             }
             CoreHttpHandler.request(
@@ -395,13 +423,13 @@ function AutoReplyTable(props) {
                 'update_chatbot_attribute',
                 update_params,
                 response => {
-                    showMessage({ msg:"Successfully Updated", success:true})
+                    showMessage({ msg: "Successfully Updated", success: true })
                     handleConfirmationDialogClose()
                     getPaginatedData()
                 },
             );
         }
-        
+
     }
     return (
         <>
@@ -416,7 +444,7 @@ function AutoReplyTable(props) {
                                 style={{ backgroundColor: '#e73859', color: 'white' }}
                             >
                                 Auto Reply
-					</Typography> : null
+                            </Typography> : null
                     }
                     <Snackbar
                         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
@@ -429,15 +457,15 @@ function AutoReplyTable(props) {
                     </Snackbar>
                     {
                         open ?
-                        <div style={{backgroundColor:"white"}}>
+                            <div style={{ backgroundColor: "white" }}>
 
-                        <AddAutoReply
-                                data={chatBotData}
-                                closeHandler={closeHandler}
-                                saveHandler={saveHandler}
-                                updateHandler={updateHandler}
-                            /> 
-                        </div>:
+                                <AddAutoReply
+                                    data={chatBotData}
+                                    closeHandler={closeHandler}
+                                    saveHandler={saveHandler}
+                                    updateHandler={updateHandler}
+                                />
+                            </div> :
                             (
                                 isLoading ? (
                                     <div className="flex flex-1 items-center justify-center h-full">
@@ -503,7 +531,7 @@ function AutoReplyTable(props) {
                                                                         scope="row"
                                                                         align="center"
                                                                         style={{ fontSize: '11px', padding: '10px' }}
-                                                                        onClick={(e)=>{openConfirmationDialogue("enabled",n)}}
+                                                                        onClick={(e) => { openConfirmationDialogue("enabled", n) }}
                                                                     >
                                                                         <div>
                                                                             {
@@ -511,7 +539,7 @@ function AutoReplyTable(props) {
 
                                                                                     <Icon name="lock" color="primary">
                                                                                         check_circle
-                                                                            </Icon>
+                                                                                    </Icon>
                                                                                     :
                                                                                     <Icon name="lock">radio_button_unchecked</Icon>
                                                                             }
@@ -524,14 +552,14 @@ function AutoReplyTable(props) {
                                                                         align="center"
                                                                         style={{ fontSize: '11px', padding: '10px' }}
                                                                         onClick={
-                                                                            (e)=>{
-                                                                                if(n.enabled&&!n.is_deleted&&!n.is_default)
-                                                                                openConfirmationDialogue("default",n)
-                                                                                
-                                                                                }
-                                                                        
+                                                                            (e) => {
+                                                                                if (n.enabled && !n.is_deleted && !n.is_default)
+                                                                                    openConfirmationDialogue("default", n)
+
+                                                                            }
+
                                                                         }
-                                                                    
+
                                                                     >
                                                                         <div>
                                                                             {
@@ -539,7 +567,7 @@ function AutoReplyTable(props) {
 
                                                                                     <Icon name="lock" color="primary">
                                                                                         check_circle
-                                                                            </Icon>
+                                                                                    </Icon>
                                                                                     :
                                                                                     <Icon name="lock">radio_button_unchecked</Icon>
                                                                             }
@@ -552,7 +580,7 @@ function AutoReplyTable(props) {
                                                                         scope="row"
                                                                         align="center"
                                                                         style={{ fontSize: '11px', padding: '10px' }}
-                                                                        onClick={(e)=>{openConfirmationDialogue("delete",n)}}
+                                                                        onClick={(e) => { openConfirmationDialogue("delete", n) }}
 
                                                                     >
                                                                         <div>
@@ -579,29 +607,29 @@ function AutoReplyTable(props) {
                                                                     </TableCell>
 
 
-                                                                    
+
 
                                                                     <TableCell
                                                                         component="th"
                                                                         scope="row"
                                                                         align="center"
                                                                         style={{ fontSize: '11px', padding: '10px' }}
-                                                                            onClick={e=>{updateChatBot(n)}}
+                                                                        onClick={e => { updateChatBot(n) }}
                                                                     >
                                                                         <Icon name="lock" color="primary">
-                                                                                        edit
-                                                                                    </Icon>
+                                                                            edit
+                                                                        </Icon>
                                                                     </TableCell>
                                                                     <TableCell
                                                                         component="th"
                                                                         scope="row"
                                                                         align="center"
                                                                         style={{ fontSize: '11px', padding: '10px' }}
-                                                                            onClick={e=>{cloneChatBot(n,i)}}
+                                                                        onClick={e => { cloneChatBot(n, i) }}
                                                                     >
                                                                         <Icon name="lock" color="primary">
-                                                                        arrow_downward
-                                                                                    </Icon>
+                                                                            arrow_downward
+                                                                        </Icon>
                                                                     </TableCell>
 
                                                                 </TableRow>
@@ -610,7 +638,7 @@ function AutoReplyTable(props) {
                                                 </TableBody>
                                             </Table>
                                             {
-                                                confirmation&&confirmationData?
+                                                confirmation && confirmationData ?
                                                     <ConfirmationDialogue
                                                         type={confirmation}
                                                         data={confirmationData}
@@ -618,7 +646,7 @@ function AutoReplyTable(props) {
                                                         handleSubmit={handleConfirmationSubmit}
                                                     />
 
-                                                :null
+                                                    : null
                                             }
                                         </FuseScrollbars>
                                         <FuseAnimate animation="transition.expandIn" delay={300}>
@@ -634,24 +662,24 @@ function AutoReplyTable(props) {
                                         </FuseAnimate>
                                     </div>
                                 ) : (
-                                            <div className="flex flex-1 items-center justify-center h-full mt-2">
-                                                <Typography color="textSecondary" variant="h5">
-                                                    No Data Found!
-                                                </Typography>
-                                                <FuseAnimate animation="transition.expandIn" delay={300}>
-                                                    <Fab
-                                                        color="primary"
-                                                        aria-label="add"
-                                                        size="medium"
-                                                        className={classes.addButton}
-                                                        onClick={handleClickAdd}
-                                                    >
-                                                        <Icon>person_add</Icon>
-                                                    </Fab>
-                                                </FuseAnimate>
+                                    <div className="flex flex-1 items-center justify-center h-full mt-2">
+                                        <Typography color="textSecondary" variant="h5">
+                                            No Data Found!
+                                        </Typography>
+                                        <FuseAnimate animation="transition.expandIn" delay={300}>
+                                            <Fab
+                                                color="primary"
+                                                aria-label="add"
+                                                size="medium"
+                                                className={classes.addButton}
+                                                onClick={handleClickAdd}
+                                            >
+                                                <Icon>person_add</Icon>
+                                            </Fab>
+                                        </FuseAnimate>
 
-                                            </div>
-                                        ))
+                                    </div>
+                                ))
 
                     }
                 </CardContent>

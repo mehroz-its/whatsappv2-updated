@@ -102,6 +102,8 @@ function AddAutoReply(props) {
     const [chatBotName, setChatBotName] = React.useState("");
     const [invalidResponse, setInvalidMessage] = React.useState("");
     const [status, setStatus] = React.useState(false);
+    const [startTime, setStartTime] = React.useState(new Date().getTime());
+    const [endTime, setEndTime] = React.useState(new Date().getTime());
 
 
     const updateChatBotName = (e) => {
@@ -119,23 +121,23 @@ function AddAutoReply(props) {
 
             if (body) {
                 console.log('body ', body)
-                if(body.__default){
+                if (body.__default) {
                     setTreeData([body.__default])
                 }
-                if(body.__startMessageConversationMessage&&body.__startMessageConversationMessage.messages&&body.__startMessageConversationMessage.messages.length){
+                if (body.__startMessageConversationMessage && body.__startMessageConversationMessage.messages && body.__startMessageConversationMessage.messages.length) {
                     setStartMessage(body.__startMessageConversationMessage.messages[0])
                 }
-                if(body.__endMessageConversationMessage&&body.__endMessageConversationMessage.messages&&body.__endMessageConversationMessage.messages.length){
+                if (body.__endMessageConversationMessage && body.__endMessageConversationMessage.messages && body.__endMessageConversationMessage.messages.length) {
                     setEndMessage(body.__endMessageConversationMessage.messages[0])
                 }
-                if(body.__surveyMessage&&body.__surveyMessage.messages&&body.__surveyMessage.messages.length){
+                if (body.__surveyMessage && body.__surveyMessage.messages && body.__surveyMessage.messages.length) {
                     console.log("body and survey message ", body.__surveyMessage)
                     setSurveyMessage(body.__surveyMessage.messages[0]);
                     setStatus(true);
-                    if(body.__surveyMessage.answers && body.__surveyMessage.answers.length) {
+                    if (body.__surveyMessage.answers && body.__surveyMessage.answers.length) {
                         setSurveyAnswers(body.__surveyMessage.answers[0])
                     }
-                    if(body.__surveyMessage.invalidMessage && body.__surveyMessage.invalidMessage.length) {
+                    if (body.__surveyMessage.invalidMessage && body.__surveyMessage.invalidMessage.length) {
                         setInvalidMessage(body.__surveyMessage.invalidMessage[0])
                     }
                 }
@@ -219,9 +221,9 @@ function AddAutoReply(props) {
     }
 
     const toggleChecked = e => {
-		console.log('ToggleChecked e', e.target.checked);
-		setStatus(e.target.checked);
-	};
+        console.log('ToggleChecked e', e.target.checked);
+        setStatus(e.target.checked);
+    };
 
     const updateNodeData = (data, path, node, treeDataUpdate) => {
 
@@ -352,31 +354,31 @@ function AddAutoReply(props) {
     }
     function saveHandler() {
 
-        let _startMessage   = startMessage  ? { "id": uuidv4(), "title": "Start Conversation Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ startMessage ], "children": [] } : undefined; 
-        let _endMessage     = endMessage    ? { "id": uuidv4(), "title": "End Conversation Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ endMessage ], "children": [] }: undefined;
-        let _surveyMessage = surveyMessage  ? { "id": uuidv4(), "title": "Survey Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ surveyMessage ], "children": [] }: undefined;
-        if (surveyAnswers && surveyAnswers != null ) {
-            _surveyMessage = surveyMessage  ? { "id": uuidv4(), "title": "Survey Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [ surveyMessage ], "children": [], "answers": [surveyAnswers], "invalidMessage": [invalidResponse] }: undefined;
+        let _startMessage = startMessage ? { "id": uuidv4(), "title": "Start Conversation Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [startMessage], "children": [] } : undefined;
+        let _endMessage = endMessage ? { "id": uuidv4(), "title": "End Conversation Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [endMessage], "children": [] } : undefined;
+        let _surveyMessage = surveyMessage ? { "id": uuidv4(), "title": "Survey Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [surveyMessage], "children": [] } : undefined;
+        if (surveyAnswers && surveyAnswers != null) {
+            _surveyMessage = surveyMessage ? { "id": uuidv4(), "title": "Survey Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [surveyMessage], "children": [], "answers": [surveyAnswers], "invalidMessage": [invalidResponse] } : undefined;
         }
 
         if (data) {
-            
-            if(startMessage&&data.__startMessageConversationMessage&&data.__startMessageConversationMessage.messages&&data.__startMessageConversationMessage.messages.length){
+
+            if (startMessage && data.__startMessageConversationMessage && data.__startMessageConversationMessage.messages && data.__startMessageConversationMessage.messages.length) {
                 _startMessage = data.__startMessageConversationMessage;
                 _startMessage.__startMessageConversationMessage.messages[0] = startMessage
             }
-            if(endMessage&&data.__endMessageConversationMessage&&data.__endMessageConversationMessage.messages&&data.__endMessageConversationMessage.messages.length){
+            if (endMessage && data.__endMessageConversationMessage && data.__endMessageConversationMessage.messages && data.__endMessageConversationMessage.messages.length) {
                 _endMessage = data.__endMessageConversationMessage;
                 _endMessage.__endMessageConversationMessage.messages[0] = startMessage
             }
-            if(surveyMessage&&data.__surveyMessage&&data.__surveyMessage.messages&&data.__surveyMessage.messages.length){
+            if (surveyMessage && data.__surveyMessage && data.__surveyMessage.messages && data.__surveyMessage.messages.length) {
                 _surveyMessage = data.__surveyMessage;
                 _surveyMessage.__surveyMessage.messages[0] = surveyMessage
             }
-            
-            props.updateHandler({ treeData: treeData[0], name: chatBotName,startMessage:_startMessage,endMessage:_endMessage, surveyMessage:_surveyMessage })
+
+            props.updateHandler({ treeData: treeData[0], name: chatBotName, startMessage: _startMessage, endMessage: _endMessage, surveyMessage: _surveyMessage })
         } else {
-            props.saveHandler({ treeData: treeData[0], name: chatBotName,startMessage:_startMessage,endMessage:_endMessage, surveyMessage:_surveyMessage })
+            props.saveHandler({ treeData: treeData[0], name: chatBotName, startMessage: _startMessage, endMessage: _endMessage, surveyMessage: _surveyMessage })
         }
     }
 
@@ -414,7 +416,7 @@ function AddAutoReply(props) {
 
                                         <Button onClick={closeHandler} color="primary" size="small" variant="contained" style={{ marginRight: "10px" }}>
                                             Cancel
-                                    </Button>
+                                        </Button>
                                         <ThemeProvider theme={theme}>
                                             <Button variant="contained" onClick={saveHandler} color="primary" size="small" className={classes.margin}>
                                                 {data ? "UPDATE" : "SAVE"}
@@ -440,20 +442,29 @@ function AddAutoReply(props) {
                         className={"p-20"}
                     >
                         <FormControlLabel
-						style={{ marginLeft: '2px' }}
-						control={
-							<Switch
-								checked={status}
-								onChange={toggleChecked}
-								name="status"
-								color="primary"
-								size="small"
-                                
-							/>
-                            
-						}
-                        label= "Survey Question?"
-					/>
+                            style={{ marginLeft: '2px' }}
+                            control={
+                                <Switch
+                                    checked={status}
+                                    onChange={toggleChecked}
+                                    name="status"
+                                    color="primary"
+                                    size="small"
+
+                                />
+
+                            }
+                            label="Survey Question?"
+                        />
+                        <div>
+
+                            <p style={{ fontSize: '12px', marginLeft: '-34px', marginBottom: '5px' }}>Start Time</p>
+                            <input step="900" type='time' labe="Start Time" value={startTime} onChange={e => setStartTime(e.target.value)} />
+                        </div>
+                        <div style={{ marginLeft: '5px' }}>
+                        <p style={{ fontSize: '12px', marginLeft: '-40px', marginBottom: '5px' }}>End Time</p>
+                            <input type='time' labe="End Time"  value={endTime} onChange={e => setEndTime(e.target.value)}/>
+                        </div>
                         <Grid container className={"mb-20"}>
                             <Grid item md={3} sm={12} xs={12}>
                                 <div className="flex" >
@@ -485,7 +496,7 @@ function AddAutoReply(props) {
                                         multiline
                                         rows={1}
                                         value={startMessage}
-                                        onChange={e=>{setStartMessage(e.target.value)}}
+                                        onChange={e => { setStartMessage(e.target.value) }}
                                         size="small"
                                         inputProps={{ maxLength: 800 }}
                                         rowsMax={6}
@@ -494,72 +505,72 @@ function AddAutoReply(props) {
                             </Grid>
                         </Grid>
                         {status === true && (
-                        <Grid container className={"mb-20"}>
-                            <Grid item md={6} sm={12} xs={12}>
-                                <div className="flex" >
-                                    <TextField
-                                        label="Survey Message"
-                                        fullWidth
-                                        id={"survey_message"}
-                                        name="chatBotName"
-                                        variant="outlined"
-                                        multiline
-                                        rows={1}
-                                        value={surveyMessage}
-                                        onChange={e=>{setSurveyMessage(e.target.value)}}
-                                        size="small"
-                                        inputProps={{ maxLength: 800 }}
-                                        rowsMax={6}
-                                    />
-                                </div>
+                            <Grid container className={"mb-20"}>
+                                <Grid item md={6} sm={12} xs={12}>
+                                    <div className="flex" >
+                                        <TextField
+                                            label="Survey Message"
+                                            fullWidth
+                                            id={"survey_message"}
+                                            name="chatBotName"
+                                            variant="outlined"
+                                            multiline
+                                            rows={1}
+                                            value={surveyMessage}
+                                            onChange={e => { setSurveyMessage(e.target.value) }}
+                                            size="small"
+                                            inputProps={{ maxLength: 800 }}
+                                            rowsMax={6}
+                                        />
+                                    </div>
+                                </Grid>
                             </Grid>
-                        </Grid>
                         )}
                         {status === true && (
-                        <Grid container className={"mb-20"}>
-                        <Grid item md={6} sm={12} xs={12}>
-                            <div className="flex" >
-                                <TextField
-                                    label="Survey Answers"
-                                    fullWidth
-                                    id={"survey_Answers"}
-                                    name="chatBotName"
-                                    variant="outlined"
-                                    multiline
-                                    rows={1}
-                                    value={surveyAnswers}
-                                    onChange={e=>{setSurveyAnswers(e.target.value)}}
-                                    size="small"
-                                    inputProps={{ maxLength: 800 }}
-                                    rowsMax={6}
-                                />
-                            </div>
-                        </Grid>
-                        </Grid>
+                            <Grid container className={"mb-20"}>
+                                <Grid item md={6} sm={12} xs={12}>
+                                    <div className="flex" >
+                                        <TextField
+                                            label="Survey Answers"
+                                            fullWidth
+                                            id={"survey_Answers"}
+                                            name="chatBotName"
+                                            variant="outlined"
+                                            multiline
+                                            rows={1}
+                                            value={surveyAnswers}
+                                            onChange={e => { setSurveyAnswers(e.target.value) }}
+                                            size="small"
+                                            inputProps={{ maxLength: 800 }}
+                                            rowsMax={6}
+                                        />
+                                    </div>
+                                </Grid>
+                            </Grid>
                         )}
                         {status === true && (
-                        <Grid container className={"mb-20"}>
-                        <Grid item md={6} sm={12} xs={12}>
-                            <div className="flex" >
-                                <TextField
-                                    label="Invalid Message"
-                                    fullWidth
-                                    id={"invlaid_message"}
-                                    name="chatBotName"
-                                    variant="outlined"
-                                    multiline
-                                    rows={1}
-                                    value={invalidResponse}
-                                    onChange={e=>{setInvalidMessage(e.target.value)}}
-                                    size="small"
-                                    inputProps={{ maxLength: 800 }}
-                                    rowsMax={6}
-                                />
-                            </div>
-                        </Grid>
-                        </Grid>
+                            <Grid container className={"mb-20"}>
+                                <Grid item md={6} sm={12} xs={12}>
+                                    <div className="flex" >
+                                        <TextField
+                                            label="Invalid Message"
+                                            fullWidth
+                                            id={"invlaid_message"}
+                                            name="chatBotName"
+                                            variant="outlined"
+                                            multiline
+                                            rows={1}
+                                            value={invalidResponse}
+                                            onChange={e => { setInvalidMessage(e.target.value) }}
+                                            size="small"
+                                            inputProps={{ maxLength: 800 }}
+                                            rowsMax={6}
+                                        />
+                                    </div>
+                                </Grid>
+                            </Grid>
                         )}
-                        
+
 
                         <Grid container>
                             <Grid item md={6} sm={12} xs={12}>
@@ -574,7 +585,7 @@ function AddAutoReply(props) {
                                         rows={1}
                                         variant="outlined"
                                         value={endMessage}
-                                        onChange={e=>{setEndMessage(e.target.value)}}
+                                        onChange={e => { setEndMessage(e.target.value) }}
                                         size="small"
                                         inputProps={{ maxLength: 800 }}
                                         rowsMax={6}
@@ -804,7 +815,7 @@ function AddAutoReply(props) {
 
                         </FuseAnimateGroup>
                     </div>
-                </div>
+                </ div>
             }
         />
     );
