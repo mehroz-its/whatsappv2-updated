@@ -67,7 +67,7 @@ function Config(props) {
                 id: uuidv4(),
                 title: "Engro",
                 type: "text",
-                messages: ["Welcome to engro pakistan, kindly select your language.\n\n?????? ??????? ??? ??? ????? ? ???? ??? ?????? ??? ???????? ????? ?????\n\n1.English\n\n2.Urdu"],
+                messages: ["Welcome to engro pakistan, kindly select your language.\n\nاینگرو پاکستان میں خوش آمدید ، برائے مہربانی اپنی زبان کا انتخاب کریں۔\n\n1.English\n\n2.Urdu"],
                 children: [],
                 expanded: true,
                 repeatPreviousMessage: true,
@@ -133,7 +133,12 @@ function Config(props) {
                                         crop_path.title = "img";
                                         delete crop_path.messages
                                     } else if (attachment.attachment_type === '3') {
-                                        crop_path.messages = [crop_path.messages[0] + '\nKindly check the video for better understanding.\n\n' + attachment.url]
+                                        if (crop_path.messages && crop_path.messages[0]) {
+                                            crop_path.messages = [crop_path.messages[0] + '\nKindly check the video for better understanding.\n\n' + attachment.url]
+                                        } else {
+                                            crop_path.images[0].caption = crop_path.images[0].caption + '\nKindly check the video for better understanding.\n\n' + attachment.url
+                                        }
+                                        
                                     } else if (attachment.attachment_type === '2') {
                                         let audioAttachemt = uuidv4();
                                         crop_path.__next = audioAttachemt;
@@ -148,7 +153,12 @@ function Config(props) {
                                     }
                                 })
                             }
-                            chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].messages = [chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].messages[0] + go_back_message + language_change_message + main_menu]
+                            if (chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].messages && chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].messages[0]) {
+                                chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].messages = [chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].messages[0] + go_back_message + language_change_message + main_menu]
+                            } else {
+                                chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].images[0].caption = chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].images[0].caption + go_back_message + language_change_message + main_menu
+                            }
+                                
                             let gobackId = uuidv4()
                             chatbot[0].children[0].children[0].children[chatbot[0].children[0].children[0].children.length - 1].children.push({
                                 actionType: "goBack",
@@ -258,7 +268,13 @@ function Config(props) {
                                                 path_of_attachment.title = "img";
                                                 delete path_of_attachment.messages
                                             } else if (attachment.attachment_type === '3') {
-                                                path_of_attachment.messages = [path_of_attachment.messages[0] + '\nKindly check the video for better understanding.\n\n' + attachment.url]
+                                                console.log('kindly show me the error ', path_of_attachment)
+                                                if ( path_of_attachment && path_of_attachment.messages && path_of_attachment.messages) {
+                                                    path_of_attachment.messages = [path_of_attachment.messages[0] + '\nKindly check the video for better understanding.\n\n' + attachment.url]
+                                                } else {
+                                                    path_of_attachment.images[0].caption = path_of_attachment.images[0].caption + '\nKindly check the video for better understanding.\n\n' + attachment.url
+                                                }
+                                                
                                             } else if (attachment.attachment_type === '2') {
                                                 let audioAttachemt = uuidv4()
                                                 path_of_attachment.__next = audioAttachemt;
@@ -302,11 +318,17 @@ function Config(props) {
                                             repeatPreviousMessage: true,
                                             steps: 3
                                         })
-                                        path_of_attachment.messages = [path_of_attachment.messages[0] + go_back_message + language_change_message + main_menu];
+                                        if (path_of_attachment.messages && path_of_attachment.messages[0]){
+                                            path_of_attachment.messages = [path_of_attachment.messages[0] + go_back_message + language_change_message + main_menu];
+                                        } else {
+                                            path_of_attachment.images[0].caption = path_of_attachment.images[0].caption + go_back_message + language_change_message + main_menu
+                                        }
+                                        
                                         path_of_attachment.__ref.push({ key: "0", id: upperKey });
                                         path_of_attachment.__ref.push({ key: "00", id: upperKey1 });
                                         path_of_attachment.__ref.push({ key: "#", id: upperKey2 });
                                     }
+
                                     chatbot[0].children[0].children[1].children[chatbot[0].children[0].children[1].children.length - 1].messages = [chatbot[0].children[0].children[1].children[chatbot[0].children[0].children[1].children.length - 1].messages[0] + `\n${innerinc}. ` + productList.name]
                                     innerinc = innerinc + 1;
                                 })
@@ -409,7 +431,12 @@ function Config(props) {
                                         crop_path.title = "img";
                                         delete crop_path.messages
                                     } else if (attachment.attachment_type === '3') {
-                                        crop_path.messages = [crop_path.messages[0] + '\nKindly check the video for better understanding.\n\n' + attachment.url]
+                                        if (crop_path && crop_path.messages && crop_path.messages[0].messages[0] ){
+                                            crop_path.messages = [crop_path.messages[0] + '\nKindly check the video for better understanding.\n\n' + attachment.url]
+                                        } else {
+                                            crop_path.images[0].caption = crop_path.images[0].caption + '\nKindly check the video for better understanding.\n\n' + attachment.url
+                                        }
+                                        
                                     } else if (attachment.attachment_type === '2') {
                                         let audioAttachemt = uuidv4()
                                         crop_path.__next = audioAttachemt;
@@ -424,7 +451,12 @@ function Config(props) {
                                     }
                                 })
                             }
-                            chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].messages = [chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].messages[0] + go_back_message + language_change_message + main_menu]
+                            if (chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].messages && chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].messages[0]) {
+                                chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].messages = [chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].messages[0] + go_back_message + language_change_message + main_menu]
+                            } else {
+                                chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].images[0].caption = chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].images[0].caption + go_back_message + language_change_message + main_menu
+                            }
+                            
                             let gobackId = uuidv4()
                             chatbot[0].children[0].children[2].children[chatbot[0].children[0].children[2].children.length - 1].children.push({
                                 actionType: "goBack",
@@ -863,7 +895,12 @@ function Config(props) {
                                         crop_path.title = "img";
                                         delete crop_path.messages
                                     } else if (attachment.attachment_type === '3') {
-                                        crop_path.messages = [crop_path.messages[0] + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url]
+                                        if ( crop_path.messages && crop.messages[0]) {
+                                            crop_path.messages = [crop_path.messages[0] + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url]
+                                        } else {
+                                            crop_path.images[0].caption = crop_path.images[0].caption + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url
+                                        }
+                                       
                                     } else if (attachment.attachment_type === '2') {
                                         let audioAttachemt = uuidv4();
                                         crop_path.__next = audioAttachemt;
@@ -878,7 +915,11 @@ function Config(props) {
                                     }
                                 })
                             }
-                            chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].messages = [chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].messages[0] + go_back_message + language_change_message + main_menu]
+                            if(chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].messages && chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].messages[0]) {
+                                chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].messages = [chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].messages[0] + go_back_message + language_change_message + main_menu]
+                            } else {
+                                chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].images[0].caption = chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].images[0].caption + go_back_message + language_change_message + main_menu
+                            }
                             let gobackId = uuidv4()
                             chatbot[0].children[1].children[0].children[chatbot[0].children[1].children[0].children.length - 1].children.push({
                                 actionType: "goBack",
@@ -987,7 +1028,12 @@ function Config(props) {
                                                 path_of_attachment.title = "img";
                                                 delete path_of_attachment.messages
                                             } else if (attachment.attachment_type === '3') {
-                                                path_of_attachment.messages = [path_of_attachment.messages[0] + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url]
+                                                if(path_of_attachment && path_of_attachment.messages && path_of_attachment.messages[0] ){
+                                                    path_of_attachment.messages = [path_of_attachment.messages[0] + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url]
+                                                } else {
+                                                    path_of_attachment.images[0].caption = path_of_attachment.images[0].caption + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url
+                                                }
+                                                
                                             } else if (attachment.attachment_type === '2') {
                                                 let audioAttachemt = uuidv4()
                                                 path_of_attachment.__next = audioAttachemt;
@@ -1030,7 +1076,12 @@ function Config(props) {
                                             repeatPreviousMessage: true,
                                             steps: 3
                                         })
-                                        path_of_attachment.messages = [path_of_attachment.messages[0] + go_back_message + language_change_message + main_menu];
+                                        if(path_of_attachment.messages && path_of_attachment.messages[0]) {
+                                            path_of_attachment.messages = [path_of_attachment.messages[0] + go_back_message + language_change_message + main_menu];
+                                        } else {
+                                            path_of_attachment.images[0].caption = path_of_attachment.images[0].caption + go_back_message + language_change_message + main_menu;
+                                        }
+                                        
                                         path_of_attachment.__ref.push({ key: "0", id: upperKey });
                                         path_of_attachment.__ref.push({ key: "00", id: upperKey1 });
                                         path_of_attachment.__ref.push({ key: "#", id: upperKey2 });
@@ -1137,7 +1188,11 @@ function Config(props) {
                                         crop_path.title = "img";
                                         delete crop_path.messages
                                     } else if (attachment.attachment_type === '3') {
-                                        crop_path.messages = [crop_path.messages[0] + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url]
+                                        if ( crop_path.messages && crop_path.messages[0]) {
+                                            crop_path.messages = [crop_path.messages[0] + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url]
+                                        } else {
+                                            crop_path.images[0].caption = crop_path.images[0].caption + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url
+                                        }
                                     } else if (attachment.attachment_type === '2') {
                                         let audioAttachemt = uuidv4()
                                         crop_path.__next = audioAttachemt;
@@ -1152,7 +1207,12 @@ function Config(props) {
                                     }
                                 })
                             }
-                            chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].messages = [chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].messages[0] + go_back_message + language_change_message + main_menu]
+                            if(chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].messages && chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].messages[0]) {
+                                chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].messages = [chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].messages[0] + go_back_message + language_change_message + main_menu]
+                            } else {
+                                chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].images[0].caption = chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].images[0].caption + go_back_message + language_change_message + main_menu
+                            }
+                            
                             let gobackId = uuidv4()
                             chatbot[0].children[1].children[2].children[chatbot[0].children[1].children[2].children.length - 1].children.push({
                                 actionType: "goBack",
