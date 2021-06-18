@@ -603,7 +603,7 @@ function Config(props) {
                                                                 id: dealerId,
                                                                 title: dealer_list.name,
                                                                 type: "image",
-                                                                images: [{ URL: dealer_list.image, caption: `Name: ${dealer_list.name}\nAddress: ${dealer_list.address}\nMobile Number: ${dealer_list.mobile_number}\nLocation: https://maps.google.com/?q=${dealer_list.location.y}, ${dealer_list.location.x}` }],
+                                                                images: [{ URL: dealer_list.image, caption: `Name: ${dealer_list.name}\nAddress: ${dealer_list.address}\nMobile Number: ${dealer_list.mobile_number}\nLocation: https://maps.google.com/?q=${dealer_list.location.y},${dealer_list.location.x}` }],
                                                                 children: [],
                                                                 repeatPreviousMessage: true,
                                                                 __ref: []
@@ -1359,7 +1359,7 @@ function Config(props) {
                                                                 id: dealerId,
                                                                 title: dealer_list.name,
                                                                 type: "image",
-                                                                images: [{ URL: dealer_list.image, caption: `نام: ${dealer_list.name}\nپتہ: ${dealer_list.address}\nموبائل نمبر: ${dealer_list.mobile_number}\nمقام: https://maps.google.com/?q=${dealer_list.location.y}, ${dealer_list.location.x}` }],
+                                                                images: [{ URL: dealer_list.image, caption: `نام: ${dealer_list.name}\nپتہ: ${dealer_list.address}\nموبائل نمبر: ${dealer_list.mobile_number}\nمقام: https://maps.google.com/?q=${dealer_list.location},${dealer_list.location.x}` }],
                                                                 children: [],
                                                                 repeatPreviousMessage: true,
                                                                 __ref: []
