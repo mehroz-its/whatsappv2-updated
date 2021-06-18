@@ -268,7 +268,6 @@ function Config(props) {
                                                 path_of_attachment.title = "img";
                                                 delete path_of_attachment.messages
                                             } else if (attachment.attachment_type === '3') {
-                                                console.log('kindly show me the error ', path_of_attachment)
                                                 if ( path_of_attachment && path_of_attachment.messages && path_of_attachment.messages) {
                                                     path_of_attachment.messages = [path_of_attachment.messages[0] + '\nKindly check the video for better understanding.\n\n' + attachment.url]
                                                 } else {
@@ -604,7 +603,7 @@ function Config(props) {
                                                                 id: dealerId,
                                                                 title: dealer_list.name,
                                                                 type: "image",
-                                                                images: [{ URL: dealer_list.image, caption: `Name: ${dealer_list.name}\nAddress: ${dealer_list.address}\nMobile Number: ${dealer_list.mobile_number}` }],
+                                                                images: [{ URL: dealer_list.image, caption: `Name: ${dealer_list.name}\nAddress: ${dealer_list.address}\nMobile Number: ${dealer_list.mobile_number}\nLocation: https://maps.google.com/?q=${dealer_list.location.y}, ${dealer_list.location.x}` }],
                                                                 children: [],
                                                                 repeatPreviousMessage: true,
                                                                 __ref: []
@@ -1352,7 +1351,7 @@ function Config(props) {
                                                     if (business_category && business_category.dealer_list && business_category.dealer_list.length > 0) {
                                                         let dealers_list = business_category.dealer_list;
                                                         let dealer_list_inc = 1;
-                                                        path.children[path.children.length - 1].messages = [path.children[path.children.length - 1].messages[0] + "\n???? ??? ??? ??? ??? ?? ??? ???? ?? ????? ?????\n"]
+                                                        path.children[path.children.length - 1].messages = [path.children[path.children.length - 1].messages[0] + "\nبراہ کرم درج ذیل میں سے ایک ڈیلر کو منتخب کریں۔\n"]
                                                         dealers_list.forEach((dealer_list) => {
                                                             let dealerId = uuidv4();
                                                             path.children[path.children.length - 1].__ref.push({ key: `${dealer_list_inc}`, id: dealerId });
@@ -1360,7 +1359,7 @@ function Config(props) {
                                                                 id: dealerId,
                                                                 title: dealer_list.name,
                                                                 type: "image",
-                                                                images: [{ URL: dealer_list.image, caption: `???: ${dealer_list.name}\n???: ${dealer_list.address}\n?????? ????: ${dealer_list.mobile_number}` }],
+                                                                images: [{ URL: dealer_list.image, caption: `نام: ${dealer_list.name}\nپتہ: ${dealer_list.address}\nموبائل نمبر: ${dealer_list.mobile_number}\nمقام: https://maps.google.com/?q=${dealer_list.location.y}, ${dealer_list.location.x}` }],
                                                                 children: [],
                                                                 repeatPreviousMessage: true,
                                                                 __ref: []
@@ -1617,7 +1616,12 @@ function Config(props) {
                 'update_chatbot',
                 update_params,
                 response => {
-                    console.log('succeed')
+                    setSnackBarOpen(true)
+                    setOK('success')
+                    setSnackBarMessage('Chatbot updated successfully!')
+                    setTimeout(() => {
+                        setSnackBarOpen(false)
+                    }, 7000);
                 },
             );
         } catch (err) {
