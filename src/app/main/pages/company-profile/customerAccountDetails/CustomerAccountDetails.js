@@ -14,6 +14,7 @@ import AutoReplyTable from './SideNavigationPages/autoReply/autoReplyTable'
 import CannedReplies from './SideNavigationPages/CannedReplies/Index'
 import Dashboard from './SideNavigationPages/Intelligence/DashboardApp'
 import Config from './SideNavigationPages/configration/config'
+import CustomApi from './SideNavigationPages/CustomApi/customApi'
 const useStyles = makeStyles((theme) => ({
     addButton: {
         position: 'fixed',
@@ -82,6 +83,7 @@ function CustomerDetails(props) {
                                     : tab === 'Agents' ? <AgentTable data={companyDetails} />
                                         : tab === 'CannedReplies' ? <CannedReplies data={companyDetails} />
                                             : tab === 'AutoReply' ? <AutoReplyTable data={companyDetails} />
+                                            : tab === 'Custom-Api' ? <CustomApi data={companyDetails} />
                                                 : null
                 }
                 leftSidebarContent={<CustomerDetailSideBar onTabChange={handleTabChange} cannedType={handleCannedMessageType} />}

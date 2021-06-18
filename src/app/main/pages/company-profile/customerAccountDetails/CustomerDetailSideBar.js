@@ -91,7 +91,7 @@ function CustomerDetailSideBar(props) {
 							className={classes.listItem}
 							onClick={() => { onTabChange('Profile') }}
 						>
-							
+
 							<PersonIcon className="list-item-icon text-16" color="action" />
 							<ListItemText className="truncate" primary="Profile" disableTypography />
 						</ListItem>
@@ -103,7 +103,7 @@ function CustomerDetailSideBar(props) {
 							activeClassName="active"
 							className={classes.listItem}
 							onClick={() => { onTabChange('Contact') }}>
-							
+
 							<PhoneAndroidIcon className="list-item-icon text-16" color="action" />
 							<ListItemText
 								primary="Contacts" disableTypography />
@@ -116,7 +116,7 @@ function CustomerDetailSideBar(props) {
 							activeClassName="active"
 							className={classes.listItem}
 							onClick={() => { onTabChange("Agents") }}>
-							
+
 							<GroupIcon className="list-item-icon text-16" color="action" />
 							<ListItemText
 								primary="Users" disableTypography />
@@ -129,7 +129,7 @@ function CustomerDetailSideBar(props) {
 							activeClassName="active"
 							className={classes.listItem}
 							onClick={() => { onTabChange("CannedReplies") }}>
-							
+
 							<SpeakerNotesIcon className="list-item-icon text-16" color="action" />
 							<ListItemText
 								primary="Canned Replies" disableTypography />
@@ -156,12 +156,29 @@ function CustomerDetailSideBar(props) {
 							activeClassName="active"
 							className={classes.listItem}
 							onClick={() => { onTabChange("AutoReply") }}>
-							
+
 							<ReplyAllIcon className="list-item-icon text-16" color="action" />
 							<ListItemText
 								primary="Auto Reply" disableTypography />
 						</ListItem>
-						
+						<ListItem
+							exact
+							button
+							component={NavLinkAdapter}
+							to="/apps/company-details/custom_api"
+							activeClassName="active"
+							className={classes.listItem}
+							onClick={() => { onTabChange("Custom-Api") }}>
+
+							{/* <ReplyAllIcon className="list-item-icon text-16" color="action" /> */}
+							<Icon className="list-item-icon text-16" color="action">
+								add_circle_outline
+
+							</Icon>
+							<ListItemText
+								primary="Custom Api" disableTypography />
+						</ListItem>
+
 					</List>
 				</Paper>
 			</FuseAnimate>

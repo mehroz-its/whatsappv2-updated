@@ -20,6 +20,7 @@ import { Grid, Paper } from '@material-ui/core';
 import SurveyTableSearch from './SurveyTableSearch';
 import SurveyWidgets2 from './Widgets/SurveyWidgets2';
 import SatisfactionChart from './SatisfactionChart';
+import CustomerResponseReport from './CustomerReport/CustomerResponseReport';
 
 const useStyles = makeStyles(theme => ({
 	layoutRoot: {},
@@ -66,6 +67,8 @@ function SurveyReport() {
 	const [satisfactionSurvey, setSatisfactionSurvey] = React.useState([]);
 	const [selectOPen, setSelectOPen] = React.useState(false);
 	const [isLoading, setisLoading] = React.useState(true);
+	const [customerFeedback, setCustomerFeedback] = React.useState([]);
+	const [feedbackValue, setFeedbackValue] = React.useState('*');
 	const [dateRange, setdateRange] = React.useState({
 		startDate: null,
 		endDate: null
@@ -101,14 +104,13 @@ function SurveyReport() {
 		dateWithEndingHour();
 	}, []);
 
-
 	function dateWithStartingHour(newDateeeee) {
 		console.log(newDateeeee, 'startdateeeeeeeeeeeeee');
 		let date = new Date(newDateeeee);
 		console.log(date, 'eeeeeeeeeeeeeeeeeeeeee');
 		let start = moment().month(date.getMonth()).date(date.getDate()).hours(0).minutes(0).seconds(0).milliseconds(0);
 		let format = moment(start).format();
-		let finalFormat = format.substr(0, 19) + '.000Z'
+		let finalFormat = format.substr(0, 19) + '.000Z';
 		console.log(format.substr(0, 19), 'formattttttt');
 		return finalFormat;
 	}
@@ -124,13 +126,13 @@ function SurveyReport() {
 			.seconds(59)
 			.milliseconds(59);
 		let format = moment(end).format();
-		let finalFormat = format.substr(0, 19) + '.999Z'
+		let finalFormat = format.substr(0, 19) + '.999Z';
 		console.log(format.substr(0, 19), 'formattttttt');
 		return finalFormat;
 	}
 
-
-	const getData = loadData => {
+	const getData = (loadData, value) => {
+		console.log(value, 'valsjasydusa');
 		let initialStartDate = new Date();
 		console.log(initialStartDate.getDate(), 'initialStartDateinitialStartDateinitialStartDate');
 		let initialEndDate = new Date();
@@ -151,10 +153,10 @@ function SurveyReport() {
 						Start == ''
 							? dateWithEndingHour(initialEndDate.setDate(initialEndDate.getDate() - 1))
 							: dateWithEndingHour(End),
-					filter: days,
 					columns: '*',
 					sortby: 'ASC',
-					orderby: 'id'
+					orderby: 'id',
+					feedback: value ? value : '*'
 				},
 				null,
 				null,
@@ -162,7 +164,6 @@ function SurveyReport() {
 			);
 		};
 		loadData().then(res => {
-			console.log(res, 'dataaaaaaaaaaaa');
 			let tempArr = [];
 
 			res.data.data.survey.agent_satisfaction.map((res, ind) => {
@@ -278,7 +279,12 @@ function SurveyReport() {
 				// }
 				// console.log(tempArr, 'TEMP_ARRRRRRRRRRRRRR');
 				// setAgentSatisfactionSurvey()
-				console.log(tempArr, 'tempArrtempArrtempArr');
+			});
+
+			let tempArrFeedback = res.data.data.survey.customer_feedback.filter(item => {
+				if (item.response === value) {
+					return item;
+				} else return item;
 			});
 
 			// setAgentSatisfactionSurvey(res?.data?.data?.survey?.agent_satisfaction);
@@ -298,10 +304,11 @@ function SurveyReport() {
 			// 		}
 			// 	});
 			// });
-			console.log(tempArr, 'tFempArrtempArrtempArr');
+
 			setAgentSatisfactionSurvey(tempArr);
 			setSatisfactionSurvey(res.data.data.survey.satisfaction);
 
+			setCustomerFeedback(tempArrFeedback);
 			// let dataagain = Object.values(data);
 			// let finaldata = dataagain[1].report.finalbox[0].conversations;
 			// let finaldata2 = dataagain[1].report.finalbox[0].engagements;
@@ -374,7 +381,7 @@ function SurveyReport() {
 		console.log(Start, End, 'Coverted_Datesss');
 	};
 	const getDataAgain = () => {
-		getData('', Start, End);
+		getData('', feedbackValue);
 	};
 	return (
 		<FusePageSimple
@@ -391,7 +398,7 @@ function SurveyReport() {
 						</FuseAnimate>
 					</div>
 					<div style={{ justifyContent: 'space-around', marginLeft: '20%' }}>
-						<FormControl className={classes.formControl}>
+						{/* <FormControl className={classes.formControl}>
 							<Select
 								labelId="demo-controlled-open-select-label"
 								id="demo-controlled-open-select"
@@ -414,7 +421,7 @@ function SurveyReport() {
 									Year
 								</MenuItem>
 							</Select>
-						</FormControl>
+						</FormControl> */}
 						<DateRangePickerVal SelectedDates={SelectedDates} />
 						<Button
 							onClick={getDataAgain}
@@ -499,7 +506,7 @@ function SurveyReport() {
 
 						<FusePageSimple
 							classes={{
-								contentWrapper: 'p-0 sm:p-12 pb-80 sm:pb-80 h-full',
+								contentWrapper: 'p-0 sm:p-12 pb-80 h-full',
 								content: 'flex flex-col h-full',
 								leftSidebar: 'w-256 border-0',
 								header: 'min-h-72 h-72 sm:h-100 sm:min-h-100',
@@ -511,6 +518,31 @@ function SurveyReport() {
 								<>
 									{/* <SurveyTable data={data2} val={val} /> */}
 									<SurveyTable agentSatisfactionSurvey={agentSatisfactionSurvey} val={val} />
+
+									{/* <CustomerResponseReport /> */}
+								</>
+							}
+						/>
+						<FusePageSimple
+							classes={{
+								contentWrapper: 'p-0 sm:p-12 pb-80 sm:pb-80 h-full',
+								content: 'flex flex-col h-full',
+								leftSidebar: 'w-256 border-0',
+								header: 'min-h-72 h-72 sm:h-100 sm:min-h-100',
+								wrapper: 'min-h-0'
+							}}
+							// header={<CustomerTableSearch SearchVal={searchContact} />}
+							content={
+								<>
+									<Paper className="w-full rounded-8 shadow-none border-1">
+										<CustomerResponseReport
+											customerFeedback={customerFeedback}
+											getData={getData}
+											setFeedbackValue={setFeedbackValue}
+											isLoading={isLoading}
+											setCustomerFeedback={setCustomerFeedback}
+										/>
+									</Paper>
 								</>
 							}
 						/>

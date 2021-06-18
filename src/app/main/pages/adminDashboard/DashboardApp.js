@@ -21,7 +21,8 @@ import WidgetWeather from './widgets/WidgetWeather';
 import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading';
 import AgentWidgets from './widgets/AgentWidgets';
 import { FormatListNumberedRtlOutlined, KeyboardReturn } from '@material-ui/icons';
-import WebSocket from "../../../socket/WebSocket"
+import WebSocket from '../../../socket/WebSocket';
+import DashboardTabs from './DashboardTabs';
 
 am4core.useTheme(am4themes_material);
 am4core.useTheme(am4themes_animated);
@@ -33,8 +34,6 @@ const useStyles = makeStyles({
 		}
 	}
 });
-
-
 
 const rader_chart = list => {
 	// console.log('list ', list);
@@ -60,8 +59,8 @@ const rader_chart = list => {
 
 		chart.hiddenState.properties.radius = am4core.percent(0);
 	}
-	let nodes = document.querySelector("div #chartdivv g").childNodes[1].childNodes[1]
-	nodes.remove()
+	let nodes = document.querySelector('div #chartdivv g').childNodes[1].childNodes[1];
+	nodes.remove();
 };
 // const rader_chart = (list) => {
 // 	am4core.useTheme(am4themes_material);
@@ -129,14 +128,13 @@ function DashboardApp(props) {
 	const [tabValue, setTabValue] = useState(0);
 	const [agents, setAgents] = useState([]);
 	const [chatCounts, setChatCounts] = useState([]);
-	let agentPermissions = JSON.parse(localStorage.getItem('user_acl'))
-	const socket = WebSocket.getSocket()
-
+	let agentPermissions = JSON.parse(localStorage.getItem('user_acl'));
+	const socket = WebSocket.getSocket();
 
 	React.useEffect(() => {
 		// EventEmitter.subscribe('GetAgentsAgain', (event) => getAgents())
 
-		socket.on("agentsOnline", (data) => {
+		socket.on('agentsOnline', data => {
 			CoreHttpHandler.request(
 				'conversations',
 				'agent_list',
@@ -150,19 +148,17 @@ function DashboardApp(props) {
 					console.log(_response, 'ressssssssssssssssssss');
 					setAgents(_response.data.data.agents.data);
 				},
-				error => { }
+				error => {}
 			);
-
-		})
+		});
 		// socket.on("newOnGoingConversationCount", (data) => {
 		// 	setAgentConversationCount(data)
 		// })
 		return () => {
-			socket.removeListener("agentsOnline")
+			socket.removeListener('agentsOnline');
 			// socket.removeListener("newOnGoingConversationCount")
-		}
+		};
 	}, []);
-
 
 	const dataSourceOptions = {
 		params: {
@@ -181,7 +177,6 @@ function DashboardApp(props) {
 		}
 	};
 	React.useEffect(() => {
-
 		CoreHttpHandler.request(
 			'dashboard',
 			'listing',
@@ -217,7 +212,7 @@ function DashboardApp(props) {
 				console.log(_response, 'ressssssssssssssssssss');
 				setAgents(_response.data.data.agents.data);
 			},
-			error => { }
+			error => {}
 		);
 
 		CoreHttpHandler.request(
@@ -233,7 +228,7 @@ function DashboardApp(props) {
 				console.log(_response, 'chatCountssss');
 				setChatCounts(_response.data.data.conversations);
 			},
-			error => { }
+			error => {}
 		);
 
 		return () => {
@@ -264,8 +259,7 @@ function DashboardApp(props) {
 		campaign_report_chart(data);
 	};
 
-
-	const dataSourceFailuree = response => { };
+	const dataSourceFailuree = response => {};
 	const campaign_report_chart = dataa => {
 		let data = dataa;
 		let chart = am4core.create('chartdivcampaign', am4charts.XYChart);
@@ -333,14 +327,14 @@ function DashboardApp(props) {
 		setBox(list);
 	};
 
-	const dataSourceFailure = response => { };
+	const dataSourceFailure = response => {};
 	const messagestateSuccess = response => {
 		const list = response.data.data.chartData;
 		console.log('list : ', list);
 		setRadarList(list);
 		rader_chart(list);
 	};
-	const messagestateFailure = response => { };
+	const messagestateFailure = response => {};
 	function handleChangeTab(event, value) {
 		setTabValue(value);
 		if (value === 0) {
@@ -490,50 +484,53 @@ function DashboardApp(props) {
 													<Grid item md={4} sm={12} xs={12}>
 														<Widget2
 															value={value}
-														// title={value.subtitle}
-														// count={value.value}
-														// bottom_title={`${value.subtitle} ${value.title}`}
+															// title={value.subtitle}
+															// count={value.value}
+															// bottom_title={`${value.subtitle} ${value.title}`}
 														/>
 													</Grid>
 												);
 											})}
 										</Grid>
 										<Grid container spacing={1}>
-											{agentPermissions['FRONT:/all/stats'] == 1 ?
-												agentData.map((value, index) => {
-													console.log('value :', value);
-													return (
-														<Grid item md={4} sm={12} xs={12}>
-															<AgentWidgets
-																agents={value.totalAgent}
-																title={value.title}
-															// bottom_title={`${value.subtitle} ${value.title}`}
-															/>
-														</Grid>
-													);
-												}) : null
-											}
+											{agentPermissions['FRONT:/all/stats'] == 1
+												? agentData.map((value, index) => {
+														console.log('value :', value);
+														return (
+															<Grid item md={4} sm={12} xs={12}>
+																<AgentWidgets
+																	agents={value.totalAgent}
+																	title={value.title}
+																	// bottom_title={`${value.subtitle} ${value.title}`}
+																/>
+															</Grid>
+														);
+												  })
+												: null}
 										</Grid>
 										<Grid container spacing={1}>
-											{agentPermissions['FRONT:/all/stats'] == 1 ? chatsData.map((value, index) => {
-												return (
-													<Grid item md={4} sm={12} xs={12}>
-														<AgentWidgets
-															agents={value.chats}
-															title={value.title}
-														// bottom_title={`${value.subtitle} ${value.title}`}
-														/>
-													</Grid>
-												);
-											})
-												: null
-											}
+											{agentPermissions['FRONT:/all/stats'] == 1
+												? chatsData.map((value, index) => {
+														return (
+															<Grid item md={4} sm={12} xs={12}>
+																<AgentWidgets
+																	agents={value.chats}
+																	title={value.title}
+																	// bottom_title={`${value.subtitle} ${value.title}`}
+																/>
+															</Grid>
+														);
+												  })
+												: null}
 										</Grid>
 									</Grid>
 									<Grid item md={6} sm={12} xs={12}>
 										<Paper className="w-full rounded-8 shadow-none border-1 pt-10 pb-10">
 											<div id="chartdivv" style={{ width: '100%', height: '221px' }}></div>
 										</Paper>
+									</Grid>
+									<Grid item xs={12}>
+										<DashboardTabs />
 									</Grid>
 								</Grid>
 							</FuseAnimateGroup>
