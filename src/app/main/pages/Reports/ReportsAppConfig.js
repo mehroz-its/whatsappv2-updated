@@ -24,7 +24,7 @@ const ReportsAppConfig = {
 			component: React.lazy(() => import('./surveyReport/SurveyReport'))
 		},
 		{
-			path: '/report/chatHourly',
+			path: '/report/chat-hourly',
 			component: React.lazy(() => import('./ChatHourly/ChatHourly'))
 		}
 	]

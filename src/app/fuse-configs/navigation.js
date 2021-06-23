@@ -175,7 +175,7 @@ module.exports = [
 						title: 'Chat Hourly',
 						translate: 'Chat Hourly',
 						type: 'item',
-						url: '/apps/chatHourly',
+						url: '/apps/chat-hourly',
 						exact: true
 					}
 				]
