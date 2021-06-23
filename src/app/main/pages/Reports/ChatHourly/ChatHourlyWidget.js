@@ -12,9 +12,9 @@ function AgentWidget({ title, agents, selectStartingTime, selectEndingTime, hour
 		let start = date.getHours();
 		let end = date.getHours() + 1;
 		if (end >= 12) {
-			return `${start-12} - ${end-12} PM`;
+			return `${start - 12} - ${end - 12} PM`;
 		} else {
-			return `${start-12} - ${end-12} AM`;
+			return `${start - 12} - ${end - 12} AM`;
 		}
 	}
 	function initialDate(newDate) {
@@ -51,11 +51,19 @@ function AgentWidget({ title, agents, selectStartingTime, selectEndingTime, hour
 				<div className="flex items-center justify-center h-40 border-t-1" style={{ marginTop: 20 }}>
 					<Typography className="px-10" color="textSecondary">
 						{hourSelected ? (
-							<b
-								style={{ fontSize: 10, color: 'black' }}
-							>{`${title}: ${selectStartingTime-12} - ${selectEndingTime-12} ${
-								selectEndingTime >= 12 ? 'PM' : 'AM'
-							}`}</b>
+							<>
+								{selectStartingTime > 12 ? (
+									<b style={{ fontSize: 10, color: 'black' }}>{`${title}: ${
+										selectStartingTime - 12
+									} - ${selectEndingTime - 12} ${selectEndingTime >= 12 ? 'PM' : 'AM'}`}</b>
+								) : (
+									<b
+										style={{ fontSize: 10, color: 'black' }}
+									>{`${title}: ${selectStartingTime} - ${selectEndingTime} ${
+										selectEndingTime >= 12 ? 'PM' : 'AM'
+									}`}</b>
+								)}
+							</>
 						) : (
 							<b style={{ fontSize: 10, color: 'black' }}>
 								{`${title}: `}
