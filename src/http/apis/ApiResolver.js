@@ -59,7 +59,8 @@ class ApiResolver {
 			chatsCount: counts.apis(),
 			agentHandlingTime: agentHandlingTime.apis(),
 			historyNumbers: historyNumbers.apis(),
-			clientInfo: clientInfo.apis()
+			clientInfo: clientInfo.apis(),
+			convoHourly: DashboardApis.apis()
 		};
 	}
 

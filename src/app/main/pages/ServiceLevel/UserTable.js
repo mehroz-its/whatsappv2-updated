@@ -131,7 +131,7 @@ function UserTable(props) {
 		return (
 			<div className="flex flex-col">
 				<FuseScrollbars className="flex-grow overflow-x-auto">
-					<Table className="min-w-l" aria-labelledby="tableTitle">
+					<Table className="min-w-lg" aria-labelledby="tableTitle">
 						<UserTableHead
 							numSelected={selected.length}
 							order={order}
@@ -173,7 +173,7 @@ function UserTable(props) {
 											component="th"
 											scope="row"
 											align="center"
-											style={{ fontSize: '12px', padding: '10px' }}
+											style={{ fontSize: '11px', padding: '10px' }}
 										>
 											{n.user_id}
 										</TableCell>
@@ -181,7 +181,7 @@ function UserTable(props) {
 											component="th"
 											scope="row"
 											align="center"
-											style={{ fontSize: '12px', padding: '10px' }}
+											style={{ fontSize: '11px', padding: '10px' }}
 										>
 											{n.username}
 										</TableCell>
@@ -189,7 +189,7 @@ function UserTable(props) {
 											component="th"
 											scope="row"
 											align="center"
-											style={{ fontSize: '12px', padding: '10px' }}
+											style={{ fontSize: '11px', padding: '10px' }}
 										>
 											{n.chat_in_20_seconds}
 										</TableCell>
@@ -197,7 +197,7 @@ function UserTable(props) {
 											component="th"
 											scope="row"
 											align="center"
-											style={{ fontSize: '12px', padding: '10px' }}
+											style={{ fontSize: '11px', padding: '10px' }}
 										>
 											{/* {`${((n.chat_in_20_seconds / n.total_chats) * 100).toFixed()} %`} */}
 											{n.chat_in_20_seconds_in_percentage}
@@ -206,11 +206,11 @@ function UserTable(props) {
 											component="th"
 											scope="row"
 											align="center"
-											style={{ fontSize: '12px', padding: '10px' }}
+											style={{ fontSize: '11px', padding: '10px' }}
 										>
 											{n.total_chats}
 										</TableCell>
-										{/* <TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
+										{/* <TableCell component="th" scope="row" align="center" style={{ fontSize: '11px', padding: '10px' }}>
 												{n.email}
 											</TableCell>
 											<TableCell component="th" scope="row" align="center" style={{ fontSize: '12px', padding: '10px' }}>
@@ -239,7 +239,7 @@ function UserTable(props) {
 				</FuseScrollbars>
 				<MuiThemeProvider theme={PaginationStyle}>
 					<TablePagination
-						style={{ fontSize: '12px' }}
+						style={{ fontSize: '11px', background: '#fff' }}
 						classes={{
 							root: 'overflow-hidden',
 							spacer: 'w-0 max-w-0',

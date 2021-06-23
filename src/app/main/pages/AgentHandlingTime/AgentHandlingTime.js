@@ -378,8 +378,8 @@ function ChatApp() {
 						<Grid container spacing={3} style={{ paddingLeft: 12, paddingRight: 12 }}>
 							<Grid item md={8} sm={12} xs={12}>
 								<Paper
-									className="w-full rounded-8 shadow-none border-1 flex"
-									style={{ display: 'flex', flexDirection: 'column', height: '285px' }}
+									className="w-full rounded-8 shadow-none border-1"
+									style={{ display: 'flex', flexDirection: 'column' }}
 								>
 									{/* <div style={{display:'flex',flexDirection:'roe'}}>
 
