@@ -13,7 +13,8 @@ const ReportsAppConfig = {
 		},
 		{
 			path: '/report/agent-report',
-			component: React.lazy(() => import('./agent/AgentApp'))
+			// component: React.lazy(() => import('./agent/AgentApp'))
+			component: React.lazy(() => import('./ChatHourly/ChatHourly'))
 		},
 		{
 			path: '/report/compaigns',
@@ -25,7 +26,7 @@ const ReportsAppConfig = {
 		},
 		{
 			path: '/report/chat-hourly',
-			component: React.lazy(() => import('./ChatHourly/ChatHourly'))
+			// component: React.lazy(() => import('./ChatHourly/ChatHourly'))
 		}
 	]
 };

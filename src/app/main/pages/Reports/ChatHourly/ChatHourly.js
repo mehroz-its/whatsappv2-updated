@@ -225,7 +225,7 @@ function ChatHourly() {
 							format="YYYY-MM-DD"
 							margin="normal"
 							id="date-picker-inline"
-							label="Date Picker"
+							label="Select Date"
 							value={selectedDate}
 							style={{ marginRight: '10px' }}
 							onChange={handleDateChange}
@@ -248,7 +248,7 @@ function ChatHourly() {
 					<KeyboardTimePicker
 						margin="normal"
 						id="time-picker"
-						label="Time picker"
+						label="Select Time"
 						value={selectedTime}
 						onChange={handleTimeChange}
 						KeyboardButtonProps={{
