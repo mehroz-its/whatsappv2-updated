@@ -12,6 +12,7 @@ import moment from 'moment';
 import ReportIcon from '@material-ui/icons/Report';
 import ChatHourlyWidget from './ChatHourlyWidget';
 import { Icon } from '@material-ui/core';
+import Card from 'react-animated-3d-card';
 
 const useStyles = makeStyles(theme => ({
 	layoutRoot: {},
@@ -214,7 +215,7 @@ function ChatHourly() {
 						</FuseAnimate>
 						<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 							<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-								<span style={{ fontSize: '15px' }}>Chat Hourly Logs</span>
+								<span style={{ fontSize: '15px' }}>Hourly Chat Logs</span>
 							</Typography>
 						</FuseAnimate>
 					</div>
@@ -346,23 +347,31 @@ function ChatHourly() {
 			}
 			content={
 				<div className="p-12">
-					<Grid container>
+					<Grid container justify="center" style={{ margin: '100px 0' }}>
 						{isLoading ? (
 							<FuseLoading />
 						) : (
 							<Grid item xs={12} sm={3}>
-								{ChatHourly.map(item => {
-									return (
-										<ChatHourlyWidget
-											agents={item.count}
-											title="Chat Hourly"
-											hourSelected={hourSelected}
-											selectStartingTime={selectStartingTime}
-											selectEndingTime={selectEndingTime}
-											SelectedDateFormat={SelectedDateFormat}
-										/>
-									);
-								})}
+								<Card
+									style={{
+										width: '350px',
+										height: '200px'
+									}}
+									onClick={() => console.log('Card clicked')}
+								>
+									{ChatHourly.map(item => {
+										return (
+											<ChatHourlyWidget
+												agents={item.count}
+												title="Hourly Chat"
+												hourSelected={hourSelected}
+												selectStartingTime={selectStartingTime}
+												selectEndingTime={selectEndingTime}
+												SelectedDateFormat={SelectedDateFormat}
+											/>
+										);
+									})}
+								</Card>
 							</Grid>
 						)}
 					</Grid>

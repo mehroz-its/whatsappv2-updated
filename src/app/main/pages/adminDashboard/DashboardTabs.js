@@ -43,6 +43,7 @@ const DashboardTabs = props => {
 	const [snackbarmessage, setSnackBarMessage] = React.useState('');
 	const [snackbaropen, setSnackBarOpen] = React.useState(false);
 	const [value, setValue] = React.useState('1');
+	let agentPermissions = JSON.parse(localStorage.getItem('user_acl'));
 
 	const handleChange = (event, newValue) => {
 		setValue(newValue);
@@ -220,43 +221,47 @@ const DashboardTabs = props => {
 			{/* <TabPanel value="1"></TabPanel>
 			<TabPanel value="2"></TabPanel>
 			<TabPanel value="3"></TabPanel> */}
-			<div style={{ marginBottom: 20, background: '#fff', borderRadius: '12.8px 12.8px' }}>
-				<div style={{ textAlign: 'center', background: '#aa0027', borderRadius: '12.8px 12.8px 0 0' }}>
-					<Typography variant="h6" style={{ color: '#fff', fontSize: '11px', lineHeight: 2.5 }}>
-						Service Levels
-					</Typography>
+			{agentPermissions['FRONT:/all/stats'] == 1 ? (
+				<div style={{ marginBottom: 20, background: '#fff', borderRadius: '12.8px 12.8px' }}>
+					<div style={{ textAlign: 'center', background: '#aa0027', borderRadius: '12.8px 12.8px 0 0' }}>
+						<Typography variant="h6" style={{ color: '#fff', fontSize: '11px', lineHeight: 2.5 }}>
+							Service Levels
+						</Typography>
+					</div>
+					<UserTable
+						totalItems={totalItems}
+						setPage={setPage}
+						setLimit={setLimit}
+						rowsPerPage={currentParams.limit}
+						currentPage={currentParams.page}
+						isLoading={isLoading}
+						ValueForSearch={searchText}
+						dataa={data2}
+						serviceStyling="serviceStyling"
+					/>
 				</div>
-				<UserTable
-					totalItems={totalItems}
-					setPage={setPage}
-					setLimit={setLimit}
-					rowsPerPage={currentParams.limit}
-					currentPage={currentParams.page}
-					isLoading={isLoading}
-					ValueForSearch={searchText}
-					dataa={data2}
-					serviceStyling="serviceStyling"
-				/>
-			</div>
+			) : null}
 
-			<div style={{ marginBottom: 20, background: '#fff', borderRadius: '12.8px 12.8px' }}>
-				<div style={{ textAlign: 'center', background: '#aa0027', borderRadius: '12.8px 12.8px 0 0' }}>
-					<Typography variant="h6" style={{ color: '#fff', fontSize: '11px', lineHeight: 2.5 }}>
-						Average Handling Time
-					</Typography>
+			{agentPermissions['FRONT:/all/stats'] == 1 ? (
+				<div style={{ marginBottom: 20, background: '#fff', borderRadius: '12.8px 12.8px' }}>
+					<div style={{ textAlign: 'center', background: '#aa0027', borderRadius: '12.8px 12.8px 0 0' }}>
+						<Typography variant="h6" style={{ color: '#fff', fontSize: '11px', lineHeight: 2.5 }}>
+							Average Handling Time
+						</Typography>
+					</div>
+					<UserTableAHT
+						totalItems={totalItems}
+						setPage={setPage}
+						setLimit={setLimit}
+						rowsPerPage={currentParams.limit}
+						currentPage={currentParams.page}
+						isLoading={isLoading}
+						ValueForSearch={searchText}
+						dataa={dataAht}
+						ahtStyling="aht"
+					/>
 				</div>
-				<UserTableAHT
-					totalItems={totalItems}
-					setPage={setPage}
-					setLimit={setLimit}
-					rowsPerPage={currentParams.limit}
-					currentPage={currentParams.page}
-					isLoading={isLoading}
-					ValueForSearch={searchText}
-					dataa={dataAht}
-					ahtStyling="aht"
-				/>
-			</div>
+			) : null}
 
 			{/* </TabContext> */}
 			<Snackbar

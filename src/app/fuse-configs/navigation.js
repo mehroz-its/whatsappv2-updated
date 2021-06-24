@@ -171,9 +171,9 @@ module.exports = [
 						exact: true
 					},
 					{
-						id: 'Chat Hourly',
-						title: 'Chat Hourly',
-						translate: 'Chat Hourly',
+						id: 'Hourly Chat Logs',
+						title: 'Hourly Chat Logs',
+						translate: 'Hourly Chat Logs',
 						type: 'item',
 						url: '/report/chat-hourly',
 						exact: true

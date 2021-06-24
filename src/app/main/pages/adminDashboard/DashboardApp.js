@@ -21,7 +21,7 @@ import ChatHourlyWidget from './widgets/ChatHourlyWidget';
 import WidgetWeather from './widgets/WidgetWeather';
 import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading';
 import AgentWidgets from './widgets/AgentWidgets';
-import { FormatListNumberedRtlOutlined, KeyboardReturn } from '@material-ui/icons';
+import { FormatListNumberedRtlOutlined, KeyboardReturn, SignalCellularNullRounded } from '@material-ui/icons';
 // import CustomerFeedbackTable from '../Reports/surveyReport/SurveyTable';
 import CustomerFeedbackTable from '../Reports/surveyReport/SurveyTable';
 import WebSocket from '../../../socket/WebSocket';
@@ -733,7 +733,6 @@ function DashboardApp(props) {
 									<Grid item md={6} sm={12} xs={12}>
 										<Grid container spacing={1}>
 											{box.map((value, index) => {
-												console.log('value :', value);
 												return (
 													<Grid item md={4} sm={12} xs={12}>
 														<Widget2
@@ -779,71 +778,83 @@ function DashboardApp(props) {
 										</Grid>
 										<Grid container spacing={1}>
 											<Grid item md={4} sm={12} xs={12}>
-												{chatHourly.map(item => {
-													return (
-														<ChatHourlyWidget
-															// agents={value.chats}
-															agents={item.count}
-															title="Chat Hourly"
-															bottom_title="askjdahdkj"
-														/>
-													);
-												})}
+												{agentPermissions['FRONT:/all/stats'] == 1
+													? chatHourly.map(item => {
+															return (
+																<ChatHourlyWidget
+																	// agents={value.chats}
+																	agents={item.count}
+																	title="Chat Hourly"
+																	bottom_title="askjdahdkj"
+																/>
+															);
+													  })
+													: null}
 											</Grid>
 											<Grid item md={4} sm={12} xs={12}>
-												<AgentWidgets
-													agents={totalChatIn20sec}
-													title="Total Chats in 20 seconds"
-													// bottom_title={`${value.subtitle} ${value.title}`}
-												/>
+												{agentPermissions['FRONT:/all/stats'] == 1 ? (
+													<AgentWidgets
+														agents={totalChatIn20sec}
+														title="Total Chats in 20 seconds"
+														// bottom_title={`${value.subtitle} ${value.title}`}
+													/>
+												) : null}
 											</Grid>
 											<Grid item md={4} sm={12} xs={12}>
-												<AgentWidgets
-													agents={totalAgentChats}
-													title="Total Chats"
-													// bottom_title={`${value.subtitle} ${value.title}`}
-												/>
+												{agentPermissions['FRONT:/all/stats'] == 1 ? (
+													<AgentWidgets
+														agents={totalAgentChats}
+														title="Total Chats"
+														// bottom_title={`${value.subtitle} ${value.title}`}
+													/>
+												) : null}
 											</Grid>
 										</Grid>
-										<Grid container>
-											<Grid item xs={12}>
-												<div
-													style={{
-														marginBottom: 20,
-														background: '#fff',
-														borderRadius: '12.8px 12.8px'
-													}}
-												>
+										{agentPermissions['FRONT:/all/stats'] == 1 ? (
+											<Grid container>
+												<Grid item xs={12}>
 													<div
 														style={{
-															textAlign: 'center',
-															background: '#aa0027',
-															borderRadius: '12.8px 12.8px 0 0',
-															marginTop: 20
+															marginBottom: 20,
+															background: '#fff',
+															borderRadius: '12.8px 12.8px'
 														}}
 													>
-														<Typography
-															variant="h6"
-															style={{ color: '#fff', fontSize: '11px', lineHeight: 2.5 }}
+														<div
+															style={{
+																textAlign: 'center',
+																background: '#aa0027',
+																borderRadius: '12.8px 12.8px 0 0',
+																marginTop: 20
+															}}
 														>
-															Customer Feedback
-														</Typography>
+															<Typography
+																variant="h6"
+																style={{
+																	color: '#fff',
+																	fontSize: '11px',
+																	lineHeight: 2.5
+																}}
+															>
+																Customer Feedback
+															</Typography>
+														</div>
+														<CustomerFeedbackTable
+															totalItems={totalItems}
+															setPage={setPage}
+															setLimit={setLimit}
+															rowsPerPage={currentParams.limit}
+															currentPage={currentParams.page}
+															isLoading={isLoading}
+															ValueForSearch={searchText}
+															agentSatisfactionSurvey={agentSatisfactionSurvey}
+															val={val}
+															customerStyling="customerStyling"
+														/>
 													</div>
-													<CustomerFeedbackTable
-														totalItems={totalItems}
-														setPage={setPage}
-														setLimit={setLimit}
-														rowsPerPage={currentParams.limit}
-														currentPage={currentParams.page}
-														isLoading={isLoading}
-														ValueForSearch={searchText}
-														agentSatisfactionSurvey={agentSatisfactionSurvey}
-														val={val}
-														customerStyling="customerStyling"
-													/>
-												</div>
+												</Grid>
 											</Grid>
-										</Grid>
+										) : null}
 									</Grid>
 									<Grid item md={6} sm={12} xs={12}>
 										<Paper className="w-full rounded-8 shadow-none border-1 pt-10 pb-10">

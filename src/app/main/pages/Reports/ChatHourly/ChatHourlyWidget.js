@@ -1,5 +1,5 @@
 import Paper from '@material-ui/core/Paper';
-import { Typography, ListItemAvatar, Avatar } from '@material-ui/core/';
+import { Typography, ListItemAvatar, Avatar, Grid, Divider } from '@material-ui/core/';
 import React from 'react';
 import moment from 'moment';
 
@@ -33,54 +33,92 @@ function AgentWidget({ title, agents, selectStartingTime, selectEndingTime, hour
 
 	return (
 		<>
-			<Paper className="w-full rounded-8 shadow-none border-1">
-				<div className="text-center pt-24 ">
-					<ListItemAvatar>
-						<Avatar
-							style={{
-								margin: '0 auto',
-								background: '#aa0027'
-							}}
-						>
-							<Typography className="px-12 leading-none text-white" style={{ fontSize: '14px' }}>
-								{agents}
-							</Typography>
-						</Avatar>
-					</ListItemAvatar>
+			<Paper className="w-full rounded-8 shadow-none">
+				<div
+					style={{
+						height: '200px',
+						display: 'flex',
+						justifyContent: 'space-around',
+						alignItems: 'center',
+						width: '100%',
+						background:
+							'url(https://upload.its.com.pk/v1/fetch/file/263b0c91-0626-48b8-b3e6-1c1f70b126b6.png)',
+						backgroundPosition: 'center',
+						backgroundSize: 'cover'
+					}}
+				>
+					<div
+						className="pt-24"
+						style={{
+							width: '100%'
+							// height: '250px'
+						}}
+					>
+						{/* <img
+						src="https://upload.its.com.pk/1574e1f1-1950-4ff5-9db7-1b5633b88f37.png"
+						width="100%"
+						height="100%"
+					/> */}
+						<Grid container alignItems="center">
+							<Grid item xs={4}>
+								<ListItemAvatar>
+									<Avatar
+										style={{
+											margin: '0 auto 0 20px',
+											background: '#aa002782',
+											width: '70px',
+											height: '70px'
+										}}
+									>
+										<Typography
+											className="px-12 leading-none text-white"
+											style={{ fontSize: '22px' }}
+										>
+											{agents}
+										</Typography>
+									</Avatar>
+								</ListItemAvatar>
+							</Grid>
+							<Grid item xs={8}>
+								<Typography className="px-10" color="textSecondary">
+									{hourSelected ? (
+										<>
+											{selectStartingTime > 12 ? (
+												<b style={{ fontSize: 15, color: '#fff' }}>{`${title}: ${
+													selectStartingTime - 12
+												} - ${selectEndingTime - 12} ${
+													selectEndingTime >= 12 ? 'PM' : 'AM'
+												}`}</b>
+											) : (
+												<b
+													style={{ fontSize: 15, color: '#fff' }}
+												>{`${title}: ${selectStartingTime} - ${selectEndingTime} ${
+													selectEndingTime >= 12 ? 'PM' : 'AM'
+												}`}</b>
+											)}
+										</>
+									) : (
+										<b style={{ fontSize: 15, color: '#fff' }}>
+											{`${title}: `}
+											{dateWithStartingHour(new Date())}
+										</b>
+									)}
+								</Typography>
+								<Divider style={{ background: '#fff', height: '2px', margin: '3px 0', width: '75%' }} />
+								<div style={{ textAlign: 'center', marginRight: 50 }}>
+									<Typography className="px-10" color="textSecondary">
+										{hourSelected ? (
+											<b style={{ fontSize: 13, color: '#fff' }}>{SelectedDateFormat()}</b>
+										) : (
+											<b style={{ fontSize: 13, color: '#fff' }}>{initialDate(new Date())}</b>
+										)}
+									</Typography>
+								</div>
+							</Grid>
+						</Grid>
+					</div>
 				</div>
-				<div className="flex items-center justify-center h-40 border-t-1" style={{ marginTop: 20 }}>
-					<Typography className="px-10" color="textSecondary">
-						{hourSelected ? (
-							<>
-								{selectStartingTime > 12 ? (
-									<b style={{ fontSize: 10, color: 'black' }}>{`${title}: ${
-										selectStartingTime - 12
-									} - ${selectEndingTime - 12} ${selectEndingTime >= 12 ? 'PM' : 'AM'}`}</b>
-								) : (
-									<b
-										style={{ fontSize: 10, color: 'black' }}
-									>{`${title}: ${selectStartingTime} - ${selectEndingTime} ${
-										selectEndingTime >= 12 ? 'PM' : 'AM'
-									}`}</b>
-								)}
-							</>
-						) : (
-							<b style={{ fontSize: 10, color: 'black' }}>
-								{`${title}: `}
-								{dateWithStartingHour(new Date())}
-							</b>
-						)}
-					</Typography>
-				</div>
-				<div style={{ textAlign: 'center' }} className="border-t-1">
-					<Typography className="px-10" color="textSecondary" style={{ margin: '10px 0' }}>
-						{hourSelected ? (
-							<b style={{ fontSize: 10 }}>{SelectedDateFormat()}</b>
-						) : (
-							<b style={{ fontSize: 10 }}>{initialDate(new Date())}</b>
-						)}
-					</Typography>
-				</div>
+				{/* <div className="flex items-center justify-center h-40 border-t-1" style={{ marginTop: 20 }}></div> */}
 			</Paper>
 		</>
 	);
