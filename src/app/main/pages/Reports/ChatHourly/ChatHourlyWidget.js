@@ -14,7 +14,7 @@ function AgentWidget({ title, agents, selectStartingTime, selectEndingTime, hour
 		if (end >= 12) {
 			return `${start - 12} - ${end - 12} PM`;
 		} else {
-			return `${start - 12} - ${end - 12} AM`;
+			return `${start} - ${end} AM`;
 		}
 	}
 	function initialDate(newDate) {

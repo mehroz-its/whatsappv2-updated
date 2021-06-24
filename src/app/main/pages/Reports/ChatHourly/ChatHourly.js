@@ -7,9 +7,8 @@ import FuseAnimate from '@fuse/core/FuseAnimate';
 import FuseLoading from '../../../../../@fuse/core/FuseLoading/FuseLoading';
 import { KeyboardDatePicker, KeyboardTimePicker } from '@material-ui/pickers';
 import { CSVLink, CSVDownload } from 'react-csv';
-import Alert from '@material-ui/lab/Alert';
+import Slide from '@material-ui/core/Slide';
 import moment from 'moment';
-import ReportIcon from '@material-ui/icons/Report';
 import ChatHourlyWidget from './ChatHourlyWidget';
 import { Icon } from '@material-ui/core';
 import Card from 'react-animated-3d-card';
@@ -38,23 +37,7 @@ function ChatHourly() {
 	const [selectEndingTime, setSelectEndingTIme] = useState('');
 	const [hourSelected, setHourSelected] = useState(false);
 	const [selectedTime, setSelectedTime] = useState(new Date());
-
-	const handleChangeStartingTime = event => {
-		setSelectStartingTIme(Number(event.target.value) || '');
-		setSelectEndingTIme(Number(event.target.value) + 1 || '');
-	};
-
-	// const handleChangeEndingTime = event => {
-	// 	setSelectEndingTIme(Number(event.target.value) || '');
-	// };
-
-	const handleClickOpen = () => {
-		setOpen(true);
-	};
-
-	const handleClose = () => {
-		setOpen(false);
-	};
+	const [checked, setChecked] = useState(true);
 
 	const handleDateChange = date => {
 		setSelectedDate(date._d);
@@ -194,6 +177,10 @@ function ChatHourly() {
 	};
 
 	const getDataAgain = () => {
+		setChecked(false);
+		setTimeout(() => {
+			setChecked(true);
+		}, 1000);
 		setisLoading(true);
 		getData();
 	};
@@ -346,35 +333,37 @@ function ChatHourly() {
 				</div>
 			}
 			content={
-				<div className="p-12">
-					<Grid container justify="center" style={{ margin: '100px 0' }}>
-						{isLoading ? (
-							<FuseLoading />
-						) : (
-							<Grid item xs={12} sm={3}>
-								<Card
-									style={{
-										width: '350px',
-										height: '200px'
-									}}
-									onClick={() => console.log('Card clicked')}
-								>
-									{ChatHourly.map(item => {
-										return (
-											<ChatHourlyWidget
-												agents={item.count}
-												title="Hourly Chat"
-												hourSelected={hourSelected}
-												selectStartingTime={selectStartingTime}
-												selectEndingTime={selectEndingTime}
-												SelectedDateFormat={SelectedDateFormat}
-											/>
-										);
-									})}
-								</Card>
-							</Grid>
-						)}
-					</Grid>
+				<div className="p-12" style={{ overflow: 'hidden' }}>
+					<Slide direction="up" in={checked} timeout={1000} mountOnEnter unmountOnExit>
+						<Grid container justify="center" style={{ margin: '100px 0' }}>
+							{isLoading ? (
+								<FuseLoading />
+							) : (
+								<Grid item xs={12} sm={3}>
+									<Card
+										style={{
+											width: '350px',
+											height: '200px'
+										}}
+										onClick={() => console.log('Card clicked')}
+									>
+										{ChatHourly.map(item => {
+											return (
+												<ChatHourlyWidget
+													agents={item.count}
+													title="Hourly Chat"
+													hourSelected={hourSelected}
+													selectStartingTime={selectStartingTime}
+													selectEndingTime={selectEndingTime}
+													SelectedDateFormat={SelectedDateFormat}
+												/>
+											);
+										})}
+									</Card>
+								</Grid>
+							)}
+						</Grid>
+					</Slide>
 				</div>
 			}
 		/>
