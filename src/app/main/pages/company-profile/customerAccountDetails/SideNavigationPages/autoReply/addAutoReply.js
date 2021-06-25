@@ -102,8 +102,9 @@ function AddAutoReply(props) {
     const [chatBotName, setChatBotName] = React.useState("");
     const [invalidResponse, setInvalidMessage] = React.useState("");
     const [status, setStatus] = React.useState(false);
-    const [startTime, setStartTime] = React.useState(new Date().getTime());
-    const [endTime, setEndTime] = React.useState(new Date().getTime());
+    const [surveyTimeToggler, setSurveyTimeToggler] = React.useState(false);
+    const [startTime, setStartTime] = React.useState(null);
+    const [endTime, setEndTime] = React.useState(null);
 
 
     const updateChatBotName = (e) => {
@@ -113,11 +114,17 @@ function AddAutoReply(props) {
     React.useEffect(() => {
 
         if (data) {
-            const { name, body } = data;
-
+            const { name, body, active_time } = data;
+            console.log(active_time, 'active_timeactive_timeactive_time')
             if (name) {
                 setChatBotName(name)
             }
+            if (active_time) {
+                setSurveyTimeToggler(true)
+                setStartTime(active_time.split('-')[0])
+                setEndTime(active_time.split('-')[1])
+            }
+      
 
             if (body) {
                 console.log('body ', body)
@@ -223,6 +230,10 @@ function AddAutoReply(props) {
     const toggleChecked = e => {
         console.log('ToggleChecked e', e.target.checked);
         setStatus(e.target.checked);
+    };
+    const toggleCheckedSurveyTime = e => {
+        console.log('ToggleChecked e', e.target.checked);
+        setSurveyTimeToggler(e.target.checked);
     };
 
     const updateNodeData = (data, path, node, treeDataUpdate) => {
@@ -353,7 +364,9 @@ function AddAutoReply(props) {
         props.closeHandler({})
     }
     function saveHandler() {
-
+        let start = startTime ? startTime.split(":")[0] : null
+        let end = endTime ? endTime.split(":")[0] : null
+        let activeTime = `${start}-${end}`
         let _startMessage = startMessage ? { "id": uuidv4(), "title": "Start Conversation Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [startMessage], "children": [] } : undefined;
         let _endMessage = endMessage ? { "id": uuidv4(), "title": "End Conversation Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [endMessage], "children": [] } : undefined;
         let _surveyMessage = surveyMessage ? { "id": uuidv4(), "title": "Survey Message", "type": "text", "expanded": true, "repeatPreviousMessage": true, "messages": [surveyMessage], "children": [] } : undefined;
@@ -362,7 +375,6 @@ function AddAutoReply(props) {
         }
 
         if (data) {
-
             if (startMessage && data.__startMessageConversationMessage && data.__startMessageConversationMessage.messages && data.__startMessageConversationMessage.messages.length) {
                 _startMessage = data.__startMessageConversationMessage;
                 _startMessage.__startMessageConversationMessage.messages[0] = startMessage
@@ -375,10 +387,11 @@ function AddAutoReply(props) {
                 _surveyMessage = data.__surveyMessage;
                 _surveyMessage.__surveyMessage.messages[0] = surveyMessage
             }
-
-            props.updateHandler({ treeData: treeData[0], name: chatBotName, startMessage: _startMessage, endMessage: _endMessage, surveyMessage: _surveyMessage })
+            let params = { treeData: treeData[0], name: chatBotName, startMessage: _startMessage, endMessage: _endMessage, surveyMessage: _surveyMessage, active_time: startTime ? activeTime : null }
+            props.updateHandler(params)
         } else {
-            props.saveHandler({ treeData: treeData[0], name: chatBotName, startMessage: _startMessage, endMessage: _endMessage, surveyMessage: _surveyMessage })
+            let params = { treeData: treeData[0], name: chatBotName, startMessage: _startMessage, endMessage: _endMessage, surveyMessage: _surveyMessage, active_time: startTime ? activeTime : null }
+            props.saveHandler(params)
         }
     }
 
@@ -441,30 +454,59 @@ function AddAutoReply(props) {
                         align="center"
                         className={"p-20"}
                     >
-                        <FormControlLabel
-                            style={{ marginLeft: '2px' }}
-                            control={
-                                <Switch
-                                    checked={status}
-                                    onChange={toggleChecked}
-                                    name="status"
-                                    color="primary"
-                                    size="small"
+                        <Grid item md={4} sm={12} xs={12}></Grid>
+                        <Grid item md={3} sm={12} xs={12}>
+                            <FormControlLabel
+                                // style={{ marginLeft: '2px' }}
+                                control={
+                                    <Switch
+                                        checked={status}
+                                        onChange={toggleChecked}
+                                        name="status"
+                                        color="primary"
+                                        size="small"
 
-                                />
+                                    />
 
+                                }
+                                label="Survey Question?"
+                            />
+                        </Grid>
+                        <Grid item md={2} sm={12} xs={12}>
+
+                            <FormControlLabel
+                                // style={{ marginLeft: '2px' }}
+                                control={
+                                    <Switch
+                                        checked={surveyTimeToggler}
+                                        onChange={toggleCheckedSurveyTime}
+                                        name="status"
+                                        color="primary"
+                                        size="small"
+
+                                    />
+
+                                }
+                                label="Survey Time"
+                            />
+                        </Grid>
+                        <Grid item md={3} sm={12} xs={12}>
+                            {
+                                surveyTimeToggler ?
+                                    <div className="flex" style={{ marginTop: '-10px' }}>
+                                        <div>
+                                            <p style={{ fontSize: '12px', marginBottom: '5px' }}>Start Time</p>
+                                            <input step="900" type='time' labe="Start Time" value={`${startTime}:00`} onChange={e => setStartTime(e.target.value)} />
+                                        </div>
+                                        <div style={{ marginLeft: '5px' }}>
+                                            <p style={{ fontSize: '12px', marginBottom: '5px' }}>End Time</p>
+                                            <input  type='time' labe="End Time" value={`${endTime}:00`} onChange={e => setEndTime(e.target.value)} />
+                                        </div>
+                                    </div> : null
                             }
-                            label="Survey Question?"
-                        />
-                        <div>
 
-                            <p style={{ fontSize: '12px', marginLeft: '-34px', marginBottom: '5px' }}>Start Time</p>
-                            <input step="900" type='time' labe="Start Time" value={startTime} onChange={e => setStartTime(e.target.value)} />
-                        </div>
-                        <div style={{ marginLeft: '5px' }}>
-                        <p style={{ fontSize: '12px', marginLeft: '-40px', marginBottom: '5px' }}>End Time</p>
-                            <input type='time' labe="End Time"  value={endTime} onChange={e => setEndTime(e.target.value)}/>
-                        </div>
+                        </Grid>
+
                         <Grid container className={"mb-20"}>
                             <Grid item md={3} sm={12} xs={12}>
                                 <div className="flex" >
@@ -482,6 +524,22 @@ function AddAutoReply(props) {
                                     />
                                 </div>
                             </Grid>
+                            {/* <Grid item md={9} sm={12} xs={12}>
+                                {
+                                    surveyTimeToggler ?
+                                        <div className="flex">
+                                            <div>
+                                                <p style={{ fontSize: '12px', marginBottom: '5px' }}>Start Time</p>
+                                                <input step="900" type='time' labe="Start Time" value={startTime} onChange={e => setStartTime(e.target.value)} />
+                                            </div>
+                                            <div style={{ marginLeft: '5px' }}>
+                                                <p style={{ fontSize: '12px', marginBottom: '5px' }}>End Time</p>
+                                                <input type='time' labe="End Time" value={endTime} onChange={e => setEndTime(e.target.value)} />
+                                            </div>
+                                        </div> : null
+                                }
+
+                            </Grid> */}
                         </Grid>
 
                         <Grid container className={"mb-20"}>

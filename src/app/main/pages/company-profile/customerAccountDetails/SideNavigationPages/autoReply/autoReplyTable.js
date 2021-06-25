@@ -231,7 +231,7 @@ function AutoReplyTable(props) {
         setOpen(true);
     };
     const updateChatBot = n => {
-        console.log(n,'nnnn')
+        console.log(n, 'nnnn')
         setOpen(true)
         setChatBotData(n)
     }
@@ -242,8 +242,8 @@ function AutoReplyTable(props) {
             clientId: companyDetails.id,
             name: `${n.name}_copy`,
             startMessage: null,
-            endMessage:null,
-            surveyMessage:null
+            endMessage: null,
+            surveyMessage: null
         };
         if (n.body) {
             if (n.body.__default) {
@@ -356,7 +356,7 @@ function AutoReplyTable(props) {
     const handleChangeRowsPerPage = event => {
         setLimit(Number(event.target.value));
     };
-    const saveHandler = ({ treeData, name, startMessage, endMessage, surveyMessage }) => {
+    const saveHandler = ({ treeData, name, startMessage, endMessage, surveyMessage ,active_time}) => {
         if (companyDetails) {
             let update_params = {
                 treeData,
@@ -364,7 +364,9 @@ function AutoReplyTable(props) {
                 name,
                 startMessage,
                 endMessage,
-                surveyMessage
+                surveyMessage,
+                ...(active_time && { active_time })
+
             };
             CoreHttpHandler.request(
                 'CompanyAgent',
@@ -377,8 +379,9 @@ function AutoReplyTable(props) {
             );
         }
     }
-    const updateHandler = ({ treeData, name, startMessage, endMessage, surveyMessage }) => {
-        console.log('inside update handler-----', surveyMessage, startMessage);
+    const updateHandler = ({ treeData, name, startMessage, endMessage, surveyMessage ,active_time }) => {
+        
+      
         if (companyDetails && chatBotData) {
             let update_params = {
                 treeData,
@@ -387,7 +390,8 @@ function AutoReplyTable(props) {
                 startMessage,
                 endMessage,
                 surveyMessage,
-                id: chatBotData.id
+                id: chatBotData.id,
+                ...(active_time && { active_time })
             }
             CoreHttpHandler.request(
                 'CompanyAgent',
