@@ -469,7 +469,7 @@ function AddAutoReply(props) {
                                     />
 
                                 }
-                                label="Survey Question?"
+                                label="Customer Feedback"
                             />
                         </Grid>
                         <Grid item md={2} sm={12} xs={12}>
@@ -487,7 +487,7 @@ function AddAutoReply(props) {
                                     />
 
                                 }
-                                label="Survey Time"
+                                label="Time Selection"
                             />
                         </Grid>
                         <Grid item md={3} sm={12} xs={12}>
