@@ -230,7 +230,7 @@ function SurveyTable(props) {
 													component="th"
 													scope="row"
 													align="center"
-													style={{ fontSize: '12px', padding: '10px' }}
+													style={{ fontSize: '11px', padding: '10px' }}
 												>
 													{n.user_id ? n.user_id : 0}
 												</TableCell>
@@ -238,7 +238,7 @@ function SurveyTable(props) {
 													component="th"
 													scope="row"
 													align="center"
-													style={{ fontSize: '12px', padding: '10px' }}
+													style={{ fontSize: '11px', padding: '10px' }}
 												>
 													{n.agentName ? n.agentName : 'Agent Name'}
 												</TableCell>
@@ -246,7 +246,7 @@ function SurveyTable(props) {
 													component="th"
 													scope="row"
 													align="center"
-													style={{ fontSize: '12px', padding: '10px' }}
+													style={{ fontSize: '11px', padding: '10px' }}
 												>
 													{n.excellent}
 												</TableCell>
@@ -254,7 +254,7 @@ function SurveyTable(props) {
 													component="th"
 													scope="row"
 													align="center"
-													style={{ fontSize: '12px', padding: '10px' }}
+													style={{ fontSize: '11px', padding: '10px' }}
 												>
 													{n.veryGood}
 												</TableCell>
@@ -262,7 +262,7 @@ function SurveyTable(props) {
 													component="th"
 													scope="row"
 													align="center"
-													style={{ fontSize: '12px', padding: '10px' }}
+													style={{ fontSize: '11px', padding: '10px' }}
 												>
 													{n.good}
 												</TableCell>
@@ -270,7 +270,7 @@ function SurveyTable(props) {
 													component="th"
 													scope="row"
 													align="center"
-													style={{ fontSize: '12px', padding: '10px' }}
+													style={{ fontSize: '11px', padding: '10px' }}
 												>
 													{n.poor}
 												</TableCell>
@@ -278,7 +278,7 @@ function SurveyTable(props) {
 													component="th"
 													scope="row"
 													align="center"
-													style={{ fontSize: '12px', padding: '10px' }}
+													style={{ fontSize: '11px', padding: '10px' }}
 												>
 													{n.veryPoor}
 												</TableCell>
@@ -286,7 +286,7 @@ function SurveyTable(props) {
 													component="th"
 													scope="row"
 													align="center"
-													style={{ fontSize: '12px', padding: '10px' }}
+													style={{ fontSize: '11px', padding: '10px' }}
 												>
 													{n.other}
 												</TableCell>
@@ -294,7 +294,7 @@ function SurveyTable(props) {
 													component="th"
 													scope="row"
 													align="center"
-													style={{ fontSize: '12px', padding: '10px' }}
+													style={{ fontSize: '11px', padding: '10px' }}
 												>
 													{/* {parseInt(n.excellent) +
 													parseInt(n.veryGood) +
@@ -363,7 +363,7 @@ function SurveyTable(props) {
 						</FuseScrollbars>
 						<MuiThemeProvider theme={PaginationStyle}>
 							<TablePagination
-								style={{ fontSize: '12px' }}
+								style={{ fontSize: '11px' }}
 								classes={{
 									root: 'overflow-hidden',
 									spacer: 'w-0 max-w-0',

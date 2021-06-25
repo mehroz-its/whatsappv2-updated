@@ -17,12 +17,16 @@ import Tabs from '@material-ui/core/Tabs';
 import CoreHttpHandler from '../../../../http/services/CoreHttpHandler';
 import Widget2 from './widgets/Widget2';
 import WidgetNow from './widgets/WidgetNow';
+import ChatHourlyWidget from './widgets/ChatHourlyWidget';
 import WidgetWeather from './widgets/WidgetWeather';
 import FuseLoading from '../../../../@fuse/core/FuseLoading/FuseLoading';
 import AgentWidgets from './widgets/AgentWidgets';
-import { FormatListNumberedRtlOutlined, KeyboardReturn } from '@material-ui/icons';
+import { FormatListNumberedRtlOutlined, KeyboardReturn, SignalCellularNullRounded } from '@material-ui/icons';
+// import CustomerFeedbackTable from '../Reports/surveyReport/SurveyTable';
+import CustomerFeedbackTable from '../Reports/surveyReport/SurveyTable';
 import WebSocket from '../../../socket/WebSocket';
 import DashboardTabs from './DashboardTabs';
+import moment from 'moment';
 
 am4core.useTheme(am4themes_material);
 am4core.useTheme(am4themes_animated);
@@ -121,6 +125,10 @@ const newMessageList = [
 	{ category: 'My-Photos', value: '0', full: '100' },
 	{ category: 'My-MYDocuments', value: '0', full: '100' }
 ];
+
+let Start = '';
+let End = '';
+
 function DashboardApp(props) {
 	const classes = useStyles();
 	const [box, setBox] = useState([]);
@@ -128,6 +136,15 @@ function DashboardApp(props) {
 	const [tabValue, setTabValue] = useState(0);
 	const [agents, setAgents] = useState([]);
 	const [chatCounts, setChatCounts] = useState([]);
+	const [chatHourly, setChatHourly] = useState([]);
+	const [isLoading, setisLoading] = React.useState(true);
+	const [val, setVal] = React.useState('');
+	const [totalItems, setTotalItems] = React.useState(0);
+	const [searchText, setSearchText] = React.useState('');
+	const [currentParams, setCurrentParams] = React.useState({ limit: 10, page: 0 });
+	const [totalChatIn20sec, setTotalChatIn20Sec] = React.useState('');
+	const [totalAgentChats, setTotalAgenChats] = React.useState('');
+	const [agentSatisfactionSurvey, setAgentSatisfactionSurvey] = React.useState([]);
 	let agentPermissions = JSON.parse(localStorage.getItem('user_acl'));
 	const socket = WebSocket.getSocket();
 
@@ -231,10 +248,247 @@ function DashboardApp(props) {
 			error => {}
 		);
 
+		CoreHttpHandler.request(
+			'convoHourly',
+			'chatHourly',
+			{
+				// startingTime: '2021-06-12T1:00:00.000Z',
+				startingTime: dateWithStartingHour(new Date()),
+				// endingTime: '2021-06-12T2:00:00.000Z'
+				endingTime: dateWithEndingHour(new Date())
+			},
+			_response => {
+				setChatHourly(_response.data.data.report);
+			},
+			error => {}
+		);
+
+		getDataCustomerReport();
+
 		return () => {
 			am4core.disposeAllCharts();
 		};
 	}, []);
+
+	React.useEffect(() => {
+		dateWithStartingHourService();
+		dateWithEndingHourService();
+	}, []);
+
+	function dateWithStartingHourService(newDateeeee) {
+		console.log(newDateeeee, 'startdateeeeeeeeeeeeee');
+		let date = new Date(newDateeeee);
+		console.log(date, 'eeeeeeeeeeeeeeeeeeeeee');
+		let start = moment().month(date.getMonth()).date(date.getDate()).hours(0).minutes(0).seconds(0).milliseconds(0);
+		let format = moment(start).format();
+		return format.substr(0, 19);
+	}
+	function dateWithEndingHourService(newDateeeee) {
+		console.log(newDateeeee, 'enddateeeeeee');
+		let date = new Date(newDateeeee);
+		console.log(date, 'eeeeeeeeeeeeeeeeeeeeee22222222222');
+		let end = moment()
+			.month(date.getMonth())
+			.date(date.getDate())
+			.hours(23)
+			.minutes(59)
+			.seconds(59)
+			.milliseconds(59);
+		let format = moment(end).format();
+		console.log(format.substr(0, 19), 'formattttttt');
+		return format.substr(0, 19);
+	}
+
+	function dateWithStartingHour(newDateeeee) {
+		let date = new Date(newDateeeee);
+		let start = moment()
+			.month(date.getMonth())
+			.date(date.getDate())
+			.hours(date.getHours())
+			.minutes(0)
+			.seconds(0)
+			.milliseconds(0);
+		let format = moment(start).format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+
+		return `${format.substr(0, 19)}Z`;
+	}
+
+	function dateWithEndingHour(newDateeeee) {
+		let date = new Date(newDateeeee);
+		let end = moment()
+			.month(date.getMonth())
+			.date(date.getDate())
+			.hours(date.getHours() + 1)
+			.minutes(0)
+			.seconds(0)
+			.milliseconds(0);
+		let format = moment(end).format('YYYY-MM-DDTHH:mm:ss.SSSZ');
+
+		return `${format.substr(0, 19)}Z`;
+	}
+
+	function dateWithStartingHourCustomer(newDateeeee) {
+		console.log(newDateeeee, 'startdateeeeeeeeeeeeee');
+		let date = new Date(newDateeeee);
+		console.log(date, 'eeeeeeeeeeeeeeeeeeeeee');
+		let start = moment().month(date.getMonth()).date(date.getDate()).hours(0).minutes(0).seconds(0).milliseconds(0);
+		let format = moment(start).format();
+		let finalFormat = format.substr(0, 19) + '.000Z';
+		console.log(format.substr(0, 19), 'formattttttt');
+		return finalFormat;
+	}
+	function dateWithEndingHourCustomer(newDateeeee) {
+		console.log(newDateeeee, 'enddateeeeeee');
+		let date = new Date(newDateeeee);
+		console.log(date, 'eeeeeeeeeeeeeeeeeeeeee22222222222');
+		let end = moment()
+			.month(date.getMonth())
+			.date(date.getDate())
+			.hours(23)
+			.minutes(59)
+			.seconds(59)
+			.milliseconds(59);
+		let format = moment(end).format();
+		let finalFormat = format.substr(0, 19) + '.999Z';
+		console.log(format.substr(0, 19), 'formattttttt');
+		return finalFormat;
+	}
+
+	const setPage = currentPage => {
+		setCurrentParams({ limit: currentParams.limit, page: currentPage });
+	};
+	const setLimit = pageLimit => {
+		setCurrentParams({ limit: pageLimit, page: 0 });
+	};
+
+	const getDataCustomerReport = loadData => {
+		let initialStartDate = new Date();
+		console.log(initialStartDate.getDate(), 'initialStartDateinitialStartDateinitialStartDate');
+		let initialEndDate = new Date();
+
+		setisLoading(true);
+		loadData = () => {
+			return CoreHttpHandler.request(
+				'surveyReport',
+				'survey',
+				{
+					limit: 100,
+					page: 0,
+					startingDate:
+						Start == ''
+							? dateWithStartingHourCustomer(initialStartDate.setDate(initialStartDate.getDate() - 1))
+							: dateWithStartingHourCustomer(Start),
+					endingDate:
+						Start == ''
+							? dateWithEndingHourCustomer(initialEndDate.setDate(initialEndDate.getDate() - 1))
+							: dateWithEndingHourCustomer(End),
+					columns: '*',
+					sortby: 'ASC',
+					orderby: 'id'
+				},
+				null,
+				null,
+				true
+			);
+		};
+		loadData().then(res => {
+			let tempArr = [];
+
+			res.data.data.survey.agent_satisfaction.map((res, ind) => {
+				let newobj = {
+					agentName: '',
+					user_id: null,
+					excellent: 0,
+					veryGood: 0,
+					good: 0,
+					poor: 0,
+					veryPoor: 0,
+					other: 0,
+					total: 0
+				};
+				let isIncluded = tempArr.findIndex(x => x.user_id == res.user_id);
+
+				if (isIncluded != -1) {
+					tempArr[isIncluded].total = parseInt(tempArr[isIncluded].total) + parseInt(res.count);
+					switch (res.response) {
+						case '1' || 1:
+							tempArr[isIncluded].veryPoor = res.count;
+							// tempArr[isIncluded].total = parseInt(tempArr[isIncluded].total) + parseInt(res.count);
+							break;
+						case '2' || 2:
+							tempArr[isIncluded].poor = res.count;
+							// tempArr[isIncluded].total = parseInt(tempArr[isIncluded].total) + parseInt(res.count);
+							break;
+						case '3' || 3:
+							tempArr[isIncluded].good = res.count;
+							// tempArr[isIncluded].total = parseInt(tempArr[isIncluded].total) + parseInt(res.count);
+							break;
+						case '4' || 4:
+							tempArr[isIncluded].veryGood = res.count;
+							// tempArr[isIncluded].total = parseInt(tempArr[isIncluded].total) + parseInt(res.count);
+							break;
+						case '5' || 5:
+							tempArr[isIncluded].excellent = res.count;
+							// tempArr[isIncluded].total = parseInt(tempArr[isIncluded].total) + parseInt(res.count);
+							break;
+						case 'other':
+							tempArr[isIncluded].other = res.count;
+							// tempArr[isIncluded].total = parseInt(tempArr[isIncluded].total) + parseInt(res.count);
+							break;
+					}
+				} else {
+					newobj.total = parseInt(newobj.total) + parseInt(res.count);
+
+					switch (res.response) {
+						case '1' || 1:
+							newobj.veryPoor = res.count;
+							// newobj.total = parseInt(newobj.total) + parseInt(res.count);
+							break;
+						case '2' || 2:
+							newobj.poor = res.count;
+							// newobj.total = parseInt(newobj.total) + parseInt(res.count);
+							break;
+						case '3' || 3:
+							newobj.good = res.count;
+							// newobj.total = parseInt(newobj.total) + parseInt(res.count);
+							break;
+						case '4' || 4:
+							newobj.veryGood = res.count;
+							// newobj.total = parseInt(newobj.total) + parseInt(res.count);
+							break;
+						case '5' || 5:
+							newobj.excellent = res.count;
+							// newobj.total = parseInt(newobj.total) + parseInt(res.count);
+							break;
+						case 'other':
+							newobj.other = res.count;
+							// newobj.total = parseInt(newobj.total) + parseInt(res.count);
+							break;
+					}
+
+					let { excellent, veryGood, good, poor, veryPoor, other } = newobj;
+
+					let totalCount =
+						parseInt(excellent) +
+						parseInt(veryGood) +
+						parseInt(good) +
+						parseInt(poor) +
+						parseInt(veryPoor) +
+						parseInt(other);
+					tempArr.push({
+						...newobj,
+						user_id: res.user_id,
+						agentName: res.username
+					});
+				}
+			});
+
+			setAgentSatisfactionSurvey(tempArr);
+			// setSatisfactionSurvey(res.data.data.survey.satisfaction);
+
+			setisLoading(false);
+		});
+	};
 
 	const dataSourceSuccesss = response => {
 		const list = response.data.data.report;
@@ -479,7 +733,6 @@ function DashboardApp(props) {
 									<Grid item md={6} sm={12} xs={12}>
 										<Grid container spacing={1}>
 											{box.map((value, index) => {
-												console.log('value :', value);
 												return (
 													<Grid item md={4} sm={12} xs={12}>
 														<Widget2
@@ -523,15 +776,96 @@ function DashboardApp(props) {
 												  })
 												: null}
 										</Grid>
+										<Grid container spacing={1}>
+											<Grid item md={4} sm={12} xs={12}>
+												{agentPermissions['FRONT:/all/stats'] == 1
+													? chatHourly.map(item => {
+															return (
+																<ChatHourlyWidget
+																	// agents={value.chats}
+																	agents={item.count}
+																	title="Chat Hourly"
+																	bottom_title="askjdahdkj"
+																/>
+															);
+													  })
+													: null}
+											</Grid>
+											<Grid item md={4} sm={12} xs={12}>
+												{agentPermissions['FRONT:/all/stats'] == 1 ? (
+													<AgentWidgets
+														agents={totalChatIn20sec}
+														title="Total Chats in 20 seconds"
+														// bottom_title={`${value.subtitle} ${value.title}`}
+													/>
+												) : null}
+											</Grid>
+											<Grid item md={4} sm={12} xs={12}>
+												{agentPermissions['FRONT:/all/stats'] == 1 ? (
+													<AgentWidgets
+														agents={totalAgentChats}
+														title="Total Chats"
+														// bottom_title={`${value.subtitle} ${value.title}`}
+													/>
+												) : null}
+											</Grid>
+										</Grid>
+										{agentPermissions['FRONT:/all/stats'] == 1 ? (
+											<Grid container>
+												<Grid item xs={12}>
+													<div
+														style={{
+															marginBottom: 20,
+															background: '#fff',
+															borderRadius: '12.8px 12.8px'
+														}}
+													>
+														<div
+															style={{
+																textAlign: 'center',
+																background: '#aa0027',
+																borderRadius: '12.8px 12.8px 0 0',
+																marginTop: 20
+															}}
+														>
+															<Typography
+																variant="h6"
+																style={{
+																	color: '#fff',
+																	fontSize: '11px',
+																	lineHeight: 2.5
+																}}
+															>
+																Customer Feedback
+															</Typography>
+														</div>
+														<CustomerFeedbackTable
+															totalItems={totalItems}
+															setPage={setPage}
+															setLimit={setLimit}
+															rowsPerPage={currentParams.limit}
+															currentPage={currentParams.page}
+															isLoading={isLoading}
+															ValueForSearch={searchText}
+															agentSatisfactionSurvey={agentSatisfactionSurvey}
+															val={val}
+															customerStyling="customerStyling"
+														/>
+													</div>
+												</Grid>
+											</Grid>
+										) : null}
 									</Grid>
 									<Grid item md={6} sm={12} xs={12}>
 										<Paper className="w-full rounded-8 shadow-none border-1 pt-10 pb-10">
 											<div id="chartdivv" style={{ width: '100%', height: '221px' }}></div>
 										</Paper>
+										<DashboardTabs
+											setTotalChatIn20Sec={setTotalChatIn20Sec}
+											setTotalAgenChats={setTotalAgenChats}
+										/>
 									</Grid>
-									<Grid item xs={12}>
-										<DashboardTabs />
-									</Grid>
+									{/* <Grid item xs={12}></Grid> */}
 								</Grid>
 							</FuseAnimateGroup>
 						)}

@@ -68,7 +68,7 @@ module.exports = [
 					}
 				]
 			},
-			
+
 			{
 				id: 'Template',
 				title: 'Template',
@@ -170,6 +170,14 @@ module.exports = [
 						url: '/apps/serviceLevel',
 						exact: true
 					},
+					{
+						id: 'Hourly Chat Logs',
+						title: 'Hourly Chat Logs',
+						translate: 'Hourly Chat Logs',
+						type: 'item',
+						url: '/report/chat-hourly',
+						exact: true
+					}
 				]
 			},
 			{

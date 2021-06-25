@@ -54,7 +54,7 @@ const incomingAndOutGoingCount = data => {
 	// Add data
 	let formatedData = [];
 	data.map(val => {
-		console.log(val, "chartvalllllllllll");
+		console.log(val, 'chartvalllllllllll');
 		formatedData.push({ country: val.username, litres: val.chat_in_20_seconds });
 	});
 	chart.data = formatedData;
