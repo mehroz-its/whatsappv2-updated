@@ -387,10 +387,10 @@ function AddAutoReply(props) {
                 _surveyMessage = data.__surveyMessage;
                 _surveyMessage.__surveyMessage.messages[0] = surveyMessage
             }
-            let params = { treeData: treeData[0], name: chatBotName, startMessage: _startMessage, endMessage: _endMessage, surveyMessage: _surveyMessage, active_time: startTime ? activeTime : null }
+            let params = { treeData: treeData[0], name: chatBotName, startMessage: _startMessage, endMessage: _endMessage, surveyMessage: _surveyMessage, active_time: surveyTimeToggler ? activeTime : null }
             props.updateHandler(params)
         } else {
-            let params = { treeData: treeData[0], name: chatBotName, startMessage: _startMessage, endMessage: _endMessage, surveyMessage: _surveyMessage, active_time: startTime ? activeTime : null }
+            let params = { treeData: treeData[0], name: chatBotName, startMessage: _startMessage, endMessage: _endMessage, surveyMessage: _surveyMessage, active_time: surveyTimeToggler ? activeTime : null }
             props.saveHandler(params)
         }
     }

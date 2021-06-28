@@ -45,6 +45,13 @@ const rows = [
 		sort: true
 	},
 	{
+		id: 'activetime',
+		align: 'center',
+		disablePadding: false,
+		label: 'Active Time',
+		sort: true
+	},
+	{
 		id: 'edit',
 		align: 'center',
 		disablePadding: false,

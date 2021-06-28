@@ -357,7 +357,7 @@ function AutoReplyTable(props) {
     const handleChangeRowsPerPage = event => {
         setLimit(Number(event.target.value));
     };
-    const saveHandler = ({ treeData, name, startMessage, endMessage, surveyMessage ,active_time}) => {
+    const saveHandler = ({ treeData, name, startMessage, endMessage, surveyMessage, active_time }) => {
         if (companyDetails) {
             let update_params = {
                 treeData,
@@ -380,9 +380,9 @@ function AutoReplyTable(props) {
             );
         }
     }
-    const updateHandler = ({ treeData, name, startMessage, endMessage, surveyMessage ,active_time }) => {
+    const updateHandler = ({ treeData, name, startMessage, endMessage, surveyMessage, active_time }) => {
         
-      
+
         if (companyDetails && chatBotData) {
             let update_params = {
                 treeData,
@@ -435,6 +435,24 @@ function AutoReplyTable(props) {
             );
         }
 
+    }
+    const formatTime = (active_time) => {
+        if (active_time) {
+            let time = active_time.split('-')
+            if (time[0] > 12) {
+                time[0] = `${time[0]-12}pm`
+            } else {
+                time[0] = `${time[0]}am`
+            }
+            if (time[1] > 12) {
+                time[1] = `${time[1]-12}pm`
+            } else {
+                time[1] = `${time[1]}am`
+            }
+            return time.join('-')
+        } else {
+            return '-'
+        }
     }
     return (
         <>
@@ -610,10 +628,14 @@ function AutoReplyTable(props) {
                                                                     >
                                                                         {moment(n.dt).format("YYYY-MM-DD hh:mm")}
                                                                     </TableCell>
-
-
-
-
+                                                                    <TableCell
+                                                                        component="th"
+                                                                        scope="row"
+                                                                        align="center"
+                                                                        style={{ fontSize: '11px', padding: '10px' }}
+                                                                    >
+                                                                        {formatTime(n.active_time)}
+                                                                    </TableCell>
                                                                     <TableCell
                                                                         component="th"
                                                                         scope="row"
