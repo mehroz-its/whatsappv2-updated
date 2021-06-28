@@ -25,6 +25,7 @@ import { Redirect } from 'react-router'
 import { useHistory } from "react-router-dom";
 import AddAutoReply from "./addAutoReply";
 import moment from "moment"
+import { v4 as uuidv4 } from 'uuid';
 import ConfirmationDialogue from './confirmationDialogue';
 const useStyles = makeStyles(theme => ({
     root: {
@@ -240,23 +241,23 @@ function AutoReplyTable(props) {
         let update_params = {
             treeData: [],
             clientId: companyDetails.id,
-            name: `${n.name}_copy`,
+            name: `${n.name}_${uuidv4()}`,
             startMessage: null,
             endMessage: null,
             surveyMessage: null
         };
         if (n.body) {
             if (n.body.__default) {
-                update_params.treeData = [n.body.__default]
+                update_params.treeData = n.body.__default
             }
             if (n.body.__startMessageConversationMessage && n.body.__startMessageConversationMessage.messages && n.body.__startMessageConversationMessage.messages.length) {
-                update_params.startMessage = n.body.__startMessageConversationMessage.messages[0]
+                update_params.startMessage = n.body.__startMessageConversationMessage
             }
             if (n.body.__endMessageConversationMessage && n.body.__endMessageConversationMessage.messages && n.body.__endMessageConversationMessage.messages.length) {
-                update_params.endMessage = n.body.__endMessageConversationMessage.messages[0]
+                update_params.endMessage = n.body.__endMessageConversationMessage
             }
             if (n.body.__surveyMessage && n.body.__surveyMessage.messages && n.body.__surveyMessage.messages.length) {
-                update_params.surveyMessage = n.body.__surveyMessage.messages[0]
+                update_params.surveyMessage = n.body.__surveyMessage
             }
         }
         CoreHttpHandler.request(

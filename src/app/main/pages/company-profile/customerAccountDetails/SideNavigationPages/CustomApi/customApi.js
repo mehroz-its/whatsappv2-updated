@@ -894,7 +894,7 @@ function Config(props) {
                                         crop_path.title = "img";
                                         delete crop_path.messages
                                     } else if (attachment.attachment_type === '3') {
-                                        if ( crop_path.messages && crop.messages[0]) {
+                                        if ( crop_path.messages && crop_path.messages[0]) {
                                             crop_path.messages = [crop_path.messages[0] + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url]
                                         } else {
                                             crop_path.images[0].caption = crop_path.images[0].caption + '\nبراہ کرم بہتر تفہیم کے لئے ویڈیو چیک کریں\n\n' + attachment.url
