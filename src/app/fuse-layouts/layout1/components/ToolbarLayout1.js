@@ -33,7 +33,9 @@ function ToolbarLayout1(props) {
 	const [toggleShow, setToggleShow] = React.useState(false);
 	const [message, setMessage] = React.useState(false);
 	const classes = useStyles(props);
-
+	const [notificationTone, setNotificationTone] = React.useState(
+		new Audio('https://upload.its.com.pk/v1/fetch/file/66961b75-3fef-406e-8923-277793adae4e.mp3')
+	);
 	const [snackbaropen, setSnackBarOpen] = React.useState(false)
 
 	const socket = WebSocket.getSocket()
@@ -51,11 +53,13 @@ function ToolbarLayout1(props) {
 	}
 
 	const handleRingtone = () => {
+		alert(enableRingtone)
 		if (enableRingtone) {
 			setEnableRingtone(false)
 			localStorage.setItem('EnableNotificationTone', true);
 			EventEmitter.dispatch('EnableNotificationTone', false);
 		} else {
+			alert('else')
 			setEnableRingtone(true)
 			EventEmitter.dispatch('EnableNotificationTone', true);
 			localStorage.setItem('EnableNotificationTone', true);
@@ -89,6 +93,9 @@ function ToolbarLayout1(props) {
 			);
 		}
 	};
+	console.log(enableRingtone,'enableeee')
+
+
 	useEffect(() => {
 		setToggleShow(PermissionResolver.hasPermission('app', 'toggle'));
 		// console.log('toggleShow : ', toggleShow);
@@ -104,15 +111,21 @@ function ToolbarLayout1(props) {
 			if (data && data.newMessage) {
 				setSnackBarOpen(true)
 				setMessage("You have a new conversation")
+				setMessage("You have a new message")
+				enableRingtone && notificationTone.play();
 			}
 		})
 		socket.on("newMessageNotification", (data) => {
 			if (data && data.newMessage) {
 				if (window && window.location && window.location.href) {
-					if (!String(window.location.href || " ").includes("/apps/chat")) {
-						setSnackBarOpen(true)
-						setMessage("You have a new message")
-					}
+					setSnackBarOpen(true)
+					setMessage("You have a new message")
+					enableRingtone && notificationTone.play();
+
+					// if (!String(window.location.href || " ").includes("/apps/chat")) {
+					// 	setSnackBarOpen(true)
+					// 	setMessage("You have a new message")
+					// }
 				}
 			}
 		})
@@ -146,7 +159,7 @@ function ToolbarLayout1(props) {
 			socket.removeListener("iAmOnline")
 		}
 
-	}, []);
+	}, [enableRingtone]);
 	return (
 		<ThemeProvider theme={toolbarTheme}>
 

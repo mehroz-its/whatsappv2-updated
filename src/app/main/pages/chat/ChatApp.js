@@ -569,21 +569,24 @@ function ChatApp(props) {
 	};
 
 	useEffect(() => {
+		let value = false;
+
+		EventEmitter.subscribe('EnableNotificationTone', event => {
+			alert(event)
+			value = event;
+		});
 		getNumbers();
 		EventEmitter.subscribe('Online', event => checkOnline(event));
-		let value = false;
 
 		socket.on('newConversation', data => {
 			setDummy(data);
-			value && notificationTone.play();
-			EventEmitter.subscribe('EnableNotificationTone', event => {
-				value = event;
-			});
+		
+			// value && notificationTone.play();
 		});
 		// let value = false
 		socket.on('newConversationMessage', data => {
 			setmessage(data);
-			value && notificationTone.play();
+			// value && notificationTone.play();
 			EventEmitter.subscribe('EnableNotificationTone', event => {
 				value = event;
 			});

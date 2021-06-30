@@ -79,6 +79,8 @@ const AttachmentDialog = function (props) {
     };
 
     const getPermission = () => {
+        alert('called')
+        console.log(navigator,'navigator.mediaDevicesnavigator.mediaDevicesnavigator.mediaDevices')
         if (navigator.mediaDevices) {
             navigator.mediaDevices.getUserMedia({ audio: true })
                 .then(function (stream) {
@@ -94,6 +96,7 @@ const AttachmentDialog = function (props) {
 
     }
     React.useEffect(() => {
+        alert('caledd')
         getPermission()
         if (dialogType === "audio") {
             setFileType("audio/*")
@@ -223,7 +226,8 @@ const AttachmentDialog = function (props) {
                                                         {IconResolver.resolve("mic")}
                                             paused
                                     </Button>}
-                                            </AudioAnalyser>  </Grid>
+                                            </AudioAnalyser>
+                                              </Grid>
                                         <Grid item xs={4}>
                                             <Button onClick={() => controlAudio("inactive")} id='content-record-button' variant="contained" color="secondary" component="span" fullWidth>
                                                 {IconResolver.resolve("mic")}

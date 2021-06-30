@@ -88,27 +88,39 @@ const AttachmentDialogV2 = function (props) {
     };
 
     React.useEffect(() => {
-        if (navigator.mediaDevices) {
-            navigator.mediaDevices.getUserMedia({ audio: true })
-                .then(function (stream) {
-                    setPermissionState(true)
-                })
-                .catch(function (err) {
-                    setPermissionState(false)
-                });
+        // if (navigator.mediaDevices) {
+        //     console.log(navigator,'navigatornavigator')
+        //     navigator.mediaDevices.getUserMedia({ audio: true })
+        //         .then(function (stream) {
+        //             setPermissionState(true)
+        //         })
+        //         .catch(function (err) {
+        //             setPermissionState(false)
+        //         });
 
-            if (dialogType === "audio") {
-                setFileType("audio/*")
-            } else if (dialogType === "video") {
-                setFileType("video/*")
-            } else if (dialogType === "image") {
-                setFileType("image/*")
-            } else if (dialogType === "document") {
-                setFileType("application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-            } else {
-                setFileType("*")
-            }
-        } else alert('Unable to load audio plugins!, Please check your connection');
+        //     if (dialogType === "audio") {
+        //         setFileType("audio/*")
+        //     } else if (dialogType === "video") {
+        //         setFileType("video/*")
+        //     } else if (dialogType === "image") {
+        //         setFileType("image/*")
+        //     } else if (dialogType === "document") {
+        //         setFileType("application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+        //     } else {
+        //         setFileType("*")
+        //     }
+        // } else alert('Unable to load audio plugins!, Please check your connection');
+        if (dialogType === "audio") {
+            setFileType("audio/*")
+        } else if (dialogType === "video") {
+            setFileType("video/*")
+        } else if (dialogType === "image") {
+            setFileType("image/*")
+        } else if (dialogType === "document") {
+            setFileType("application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+        } else {
+            setFileType("*")
+        }
     }, []);
 
     const controlAudio = (status) => {
