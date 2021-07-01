@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 import React from 'react';
-const URL = 'https://whatsapp-ent-be.its.com.pk'
+const URL = 'https://wentterminus.its.com.pk'
 
 const getToken = () => {
     return localStorage.getItem("user_token")
