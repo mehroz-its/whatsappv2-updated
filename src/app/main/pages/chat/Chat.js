@@ -1240,7 +1240,7 @@ function Chat(props) {
 			<XGlobalDialogCmp
 				onDialogPropsChange={sendDialogInputHandler}
 				data={{ dialogType: sendActionType, attachment: sendDialogData }}
-				dialogTitle={`sendDialogTitle`}
+				dialogTitle={sendDialogTitle}
 				options={dialogOptionsConfirmBlock}
 				content={AttachmentDialogV2}
 				defaultState={sendDialogOpen}

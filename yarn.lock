@@ -3079,6 +3079,13 @@ atob@^2.1.2:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
+audio-react-recorder@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/audio-react-recorder/-/audio-react-recorder-1.0.4.tgz#db81f10286c2252af8d42162e1f49dbd1de0dffd"
+  integrity sha512-an7eX0yOGDbZOSu2LvnfWIsI41pkx9nXgtBVbI+9ByS91WKqoVGVb5pbmqHax5sZty2DjOIG/neuxcghIU/ucg==
+  dependencies:
+    prop-types "^15.7.2"
+
 auth0-js@^9.13.1:
   version "9.13.2"
   resolved "https://registry.yarnpkg.com/auth0-js/-/auth0-js-9.13.2.tgz#78ea02d28a0a8c5ee4eb27c229563227071451d0"
@@ -12210,6 +12217,13 @@ react-audio-analyser@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/react-audio-analyser/-/react-audio-analyser-0.3.1.tgz#938af685da7059cc63475f4dde9812978d3cd8b5"
   integrity sha512-GHqz+++rbPLXdyw7PU3UhtYGOuZTjqB1VuQixjn2GEbz4au+SKtI7oz5glg7O4GE94O3vzqJu9fLKc995198yw==
+
+react-audio-player@^0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/react-audio-player/-/react-audio-player-0.17.0.tgz#4be7b1952512801f36ba0865a9c98f7b108f991e"
+  integrity sha512-aCZgusPxA9HK7rLZcTdhTbBH9l6do9vn3NorgoDZRxRxJlOy9uZWzPaKjd7QdcuP2vXpxGA/61JMnnOEY7NXeA==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-autosuggest@10.0.0:
   version "10.0.0"

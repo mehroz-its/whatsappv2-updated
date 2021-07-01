@@ -53,13 +53,11 @@ function ToolbarLayout1(props) {
 	}
 
 	const handleRingtone = () => {
-		alert(enableRingtone)
 		if (enableRingtone) {
 			setEnableRingtone(false)
 			localStorage.setItem('EnableNotificationTone', true);
 			EventEmitter.dispatch('EnableNotificationTone', false);
 		} else {
-			alert('else')
 			setEnableRingtone(true)
 			EventEmitter.dispatch('EnableNotificationTone', true);
 			localStorage.setItem('EnableNotificationTone', true);
