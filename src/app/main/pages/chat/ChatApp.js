@@ -572,7 +572,6 @@ function ChatApp(props) {
 		let value = false;
 
 		EventEmitter.subscribe('EnableNotificationTone', event => {
-			alert(event)
 			value = event;
 		});
 		getNumbers();
