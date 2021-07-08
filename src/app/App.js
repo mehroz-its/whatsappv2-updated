@@ -20,6 +20,7 @@ import { useIdleTimer } from 'react-idle-timer'
 import CoreHttpHandler from './../http/services/CoreHttpHandler';
 
 
+
 const jss = create({
 	...jssPreset(),
 	plugins: [...jssPreset().plugins, jssExtend(), rtl()],
@@ -29,6 +30,7 @@ const jss = create({
 const generateClassName = createGenerateClassName();
 
 const App = () => {
+
 	const [hasPermission, setHasPermission] = React.useState(null)
 	const [displaySnack, setDisplaySnack] = React.useState(false)
 

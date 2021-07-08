@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 		color: 'inherit'
 	},
 	addIcon: {
-		color: amber[500]
+		color: amber[500]	
 	}
 });
 
@@ -44,14 +44,30 @@ function FuseShortcuts(props) {
 	const [searchText, setSearchText] = useState('');
 	const [searchResults, setSearchResults] = useState(null);
 	const [navigation, setNavigation] = useState(null);
-	const shortcutItems = shortcuts ? shortcuts.map(id => FuseUtils.findById(navigationData, id)) : [];
+	const [shortcutItems, setShortcutItems] = useState([])
+	const [userShortCuts, setUserShortCuts] = useState([])
+console.log(navigationData,'navigationDatanavigationData')
+	useEffect(() => {
+		let shortcutItems = userShortCuts ? userShortCuts.map(id => FuseUtils.findById(navigationData, id)) : []
+		setShortcutItems(shortcutItems)
+		localStorage.setItem('shortcutItems', JSON.stringify(shortcutItems))
+		localStorage.setItem('userShortcuts', userShortCuts)
+		
+	}, [userShortCuts])
+
+	// useEffect(() => {
+	// 	let shortcutItems = localStorage.getItem('shortcutItems')
+	// 	let userShortcuts = localStorage.getItem('userShortcuts')
+	// 	setUserShortCuts([...userShortcuts])
+	// 	setShortcutItems(JSON.parse(shortcutItems))
+	// }, [userShortCuts])
 
 	useEffect(() => {
 		function flattenNavigation() {
 			setNavigation(FuseUtils.getFlatNavigation(navigationData));
 		}
 
-		flattenNavigation();
+		flattenNavigation();	
 	}, [props.location, navigationData]);
 
 	function addMenuClick(event) {
@@ -75,11 +91,14 @@ function FuseShortcuts(props) {
 	}
 
 	function toggleInShortcuts(id) {
-		let newShortcuts = [...shortcuts];
+		let newShortcuts = [...userShortCuts];
 		newShortcuts = newShortcuts.includes(id) ? newShortcuts.filter(_id => id !== _id) : [...newShortcuts, id];
-		dispatch(UserActions.updateUserShortcuts(newShortcuts));
+		// dispatch(UserActions.updateUserShortcuts(newShortcuts));
+		setUserShortCuts(newShortcuts)
+		console.log(newShortcuts,'newShortcuts')
 	}
 
+	console.log(shortcutItems, 'shortcutItemsshortcutItemsshortcutItems')
 	function ShortcutMenuItem({ item, onToggle }) {
 		return (
 			<Link to={item.url} className={classes.item} role="button">
@@ -99,7 +118,7 @@ function FuseShortcuts(props) {
 							onToggle(item.id);
 						}}
 					>
-						<Icon color="action">{shortcuts.includes(item.id) ? 'star' : 'star_border'}</Icon>
+						<Icon color="action">{userShortCuts.includes(item.id) ? 'star' : 'star_border'}</Icon>
 					</IconButton>
 				</MenuItem>
 			</Link>
@@ -130,7 +149,7 @@ function FuseShortcuts(props) {
 									title={item.title}
 									placement={props.variant === 'horizontal' ? 'center' : 'center'}
 								>
-									<IconButton className="w-40 h-0 p-0" style={{marginTop:'-30%'}}>
+									<IconButton className="w-40 h-0 p-0" style={{ marginTop: '-30%' }}>
 										{item.icon ? (
 											<Icon >{item.icon}</Icon>
 										) : (
@@ -147,7 +166,7 @@ function FuseShortcuts(props) {
 					placement={props.variant === 'horizontal' ? 'bottom' : 'left'}
 				>
 					<IconButton
-					style={{marginTop:'-1%'}}
+						style={{ marginTop: '-1%' }}
 						className="w-25 h-25 p-0"
 						aria-owns={addMenu ? 'add-menu' : null}
 						aria-haspopup="true"

@@ -85,6 +85,7 @@ export function createUserSettingsFirebase(authUser) {
  * Set User Data
  */
 export function setUserData(user) {
+	console.log(user,'userrrr')
 	return dispatch => {
 		/*
         You can redirect the logged-in user to a specific route depending on his role
@@ -139,6 +140,7 @@ export function updateUserShortcuts(shortcuts) {
 
 		updateUserData(newUser, dispatch);
 
+		console.log(newUser,'newUsernewUser')
 		return dispatch(setUserData(newUser));
 	};
 }
